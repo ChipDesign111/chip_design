@@ -12,14 +12,17 @@
 
 ## 2. 当前状态与依据
 
-- 共有仓库新建架构；尚未引入官方源码或个人实现，尚无共有 Lab PASS。
+- 外围按用户选定 Lab 3 固定，90 个原文件字节校验；变动点仅 NPU，详见 architecture.md。
+- 共有兼容 NPU 已通过原核级/MMIO/四份 SoC 镜像，HAR V1 已通过 1000 核例、12 MMIO 用例和真实 CPU 六次连续推理，见 reports/baseline.md。
 - 个人 Lab 可作为学习和贡献来源，不能直接变成共有项目验收结果。
 - 课程网站 2026-10-08：Lab 0–3 已有材料，Lab 4–6 和 Final Project 尚未发布。
 - 本计划中的周次参考课堂课程讲义；具体截止、评分、四人登记和资源由最新通知确定。
-- 已知 Lab 3 模板底层需要核查：8 KB 主 SRAM、NPU 16 KB 本地地址、读下一拍有效、原计算核为无符号 4 位矩阵乘。
+- 已核对：8 KB 主 SRAM、16 KB NPU 地址窗口、下一拍读有效，原回归为无符号 4 位矩阵乘。HAR 算术契约 V1 已实现，真实训练模型尚缺。
 - 网站：[课程主页](https://full-stack-ai-chip.tianyuj.com/)、[Lab 3](https://full-stack-ai-chip.tianyuj.com/lab-3/)、[Final Project](https://full-stack-ai-chip.tianyuj.com/final-project/)。
 
 ## 3. 阶段 A：组织与共有工程
+
+本次完成选择性导入、共享入口和本机平台回归。无需等待真实模型才开发 RTL；模型缺席时使用合成权重验证，后续优先对接真实数据及模型，然后评估 NPU 存储/综合。现有 16 周学习安排保留为参考，并非当前进度要从第 1 周重新开始。
 
 任务：
 1. 四人使用个人账号加入组织；仓库权限按团队配置，不共享登录凭据。

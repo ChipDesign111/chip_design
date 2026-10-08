@@ -1,21 +1,23 @@
-# MMIO 与数据布局草案
+# HAR V1 MMIO 与数据布局
 
-状态：DRAFT。以下为 HAR 项目建议，不替换原 Lab 3 的冻结地址表。
-基址建议沿用 0x70000000，全部采用 32 位对齐字访问。本地窗口最大 0x4000 字节。
+状态：IMPLEMENTED_V1，2026-10-08。仅用于 har 配置；lab3 配置继续使用原 4×4 地址表。两个 NPU 都接到固定 Lab 3 外围。
+基址 0x70000000，全部采用 32 位对齐字访问。本地窗口 0x4000 字节。
 
 ## 寄存器
 
-| 偏移 | 名称 | 建议行为 |
+| 偏移 | 名称 | 实现行为 |
 | --- | --- | --- |
 | 0x0000 | CONTROL | bit0 START，bit1 ACK_DONE；其余保留 |
 | 0x0004 | STATUS | bit0 DONE，bit1 BUSY，bit2 ERROR；读取无副作用 |
 | 0x0008 | CLASS_ID | 完成后返回 0–5 |
 | 0x000C | CYCLE_COUNT | 接受启动至完成的计算周期 |
-| 0x0010 | REQUANT_MULT | 第一层整数系数，具体范围待确定 |
-| 0x0014 | REQUANT_SHIFT | 第一层移位，合法范围待确定 |
+| 0x0010 | REQUANT_MULT | 0–65535，复位默认 1 |
+| 0x0014 | REQUANT_SHIFT | 0–31，复位默认 0 |
 
-建议：START 在空闲/已完成时被接受，清旧 DONE；BUSY 时 START 和数据/配置写入被忽略并置 ERROR。
-ACK_DONE 显式清 DONE；若同时 START 和 ACK_DONE，START 优先。ERROR 清除机制、CLASS_ID 复位值及周期计数边界在实现前评审固定。
+START 在空闲/已完成时接受，清旧 DONE、ERROR 并开始计算；BUSY 时所有写入（包括 START/ACK）忽略并置 ERROR。
+ACK_DONE 在非 BUSY 时清 DONE、ERROR；同时 START/ACK 时 START 优先。非法 MULT/SHIFT 保留旧配置并置 ERROR，合法配置写不清 ERROR。
+DONE 保持到 ACK/START/复位；ACK 保留输出。CLASS_ID、结果和周期复位为零；新启动清结果和周期，BUSY 期间输出未完整，不可使用。
+正常推理 CYCLE_COUNT=2279，从接受 START 后开始计数，到 Argmax 完成，不包含软件传输。未定义读返回零；非 BUSY 时未定义或只读地址写忽略。CONTROL 读返回零。
 
 ## 数据窗口
 
@@ -37,12 +39,12 @@ ACK_DONE 显式清 DONE；若同时 START 和 ACK_DONE，START 优先。ERROR �
 
 ## 桥接时序
 
-本项目需核对官方 axi2mem：
+已沿用选定 Lab 3 axi2mem：
 - 本地地址是 word 地址，软件地址是 byte 地址，转换要明确。
 - 写仅在有效请求和写使能同时成立时发生。
 - 读按桥接约定在下一拍有效；保持读请求不能造成副作用。
 - 当前 Lab 3 NPU 包装层不传递 byte enable，首版使用完整 32 位写。
-- 高位截断造成的地址别名必须有记录；必要时缩小合法映射或加入译码检查，不能假设总线的大区间等于实际存储容量。
+- 外围 addr[13:2] 截断造成 16 KB 地址别名，保持外围不变；软件只用基址加合法偏移。大译码区间不代表实际容量。
 - 若最终存储宏延迟不同，需要显式适配；不能直接更改读延迟而保留旧桥接契约。
 
 ## 软件执行
