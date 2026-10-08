@@ -1,0 +1,35 @@
+name: 项目任务
+description: 明确任务范围、依赖和验收条件
+title: "[任务] "
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: 目标
+      description: 完成后系统将具备什么行为？
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 修改范围
+      description: 预计涉及的目录、文档、接口。
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: 前置依赖
+      description: 数据、接口或其他任务。
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收标准
+      description: 写明可运行命令、需要比较的数据和通过条件。
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 完成证据
+      description: 完成后补充 commit、工具版本、命令、结果及限制。

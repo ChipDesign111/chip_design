@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "status": "DRAFT",
+  "organization": "ChipDesign111",
+  "repository": "chip_design",
+  "network": {
+    "input_features": 64,
+    "hidden_features": 32,
+    "classes": 6
+  },
+  "numeric": {
+    "input_bits": 8,
+    "weight_bits": 8,
+    "bias_bits": 32,
+    "accumulator_bits": 32,
+    "hidden_bits": 8,
+    "score_bits": 32
+  },
+  "architecture": {
+    "baseline_mac_units": 1,
+    "optional_mac_units": 4
+  },
+  "mmio": {
+    "base_address": 1879048192,
+    "window_bytes": 16384,
+    "register_area_bytes": 32,
+    "windows": [
+      {
+        "name": "input",
+        "offset": 64,
+        "size_bytes": 64
+      },
+      {
+        "name": "weight1",
+        "offset": 256,
+        "size_bytes": 2048
+      },
+      {
+        "name": "weight2",
+        "offset": 2304,
+        "size_bytes": 192
+      },
+      {
+        "name": "bias1",
+        "offset": 2496,
+        "size_bytes": 128
+      },
+      {
+        "name": "bias2",
+        "offset": 2624,
+        "size_bytes": 24
+      },
+      {
+        "name": "hidden",
+        "offset": 2688,
+        "size_bytes": 32
+      },
+      {
+        "name": "scores",
+        "offset": 2816,
+        "size_bytes": 24
+      }
+    ]
+  },
+  "course_main_sram_bytes_to_verify": 8192,
+  "target_clock_hz": null
+}

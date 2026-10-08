@@ -1,0 +1,29 @@
+# Generated project output
+/build/
+**/__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+# EDA and simulator output
+**/work/
+**/out/
+*.vcd
+*.wlf
+*.fst
+*.vvp
+transcript
+vsim_stacktrace.vstf
+# Local-only configuration and credentials
+/configs/env.local.json
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+# Editor and OS output
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+# Do not globally ignore .hex: approved fixed program fixtures may be tracked.
