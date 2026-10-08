@@ -1,6 +1,6 @@
 # 整数数值规则草案
 
-状态：DRAFT。模型尚未提供，尺度、量化参数和验证阈值未冻结。
+状态：DRAFT。基线权重已在 [model/export](../model/export/README.md)，整数尺度以 [quant_params.json](../model/export/quant_params.json) 为准；RTL 逐值对照仍未完成。
 
 ## 计算定义
 
