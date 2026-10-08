@@ -1,0 +1,86 @@
+{
+  "model_version": "har-mlp-64x32x6-2026-09-24",
+  "dataset": "UCI HAR",
+  "label_order": [
+    "WALKING",
+    "WALKING_UPSTAIRS",
+    "WALKING_DOWNSTAIRS",
+    "SITTING",
+    "STANDING",
+    "LAYING"
+  ],
+  "label_note": "UCI HAR y is 1..6 in this order. Index 3 is SITTING, index 4 is STANDING.",
+  "float_test_accuracy": 0.8551068883610451,
+  "int8_weight_ptq_test_accuracy": 0.851,
+  "integer_requant_test_accuracy": 0.8497,
+  "input": {
+    "quantization": "symmetric",
+    "scale": 0.007874015718698502,
+    "formula": "q = clip(round(x / scale), -128, 127)"
+  },
+  "fc1": {
+    "weight_shape": [
+      32,
+      64
+    ],
+    "weight_scale": 0.00944331381469965,
+    "bias_int32": [
+      -429,
+      -220,
+      3822,
+      3601,
+      1380,
+      5052,
+      715,
+      -627,
+      -368,
+      1132,
+      -200,
+      237,
+      3632,
+      2917,
+      414,
+      -1297,
+      2081,
+      1164,
+      1496,
+      2127,
+      -2118,
+      701,
+      3631,
+      1381,
+      1705,
+      -650,
+      283,
+      5006,
+      2670,
+      2474,
+      0,
+      1137
+    ]
+  },
+  "hidden_requant": {
+    "formula": "h = clip((relu_acc * 1064 + 524288) >> 20, 0, 127)",
+    "mul": 1064,
+    "round_add": 524288,
+    "shift": 20,
+    "approximates_divisor": 986
+  },
+  "fc2": {
+    "weight_shape": [
+      6,
+      32
+    ],
+    "weight_scale": 0.011908121407032013,
+    "bias_int32": [
+      132,
+      249,
+      -29,
+      -125,
+      -69,
+      -73
+    ],
+    "bias_scale_note": "bias converted with hidden divisor 986 and both layer scales"
+  },
+  "argmax_tie": "smallest index"
+}
