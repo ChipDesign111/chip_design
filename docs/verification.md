@@ -1,6 +1,6 @@
 # 验证与性能计划
 
-状态：PLANNED，当前没有功能 PASS 或 PPA 结果。
+状态：初始功能基线已通过核级/MMIO/真实 CPU，见 [报告](../reports/baseline.md)；真实模型、FPGA 和 PPA/ASIC 待完成。改动后的命令与最低验证要求见 [修改与验证指南](change-guide.md)。
 
 ## 分层验收
 

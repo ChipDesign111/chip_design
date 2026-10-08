@@ -5,6 +5,7 @@
 | [plan.md](plan.md) | 从建仓到交付的详细执行计划、第一周安排和课程周次 |
 | [backlog.md](backlog.md) | 可转成 GitHub Issues 的待办与验收条件 |
 | [architecture.md](architecture.md) | 目录边界、硬件层次、构建入口 |
+| [change-guide.md](change-guide.md) | 能改什么、怎样改、改后运行哪些验证及通过标准 |
 | [spec.md](spec.md) | 项目功能和约束草案 |
 | [numerics.md](numerics.md) | INT8 / INT32 和量化规则草案 |
 | [mmio.md](mmio.md) | 地址、状态、读写和数据打包草案 |

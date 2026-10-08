@@ -2,6 +2,8 @@
 
 ## 贡献流程
 
+开始修改前阅读 [修改边界与验证操作指南](docs/change-guide.md)：platform 与原 Lab 3 测试冻结，HAR 开发在 rtl/npu/har；新增模块必须进入实际编译入口，硬件变更须通过单元和真实 CPU SoC 回归。
+
 `Issue → 任务分支 → 修改和验证 → PR → 另一人复核 → 合并 main`。
 
 - 四人各自克隆同一仓库，各用独立本地与 CLab 工作目录。

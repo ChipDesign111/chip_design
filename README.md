@@ -9,6 +9,7 @@ ChipDesign111 的共有芯片设计项目。目标是在课程提供的 RISC-V S
 1. 阅读 [详细项目计划](docs/plan.md)，确认阶段顺序和验收点。
 2. 阅读 [目录与硬件架构](docs/architecture.md)，确定各类文件放在哪里。
 3. 阅读 [协作规范](CONTRIBUTING.md) 和 [环境说明](docs/environment.md)。
+   开始改代码前，按 [修改与验证指南](docs/change-guide.md) 确认允许的修改区、编译入口和回归要求。
 4. 评审 [V1 规格](docs/spec.md)、[数值规则](docs/numerics.md) 和 [MMIO](docs/mmio.md)。
 5. 从 [任务清单](docs/backlog.md) 领取任务；当前不预先安排四人分工。
 
