@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "DRAFT",
+  "status": "HAR_V1_FUNCTIONAL_LAB3_PERIMETER_FIXED",
   "organization": "ChipDesign111",
   "repository": "chip_design",
   "network": {
@@ -62,6 +62,6 @@
       }
     ]
   },
-  "course_main_sram_bytes_to_verify": 8192,
+  "course_main_sram_bytes": 8192,
   "target_clock_hz": null
 }

@@ -17,4 +17,4 @@
 | [ai-log/](ai-log/README.md) | AI 使用和人工修订记录 |
 | [weekly/](weekly/README.md) | 每周进度和验收记录 |
 
-DRAFT 表示团队建议，不能直接当作已冻结的硬件接口。当前所有功能、性能和签核结果都仍待实现验证。
+DRAFT 表示建议；HAR V1 算术与 MMIO 已实现，Lab 3 外围已固定，功能回归见 [报告](../reports/baseline.md)。真实模型、FPGA、PPA 与签核仍待完成。

@@ -1,22 +1,36 @@
 # 环境和共有运行入口
 
-## 当前可用
+已验证：Windows、Python 3.11、Icarus Verilog 11、ModelSim 2019.2。工具路径使用 PATH 或 CLI 参数，不写个人绝对路径。
 
-Python 3.11+ 执行 `python scripts/check_repo.py`，检查骨架与配置。
-当前尚无 RTL/CPU/FPGA/ASIC 的可运行入口，不把目录 README 当作完成实验。
+```text
+python scripts/check_repo.py
+python scripts/check_platform.py
+python scripts/run_tests.py --unit
+python scripts/run_tests.py --soc --vsim "本机 vsim 路径"
+```
 
-## 本地配置
+从根目录执行；脚本也支持从其他目录调用。不带 --unit/--soc 时执行全部。Icarus 不在 PATH 时指定 --iverilog、--vvp。--count 支持 12–1000，默认核级 1000 组。
 
-复制 `configs/env.example.json` 为 `configs/env.local.json`，填个人路径；本地文件被忽略。
-记录操作系统、Python、仿真器、Icarus、RISC-V GCC 版本。具体安装以课程教程和官方来源为准，不要求每个人路径相同。
+完整 AXI SoC 使用 ModelSim，Icarus 11 不支持这里的 SystemVerilog interface。独立 work 在 build/soc/lab3/、har/；多人各自克隆，同一克隆勿同时跑两份回归。
 
-## 后续环境
+## ModelSim
 
-- 单元仿真：Icarus 或课程仿真器；兼容性按实际源码检查。
-- SoC：Lab 3 使用 ModelSim；CLab/后续工具采用课程正式环境。
-- RISC-V：旧 Lab 可运行预编译 hex；自主 C 驱动需要自己的构建链。
-- FPGA：板卡和工具待 Lab 6 正式发布。
-- ASIC：仅在课程指定环境使用工艺库与商业工具，不将库上传到 GitHub 或提供给 AI。
+使用已有 LM_LICENSE_FILE；未配置时仅尝试 vsim 安装目录上一级的 LICENSE.TXT。其他安装布局请自行配置环境变量。许可证不提交。
 
-共有脚本定位根目录、读取配置、独立创建 build/<任务>/<版本>；不同人和不同任务不能共用同一 work 数据库。
-官方相对 filelist 路径导入时适配，禁止在共有脚本中写个人绝对路径或许可证地址。
+原 SoC TB 不改动。运行脚本用 -G 指定 SRAM INIT_FILE，启动后关闭 VCD 以减少回归开销。检查真实 SRAM magic=c0dec0de 才判通过；FAIL、TIMEOUT、缺失 PASS、编译错误均失败，不能把 $finish 的零退出码当 PASS。
+
+## 向量与程序
+
+```text
+python scripts/generate_vectors.py --count 1000
+python scripts/build_har_firmware.py
+```
+
+种子 20261008，向量通过独立 Python 整数参考生成。
+HAR RV32I 编码器不依赖交叉编译器，生成实际 CV32E40P 执行的 8 KB hex、解释性 .S 清单和地址/SHA JSON。清单不是完整 GCC 工程；后续 C 驱动需建立交叉编译链。
+
+原 Lab 3 四份预编译 hex 直接使用，原 C/启动/链接材料保留。
+日志在 build/logs/，结果在 build/results/unit.json、soc.json；见 [报告](../reports/baseline.md)。
+GitHub CI 执行外围校验和 Icarus 单元回归，商业 SoC 仿真本地执行。
+
+FPGA/ASIC 尚未验证，板卡、频率和工艺约束待确认。PDK、标准单元库及许可证留在课程指定环境，不提供给 AI、不上传。

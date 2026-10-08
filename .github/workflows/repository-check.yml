@@ -1,7 +1,7 @@
 name: Repository checks
 on:
   push:
-    branches: [main]
+    branches: [main, 'codex/**']
   pull_request:
 permissions:
   contents: read
@@ -15,3 +15,7 @@ jobs:
           python-version: "3.12"
       - name: Check repository structure and document links
         run: python scripts/check_repo.py
+      - name: Install Icarus Verilog
+        run: sudo apt-get update && sudo apt-get install -y iverilog
+      - name: Check fixed Lab 3 perimeter and run RTL regressions
+        run: python scripts/run_tests.py --unit
