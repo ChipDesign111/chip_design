@@ -1,4 +1,4 @@
-# 已选 HAR 模型如何在 RTL / SoC 验证
+# Trained model verification
 
 2026-10-13。来源是已合入 main 的 PR #2，模型版本 har-mlp-64x32x6-2026-09-24。保留原训练文件、浮点/INT8 权重、量化参数和指标，没有重新训练或替换参数。
 
@@ -32,9 +32,9 @@ RTL 的判定目标是整数参考，不直接把真实标签当成“硬件应�
 需要 NumPy；推理/验证无需 Torch，无需解包执行 best.pt。
 
 ```text
-python -m pip install numpy==2.3.5
-python scripts/download_uci_har.py
-python scripts/run_model_tests.py --data-root "data/UCI HAR Dataset" --vsim "本机 vsim 路径"
+python -m pip install -r requirements.txt
+python project.py download-data
+python project.py test --suite model-soc --data-root "data/UCI HAR Dataset" --vsim /path/to/vsim
 ```
 
 原始官方下载、提取数据及 SHA 位于被忽略的 data/。完整模型向量、程序、日志、结果在 build/real_model/、build/logs/。
@@ -42,11 +42,11 @@ python scripts/run_model_tests.py --data-root "data/UCI HAR Dataset" --vsim "本
 不下载数据集时，可用已提交的六类 24 条真实 INT8 输入做快速复现：
 
 ```text
-python scripts/run_model_tests.py --unit
-python scripts/run_model_tests.py --vsim "本机 vsim 路径"
+python project.py test --suite model
+python project.py test --suite model-soc --vsim /path/to/vsim
 ```
 
-CI 使用第一条（24 条各跑单次/双次，共 48 推理），本机另有全 2947 条测试的记录。完整 SoC 使用原 my_soc_tb，不改原课程测试；24 条 CPU 程序只占 6232 B，不超 8 KB 主 SRAM。
+CI 使用第一条（24 条各跑单次/双次，共 48 推理），另有全 2947 条测试的记录。完整 SoC 使用原 my_soc_tb 及冻结测试；24 条 CPU 程序占 6232 B，不超 8 KiB 主 SRAM。
 
 需要重新生成小样本固定文件时：
 python scripts/export_real_model.py --data-root "data/UCI HAR Dataset" --write-fixture

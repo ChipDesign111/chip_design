@@ -1,0 +1,38 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{yml,yaml,json}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[platform/course_soc/**]
+charset = unset
+end_of_line = unset
+indent_style = unset
+indent_size = unset
+insert_final_newline = unset
+trim_trailing_whitespace = false
+
+[verification/lab3/**]
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = false
+
+[sw/startup/lab3/**]
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = false
+
+[filelists/lab3_original.f]
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = false

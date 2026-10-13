@@ -1,0 +1,2 @@
+# Trained-model inference and verification; training dependencies are optional.
+numpy==2.3.5

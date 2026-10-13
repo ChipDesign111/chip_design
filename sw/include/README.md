@@ -1,3 +1,3 @@
-# 软件公共接口
+# Software interface headers
 
-计划放寄存器常量、打包方法、驱动声明和类别映射。以 docs/mmio.md 和 model 输出为依据，避免三处地址不一致。
+Reserved for the future C driver interface. No production header is currently consumed by the RV32I self-check generators. Register semantics are defined in [MMIO](../../docs/mmio.md); adding a header requires matching driver and CPU tests.

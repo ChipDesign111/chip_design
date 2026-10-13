@@ -1,4 +1,5 @@
-# 完整 NPU 验证
+# NPU regression
 
-计划逐项比对 32 个 hidden、六个 score 和类别，覆盖控制、复位和连续运行。
-原 4×4 实验测试不代替新 MLP 的验证。
+[tb_har_core.sv](tb_har_core.sv) compares hidden activations, signed scores and class IDs against independent gold. Each parameter case runs single and paired modes, including pipeline overlap, reset, busy START/ACK and sticky completion.
+
+`python project.py test --suite unit` runs 1000 cases / 3000 inferences. `--count 12` is a debug subset. Vector generation has a fixed seed and rejects invalid integer ranges.

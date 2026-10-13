@@ -1,0 +1,41 @@
+name: Bug report
+description: Reproducible functional or tooling defect
+title: "[bug] "
+body:
+  - type: input
+    id: revision
+    attributes:
+      label: Source revision
+      description: Commit, branch and local modifications.
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - RTL / arithmetic
+        - MMIO / control
+        - CPU / SoC
+        - Model / quantization
+        - Build / CI / documentation
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Command, input/model identity and steps.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and observed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Environment and evidence
+      description: Tool versions, first failure, result/log locations and input SHA.

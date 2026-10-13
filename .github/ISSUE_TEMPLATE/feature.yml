@@ -1,0 +1,28 @@
+name: Engineering proposal
+description: Capability, architecture or workflow improvement
+title: "[proposal] "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and measurable outcome
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Proposed scope and alternatives
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Interface, numeric and dependency impact
+      description: Identify affected consumers, ADRs and migration.
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance evidence
+      description: Commands, target metrics and regression requirements.
+    validations:
+      required: true

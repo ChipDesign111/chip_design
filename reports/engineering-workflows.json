@@ -1,0 +1,240 @@
+{
+  "date": "2026-10-13",
+  "source_base": "fb301c3d6f04041603c82d432d3772f69b69458b",
+  "scope": "Engineering entry point, repository policy, documentation and CI; hardware and model unchanged",
+  "tested_source_sha256": {
+    "project.py": "88d15b207e8f72142e5651827a222039d24c1a7e5ecdf9f80bd7fc1e048bd56e",
+    "scripts/check_repo.py": "dad3e8f68d2585eeaf86ee17925e221872492512812157f139f8af61f72b2031",
+    ".github/workflows/ci.yml": "33b4707b2db5f100c6cf6a20ccde025716aceaa202add7529d255e425af36da6",
+    "requirements.txt": "83f4fe3f61f297daff05dad94dcf55ca663da994af595593eb003d3e582de502"
+  },
+  "tools": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "iverilog": "11.0",
+    "modelsim": "2019.2",
+    "yosys": "Yosys 0.18+29 (git sha1 b2408df31, x86_64-w64-mingw32-g++ 9.2.1 -Os)"
+  },
+  "commands": [
+    "python project.py ci",
+    "python project.py test --suite soc --vsim <local-tool>",
+    "python project.py test --suite model-soc --vsim <local-tool>"
+  ],
+  "unit": [
+    {
+      "test": "platform_integrity",
+      "pass_": true,
+      "seconds": 0.094,
+      "log": "build/logs/platform_integrity.log",
+      "exit_code": 0
+    },
+    {
+      "test": "lab3_core_compile",
+      "pass_": true,
+      "seconds": 0.094,
+      "log": "build/logs/lab3_core_compile.log",
+      "exit_code": 0
+    },
+    {
+      "test": "lab3_core",
+      "pass_": true,
+      "seconds": 0.031,
+      "log": "build/logs/lab3_core.log",
+      "exit_code": 0
+    },
+    {
+      "test": "lab3_mmio_compile",
+      "pass_": true,
+      "seconds": 0.063,
+      "log": "build/logs/lab3_mmio_compile.log",
+      "exit_code": 0
+    },
+    {
+      "test": "lab3_mmio",
+      "pass_": true,
+      "seconds": 0.031,
+      "log": "build/logs/lab3_mmio.log",
+      "exit_code": 0
+    },
+    {
+      "test": "har_core_compile",
+      "pass_": true,
+      "seconds": 0.078,
+      "log": "build/logs/har_core_compile.log",
+      "exit_code": 0
+    },
+    {
+      "test": "har_core",
+      "pass_": true,
+      "seconds": 75.235,
+      "log": "build/logs/har_core.log",
+      "exit_code": 0
+    },
+    {
+      "test": "har_mmio_compile",
+      "pass_": true,
+      "seconds": 0.109,
+      "log": "build/logs/har_mmio_compile.log",
+      "exit_code": 0
+    },
+    {
+      "test": "har_mmio",
+      "pass_": true,
+      "seconds": 1.625,
+      "log": "build/logs/har_mmio.log",
+      "exit_code": 0
+    }
+  ],
+  "soc": [
+    {
+      "test": "platform_integrity",
+      "pass_": true,
+      "seconds": 0.078,
+      "log": "build/logs/platform_integrity.log",
+      "exit_code": 0
+    },
+    {
+      "test": "lab3_soc_lab3_test1",
+      "pass_": true,
+      "seconds": 13.734,
+      "log": "build/logs/lab3_soc_lab3_test1.log",
+      "exit_code": 0,
+      "soc_cycles": 7432
+    },
+    {
+      "test": "lab3_soc_lab3_test2",
+      "pass_": true,
+      "seconds": 4.032,
+      "log": "build/logs/lab3_soc_lab3_test2.log",
+      "exit_code": 0,
+      "soc_cycles": 14754
+    },
+    {
+      "test": "lab3_soc_lab3_test3",
+      "pass_": true,
+      "seconds": 4.656,
+      "log": "build/logs/lab3_soc_lab3_test3.log",
+      "exit_code": 0,
+      "soc_cycles": 20804
+    },
+    {
+      "test": "lab3_soc_lab3_hand",
+      "pass_": true,
+      "seconds": 2.562,
+      "log": "build/logs/lab3_soc_lab3_hand.log",
+      "exit_code": 0,
+      "soc_cycles": 208
+    },
+    {
+      "test": "har_soc_tiled_8",
+      "pass_": true,
+      "seconds": 19.625,
+      "log": "build/logs/har_soc_tiled_8.log",
+      "exit_code": 0,
+      "soc_cycles": 56775
+    },
+    {
+      "test": "har_soc_single6",
+      "pass_": true,
+      "seconds": 8.422,
+      "log": "build/logs/har_soc_single6.log",
+      "exit_code": 0,
+      "soc_cycles": 51049
+    }
+  ],
+  "real_model": [
+    {
+      "test": "model_platform_integrity",
+      "pass_": true,
+      "seconds": 0.109,
+      "log": "build/logs/model_platform_integrity.log",
+      "exit_code": 0
+    },
+    {
+      "test": "har_model_compile",
+      "pass_": true,
+      "seconds": 0.094,
+      "log": "build/logs/har_model_compile.log",
+      "exit_code": 0
+    },
+    {
+      "test": "har_real_model",
+      "pass_": true,
+      "seconds": 0.953,
+      "log": "build/logs/har_real_model.log",
+      "exit_code": 0
+    },
+    {
+      "test": "har_real_model_soc24",
+      "pass_": true,
+      "seconds": 21.875,
+      "log": "build/logs/har_real_model_soc24.log",
+      "exit_code": 0,
+      "soc_cycles": 76249
+    }
+  ],
+  "synthesis": {
+    "pass_": true,
+    "weight_banks": 38,
+    "weight_bits": 17920,
+    "synchronous_read_ports": 76,
+    "dot_product_multipliers": 140,
+    "requant_multipliers": 32,
+    "total_multipliers": 172,
+    "latches": 0,
+    "tool": "Yosys 0.18+29 (git sha1 b2408df31, x86_64-w64-mingw32-g++ 9.2.1 -Os)",
+    "scope": "Generic cells and memory structure only; no area/frequency/BRAM/ASIC claim"
+  },
+  "counts": {
+    "synthetic_cases": 1000,
+    "synthetic_core_inferences": 3000,
+    "mmio_cases": 12,
+    "real_rows": 24,
+    "real_rtl_inferences": 48,
+    "real_soc_inputs": 24
+  },
+  "clean_checkout": {
+    "path_with_spaces": true,
+    "preexisting_build_or_data": false,
+    "commands": [
+      "check",
+      "test --suite unit --count 12",
+      "test --suite model",
+      "synth"
+    ],
+    "pass": true,
+    "tracked_tree_clean_after": true
+  },
+  "cli_cases": [
+    {
+      "case": "cross-directory check",
+      "exit_code": 0
+    },
+    {
+      "case": "invalid count",
+      "exit_code": 2
+    },
+    {
+      "case": "invalid dataset root",
+      "exit_code": 2
+    },
+    {
+      "case": "invalid explicit tool",
+      "exit_code": 2
+    },
+    {
+      "case": "required NumPy missing in separate Python",
+      "exit_code": 1
+    }
+  ],
+  "preserved": {
+    "frozen_files": 90,
+    "rtl_and_model_git_blobs_unchanged": true,
+    "historical_json_git_blobs_unchanged": true
+  },
+  "limits": [
+    "This change reran the 24-row fixture; the earlier 2947-row result remains historical evidence.",
+    "No FPGA, technology mapping, frequency/power/area or ASIC signoff.",
+    "GitHub CI result is recorded by the linked pull request; this JSON records local tests."
+  ]
+}

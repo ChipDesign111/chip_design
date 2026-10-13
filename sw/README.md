@@ -1,6 +1,7 @@
-# CPU 软件
+# Bare-metal verification software
 
-[include/](include/README.md)、[drivers/](drivers/README.md)、[tests/](tests/README.md)、[startup/](startup/README.md)。
-计划建立裸机构建与驱动：C/汇编→ELF→map/反汇编→hex→SoC。
-当前 scripts/build_har_firmware.py 可生成不依赖 GCC 的 RV32I 自检：装载权重/输入/偏置、带超时轮询、逐项比较隐藏层/得分/类别、ACK 后连续运行。原四个 Lab 3 镜像在 verification/lab3/soc/。这条路径已在真实 CPU 执行，尚未建立 C 驱动工具链。
-原 Lab 预编译程序不等于自主软件已有构建链。关注 [存储预算](../docs/memory-budget.md)。
+Current executable generation is provided by scripts/build_har_firmware.py and scripts/build_model_firmware.py. The RV32I images execute on the real CV32E40P and compare hidden/score/class and cycle counters; no cross compiler is required for this path.
+
+Original startup/linker material and C/hex fixtures are retained for provenance and compatibility. A production C driver and GCC/ELF build chain are not implemented. Reserved include/drivers/tests boundaries do not imply existing software.
+
+SRAM budgets: [memory budget](../docs/memory-budget.md). CPU test scope: [verification](../docs/verification.md).

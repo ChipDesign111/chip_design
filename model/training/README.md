@@ -1,6 +1,6 @@
 # 数据与训练
 
-模型已经训完。结构是 `Linear(64, 32)` → ReLU → `Linear(32, 6)`，参数 2278。检查点在 [checkpoints/best.pt](checkpoints/best.pt)。
+已提交模型结构为 `Linear(64, 32)` → ReLU → `Linear(32, 6)`，参数 2278。训练检查点为 [checkpoints/best.pt](checkpoints/best.pt)，推理和 RTL 验证使用 [导出参数](../export/README.md)，不需要加载检查点。
 
 ## 数据
 
@@ -19,7 +19,9 @@
 
 坐和站是主要混淆来源。
 
-## 复现
+## 训练入口
+
+下列命令用于重新训练。原训练依赖尚未锁定，不能承诺跨版本得到相同权重；当前验证基线以已提交参数及 SHA 为准。原脚本使用测试划分选择最佳 checkpoint，其报告不属于额外独立盲测。后续训练应增加独立验证划分，再对保留测试集做最终评估。
 
 ```bash
 python -m venv .venv
@@ -28,6 +30,6 @@ pip install torch numpy scikit-learn
 python model/training/train_har_mlp.py --epochs 80 --batch-size 128 --lr 1e-3
 ```
 
-多卡机器可以用 `model/training/run_train.sh`，它只占用 `nvidia-smi` 里当前较空的一张卡。优化器是 Adam，学习率 `1e-3`，权重衰减 `1e-4`，损失是交叉熵。
+GPU 环境可使用 [run_train.sh](run_train.sh)，脚本通过 `nvidia-smi` 选择空闲程度较高的单张卡。优化器为 Adam，学习率 `1e-3`，权重衰减 `1e-4`，损失为交叉熵。重新训练或更换特征必须更新导出参数、来源、固定向量和验证报告。
 
 Davide Anguita 等，*A Public Domain Dataset for Human Activity Recognition Using Smartphones*，ESANN 2013。

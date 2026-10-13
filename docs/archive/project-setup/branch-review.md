@@ -1,3 +1,5 @@
+> 历史记录：内容反映记录时的项目状态，不作为现行接口或发布规范。参见 [工程文档](../../README.md)。
+
 # 2026-10-13 GitHub 分支审查
 
 按用户“检查所有分支，如果没问题尽量合并”的要求，审查时远端有三个分支：
@@ -12,7 +14,7 @@
 
 冲突为 README.md、docs/numerics.md、docs/spec.md。将 main 合入 tiled 分支时保留两边设计/模型内容，修正旧“尚无实现/没有模型”状态，采用 UCI 的 3=坐、4=站编号。原权重、量化参数和训练文件保持原字节，外围 90 文件 SHA 不变。
 
-确认模型 MULT=1064/SHIFT=20 与现有 RTL 兼容；没有为适应模型改动硬件或改原测试。补充真实模型全测试集/CPU 测试及 CI 小样本。算术参考、NumPy 独立结果、RTL、真实 CPU 互相核对，结果见 [real-model.md](real-model.md)。
+确认模型 MULT=1064/SHIFT=20 与现有 RTL 兼容；没有为适应模型改动硬件或改原测试。补充真实模型全测试集/CPU 测试及 CI 小样本。算术参考、NumPy 独立结果、RTL、真实 CPU 互相核对，结果见 [real-model.md](../../../reports/real-model.md)。
 
 合并顺序：先将通过检查的 PR #3 合入其基础分支，再将 PR #1 合入 main，使 main 同时包含原模型与最新版硬件。使用正常 merge，保留来源与历史；每次合并使用预期 head SHA 防止混入并发更新，并检查 CI 与合并状态。最终状态以 [PR #1](https://github.com/ChipDesign111/chip_design/pull/1)、[PR #3](https://github.com/ChipDesign111/chip_design/pull/3) 的 GitHub 记录为准。
 

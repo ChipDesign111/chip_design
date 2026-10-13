@@ -1,24 +1,27 @@
-## 解决的问题
+## Problem and behavior
 
-关联任务：待填写。
+Describe the trigger, current behavior and resulting behavior.
 
-## 修改内容与影响
+## Scope and compatibility
 
-说明模块、接口、数值规则、存储布局是否变化。
+Affected modules/workflows:
+Interface, numerical, memory or dependency changes:
+Migration or rollback implications:
 
-## 验证
+## Verification
 
-- 命令：
-- 运行环境 / 工具版本：
-- 测试向量 / 模型版本：
-- 结果：
-- 未验证的部分：
+| Command / suite | Source / input revision | Result |
+| --- | --- | --- |
+| | | |
 
-## 合并检查
+Tool versions and artifacts:
+Coverage limits / checks not run:
 
-- [ ] 修改与任务范围一致。
-- [ ] 接口或数值变化已同步文档。
-- [ ] 已运行受影响检查，并提供结果。
-- [ ] 按 docs/change-guide.md 验证：外围 SHA 一致；硬件改动通过完整 --unit 与本机 --soc；新增源已进入两种实际编译入口。
-- [ ] 没有课程受限内容、个人路径、凭据或生成产物。
-- [ ] 已请另一名成员复核。
+## Checklist
+
+- [ ] Changes match the stated scope and update affected contracts.
+- [ ] Required CI and applicable local SoC verification are complete.
+- [ ] New RTL is included in unit and SoC compilation.
+- [ ] Frozen inputs remain unchanged or have a reviewed baseline migration.
+- [ ] Evidence identifies tested source and inputs; historical reports are preserved.
+- [ ] Third-party notices are updated where necessary; generated/restricted files are excluded.

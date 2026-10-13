@@ -1,10 +1,12 @@
-# NPU 实现
+# Neural accelerator
 
-外部端口采用固定 Lab 3 simple_npu_top；每次只编译一份：
+| Profile | Implementation |
+| --- | --- |
+| `har` | Two FC1 16×4 tiles, one FC2 6×2 tile, synchronous banked weights, hidden double buffering |
+| `lab3` | Unsigned 4-bit 4×4 compatibility accelerator |
 
-- lab3/：4×4 无符号 4 位兼容核，用于原课程回归，保持不变。
-- har/：HAR V2，2 个 16×4 FC1 tile、1 个 6×2 FC2 tile，banked 权重存储、两级计算流水和 hidden 双缓冲。
+Both profiles provide the fixed simple_npu_top interface. HAR supports one or two inputs per command: 39 / 59 core cycles, with 18 cycles of cross-input stage overlap.
 
-单样本 39 周期，双样本共 59 周期，两级实际重叠 18 周期。内部 core 接口已改为同步权重读口；外部 Lab 3 端口不变。旧单次 MMIO 窗口保留，双样本与性能寄存器见 [MMIO](../../docs/mmio.md)。
+[har_dot_tile.sv](har/har_dot_tile.sv) implements registered products and output-stationary accumulation. [har_weight_store.sv](har/har_weight_store.sv) implements 38 synchronous banks. [har_npu_core.sv](har/har_npu_core.sv) schedules the pipeline; [simple_npu_top.sv](har/simple_npu_top.sv) implements MMIO.
 
-架构/代码/时序见 [tiled-npu.md](../../docs/tiled-npu.md)，数值见 [numerics.md](../../docs/numerics.md)，证据见 [V2 报告](../../reports/tiled-v2.md)。V1 报告是历史版本，不代表当前代码。未验证目标 PPA、FPGA 或 ASIC。
+Contracts: [numerics](../../docs/numerics.md), [MMIO](../../docs/mmio.md). Architecture: [tiled NPU](../../docs/tiled-npu.md). Evidence: [reports](../../reports/README.md). Target timing/area and physical implementation are not established by simulation.

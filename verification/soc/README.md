@@ -1,4 +1,7 @@
-# SoC 验证
+# Full-system verification
 
-计划在真实 CPU 上运行共同构建的裸机程序；区分官方平台回归与 HAR 新项目测试。
-记录镜像、filelist、工具和 commit；不得修改官方测试期望来掩盖问题。
+The imported my_soc_tb remains in verification/lab3/soc and drives the real CV32E40P integration. Firmware is generated under build/sw or build/real_model and supplied through INIT_FILE.
+
+SoC backends run original CPU images, synthetic accelerator programs and trained-model self-checks. A true SRAM PASS magic is required; zero simulator exit alone is insufficient.
+
+Run `python project.py test --suite soc --vsim /path/to/vsim` and `--suite model-soc`. No replacement CPU BFM is used.
