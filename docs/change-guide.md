@@ -55,17 +55,17 @@ HAR 可以更换内部结构，但连接固定外围时必须保持：
 
 ## 4. 怎样开始修改
 
-1. 一次任务明确一个目标，例如“把一个 MAC 改为四个，保持逐值结果与 MMIO 行为”。
-2. 从包含已验证基线的版本建立任务分支。当前基线在 PR #1 的 codex/lab3-platform-npu，尚未合入 main；合并前以该分支为起点，合并后以更新的 origin/main 为起点。
+1. 一次任务明确一个目标，例如“优化 tile 存储映射，保持逐值结果与 MMIO 行为”。
+2. 共有基线整合到 main 后，从更新的 origin/main 建立任务分支；初始 PR #1/#3 开发分支仅保留历史，不作为长期个人主线。
 3. 先修改 har/ 内部；新增模块时同时处理下面的编译入口。
 4. 给缺陷补能重现的 HAR 测试，保留失败向量；优化保留同一整数参考作为对照。
 5. 先小规模调试，完整回归通过后记录结果并提交 PR；由另一名成员复核后合并。
 
-合并前建立新任务分支的示例（将名字换成自己的任务）：
+本次整合完成后建立任务分支（将名字换成自己的任务）：
 
 ```text
 git fetch origin
-git switch -c codex/npu-your-task origin/codex/lab3-platform-npu
+git switch -c codex/npu-your-task origin/main
 ```
 
 ### 新增模块必须加入哪些地方

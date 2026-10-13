@@ -1,5 +1,7 @@
 # 环境和共有运行入口
 
+已选模型联调还需 NumPy 2.3.5：python -m pip install numpy==2.3.5；无需 Torch。python scripts/run_model_tests.py --unit 用六类 24 条固定真实输入；全 2947 条及 CPU 命令见 [模型验证指南](model-verification.md)。原始数据下载到忽略的 data/。
+
 已验证：Windows、Python 3.11、Icarus Verilog 11、ModelSim 2019.2。工具路径使用 PATH 或 CLI 参数，不写个人绝对路径。
 
 ```text

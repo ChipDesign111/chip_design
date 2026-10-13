@@ -7,6 +7,7 @@
 | [architecture.md](architecture.md) | 目录边界、硬件层次、构建入口 |
 | [change-guide.md](change-guide.md) | 能改什么、怎样改、改后运行哪些验证及通过标准 |
 | [tiled-npu.md](tiled-npu.md) | V2 tile 配比、并行/存储、两级流水时序及代码位置 |
+| [model-verification.md](model-verification.md) | 已选训练模型、真实输入、量化/标签规则与 RTL/CPU 实测入口 |
 | [spec.md](spec.md) | 项目功能和约束草案 |
 | [numerics.md](numerics.md) | INT8 / INT32 和量化规则草案 |
 | [mmio.md](mmio.md) | 地址、状态、读写和数据打包草案 |

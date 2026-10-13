@@ -21,3 +21,7 @@ jobs:
         run: python scripts/run_tests.py --unit
       - name: Check generic synthesis and synchronous weight banks
         run: python scripts/check_synthesis.py
+      - name: Install trained-model inference dependency
+        run: python -m pip install numpy==2.3.5
+      - name: Verify trained model with real six-class input fixtures
+        run: python scripts/run_model_tests.py --unit

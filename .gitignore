@@ -1,5 +1,7 @@
 # Generated project output
 /build/
+# Raw UCI HAR download. Exported weights live in model/export/.
+/data/
 **/__pycache__/
 *.py[cod]
 .venv/
