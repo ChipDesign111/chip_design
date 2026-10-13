@@ -1,4 +1,4 @@
 # 编译清单
 
-计划分别定义官方平台、NPU、MMIO 和 HAR SoC 的源文件清单，明确顺序和包含路径。
-脚本以约定根目录解析路径；原模板相对路径导入时适配。自动展开绝对路径的清单放 build，不提交个人路径。
+lab3_original.f 为按字节保存的来源清单，不直接运行其中旧路径。scripts/run_tests.py 转换公共外围路径，仅替换 NPU 源为 lab3 或 har 配置，生成 build/lab3.f、build/har.f。单元测试有独立明确的源列表。
+不同时编译两份 simple_npu_top，不提交生成的个人绝对路径。原清单包含在 SHA-256 校验中。

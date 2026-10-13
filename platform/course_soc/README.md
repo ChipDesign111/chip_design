@@ -1,5 +1,9 @@
-# 官方 SoC 模板准入
+# 选定 Lab 3 外围
 
-当前未导入。先确认课程源码是否允许进入当前公开仓库，再导入干净的官方包。
-保留原目录、版权和许可证，记录版本与校验值；排除 work、out、波形、缓存和本地许可证配置。
-不能用个人修改后的文件冒充未修改官方模板。原模板与项目改动分别记录。
+来源：用户提供的 lab3-ST/SoC_cv32e40p，已完成四端口 NPU 接入的版本。按本次要求冻结这份外围，不声称它就是未经修改的官方发行包。
+
+导入 CPU、AXI、Debug、复位/时钟、Boot RAM、8 KB 主 SRAM、my_soc_top、my_npu_subsystem 及头文件。选定原测试、C/hex、启动/链接、filelist 分别放入 verification/lab3/、sw/startup/lab3/、filelists/。
+
+[manifest.json](manifest.json) 记录全部 90 个选定文件的来源相对路径和原字节 SHA-256。运行 python scripts/check_platform.py 验证。原版权/许可证头保留，Git 不转换行尾；没有为第三方代码添加新的统一许可证。
+
+原 NPU 未作为外围导入，团队两个实现位于 rtl/npu/lab3/、har/。这里没有 PDK、商业工具、标准单元库、个人报告或产物。来源和使用范围见 [sources.md](../../docs/sources.md)。

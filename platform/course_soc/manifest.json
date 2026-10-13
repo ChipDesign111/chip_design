@@ -1,0 +1,456 @@
+{
+  "source": "Provided Lab 3 SoC_cv32e40p, completed 4-port NPU integration",
+  "perimeter_policy": "Fixed; only NPU build profile is replaceable",
+  "files": [
+    {
+      "source": "soc/sim/filelists/my_soc_tb.f",
+      "path": "filelists/lab3_original.f",
+      "sha256": "d60a1943075198cdb7b0fa4c79406d98854fe62198382df521118cd1c6e2b3fd"
+    },
+    {
+      "source": "cpu_cv32e40p/include/cv32e40p_apu_core_pkg.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/include/cv32e40p_apu_core_pkg.sv",
+      "sha256": "33d7c06b0fef3ae2c8814b040abe3cdaa23065cf12643de20e8275f44f97abe1"
+    },
+    {
+      "source": "cpu_cv32e40p/include/cv32e40p_fpu_pkg.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/include/cv32e40p_fpu_pkg.sv",
+      "sha256": "ae738f408ba2ade41bfcf0488c8f611a2c39b26915191890dac907b8a7a518e5"
+    },
+    {
+      "source": "cpu_cv32e40p/include/cv32e40p_pkg.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/include/cv32e40p_pkg.sv",
+      "sha256": "3fee39d262ef44bff6ee00b591fe08830e5e35cdd1b9e5eb9eb06da6f6525805"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_aligner.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_aligner.sv",
+      "sha256": "c78cd8c09fee10e45536dc5b8d1fb17c3a130e2270168279fcaa43a19580e4f3"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_alu.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_alu.sv",
+      "sha256": "6eca8d4c2e299adcc498417220478360cc22898ba9037cdad6a1b81e80373c7b"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_alu_div.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_alu_div.sv",
+      "sha256": "11035bcbb28447fa5a3e40d5cad4f257e763f75e49664ce8098ab6247a9a57cb"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_apu_disp.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_apu_disp.sv",
+      "sha256": "27931c8004e4d266c6ea02c9d5c19968c67d7e6ab86e57da4088531b13c8c48f"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_compressed_decoder.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_compressed_decoder.sv",
+      "sha256": "db90df2f8737aff29d73b3d242dd33aeb6750ae69ae7eb8e118b531180945d7f"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_controller.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_controller.sv",
+      "sha256": "858b172963e17529de0b40a5be6ddfdadfc60bdca967819e4fc558b0ed6d7b87"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_core.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_core.sv",
+      "sha256": "6a78a0d77d32e6795f63e5149f77b98320ce504c67c44a2e359c9aea70989224"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv",
+      "sha256": "e2cec8f3d273748783275c60b1ec89101336608638d7e7783b03dd6b9dbb0345"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_decoder.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_decoder.sv",
+      "sha256": "6e12f673e05380e34a35c38d8ee8b6878935d96b6f2dfda72c67f8a6e92a6e4e"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_ex_stage.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_ex_stage.sv",
+      "sha256": "1510df315721b370c2d86b1c1d134a3ff6beefba2d072de7a4a611e3ecffb753"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_ff_one.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_ff_one.sv",
+      "sha256": "6b646e6aa931f8ab56b85ee27549a422450b456270a54d68a4130329823226b6"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_fifo.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_fifo.sv",
+      "sha256": "d910cbd0751f38d349e8975de22b43d0a2937f9e905b0d9b82894fd83c53fe8a"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_fp_wrapper.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_fp_wrapper.sv",
+      "sha256": "1579104bf82f2e18a13029a7e299d867415a660ccff24c20ca3bb4ee4e315e9d"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_hwloop_regs.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_hwloop_regs.sv",
+      "sha256": "c2a0787c07bcd6c198b6338c4c6ee372b4bce96ec4a4def467ff0ae03da4e43a"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_id_stage.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv",
+      "sha256": "98b246d9ada45a7073d217d5c3bbc86941ee76bb00e7e0edda61d3bbec83728e"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_if_stage.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_if_stage.sv",
+      "sha256": "e2d1cc9bc433a093938f2d4e4268c611f9a9bf199101e85114d417ff04597626"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_int_controller.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_int_controller.sv",
+      "sha256": "24df51d9cb33f5c8760a8cfbc7931aafc94c2ab0523c7df55b2635e7778af16f"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_load_store_unit.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_load_store_unit.sv",
+      "sha256": "857962513fc5bd3eb3d6b28c55fdfb15ef53f8ce8a59173a7d583efb8caee66f"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_mult.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_mult.sv",
+      "sha256": "6a0cf2f15c69886ad5497222aa203f6f5b1fdd004b32a4ab87b36a0960ba2254"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv",
+      "sha256": "2b0a58e5c2f758dbe5f6e8f786c547da5508ce466007517434e2f7d817b758ed"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_popcnt.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_popcnt.sv",
+      "sha256": "7a2dbeded21929832b40fc8d068b35b7281c75a63c426feed207127d4da08e4e"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_prefetch_buffer.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_prefetch_buffer.sv",
+      "sha256": "a2fcbe6b783659ebecaf25d105f30c68af9b68c2850b833af64a2cec3ec29262"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_prefetch_controller.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_prefetch_controller.sv",
+      "sha256": "66e6078ea3b3acd3ceea4b974c0488d25e02324935532de1f2d39cdc34c875a0"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_register_file_ff.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_register_file_ff.sv",
+      "sha256": "cd04d46afbf778ff3f1573bdd390784e5461a09b33fd670fa126ae7d3c433e89"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_sleep_unit.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_sleep_unit.sv",
+      "sha256": "1cf012a83b54472931ad9944e7774e311222641a0aa026229c19467f90bf5448"
+    },
+    {
+      "source": "cpu_cv32e40p/rtl/cv32e40p_top.sv",
+      "path": "platform/course_soc/cpu_cv32e40p/rtl/cv32e40p_top.sv",
+      "sha256": "2467f6b3c2745e687edad1a0c88ab5267b4ba8642c91e1fc0f282cf4223e5dc3"
+    },
+    {
+      "source": "soc/rtl/axi/addr_decode.sv",
+      "path": "platform/course_soc/soc/rtl/axi/addr_decode.sv",
+      "sha256": "84e2b6d49c834b21f13b12d94919efd9a7d541b191a0651d2cca97435a5ca85a"
+    },
+    {
+      "source": "soc/rtl/axi/axi2mem.sv",
+      "path": "platform/course_soc/soc/rtl/axi/axi2mem.sv",
+      "sha256": "fff8e7e11c584755f4b0abf638880c51e77cea199a4fa40f15ac6ef2a803d39e"
+    },
+    {
+      "source": "soc/rtl/axi/axi_adapter.sv",
+      "path": "platform/course_soc/soc/rtl/axi/axi_adapter.sv",
+      "sha256": "e50bf7d69b52544a7c5d032f6f41817fd58aa4fb21c60dc999a89de738092c9a"
+    },
+    {
+      "source": "soc/rtl/axi/axi_atop_filter.sv",
+      "path": "platform/course_soc/soc/rtl/axi/axi_atop_filter.sv",
+      "sha256": "328ce02dcbdca8917393b2f399b856be3c4e06f561cb1347368210c9aae3f9e3"
+    },
+    {
+      "source": "soc/rtl/axi/axi_demux.sv",
+      "path": "platform/course_soc/soc/rtl/axi/axi_demux.sv",
+      "sha256": "75ff0775043bea786d54781358558579e701042b2e687339fe53eb696de6e020"
+    },
+    {
+      "source": "soc/rtl/axi/axi_err_slv.sv",
+      "path": "platform/course_soc/soc/rtl/axi/axi_err_slv.sv",
+      "sha256": "15365a63f8a7b66bb61fce39b03ad5401845f244b5acd06d7140daab2c7906a4"
+    },
+    {
+      "source": "soc/rtl/axi/axi_id_prepend.sv",
+      "path": "platform/course_soc/soc/rtl/axi/axi_id_prepend.sv",
+      "sha256": "37472cac2adfea0f0127f395ad2df8de9d0643122234113a5965dbfd82566bd7"
+    },
+    {
+      "source": "soc/rtl/axi/axi_intf.sv",
+      "path": "platform/course_soc/soc/rtl/axi/axi_intf.sv",
+      "sha256": "c610a66a6c58f0f53dc4a44c2932ff034cf5855ca3fdfd2e3621b0aa30e7fb43"
+    },
+    {
+      "source": "soc/rtl/axi/axi_mux.sv",
+      "path": "platform/course_soc/soc/rtl/axi/axi_mux.sv",
+      "sha256": "71b6b0187138fe1a659154f939678a92b1b36c3db7a5b74f7b64329beb107e97"
+    },
+    {
+      "source": "soc/rtl/axi/axi_pkg.sv",
+      "path": "platform/course_soc/soc/rtl/axi/axi_pkg.sv",
+      "sha256": "76b3797792ee5b95ab5937f3d457b48852e5c427de48298dafbdde43d0916ac2"
+    },
+    {
+      "source": "soc/rtl/axi/axi_xbar.sv",
+      "path": "platform/course_soc/soc/rtl/axi/axi_xbar.sv",
+      "sha256": "fe402e3efc15236b4ba66409777c0f7e959373344bd04ebbcba8bbf2582f0b16"
+    },
+    {
+      "source": "soc/rtl/clk_rst/cluster_clk_cells.sv",
+      "path": "platform/course_soc/soc/rtl/clk_rst/cluster_clk_cells.sv",
+      "sha256": "0bf54e372850c1af22264711d311d943718dc4c8d918e47cc98e9a8d07461d44"
+    },
+    {
+      "source": "soc/rtl/clk_rst/cv32e40p_fpga_clock_gate.sv",
+      "path": "platform/course_soc/soc/rtl/clk_rst/cv32e40p_fpga_clock_gate.sv",
+      "sha256": "34cca41fb001e179819e899ad1cfe0e251193233b34e25da172db0bbbc55604e"
+    },
+    {
+      "source": "soc/rtl/clk_rst/pulp_clk_cells.sv",
+      "path": "platform/course_soc/soc/rtl/clk_rst/pulp_clk_cells.sv",
+      "sha256": "717fc6e7ec754807440f346d9b8bb930da302fffd294550e30ceae78009f4e87"
+    },
+    {
+      "source": "soc/rtl/clk_rst/rstgen.sv",
+      "path": "platform/course_soc/soc/rtl/clk_rst/rstgen.sv",
+      "sha256": "83d9f70bab3b514062a7a79a581919afd5de466167dfcd08733c773f36ba094a"
+    },
+    {
+      "source": "soc/rtl/clk_rst/rstgen_bypass.sv",
+      "path": "platform/course_soc/soc/rtl/clk_rst/rstgen_bypass.sv",
+      "sha256": "51322d03a0479f16a4acb66cccee48003e2e224c02a7d3188cbaea9b2f8b2756"
+    },
+    {
+      "source": "soc/rtl/clk_rst/tc_clk.sv",
+      "path": "platform/course_soc/soc/rtl/clk_rst/tc_clk.sv",
+      "sha256": "7eb340f76c76d18f4ac3b6d1d61433c7372118d24f57f83a6ceae82cdbf51c2d"
+    },
+    {
+      "source": "soc/rtl/common_cells/cdc_2phase.sv",
+      "path": "platform/course_soc/soc/rtl/common_cells/cdc_2phase.sv",
+      "sha256": "3720278ce00b5591a1a63fe5515528dd4223a35070303e58cf2e48bd0b56c8c1"
+    },
+    {
+      "source": "soc/rtl/common_cells/cf_math_pkg.sv",
+      "path": "platform/course_soc/soc/rtl/common_cells/cf_math_pkg.sv",
+      "sha256": "afc32fcae21f6cbb834c5ee602a1aaee1b518fc436a86d4fe1b97942473d35c8"
+    },
+    {
+      "source": "soc/rtl/common_cells/counter.sv",
+      "path": "platform/course_soc/soc/rtl/common_cells/counter.sv",
+      "sha256": "b7a9b5fc11ce4def51133f27ec0470a18ae7c8c6b1161f21c948ae848b693f58"
+    },
+    {
+      "source": "soc/rtl/common_cells/delta_counter.sv",
+      "path": "platform/course_soc/soc/rtl/common_cells/delta_counter.sv",
+      "sha256": "698851a015f2b093d5688faa02ae60f0b3ed4324a7584846a99726e1c93732f7"
+    },
+    {
+      "source": "soc/rtl/common_cells/fifo_v2.sv",
+      "path": "platform/course_soc/soc/rtl/common_cells/fifo_v2.sv",
+      "sha256": "cff163332b28e84904955e88691f973a47f90a4209b3f0ae0d2afe94f6a49921"
+    },
+    {
+      "source": "soc/rtl/common_cells/fifo_v3.sv",
+      "path": "platform/course_soc/soc/rtl/common_cells/fifo_v3.sv",
+      "sha256": "08cc968a5b26b5a68ad2c548755e6b3b0d07a7ad75a3f11e92bc1bab71eeb7c6"
+    },
+    {
+      "source": "soc/rtl/common_cells/lzc.sv",
+      "path": "platform/course_soc/soc/rtl/common_cells/lzc.sv",
+      "sha256": "c47046cab67cd9e9ff46f9b2a4c055f301eabd0f135d76d96639eb41c9fa3609"
+    },
+    {
+      "source": "soc/rtl/common_cells/rr_arb_tree.sv",
+      "path": "platform/course_soc/soc/rtl/common_cells/rr_arb_tree.sv",
+      "sha256": "c7361280318a605131345932ab3325bc53f8fc76e67c5579b991b96a5b4ffeed"
+    },
+    {
+      "source": "soc/rtl/common_cells/spill_register.sv",
+      "path": "platform/course_soc/soc/rtl/common_cells/spill_register.sv",
+      "sha256": "97bf85128f538c54c749896b8eee5fcfe4b27c16845d2a17990979a63b09f2ec"
+    },
+    {
+      "source": "soc/rtl/common_cells/spill_register_flushable.sv",
+      "path": "platform/course_soc/soc/rtl/common_cells/spill_register_flushable.sv",
+      "sha256": "f25965444dd82ef32a8a5eaaf6bcc5f05d1ab577b42ee4157dffb38aff5ccfe9"
+    },
+    {
+      "source": "soc/rtl/common_cells/stream_register.sv",
+      "path": "platform/course_soc/soc/rtl/common_cells/stream_register.sv",
+      "sha256": "b4292350fdfaf9471b736dbd610d4cb0a450ed757e9f13431e4b195c53834b1c"
+    },
+    {
+      "source": "soc/rtl/debug/debug_rom.sv",
+      "path": "platform/course_soc/soc/rtl/debug/debug_rom.sv",
+      "sha256": "fa60eaab03518e8e145a3f0a626bc7945e79265e8322ce874a6c8f6996f0e10b"
+    },
+    {
+      "source": "soc/rtl/debug/dm_csrs.sv",
+      "path": "platform/course_soc/soc/rtl/debug/dm_csrs.sv",
+      "sha256": "0538bf1d829187699085de361d20ab79d04a459b06060a8f04709105f61818dc"
+    },
+    {
+      "source": "soc/rtl/debug/dm_mem.sv",
+      "path": "platform/course_soc/soc/rtl/debug/dm_mem.sv",
+      "sha256": "cf047a8b7654f2cb0d36050c41b57cf95bf0a0a21f5dea346d38aa0da57c24fe"
+    },
+    {
+      "source": "soc/rtl/debug/dm_pkg.sv",
+      "path": "platform/course_soc/soc/rtl/debug/dm_pkg.sv",
+      "sha256": "c46075cb09de0e773c91da62d02497673945b7a3e5de176363e5b5e118f82eea"
+    },
+    {
+      "source": "soc/rtl/debug/dm_sba.sv",
+      "path": "platform/course_soc/soc/rtl/debug/dm_sba.sv",
+      "sha256": "e7e30ce0f0e6f652dcf59e586933cada245018b80f2529da476b4272e86e4380"
+    },
+    {
+      "source": "soc/rtl/debug/dm_top.sv",
+      "path": "platform/course_soc/soc/rtl/debug/dm_top.sv",
+      "sha256": "5fa2656a11759ff10fd016ed885761c9c379627b9a1b83ddee6e03a35ee9e23f"
+    },
+    {
+      "source": "soc/rtl/debug/dmi_cdc.sv",
+      "path": "platform/course_soc/soc/rtl/debug/dmi_cdc.sv",
+      "sha256": "ad8a13c8314b9a3c28228db2844466c9d750460d6afa8f6299a7229d80f8dd47"
+    },
+    {
+      "source": "soc/rtl/debug/dmi_jtag.sv",
+      "path": "platform/course_soc/soc/rtl/debug/dmi_jtag.sv",
+      "sha256": "807cf3fb86fe7060cdb1fa21dfbc843220b09a4d694d23ad4bc1cdd3e7118264"
+    },
+    {
+      "source": "soc/rtl/debug/dmi_jtag_tap.sv",
+      "path": "platform/course_soc/soc/rtl/debug/dmi_jtag_tap.sv",
+      "sha256": "50d1b4d325694f4e898d5b2f2e7b26a7e631a5abdd1cd283500c900b079275ab"
+    },
+    {
+      "source": "soc/rtl/include/axi/assign.svh",
+      "path": "platform/course_soc/soc/rtl/include/axi/assign.svh",
+      "sha256": "fda021db4c1c67e0345bcf8feb5a501d77e759ce56cef31e6293bdce89ec6a84"
+    },
+    {
+      "source": "soc/rtl/include/axi/typedef.svh",
+      "path": "platform/course_soc/soc/rtl/include/axi/typedef.svh",
+      "sha256": "c2ef2098fea077e07100b9b9c40f2ac5453e7e01af407e236a810b43aeb8b2ef"
+    },
+    {
+      "source": "soc/rtl/include/common_cells/assertions.svh",
+      "path": "platform/course_soc/soc/rtl/include/common_cells/assertions.svh",
+      "sha256": "d44ed5ffbbfb69c65f5b398428c6b5b5a1103883b925040cbc7bece257d13b1a"
+    },
+    {
+      "source": "soc/rtl/include/common_cells/registers.svh",
+      "path": "platform/course_soc/soc/rtl/include/common_cells/registers.svh",
+      "sha256": "a4e19da894564fd30a4dec4ca8466d181592c9202be2bf124fc4caa82b432d25"
+    },
+    {
+      "source": "soc/rtl/include/my_soc_pkg.sv",
+      "path": "platform/course_soc/soc/rtl/include/my_soc_pkg.sv",
+      "sha256": "1366702d96b1ea493246dd813261956309bd14bccdb627121662de2b014ea83b"
+    },
+    {
+      "source": "soc/rtl/mem/bootram.sv",
+      "path": "platform/course_soc/soc/rtl/mem/bootram.sv",
+      "sha256": "4aa5f14dbb92a7ac9855f3019486a51a42ba210242a58b653b3e59049c2d82bf"
+    },
+    {
+      "source": "soc/rtl/mem/bootrom.sv",
+      "path": "platform/course_soc/soc/rtl/mem/bootrom.sv",
+      "sha256": "24f7966a9f6bd58e6cf28e9803b0bf1c66bb84feb5aef6306c472caba7be3710"
+    },
+    {
+      "source": "soc/rtl/mem/my_mainmem.sv",
+      "path": "platform/course_soc/soc/rtl/mem/my_mainmem.sv",
+      "sha256": "f1266fa9b2a16c22c8c34b9addca7dce71d4ae5c6c2a98f778894d406475c059"
+    },
+    {
+      "source": "soc/rtl/mem/sram_ff.sv",
+      "path": "platform/course_soc/soc/rtl/mem/sram_ff.sv",
+      "sha256": "1bd0872748ec505d5eb18cb94c6a5660ae3d5c48990d12cb1c6cbbb111f774d5"
+    },
+    {
+      "source": "soc/rtl/my_npu_subsystem.sv",
+      "path": "platform/course_soc/soc/rtl/my_npu_subsystem.sv",
+      "sha256": "4d09e3bf393b9571e7c2da52a64161deec6e3812d513600465fa32c1e192fe24"
+    },
+    {
+      "source": "soc/rtl/my_soc_top.sv",
+      "path": "platform/course_soc/soc/rtl/my_soc_top.sv",
+      "sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6"
+    },
+    {
+      "source": "soc/sim/sw/linker.ld",
+      "path": "sw/startup/lab3/linker.ld",
+      "sha256": "28381b46dd73487cb14db8de76d7f583cd0b02d12c9d6b65468467b8255921c5"
+    },
+    {
+      "source": "soc/sim/sw/startup.S",
+      "path": "sw/startup/lab3/startup.S",
+      "sha256": "dfd60c1e493af58cc764d755f3a07d2c7813b8dde08a4297a3867b41f058bb03"
+    },
+    {
+      "source": "soc/sim/tb/lab3_hand.hex",
+      "path": "verification/lab3/soc/lab3_hand.hex",
+      "sha256": "a2f246a947de40b85e97a1a5e50ea7aa039c8dec046baae5ca727e3b7ed9b64d"
+    },
+    {
+      "source": "soc/sim/tb/lab3_test1.c",
+      "path": "verification/lab3/soc/lab3_test1.c",
+      "sha256": "6620cac6164cb1ae217325dba09bf89d2bed404fa07ce93099dadfaa689a989c"
+    },
+    {
+      "source": "soc/sim/tb/lab3_test1.hex",
+      "path": "verification/lab3/soc/lab3_test1.hex",
+      "sha256": "204d8d9621259ac513348729a5f04ff15763ab0504856f52fe420d6da6cbd908"
+    },
+    {
+      "source": "soc/sim/tb/lab3_test2.c",
+      "path": "verification/lab3/soc/lab3_test2.c",
+      "sha256": "479df95eeaf6390d37404b3f4fe868d2f5204289b2112e4e701b245311926858"
+    },
+    {
+      "source": "soc/sim/tb/lab3_test2.hex",
+      "path": "verification/lab3/soc/lab3_test2.hex",
+      "sha256": "02f95597ee9cef5add33382d1dc7245c14d972f56bfaff415eb45df1590b501b"
+    },
+    {
+      "source": "soc/sim/tb/lab3_test3.c",
+      "path": "verification/lab3/soc/lab3_test3.c",
+      "sha256": "cde424d86c9c1da9592a274f453b3b36d713bd24eaf74ba4108b7a6fef96ea97"
+    },
+    {
+      "source": "soc/sim/tb/lab3_test3.hex",
+      "path": "verification/lab3/soc/lab3_test3.hex",
+      "sha256": "5ac1ada6e28c1c9f508f02d9a00dd6431a9584ac78307a20bc89407b9a782a66"
+    },
+    {
+      "source": "soc/sim/tb/my_soc_tb.sv",
+      "path": "verification/lab3/soc/my_soc_tb.sv",
+      "sha256": "8b496e23af7d597a85d0f5f3e0f3997cdd9cdb16642c45df70373aee91ff053c"
+    },
+    {
+      "source": "simple_npu/tb/tb_npu_check.sv",
+      "path": "verification/lab3/tb_npu_check.sv",
+      "sha256": "1947c88f9a20cf68faed6fa05598b411012699d54d0defac2dab69ee8cf3e3a1"
+    },
+    {
+      "source": "simple_npu/tb/tb_simple_npu.sv",
+      "path": "verification/lab3/tb_simple_npu.sv",
+      "sha256": "73b43e8282e0ba9681370d00204c66fb87aca30ff046646345fe35c405423757"
+    }
+  ]
+}

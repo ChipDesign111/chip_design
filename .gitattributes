@@ -14,3 +14,9 @@
 *.hex text eol=lf
 *.png binary
 *.pdf binary
+*.npz binary
+*.pt binary
+platform/course_soc/** -text
+verification/lab3/** -text
+sw/startup/lab3/** -text
+filelists/lab3_original.f -text

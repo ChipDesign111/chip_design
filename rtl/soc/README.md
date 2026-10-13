@@ -1,4 +1,4 @@
 # SoC 集成
 
-计划实现项目顶层、NPU 子系统包装和 MMIO。复用 platform 中共同底座，采用明确编译清单。
-以 [MMIO 草案](../../docs/mmio.md) 评审接口，核对 axi2mem 读下一拍契约和 byte/word 地址。
+当前为预留目录，未参与构建。系统顶层 my_soc_top 和桥接 my_npu_subsystem 位于 platform/course_soc 并已冻结；MMIO 包装在 rtl/npu/har/simple_npu_top.sv，不在这里重复建系统顶层。
+未来若有独立集成需求，先明确冻结边界和编译配置。见 [修改与验证指南](../../docs/change-guide.md) 及 [MMIO 契约](../../docs/mmio.md)。

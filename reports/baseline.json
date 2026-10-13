@@ -1,0 +1,227 @@
+{
+  "date": "2026-10-08",
+  "scope": "functional simulation; synthetic weights; no FPGA/ASIC/accuracy claim",
+  "tools": {
+    "python": "3.11",
+    "iverilog": "11.0",
+    "modelsim": "2019.2"
+  },
+  "unit": [
+    {
+      "test": "platform_integrity",
+      "pass_": true,
+      "seconds": 0.078,
+      "log": "build\\logs\\platform_integrity.log",
+      "exit_code": 0
+    },
+    {
+      "test": "lab3_core_compile",
+      "pass_": true,
+      "seconds": 0.093,
+      "log": "build\\logs\\lab3_core_compile.log",
+      "exit_code": 0
+    },
+    {
+      "test": "lab3_core",
+      "pass_": true,
+      "seconds": 0.047,
+      "log": "build\\logs\\lab3_core.log",
+      "exit_code": 0
+    },
+    {
+      "test": "lab3_mmio_compile",
+      "pass_": true,
+      "seconds": 0.078,
+      "log": "build\\logs\\lab3_mmio_compile.log",
+      "exit_code": 0
+    },
+    {
+      "test": "lab3_mmio",
+      "pass_": true,
+      "seconds": 0.032,
+      "log": "build\\logs\\lab3_mmio.log",
+      "exit_code": 0
+    },
+    {
+      "test": "har_core_compile",
+      "pass_": true,
+      "seconds": 0.078,
+      "log": "build\\logs\\har_core_compile.log",
+      "exit_code": 0
+    },
+    {
+      "test": "har_core",
+      "pass_": true,
+      "seconds": 36.343,
+      "log": "build\\logs\\har_core.log",
+      "exit_code": 0
+    },
+    {
+      "test": "har_mmio_compile",
+      "pass_": true,
+      "seconds": 0.079,
+      "log": "build\\logs\\har_mmio_compile.log",
+      "exit_code": 0
+    },
+    {
+      "test": "har_mmio",
+      "pass_": true,
+      "seconds": 0.406,
+      "log": "build\\logs\\har_mmio.log",
+      "exit_code": 0
+    }
+  ],
+  "soc": [
+    {
+      "test": "platform_integrity",
+      "pass_": true,
+      "seconds": 0.094,
+      "log": "build\\logs\\platform_integrity.log",
+      "exit_code": 0
+    },
+    {
+      "test": "lab3_soc_lab3_test1",
+      "pass_": true,
+      "seconds": 13.828,
+      "log": "build\\logs\\lab3_soc_lab3_test1.log",
+      "exit_code": 0,
+      "soc_cycles": 7432
+    },
+    {
+      "test": "lab3_soc_lab3_test2",
+      "pass_": true,
+      "seconds": 3.75,
+      "log": "build\\logs\\lab3_soc_lab3_test2.log",
+      "exit_code": 0,
+      "soc_cycles": 14754
+    },
+    {
+      "test": "lab3_soc_lab3_test3",
+      "pass_": true,
+      "seconds": 4.406,
+      "log": "build\\logs\\lab3_soc_lab3_test3.log",
+      "exit_code": 0,
+      "soc_cycles": 20804
+    },
+    {
+      "test": "lab3_soc_lab3_hand",
+      "pass_": true,
+      "seconds": 2.422,
+      "log": "build\\logs\\lab3_soc_lab3_hand.log",
+      "exit_code": 0,
+      "soc_cycles": 208
+    },
+    {
+      "test": "har_soc_6_classes",
+      "pass_": true,
+      "seconds": 19.391,
+      "log": "build\\logs\\har_soc_6_classes.log",
+      "exit_code": 0,
+      "soc_cycles": 64475
+    }
+  ],
+  "vectors": {
+    "seed": 20261008,
+    "count": 1000,
+    "words_per_case": 2383,
+    "mmio_cases": 12,
+    "kind": "synthetic hardware verification; no classification accuracy claim",
+    "sha256": {
+      "core.hex": "3686e3831f6f7418807f33ea82d11449719e24466a7eef14ab1caa292d15f5f1",
+      "mmio.hex": "ecc6839ec2a3e7ce8f7cbd162a2a78d52f7f716b25a6b7bd54afcf78eb5c87dc"
+    }
+  },
+  "firmware": {
+    "cases": 6,
+    "expected_classes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "code_bytes": 2336,
+    "image_used_bytes": 6232,
+    "sram_bytes": 8192,
+    "sha256": "304ba1cd6e017b83b0316782a3f1ffe90ae67bc6bb0d1eed8ad4c38e26c6da9e",
+    "labels": {
+      "_start": "0x80000000",
+      "load_weights": "0x8000003c",
+      "load_x_0": "0x80000078",
+      "load_bias_0": "0x800000a8",
+      "poll_0": "0x800000ec",
+      "done_0": "0x8000010c",
+      "hidden_0": "0x80000130",
+      "scores_0": "0x80000168",
+      "load_x_1": "0x800001e8",
+      "load_bias_1": "0x80000218",
+      "poll_1": "0x8000025c",
+      "done_1": "0x8000027c",
+      "hidden_1": "0x800002a0",
+      "scores_1": "0x800002d8",
+      "load_x_2": "0x80000358",
+      "load_bias_2": "0x80000388",
+      "poll_2": "0x800003cc",
+      "done_2": "0x800003ec",
+      "hidden_2": "0x80000410",
+      "scores_2": "0x80000448",
+      "load_x_3": "0x800004c8",
+      "load_bias_3": "0x800004f8",
+      "poll_3": "0x8000053c",
+      "done_3": "0x8000055c",
+      "hidden_3": "0x80000580",
+      "scores_3": "0x800005b8",
+      "load_x_4": "0x80000638",
+      "load_bias_4": "0x80000668",
+      "poll_4": "0x800006ac",
+      "done_4": "0x800006cc",
+      "hidden_4": "0x800006f0",
+      "scores_4": "0x80000728",
+      "load_x_5": "0x800007a8",
+      "load_bias_5": "0x800007d8",
+      "poll_5": "0x8000081c",
+      "done_5": "0x8000083c",
+      "hidden_5": "0x80000860",
+      "scores_5": "0x80000898",
+      "halt": "0x80000900",
+      "fail": "0x80000904",
+      "weights": "0x80000920",
+      "x_0": "0x800011e0",
+      "bias_0": "0x80001220",
+      "expected_0": "0x800012b8",
+      "x_1": "0x800012f4",
+      "bias_1": "0x80001334",
+      "expected_1": "0x800013cc",
+      "x_2": "0x80001408",
+      "bias_2": "0x80001448",
+      "expected_2": "0x800014e0",
+      "x_3": "0x8000151c",
+      "bias_3": "0x8000155c",
+      "expected_3": "0x800015f4",
+      "x_4": "0x80001630",
+      "bias_4": "0x80001670",
+      "expected_4": "0x80001708",
+      "x_5": "0x80001744",
+      "bias_5": "0x80001784",
+      "expected_5": "0x8000181c"
+    },
+    "weights": "synthetic, deterministic seed 20261008"
+  },
+  "source_sha256": {
+    "model/reference/mlp_int.py": "9aa08e7e1ba38a5bd5da8e01c0ea5939fae38af820ba896ca17f91d1040956f0",
+    "rtl/npu/har/har_npu_core.sv": "75dfb9cdfbc4e9f200ac09453f4b8396323da70bc707cc5def832237da21b63b",
+    "rtl/npu/har/simple_npu_top.sv": "559e0c236df81b27a2bb4fd3d02a63985a4bc74ce78076e0e891231ac2bac4a5",
+    "rtl/npu/lab3/simple_npu_core.sv": "a9aaf25b61fb0d45210cac76671403e285470841a78bb29ecc8e9d038aaed505",
+    "rtl/npu/lab3/simple_npu_pe.sv": "ad6413a46806cd65c9c88cf24ecb23bfe4087eaa6f7182263d6b3a5da85ad9bd",
+    "rtl/npu/lab3/simple_npu_top.sv": "7cc7cb62264ea3605a223ca4528322446f41652eddda606c106430ac08fb4d40",
+    "scripts/build_har_firmware.py": "e3fef96367314dec19d1a2e7c5ee2f2249f074a90e66e7ddb77fbbccfc0fbcfa",
+    "scripts/check_platform.py": "307a6a1b31d7ea1a579127b48a019d84e0618514ca0968fbaa9f6b918577c34b",
+    "scripts/check_repo.py": "a21a116a4081b17321b4107083b7bf5c1117d9fe236a3e24f1c5893d8f56c5d0",
+    "scripts/generate_vectors.py": "e723adf93a354218e714291fc89cd3e878ddd8ba3c02257b124b3212aba2a69d",
+    "scripts/import_lab3.py": "0855024652de64a240239232f0b7aa20ffd9d1f63d00f388614d8246bb4d008d",
+    "scripts/run_tests.py": "6a0603e13295ea7918e3ae281b6b9e170a921a193bf657716a6fae50a5828fd4",
+    "verification/mmio/tb_har_mmio.sv": "9ff307f027a2736a9e4fa816232a2d093d36e78b8f24793072e09122ab425845",
+    "verification/npu/tb_har_core.sv": "ab9812d55b5153f67152f29caf22fa5ecc8057a43125833c2c4d58bd888e6cbd"
+  }
+}

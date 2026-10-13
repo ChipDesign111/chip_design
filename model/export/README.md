@@ -21,4 +21,4 @@ class = argmax(z)
 
 整数前向见 [quant_params.json](quant_params.json)：INT32 累加，ReLU 后用 `(acc * 1064 + 524288) >> 20` 压回 0–127，再做第二层。该整数路径在测试集上的准确率是 84.97%。平局时取最小下标。
 
-固定回归向量（32 个 hidden、6 个 score、class id）尚未从整数参考程序导出。
+现已通过 scripts/export_real_model.py 从真实测试输入导出完整 hidden/score/class 到 build/real_model，NumPy 与逐标量参考逐值一致；RTL 单/双模式及真实 CPU 已验证。命令与可复现固定样例见 [模型验证指南](../../docs/model-verification.md)。原参数文件保持不变。

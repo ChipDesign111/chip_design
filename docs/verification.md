@@ -1,6 +1,6 @@
 # 验证与性能计划
 
-状态：PLANNED，当前没有功能 PASS 或 PPA 结果。
+状态：当前 tiled V2 通过核级 3000 推理/MMIO/真实 CPU 与通用综合结构检查，见 [V2 报告](../reports/tiled-v2.md)；[V1](../reports/baseline.md) 为历史。真实模型/FPGA/PPA/ASIC 待完成。命令与最低验证要求见 [修改指南](change-guide.md)。
 
 ## 分层验收
 
