@@ -350,7 +350,7 @@
     "scripts/build_har_firmware.py": "6b25646d8285693fb71c5665ee1ee2c0cf4638dd6428efde08be19577a964c31",
     "scripts/check_platform.py": "307a6a1b31d7ea1a579127b48a019d84e0618514ca0968fbaa9f6b918577c34b",
     "scripts/check_repo.py": "a21a116a4081b17321b4107083b7bf5c1117d9fe236a3e24f1c5893d8f56c5d0",
-    "scripts/check_synthesis.py": "71098e11b8020ca3bf6423f8ac7b41619f486d72902ee10f0880a85bc49940a7",
+    "scripts/check_synthesis.py": "4790b571f549613ea2e36ff2507f1f9215ff80448ff9c937e650562ba0baa123",
     "scripts/generate_vectors.py": "f0e330c8950a07d1dcbd3e01333fda0f195aa127dd15209124012a6cdfa69af1",
     "scripts/import_lab3.py": "0855024652de64a240239232f0b7aa20ffd9d1f63d00f388614d8246bb4d008d",
     "scripts/run_tests.py": "75e385390448d8830ce54159d68a32adce8d29926dd0b76037c03050bcdc67ae",

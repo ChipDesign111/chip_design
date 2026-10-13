@@ -17,7 +17,9 @@ def main():
     out=ROOT/"build/synthesis"
     out.mkdir(parents=True,exist_ok=True)
     netlist=out/"har_generic.json"
-    commands=["read_verilog -sv "+" ".join('"'+(ROOT/s).as_posix()+'"' for s in HAR_RTL+["rtl/npu/har/simple_npu_top.sv"]),
+    # Old Yosys embeds source filenames into RTLIL names, which cannot contain
+    # spaces. Keep source filenames relative even when the checkout has spaces.
+    commands=["read_verilog -sv "+" ".join('"'+s+'"' for s in HAR_RTL+["rtl/npu/har/simple_npu_top.sv"]),
         "hierarchy -check -top simple_npu_top","proc","opt","wreduce","opt",
         "memory_dff","memory_collect","opt_clean","check -assert","stat",
         'write_json "'+netlist.as_posix()+'"']
@@ -25,7 +27,7 @@ def main():
     script.write_text("\n".join(commands)+"\n")
     log=out/"yosys.log"
     with log.open("w",encoding="utf-8") as output:
-        result=subprocess.run([args.yosys,"-Q","-T","-s",str(script)],stdout=output,stderr=subprocess.STDOUT,timeout=180)
+        result=subprocess.run([args.yosys,"-Q","-T","-s",str(script)],cwd=ROOT,stdout=output,stderr=subprocess.STDOUT,timeout=180)
     if result.returncode: raise SystemExit("Yosys failed; see "+str(log))
     design=json.loads(netlist.read_text())
     cells=[cell for module in design["modules"].values() for cell in module["cells"].values()]
