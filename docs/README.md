@@ -1,23 +1,28 @@
-# 共有文档导航
+# Engineering documentation
 
-| 文档 | 用途 |
+## 使用与集成
+
+| 文档 | 内容 |
 | --- | --- |
-| [plan.md](plan.md) | 从建仓到交付的详细执行计划、第一周安排和课程周次 |
-| [backlog.md](backlog.md) | 可转成 GitHub Issues 的待办与验收条件 |
-| [architecture.md](architecture.md) | 目录边界、硬件层次、构建入口 |
-| [change-guide.md](change-guide.md) | 能改什么、怎样改、改后运行哪些验证及通过标准 |
-| [tiled-npu.md](tiled-npu.md) | V2 tile 配比、并行/存储、两级流水时序及代码位置 |
-| [model-verification.md](model-verification.md) | 已选训练模型、真实输入、量化/标签规则与 RTL/CPU 实测入口 |
-| [spec.md](spec.md) | 项目功能和约束草案 |
-| [numerics.md](numerics.md) | INT8 / INT32 和量化规则草案 |
-| [mmio.md](mmio.md) | 地址、状态、读写和数据打包草案 |
-| [memory-budget.md](memory-budget.md) | 8 KB 主存及 NPU 存储预算 |
-| [verification.md](verification.md) | 测试层次、覆盖、性能测量 |
-| [environment.md](environment.md) | 个人机器与 CLab 的独立配置 |
-| [sources.md](sources.md) | 课程资料、发布状态和源码准入记录 |
-| [decisions.md](decisions.md) | 共同决策及待确认问题 |
-| [team.md](team.md) | 账号、权限与协作规则，不做四人任务分配 |
-| [ai-log/](ai-log/README.md) | AI 使用和人工修订记录 |
-| [weekly/](weekly/README.md) | 每周进度和验收记录 |
+| [environment.md](environment.md) | 工具依赖、统一命令、诊断与构建产物 |
+| [spec.md](spec.md) | 功能范围、能力状态和兼容边界 |
+| [architecture.md](architecture.md) | SoC 层次、实现归属和构建配置 |
+| [mmio.md](mmio.md) | 寄存器、地址窗口、握手和错误语义 |
+| [numerics.md](numerics.md) | 位宽、舍入、饱和和 Argmax 契约 |
+| [tiled-npu.md](tiled-npu.md) | tile 配比、存储与两级流水时序 |
+| [memory-budget.md](memory-budget.md) | 主存与加速器本地数据预算 |
 
-DRAFT 表示建议；HAR tiled V2 已实现，Lab 3 外围固定，当前回归见 [V2 报告](../reports/tiled-v2.md)，[V1 报告](../reports/baseline.md) 为历史结果。真实模型、FPGA、PPA 与签核待完成。
+## 开发与验证
+
+| 文档 | 内容 |
+| --- | --- |
+| [change-guide.md](change-guide.md) | 修改边界、编译入口和最低回归要求 |
+| [verification.md](verification.md) | 验证层次、通过条件与 CI 覆盖 |
+| [model-verification.md](model-verification.md) | 已选模型和真实输入的验证路径 |
+| [adr/](adr/README.md) | 已接受的架构决策 |
+| [releases.md](releases.md) | 发布候选、版本与证据清单 |
+| [roadmap.md](roadmap.md) | 能力缺口、交付条件与优先级 |
+| [provenance.md](provenance.md) | 组件来源与基线更新规则 |
+
+[贡献规范](../CONTRIBUTING.md)、[验证报告](../reports/README.md)、[组件声明](../THIRD_PARTY_NOTICES.md) 是配套入口。
+[历史归档](archive/README.md) 保存早期规划和开发记录，不作为现行工程规范。

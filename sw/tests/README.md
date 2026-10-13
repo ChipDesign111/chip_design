@@ -1,4 +1,5 @@
-# 裸机自检
+# Software test boundary
 
-计划比较六个得分和类别，覆盖连续推理和超时。先跑简单程序，再完整网络。
-每次仅放少量样本；结果使用可观察状态区，避免未经预算引入大型运行库。
+Generated CPU self-checks currently live under build/, with their source generators in scripts. No standalone C test build is implemented here.
+
+Future C tests must compare complete numerical results, fit the 8 KiB SRAM budget and be executed in the real CPU/SoC test path.

@@ -1,4 +1,5 @@
-# NPU 驱动
+# Driver boundary
 
-计划实现参数装载、输入写入、启动、带超时轮询和得分/类别读回。
-首版采用 32 位 MMIO，显式打包 INT8，使用 volatile，并明确状态错误处理。
+A production C driver is not yet implemented. Current CPU validation uses looped RV32I self-check programs generated from scripts.
+
+A driver must provide aligned parameter/input loading, timeout-bounded polling, result access and completion acknowledgement, matching [MMIO](../../docs/mmio.md).

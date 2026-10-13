@@ -1,4 +1,5 @@
-# SoC 集成
+# Integration extensions
 
-当前为预留目录，未参与构建。系统顶层 my_soc_top 和桥接 my_npu_subsystem 位于 platform/course_soc 并已冻结；MMIO 包装在 rtl/npu/har/simple_npu_top.sv，不在这里重复建系统顶层。
-未来若有独立集成需求，先明确冻结边界和编译配置。见 [修改与验证指南](../../docs/change-guide.md) 及 [MMIO 契约](../../docs/mmio.md)。
+Reserved boundary; no independent system top is implemented here. The compiled top is platform/course_soc/soc/rtl/my_soc_top.sv, and the bridge is my_npu_subsystem.sv.
+
+The accelerator's MMIO wrapper is rtl/npu/har/simple_npu_top.sv. Avoid duplicating a CPU or top to modify an accelerator. Integration changes follow [ADR 0001](../../docs/adr/0001-fixed-platform-boundary.md).

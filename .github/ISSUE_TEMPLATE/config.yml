@@ -1,1 +1,5 @@
-blank_issues_enabled: true
+blank_issues_enabled: false
+contact_links:
+  - name: Engineering documentation
+    url: https://github.com/ChipDesign111/chip_design/blob/main/docs/README.md
+    about: Architecture, interfaces, commands and verification scope.

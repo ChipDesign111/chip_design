@@ -1,27 +1,41 @@
-# 共有架构：固定外围与 tiled NPU
+# System architecture
 
-2026-10-13；LAB3_PERIMETER_FIXED / HAR_TILED_V2。
-
-外围保持原 Lab 3 字节：CV32E40P、AXI、Debug、Boot RAM、8 KB 主 SRAM、复位、my_soc_top、my_npu_subsystem。90 文件 SHA 校验不变。
+HAR-NPU 使用固定参考 SoC 和可替换的加速器实现。平台源码与项目 RTL 按来源/修改责任分离，而不是按 HDL 语言分类。
 
 ```text
-platform/course_soc/my_soc_top
-    └── my_npu_subsystem（固定 axi2mem / 地址桥）
-            └── rtl/npu/{lab3 或 har}/simple_npu_top
-                    har:
-                    ├── har_weight_store：38 个同步 bank
-                    └── har_npu_core
-                        ├── 2× har_dot_tile(16,4) → quant → hidden 双缓冲
-                        └── 1× har_dot_tile(6,2) → Argmax
+platform/course_soc/soc/rtl/my_soc_top.sv
+├── CV32E40P
+├── AXI / Debug / Boot RAM / 8 KiB SRAM / Reset
+└── my_npu_subsystem.sv
+    └── simple_npu_top                 rtl/npu/har/
+        ├── har_weight_store          38 synchronous banks
+        └── har_npu_core
+            ├── 2 × har_dot_tile(16,4)
+            ├── ReLU / requantization / hidden double buffer
+            └── 1 × har_dot_tile(6,2) → Argmax
 ```
 
-simple_npu_top 保持 clka/rst_ni/ena/wea/addra[11:0]/dina[31:0]/douta[31:0]。对外围仍为下一拍读有效，32 位对齐写；基址 0x70000000、本地 16 KB、高位别名均保持。
+## 模块与编译配置
 
-lab3 配置仅用于原 4 位矩阵乘回归，har 配置为 INT8 MLP；同名 top 每次只编译一份。
-scripts/run_tests.py 展开冻结原清单并选择实际源，新模块同时进入 HAR_RTL 和 SoC 源列表。没有额外系统顶层。
+| 配置 | 加速器源 | 用途 |
+| --- | --- | --- |
+| `har` | `rtl/npu/har/` | INT8 64→32→6 MLP |
+| `lab3` | `rtl/npu/lab3/` | 4×4、无符号 4-bit 兼容回归 |
 
-片上权重容量 2240 B；FC1 32×16×32 bit，FC2 6×8×32 bit。输入、偏置、隐藏及结果为寄存器文件。RAM 阵列不复位，以有效位提供复位后逻辑零行为。双样本共享模型/偏置/量化参数，分开输入/hidden/输出。
-原单次 MMIO 布局兼容，新增批长度及第二样本窗口，详见 [MMIO](mmio.md)。
+两者定义相同的 `simple_npu_top`，每次只编译一份。CPU、互连、系统顶层和 NPU 接入桥共用同一冻结基线，90 文件完整性由 manifest 校验。
 
-详细 tile 配比、时序、并行与存储见 [tiled-npu.md](tiled-npu.md)，改动流程见 [change-guide.md](change-guide.md)，数值规则见 [numerics.md](numerics.md)。
-单样本 39 周期、双样本 59 周期，阶段活跃各 19 周期，重叠 18 周期；不包含 CPU 传输。最终面积/频率/功耗、BRAM/SRAM 宏映射需要目标平台验证。
+加速器保持 `clka/rst_ni/ena/wea/addra[11:0]/dina[31:0]/douta[31:0]`。CPU 字节地址经固定桥转换为 word 地址；基址 `0x70000000`，本地窗口 16 KiB，读下一拍有效，软件只作完整 32-bit 对齐写。具体语义见 [MMIO](mmio.md)。
+
+## 数据与并行
+
+FC1 的 32 个输出通道由两个 16-output/4-lane tile 覆盖；FC2 的 6 个通道由一个 6-output/2-lane tile 覆盖。两层分别发射 16 个 K 维分块，产品与累加打拍。
+
+权重存储为 FC1 32×16×32 bit、FC2 6×8×32 bit，共 2240 B；CPU 回读和计算读取均同步。有效位提供复位后逻辑零行为，RAM 阵列无数据复位。输入、偏置、hidden 和结果为小型寄存器文件。
+
+批次包含 1 或 2 输入，参数共享。双 hidden 缓冲使 FC1 处理下一输入时，FC2 处理上一输入。单输入 39 周期，双输入 59 周期，两层重叠 18 周期；详见 [流水设计](tiled-npu.md)。该实现不包含 DMA 或无限长流。
+
+## 构建与演进
+
+`project.py` 提供统一入口；`scripts/run_tests.py` 展开冻结原清单并选择加速器源，产物位于 `build/`。新增模块需要进入单元和 SoC 源列表。
+
+固定外围、tile 配比和数值边界见 [ADR](adr/README.md)。目标 BRAM/SRAM 宏映射、面积、频率和功耗需要目标平台验证；通用 Yosys 内存统计不代替这些结果。

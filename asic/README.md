@@ -1,5 +1,7 @@
-# ASIC 实现
+# ASIC target integration
 
-等待课程 Lab 4/5 的工具、库、宏与签核要求；当前不提供未验证 EDA 脚本。
-规划：综合→布局/电源→摆放→CTS→布线→签核→GDS。
-PDK 和受限标准单元库仅在课程环境使用；公共仓库保存允许共享的脚本与摘要。
+Not implemented: no technology mapping, target timing constraints, physical flow or signoff result is included.
+
+A target flow requires authorized libraries/macros, synthesis, floorplan/power, placement, CTS, routing, STA and physical checks. Restricted technology data remains outside the repository; distributable scripts and summarized evidence must identify their source revision and constraints.
+
+Generic Yosys checks are technology-independent and are not ASIC signoff.

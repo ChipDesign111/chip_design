@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repository:
+    name: Repository policy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python project.py check
+
+  rtl:
+    name: RTL regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install simulator
+        run: sudo apt-get update && sudo apt-get install -y iverilog
+      - name: Verify prerequisites
+        run: python project.py doctor --require unit
+      - run: python project.py test --suite unit
+      - name: Retain regression evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rtl-regression
+          path: |
+            build/logs/
+            build/results/
+            build/vectors/manifest.json
+          if-no-files-found: ignore
+          retention-days: 14
+
+  model:
+    name: Trained model
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: sudo apt-get update && sudo apt-get install -y iverilog
+      - name: Verify prerequisites
+        run: python project.py doctor --require model
+      - run: python project.py test --suite model
+      - name: Retain model evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trained-model
+          path: |
+            build/logs/
+            build/real_model/results.json
+            build/real_model/manifest.json
+          if-no-files-found: ignore
+          retention-days: 14
+
+  synthesis:
+    name: Generic synthesis
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: sudo apt-get update && sudo apt-get install -y yosys
+      - name: Verify prerequisites
+        run: python project.py doctor --require synthesis
+      - run: python project.py synth
+      - name: Retain structure evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: generic-synthesis
+          path: |
+            build/synthesis/yosys.log
+            build/synthesis/summary.json
+          if-no-files-found: ignore
+          retention-days: 14

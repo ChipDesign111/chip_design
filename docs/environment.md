@@ -1,39 +1,71 @@
-# 环境和共有运行入口
+# Tooling and quick start
 
-已选模型联调还需 NumPy 2.3.5：python -m pip install numpy==2.3.5；无需 Torch。python scripts/run_model_tests.py --unit 用六类 24 条固定真实输入；全 2947 条及 CPU 命令见 [模型验证指南](model-verification.md)。原始数据下载到忽略的 data/。
+## 依赖
 
-已验证：Windows、Python 3.11、Icarus Verilog 11、ModelSim 2019.2。工具路径使用 PATH 或 CLI 参数，不写个人绝对路径。
+| 工作流 | 依赖 |
+| --- | --- |
+| 仓库检查 | Python 3.11+ |
+| RTL / MMIO | Icarus Verilog、vvp |
+| 真实模型 | 上述工具 + `requirements.txt` 中的 NumPy |
+| 完整 SoC | ModelSim，及有效的本地工具许可证 |
+| 通用结构检查 | Yosys |
 
-```text
-python scripts/check_repo.py
-python scripts/check_platform.py
-python scripts/run_tests.py --unit
-python scripts/run_tests.py --soc --vsim "本机 vsim 路径"
-python scripts/check_synthesis.py
+训练依赖 Torch、NumPy、scikit-learn，参见 [训练文档](../model/training/README.md)；验证已有导出权重不需要 Torch 或 checkpoint 反序列化。
+
+Linux CI 安装 Icarus/Yosys；Windows 已验证 Icarus 11、ModelSim 2019.2 和通用 Yosys。Python 依赖按 [requirements.txt](../requirements.txt) 锁定。
+
+## 环境诊断
+
+```sh
+python -m pip install -r requirements.txt
+python project.py doctor
+python project.py doctor --require unit --require model --require synthesis
 ```
 
-从根目录执行；脚本也支持从其他目录调用。不带 --unit/--soc 时执行全部。Icarus 不在 PATH 时指定 --iverilog、--vvp。--count 支持 12–1000，默认核级 1000 组。
+doctor 只检查，不安装软件或修改环境。它区分可选工具缺失与所选工作流的必需依赖；输出不会包含许可证内容。许可证配置不等于已验证许可证有效。
 
-完整 AXI SoC 使用 ModelSim，Icarus 11 不支持这里的 SystemVerilog interface。独立 work 在 build/soc/lab3/、har/；多人各自克隆，同一克隆勿同时跑两份回归。
+可执行文件从 PATH 查找，或通过 `--iverilog`、`--vvp`、`--vsim`、`--yosys` 指定。所有命令定位仓库根目录，支持从其他当前目录调用。
 
-## ModelSim
+## 标准命令
 
-使用已有 LM_LICENSE_FILE；未配置时仅尝试 vsim 安装目录上一级的 LICENSE.TXT。其他安装布局请自行配置环境变量。许可证不提交。
-
-原 SoC TB 不改动。运行脚本用 -G 指定 SRAM INIT_FILE，启动后关闭 VCD 以减少回归开销。检查真实 SRAM magic=c0dec0de 才判通过；FAIL、TIMEOUT、缺失 PASS、编译错误均失败，不能把 $finish 的零退出码当 PASS。
-
-## 向量与程序
-
-```text
-python scripts/generate_vectors.py --count 1000
-python scripts/build_har_firmware.py
+```sh
+python project.py check
+python project.py test --suite unit --count 12
+python project.py test --suite unit
+python project.py test --suite model
+python project.py synth
+python project.py ci
 ```
 
-种子 20261008，向量通过独立 Python 整数参考生成。
-HAR RV32I 编码器不依赖交叉编译器，生成实际 CV32E40P 执行的 8 KB hex、解释性 .S 清单和地址/SHA JSON。清单不是完整 GCC 工程；后续 C 驱动需建立交叉编译链。
+12 组合成用例用于调试；完整 unit 默认 1000 组（3000 推理）。model 使用 24 条真实固定输入（单/双模式共 48 推理）。ci 复现公共 CI 的检查集合，不包含商业 SoC 仿真。
 
-原 Lab 3 四份预编译 hex 直接使用，原 C/启动/链接材料保留。
-日志在 build/logs/，结果在 build/results/unit.json、soc.json；见 [报告](../reports/baseline.md)。
-GitHub CI 执行外围校验、Icarus 单元回归及 Yosys 通用结构检查，商业 SoC 仿真本地执行。check_synthesis 可用 --yosys 指定路径；无工艺库参与。V2 结果见 reports/tiled-v2.md；--soc 包含四原镜像、八次推理及六次同工作量性能程序。batch.hex 为共享参数的第二输入及独立 gold。
+```sh
+python project.py test --suite soc --vsim /path/to/vsim
+python project.py test --suite model-soc --vsim /path/to/vsim
+python project.py test --suite all --vsim /path/to/vsim
+```
 
-FPGA/ASIC 尚未验证，板卡、频率和工艺约束待确认。PDK、标准单元库及许可证留在课程指定环境，不提供给 AI、不上传。
+`all` 包含 unit、model、soc、model-soc。完整 AXI SoC 包含 SystemVerilog interface，使用 ModelSim；Icarus 单元测试不替代 SoC 仿真。
+
+## 全量真实数据
+
+```sh
+python project.py download-data
+python project.py test --suite model-soc --data-root "data/UCI HAR Dataset" --vsim /path/to/vsim
+```
+
+使用官方测试集全部 2947 条做模型/RTL 对照，CPU 自检仍采用六类各 4 条。来源和具体判定见 [模型验证](model-verification.md)。原始数据保留在忽略的 `data/`。
+
+## 许可证与产物
+
+ModelSim 优先使用环境变量 `LM_LICENSE_FILE`；未设置时后端尝试安装目录上一级的 LICENSE.TXT。其他布局由本地环境配置。不提交许可证或工具数据库。
+
+| 路径 | 产物 |
+| --- | --- |
+| `build/unit/`、`build/vectors/` | Icarus 镜像、合成向量 |
+| `build/soc/{lab3,har,har-model}/` | 独立 work、Tcl、仿真数据库 |
+| `build/real_model/` | 真实向量、CPU 镜像、准确率和结果 |
+| `build/logs/`、`build/results/` | 回归日志、结构化结果 |
+| `build/synthesis/` | 通用网表、结构检查日志和摘要 |
+
+同一 checkout 不并发运行共用上述目录的回归。失败时先看首个失败阶段及对应日志；CPU $finish 的零退出码不代表 PASS，后端还会检查 SRAM magic。

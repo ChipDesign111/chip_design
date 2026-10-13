@@ -1,10 +1,10 @@
 # HAR V2：两级 tile 流水加速器
 
-2026-10-13。外围固定为 Lab 3，只替换 rtl/npu/har/。原整数算术不变；增加双样本模式及计数寄存器，旧单次推理窗口兼容。模型是 64→32→6，输入/权重 INT8、偏置/得分 INT32，ReLU/重新量化只在第一层。
+外围采用冻结的 Lab 3 参考平台，加速器实现在 rtl/npu/har/。V2 保持整数算术契约，支持双样本模式及计数寄存器，与原单次推理窗口兼容。模型为 64→32→6，输入/权重 INT8、偏置/得分 INT32，ReLU/重新量化只在第一层。
 
 ## 为什么 tile 数量 2:1 还不够
 
-第一层 64×32=2048 MAC，第二层 32×6=192 MAC，工作量比为 10.67:1。如果两层使用相同形状和吞吐的 tile，数量 2:1 时第一层仍慢约 5.33 倍。这里保持用户要求的 2 个 tile : 1 个 tile，采用不同形状：
+第一层 64×32=2048 MAC，第二层 32×6=192 MAC，工作量比为 10.67:1。如果两层使用相同形状和吞吐的 tile，数量 2:1 时第一层仍慢约 5.33 倍。设计采用 2 个 FC1 tile 与 1 个 FC2 tile，通过不同形状平衡阶段吞吐：
 
 | 项目 | 第一级 FC1 | 第二级 FC2 |
 | --- | ---: | ---: |
@@ -17,7 +17,7 @@
 | 每层发射分块数 | 64/4=16 | 32/2=16 |
 | 每样本实际活跃周期 | 19 | 19 |
 
-“tile 数两倍”不表示乘法器或面积两倍。两个大 FC1 tile 共 128 个乘法器，FC2 为 12 个；另外还有 32 个量化乘法器。没有 PPA 证据时不承诺能放入课程面积或达到目标频率。
+tile 数量比不等于乘法器或面积比。两个 FC1 tile 共 128 个乘法器，FC2 为 12 个；另外还有 32 个量化乘法器。目标面积与频率需要目标平台综合和实现证据。
 
 ## 数据通路和真正的流水重叠
 
@@ -88,12 +88,13 @@ Yosys 通用综合结构检查保留 38 个 RAM、17920 bit 和 76 个同步读�
 整数参考未改变。每个输出和中间值逐项一致，测试独立观察两个 stage 的同时活跃拍数，再与计数寄存器比较。复位覆盖 FC1、FC2 和真实重叠区间。完整 SoC 使用真实 CV32E40P 通过固定 AXI 外围发 MMIO，不用 BFM 代替 CPU。
 
 ```text
-python scripts/check_repo.py
-python scripts/run_tests.py --unit
-python scripts/run_tests.py --soc --vsim "本机 vsim 路径"
-python scripts/check_synthesis.py
+python project.py check
+python project.py test --suite unit
+python project.py test --suite model
+python project.py test --suite soc --vsim /path/to/vsim
+python project.py synth
 ```
 
-最后一项需要 Yosys，可用 --yosys 指定路径。未访问 PDK/标准单元库。实际结果及同工作量性能比较见 [V2 报告](../reports/tiled-v2.md)；初始 V1 报告作为历史版本保留。
+最后一项需要 Yosys，可用 --yosys 指定路径。未访问 PDK/标准单元库。实际结果及同工作量性能比较见 [V2 报告](../reports/history/tiled-v2.md)；初始 V1 报告作为历史版本保留。
 
-当前为合成权重功能/结构验证，不能声称真实活动识别准确率、板级成功或物理签核通过。
+真实模型另有全量 2947 条 RTL 逐值对照及 24 条 CPU / SoC 自检，见 [模型验证](model-verification.md) 和 [真实模型报告](../reports/real-model.md)。板级验证与物理签核尚未完成。

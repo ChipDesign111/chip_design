@@ -1,4 +1,5 @@
-# 固定回归向量
+# Fixed input fixtures
 
-未来保存少量确定性输入、参数与预期结果，并记录模型版本、合法数值范围和校验。
-完整数据集或大量随机数据通过脚本生成到 build；当前没有真实向量。
+[har_uci24.json](har_uci24.json) contains 24 real UCI HAR test inputs: four evenly spaced source rows per true class. It records source row IDs, feature selection, input scale, citation/license and dataset-file SHA-256. Selection does not depend on prediction correctness.
+
+Gold is computed independently at runtime. Synthetic and full-dataset vectors are generated under ignored build/. These 24 rows are an integration fixture, not an overall accuracy estimate. See [model verification](../../docs/model-verification.md).

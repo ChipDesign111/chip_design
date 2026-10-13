@@ -1,4 +1,5 @@
-# 单元验证
+# Operator test boundary
 
-计划覆盖符号扩展、乘加、偏置、舍入、饱和、ReLU 和 Argmax。
-使用边界和独立整数参考，失败样例固定回归。
+No standalone operator testbench is currently compiled from this directory. Arithmetic boundary coverage is supplied by tb_har_core and the independent integer reference.
+
+Extracted operators should gain focused tests here while preserving full-network and SoC regression.

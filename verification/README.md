@@ -1,4 +1,14 @@
-# 共同验证
+# Verification
 
-[unit/](unit/README.md)、[npu/](npu/README.md)、[mmio/](mmio/README.md)、[soc/](soc/README.md)、[vectors/](vectors/README.md)。
-计划见 [verification.md](../docs/verification.md)。当前无功能测试实现或 PASS。
+Verification is layered into scalar/vector integer references, RTL control/arithmetic, MMIO, full CPU/SoC and technology-independent synthesis checks.
+
+| Location | Scope |
+| --- | --- |
+| [npu/](npu/README.md) | Synthetic parameter and pipeline regression |
+| [mmio/](mmio/README.md) | Interface and trained-model tests |
+| [vectors/](vectors/README.md) | Small reproducible real-input fixtures |
+| lab3/ | Immutable imported tests and CPU images |
+| [soc/](soc/README.md) | SoC integration boundary |
+| [unit/](unit/README.md) | Future independent operator tests |
+
+Run `python project.py test --suite unit` and `--suite model`; complete CPU verification uses `--suite soc` and `--suite model-soc` with ModelSim. Definitions and pass conditions: [verification strategy](../docs/verification.md).

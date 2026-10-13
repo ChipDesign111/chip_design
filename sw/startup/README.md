@@ -1,4 +1,5 @@
-# 启动和链接
+# Startup baseline
 
-计划从允许共享的课程配置中选取启动代码，核对 SRAM、栈和测试标志区。
-保留来源，项目布局明确记录；软件容量变化同时核对硬件，不只改 linker。
+lab3/ contains immutable source startup/linker material recorded by the platform manifest. It is retained for compatibility and future compiler integration.
+
+Current RV32I generators emit self-contained programs without a C runtime or function-call stack. A GCC-based build must explicitly validate startup, memory layout, stack and magic-region placement.
