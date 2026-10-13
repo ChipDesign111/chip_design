@@ -81,7 +81,7 @@ def pack(values):
     assert len(values) % 4 == 0
     return [sum((v & 255) << (8*j) for j,v in enumerate(values[i:i+4])) for i in range(0,len(values),4)]
 
-def build(out):
+def build(out, include_batch=True):
     rng = random.Random(20261008)
     w1 = [[rng.randint(-3,3) for _ in range(64)] for _ in range(32)]
     w2 = [[rng.randint(-3,3) for _ in range(32)] for _ in range(6)]
@@ -141,8 +141,39 @@ def build(out):
         a.li(5,3); a.sw(5,10,4)
         a.lw(29,11,8); a.lw(30,6); a.branch("bne",29,30,"fail")
         a.li(5,4); a.sw(5,10,4)
-        a.lw(29,11,12); a.li(30,2279); a.branch("bne",29,30,"fail")
+        a.lw(29,11,12); a.li(30,39); a.branch("bne",29,30,"fail")
         a.li(5,2); a.sw(5,11)
+    # Two input slots share the same model, biases and quantization config.
+    # A real CPU command must exercise overlapping inference stages.
+    if not include_batch: a.jump("after_batch")
+    a.li(5,6);a.sw(5,10,20)
+    copy("batch_input0","x_0",0x70000040,16)
+    copy("batch_input1","x_1",0x70000c00,16)
+    copy("batch_bias","bias_0",0x700009c0,38)
+    a.li(5,cases[0]["mult"]);a.sw(5,11,16)
+    a.li(5,cases[0]["shift"]);a.sw(5,11,20)
+    a.li(5,2);a.sw(5,11,24)
+    a.li(5,1);a.sw(5,11)
+    a.li(28,10000)
+    a.label("batch_poll");a.lw(29,11,4)
+    a.andi(5,29,4);a.branch("bne",5,0,"fail")
+    a.andi(5,29,1);a.branch("bne",5,0,"batch_done")
+    a.addi(28,28,-1);a.branch("bne",28,0,"batch_poll");a.jump("fail")
+    a.label("batch_done")
+    for slot in range(2):
+        a.la(6,"expected_0" if slot==0 else "batch_expected")
+        for kind,address,length in [("hidden",0x70000a80 if slot==0 else 0x70000c40,8),
+                                     ("score",0x70000b00 if slot==0 else 0x70000c80,6),
+                                     ("class",0x70000008 if slot==0 else 0x70000c98,1)]:
+            a.li(7,address);a.li(28,length)
+            a.label(f"batch_{slot}_{kind}")
+            a.lw(29,7);a.lw(30,6);a.branch("bne",29,30,"fail")
+            a.addi(7,7,4);a.addi(6,6,4);a.addi(28,28,-1)
+            a.branch("bne",28,0,f"batch_{slot}_{kind}")
+    for offset,expected in [(12,59),(28,18),(32,38),(36,38)]:
+        a.lw(29,11,offset);a.li(30,expected);a.branch("bne",29,30,"fail")
+    a.li(5,2);a.sw(5,11);a.li(5,1);a.sw(5,11,24)
+    a.label("after_batch")
     a.li(5,0xc0dec0de); a.sw(5,10)
     a.label("halt"); a.jump("halt")
     a.label("fail")
@@ -161,6 +192,9 @@ def build(out):
             a.label(name)
             for word in words:
                 a.emit(word,f".word 0x{word & 0xffffffff:08x}")
+    bh,bs,bc=infer(cases[1]["x"],w1,w2,cases[0]["b1"],cases[0]["b2"],cases[0]["mult"],cases[0]["shift"])
+    a.label("batch_expected")
+    for word in pack(bh)+bs+[bc]: a.emit(word,f".word 0x{word & 0xffffffff:08x}")
     a.resolve()
     used = len(a.words)*4
     assert used < 0x1fe0, f"Firmware exceeds SRAM reserved boundary: {used}"
@@ -169,7 +203,7 @@ def build(out):
     hex_path.write_text("".join(f"{word:08x}\n" for word in a.words+[0]*(2048-len(a.words))),encoding="ascii")
     # This listing is explanatory: resolved address loads are represented by symbols.
     (out/"har_selftest.S").write_text("# Generated RV32I listing; executable is har_selftest.hex.\n"+"\n".join(a.listing)+"\n",encoding="utf-8")
-    meta = dict(cases=6,expected_classes=list(range(6)),code_bytes=code_bytes,image_used_bytes=used,sram_bytes=8192,sha256=hashlib.sha256(hex_path.read_bytes()).hexdigest(),labels={k:hex(v) for k,v in a.labels.items()},weights="synthetic, deterministic seed 20261008")
+    meta = dict(cases=8 if include_batch else 6,single_cases=6,batch_cases=2 if include_batch else 0,single_cycles=39,batch_cycles=59,overlap_cycles=18,expected_classes=list(range(6)),code_bytes=code_bytes,image_used_bytes=used,sram_bytes=8192,sha256=hashlib.sha256(hex_path.read_bytes()).hexdigest(),labels={k:hex(v) for k,v in a.labels.items()},weights="synthetic, deterministic seed 20261008")
     (out/"har_selftest.json").write_text(json.dumps(meta,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({k:v for k,v in meta.items() if k!="labels"}))
     return hex_path
@@ -177,4 +211,6 @@ def build(out):
 if __name__ == "__main__":
     p=argparse.ArgumentParser()
     p.add_argument("--out",type=Path,default=ROOT/"build/sw")
-    build(p.parse_args().out)
+    p.add_argument("--single-only",action="store_true")
+    args=p.parse_args()
+    build(args.out,not args.single_only)

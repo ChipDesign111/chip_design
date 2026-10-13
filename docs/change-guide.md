@@ -1,6 +1,6 @@
 # 修改边界与验证操作指南
 
-适用版本：Lab 3 固定外围 + HAR V1；2026-10-08。
+适用版本：Lab 3 固定外围 + HAR tiled V2；2026-10-13，见 [当前实现](tiled-npu.md)。
 读完本页应能确定：要改哪一个文件、哪些接口必须保留、新增文件如何加入编译、修改后怎样判定通过。
 
 ## 1. platform 和 rtl 如何连接
@@ -55,17 +55,17 @@ HAR 可以更换内部结构，但连接固定外围时必须保持：
 
 ## 4. 怎样开始修改
 
-1. 一次任务明确一个目标，例如“把一个 MAC 改为四个，保持逐值结果与 MMIO 行为”。
-2. 从包含已验证基线的版本建立任务分支。当前基线在 PR #1 的 codex/lab3-platform-npu，尚未合入 main；合并前以该分支为起点，合并后以更新的 origin/main 为起点。
+1. 一次任务明确一个目标，例如“优化 tile 存储映射，保持逐值结果与 MMIO 行为”。
+2. 共有基线整合到 main 后，从更新的 origin/main 建立任务分支；初始 PR #1/#3 开发分支仅保留历史，不作为长期个人主线。
 3. 先修改 har/ 内部；新增模块时同时处理下面的编译入口。
 4. 给缺陷补能重现的 HAR 测试，保留失败向量；优化保留同一整数参考作为对照。
 5. 先小规模调试，完整回归通过后记录结果并提交 PR；由另一名成员复核后合并。
 
-合并前建立新任务分支的示例（将名字换成自己的任务）：
+本次整合完成后建立任务分支（将名字换成自己的任务）：
 
 ```text
 git fetch origin
-git switch -c codex/npu-your-task origin/codex/lab3-platform-npu
+git switch -c codex/npu-your-task origin/main
 ```
 
 ### 新增模块必须加入哪些地方
@@ -74,7 +74,7 @@ git switch -c codex/npu-your-task origin/codex/lab3-platform-npu
 
 例如增加 rtl/npu/har/har_mac.sv：
 
-- units()：把依赖文件加入 har_core 与 har_mmio 各自的 sources 列表，按依赖顺序放置。
+- 当前在 scripts/run_tests.py 的 HAR_RTL 公共列表加入文件；units() 的 har_core/har_mmio 都复用它，按依赖顺序放置。
 - filelist(profile)：把文件加入 har 配置的 sources 列表；该列表会生成 SoC 的 build/har.f。
 - 新文件如果在 rtl/memory/，调整路径生成逻辑以包含它，不把它伪装为 har/ 内的文件。
 - lab3 配置继续编译自己的 PE/core/top；不要同时编译两份 simple_npu_top。
@@ -84,7 +84,7 @@ git switch -c codex/npu-your-task origin/codex/lab3-platform-npu
 
 ### 优化周期和存储时特别注意
 
-当前 2279 周期的断言出现在核级 TB、MMIO TB 和 scripts/build_har_firmware.py。
+当前单次 39 / 双次 59 周期、18 拍重叠的断言在核级 TB、MMIO TB 和 scripts/build_har_firmware.py；两层每样本各活跃 19 拍。
 增加并行度或流水线后，先推导新的计算周期和计数边界，再同步这些自主断言、数值/MMIO 文档和报告；同时逐值比较结果。不能只删除周期断言。
 
 存储从寄存器改为同步 RAM 后，核内可能需要等待读数据；对外围仍要兑现下一拍读出。要验证读后写、权重复用、连续推理和复位中止。主 SRAM 的 8 KB 不因 NPU 存储优化而增加。仿真正确不证明新存储已映射到目标宏或 FPGA RAM。

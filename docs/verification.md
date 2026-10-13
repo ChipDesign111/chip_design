@@ -1,6 +1,6 @@
 # 验证与性能计划
 
-状态：初始功能基线已通过核级/MMIO/真实 CPU，见 [报告](../reports/baseline.md)；真实模型、FPGA 和 PPA/ASIC 待完成。改动后的命令与最低验证要求见 [修改与验证指南](change-guide.md)。
+状态：当前 tiled V2 通过核级 3000 推理/MMIO/真实 CPU 与通用综合结构检查，见 [V2 报告](../reports/tiled-v2.md)；[V1](../reports/baseline.md) 为历史。真实模型/FPGA/PPA/ASIC 待完成。命令与最低验证要求见 [修改指南](change-guide.md)。
 
 ## 分层验收
 

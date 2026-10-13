@@ -12,6 +12,8 @@
 
 ## 2. 当前状态与依据
 
+2026-10-13 更新：HAR 已升级为 tiled V2，FC1 两个 tile / FC2 一个 tile，19/19 周期阶段均衡、hidden 双缓冲和同步 bank 存储。1000 参数组共 3000 次推理及完整 CPU/SoC 回归通过，详见 [V2 设计](tiled-npu.md)、[报告](../reports/tiled-v2.md)。以下 2026-10-08 条目保留为 V1 历史依据；后续优先真实模型和目标综合资源评估。
+
 - 外围按用户选定 Lab 3 固定，90 个原文件字节校验；变动点仅 NPU，详见 architecture.md。
 - 共有兼容 NPU 已通过原核级/MMIO/四份 SoC 镜像，HAR V1 已通过 1000 核例、12 MMIO 用例和真实 CPU 六次连续推理，见 reports/baseline.md。
 - 个人 Lab 可作为学习和贡献来源，不能直接变成共有项目验收结果。

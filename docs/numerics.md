@@ -1,6 +1,6 @@
 # HAR V1 整数数值规则
 
-状态：IMPLEMENTED_V1，2026-10-08。硬件算术契约已实现并逐值验证；训练模型和实际尺度仍待提供。
+状态：算术契约已实现，tiled V2 沿用；训练模型来自 [model/export](../model/export/README.md)，参数以 [quant_params.json](../model/export/quant_params.json) 为准。实际 MULT=1064、SHIFT=20、舍入加数 524288，均在当前硬件支持范围，无需改动 RTL。
 
 ## 计算定义
 
