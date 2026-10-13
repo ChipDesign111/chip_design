@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "HAR_V1_FUNCTIONAL_LAB3_PERIMETER_FIXED",
+  "status": "HAR_TILED_V2_LAB3_PERIMETER_FIXED",
   "organization": "ChipDesign111",
   "repository": "chip_design",
   "network": {
@@ -17,13 +17,23 @@
     "score_bits": 32
   },
   "architecture": {
-    "baseline_mac_units": 1,
-    "optional_mac_units": 4
+    "fc1_tiles": 2,
+    "fc1_outputs_per_tile": 16,
+    "fc1_lanes_per_tile": 4,
+    "fc2_tiles": 1,
+    "fc2_outputs_per_tile": 6,
+    "fc2_lanes_per_tile": 2,
+    "dot_product_multipliers": 140,
+    "requant_multipliers": 32,
+    "weight_banks": 38,
+    "batch_max": 2,
+    "single_cycles": 39,
+    "batch2_cycles": 59
   },
   "mmio": {
     "base_address": 1879048192,
     "window_bytes": 16384,
-    "register_area_bytes": 32,
+    "register_area_bytes": 40,
     "windows": [
       {
         "name": "input",
@@ -59,6 +69,26 @@
         "name": "scores",
         "offset": 2816,
         "size_bytes": 24
+      },
+      {
+        "name": "input1",
+        "offset": 3072,
+        "size_bytes": 64
+      },
+      {
+        "name": "hidden1",
+        "offset": 3136,
+        "size_bytes": 32
+      },
+      {
+        "name": "scores1",
+        "offset": 3200,
+        "size_bytes": 24
+      },
+      {
+        "name": "class1",
+        "offset": 3224,
+        "size_bytes": 4
       }
     ]
   },

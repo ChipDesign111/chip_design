@@ -7,6 +7,7 @@ python scripts/check_repo.py
 python scripts/check_platform.py
 python scripts/run_tests.py --unit
 python scripts/run_tests.py --soc --vsim "本机 vsim 路径"
+python scripts/check_synthesis.py
 ```
 
 从根目录执行；脚本也支持从其他目录调用。不带 --unit/--soc 时执行全部。Icarus 不在 PATH 时指定 --iverilog、--vvp。--count 支持 12–1000，默认核级 1000 组。
@@ -31,6 +32,6 @@ HAR RV32I 编码器不依赖交叉编译器，生成实际 CV32E40P 执行的 8 
 
 原 Lab 3 四份预编译 hex 直接使用，原 C/启动/链接材料保留。
 日志在 build/logs/，结果在 build/results/unit.json、soc.json；见 [报告](../reports/baseline.md)。
-GitHub CI 执行外围校验和 Icarus 单元回归，商业 SoC 仿真本地执行。
+GitHub CI 执行外围校验、Icarus 单元回归及 Yosys 通用结构检查，商业 SoC 仿真本地执行。check_synthesis 可用 --yosys 指定路径；无工艺库参与。V2 结果见 reports/tiled-v2.md；--soc 包含四原镜像、八次推理及六次同工作量性能程序。batch.hex 为共享参数的第二输入及独立 gold。
 
 FPGA/ASIC 尚未验证，板卡、频率和工艺约束待确认。PDK、标准单元库及许可证留在课程指定环境，不提供给 AI、不上传。

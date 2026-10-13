@@ -18,6 +18,7 @@ from scripts.build_har_firmware import build
 from scripts.generate_vectors import generate
 
 RESULTS=[]
+HAR_RTL=["rtl/npu/har/har_dot_tile.sv","rtl/npu/har/har_weight_store.sv","rtl/npu/har/har_npu_core.sv"]
 def execute(name,command,cwd=ROOT,marker=None,timeout=300,env=None):
     start=time.monotonic()
     result=subprocess.run([str(v) for v in command],cwd=cwd,env=env,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=timeout)
@@ -50,8 +51,8 @@ def units(args):
     suites=[
         ("lab3_core","tb_npu_check",["rtl/npu/lab3/simple_npu_pe.sv","rtl/npu/lab3/simple_npu_core.sv","verification/lab3/tb_npu_check.sv"],"[CHECK] ALL PASS",[]),
         ("lab3_mmio","tb_simple_npu",["rtl/npu/lab3/simple_npu_pe.sv","rtl/npu/lab3/simple_npu_core.sv","rtl/npu/lab3/simple_npu_top.sv","verification/lab3/tb_simple_npu.sv"],"[TB] ALL PASS",[]),
-        ("har_core","tb_har_core",["rtl/npu/har/har_npu_core.sv","verification/npu/tb_har_core.sv"],f"HAR_CORE PASS cases={args.count}",[f"+VECTORS={(ROOT/'build/vectors/core.hex').as_posix()}",f"+COUNT={args.count}"]),
-        ("har_mmio","tb_har_mmio",["rtl/npu/har/har_npu_core.sv","rtl/npu/har/simple_npu_top.sv","verification/mmio/tb_har_mmio.sv"],"HAR_MMIO PASS cases=12",[f"+VECTORS={(ROOT/'build/vectors/mmio.hex').as_posix()}","+COUNT=12"]),
+        ("har_core","tb_har_core",HAR_RTL+["verification/npu/tb_har_core.sv"],f"HAR_CORE PASS cases={args.count}",[f"+VECTORS={(ROOT/'build/vectors/core.hex').as_posix()}",f"+BATCH={(ROOT/'build/vectors/batch.hex').as_posix()}",f"+COUNT={args.count}"]),
+        ("har_mmio","tb_har_mmio",HAR_RTL+["rtl/npu/har/simple_npu_top.sv","verification/mmio/tb_har_mmio.sv"],"HAR_MMIO PASS cases=12",[f"+VECTORS={(ROOT/'build/vectors/mmio.hex').as_posix()}",f"+BATCH={(ROOT/'build/vectors/batch.hex').as_posix()}","+COUNT=12"]),
     ]
     for name,top,sources,marker,plusargs in suites:
         output=directory/(name+".vvp")
@@ -68,7 +69,7 @@ def filelist(profile):
             lines.append("+incdir+"+(ROOT/"platform/course_soc"/line[len("+incdir+"):]).as_posix())
         elif line.startswith("simple_npu/"):
             if not inserted:
-                sources=["simple_npu_pe.sv","simple_npu_core.sv","simple_npu_top.sv"] if profile=="lab3" else ["har_npu_core.sv","simple_npu_top.sv"]
+                sources=["simple_npu_pe.sv","simple_npu_core.sv","simple_npu_top.sv"] if profile=="lab3" else ["har_dot_tile.sv","har_weight_store.sv","har_npu_core.sv","simple_npu_top.sv"]
                 lines.extend((ROOT/"rtl/npu"/profile/f).as_posix() for f in sources)
                 inserted=True
         elif line=="soc/sim/tb/my_soc_tb.sv":
@@ -88,9 +89,10 @@ def soc(args):
         candidate=Path(vsim).parent.parent/"LICENSE.TXT"
         if candidate.exists(): env["LM_LICENSE_FILE"]=str(candidate)
     har_hex=build(ROOT/"build/sw")
+    har_single_hex=build(ROOT/"build/sw/single6",include_batch=False)
     for profile,tests in [
         ("lab3",[(f"lab3_soc_{name}",ROOT/f"verification/lab3/soc/{name}.hex") for name in ["lab3_test1","lab3_test2","lab3_test3","lab3_hand"]]),
-        ("har",[("har_soc_6_classes",har_hex)]),
+        ("har",[("har_soc_tiled_8",har_hex),("har_soc_single6",har_single_hex)]),
     ]:
         directory=ROOT/"build/soc"/profile
         (directory/"soc/sim/out").mkdir(parents=True,exist_ok=True)

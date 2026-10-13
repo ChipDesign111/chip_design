@@ -6,6 +6,7 @@
 | [backlog.md](backlog.md) | 可转成 GitHub Issues 的待办与验收条件 |
 | [architecture.md](architecture.md) | 目录边界、硬件层次、构建入口 |
 | [change-guide.md](change-guide.md) | 能改什么、怎样改、改后运行哪些验证及通过标准 |
+| [tiled-npu.md](tiled-npu.md) | V2 tile 配比、并行/存储、两级流水时序及代码位置 |
 | [spec.md](spec.md) | 项目功能和约束草案 |
 | [numerics.md](numerics.md) | INT8 / INT32 和量化规则草案 |
 | [mmio.md](mmio.md) | 地址、状态、读写和数据打包草案 |
@@ -18,4 +19,4 @@
 | [ai-log/](ai-log/README.md) | AI 使用和人工修订记录 |
 | [weekly/](weekly/README.md) | 每周进度和验收记录 |
 
-DRAFT 表示建议；HAR V1 算术与 MMIO 已实现，Lab 3 外围已固定，功能回归见 [报告](../reports/baseline.md)。真实模型、FPGA、PPA 与签核仍待完成。
+DRAFT 表示建议；HAR tiled V2 已实现，Lab 3 外围固定，当前回归见 [V2 报告](../reports/tiled-v2.md)，[V1 报告](../reports/baseline.md) 为历史结果。真实模型、FPGA、PPA 与签核待完成。

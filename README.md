@@ -2,7 +2,7 @@
 
 ChipDesign111 的共有芯片设计项目。目标是在课程提供的 RISC-V SoC 基础上，实现运行 `64 → 32 → 6` 小型 MLP 的 INT8 NPU，完成算法参考、RTL、系统验证、FPGA 原型和 ASIC 交付。
 
-**当前阶段：Lab 3 外围固定，HAR V1 已实现并完成 RTL/MMIO/真实 CPU 仿真。** 原四份 SoC 镜像通过；HAR 通过 1000 组核例、12 组 MMIO 和六次 CPU 连续推理。见 [验证报告](reports/baseline.md)。当前权重为合成测试数据，真实模型、FPGA 和 ASIC 待完成。
+**当前阶段：Lab 3 外围固定，HAR tiled V2 已完成。** 第一级 2 个 16×4 tile，第二级 1 个 6×2 tile，同步 bank 存储和双样本两级流水；单次 39 周期，双次 59 周期。1000 参数组共 3000 推理、MMIO、原四 SoC 镜像及 CPU 八次推理通过。见 [架构](docs/tiled-npu.md) 和 [V2 报告](reports/tiled-v2.md)。权重为合成测试数据，真实模型/FPGA/ASIC 待完成。
 
 ## 从这里开始
 
@@ -10,7 +10,7 @@ ChipDesign111 的共有芯片设计项目。目标是在课程提供的 RISC-V S
 2. 阅读 [目录与硬件架构](docs/architecture.md)，确定各类文件放在哪里。
 3. 阅读 [协作规范](CONTRIBUTING.md) 和 [环境说明](docs/environment.md)。
    开始改代码前，按 [修改与验证指南](docs/change-guide.md) 确认允许的修改区、编译入口和回归要求。
-4. 评审 [V1 规格](docs/spec.md)、[数值规则](docs/numerics.md) 和 [MMIO](docs/mmio.md)。
+4. 评审 [设计规格](docs/spec.md)、[数值规则](docs/numerics.md) 和 [MMIO](docs/mmio.md)。
 5. 从 [任务清单](docs/backlog.md) 领取任务；当前不预先安排四人分工。
 
 ## 项目规模
@@ -54,6 +54,7 @@ python scripts/check_repo.py
 python scripts/check_platform.py
 python scripts/run_tests.py --unit
 python scripts/run_tests.py --soc --vsim "本机 vsim 路径"
+python scripts/check_synthesis.py
 ```
 
 check_repo 检查结构与链接，check_platform 检查 90 个导入文件 SHA。--unit 使用 Icarus；--soc 使用 ModelSim，检查真实 CPU 写入的 PASS magic。工具安装及完整入口见 [环境说明](docs/environment.md)。两个 NPU 分开编译，都使用同一 Lab 3 外围。

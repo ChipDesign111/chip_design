@@ -48,15 +48,20 @@ def generate(count, out):
     rng=random.Random(20261008)
     examples=[]
     core=out/"core.hex"; mmio=out/"mmio.hex"
-    with core.open("w",encoding="ascii") as a, mmio.open("w",encoding="ascii") as b:
+    batch=out/"batch.hex"
+    with core.open("w",encoding="ascii") as a, mmio.open("w",encoding="ascii") as b, batch.open("w",encoding="ascii") as paired:
         for index in range(count):
             c=case(index,rng)
             text="".join(f"{value & 0xffffffff:08x}\n" for value in flatten(c))
             a.write(text)
+            x1=[-v if v!=-128 else 127 for v in c["x"]]
+            h1,s1,category1=infer(x1,c["w1"],c["w2"],c["b1"],c["b2"],c["mult"],c["shift"])
+            paired.write("".join(f"{v & 0xffffffff:08x}\n" for v in x1+h1+s1+[category1]))
             if index<12: b.write(text); examples.append(c)
     manifest={"seed":20261008,"count":count,"words_per_case":WORDS,"mmio_cases":12,
               "kind":"synthetic hardware verification; no classification accuracy claim",
-              "sha256":{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (core,mmio)}}
+              "batch_words_per_case":103,
+              "sha256":{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (core,mmio,batch)}}
     (out/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n",encoding="utf-8")
     print(json.dumps(manifest))
     return manifest
