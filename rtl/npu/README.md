@@ -1,12 +1,5 @@
-# Neural accelerator
+# Tiled MLP NPU
 
-| Profile | Implementation |
-| --- | --- |
-| `har` | Two FC1 16×4 tiles, one FC2 6×2 tile, synchronous banked weights, hidden double buffering |
-| `lab3` | Unsigned 4-bit 4×4 compatibility accelerator |
+har_dot_tile：乘法/累加流水；har_weight_store：38 个同步权重 bank；har_npu_core：两级调度、双缓冲、ReLU/量化/Argmax；simple_npu_top：MMIO 包装。
 
-Both profiles provide the fixed simple_npu_top interface. HAR supports one or two inputs per command: 39 / 59 core cycles, with 18 cycles of cross-input stage overlap.
-
-[har_dot_tile.sv](har/har_dot_tile.sv) implements registered products and output-stationary accumulation. [har_weight_store.sv](har/har_weight_store.sv) implements 38 synchronous banks. [har_npu_core.sv](har/har_npu_core.sv) schedules the pipeline; [simple_npu_top.sv](har/simple_npu_top.sv) implements MMIO.
-
-Contracts: [numerics](../../docs/numerics.md), [MMIO](../../docs/mmio.md). Architecture: [tiled NPU](../../docs/tiled-npu.md). Evidence: [reports](../../reports/README.md). Target timing/area and physical implementation are not established by simulation.
+只保留当前 64→32→6 实现。接口及周期变更需要同步参考、固件生成与测试。见 [设计](../../report/npu.md) 和 [寄存器](../../report/mmio.md)。

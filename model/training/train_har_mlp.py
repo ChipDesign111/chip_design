@@ -284,7 +284,7 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument(
         "--data-root",
-        default=str(root / "data" / "UCI HAR Dataset"),
+        default=str(root / "model" / "data" / "UCI HAR Dataset"),
     )
     p.add_argument(
         "--out-dir",

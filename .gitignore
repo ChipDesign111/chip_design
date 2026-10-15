@@ -1,34 +1,24 @@
-# Generated project output
-/build/
-# Raw UCI HAR download. Exported weights live in model/export/.
-/data/
+# Timestamped local work, waveforms and licensed IP
+/test/*/runs/
+/tools/local/
+/model/data/
 **/__pycache__/
 *.py[cod]
-.venv/
-venv/
-.pytest_cache/
-# EDA and simulator output
-**/work/
-**/out/
 *.vcd
 *.wlf
 *.fst
 *.vvp
+**/work/
 transcript
 vsim_stacktrace.vstf
-# Local-only configuration and credentials
-/configs/env.local.json
+.venv/
+venv/
+.pytest_cache/
 .env
 .env.*
-!.env.example
 *.pem
 *.key
-# Editor and OS output
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
-# Do not globally ignore .hex: approved fixed program fixtures may be tracked.
-
-# Licensed physical-IP views remain local only
-/asic/vendor/
