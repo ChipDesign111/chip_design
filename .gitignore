@@ -29,3 +29,6 @@ vsim_stacktrace.vstf
 .DS_Store
 Thumbs.db
 # Do not globally ignore .hex: approved fixed program fixtures may be tracked.
+
+# Licensed physical-IP views remain local only
+/asic/vendor/

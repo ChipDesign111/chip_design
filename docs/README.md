@@ -11,6 +11,7 @@
 | [numerics.md](numerics.md) | 位宽、舍入、饱和和 Argmax 契约 |
 | [tiled-npu.md](tiled-npu.md) | tile 配比、存储与两级流水时序 |
 | [memory-budget.md](memory-budget.md) | 主存与加速器本地数据预算 |
+| [sram.md](sram.md) | 主 SRAM 适配、本地资料与验证 |
 
 ## 开发与验证
 

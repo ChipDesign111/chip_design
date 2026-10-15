@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 import re
 import sys
+import shutil
+import subprocess
 from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,6 +21,10 @@ REQUIRED_FILES = (
     "docs/verification.md", "docs/change-guide.md", "docs/model-verification.md",
     "docs/releases.md", "docs/roadmap.md", "docs/provenance.md", "docs/adr/README.md",
     "docs/archive/README.md", "LICENSES/README.md", "reports/README.md",
+    "docs/sram.md", "rtl/memory/chip_sram_2048x32.sv", "rtl/memory/my_mainmem_sram.sv",
+    "scripts/memory_profile.py", "scripts/run_sram_tests.py", "scripts/check_sram_synthesis.py",
+    "verification/unit/tb_mainmem_sram.sv", "verification/soc/tb_soc_sram.sv",
+    "asic/ra1shd_blackbox.sv",
 )
 REQUIRED_DIRS = (
     "platform", "platform/course_soc", "rtl", "rtl/npu", "model",
@@ -26,7 +32,7 @@ REQUIRED_DIRS = (
     "verification/npu", "verification/mmio", "verification/vectors",
     "filelists", "scripts", "configs", "fpga", "asic", "reports",
 )
-EXCLUDED_PARTS = {".git", "build", "data", ".venv", "venv", "__pycache__"}
+EXCLUDED_PARTS = {".git", "build", "data", "vendor", ".venv", "venv", "__pycache__"}
 
 
 def files(suffix: str):
@@ -38,6 +44,12 @@ def files(suffix: str):
 
 def check() -> list[str]:
     errors = []
+    if "/asic/vendor/" not in (ROOT / ".gitignore").read_text(encoding="utf-8").splitlines():
+        errors.append("Local physical-IP directory must be ignored")
+    if shutil.which("git") and (ROOT / ".git").exists():
+        tracked = subprocess.check_output(["git", "ls-files", "--", "asic/vendor"], cwd=ROOT, text=True)
+        if tracked.strip():
+            errors.append("Licensed physical-IP views must not be tracked")
     for name in REQUIRED_FILES:
         if not (ROOT / name).is_file():
             errors.append(f"Missing required file: {name}")

@@ -32,6 +32,7 @@ python project.py doctor
 python project.py check
 python project.py test --suite unit
 python project.py test --suite model
+python project.py test --suite memory
 ```
 
 通用综合结构检查与完整 SoC 仿真：
@@ -78,3 +79,5 @@ python project.py test --suite model-soc --vsim /path/to/vsim
 - [贡献规范](CONTRIBUTING.md) · [变更记录](CHANGELOG.md) · [发布流程](docs/releases.md) · [路线图](docs/roadmap.md)
 
 第三方组件及数据按各自来源条款管理，见 [组件声明](THIRD_PARTY_NOTICES.md)。版权/许可证头、原测试和来源校验属于工程基线。
+
+CPU 主存支持可选 2048×32 单端口 SRAM 适配，见 [SRAM 接入](docs/sram.md)。厂商视图为本地依赖，公开 CI 使用自有行为后端。

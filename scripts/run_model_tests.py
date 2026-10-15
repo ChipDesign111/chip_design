@@ -6,12 +6,14 @@ sys.path.insert(0,str(ROOT))
 from scripts.export_real_model import export
 from scripts.build_model_firmware import build_model
 from scripts.run_tests import HAR_RTL,RESULTS,execute,filelist,tool
+from scripts.memory_profile import MEMORIES,soc_target,functional_sim_flags
 
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--data-root",type=Path,help="Official UCI root for full 2947-row test; otherwise use committed 24-row fixture")
     p.add_argument("--unit",action="store_true",help="Run real-model MMIO regression without ModelSim")
     p.add_argument("--vsim");p.add_argument("--iverilog");p.add_argument("--vvp")
+    p.add_argument("--memory",choices=MEMORIES,default="reference")
     args=p.parse_args()
     meta=export(args.data_root)
     out=ROOT/"build/real_model"
@@ -30,21 +32,26 @@ def main():
             if not env.get("LM_LICENSE_FILE"):
                 candidate=Path(vsim).parent.parent/"LICENSE.TXT"
                 if candidate.exists():env["LM_LICENSE_FILE"]=str(candidate)
-            directory=ROOT/"build/soc/har-model"
+            top,init_parameter=soc_target(args.memory)
+            directory=ROOT/"build/soc"/("har-model" if args.memory=="reference" else args.memory+"/har-model")
             (directory/"soc/sim/out").mkdir(parents=True,exist_ok=True)
-            fl=filelist("har")
+            fl=filelist("har",args.memory)
             script=directory/"real_model.do"
             commands=["onerror {quit -code 1}","onbreak {resume}",
                 "if {[file exists work]} {vdel -lib work -all}","vlib work","vmap work work",
                 f"vlog -sv -f {{{fl.as_posix()}}}",
-                f"vsim -suppress 12110 -novopt -onfinish stop -wlf model.wlf {{-G/my_soc_tb/dut/i_mainmem/INIT_FILE={image.as_posix()}}} work.my_soc_tb",
+                f"vsim {functional_sim_flags(args.memory)}-suppress 12110 -novopt -onfinish stop -wlf model.wlf {{-G{init_parameter}={image.as_posix()}}} work.{top}",
                 "run 0","vcd off","run -all",
-                "set status [examine -radix hex /my_soc_tb/magic_status]",
+                f"set status [examine -radix hex /{top}/magic_status]",
                 'puts "SOC_MAGIC=$status"',
                 'if {![string equal -nocase $status c0dec0de]} {quit -code 2}',"quit -code 0"]
             script.write_text("\n".join(commands)+"\n")
-            execute("har_real_model_soc24",[vsim,"-c","-do",f"do {{{script.as_posix()}}}"],cwd=directory,env=env,marker="SOC_MAGIC=c0dec0de",timeout=300)
+            name="har_real_model_soc24" if args.memory=="reference" else args.memory+"_har_real_model_soc24"
+            execute(name,[vsim,"-c","-do",f"do {{{script.as_posix()}}}"],cwd=directory,env=env,marker="SOC_MAGIC=c0dec0de",timeout=300)
     finally:
         (out/"results.json").write_text(json.dumps(RESULTS,indent=2)+"\n")
+        result_path=ROOT/"build/results"/(args.memory+"_model.json")
+        result_path.parent.mkdir(parents=True,exist_ok=True)
+        result_path.write_text(json.dumps(RESULTS,indent=2)+"\n")
     print("ALL REAL MODEL TESTS PASS",flush=True)
 if __name__=="__main__":main()

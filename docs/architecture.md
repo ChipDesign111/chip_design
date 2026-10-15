@@ -39,3 +39,7 @@ FC1 的 32 个输出通道由两个 16-output/4-lane tile 覆盖；FC2 的 6 个
 `project.py` 提供统一入口；`scripts/run_tests.py` 展开冻结原清单并选择加速器源，产物位于 `build/`。新增模块需要进入单元和 SoC 源列表。
 
 固定外围、tile 配比和数值边界见 [ADR](adr/README.md)。目标 BRAM/SRAM 宏映射、面积、频率和功耗需要目标平台验证；通用 Yosys 内存统计不代替这些结果。
+
+## 可选 CPU SRAM
+
+rtl/memory 提供 2048×32 单端口主存适配，通过编译配置选择自有行为后端或本地 RA1SHD 模型；外围源码不变，reference 仍为默认。主存宏与 NPU 权重 bank 独立。装载及验证边界见 [SRAM](sram.md)。

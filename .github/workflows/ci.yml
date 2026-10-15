@@ -39,6 +39,7 @@ jobs:
       - name: Verify prerequisites
         run: python project.py doctor --require unit
       - run: python project.py test --suite unit
+      - run: python project.py test --suite memory
       - name: Retain regression evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -99,5 +100,7 @@ jobs:
           path: |
             build/synthesis/yosys.log
             build/synthesis/summary.json
+            build/synthesis/memory/*.log
+            build/synthesis/memory/summary.json
           if-no-files-found: ignore
           retention-days: 14

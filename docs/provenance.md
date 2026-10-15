@@ -21,3 +21,7 @@ model/export 保存 64→32→6 HAR 模型的浮点/INT8 产物、特征下标�
 组件按其原始条款管理；没有以仓库结构变更统一替换许可证。见 [THIRD_PARTY_NOTICES](../THIRD_PARTY_NOTICES.md) 和 [LICENSES](../LICENSES/README.md)。
 
 早期来源调查、课程规划和辅助开发记录保留在 [历史归档](archive/README.md)，不作为当前接口或工具版本的权威说明。
+
+## 本地主 SRAM 资料
+
+RA1SHD 原始模型与物理视图作为授权本地依赖移入忽略的 asic/vendor，公开仓库只包含项目编写的适配接口与测试。原始资料不纳入 90-file 平台 manifest，不上传到公共 CI。见 [SRAM](sram.md)。
