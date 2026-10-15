@@ -16,7 +16,11 @@
 *.pdf binary
 *.npz binary
 *.pt binary
-platform/course_soc/** -text
-verification/lab3/** -text
-sw/startup/lab3/** -text
-filelists/lab3_original.f -text
+rtl/cpu_cv32e40p/** -text
+rtl/axi/** -text
+rtl/clk_rst/** -text
+rtl/common_cells/** -text
+rtl/debug/** -text
+rtl/include/** -text
+rtl/soc/** -text
+rtl/memory/boot*.sv -text

@@ -1,5 +1,3 @@
-# Integration extensions
+# SoC integration
 
-Reserved boundary; no independent system top is implemented here. The compiled top is platform/course_soc/soc/rtl/my_soc_top.sv, and the bridge is my_npu_subsystem.sv.
-
-The accelerator's MMIO wrapper is rtl/npu/har/simple_npu_top.sv. Avoid duplicating a CPU or top to modify an accelerator. Integration changes follow [ADR 0001](../../docs/adr/0001-fixed-platform-boundary.md).
+my_soc_top 集成 CV32E40P、AXI、Debug、Boot、SRAM 与 NPU。my_npu_subsystem 保持 MMIO 到 simple_npu_top 的接入边界。原外围字节由 rtl/manifest.json 校验；加速器只选择当前 HAR 实现。

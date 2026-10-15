@@ -4,7 +4,7 @@
 
 ## 数据
 
-使用 [UCI HAR](https://archive.ics.uci.edu/dataset/240/human+activity+recognition+using+smartphones)。每个窗口原有 561 维加速度计和陀螺仪特征。训练集上用 ANOVA F 值选出 64 维，下标在 [../export/meta.json](../export/meta.json) 的 `selected_feature_indices`。原始数据集大约 60 MB，不入库；下载后解压到仓库根目录的 `data/UCI HAR Dataset/`（该目录已被忽略）。
+使用 [UCI HAR](https://archive.ics.uci.edu/dataset/240/human+activity+recognition+using+smartphones)。每个窗口原有 561 维加速度计和陀螺仪特征。训练集上用 ANOVA F 值选出 64 维，下标在 [../export/meta.json](../export/meta.json) 的 `selected_feature_indices`。原始数据集大约 60 MB，不入库；下载后解压到`model/data/UCI HAR Dataset/`（该目录已被忽略）。
 
 标签与 UCI HAR 的 `y - 1` 一致：
 

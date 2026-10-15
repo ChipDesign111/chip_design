@@ -1,7 +1,9 @@
-# HAR model and reference
+# HAR MLP
 
-当前模型已经与 tiled V2 联调：官方测试集 2947 条、单/双模式共 5894 次 RTL 推理逐值一致；真实 CPU 24 条六类样例通过。流程见 [模型验证](../docs/model-verification.md)，准确率与限制见 [报告](../reports/real-model.md)。不使用 NPZ 中全为站立的 16 条样例估计总体精度。
+64→32→6 MLP，2278 参数。training 保存训练脚本与 checkpoint，export 保存原始浮点/INT8 权重、特征下标、量化参数和历史指标，reference 保存精确整数实现。既有权重与量化参数不因目录重组改变。
 
-[training/](training/README.md)：数据与浮点模型；[reference/](reference/README.md)：整数行为；[export/](export/README.md)：权重和测试向量导出。
+输入为加速度计/陀螺仪窗口预处理后的 64 个 INT8 特征；标签为 0 步行、1 上楼、2 下楼、3 坐、4 站立、5 躺卧。当前 MULT=1064、SHIFT=20，算术见 [numerics.md](numerics.md)。
 
-当前基线是 UCI HAR 上的 64→32→6 MLP，参数 2278。浮点测试准确率 85.51%，INT8 权重量化、浮点激活路径为 85.10%，硬件使用的全整数路径为 84.97%。权重、特征下标和整数偏置在 [export/](export/README.md)。已实现的 [整数参考](reference/mlp_int.py) 与 NumPy 向量化参考相互核对，RTL 逐值对照该整数契约。
+历史全 2947 条测试：浮点 85.5107%，权重量化/浮点激活 85.1035%，全整数 84.9678%。RTL 单/双模式 5894 次逐值一致；详细证据在 [真实模型历史记录](../test/2026-10-13/real-model/report.md)。当前 24 条六类样例用于 SoC 集成，18 条分类正确；硬件逐值一致不代表分类全部正确。
+
+原训练用测试划分选最佳 checkpoint，因此不是额外独立盲测。验证导出权重无需加载 best.pt；NumPy 使用 requirements.txt。原始数据下载到忽略的 model/data。运行：python tools/project.py test --suite model 或 --suite model-soc。

@@ -22,6 +22,6 @@ Coverage limits / checks not run:
 - [ ] Changes match the stated scope and update affected contracts.
 - [ ] Required CI and applicable local SoC verification are complete.
 - [ ] New RTL is included in unit and SoC compilation.
-- [ ] Frozen inputs remain unchanged or have a reviewed baseline migration.
-- [ ] Evidence identifies tested source and inputs; historical reports are preserved.
+- [ ] Retained hardware remain unchanged or have a reviewed baseline migration.
+- [ ] Evidence identifies tested source and inputs; dated test reports are preserved.
 - [ ] Third-party notices are updated where necessary; generated/restricted files are excluded.
