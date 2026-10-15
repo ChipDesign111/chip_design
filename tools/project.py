@@ -18,6 +18,8 @@ PROFILE_REQUIREMENTS = {
     "repository": ("python",),
     "unit": ("python", "iverilog", "vvp"),
     "memory": ("python", "iverilog", "vvp"),
+    "dma-unit": ("python", "iverilog", "vvp"),
+    "dma": ("python", "numpy", "iverilog", "vvp", "vsim"),
     "model": ("python", "numpy", "iverilog", "vvp"),
     "soc": ("python", "vsim"),
     "model-soc": ("python", "numpy", "iverilog", "vvp", "vsim"),
@@ -91,6 +93,11 @@ def command_plan(args: argparse.Namespace, tools: dict) -> list[list[str]]:
         return flags
 
     def test_command(suite: str) -> list[str]:
+        if suite in ("dma-unit", "dma"):
+            flags = simulator_flags("iverilog", "vvp")
+            if suite == "dma-unit":flags.append("--unit")
+            else:flags.extend(["--memory", args.memory, *simulator_flags("vsim")])
+            return command("run_dma_tests.py", *flags)
         if suite == "memory":
             return command("run_sram_tests.py", "--memory", args.memory,
                            *simulator_flags("iverilog", "vvp"))
@@ -117,16 +124,18 @@ def command_plan(args: argparse.Namespace, tools: dict) -> list[list[str]]:
         return [command("download_uci_har.py")]
     if args.command == "synth":
         return [command(name, *simulator_flags("yosys"))
-                for name in ("check_synthesis.py", "check_sram_synthesis.py")]
+                for name in ("check_synthesis.py", "check_sram_synthesis.py", "check_dma_synthesis.py")]
     if args.command == "ci":
         return checks + [
             command("run_tests.py", "--unit", *simulator_flags("iverilog", "vvp")),
             command("run_sram_tests.py", *simulator_flags("iverilog", "vvp")),
+            command("run_dma_tests.py", "--unit", *simulator_flags("iverilog", "vvp")),
             command("run_model_tests.py", "--unit", *simulator_flags("iverilog", "vvp")),
             command("check_synthesis.py", *simulator_flags("yosys")),
             command("check_sram_synthesis.py", *simulator_flags("yosys")),
+            command("check_dma_synthesis.py", *simulator_flags("yosys")),
         ]
-    suites = ["unit", "memory", "model", "soc", "model-soc"] if args.suite == "all" else [args.suite]
+    suites = ["unit", "memory", "dma-unit", "model", "soc", "model-soc", "dma"] if args.suite == "all" else [args.suite]
     return [test_command(suite) for suite in suites]
 
 
@@ -143,7 +152,7 @@ def parser() -> argparse.ArgumentParser:
     add_tools(doctor)
     commands.add_parser("check", help="Check repository policy, links, configuration and frozen inputs")
     test = commands.add_parser("test", help="Run a verification suite")
-    test.add_argument("--suite", choices=["unit", "memory", "model", "soc", "model-soc", "all"], default="unit")
+    test.add_argument("--suite", choices=["unit", "memory", "dma-unit", "dma", "model", "soc", "model-soc", "all"], default="unit")
     test.add_argument("--memory", choices=["portable-sram", "ra1shd"], default="portable-sram",
                       help="CPU main-memory backend for memory/SoC suites")
     test.add_argument("--count", type=int, default=1000, help="Synthetic cases, 12..1000 (unit suite)")
@@ -172,6 +181,8 @@ def main(argv: list[str] | None = None) -> int:
     elif args.command == "ci":
         required.extend(["unit", "model", "synthesis"])
     elif args.command == "test":
+        if args.suite in ("dma", "dma-unit") and args.data_root:
+            cli.error("DMA benchmark uses the fixed 24-row real fixture; --data-root applies to model suites")
         if args.memory == "ra1shd" and args.suite in ("unit", "model"):
             cli.error("--memory applies to memory, soc, model-soc or all suites")
         if args.memory == "ra1shd":
@@ -186,7 +197,7 @@ def main(argv: list[str] | None = None) -> int:
             path = args.data_root.expanduser().resolve()
             if not all((path / "test" / name).is_file() for name in ("X_test.txt", "y_test.txt")):
                 cli.error("--data-root must contain test/X_test.txt and test/y_test.txt")
-        required.extend(["unit", "memory", "model", "soc", "model-soc"] if args.suite == "all" else [args.suite])
+        required.extend(["unit", "memory", "dma-unit", "dma", "model", "soc", "model-soc"] if args.suite == "all" else [args.suite])
     if not require_profiles(details, required):
         return 1
 

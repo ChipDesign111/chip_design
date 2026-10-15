@@ -62,3 +62,7 @@ DONE 保持到 ACK/START/复位；ACK 保留输出。CLASS_ID、结果和周期�
 
 双次：装共享参数、INPUT/INPUT1→BATCH_COUNT=2→START→轮询 DONE→读两份结果/计数→ACK。之后恢复 BATCH_COUNT=1 继续单次。BUSY 时所有写拒绝并置 ERROR。
 权重为同步 bank 存储，外围读仍下一拍；RAM 阵列不复位，以有效位屏蔽旧值，复位后重新装载模型。
+
+## DMA 装载
+
+0x0D00–0x0D1F 为独立 DMA CSR，源地址/目的地址使用 byte，长度使用 32-bit word。原控制和数据窗口不变。完整协议及错误行为见 [DMA](dma.md)。

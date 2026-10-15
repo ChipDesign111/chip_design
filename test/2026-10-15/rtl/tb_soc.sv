@@ -12,10 +12,29 @@ module tb_soc #(
     reg load_req = 0;
     reg [31:0] load_addr = 0, load_data = 0;
     reg [31:0] magic_status = 0;
+    reg [31:0] parameter_cycles=0,input_cycles=0,application_cycles=0,dma_engine_cycles=0;
+    reg [31:0] warm_cycles=0;
+    reg [31:0] dma_read_beats=0,dma_write_beats=0,dma_read_bursts=0,dma_write_bursts=0;
     integer cycle_count = 0;
 
     // Observe real CPU/AXI writes; never inject a completion status.
     always @(posedge clk_i) begin
+        if(rst_ni) begin
+            if(dut.slave[3].ar_valid && dut.slave[3].ar_ready) dma_read_bursts<=dma_read_bursts+1;
+            if(dut.slave[3].aw_valid && dut.slave[3].aw_ready) dma_write_bursts<=dma_write_bursts+1;
+            if(dut.slave[3].r_valid && dut.slave[3].r_ready) dma_read_beats<=dma_read_beats+1;
+            if(dut.slave[3].w_valid && dut.slave[3].w_ready) dma_write_beats<=dma_write_beats+1;
+        end
+        if (rst_ni && dut.sram_req && dut.sram_we && dut.sram_be==4'hf) begin
+            case(dut.sram_addr)
+                32'h80001fc0:parameter_cycles<=dut.sram_wdata;
+                32'h80001fc4:input_cycles<=dut.sram_wdata;
+                32'h80001fc8:application_cycles<=dut.sram_wdata;
+                32'h80001fcc:dma_engine_cycles<=dut.sram_wdata;
+                32'h80001fd0:warm_cycles<=dut.sram_wdata;
+                default:begin end
+            endcase
+        end
         if (rst_ni && dut.sram_req && dut.sram_we &&
             dut.sram_addr == 32'h80001fe0)
             for (integer b = 0; b < 4; b = b + 1)

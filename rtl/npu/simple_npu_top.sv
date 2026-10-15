@@ -3,6 +3,7 @@ module simple_npu_top (
     input logic clka,rst_ni,ena,wea,
     input logic [11:0] addra,
     input logic [31:0] dina,
+    output wire busy_o,
     output wire [31:0] douta
 );
     logic [511:0] input_features,input_features1;
@@ -16,6 +17,7 @@ module simple_npu_top (
     wire [2:0] class_id,class_id1;
     wire [31:0] cycle_count,overlap_count,fc1_cycles,fc2_cycles;
     wire busy,done;
+    assign busy_o=busy;
     logic error,weight_read_q;
     logic [31:0] read_data,read_q;
     wire write_request=ena && wea;

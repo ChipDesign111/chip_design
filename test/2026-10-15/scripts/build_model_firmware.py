@@ -9,7 +9,8 @@ sys.path.insert(0,str(ROOT))
 from build_har_firmware import Assembler,pack
 import hashlib
 
-def build_model():
+def build_model(use_dma=False, benchmark=False):
+    benchmark = benchmark or use_dma
     out=WORK/"real_model"
     words=[int(v,16) for v in (out/"weights.hex").read_text().split()]
     raw=[int(v,16) for v in (out/"soc24.hex").read_text().split()]
@@ -22,18 +23,43 @@ def build_model():
     a=Assembler()
     a.label("_start");a.li(2,0x80001fe0);a.li(10,0x80001fe0);a.li(11,0x70000000)
     a.li(5,0x12345678);a.sw(5,10)
+    if benchmark:
+        a.li(16,0x80001fc0);a.li(24,0);a.li(17,0)
+        # Enable mcycle (CV32E40P inhibits counters after reset).
+        a.emit(0x32001073,"csrw mcountinhibit, x0")
+        a.rdcycle(20)
     def copy_loop(label,destination,count):
-        a.li(7,destination);a.li(28,count);a.label(label)
-        a.lw(29,6);a.sw(29,7);a.addi(6,6,4);a.addi(7,7,4);a.addi(28,28,-1)
-        a.branch("bne",28,0,label)
-    a.la(6,"model_weights");copy_loop("load_model",0x70000100,598)
+        if not use_dma:
+            a.li(7,destination);a.li(28,count);a.label(label)
+            a.lw(29,6);a.sw(29,7);a.addi(6,6,4);a.addi(7,7,4);a.addi(28,28,-1)
+            a.branch("bne",28,0,label)
+        else:
+            a.li(7,0x70000d00);a.sw(6,7,8)
+            a.li(5,destination);a.sw(5,7,12)
+            a.li(5,count);a.sw(5,7,16);a.li(5,1);a.sw(5,7)
+            a.li(31,100000);a.label(label)
+            a.lw(29,7,4);a.andi(5,29,4);a.branch("bne",5,0,"fail")
+            a.andi(5,29,1);a.branch("bne",5,0,label+"_done")
+            a.addi(31,31,-1);a.branch("bne",31,0,label);a.jump("fail")
+            a.label(label+"_done")
+            a.lw(29,7,24);a.li(30,count);a.branch("bne",29,30,"fail")
+            a.lw(29,7,20);a.add(17,17,29)
+            a.li(5,count*4);a.add(6,6,5)
+    a.la(6,"model_weights")
+    if benchmark:a.rdcycle(25)
+    copy_loop("load_model",0x70000100,598)
+    if benchmark:a.rdcycle(26);a.sub(19,26,25)
     a.li(5,words[598]);a.sw(5,11,16);a.li(5,words[599]);a.sw(5,11,20)
     a.li(5,2);a.sw(5,11,24)
+    if benchmark:a.rdcycle(18)
     a.la(8,"records");a.li(21,12)
     a.label("pair_loop")
     a.lw(5,8);a.sw(5,10,20)
-    a.addi(6,8,4);copy_loop("load_input0",0x70000040,16);a.addi(22,6,0)
+    a.addi(6,8,4)
+    if benchmark:a.rdcycle(25)
+    copy_loop("load_input0",0x70000040,16);a.addi(22,6,0)
     a.addi(6,8,132);copy_loop("load_input1",0x70000c00,16);a.addi(23,6,0)
+    if benchmark:a.rdcycle(26);a.sub(26,26,25);a.add(24,24,26)
     a.li(5,1);a.sw(5,11);a.li(28,10000)
     a.label("poll");a.lw(29,11,4);a.andi(5,29,4);a.branch("bne",5,0,"fail")
     a.andi(5,29,1);a.branch("bne",5,0,"finished")
@@ -52,6 +78,11 @@ def build_model():
         a.lw(29,11,offset);a.li(30,expected);a.branch("bne",29,30,"fail")
     a.li(5,2);a.sw(5,11)
     a.addi(8,8,256);a.addi(21,21,-1);a.branch("bne",21,0,"pair_loop")
+    if benchmark:
+        a.rdcycle(26);a.sub(27,26,20)
+        a.sub(26,26,18)
+        a.sw(19,16);a.sw(24,16,4);a.sw(27,16,8);a.sw(17,16,12)
+        a.sw(26,16,16)
     a.li(5,0xc0dec0de);a.sw(5,10)
     a.label("halt");a.jump("halt")
     a.label("fail");a.sw(28,10,8);a.sw(29,10,12);a.sw(30,10,16)
@@ -63,13 +94,16 @@ def build_model():
     for v in records:a.emit(v,f".word 0x{v:08x}")
     a.resolve()
     used=len(a.words)*4
-    assert used<0x1fe0
-    image=out/"model_selftest.hex"
+    assert used<(0x1fc0 if benchmark else 0x1fe0)
+    suffix="_dma" if use_dma else "_cpu" if benchmark else ""
+    image=out/("model_selftest"+suffix+".hex")
     image.write_text("".join(f"{v:08x}\n" for v in a.words+[0]*(2048-len(a.words))),encoding="ascii")
-    (out/"model_selftest.S").write_text("\n".join(a.listing)+"\n")
+    (out/("model_selftest"+suffix+".S")).write_text("\n".join(a.listing)+"\n")
     meta={"samples":24,"batches":12,"code_bytes":code_bytes,"image_used_bytes":used,"sram_bytes":8192,
         "sha256":hashlib.sha256(image.read_bytes()).hexdigest(),"comparison":"Every hidden, score and predicted class against integer gold, not against the true activity label"}
-    (out/"firmware.json").write_text(json.dumps(meta,indent=2)+"\n")
+    if benchmark:meta.update(transport="dma" if use_dma else "cpu",parameter_words=598,input_words=384,
+        measured="mcycle: parameter copy, cumulative input copy, application including identical result checks")
+    (out/("firmware"+suffix+".json")).write_text(json.dumps(meta,indent=2)+"\n")
     print(json.dumps(meta),flush=True)
     return image
 if __name__=="__main__":build_model()

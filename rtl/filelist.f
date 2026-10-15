@@ -67,6 +67,8 @@ rtl/cpu_cv32e40p/rtl/cv32e40p_sleep_unit.sv
 rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv
 rtl/cpu_cv32e40p/rtl/cv32e40p_core.sv
 rtl/cpu_cv32e40p/rtl/cv32e40p_top.sv
+rtl/dma/har_dma.sv
+rtl/dma/har_dma_axi.sv
 rtl/soc/my_npu_subsystem.sv
 rtl/soc/my_soc_top.sv
 rtl/memory/chip_sram_2048x32.sv

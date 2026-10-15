@@ -10,7 +10,8 @@ def check():
         path = ROOT / record['path']
         if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != record['sha256']:
             raise AssertionError('Retained hardware changed: ' + record['path'])
-    print(f"PASS: {len(manifest['files'])} retained hardware files match source SHA-256")
+    overrides=sum('project_override' in record for record in manifest['files'])
+    print(f"PASS: {len(manifest['files'])} hardware source SHA-256 checks ({overrides} documented project integration overrides)")
 
 if __name__ == '__main__':
     check()

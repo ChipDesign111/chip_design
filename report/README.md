@@ -12,3 +12,5 @@
 | [整数规则](../model/numerics.md) | MLP 数值契约 |
 | [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) | 组件来源与授权 |
 | [CHANGELOG.md](CHANGELOG.md) | 工程变更 |
+
+[DMA](dma.md)：AXI burst 装载、CSR、错误/并发规则与加速比测量；[验证记录](../test/2026-10-15/dma/report.md)。

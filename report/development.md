@@ -49,3 +49,7 @@ python tools/project.py test --suite model-soc --data-root "model/data/UCI HAR D
 PR 说明问题、最终行为、影响和实测证据。文档运行 check；路径/工具变化实际运行受影响入口并在干净 checkout 复现；RTL/存储/数值变化运行完整相关回归。保留版权与组件条款；不提交 tools/local、数据下载、工具许可证、PDK 或本地数据库。
 
 交付前固定 source/model/input SHA、通过 CI 与适用 SoC 回归并归档测试记录。目标交付另需约束、映射、STA、板级或物理签核证据。版本标签按兼容性管理，未发布变更记录在 CHANGELOG。
+
+## DMA
+
+新增 `test --suite dma-unit`（公开协议/入口回归）与 `test --suite dma --memory portable-sram|ra1shd --vsim /path/to/vsim`（同模型 CPU/DMA 对比）。`ci` 包含 dma-unit 和 DMA 通用综合；`all` 也包含完整 DMA 基准。见 [DMA](dma.md)。
