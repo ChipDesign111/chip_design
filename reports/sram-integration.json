@@ -1,0 +1,468 @@
+{
+  "date": "2026-10-15",
+  "source_base": "dec1a66dd394ba1a0626a092e736bb1afcaade72",
+  "tested_source_sha256": {
+    "project.py": "ddbeac56ce94df0566b669a1f080e3b9ef602c73dae4bcc7976f48a33d539e12",
+    ".github/workflows/ci.yml": "79931859902fc7486c7c5187eef714560907008763368ad3c05ed0f84f1d2781",
+    "scripts/check_repo.py": "af371d4346ba7d19ad2de37a09cd01ef1536892ca9e9243ce4387857c929330c",
+    "scripts/run_tests.py": "70c6a5cc922d066dbd358aa255b8ac1aaf2a08f51d50a73fe2b46537f4d727d4",
+    "scripts/run_model_tests.py": "e2bbebe45c80e79c5e4492c58e10f86dbe36a531ac8262a8a0dfdac58ed01365",
+    "scripts/memory_profile.py": "458836ee01c9cdfc78fd0f01f823882eb2dc99fcac6d9520083b9c720995aad9",
+    "scripts/run_sram_tests.py": "f164cc192bff4c67d2fe2ce76a01f3585fadcfdc015d780ff08caa75505ee80f",
+    "scripts/check_sram_synthesis.py": "369b5682ada4978922349ab419d605b60af3a7825ba61899a827a6397cb75b8b",
+    "rtl/memory/chip_sram_2048x32.sv": "a0d9920d941e58cd5c55a26392446b1ad4f1072b9050828537e44d49b39f646b",
+    "rtl/memory/my_mainmem_sram.sv": "d51f738950f52a014b67affb24dc2e5c9d54d9f8e47a6e9b968a0c5693cace0f",
+    "asic/ra1shd_blackbox.sv": "bc8f3dbb1f1e7bc13338f986431a731aec51e457f8f1c93ca4eb90a0a2782874",
+    "verification/unit/tb_mainmem_sram.sv": "f90c21b7ec1ce99917cd299877b5d3b59e6db7301507bc7bef0c493d2547b4eb",
+    "verification/soc/tb_soc_sram.sv": "6bdbb2cadd9b779106b6d17fa5915298d6f9cc00f3e5250f02b9896c431768b5"
+  },
+  "tools": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "iverilog": "11.0 (devel), s20150603-642-g3bdb50da",
+    "modelsim": "2019.2",
+    "yosys": "Yosys 0.18+29 (git sha1 b2408df31, x86_64-w64-mingw32-g++ 9.2.1 -Os)"
+  },
+  "functional_only": true,
+  "vendor_soc_flags": [
+    "+notimingchecks"
+  ],
+  "vendor_unit_specify_enabled": false,
+  "local_import": {
+    "files": 9,
+    "destination": "asic/vendor/RA1SHD_2048x32M8",
+    "move_sha256_verified": true,
+    "tracked": false
+  },
+  "memory_units": {
+    "portable-sram": [
+      {
+        "test": "sram_portable-sram_compile",
+        "pass_": true,
+        "seconds": 0.094,
+        "log": "build/logs/sram_portable-sram_compile.log",
+        "exit_code": 0
+      },
+      {
+        "test": "sram_portable-sram",
+        "pass_": true,
+        "seconds": 0.093,
+        "log": "build/logs/sram_portable-sram.log",
+        "exit_code": 0
+      }
+    ],
+    "ra1shd": [
+      {
+        "test": "sram_ra1shd_compile",
+        "pass_": true,
+        "seconds": 0.125,
+        "log": "build/logs/sram_ra1shd_compile.log",
+        "exit_code": 0
+      },
+      {
+        "test": "sram_ra1shd",
+        "pass_": true,
+        "seconds": 0.516,
+        "log": "build/logs/sram_ra1shd.log",
+        "exit_code": 0
+      }
+    ]
+  },
+  "soc": {
+    "reference": [
+      {
+        "test": "platform_integrity",
+        "pass_": true,
+        "seconds": 0.11,
+        "log": "build/logs/platform_integrity.log",
+        "exit_code": 0
+      },
+      {
+        "test": "lab3_soc_lab3_test1",
+        "pass_": true,
+        "seconds": 14.625,
+        "log": "build/logs/lab3_soc_lab3_test1.log",
+        "exit_code": 0,
+        "soc_cycles": 7432
+      },
+      {
+        "test": "lab3_soc_lab3_test2",
+        "pass_": true,
+        "seconds": 4.265,
+        "log": "build/logs/lab3_soc_lab3_test2.log",
+        "exit_code": 0,
+        "soc_cycles": 14754
+      },
+      {
+        "test": "lab3_soc_lab3_test3",
+        "pass_": true,
+        "seconds": 4.735,
+        "log": "build/logs/lab3_soc_lab3_test3.log",
+        "exit_code": 0,
+        "soc_cycles": 20804
+      },
+      {
+        "test": "lab3_soc_lab3_hand",
+        "pass_": true,
+        "seconds": 2.672,
+        "log": "build/logs/lab3_soc_lab3_hand.log",
+        "exit_code": 0,
+        "soc_cycles": 208
+      },
+      {
+        "test": "har_soc_tiled_8",
+        "pass_": true,
+        "seconds": 20.828,
+        "log": "build/logs/har_soc_tiled_8.log",
+        "exit_code": 0,
+        "soc_cycles": 56775
+      },
+      {
+        "test": "har_soc_single6",
+        "pass_": true,
+        "seconds": 8.516,
+        "log": "build/logs/har_soc_single6.log",
+        "exit_code": 0,
+        "soc_cycles": 51049
+      }
+    ],
+    "portable-sram": [
+      {
+        "test": "platform_integrity",
+        "pass_": true,
+        "seconds": 0.11,
+        "log": "build/logs/platform_integrity.log",
+        "exit_code": 0
+      },
+      {
+        "test": "portable-sram_lab3_soc_lab3_test1",
+        "pass_": true,
+        "seconds": 13.484,
+        "log": "build/logs/portable-sram_lab3_soc_lab3_test1.log",
+        "exit_code": 0,
+        "soc_cycles": 7431
+      },
+      {
+        "test": "portable-sram_lab3_soc_lab3_test2",
+        "pass_": true,
+        "seconds": 3.766,
+        "log": "build/logs/portable-sram_lab3_soc_lab3_test2.log",
+        "exit_code": 0,
+        "soc_cycles": 14753
+      },
+      {
+        "test": "portable-sram_lab3_soc_lab3_test3",
+        "pass_": true,
+        "seconds": 4.421,
+        "log": "build/logs/portable-sram_lab3_soc_lab3_test3.log",
+        "exit_code": 0,
+        "soc_cycles": 20803
+      },
+      {
+        "test": "portable-sram_lab3_soc_lab3_hand",
+        "pass_": true,
+        "seconds": 2.454,
+        "log": "build/logs/portable-sram_lab3_soc_lab3_hand.log",
+        "exit_code": 0,
+        "soc_cycles": 207
+      },
+      {
+        "test": "portable-sram_har_soc_tiled_8",
+        "pass_": true,
+        "seconds": 18.891,
+        "log": "build/logs/portable-sram_har_soc_tiled_8.log",
+        "exit_code": 0,
+        "soc_cycles": 56774
+      },
+      {
+        "test": "portable-sram_har_soc_single6",
+        "pass_": true,
+        "seconds": 7.375,
+        "log": "build/logs/portable-sram_har_soc_single6.log",
+        "exit_code": 0,
+        "soc_cycles": 51048
+      }
+    ],
+    "ra1shd": [
+      {
+        "test": "platform_integrity",
+        "pass_": true,
+        "seconds": 0.141,
+        "log": "build/logs/platform_integrity.log",
+        "exit_code": 0
+      },
+      {
+        "test": "ra1shd_lab3_soc_lab3_test1",
+        "pass_": true,
+        "seconds": 14.969,
+        "log": "build/logs/ra1shd_lab3_soc_lab3_test1.log",
+        "exit_code": 0,
+        "soc_cycles": 7431
+      },
+      {
+        "test": "ra1shd_lab3_soc_lab3_test2",
+        "pass_": true,
+        "seconds": 4.187,
+        "log": "build/logs/ra1shd_lab3_soc_lab3_test2.log",
+        "exit_code": 0,
+        "soc_cycles": 14753
+      },
+      {
+        "test": "ra1shd_lab3_soc_lab3_test3",
+        "pass_": true,
+        "seconds": 4.953,
+        "log": "build/logs/ra1shd_lab3_soc_lab3_test3.log",
+        "exit_code": 0,
+        "soc_cycles": 20803
+      },
+      {
+        "test": "ra1shd_lab3_soc_lab3_hand",
+        "pass_": true,
+        "seconds": 2.672,
+        "log": "build/logs/ra1shd_lab3_soc_lab3_hand.log",
+        "exit_code": 0,
+        "soc_cycles": 207
+      },
+      {
+        "test": "ra1shd_har_soc_tiled_8",
+        "pass_": true,
+        "seconds": 21.094,
+        "log": "build/logs/ra1shd_har_soc_tiled_8.log",
+        "exit_code": 0,
+        "soc_cycles": 56774
+      },
+      {
+        "test": "ra1shd_har_soc_single6",
+        "pass_": true,
+        "seconds": 8.75,
+        "log": "build/logs/ra1shd_har_soc_single6.log",
+        "exit_code": 0,
+        "soc_cycles": 51048
+      }
+    ]
+  },
+  "trained_model": {
+    "reference": [
+      {
+        "test": "model_platform_integrity",
+        "pass_": true,
+        "seconds": 0.109,
+        "log": "build/logs/model_platform_integrity.log",
+        "exit_code": 0
+      },
+      {
+        "test": "har_model_compile",
+        "pass_": true,
+        "seconds": 0.11,
+        "log": "build/logs/har_model_compile.log",
+        "exit_code": 0
+      },
+      {
+        "test": "har_real_model",
+        "pass_": true,
+        "seconds": 0.953,
+        "log": "build/logs/har_real_model.log",
+        "exit_code": 0
+      },
+      {
+        "test": "har_real_model_soc24",
+        "pass_": true,
+        "seconds": 22.563,
+        "log": "build/logs/har_real_model_soc24.log",
+        "exit_code": 0,
+        "soc_cycles": 76249
+      }
+    ],
+    "portable-sram": [
+      {
+        "test": "model_platform_integrity",
+        "pass_": true,
+        "seconds": 0.125,
+        "log": "build/logs/model_platform_integrity.log",
+        "exit_code": 0
+      },
+      {
+        "test": "har_model_compile",
+        "pass_": true,
+        "seconds": 0.125,
+        "log": "build/logs/har_model_compile.log",
+        "exit_code": 0
+      },
+      {
+        "test": "har_real_model",
+        "pass_": true,
+        "seconds": 0.969,
+        "log": "build/logs/har_real_model.log",
+        "exit_code": 0
+      },
+      {
+        "test": "portable-sram_har_real_model_soc24",
+        "pass_": true,
+        "seconds": 21.906,
+        "log": "build/logs/portable-sram_har_real_model_soc24.log",
+        "exit_code": 0,
+        "soc_cycles": 76248
+      }
+    ],
+    "ra1shd": [
+      {
+        "test": "model_platform_integrity",
+        "pass_": true,
+        "seconds": 0.141,
+        "log": "build/logs/model_platform_integrity.log",
+        "exit_code": 0
+      },
+      {
+        "test": "har_model_compile",
+        "pass_": true,
+        "seconds": 0.14,
+        "log": "build/logs/har_model_compile.log",
+        "exit_code": 0
+      },
+      {
+        "test": "har_real_model",
+        "pass_": true,
+        "seconds": 0.985,
+        "log": "build/logs/har_real_model.log",
+        "exit_code": 0
+      },
+      {
+        "test": "ra1shd_har_real_model_soc24",
+        "pass_": true,
+        "seconds": 23.031,
+        "log": "build/logs/ra1shd_har_real_model_soc24.log",
+        "exit_code": 0,
+        "soc_cycles": 76248
+      }
+    ]
+  },
+  "npu_unit": [
+    {
+      "test": "platform_integrity",
+      "pass_": true,
+      "seconds": 0.125,
+      "log": "build/logs/platform_integrity.log",
+      "exit_code": 0
+    },
+    {
+      "test": "lab3_core_compile",
+      "pass_": true,
+      "seconds": 0.094,
+      "log": "build/logs/lab3_core_compile.log",
+      "exit_code": 0
+    },
+    {
+      "test": "lab3_core",
+      "pass_": true,
+      "seconds": 0.062,
+      "log": "build/logs/lab3_core.log",
+      "exit_code": 0
+    },
+    {
+      "test": "lab3_mmio_compile",
+      "pass_": true,
+      "seconds": 0.079,
+      "log": "build/logs/lab3_mmio_compile.log",
+      "exit_code": 0
+    },
+    {
+      "test": "lab3_mmio",
+      "pass_": true,
+      "seconds": 0.046,
+      "log": "build/logs/lab3_mmio.log",
+      "exit_code": 0
+    },
+    {
+      "test": "har_core_compile",
+      "pass_": true,
+      "seconds": 0.11,
+      "log": "build/logs/har_core_compile.log",
+      "exit_code": 0
+    },
+    {
+      "test": "har_core",
+      "pass_": true,
+      "seconds": 71.344,
+      "log": "build/logs/har_core.log",
+      "exit_code": 0
+    },
+    {
+      "test": "har_mmio_compile",
+      "pass_": true,
+      "seconds": 0.141,
+      "log": "build/logs/har_mmio_compile.log",
+      "exit_code": 0
+    },
+    {
+      "test": "har_mmio",
+      "pass_": true,
+      "seconds": 1.625,
+      "log": "build/logs/har_mmio.log",
+      "exit_code": 0
+    }
+  ],
+  "synthesis": {
+    "portable": {
+      "bits": 65536,
+      "synchronous_read_ports": 1,
+      "pass": true
+    },
+    "macro": {
+      "blackbox_instances": 1,
+      "pass": true
+    },
+    "tool": "Yosys 0.18+29 (git sha1 b2408df31, x86_64-w64-mingw32-g++ 9.2.1 -Os)",
+    "scope": "Generic inference/connectivity only; no vendor library, timing or physical signoff"
+  },
+  "npu_synthesis": {
+    "pass_": true,
+    "weight_banks": 38,
+    "weight_bits": 17920,
+    "synchronous_read_ports": 76,
+    "dot_product_multipliers": 140,
+    "requant_multipliers": 32,
+    "total_multipliers": 172,
+    "latches": 0,
+    "tool": "Yosys 0.18+29 (git sha1 b2408df31, x86_64-w64-mingw32-g++ 9.2.1 -Os)",
+    "scope": "Generic cells and memory structure only; no area/frequency/BRAM/ASIC claim"
+  },
+  "clean_checkout": {
+    "clean_checkout": true,
+    "without_vendor_views": true,
+    "spaces_in_path": true,
+    "commands": [
+      "check",
+      "memory",
+      "model",
+      "synth"
+    ],
+    "missing_vendor_exit": 2,
+    "tracked_vendor_rejected_exit": 1,
+    "cross_directory_check": true,
+    "tracked_tree_clean": true
+  },
+  "initial_failure": "With vendor setup/hold checking enabled, zero-delay RTL transitions triggered hold notifiers and CPU timeout. Resolved functional-flow selection using explicit +notimingchecks; not a timing-signoff result.",
+  "counts": {
+    "read_comparisons_per_memory_unit": 6128,
+    "writes_per_memory_unit": 4064,
+    "words_covered": 2048,
+    "byte_masks": 16,
+    "synthetic_npu_cases": 1000,
+    "synthetic_core_inferences": 3000,
+    "real_rows": 24,
+    "real_rtl_inferences": 48,
+    "cpu_real_inputs_per_backend": 24
+  },
+  "preserved": {
+    "frozen_files": 90,
+    "npu_rtl": true,
+    "model_parameters": true,
+    "firmware_and_fixtures": true
+  },
+  "limitations": [
+    "No timing/STA/SDF signoff, physical view processing, area/power or FPGA/ASIC implementation.",
+    "Firmware preload is testbench-only port loading, not a hardware boot/download path.",
+    "Full 2947-row model test was not repeated; the 24-row committed fixture was used.",
+    "New monitor counts completion one clock earlier than original polling; not a performance improvement."
+  ]
+}

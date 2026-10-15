@@ -21,3 +21,9 @@
 - 加速器 RTL、MMIO ABI、数值规则、训练权重及 90 个冻结文件保持不变。
 - 原后端脚本入口继续可用，project.py 作为推荐入口。
 - 既有数值结果属于记录时的验证基线；工程流程变化不改写历史证据。
+
+### Optional main SRAM
+
+- Added a project-owned 2048×32 single-port adapter, portable-sram / local ra1shd backends, byte-write regression and generic connectivity checks.
+- CPU/NPU interfaces and frozen platform remain unchanged; reference memory remains default.
+- Licensed macro views are local-only; vendor SoC runs are functional with timing checks disabled, not timing signoff. See [SRAM](docs/sram.md).

@@ -45,7 +45,7 @@ python project.py test --suite model-soc --vsim /path/to/vsim
 python project.py test --suite all --vsim /path/to/vsim
 ```
 
-`all` 包含 unit、model、soc、model-soc。完整 AXI SoC 包含 SystemVerilog interface，使用 ModelSim；Icarus 单元测试不替代 SoC 仿真。
+`all` 包含 unit、memory、model、soc、model-soc。完整 AXI SoC 包含 SystemVerilog interface，使用 ModelSim；Icarus 单元测试不替代 SoC 仿真。
 
 ## 全量真实数据
 
@@ -69,3 +69,7 @@ ModelSim 优先使用环境变量 `LM_LICENSE_FILE`；未设置时后端尝试�
 | `build/synthesis/` | 通用网表、结构检查日志和摘要 |
 
 同一 checkout 不并发运行共用上述目录的回归。失败时先看首个失败阶段及对应日志；CPU $finish 的零退出码不代表 PASS，后端还会检查 SRAM magic。
+
+## 主 SRAM 配置
+
+`python project.py test --suite memory` 运行公开功能测试；soc / model-soc 可增加 `--memory portable-sram` 或 `--memory ra1shd`。`all` 还包括 memory 套件。ra1shd 依赖本地授权模型，详见 [SRAM](sram.md)。

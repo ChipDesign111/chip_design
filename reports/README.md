@@ -4,6 +4,8 @@ Reports identify the inputs, source hashes, commands, results and limits of a pa
 
 ## Engineering workflows
 
+[sram-integration.md](sram-integration.md) / [sram-integration.json](sram-integration.json): selectable CPU SRAM, local vendor model, full SoC across three backends and public clean-checkout reproduction. Functional simulation is distinguished from physical timing signoff.
+
 [engineering-workflows.md](engineering-workflows.md) / [engineering-workflows.json](engineering-workflows.json): portable entry point, repository policy, layered CI definition, local full regression and clean-checkout reproduction. Hardware and model remain identical to the functional baseline below.
 
 ## Current functional baseline

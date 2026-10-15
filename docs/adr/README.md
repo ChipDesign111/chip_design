@@ -7,5 +7,6 @@
 | [0001](0001-fixed-platform-boundary.md) | Accepted | 固定参考外围与可替换 NPU |
 | [0002](0002-balanced-tiles.md) | Accepted | 异形 2:1 tile 与双输入两级流水 |
 | [0003](0003-integer-contract.md) | Accepted | 精确整数契约与分类/计算质量分离 |
+| [0004](0004-main-sram-backends.md) | Accepted | CPU 主 SRAM 编译覆盖、自有后端与本地宏依赖 |
 
 早期非规范化决策记录位于 [archive](../archive/README.md)。

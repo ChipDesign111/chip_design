@@ -11,7 +11,7 @@
 | `model/`、自主 verification、scripts、sw | 随规格同步演进 |
 | docs / configs / reports | 当前契约、机器规格及版本化证据 |
 
-`rtl/soc/`、`rtl/memory/` 等保留目录没有独立构建模块。当前 MMIO 和权重存储均在 `rtl/npu/har/`，系统顶层在平台目录。架构图见 [architecture.md](architecture.md)。
+`rtl/soc/` 为保留目录；`rtl/memory/` 提供可选主 SRAM 适配。当前 MMIO 和权重存储均在 `rtl/npu/har/`，系统顶层在平台目录。架构图见 [architecture.md](architecture.md)。
 
 ## 接口契约
 

@@ -19,3 +19,7 @@
 
 - Solderpad 0.51：源文件指向 http://solderpad.org/licenses/SHL-0.51
 - UCI HAR：[数据集页面](https://archive.ics.uci.edu/dataset/240/human+activity+recognition+using+smartphones)
+
+## Local physical-IP dependencies
+
+The optional RA1SHD SRAM model and physical views are licensed local dependencies under ignored asic/vendor/. They are not distributed by this repository. Public adapter and interface-only declaration contain no vendor implementation, timing tables or geometry. See [SRAM](docs/sram.md).

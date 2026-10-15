@@ -16,6 +16,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from scripts.build_har_firmware import build
 from scripts.generate_vectors import generate
+from scripts.memory_profile import MEMORIES, soc_target, sources as memory_sources, functional_sim_flags
 
 RESULTS=[]
 HAR_RTL=["rtl/npu/har/har_dot_tile.sv","rtl/npu/har/har_weight_store.sv","rtl/npu/har/har_npu_core.sv"]
@@ -59,9 +60,13 @@ def units(args):
         execute(name+"_compile",[iv,"-g2012","-s",top,"-o",output]+[ROOT/path for path in sources])
         execute(name,[vv,output]+plusargs,cwd=directory,marker=marker)
 
-def filelist(profile):
+def filelist(profile, memory="reference"):
     lines=[]
     inserted=False
+    if memory not in MEMORIES:
+        raise ValueError("Unknown memory backend")
+    if memory == "ra1shd":
+        lines.append("+define+CHIP_USE_RA1SHD")
     for raw in (ROOT/"filelists/lab3_original.f").read_text().splitlines():
         line=raw.strip()
         if not line: continue
@@ -73,16 +78,22 @@ def filelist(profile):
                 lines.extend((ROOT/"rtl/npu"/profile/f).as_posix() for f in sources)
                 inserted=True
         elif line=="soc/sim/tb/my_soc_tb.sv":
-            lines.append((ROOT/"verification/lab3/soc/my_soc_tb.sv").as_posix())
+            tb = "verification/lab3/soc/my_soc_tb.sv" if memory == "reference" else "verification/soc/tb_soc_sram.sv"
+            lines.append((ROOT/tb).as_posix())
+        elif line=="soc/rtl/mem/my_mainmem.sv" and memory != "reference":
+            lines.extend(path.as_posix() for path in memory_sources(memory))
         else:
             lines.append((ROOT/"platform/course_soc"/line).as_posix())
     lines.insert(0,"+incdir+"+(ROOT/"platform/course_soc/soc/rtl").as_posix())
-    path=ROOT/"build"/(profile+".f")
+    suffix = "" if memory == "reference" else "_" + memory
+    path=ROOT/"build"/(profile+suffix+".f")
     path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text("\n".join('"'+line+'"' for line in lines)+"\n",encoding="utf-8")
     return path
 
 def soc(args):
+    memory = args.memory
+    top, init_parameter = soc_target(memory)
     vsim=tool("vsim",args.vsim)
     env=os.environ.copy()
     if not env.get("LM_LICENSE_FILE"):
@@ -94,24 +105,25 @@ def soc(args):
         ("lab3",[(f"lab3_soc_{name}",ROOT/f"verification/lab3/soc/{name}.hex") for name in ["lab3_test1","lab3_test2","lab3_test3","lab3_hand"]]),
         ("har",[("har_soc_tiled_8",har_hex),("har_soc_single6",har_single_hex)]),
     ]:
-        directory=ROOT/"build/soc"/profile
+        directory=ROOT/"build/soc"/(profile if memory == "reference" else memory+"/"+profile)
         (directory/"soc/sim/out").mkdir(parents=True,exist_ok=True)
-        fl=filelist(profile)
+        fl=filelist(profile, memory)
         for idx,(name,hex_path) in enumerate(tests):
             commands=["onerror {quit -code 1}","onbreak {resume}"]
             if idx==0:
                 commands += ["if {[file exists work]} {vdel -lib work -all}","vlib work","vmap work work",f"vlog -sv -f {{{fl.as_posix()}}}"]
             commands += [
-                f"vsim -suppress 12110 -novopt -onfinish stop -wlf {{{(directory/(name+'.wlf')).as_posix()}}} {{-G/my_soc_tb/dut/i_mainmem/INIT_FILE={hex_path.as_posix()}}} work.my_soc_tb",
+                f"vsim {functional_sim_flags(memory)}-suppress 12110 -novopt -onfinish stop -wlf {{{(directory/(name+'.wlf')).as_posix()}}} {{-G{init_parameter}={hex_path.as_posix()}}} work.{top}",
                 "run 0", "vcd off", "run -all",
-                'set status [examine -radix hex /my_soc_tb/magic_status]',
+                f'set status [examine -radix hex /{top}/magic_status]',
                 'puts "SOC_MAGIC=$status"',
                 'if {![string equal -nocase $status c0dec0de]} {quit -code 2}',
                 "quit -code 0",
             ]
             do=directory/(name+".do")
             do.write_text("\n".join(commands)+"\n",encoding="utf-8")
-            execute(name,[vsim,"-c","-do",f"do {{{do.as_posix()}}}"],cwd=directory,env=env,marker="SOC_MAGIC=c0dec0de",timeout=args.soc_timeout)
+            result_name = name if memory == "reference" else memory + "_" + name
+            execute(result_name,[vsim,"-c","-do",f"do {{{do.as_posix()}}}"],cwd=directory,env=env,marker="SOC_MAGIC=c0dec0de",timeout=args.soc_timeout)
 
 def main():
     p=argparse.ArgumentParser()
@@ -121,8 +133,9 @@ def main():
     p.add_argument("--count",type=int,default=1000)
     p.add_argument("--iverilog");p.add_argument("--vvp");p.add_argument("--vsim")
     p.add_argument("--soc-timeout",type=int,default=300)
+    p.add_argument("--memory",choices=MEMORIES,default="reference")
     args=p.parse_args()
-    output=ROOT/"build/results"/("soc.json" if args.soc else "unit.json" if args.unit else "all.json")
+    output=ROOT/"build/results"/(("" if args.memory == "reference" else args.memory+"_")+("soc.json" if args.soc else "unit.json" if args.unit else "all.json"))
     try:
         execute("platform_integrity",[sys.executable,ROOT/"scripts/check_platform.py"])
         if not args.soc: units(args)

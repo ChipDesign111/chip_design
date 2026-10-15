@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parent
 PROFILE_REQUIREMENTS = {
     "repository": ("python",),
     "unit": ("python", "iverilog", "vvp"),
+    "memory": ("python", "iverilog", "vvp"),
     "model": ("python", "numpy", "iverilog", "vvp"),
     "soc": ("python", "vsim"),
     "model-soc": ("python", "numpy", "iverilog", "vvp", "vsim"),
@@ -87,16 +88,22 @@ def command_plan(args: argparse.Namespace, tools: dict) -> list[list[str]]:
         return flags
 
     def test_command(suite: str) -> list[str]:
+        if suite == "memory":
+            memory = "portable-sram" if args.memory == "reference" else args.memory
+            return command("run_sram_tests.py", "--memory", memory,
+                           *simulator_flags("iverilog", "vvp"))
         if suite == "unit":
             return command("run_tests.py", "--unit", "--count", str(args.count),
                            *simulator_flags("iverilog", "vvp"))
         if suite == "soc":
-            return command("run_tests.py", "--soc", *simulator_flags("vsim"))
+            return command("run_tests.py", "--soc", "--memory", args.memory,
+                           *simulator_flags("vsim"))
         flags = simulator_flags("iverilog", "vvp")
         if suite == "model":
             flags.append("--unit")
         else:
             flags.extend(simulator_flags("vsim"))
+            flags.extend(["--memory", args.memory])
         if args.data_root:
             flags.extend(["--data-root", str(args.data_root.expanduser().resolve())])
         return command("run_model_tests.py", *flags)
@@ -107,14 +114,17 @@ def command_plan(args: argparse.Namespace, tools: dict) -> list[list[str]]:
     if args.command == "download-data":
         return [command("download_uci_har.py")]
     if args.command == "synth":
-        return [command("check_synthesis.py", *simulator_flags("yosys"))]
+        return [command(name, *simulator_flags("yosys"))
+                for name in ("check_synthesis.py", "check_sram_synthesis.py")]
     if args.command == "ci":
         return checks + [
             command("run_tests.py", "--unit", *simulator_flags("iverilog", "vvp")),
+            command("run_sram_tests.py", *simulator_flags("iverilog", "vvp")),
             command("run_model_tests.py", "--unit", *simulator_flags("iverilog", "vvp")),
             command("check_synthesis.py", *simulator_flags("yosys")),
+            command("check_sram_synthesis.py", *simulator_flags("yosys")),
         ]
-    suites = ["unit", "model", "soc", "model-soc"] if args.suite == "all" else [args.suite]
+    suites = ["unit", "memory", "model", "soc", "model-soc"] if args.suite == "all" else [args.suite]
     return [test_command(suite) for suite in suites]
 
 
@@ -131,7 +141,9 @@ def parser() -> argparse.ArgumentParser:
     add_tools(doctor)
     commands.add_parser("check", help="Check repository policy, links, configuration and frozen inputs")
     test = commands.add_parser("test", help="Run a verification suite")
-    test.add_argument("--suite", choices=["unit", "model", "soc", "model-soc", "all"], default="unit")
+    test.add_argument("--suite", choices=["unit", "memory", "model", "soc", "model-soc", "all"], default="unit")
+    test.add_argument("--memory", choices=["reference", "portable-sram", "ra1shd"], default="reference",
+                      help="Main-memory backend for memory/SoC suites; reference preserves original tests")
     test.add_argument("--count", type=int, default=1000, help="Synthetic cases, 12..1000 (unit suite)")
     test.add_argument("--data-root", type=Path, help="Official UCI root; omitted uses 24 real fixtures")
     add_tools(test)
@@ -158,13 +170,21 @@ def main(argv: list[str] | None = None) -> int:
     elif args.command == "ci":
         required.extend(["unit", "model", "synthesis"])
     elif args.command == "test":
+        if args.memory != "reference" and args.suite in ("unit", "model"):
+            cli.error("--memory applies to memory, soc, model-soc or all suites")
+        if args.memory == "ra1shd":
+            from scripts.memory_profile import vendor_model
+            try:
+                vendor_model()
+            except FileNotFoundError as error:
+                cli.error(str(error))
         if not 12 <= args.count <= 1000:
             cli.error("--count must be in 12..1000")
         if args.data_root:
             path = args.data_root.expanduser().resolve()
             if not all((path / "test" / name).is_file() for name in ("X_test.txt", "y_test.txt")):
                 cli.error("--data-root must contain test/X_test.txt and test/y_test.txt")
-        required.extend(["unit", "model", "soc", "model-soc"] if args.suite == "all" else [args.suite])
+        required.extend(["unit", "memory", "model", "soc", "model-soc"] if args.suite == "all" else [args.suite])
     if not require_profiles(details, required):
         return 1
 

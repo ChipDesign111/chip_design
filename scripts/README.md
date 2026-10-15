@@ -14,3 +14,5 @@ Use [project.py](../project.py) as the supported command entry point; existing s
 | import_lab3.py | Controlled baseline import, not normal development |
 
 Backends locate the repository root and write ignored build/ artifacts. Tool paths are supplied through PATH/CLI; secrets and machine-specific configuration are not source inputs. Commands and artifact locations: [environment](../docs/environment.md).
+
+Memory backends: memory_profile.py selects sources and test tops; run_sram_tests.py exercises the adapter; check_sram_synthesis.py checks inferred memory and blackbox connectivity. See [SRAM](../docs/sram.md).
