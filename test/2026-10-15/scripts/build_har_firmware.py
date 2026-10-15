@@ -48,6 +48,12 @@ class Assembler:
     def sw(self, rs2, rs1, offset=0):
         imm = offset & 4095
         self.emit(((imm >> 5) << 25) | (rs2 << 20) | (rs1 << 15) | (2 << 12) | ((imm & 31) << 7) | 0x23, f"sw x{rs2}, {offset}(x{rs1})")
+    def add(self, rd, rs1, rs2):
+        self.emit((rs2 << 20) | (rs1 << 15) | (rd << 7) | 0x33, f"add x{rd}, x{rs1}, x{rs2}")
+    def sub(self, rd, rs1, rs2):
+        self.emit((0x20 << 25) | (rs2 << 20) | (rs1 << 15) | (rd << 7) | 0x33, f"sub x{rd}, x{rs1}, x{rs2}")
+    def rdcycle(self, rd):
+        self.emit((0xb00 << 20) | (2 << 12) | (rd << 7) | 0x73, f"csrr x{rd}, mcycle")
     def branch(self, kind, rs1, rs2, label):
         self.fixups.append((kind, len(self.words), rs1, rs2, label))
         self.emit(0, f"{kind} x{rs1}, x{rs2}, {label}")

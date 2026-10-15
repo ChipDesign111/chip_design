@@ -11,3 +11,7 @@
 ## Prior baselines
 
 2026-10-13：tiled MLP、真实模型及工程化验证。2026-10-15：主 SRAM 宏功能接入。具体实测记录按日期见 [test](../test/README.md)。
+
+## DMA integration
+
+新增独立 AXI burst DMA，用于主 SRAM 到 NPU 参数/输入装载；最多 16-word 缓冲，新增 0xD00 CSR。显式更新两个 SoC 集成文件及其来源记录，保持算术核心和原寄存器兼容。增加协议、并发、错误、复位与真实模型端到端周期对比。见 [DMA](dma.md)。

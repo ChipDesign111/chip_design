@@ -40,6 +40,7 @@ jobs:
         run: python tools/project.py doctor --require unit
       - run: python tools/project.py test --suite unit
       - run: python tools/project.py test --suite memory
+      - run: python tools/project.py test --suite dma-unit
       - name: Retain regression evidence
         if: always()
         uses: actions/upload-artifact@v4

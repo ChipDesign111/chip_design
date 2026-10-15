@@ -28,7 +28,7 @@ module my_soc_top (
       .AXI_DATA_WIDTH (32),
       .AXI_ID_WIDTH   (2),
       .AXI_USER_WIDTH (1)
-  ) slave[2:0]();
+  ) slave[3:0]();
 
   AXI_BUS #(
       .AXI_ADDR_WIDTH (32),
@@ -38,7 +38,7 @@ module my_soc_top (
   ) master[3:0]();
 
   localparam axi_pkg::xbar_cfg_t AXI_XBAR_CFG = '{
-      NoSlvPorts:         3,
+      NoSlvPorts:         4,
       NoMstPorts:         4,
       MaxMstTrans:        1,
       MaxSlvTrans:        1,
@@ -427,6 +427,9 @@ module my_soc_top (
   );
 
   logic        npu_req, npu_we;
+  logic npu_user, npu_busy, dma_busy, dma_req, dma_we, dma_conflict;
+  logic [4:0] dma_addr;
+  logic [31:0] dma_wdata, dma_rdata;
   logic [31:0] npu_addr, npu_wdata, npu_rdata;
 
   axi2mem #(
@@ -435,12 +438,21 @@ module my_soc_top (
   ) i_axi2npu (
       .clk_i(clk_i), .rst_ni(ndmreset_n), .slave(master[IDX_NPU]),
       .req_o(npu_req), .we_o(npu_we), .addr_o(npu_addr), .be_o(),
-      .data_o(npu_wdata), .data_i(npu_rdata), .user_i('0), .user_o()
+      .data_o(npu_wdata), .data_i(npu_rdata), .user_i('0), .user_o(npu_user)
   );
 
   my_npu_subsystem i_npu_subsystem (
       .clk_i(clk_i), .rst_ni(ndmreset_n), .req_i(npu_req), .we_i(npu_we),
-      .addr_i(npu_addr), .wdata_i(npu_wdata), .rdata_o(npu_rdata)
+      .addr_i(npu_addr), .wdata_i(npu_wdata), .rdata_o(npu_rdata),
+      .dma_write_i(npu_user), .dma_busy_i(dma_busy), .dma_rdata_i(dma_rdata),
+      .dma_req_o(dma_req), .dma_we_o(dma_we), .dma_addr_o(dma_addr),
+      .dma_wdata_o(dma_wdata), .dma_conflict_o(dma_conflict), .npu_busy_o(npu_busy)
   );
 
+  har_dma_axi i_dma (
+      .clk_i(clk_i), .rst_ni(ndmreset_n), .master(slave[3]),
+      .reg_req_i(dma_req), .reg_we_i(dma_we), .reg_addr_i(dma_addr),
+      .reg_wdata_i(dma_wdata), .reg_rdata_o(dma_rdata),
+      .npu_busy_i(npu_busy), .conflict_i(dma_conflict), .busy_o(dma_busy)
+  );
 endmodule

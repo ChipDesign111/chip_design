@@ -89,9 +89,22 @@
         "name": "class1",
         "offset": 3224,
         "size_bytes": 4
+      },
+      {
+        "name": "dma_registers",
+        "offset": 3328,
+        "size_bytes": 32
       }
     ]
   },
   "course_main_sram_bytes": 8192,
-  "target_clock_hz": null
+  "target_clock_hz": null,
+  "dma": {
+    "direction": "SRAM_TO_NPU",
+    "max_burst_words": 16,
+    "buffer_bytes": 64,
+    "outstanding_bursts": 1,
+    "source_bytes": 8192,
+    "compute_overlap": false
+  }
 }

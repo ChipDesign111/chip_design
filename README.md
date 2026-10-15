@@ -34,3 +34,5 @@ python tools/project.py synth
 当前 NPU 使用两个 FC1 tile、一个 FC2 tile，38 个同步权重 bank。单输入 39 周期，双输入 59 周期，重叠 18 周期。现有 MLP 全测试集历史整数准确率为 2504/2947（84.9678%）；硬件逐值一致性与模型分类准确率分别报告。
 
 当前源码仅保留替换后的 HAR NPU，原 Lab3 NPU、4×4 回归与导入入口已删除。固定外围的 75 个保留文件沿用原字节校验；模型参数保持不变。来源和授权见 [组件声明](report/THIRD_PARTY_NOTICES.md)。
+
+CPU 主 SRAM→NPU 装载支持独立 AXI burst DMA；协议和基准命令见 [DMA](report/dma.md)。
