@@ -1,6 +1,6 @@
 # W8A4 连续流水 RTL 分支
 
-日期：2026-10-20。分支：`feat/npu-stream-rtl`。这是可选的新增 RTL 实现，通过 `CHIP_STREAM_NPU` 编译宏启用；未设置时继续使用原 INT8 NPU、原 DMA 与原软件接口。
+日期：2026-10-20。分支：`feat/npu-w8a4-streaming`。这是可选的新增 RTL 实现，通过 `CHIP_STREAM_NPU` 编译宏启用；未设置时继续使用原 INT8 NPU、原 DMA 与原软件接口。
 
 ## 固定硬件规模
 
