@@ -1,0 +1,125 @@
+{
+  "name": "W8_I4_H4",
+  "weight_bits": 8,
+  "input_bits": 4,
+  "hidden_storage_bits": 4,
+  "input_range": [
+    -7,
+    7
+  ],
+  "weight_range": [
+    -127,
+    127
+  ],
+  "hidden_range": [
+    0,
+    15
+  ],
+  "input_bytes": 32,
+  "correct": 2490,
+  "samples": 2947,
+  "accuracy": 0.8449270444519851,
+  "difference_from_deployed_pp": -0.47505938242280443,
+  "input_scale": 0.14285714285714285,
+  "fc1_weight_scale": 0.00944331381469965,
+  "fc2_weight_scale": 0.011908121407032013,
+  "hidden_scale": 0.5660308810082662,
+  "calibration_percentile": 99.5,
+  "calibration_hidden_mse": 0.018255515066640346,
+  "requant_multiplier": 39986,
+  "requant_shift": 24,
+  "bias1_int32": [
+    -24,
+    -12,
+    211,
+    199,
+    76,
+    278,
+    39,
+    -35,
+    -20,
+    62,
+    -11,
+    13,
+    200,
+    161,
+    23,
+    -71,
+    115,
+    64,
+    82,
+    117,
+    -117,
+    39,
+    200,
+    76,
+    94,
+    -36,
+    16,
+    276,
+    147,
+    136,
+    0,
+    63
+  ],
+  "bias2_int32": [
+    17,
+    32,
+    -4,
+    -16,
+    -9,
+    -9
+  ],
+  "fc1_accumulator_bound": 13943,
+  "fc2_accumulator_bound": 18092,
+  "confusion_matrix": [
+    [
+      474,
+      17,
+      5,
+      0,
+      0,
+      0
+    ],
+    [
+      58,
+      409,
+      4,
+      0,
+      0,
+      0
+    ],
+    [
+      19,
+      30,
+      371,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      0,
+      320,
+      170,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      153,
+      379,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      537
+    ]
+  ]
+}

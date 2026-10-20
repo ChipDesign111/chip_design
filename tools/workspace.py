@@ -21,7 +21,7 @@ def source_hashes():
     candidates = list((ROOT / "rtl").rglob("*.sv")) + list((ROOT / "rtl").rglob("*.svh"))
     candidates += list((ROOT / "test").glob("*/scripts/*.py")) + list((ROOT / "test").glob("*/rtl/*.sv"))
     candidates += list((ROOT / "tools").glob("*.py")) + list((ROOT / "model/export").glob("*"))
-    candidates += list((ROOT / "model/quantization").glob("*.py")) + list((ROOT / "test/2026-10-20/precision").glob("*.json"))
+    candidates += list((ROOT / "model/quantization").glob("*.json")) + list((ROOT / "test/2026-10-20/fixtures").glob("*.json"))
     candidates += [ROOT / "rtl/filelist.f", ROOT / "rtl/project.json", TEST_ROOT / "fixtures/har_uci24.json"]
     return {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
             for p in sorted(candidates) if p.is_file() and p.suffix != ".md"}

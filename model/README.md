@@ -8,4 +8,4 @@
 
 原训练用测试划分选最佳 checkpoint，因此不是额外独立盲测。验证导出权重无需加载 best.pt；NumPy 使用 requirements.txt。原始数据下载到忽略的 model/data。运行：python tools/project.py test --suite model 或 --suite model-soc。
 
-可选 [W8A4连续流水RTL](../report/streaming.md) 使用单独冻结的偏置、M=39986、SHIFT=24，输入INT4、隐藏UINT4、权重INT8。原export保持不变；新参数见 [精度比较](../test/2026-10-20/precision/results.json)。完整2947条低位宽RTL逐值验证及24条真实CPU/SoC验证见 [新报告](../test/2026-10-20/stream/report.md)。
+可选 [W8A4连续流水RTL](../report/streaming.md) 使用单独冻结的偏置、M=39986、SHIFT=24，输入INT4、隐藏UINT4、权重INT8。原export保持不变；新参数见 [最终量化配置](../model/quantization/w8a4.json)。完整2947条低位宽RTL逐值验证及24条真实CPU/SoC验证见 [新报告](../test/2026-10-20/version-compare/report.md)。

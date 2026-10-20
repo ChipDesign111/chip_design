@@ -97,8 +97,7 @@ def command_plan(args: argparse.Namespace, tools: dict) -> list[list[str]]:
     def test_command(suite: str) -> list[str]:
         if suite in ("stream-unit", "stream"):
             flags = simulator_flags("iverilog", "vvp")
-            if suite == "stream-unit": flags.append("--unit")
-            else: flags.extend(["--memory", args.memory, *simulator_flags("vsim")])
+            flags.append("--unit")
             if args.data_root: flags.extend(["--data-root", str(args.data_root.expanduser().resolve())])
             return [sys.executable, str(ROOT/"test/2026-10-20/scripts/run_stream_tests.py"), *flags]
 
@@ -145,7 +144,11 @@ def command_plan(args: argparse.Namespace, tools: dict) -> list[list[str]]:
             command("check_dma_synthesis.py", *simulator_flags("yosys")),
         ]
     suites = ["unit", "memory", "dma-unit", "model", "soc", "model-soc", "dma"] if args.suite == "all" else [args.suite]
-    return [test_command(suite) for suite in suites]
+    planned = [test_command(suite) for suite in suites]
+    if args.suite == "stream":
+        planned.append([sys.executable, str(ROOT/"test/2026-10-20/scripts/run_version_compare.py"),
+                        "--memory", args.memory, *simulator_flags("vsim")])
+    return planned
 
 
 def parser() -> argparse.ArgumentParser:

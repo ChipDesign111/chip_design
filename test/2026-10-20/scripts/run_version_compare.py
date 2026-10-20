@@ -47,7 +47,7 @@ def previous_sources(out):
 
 def model_inputs(out):
     fixture=json.loads((ROOT/'test/2026-10-15/fixtures/har_uci24.json').read_text())
-    newer=json.loads((ROOT/'test/2026-10-20/precision/w8a4_soc24_gold.json').read_text())
+    newer=json.loads((ROOT/'test/2026-10-20/fixtures/w8a4_soc24.json').read_text())
     assert fixture['row_ids']==[c['row_id'] for c in newer]
     params=json.loads((ROOT/'model/export/quant_params.json').read_text())
     with np.load(ROOT/'model/export/weights_int8.npz',allow_pickle=False) as z:
@@ -58,8 +58,7 @@ def model_inputs(out):
         h,s,c=infer(x,w1,w2,params['fc1']['bias_int32'],params['fc2']['bias_int32'],
                     params['hidden_requant']['mul'],params['hidden_requant']['shift'])
         previous.append(dict(input_words_u32=pack(x),hidden_u4=h,scores_int32=s,class_id=c))
-    frozen=json.loads((ROOT/'test/2026-10-20/precision/results.json').read_text())
-    q=next(c for c in frozen['candidates'] if c['name']==frozen['recommended'])
+    q=json.loads((ROOT/'model/quantization/w8a4.json').read_text())
     models={
         'previous':(weights+params['fc1']['bias_int32']+params['fc2']['bias_int32']+
                     [params['hidden_requant']['mul'],params['hidden_requant']['shift']],previous),

@@ -1,0 +1,57 @@
+{
+  "result": "PASS",
+  "arithmetic_and_protocol": {
+    "samples": 24,
+    "unit": [
+      {
+        "mode": 3,
+        "samples": 24,
+        "cycles": 417,
+        "result_span": 368
+      }
+    ],
+    "dma_protocol_cases": 248,
+    "precision": "W8A4, INT32 accumulation",
+    "parameter_words": 598,
+    "input_words": 192,
+    "scope": "Final continuous mode; exact hidden/score/class, DMA protocol and packet safety",
+    "full_model_rtl_samples": 2947,
+    "source_sha256": {
+      "rtl/npu/har_dot_tile.sv": "f708d37b9e1e29d18ebd7deac1e6bb70ae08cf6cb86b8ab9f8e25b6790a4b035",
+      "rtl/npu/har_weight_store.sv": "c96e643656f232e4928437511c39f0bca68b72fb92c7f8eb32e73cad27969950",
+      "rtl/npu/har_stream_core.sv": "e5f6222bdac07dcf74d08ed3d20d9efc7238a03d48fdb6ccc8d3a539209d9018",
+      "rtl/npu/har_stream_top.sv": "45f2f9ebdab20bc80667202f77998bc02a1a18100b170504fb0f6f49afca6a60",
+      "rtl/dma/har_stream_dma.sv": "4aec7184d5fd5399137ec18171c1780795e4ae352bf49e0bc4919fc82bb57c3c"
+    }
+  },
+  "soc_backends": {
+    "portable-sram": "PASS",
+    "ra1shd": "PASS"
+  },
+  "soc_samples_per_version_per_backend": 24,
+  "packet_abort_order_reset": "PASS",
+  "generic_synthesis": {
+    "har_stream_top": {
+      "multipliers": 172,
+      "latches": 0,
+      "memory_bits": 17920,
+      "explicit_dff_bits": 11227
+    },
+    "har_stream_dma": {
+      "multipliers": 0,
+      "latches": 0,
+      "memory_bits": 512,
+      "explicit_dff_bits": 349
+    },
+    "scope": "Generic structure only; no mapped area/timing/power or native 4x8 multiplier claim",
+    "source_sha256": {
+      "rtl/npu/har_dot_tile.sv": "f708d37b9e1e29d18ebd7deac1e6bb70ae08cf6cb86b8ab9f8e25b6790a4b035",
+      "rtl/npu/har_weight_store.sv": "c96e643656f232e4928437511c39f0bca68b72fb92c7f8eb32e73cad27969950",
+      "rtl/npu/har_stream_core.sv": "e5f6222bdac07dcf74d08ed3d20d9efc7238a03d48fdb6ccc8d3a539209d9018",
+      "rtl/npu/har_stream_top.sv": "45f2f9ebdab20bc80667202f77998bc02a1a18100b170504fb0f6f49afca6a60",
+      "rtl/dma/har_stream_dma.sv": "4aec7184d5fd5399137ec18171c1780795e4ae352bf49e0bc4919fc82bb57c3c"
+    }
+  },
+  "source_unchanged_during_all_runs": true,
+  "scope": "Final W8A4 profile, functional RTL simulation and generic structure only"
+}

@@ -13,8 +13,8 @@ module tb_stream_npu;
     reg [31:0] params[0:599];
     reg [31:0] vectors[0:138508];
     reg [8191:0] param_path,vector_path;
-    integer n,k,j,check_j,mode,received,clock_count,previous,first_cycle;
-    integer samples,batch_base,batch_size,only_fast,total_cycles,total_span;
+    integer n,j,check_j,mode,received,clock_count,previous,first_cycle;
+    integer samples,batch_base,batch_size,total_cycles,total_span;
     task write_word;
         input integer a;
         input [31:0] d;
@@ -43,9 +43,8 @@ module tb_stream_npu;
     end
     initial begin
         clock_count=0;received=0;previous=0;mode=0;first_cycle=0;batch_base=0;
-        samples=24;only_fast=0;
+        samples=24;
         if($value$plusargs("COUNT=%d",samples)) begin end
-        if($value$plusargs("ONLY_FAST=%d",only_fast)) begin end
         if(samples<1 || samples>2947) $fatal(1,"COUNT range");
         if(!$value$plusargs("PARAMS=%s",param_path)) $fatal(1,"PARAMS");
         if(!$value$plusargs("VECTORS=%s",vector_path)) $fatal(1,"VECTORS");
@@ -53,8 +52,8 @@ module tb_stream_npu;
         repeat(3) @(negedge clk);rst=1;
         for(n=0;n<598;n=n+1) write_word(64+n,params[n]);
         write_word(4,params[598]);write_word(5,params[599]);idle;
-        for(k=(only_fast ? 2:0);k<3;k=k+1) begin
-            mode=k==2 ? 3:k;total_cycles=0;total_span=0;
+        begin
+            mode=3;total_cycles=0;total_span=0;
             batch_base=0;
             while(batch_base<samples) begin
                 batch_size=samples-batch_base>64 ? 64:samples-batch_base;
