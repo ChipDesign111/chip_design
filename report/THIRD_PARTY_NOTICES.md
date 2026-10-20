@@ -2,9 +2,9 @@
 
 | 组件 | 位置 | 来源 |
 | --- | --- | --- |
-| CV32E40P / RI5CY | rtl/cpu_cv32e40p | 保留 ETH Zurich / University of Bologna 等版权和 Solderpad 0.51 声明 |
-| AXI / common_cells / Debug | rtl/axi、common_cells、debug | 以具体文件原版权/许可证头为准 |
-| 集成、时钟/复位、Boot | rtl/soc、clk_rst、memory | 提供的参考 SoC；不推定所有集成文件使用同一许可证 |
+| CV32E40P / RI5CY | rtl/platform/cpu_cv32e40p | 保留 ETH Zurich / University of Bologna 等版权和 Solderpad 0.51 声明 |
+| AXI / common_cells / Debug | rtl/platform 下的 axi、common_cells、debug | 以具体文件原版权/许可证头为准 |
+| 集成、时钟/复位、Boot | rtl/soc 与 rtl/platform 下的 clk_rst、memory | 提供的参考 SoC；不推定所有集成文件使用同一许可证 |
 | MLP / 训练产物 | model | 原模型版本、参数、特征/量化/标签与历史指标 |
 | UCI HAR 固定输入 | test/2026-10-15/fixtures | Reyes-Ortiz 等（2013），DOI 10.24432/C54S4K；CC BY 4.0、来源行号及 SHA 保存在 fixture |
 | 可选 SRAM 厂商视图 | tools/local/vendor | 授权本地依赖，不由公开仓库分发 |

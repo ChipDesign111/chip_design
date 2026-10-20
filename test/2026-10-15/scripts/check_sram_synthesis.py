@@ -25,10 +25,10 @@ def main():
         commands = []
         flags = ""
         if backend == "macro":
-            commands.append("read_verilog -sv -lib rtl/memory/ra1shd_blackbox.sv")
+            commands.append("read_verilog -sv -lib rtl/platform/memory/ra1shd_blackbox.sv")
             flags = "-DCHIP_USE_RA1SHD "
         commands.extend([
-            "read_verilog -sv " + flags + "rtl/memory/chip_sram_2048x32.sv rtl/memory/my_mainmem.sv",
+            "read_verilog -sv " + flags + "rtl/platform/memory/chip_sram_2048x32.sv rtl/platform/memory/my_mainmem.sv",
             "hierarchy -check -top my_mainmem", "proc", "opt", "memory_dff",
             "memory_collect", "opt_clean", "check -assert",
             'write_json "' + netlist.as_posix() + '"',

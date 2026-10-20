@@ -23,7 +23,7 @@ def main():
         execute("model_platform_integrity",[sys.executable,ROOT/"tools/check_hardware.py"])
         iv=tool("iverilog",args.iverilog);vv=tool("vvp",args.vvp)
         exe=out/"har_model.vvp"
-        execute("har_model_compile",[iv,"-g2012","-s","tb_har_model","-o",exe]+[ROOT/n for n in HAR_RTL+["rtl/npu/simple_npu_top.sv","test/2026-10-15/rtl/tb_har_model.sv"]])
+        execute("har_model_compile",[iv,"-g2012","-s","tb_har_model","-o",exe]+[ROOT/n for n in HAR_RTL+["rtl/npu/baseline/simple_npu_top.sv","test/2026-10-15/rtl/tb_har_model.sv"]])
         log=execute("har_real_model",[vv,exe,f"+WEIGHTS={(out/'weights.hex').as_posix()}",f"+SAMPLES={(out/'samples.hex').as_posix()}",f"+COUNT={meta['sample_count']}"],
             cwd=out,marker=f"HAR_MODEL PASS samples={meta['sample_count']}",timeout=300)
         expected=meta["integer_correct"]*2

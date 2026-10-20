@@ -1,5 +1,11 @@
 # Changelog
 
+## RTL layout — 2026-10-20
+
+- rtl收拢为soc/platform/npu/dma；共享tile和bank进入npu/common，INT8兼容代码进入baseline。
+- 编译清单、测试/综合源列表、外围manifest和行尾规则同步迁移，所有SV/SVH内容保持原字节。
+- 重写各层README，明确W8A4最终版与默认INT8配置、阅读顺序、修改边界和验证入口。
+
 ## Streaming profile — 2026-10-20
 
 - 新增可选W8A4连续流水RTL，保持FC1 32×4、FC2 6×2和32路并行重定标；原INT8模块不改写。

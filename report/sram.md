@@ -2,7 +2,7 @@
 
 ## 实现与资料
 
-rtl/memory/my_mainmem.sv 和 chip_sram_2048x32.sv 实现 2048×32、8192 B 单端口主存。默认 portable-sram 使用项目自有行为存储；--memory ra1shd 连接授权本地模型。旧 reference 实现已移除，SoC 只编译一份 my_mainmem。
+rtl/platform/memory/my_mainmem.sv 和 chip_sram_2048x32.sv 实现 2048×32、8192 B 单端口主存。默认 portable-sram 使用项目自有行为存储；--memory ra1shd 连接授权本地模型。旧 reference 实现已移除，SoC 只编译一份 my_mainmem。
 
 九个原始 SRAM 文件保留在 tools/local/vendor/RA1SHD_2048x32M8，清单为 tools/local/vendor/local-inventory.json。目录迁移前后逐文件 SHA 一致。tools/local 整体忽略，不上传原始 Verilog、Liberty、CDL 或版图资料；fpga、eda 保持空目录。
 

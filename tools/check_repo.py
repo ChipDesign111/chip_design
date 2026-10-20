@@ -43,6 +43,22 @@ def check() -> list[str]:
         if not (ROOT / name).is_dir(): errors.append(f"Missing directory: {name}")
     visible = {p.name for p in ROOT.iterdir() if p.is_dir() and not p.name.startswith(".")}
     if visible != set(REQUIRED_DIRS): errors.append("Top-level directories must be exactly rtl/fpga/model/eda/test/report/tools")
+    rtl_dirs = {p.name for p in (ROOT / "rtl").iterdir() if p.is_dir()}
+    if rtl_dirs != {"soc", "platform", "npu", "dma"}:
+        errors.append("RTL directories must be soc/platform/npu/dma")
+    listed = set()
+    for raw in (ROOT / "rtl/filelist.f").read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        include = line.startswith("+incdir+")
+        relative = line[len("+incdir+"):] if include else line
+        target = (ROOT / relative).resolve()
+        if not target.is_relative_to(ROOT / "rtl") or not (target.is_dir() if include else target.is_file()):
+            errors.append("Invalid RTL filelist entry: " + line)
+        if line in listed:
+            errors.append("Duplicate RTL filelist entry: " + line)
+        listed.add(line)
     for name in ("fpga", "eda"):
         if (ROOT/name).exists() and any(p.name != ".gitkeep" for p in (ROOT/name).iterdir()):
             errors.append(name + " must remain empty except for its Git placeholder")

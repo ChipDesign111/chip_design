@@ -1,42 +1,34 @@
 # HAR SoC
 
-[![CI](https://github.com/ChipDesign111/chip_design/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ChipDesign111/chip_design/actions/workflows/ci.yml)
+[![CI](https://github.com/ChipDesign111/chip_design/actions/workflows/ci.yml/badge.svg?branch=xzx%2Frtl)](https://github.com/ChipDesign111/chip_design/actions/workflows/ci.yml)
 
-面向人体活动识别的 RISC-V SoC：CV32E40P + AXI + INT8 64→32→6 MLP NPU。当前交付为 RTL / SoC 功能仿真，FPGA 与 EDA 实现尚未开始。
+人体活动识别SoC：CV32E40P + AXI + 64→32→6 MLP NPU。当前开发分支 `xzx/rtl` 使用可选W8A4连续流水配置；未定义 `CHIP_STREAM_NPU` 时仍构建INT8兼容路径。当前交付是RTL/完整SoC功能仿真。
 
-| 目录 | 内容 |
+| 目录 | 入口与职责 |
 | --- | --- |
-| [rtl](rtl/README.md) | 完整 SoC 硬件：CPU、AXI、Debug、时钟/复位、存储、当前 NPU、统一源清单 |
-| fpga | 空占位，后续 FPGA 实现 |
-| [model](model/README.md) | MLP 训练、导出权重、量化规则和整数参考 |
-| eda | 空占位，后续 EDA 工程 |
-| [test](test/README.md) | 按日期组织测试脚本、testbench、输入、结果与报告 |
-| [report](report/README.md) | 现行设计、接口和开发说明 |
-| [tools](tools/README.md) | 工程入口、检查与下载工具；本地临时工具/受限资料 |
+| [rtl](rtl/README.md) | 四块硬件：soc集成 / platform外围 / npu计算 / dma搬运；含阅读顺序、修改范围及验证方法 |
+| [model](model/README.md) | 权重、特征、量化配置、整数参考与模型质量 |
+| [test](test/README.md) | 测试脚本、输入、结果和按日期归档的证据 |
+| [report](report/README.md) | 架构、接口、设计与开发说明 |
+| [tools](tools/README.md) | 统一工程入口和检查；受限资料只存忽略的tools/local |
+| fpga / eda | FPGA与后端实现工程，当前为空占位 |
 
-## 运行
+## 从这里开始
 
-Python 3.11+；RTL 使用 Icarus，模型验证另需 NumPy，完整 SoC 使用 ModelSim，结构检查使用 Yosys。
+先读 [RTL目录说明](rtl/README.md)，再读 [最终流水设计](report/streaming.md)。Python需要3.11+与NumPy，核级用Icarus，完整SoC用ModelSim，通用结构检查用Yosys。
 
 ```sh
 python -m pip install -r model/requirements.txt
-python tools/project.py doctor
 python tools/project.py check
-python tools/project.py test --suite unit
-python tools/project.py test --suite model
-python tools/project.py test --suite memory
-python tools/project.py test --suite model-soc --vsim /path/to/vsim
-python tools/project.py synth
+python tools/project.py test --suite stream-unit
+python tools/project.py test --suite stream --vsim /path/to/vsim
+python test/2026-10-20/scripts/check_stream_synthesis.py --yosys /path/to/yosys
 ```
 
-厂商 SRAM 功能仿真增加 `--memory ra1shd`，本地模型放入 tools/local/vendor；默认使用 portable-sram。详见 [开发说明](report/development.md) 和 [SRAM](report/sram.md)。每次测试在 `test/日期/runs/时间戳/` 保存脚本快照、结果、日志和报告。
+全2947条输入验证加 `--data-root "model/data/UCI HAR Dataset"`；有授权SRAM模型时SoC测试加 `--memory ra1shd`，否则默认portable-sram。INT8兼容回归使用 `unit`、`model`、`model-soc` 及 `synth`；全部命令见 [开发说明](report/development.md)。运行日志、向量、源SHA和脚本快照只生成到忽略的 `test/日期/runs/`。
 
-当前 NPU 使用两个 FC1 tile、一个 FC2 tile，38 个同步权重 bank。单输入 39 周期，双输入 59 周期，重叠 18 周期。现有 MLP 全测试集历史整数准确率为 2504/2947（84.9678%）；硬件逐值一致性与模型分类准确率分别报告。
+## 已验证的结果
 
-当前源码仅保留替换后的 HAR NPU，原 Lab3 NPU、4×4 回归与导入入口已删除。固定外围的 75 个保留文件沿用原字节校验；模型参数保持不变。来源和授权见 [组件声明](report/THIRD_PARTY_NOTICES.md)。
+FC1为32×4路、FC2为6×2路，另有32路重定标乘法，权重常驻38个bank共2240 B。24条真实输入的完整版本比较：整机13619→4972周期（2.739×），装载权重后11404→3314周期（3.441×）。两版CPU类别收集与校验工作量一致；完整口径和双SRAM证据见 [性能报告](test/2026-10-20/version-compare/report.md)。
 
-CPU 主 SRAM→NPU 装载支持独立 AXI burst DMA；协议和基准命令见 [DMA](report/dma.md)。
-
-新增可选 [W8A4连续流水实现](report/streaming.md)：保持FC1 32×4、FC2 6×2和32路重定标，通过CHIP_STREAM_NPU启用连续调度、两帧DMA暂存及响应成功后提交。运行 `python tools/project.py test --suite stream-unit`；完整SoC基准使用 `--suite stream --vsim /path/to/vsim`。默认INT8路径继续保留；[实测报告](test/2026-10-20/version-compare/report.md)区分核心吞吐与整机加速。
-
-[完整前后版本对比](test/2026-10-20/version-compare/report.md)：对真实52be8c5与新版采用一致的类别收集/校验工作量，24条真实输入的整机周期13619→4972（2.739×），装载权重后的处理段11404→3314（3.441×）。
+W8A4全测试集准确率2490/2947（84.4927%），原INT8为2504/2947（84.9678%）。实现逐值一致性与分类准确率分别报告；原checkpoint曾用该测试集选优，非独立盲测。无FPGA实测或目标工艺PPA签核结论。来源、版权与授权见 [组件声明](report/THIRD_PARTY_NOTICES.md)。

@@ -21,7 +21,7 @@ from generate_vectors import generate
 from tools.memory_profile import MEMORIES, soc_target, sources as memory_sources, functional_sim_flags
 
 RESULTS=[]
-HAR_RTL=["rtl/npu/har_dot_tile.sv","rtl/npu/har_weight_store.sv","rtl/npu/har_npu_core.sv"]
+HAR_RTL=["rtl/npu/common/har_dot_tile.sv","rtl/npu/common/har_weight_store.sv","rtl/npu/baseline/har_npu_core.sv"]
 def execute(name,command,cwd=ROOT,marker=None,timeout=300,env=None):
     start=time.monotonic()
     result=subprocess.run([str(v) for v in command],cwd=cwd,env=env,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=timeout)
@@ -53,7 +53,7 @@ def units(args):
     generate(args.count,WORK/"vectors")
     suites=[
         ("har_core","tb_har_core",HAR_RTL+["test/2026-10-15/rtl/tb_har_core.sv"],f"HAR_CORE PASS cases={args.count}",[f"+VECTORS={(WORK/'vectors/core.hex').as_posix()}",f"+BATCH={(WORK/'vectors/batch.hex').as_posix()}",f"+COUNT={args.count}"]),
-        ("har_mmio","tb_har_mmio",HAR_RTL+["rtl/npu/simple_npu_top.sv","test/2026-10-15/rtl/tb_har_mmio.sv"],"HAR_MMIO PASS cases=12",[f"+VECTORS={(WORK/'vectors/mmio.hex').as_posix()}",f"+BATCH={(WORK/'vectors/batch.hex').as_posix()}","+COUNT=12"]),
+        ("har_mmio","tb_har_mmio",HAR_RTL+["rtl/npu/baseline/simple_npu_top.sv","test/2026-10-15/rtl/tb_har_mmio.sv"],"HAR_MMIO PASS cases=12",[f"+VECTORS={(WORK/'vectors/mmio.hex').as_posix()}",f"+BATCH={(WORK/'vectors/batch.hex').as_posix()}","+COUNT=12"]),
     ]
     for name,top,sources,marker,plusargs in suites:
         output=directory/(name+".vvp")

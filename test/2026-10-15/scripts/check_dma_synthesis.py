@@ -11,7 +11,7 @@ def main():
     if not args.yosys:p.error("Yosys missing")
     out=WORK/"synthesis/dma";out.mkdir(parents=True,exist_ok=True)
     net=out/"dma.json"
-    commands=["read_verilog -sv rtl/dma/har_dma.sv","hierarchy -check -top har_dma","proc","opt","wreduce","opt",
+    commands=["read_verilog -sv rtl/dma/baseline/har_dma.sv","hierarchy -check -top har_dma","proc","opt","wreduce","opt",
               "memory_dff","memory_collect","opt_clean","check -assert","stat",'write_json "'+net.as_posix()+'"']
     script=out/"check.ys";script.write_text("\n".join(commands)+"\n")
     with (out/"yosys.log").open("w",encoding="utf-8") as log:

@@ -1,5 +1,7 @@
 # SRAM-to-NPU DMA
 
+本文描述INT8兼容DMA路径；当前W8A4开发配置见 [连续流水设计](streaming.md)，文件位置与修改方法见 [RTL入口](../rtl/README.md)。
+
 DMA 是独立 AXI4 主设备，从 8 KiB CPU 主 SRAM 搬运权重、偏置或输入到现有 NPU 地址窗口。CPU 设置源、目的、word 数并启动，DMA 自主完成读写；当前不搬运结果、不自动启动 NPU，也不实现计算与搬运重叠。
 
 ## 结构
@@ -13,7 +15,7 @@ CPU / Debug / DMA → AXI crossbar → 主 SRAM / NPU MMIO
 
 每次只有一个未完成突发，先读完整块再写；尾块取剩余 word 数，并在 4 KiB 边界截断。AW/W 通道独立握手，所有 valid 在背压下保持地址/数据稳定。每个读响应检查 RRESP 和 RLAST，每个写响应检查 BRESP；错误不继续提交下一突发。复位同时复位 DMA 和互连以中止在途事务。
 
-DMA 核心为 [har_dma.sv](../rtl/dma/har_dma.sv)，AXI 元数据适配为 [har_dma_axi.sv](../rtl/dma/har_dma_axi.sv)。通用综合保留 512-bit 缓冲和 343 bit 显式寄存器，无乘法器或锁存器；此统计不含新增 AXI 路由资源，不能作为物理面积。
+DMA 核心为 [har_dma.sv](../rtl/dma/baseline/har_dma.sv)，AXI 元数据适配为 [har_dma_axi.sv](../rtl/dma/har_dma_axi.sv)。通用综合保留 512-bit 缓冲和 343 bit 显式寄存器，无乘法器或锁存器；此统计不含新增 AXI 路由资源，不能作为物理面积。
 
 ## CSR
 

@@ -4,8 +4,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MEMORIES = ("portable-sram", "ra1shd")
 ADAPTER_SOURCES = (
-    "rtl/memory/chip_sram_2048x32.sv",
-    "rtl/memory/my_mainmem.sv",
+    "rtl/platform/memory/chip_sram_2048x32.sv",
+    "rtl/platform/memory/my_mainmem.sv",
 )
 
 

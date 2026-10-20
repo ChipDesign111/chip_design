@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "HAR_TILED_V2_LAB3_PERIMETER_FIXED",
+  "status": "HAR_STREAM_AND_INT8_LAB3_PERIMETER_FIXED",
   "organization": "ChipDesign111",
   "repository": "chip_design",
   "network": {
@@ -106,5 +106,40 @@
     "outstanding_bursts": 1,
     "source_bytes": 8192,
     "compute_overlap": false
+  },
+  "configuration_scope": "Existing numeric/architecture/mmio/dma fields describe the default INT8 compatibility profile.",
+  "default_profile": "int8",
+  "development_profile": "stream",
+  "profiles": {
+    "int8": {
+      "define": null,
+      "npu_top": "simple_npu_top",
+      "npu_sources": "rtl/npu/baseline",
+      "dma_engine": "har_dma",
+      "batch_max": 2,
+      "input_bits": 8,
+      "hidden_range": [
+        0,
+        127
+      ],
+      "test_suite": "model-soc"
+    },
+    "stream": {
+      "define": "CHIP_STREAM_NPU",
+      "npu_top": "har_stream_top",
+      "npu_sources": "rtl/npu",
+      "dma_engine": "har_stream_dma",
+      "batch_max": 64,
+      "input_bits": 4,
+      "hidden_range": [
+        0,
+        15
+      ],
+      "weight_bits": 8,
+      "ideal_result_interval_cycles": 16,
+      "compute_overlap": true,
+      "test_suite": "stream",
+      "quantization": "model/quantization/w8a4.json"
+    }
   }
 }

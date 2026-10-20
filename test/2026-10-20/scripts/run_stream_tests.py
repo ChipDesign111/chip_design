@@ -14,7 +14,7 @@ from tools.workspace import WORK, begin_run, finish_run
 sys.path.insert(0,str(ROOT/'test/2026-10-15/scripts'))
 from run_tests import execute,tool
 
-NEW_RTL=['rtl/npu/har_dot_tile.sv','rtl/npu/har_weight_store.sv',
+NEW_RTL=['rtl/npu/common/har_dot_tile.sv','rtl/npu/common/har_weight_store.sv',
          'rtl/npu/har_stream_core.sv','rtl/npu/har_stream_top.sv']
 
 

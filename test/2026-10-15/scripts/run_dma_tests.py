@@ -25,8 +25,8 @@ def main():
     result_path.parent.mkdir(parents=True,exist_ok=True)
     try:
         for top,inputs,marker in [
-            ("tb_har_dma",["rtl/dma/har_dma.sv","test/2026-10-15/rtl/tb_har_dma.sv"],"DMA_UNIT PASS transfers=227"),
-            ("tb_dma_ingress",HAR_RTL+["rtl/npu/simple_npu_top.sv","rtl/soc/my_npu_subsystem.sv","test/2026-10-15/rtl/tb_dma_ingress.sv"],"DMA_INGRESS PASS"),
+            ("tb_har_dma",["rtl/dma/baseline/har_dma.sv","test/2026-10-15/rtl/tb_har_dma.sv"],"DMA_UNIT PASS transfers=227"),
+            ("tb_dma_ingress",HAR_RTL+["rtl/npu/baseline/simple_npu_top.sv","rtl/soc/my_npu_subsystem.sv","test/2026-10-15/rtl/tb_dma_ingress.sv"],"DMA_INGRESS PASS"),
         ]:
             image=out/(top+".vvp")
             execute(top+"_compile",[tool("iverilog",args.iverilog),"-g2012","-s",top,"-o",image,*[ROOT/name for name in inputs]])

@@ -1,43 +1,33 @@
-# SoC architecture
+# SoC 架构与代码边界
+
+完整硬件在 `rtl/`，按集成、外围、计算与搬运四类组织。模块逐项说明、阅读顺序和修改/验证矩阵以 [RTL入口](../rtl/README.md) 为准。
 
 ```text
 rtl/soc/my_soc_top.sv
-├── rtl/cpu_cv32e40p       CV32E40P
-├── rtl/axi               AXI interconnect / axi2mem
-├── rtl/debug             JTAG / Debug
-├── rtl/clk_rst           clock / reset
-├── rtl/memory            Boot + 2048×32 main SRAM
+├── rtl/platform/       CPU、AXI、Debug、时钟/复位、Boot、主SRAM
+├── rtl/dma/har_dma_axi.sv
+│   ├── CHIP_STREAM_NPU：har_stream_dma
+│   └── 默认：baseline/har_dma
 └── rtl/soc/my_npu_subsystem.sv
-    └── rtl/npu/simple_npu_top.sv
-        ├── har_weight_store  38 synchronous banks
-        └── har_npu_core      FC1 tiles ×2 → ReLU/requant → FC2 tile ×1 → Argmax
+    ├── CHIP_STREAM_NPU：npu/har_stream_top → har_stream_core
+    └── 默认：npu/baseline/simple_npu_top → har_npu_core
+        两版均使用 npu/common/ 的 tile 与权重bank
 ```
 
-## 硬件边界
+## 配置与算术
 
-rtl 包含完整硬件，没有独立 platform 目录。rtl/filelist.f 是当前 SoC 的源清单；运行工具展开绝对路径并加入测试顶层，不再从旧课程清单替换 NPU。
+当前开发使用W8A4连续流水配置：INT4输入、ReLU后UINT4、INT8权重和INT32偏置/累加/得分，单命令1～64条样本，供数充分时结果间隔16周期。FC1为32×4路、FC2为6×2路，另有32路重定标乘法。参数、接口与精度见 [最终版设计](streaming.md)。
 
-CPU、AXI、Debug、时钟/复位与 Boot 外围共 75 个保留文件保持原字节和版权，路径迁移映射记录在 rtl/manifest.json。原 90-file 清单中的旧主存行为实现、原始测试、启动材料及旧 filelist 已退出当前源码。当前 NPU 是唯一加速器实现，旧 4×4 NPU 不再参与任何构建。
+未定义CHIP_STREAM_NPU时仍构建INT8兼容路径，最多两条输入；39/59周期是该兼容核心的单/双样本值，不能用于描述最终版整机吞吐。两版的模块、DMA和测试入口在 [project.json](../rtl/project.json) 的profiles中明确区分。
 
-## 模型与算术
+## 存储与数据流
 
-MLP 为 64→32→6，2278 参数、2240 MAC/输入；输入/权重 INT8，偏置/累加/得分 INT32，hidden 为 0..127。第一层 ReLU + 整数量化，第二层有符号 Argmax，相等取较小下标。规则见 [model/numerics.md](../model/numerics.md)。
+主SRAM为8192 B，基址0x80000000，CPU与DMA通过AXI共享。主存后端可以选择portable-sram或本地授权ra1shd，接口容量、掩码写和读时序保持相同。NPU位于0x70000000的16 KiB窗口，其2240 B权重由38个独立同步bank保存；片上权重读不会经由主SRAM。
 
-两 FC1 tile 各 16 输出×4 lane；FC2 为 6 输出×2 lane。每级发射 16 块，独立乘法/累加流水及 hidden 双缓冲支持跨样本重叠。单输入 39 周期、两输入 59 周期、重叠 18 周期；详见 [NPU](npu.md)。
+最终版先搬运598字权重/偏置，再以8字/样本搬运打包输入。DMA使用最多16字FIFO和两帧暂存，输入只在成功响应后提交；计算与下一批预取可以重叠。结果按帧顺序写入类别表。完整SoC基准中CPU真实执行固件并检查类别，测试台同时核对hidden/score/class。
 
-## 存储与接口
+## 来源与修改边界
 
-CPU 主存 8192 B，基址 0x80000000；程序状态区 0x80001FE0–0x80001FFF。真实模型 24 条自检镜像占 6232 B。主存后端只改变实现选择，不改变容量、字节写使能与一拍读接口。
+CPU、AXI、Debug、时钟/复位和Boot来源及SHA在 [manifest](../rtl/manifest.json) 中；两个soc集成文件有明确的项目覆盖记录。本次目录整理只迁移路径，所有SystemVerilog源码字节不变。新增主存适配和NPU/DMA是项目维护代码，具体修改与检查见 [RTL入口](../rtl/README.md)。
 
-NPU 基址 0x70000000，本地窗口 16 KiB；word 地址 12 bit，软件完整 32-bit 对齐访问。权重 2240 B 分在 38 个同步 bank，CPU 回读与计算读独立。单端口主 SRAM 不替代并行权重 bank。寄存器见 [MMIO](mmio.md)。
-
-## 修改范围
-
-- rtl/npu：允许优化 tile、调度和存储；同步更新数值/接口、固件和测试。
-- rtl/memory：允许后端适配，保持主存协议；原外围更新须独立记录来源和校验迁移。
-- rtl 其余保留外围：非日常修改区，由 tools/check_hardware.py 校验。
-- model：模型、特征或量化改变后需重新导出与真实数据评估。
-- test/日期：每轮验证脚本、testbench、输入、结果与报告。
-- fpga / eda：当前为空，尚未交付目标实现。
-
-完整功能仿真不等于 FPGA 上板、目标时序/面积/功耗或 ASIC 签核。当前有 SRAM→NPU 的独立 AXI burst DMA；尚无搬运/计算重叠、无限长队列或硬件程序下载功能。见 [DMA](dma.md)。
+`rtl/platform` 是硬件外围子目录；`fpga/` 和 `eda/` 是实现工程目录，当前仍为空占位。功能仿真与通用综合不等于FPGA上板、目标面积/功耗或ASIC时序与物理签核。

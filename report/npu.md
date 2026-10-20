@@ -1,5 +1,7 @@
 # HAR V2：两级 tile 流水加速器
 
+本文描述INT8兼容NPU路径；当前W8A4开发配置见 [连续流水设计](streaming.md)，文件位置与修改方法见 [RTL入口](../rtl/README.md)。
+
 完整 SoC 外围与 NPU 均位于 rtl，加速器实现在 rtl/npu/。V2 保持整数算术契约，支持双样本模式及计数寄存器，与原单次推理窗口兼容。模型为 64→32→6，输入/权重 INT8、偏置/得分 INT32，ReLU/重新量化只在第一层。
 
 ## 为什么 tile 数量 2:1 还不够
@@ -59,7 +61,7 @@ FC1 第二个样本从第 20 拍发射，第 38 拍生成 hidden1；FC2 第一�
 
 ## 片上存储
 
-[har_weight_store.sv](../rtl/npu/har_weight_store.sv)：
+[har_weight_store.sv](../rtl/npu/common/har_weight_store.sv)：
 
 - FC1：32 个 bank，每 bank 16×32 bit，共 2048 B；每拍各 bank 读一个含四 INT8 权重的 word。
 - FC2：6 个 bank，每 bank 8×32 bit，共 192 B；每拍取 word 的低/高 16 bit，供两个输入 lane。
@@ -74,10 +76,10 @@ Yosys 通用综合结构检查保留 38 个 RAM、17920 bit 和 76 个同步读�
 
 | 文件 | 职责 |
 | --- | --- |
-| [har_dot_tile.sv](../rtl/npu/har_dot_tile.sv) | 参数化 tile，寄存乘积、分块累加、首尾标记 |
-| [har_weight_store.sv](../rtl/npu/har_weight_store.sv) | 双读端口 bank 存储、CPU 装载/回读、有效位 |
-| [har_npu_core.sv](../rtl/npu/har_npu_core.sv) | 2:1 tile 实例、两级调度、hidden 双缓冲、计数 |
-| [simple_npu_top.sv](../rtl/npu/simple_npu_top.sv) | 保持 SoC 接入端口、MMIO 和同步读返回 |
+| [har_dot_tile.sv](../rtl/npu/common/har_dot_tile.sv) | 参数化 tile，寄存乘积、分块累加、首尾标记 |
+| [har_weight_store.sv](../rtl/npu/common/har_weight_store.sv) | 双读端口 bank 存储、CPU 装载/回读、有效位 |
+| [har_npu_core.sv](../rtl/npu/baseline/har_npu_core.sv) | 2:1 tile 实例、两级调度、hidden 双缓冲、计数 |
+| [simple_npu_top.sv](../rtl/npu/baseline/simple_npu_top.sv) | 保持 SoC 接入端口、MMIO 和同步读返回 |
 | [tb_har_core.sv](../test/2026-10-15/rtl/tb_har_core.sv) | 1000 组各跑单次/双次，共 3000 推理 |
 | [tb_har_mmio.sv](../test/2026-10-15/rtl/tb_har_mmio.sv) | 单次/双次装载、忙时保护、重叠时权重回读 |
 | [build_har_firmware.py](../test/2026-10-15/scripts/build_har_firmware.py) | CPU 六个单次 + 一批两个输入，逐项检查及周期断言 |

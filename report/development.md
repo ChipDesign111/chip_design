@@ -14,7 +14,7 @@ python tools/project.py ci
 
 ## 修改与验证
 
-从更新后的 main 创建短期分支。先明确行为/通过标准，修改最小模块；新增 RTL 进入 rtl/filelist.f 及 test/2026-10-15/scripts/run_tests.py 的 HAR_RTL（核级/模型/综合共用）。完整 SoC 仅使用当前 NPU；不会再构建原 NPU。
+从更新后的 main 创建短期分支。先明确行为/通过标准，修改最小模块；新增RTL进入rtl/filelist.f，并同步相关核级和综合源列表。最终版使用test/2026-10-20/scripts/run_stream_tests.py的NEW_RTL及check_stream_synthesis.py；INT8兼容版使用test/2026-10-15/scripts/run_tests.py的HAR_RTL。两版通过CHIP_STREAM_NPU选择，具体文件与边界见 [RTL说明](../rtl/README.md)。
 
 | 验证 | 命令（前缀 python tools/project.py） |
 | --- | --- |
@@ -24,8 +24,12 @@ python tools/project.py ci
 | 24 条真实输入 / 48 RTL 推理 | test --suite model |
 | 完整 CPU，合成参数八次/六次自检 | test --suite soc --vsim /path/to/vsim |
 | 完整 CPU，24 条真实模型输入 | test --suite model-soc --vsim /path/to/vsim |
-| 全部功能套件 | test --suite all --vsim /path/to/vsim |
-| NPU 与主 SRAM 通用综合结构 | synth |
+| 最终W8A4核级、MMIO、DMA协议 | test --suite stream-unit |
+| 最终W8A4与前一版真实RTL的完整SoC | test --suite stream --vsim /path/to/vsim |
+| INT8兼容路径全部功能套件 | test --suite all --vsim /path/to/vsim |
+| INT8 NPU与主SRAM/DMA通用综合 | synth |
+
+最终版综合运行 `python test/2026-10-20/scripts/check_stream_synthesis.py --yosys /path/to/yosys`。
 
 默认主存 portable-sram；存储或 SoC 套件可增加 --memory ra1shd，要求本地授权模型。完整 SoC 以 CPU 真实写入 c0dec0de 为通过条件；不能强制完成标志或修改参考规避失败。
 

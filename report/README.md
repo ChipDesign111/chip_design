@@ -5,8 +5,8 @@
 | 文档 | 内容 |
 | --- | --- |
 | [architecture.md](architecture.md) | 完整 SoC、目录边界、存储与修改范围 |
-| [npu.md](npu.md) | tile 配比、两级流水、bank 存储和周期 |
-| [mmio.md](mmio.md) | 寄存器、数据布局和协议 |
+| [npu.md](npu.md) | INT8兼容路径的tile、bank和周期；当前开发设计见连续流水RTL |
+| [mmio.md](mmio.md) | INT8兼容寄存器；最终版扩展见连续流水RTL |
 | [sram.md](sram.md) | SRAM 后端、本地资料和仿真边界 |
 | [development.md](development.md) | 工具依赖、修改方法、验证与交付 |
 | [整数规则](../model/numerics.md) | MLP 数值契约 |

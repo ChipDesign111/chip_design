@@ -21,7 +21,7 @@ def main():
     netlist=out/"har_generic.json"
     # Old Yosys embeds source filenames into RTLIL names, which cannot contain
     # spaces. Keep source filenames relative even when the checkout has spaces.
-    commands=["read_verilog -sv "+" ".join('"'+s+'"' for s in HAR_RTL+["rtl/npu/simple_npu_top.sv"]),
+    commands=["read_verilog -sv "+" ".join('"'+s+'"' for s in HAR_RTL+["rtl/npu/baseline/simple_npu_top.sv"]),
         "hierarchy -check -top simple_npu_top","proc","opt","wreduce","opt",
         "memory_dff","memory_collect","opt_clean","check -assert","stat",
         'write_json "'+netlist.as_posix()+'"']
