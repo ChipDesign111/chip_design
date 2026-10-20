@@ -38,3 +38,5 @@ python tools/project.py synth
 CPU 主 SRAM→NPU 装载支持独立 AXI burst DMA；协议和基准命令见 [DMA](report/dma.md)。
 
 新增可选 [W8A4连续流水实现](report/streaming.md)：保持FC1 32×4、FC2 6×2和32路重定标，通过CHIP_STREAM_NPU启用连续调度、两帧DMA暂存及响应成功后提交。运行 `python tools/project.py test --suite stream-unit`；完整SoC基准使用 `--suite stream --vsim /path/to/vsim`。默认INT8路径继续保留；[实测报告](test/2026-10-20/stream/report.md)区分核心吞吐与整机加速。
+
+[完整前后版本对比](test/2026-10-20/version-compare/report.md)：对真实52be8c5与新版采用一致的类别收集/校验工作量，24条真实输入的整机周期13619→4972（2.739×），装载权重后的处理段11404→3314（3.441×）。
