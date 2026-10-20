@@ -1,0 +1,26 @@
+{
+  "network": [
+    64,
+    32,
+    6
+  ],
+  "numeric": "INT4 input / UINT4 hidden / INT8 weights / INT32 bias and accumulation",
+  "label_order": [
+    "WALKING",
+    "WALKING_UPSTAIRS",
+    "WALKING_DOWNSTAIRS",
+    "SITTING",
+    "STANDING",
+    "LAYING"
+  ],
+  "weight_file": "weights.npz",
+  "weight_sha256": "bc22b7cce4ec039e4eab18de5140b555e8cb9c8345ce081a5cb11e3538e071f6",
+  "quantization": "quantization/w8a4.json",
+  "model_origin": "har-mlp-64x32x6-2026-09-24",
+  "pre_final_snapshot": "e20ba50413c35857d53ee04cbbfb218f105651b6",
+  "accuracy": {
+    "correct": 2490,
+    "samples": 2947,
+    "test_split_used_for_original_checkpoint_selection": true
+  }
+}

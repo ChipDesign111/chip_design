@@ -1,17 +1,13 @@
-# Design reports
-
-这里保存现行设计与使用说明。每次测试的结果、日志和报告统一放在 [test](../test/README.md)，不在这里重复存档。
+# 最终设计说明
 
 | 文档 | 内容 |
 | --- | --- |
-| [architecture.md](architecture.md) | 完整 SoC、目录边界、存储与修改范围 |
-| [npu.md](npu.md) | INT8兼容路径的tile、bank和周期；当前开发设计见连续流水RTL |
-| [mmio.md](mmio.md) | INT8兼容寄存器；最终版扩展见连续流水RTL |
-| [sram.md](sram.md) | SRAM 后端、本地资料和仿真边界 |
-| [development.md](development.md) | 工具依赖、修改方法、验证与交付 |
-| [整数规则](../model/numerics.md) | MLP 数值契约 |
-| [连续流水RTL](streaming.md) | 可选W8A4实现、去空泡、DMA协同、MMIO与性能测量 |
-| [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) | 组件来源与授权 |
-| [CHANGELOG.md](CHANGELOG.md) | 工程变更 |
+| [architecture](architecture.md) | SoC模块关系与数据流 |
+| [streaming](streaming.md) | 最终两级流水、DMA、接口与性能 |
+| [mmio](mmio.md) | 唯一寄存器布局 |
+| [development](development.md) | 当前测试和综合命令 |
+| [sram](sram.md) | 主存后端与本地授权模型 |
+| [local_archive](local_archive.md) | 上一版源码、测试、训练和Git备份的本地管理 |
+| [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES.md) | 来源与授权 |
 
-[DMA](dma.md)：AXI burst 装载、CSR、错误/并发规则与加速比测量；[验证记录](../test/2026-10-15/dma/report.md)。
+代码入口见 [RTL](../rtl/README.md)，精简验证见 [validation](../test/2026-10-20/validation.json)。

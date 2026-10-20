@@ -1,7 +1,7 @@
 `timescale 1ns/1ps
 // SRAM simulation loader and passive CPU-write completion monitor.
 module tb_soc #(
-    parameter INIT_FILE = ""
+    parameter INIT_FILE = "", GOLD_FILE = ""
 );
     reg clk_i = 0, rst_ni = 0;
     wire td_o;
@@ -16,6 +16,41 @@ module tb_soc #(
     reg [31:0] warm_cycles=0;
     reg [31:0] dma_read_beats=0,dma_write_beats=0,dma_read_bursts=0,dma_write_bursts=0;
     integer cycle_count = 0;
+    reg [31:0] gold[0:935];
+    integer result_count=0;
+    reg [31:0] compute_cycles=0,transfer_compute_cycles=0;
+    task check_frame;
+        input [255:0] hidden;
+        input [191:0] scores;
+        input [2:0] class_id;
+        integer j;
+        begin
+            if(result_count>=24) $fatal(1,"Extra result");
+            for(j=0;j<32;j=j+1)
+                if(hidden[j*8+:8]!==gold[result_count*39+j][7:0])
+                    $fatal(1,"Hidden mismatch sample=%0d neuron=%0d",result_count,j);
+            for(j=0;j<6;j=j+1)
+                if(scores[j*32+:32]!==gold[result_count*39+32+j])
+                    $fatal(1,"Score mismatch sample=%0d neuron=%0d",result_count,j);
+            if(class_id!==gold[result_count*39+38][2:0]) $fatal(1,"Class mismatch");
+            result_count=result_count+1;
+        end
+    endtask
+    initial begin
+        if(GOLD_FILE=="") $fatal(1,"Missing gold");
+        $readmemh(GOLD_FILE,gold);
+    end
+    always @(posedge clk_i) if(rst_ni) begin
+        if(dut.i_npu_subsystem.i_npu_core.result_valid)
+            check_frame(dut.i_npu_subsystem.i_npu_core.result_hidden,
+                        dut.i_npu_subsystem.i_npu_core.result_scores,
+                        dut.i_npu_subsystem.i_npu_core.result_class);
+        if(dut.i_npu_subsystem.i_npu_core.w1_re || dut.i_npu_subsystem.i_npu_core.w2_re) begin
+            compute_cycles<=compute_cycles+1;
+            if((dut.slave[3].r_valid && dut.slave[3].r_ready) || (dut.slave[3].w_valid && dut.slave[3].w_ready))
+                transfer_compute_cycles<=transfer_compute_cycles+1;
+        end
+    end
 
     // Observe real CPU/AXI writes; never inject a completion status.
     always @(posedge clk_i) begin
@@ -71,6 +106,7 @@ module tb_soc #(
             @(posedge clk_i); #2;
             cycle_count = cycle_count + 1;
             if (magic_status === 32'hc0dec0de) begin
+                if(result_count!=24) $fatal(1,"Missing results");
                 $display("PASS: SRAM SoC self-check OK after %0d cycles", cycle_count);
                 $finish;
             end

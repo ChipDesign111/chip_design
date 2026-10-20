@@ -1,9 +1,8 @@
 // W8A4 continuous scheduler. Same 2x(16x4) FC1 and 1x(6x2) FC2 tiles.
-// Runtime mode 0=serialized, 1=II20, 3=adjacent frames (II16).
+// Fixed continuous operation: adjacent frames, ideal result interval 16 cycles.
 module har_stream_core(
     input logic clk,rst_ni,start,
     input logic [6:0] sample_count,
-    input logic [1:0] mode,
     input logic in_valid,
     output wire in_ready,
     input logic [511:0] in_features,
@@ -32,18 +31,15 @@ module har_stream_core(
     logic s1_run,s2_run,s1_hslot;
     logic [3:0] c1,c2;
     logic [6:0] total,launched;
-    logic [1:0] mode_q;
-    logic [4:0] cooldown;
     logic [1023:0] b1;
     logic [191:0] b2;
     logic [15:0] mult;
     logic [4:0] shift;
-    wire launch1=busy && !s1_run && xv[xrd] && (!occupied[hwr] || (s2_run && hrd==hwr)) &&
-        (mode_q[0] || launched==retired) && cooldown==0;
+    wire launch1=busy && !s1_run && xv[xrd] && (!occupied[hwr] || (s2_run && hrd==hwr));
     wire launch2=busy && !s2_run && hv[hrd];
     wire [3:0] issue1=launch1 ? 4'd0:c1;
     wire [3:0] issue2=launch2 ? 4'd0:c2;
-    assign in_ready=busy && accepted<total && !xv[xwr] && (mode_q[0] || accepted==retired);
+    assign in_ready=busy && accepted<total && !xv[xwr];
     assign w1_re=busy && (s1_run || launch1);
     assign w2_re=busy && (s2_run || launch2);
     assign w1_addr=issue1;
@@ -94,9 +90,9 @@ module har_stream_core(
             busy<=0;done<=0;result_valid<=0;result_id<=0;result_hidden<=0;result_scores<=0;result_class<=0;
             cycles<=0;fc1_issues<=0;fc2_issues<=0;overlap<=0;accepted<=0;retired<=0;launched<=0;
             xv<=0;hv<=0;occupied<=0;xwr<=0;xrd<=0;hwr<=0;hrd<=0;hcommit<=0;
-            s1_run<=0;s2_run<=0;s1_hslot<=0;c1<=0;c2<=0;cooldown<=0;
+            s1_run<=0;s2_run<=0;s1_hslot<=0;c1<=0;c2<=0;
             v1<=0;f1<=0;l1<=0;v2<=0;f2<=0;l2<=0;half2<=0;xchunk<=0;hchunk<=0;
-            total<=0;mode_q<=0;b1<=0;b2<=0;mult<=0;shift<=0;
+            total<=0;b1<=0;b2<=0;mult<=0;shift<=0;
         end else begin
             result_valid<=0;
             v1<=w1_re;v2<=w2_re;
@@ -108,20 +104,18 @@ module har_stream_core(
             end
             if(start && !busy) begin
                 busy<=1;done<=0;cycles<=0;fc1_issues<=0;fc2_issues<=0;overlap<=0;
-                accepted<=0;retired<=0;launched<=0;total<=sample_count;mode_q<=mode;
+                accepted<=0;retired<=0;launched<=0;total<=sample_count;
                 xv<=0;hv<=0;occupied<=0;xwr<=0;xrd<=0;hwr<=0;hrd<=0;hcommit<=0;
-                s1_run<=0;s2_run<=0;c1<=0;c2<=0;cooldown<=0;
+                s1_run<=0;s2_run<=0;c1<=0;c2<=0;
                 b1<=bias1;b2<=bias2;mult<=requant_mult;shift<=requant_shift;
             end else if(busy) begin
                 cycles<=cycles+1'b1;
-                if(cooldown!=0) cooldown<=cooldown-1'b1;
                 if(in_valid && in_ready) begin
                     xb[xwr]<=in_features;xv[xwr]<=1;xwr<=!xwr;accepted<=accepted+1'b1;
                 end
                 if(launch1) begin
                     s1_run<=1;c1<=1;s1_hslot<=hwr;hwr<=!hwr;
                     launched<=launched+1'b1;
-                    if(mode_q==1) cooldown<=19;
                 end else if(w1_re) begin
                     if(c1==15) begin s1_run<=0;xv[xrd]<=0;xrd<=!xrd;end
                     else c1<=c1+1'b1;

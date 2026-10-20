@@ -1,6 +1,6 @@
-# W8A4 连续流水 RTL 分支
+# 最终 W8A4 连续流水 RTL
 
-日期：2026-10-20。分支：`xzx/rtl`。这是可选的新增 RTL 实现，通过 `CHIP_STREAM_NPU` 编译宏启用；未设置时继续使用原 INT8 NPU、原 DMA 与原软件接口。
+日期：2026-10-20。分支：`xzx/rtl`。这是唯一构建实现，SoC直接实例化最终NPU与DMA，无需选择宏。
 
 ## 固定硬件规模
 
@@ -14,7 +14,7 @@
 | 隐藏 | ReLU后UINT4数值0..15，内部零扩展为8 bit供FC2使用 |
 | 偏置/累加/得分 | INT32 |
 
-原 `har_dot_tile.sv`、`har_weight_store.sv`、`har_npu_core.sv` 和 `simple_npu_top.sv` 保持原样。新增 [har_stream_core.sv](../rtl/npu/har_stream_core.sv)、[har_stream_top.sv](../rtl/npu/har_stream_top.sv)、[har_stream_dma.sv](../rtl/dma/har_stream_dma.sv)。两处SoC集成文件与AXI元数据适配器增加编译选择/本地信用及提交信号，CPU、AXI库、Debug、时钟和Boot代码不变；集成SHA在manifest中明确更新。
+最终NPU由har_stream_core、har_stream_top、har_dot_tile、har_weight_store组成；最终搬运由har_stream_dma与har_dma_axi完成。tile和权重存储直接位于rtl/npu。
 
 本版低位宽首先减少外部输入流量，复用现有8×8乘法tile，**不宣称已综合成原生4×8乘法阵列或已减半乘法面积**。
 
@@ -24,7 +24,7 @@ FC1每帧16组，FC2每帧16组。发射完第16组后，调度器允许下一�
 
 两个输入槽、两个隐藏槽及两个FC2隐藏快照支持不同帧重叠。FC1可在目标隐藏槽仍被FC2消费时开始下一帧计算，因为该槽在下一次FC1结果写入前已完成16组消费；没有外部FC2停顿路径。模型参数在START时快照，运行时禁止改写。每条命令处理1～64帧，类别结果表保留该批全部结果；它不是无上限流式接口。
 
-最终配置使用MODE=3，充分供数时连续结果间隔为16周期。MODE=0/1是RTL保留的诊断控制，不作为交付性能方案；测试和性能报告统一使用最终配置。SoC仍可能受到SRAM仲裁和供数背压影响。
+调度固定为连续流水，充分供数时结果间隔16周期。0xF0C为固定配置值3，只接受写入3；不保留串行/II20调度控制。SoC吞吐仍受仲裁与背压影响。
 
 ## DMA与计算并行
 
@@ -56,29 +56,19 @@ NPU基址`0x70000000`，以下为字节偏移，所有访问32 bit对齐。
 | 0xF00 | 写 | bit0 ARM，清批次计数/状态并快照参数 |
 | 0xF04或0x004 | 读 | bit0 DONE、bit1 BUSY、bit2 ERROR |
 | 0xF08 | 读写，仅空闲 | 样本数1～64 |
-| 0xF0C | 读写，仅空闲 | MODE=0/1/3 |
+| 0xF0C | 读写，仅空闲 | 固定流水配置3 |
 | 0xF10 | 读 | ARM至最后结果的NPU周期，包含等待首批DMA数据 |
 | 0xF14 / 0xF18 | 读 | FC1 / FC2有效发射周期，各应为16×样本数 |
 | 0xF1C | 读 | FC1与FC2同时发射周期 |
 | 0xF20 / 0xF24 | 读 | 已接收 / 已完成样本数 |
 | 0x1000～0x10FF | 读 | 本批64个类别槽；超出已完成范围读0 |
 
-软件先DMA装载598字参数，设置M=39986、SHIFT=24；设置样本数和MODE，ARM；再启动一次输入DMA，轮询DMA和NPU的DONE/ERROR；检查计数并读取类别。轮询必须有超时。输入暂存依赖DMA提交信号，不是可直接由CPU写完后自动启动的普通窗口。完整hidden/score由硬件结果流输出，测试台逐项核对；本批类别由CPU读取并自检。
+软件先DMA装载598字参数，设置M=39986、SHIFT=24；设置样本数和固定流水配置3，ARM；再启动一次输入DMA，轮询DMA和NPU的DONE/ERROR；检查计数并读取类别。轮询必须有超时。输入暂存依赖DMA提交信号，不是可直接由CPU写完后自动启动的普通窗口。完整hidden/score由硬件结果流输出，测试台逐项核对；本批类别由CPU读取并自检。
 
-W8A4的偏置和尺度单独冻结在 [最终量化配置](../model/quantization/w8a4.json)，不覆盖旧model/export。新公式为`hidden=min(15,(max(acc,0)*39986+8388608)>>24)`。原输入尺度、偏置、M=1064不能混用。全2947条参考准确率2490/2947=84.4927%；原INT8为2504/2947=84.9678%，二者数值不同，版本比较使用各自原生数值格式和相同CPU校验工作量。
+W8A4的偏置和尺度单独冻结在 [最终量化配置](../model/quantization/w8a4.json)，部署数组见model/weights.npz。新公式为`hidden=min(15,(max(acc,0)*39986+8388608)>>24)`。全2947条参考准确率2490/2947=84.4927%；原INT8为2504/2947=84.9678%，二者数值不同，版本比较使用各自原生数值格式和相同CPU校验工作量。
 
-## 性能和验证
+## 验证
 
-**完整版本主结果：相对前一版52be8c5，统一类别收集/校验口径下整机13619→4972周期，2.739×；装载权重后的处理段11404→3314周期，3.441×。** 两版均已片上存权重，收益来自输入压缩、DMA和调度/驱动整体变化。详情见 [版本间比较](../test/2026-10-20/version-compare/report.md)。
+当前验证独立构建唯一最终版，CPU真实执行RV32I程序，经AXI和SRAM驱动DMA/NPU，测试台核对全部hidden、score与类别。命令见 [开发说明](development.md)，当前精简结果见 [validation.json](../test/2026-10-20/validation.json)。
 
-正式结果见 [2026-10-20验证报告](../test/2026-10-20/version-compare/report.md)。测量区分单元连续供数、NPU含DMA等待窗口、端到端流处理窗口和整机总周期。主SRAM同时承担CPU取指与DMA读，不能将核心16周期目标直接称为整机每帧固定16周期。
-
-```sh
-python tools/project.py test --suite stream-unit
-python tools/project.py test --suite stream-unit --data-root "model/data/UCI HAR Dataset"
-python tools/project.py test --suite stream --memory portable-sram --vsim /path/to/vsim
-python tools/project.py test --suite stream --memory ra1shd --vsim /path/to/vsim
-python test/2026-10-20/scripts/check_stream_synthesis.py --yosys /path/to/yosys
-```
-
-第一条适用于公共CI；全模型RTL额外需要官方测试数据。两种SRAM后端的SoC基准使用同一模型/24条真实输入，CPU真实执行RV32I程序，经AXI驱动DMA和NPU；测试台不注入完成状态、不预装NPU权重，只在CPU复位期间通过SRAM端口装载程序。厂商模型采用功能仿真并关闭时序检查，不代表板级实测或物理时序签核。
+历史前后版本对比程序与原始证据保存在 [本地归档](local_archive.md)。当前SoC测试不读取旧RTL、不需要Git历史；当前周期以本轮validation为准。仅为功能仿真与通用综合，非FPGA或目标工艺签核。

@@ -59,6 +59,11 @@ def check() -> list[str]:
         if line in listed:
             errors.append("Duplicate RTL filelist entry: " + line)
         listed.add(line)
+    for forbidden in ("rtl/npu/common", "rtl/npu/baseline", "rtl/dma/baseline"):
+        if (ROOT / forbidden).exists():errors.append("Retired layout present: " + forbidden)
+    rtl_text = "\n".join(p.read_text(encoding="utf-8") for p in files(".sv"))
+    if "CHIP_STREAM_NPU" in rtl_text or "module simple_npu_top" in rtl_text or "module har_npu_core" in rtl_text:
+        errors.append("Only the final W8A4 hardware may be present")
     for name in ("fpga", "eda"):
         if (ROOT/name).exists() and any(p.name != ".gitkeep" for p in (ROOT/name).iterdir()):
             errors.append(name + " must remain empty except for its Git placeholder")
@@ -90,6 +95,8 @@ def check() -> list[str]:
         network = config["network"]
         if tuple(network[key] for key in ("input_features", "hidden_features", "classes")) != (64, 32, 6):
             errors.append("Network dimensions differ from the fixed accelerator contract")
+        if config["numeric"]["input_bits"] != 4 or config["architecture"]["batch_max"] != 64:
+            errors.append("Final design must use W8A4 and a 64-sample maximum batch")
         mmio = config["mmio"]
         if not 0 <= mmio["base_address"] < 2**32 or mmio["base_address"] % 4:
             errors.append("Invalid MMIO base")
@@ -97,7 +104,7 @@ def check() -> list[str]:
             errors.append("MMIO aperture must match the 12-bit word-address port")
         previous_end = mmio["register_area_bytes"]
         if previous_end < 40 or previous_end % 4:
-            errors.append("Register area does not cover the V2 control registers")
+            errors.append("Register area does not cover final scalar control registers")
         for window in sorted(mmio["windows"], key=lambda value: value["offset"]):
             start, size = window["offset"], window["size_bytes"]
             if start % 4 or size <= 0 or size % 4:

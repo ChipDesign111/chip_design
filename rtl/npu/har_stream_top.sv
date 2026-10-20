@@ -1,5 +1,4 @@
-// Optional streaming NPU; enabled only by CHIP_STREAM_NPU in the SoC wrapper.
-// Keep legacy arithmetic RTL and MMIO implementation separately buildable.
+// Final W8A4 NPU: packed input staging, continuous compute and batch results.
 module har_stream_top(
     input logic clka,rst_ni,ena,wea,
     input logic [11:0] addra,
@@ -14,7 +13,6 @@ module har_stream_top(
     logic [15:0] mult;
     logic [4:0] shift;
     logic [6:0] count;
-    logic [1:0] mode;
     logic error,weight_read_q;
     logic [31:0] read_data,read_q;
     logic [255:0] packet[0:1];
@@ -31,7 +29,7 @@ module har_stream_top(
     wire [511:0] expanded;
     wire input_ready;
     wire input_valid=pending_count!=0;
-    assign stream_ready_o=busy_o && pending_count==0 && packet_index==0 && !packet_full && (mode[0] || input_ready);
+    assign stream_ready_o=busy_o && pending_count==0 && packet_index==0 && !packet_full;
     genvar n;
     generate for(n=0;n<64;n=n+1) begin: unpack
         assign expanded[n*8+:8]={{4{packed_input[n*4+3]}},packed_input[n*4+:4]};
@@ -53,7 +51,7 @@ module har_stream_top(
     wire [191:0] result_scores;
     wire [2:0] result_class;
     wire [31:0] cycles,fc1_issues,fc2_issues,overlap;
-    har_stream_core core(.clk(clka),.rst_ni(rst_ni),.start(start),.sample_count(count),.mode(mode),
+    har_stream_core core(.clk(clka),.rst_ni(rst_ni),.start(start),.sample_count(count),
         .in_valid(input_valid),.in_ready(input_ready),.in_features(expanded),
         .bias1(bias1),.bias2(bias2),.requant_mult(mult),.requant_shift(shift),
         .busy(busy_o),.done(done),.result_valid(result_valid),.result_id(result_id),
@@ -64,7 +62,7 @@ module har_stream_top(
     assign douta=weight_read_q ? weight_data:read_q;
     always_ff @(posedge clka or negedge rst_ni) begin
         if(!rst_ni) begin
-            bias1<=0;bias2<=0;mult<=1;shift<=0;count<=0;mode<=3;error<=0;
+            bias1<=0;bias2<=0;mult<=1;shift<=0;count<=0;error<=0;
             packet_index<=0;pending_count<=0;packet_full<=0;packet_rd<=0;read_q<=0;weight_read_q<=0;
         end else begin
             read_q<=read_data;weight_read_q<=ena && !wea && is_weight;
@@ -90,7 +88,7 @@ module har_stream_top(
                 else if(addra==4) begin if(dina[31:16]!=0) error<=1;else mult<=dina[15:0];end
                 else if(addra==5) begin if(dina>31) error<=1;else shift<=dina[4:0];end
                 else if(addra==962) begin if(dina==0 || dina>64) error<=1;else count<=dina[6:0];end
-                else if(addra==963) begin if(dina!=0 && dina!=1 && dina!=3) error<=1;else mode<=dina[1:0];end
+                else if(addra==963) begin if(dina!=3) error<=1;end
                 else if(addra>=624 && addra<656) bias1[(addra-624)*32+:32]<=dina;
                 else if(addra>=656 && addra<662) bias2[(addra-656)*32+:32]<=dina;
             end
@@ -104,7 +102,7 @@ module har_stream_top(
                 4:read_data={16'b0,mult};
                 5:read_data={27'b0,shift};
                 962:read_data={25'b0,count};
-                963:read_data={30'b0,mode};
+                963:read_data=32'd3;
                 964:read_data=cycles;
                 965:read_data=fc1_issues;
                 966:read_data=fc2_issues;

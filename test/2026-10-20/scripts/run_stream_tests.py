@@ -11,23 +11,28 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(ROOT))
 from tools.workspace import WORK, begin_run, finish_run
-sys.path.insert(0,str(ROOT/'test/2026-10-15/scripts'))
-from run_tests import execute,tool
+from tools.simulation import execute,tool
 
-NEW_RTL=['rtl/npu/common/har_dot_tile.sv','rtl/npu/common/har_weight_store.sv',
+NEW_RTL=['rtl/npu/har_dot_tile.sv','rtl/npu/har_weight_store.sv',
          'rtl/npu/har_stream_core.sv','rtl/npu/har_stream_top.sv']
 
 
 def vectors(directory,data_root=None):
     directory.mkdir(parents=True,exist_ok=True)
     config=json.loads((ROOT/'model/quantization/w8a4.json').read_text())
-    with np.load(ROOT/'model/export/weights_int8.npz',allow_pickle=False) as z:
+    with np.load(ROOT/'model/weights.npz',allow_pickle=False) as z:
         w1=z['fc1_weight_int8'].astype(np.int64);w2=z['fc2_weight_int8'].astype(np.int64)
         indices=z['feat_idx'].astype(int)
     values=w1.ravel().tolist()+w2.ravel().tolist()
     words=[sum((int(v)&255)<<(8*k) for k,v in enumerate(values[i:i+4])) for i in range(0,len(values),4)]
     words+=config['bias1_int32']+config['bias2_int32']+[config['requant_multiplier'],config['requant_shift']]
     cases=json.loads((ROOT/'test/2026-10-20/fixtures/w8a4_soc24.json').read_text())
+    from model.reference.mlp import infer
+    for case in cases:
+        x=[(int(word)>>(4*k))&15 for word in case['input_words_u32'] for k in range(8)]
+        x=[v-16 if v>=8 else v for v in x]
+        h,s,c=infer(x)
+        assert (h,s,c)==(case['hidden_u4'],case['scores_int32'],case['class_id']),case['row_id']
     def save(name,values):
         path=directory/(name+'.hex');path.write_text(''.join(f'{int(v)&0xffffffff:08x}\n' for v in values),encoding='ascii');return path
     params=save('params',words)
@@ -44,6 +49,8 @@ def vectors(directory,data_root=None):
         for i in range(len(x)):
             packed=[sum((int(v)&15)<<(4*k) for k,v in enumerate(x[i,j:j+8])) for j in range(0,64,8)]
             full_words+=packed+h[i].tolist()+score[i].tolist()+[int(pred[i])]
+        labels=np.loadtxt(data_root/'test/y_test.txt',dtype=np.int64)-1
+        assert int(np.count_nonzero(pred==labels))==2490,'Unexpected deployed-model accuracy'
         full=save('full_vectors',full_words)
     return words,cases,params,fixture,full
 

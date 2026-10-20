@@ -18,7 +18,7 @@ def main():
     if not args.yosys:raise SystemExit('Yosys required')
     metadata=begin_run(' '.join(sys.argv));code=1
     out=WORK/'synthesis';out.mkdir(parents=True,exist_ok=True)
-    sources={'har_stream_top':['rtl/npu/common/har_dot_tile.sv','rtl/npu/common/har_weight_store.sv','rtl/npu/har_stream_core.sv','rtl/npu/har_stream_top.sv'],
+    sources={'har_stream_top':['rtl/npu/har_dot_tile.sv','rtl/npu/har_weight_store.sv','rtl/npu/har_stream_core.sv','rtl/npu/har_stream_top.sv'],
              'har_stream_dma':['rtl/dma/har_stream_dma.sv']}
     results={}
     try:

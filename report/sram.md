@@ -18,7 +18,6 @@ CPU 地址基址 0x80000000，word 地址 addr[12:2]；CLK=clk_i，CEN=~req_i，
 python tools/project.py test --suite memory
 python tools/project.py test --suite memory --memory ra1shd
 python tools/project.py test --suite soc --memory ra1shd --vsim /path/to/vsim
-python tools/project.py test --suite model-soc --memory ra1shd --vsim /path/to/vsim
 python tools/project.py synth
 ```
 
@@ -26,4 +25,4 @@ SRAM 单元覆盖 2048 地址、16 字节掩码、禁写、随机读写、同步
 
 厂商模型在零延迟 RTL 中使用明确的 +notimingchecks 功能模式；Icarus 不启用 specify。它不证明 setup/hold、目标频率或 STA/SDF 通过。Yosys 仅检查 65536-bit 同步 RAM 与单 blackbox 连接，不读取厂商 Liberty/CDL/版图内容。
 
-此宏用于 CPU 主存，不能直接折叠 NPU 的 38 个并行权重 bank。目标宏映射、电源/物理视图、时序、面积/功耗及签核仍需授权 EDA 环境完成。历史 SRAM 测试见 [2026-10-15](../test/2026-10-15/sram-integration/report.md)，该记录保留旧目录和配置语境。
+此宏用于 CPU 主存，不能直接折叠 NPU 的 38 个并行权重 bank。目标宏映射、电源/物理视图、时序、面积/功耗及签核仍需授权 EDA 环境完成。当前测试与证据见 [最终版验证](../test/2026-10-20/README.md)。

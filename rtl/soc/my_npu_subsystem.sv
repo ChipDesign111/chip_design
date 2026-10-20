@@ -31,14 +31,9 @@ module my_npu_subsystem (
   assign dma_wdata_o=wdata_i;
   assign dma_conflict_o=req_i && block_write;
 
-`ifdef CHIP_STREAM_NPU
   har_stream_top i_npu_core (
       .stream_ready_o(stream_ready_o),
       .stream_commit_i(stream_commit_i),.stream_abort_i(stream_abort_i),.stream_commit_count_i(stream_commit_count_i),
-`else
-  assign stream_ready_o=0;
-  simple_npu_top i_npu_core (
-`endif
       .clka  (clk_i),
       .wea   (we_i),
       .ena   (req_i && !dma_select && !block_write),

@@ -72,6 +72,9 @@ module tb_stream_npu;
             end
             $display("STREAM_UNIT mode=%0d samples=%0d cycles=%0d result_span=%0d",mode,samples,total_cycles,total_span);
         end
+        write_word(963,0);idle;
+        if(!dut.error) $fatal(1,"Retired pipeline configuration accepted");
+        write_word(963,3);idle;
         // Partial/failed packets must not be submitted to the arithmetic core.
         write_word(962,1);write_word(963,3);write_word(960,1);idle;
         for(j=0;j<8;j=j+1) write_word(896+j,vectors[j]);

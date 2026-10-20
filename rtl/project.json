@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "HAR_STREAM_AND_INT8_LAB3_PERIMETER_FIXED",
+  "status": "FINAL_W8A4_LAB3_SOC",
   "organization": "ChipDesign111",
   "repository": "chip_design",
   "network": {
@@ -9,11 +9,11 @@
     "classes": 6
   },
   "numeric": {
-    "input_bits": 8,
+    "input_bits": 4,
     "weight_bits": 8,
+    "hidden_bits": 4,
     "bias_bits": 32,
     "accumulator_bits": 32,
-    "hidden_bits": 8,
     "score_bits": 32
   },
   "architecture": {
@@ -26,9 +26,9 @@
     "dot_product_multipliers": 140,
     "requant_multipliers": 32,
     "weight_banks": 38,
-    "batch_max": 2,
-    "single_cycles": 39,
-    "batch2_cycles": 59
+    "weight_bytes": 2240,
+    "batch_max": 64,
+    "ideal_result_interval_cycles": 16
   },
   "mmio": {
     "base_address": 1879048192,
@@ -36,64 +36,29 @@
     "register_area_bytes": 40,
     "windows": [
       {
-        "name": "input",
-        "offset": 64,
-        "size_bytes": 64
-      },
-      {
-        "name": "weight1",
+        "name": "parameters",
         "offset": 256,
-        "size_bytes": 2048
-      },
-      {
-        "name": "weight2",
-        "offset": 2304,
-        "size_bytes": 192
-      },
-      {
-        "name": "bias1",
-        "offset": 2496,
-        "size_bytes": 128
-      },
-      {
-        "name": "bias2",
-        "offset": 2624,
-        "size_bytes": 24
-      },
-      {
-        "name": "hidden",
-        "offset": 2688,
-        "size_bytes": 32
-      },
-      {
-        "name": "scores",
-        "offset": 2816,
-        "size_bytes": 24
-      },
-      {
-        "name": "input1",
-        "offset": 3072,
-        "size_bytes": 64
-      },
-      {
-        "name": "hidden1",
-        "offset": 3136,
-        "size_bytes": 32
-      },
-      {
-        "name": "scores1",
-        "offset": 3200,
-        "size_bytes": 24
-      },
-      {
-        "name": "class1",
-        "offset": 3224,
-        "size_bytes": 4
+        "size_bytes": 2392
       },
       {
         "name": "dma_registers",
         "offset": 3328,
         "size_bytes": 32
+      },
+      {
+        "name": "input_staging",
+        "offset": 3584,
+        "size_bytes": 64
+      },
+      {
+        "name": "pipeline_control",
+        "offset": 3840,
+        "size_bytes": 40
+      },
+      {
+        "name": "classes",
+        "offset": 4096,
+        "size_bytes": 256
       }
     ]
   },
@@ -103,43 +68,8 @@
     "direction": "SRAM_TO_NPU",
     "max_burst_words": 16,
     "buffer_bytes": 64,
-    "outstanding_bursts": 1,
     "source_bytes": 8192,
-    "compute_overlap": false
+    "compute_overlap": true
   },
-  "configuration_scope": "Existing numeric/architecture/mmio/dma fields describe the default INT8 compatibility profile.",
-  "default_profile": "int8",
-  "development_profile": "stream",
-  "profiles": {
-    "int8": {
-      "define": null,
-      "npu_top": "simple_npu_top",
-      "npu_sources": "rtl/npu/baseline",
-      "dma_engine": "har_dma",
-      "batch_max": 2,
-      "input_bits": 8,
-      "hidden_range": [
-        0,
-        127
-      ],
-      "test_suite": "model-soc"
-    },
-    "stream": {
-      "define": "CHIP_STREAM_NPU",
-      "npu_top": "har_stream_top",
-      "npu_sources": "rtl/npu",
-      "dma_engine": "har_stream_dma",
-      "batch_max": 64,
-      "input_bits": 4,
-      "hidden_range": [
-        0,
-        15
-      ],
-      "weight_bits": 8,
-      "ideal_result_interval_cycles": 16,
-      "compute_overlap": true,
-      "test_suite": "stream",
-      "quantization": "model/quantization/w8a4.json"
-    }
-  }
+  "quantization": "model/quantization/w8a4.json"
 }

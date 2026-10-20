@@ -1,6 +1,7 @@
 {
   "result": "PASS",
-  "arithmetic_and_protocol": {
+  "design": "single final W8A4 SoC, no version macro",
+  "unit_and_model": {
     "samples": 24,
     "unit": [
       {
@@ -17,25 +18,77 @@
     "scope": "Final continuous mode; exact hidden/score/class, DMA protocol and packet safety",
     "full_model_rtl_samples": 2947,
     "source_sha256": {
-      "rtl/npu/common/har_dot_tile.sv": "f708d37b9e1e29d18ebd7deac1e6bb70ae08cf6cb86b8ab9f8e25b6790a4b035",
-      "rtl/npu/common/har_weight_store.sv": "c96e643656f232e4928437511c39f0bca68b72fb92c7f8eb32e73cad27969950",
-      "rtl/npu/har_stream_core.sv": "e5f6222bdac07dcf74d08ed3d20d9efc7238a03d48fdb6ccc8d3a539209d9018",
-      "rtl/npu/har_stream_top.sv": "45f2f9ebdab20bc80667202f77998bc02a1a18100b170504fb0f6f49afca6a60",
+      "rtl/npu/har_dot_tile.sv": "f708d37b9e1e29d18ebd7deac1e6bb70ae08cf6cb86b8ab9f8e25b6790a4b035",
+      "rtl/npu/har_weight_store.sv": "c96e643656f232e4928437511c39f0bca68b72fb92c7f8eb32e73cad27969950",
+      "rtl/npu/har_stream_core.sv": "c06c20a66331cff72786dfd28aaa3141c40712445e9777e87aaceb90d89ad72b",
+      "rtl/npu/har_stream_top.sv": "6810932a074ba294e97f302ef7bd9b81d222af5a7ffca9e693147ef626ef2335",
       "rtl/dma/har_stream_dma.sv": "4aec7184d5fd5399137ec18171c1780795e4ae352bf49e0bc4919fc82bb57c3c"
     }
   },
-  "soc_backends": {
-    "portable-sram": "PASS",
-    "ra1shd": "PASS"
+  "soc": {
+    "portable-sram": {
+      "memory": "portable-sram",
+      "samples": 24,
+      "firmware": {
+        "code_bytes": 644,
+        "image_used_bytes": 3904,
+        "sha256": "b6656f629ec2c3310d40bb6e04bc21feb0f025716c880d0e74ee74f30d4dca6e"
+      },
+      "metrics": {
+        "parameter_cycles": 1294,
+        "input_cycles": 606,
+        "application_cycles": 4728,
+        "warm_cycles": 3314,
+        "dma_engine_cycles": 1441,
+        "dma_read_beats": 790,
+        "dma_write_beats": 790,
+        "dma_read_bursts": 50,
+        "dma_write_bursts": 50,
+        "result_count": 24,
+        "compute_cycles": 410,
+        "transfer_compute_cycles": 187,
+        "soc_cycles": 4972
+      },
+      "precision": "W8A4",
+      "scope": "Final design only; CPU checks 24 classes, passive TB checks all hidden/score/class values"
+    },
+    "ra1shd": {
+      "memory": "ra1shd",
+      "samples": 24,
+      "firmware": {
+        "code_bytes": 644,
+        "image_used_bytes": 3904,
+        "sha256": "b6656f629ec2c3310d40bb6e04bc21feb0f025716c880d0e74ee74f30d4dca6e"
+      },
+      "metrics": {
+        "parameter_cycles": 1294,
+        "input_cycles": 606,
+        "application_cycles": 4728,
+        "warm_cycles": 3314,
+        "dma_engine_cycles": 1441,
+        "dma_read_beats": 790,
+        "dma_write_beats": 790,
+        "dma_read_bursts": 50,
+        "dma_write_bursts": 50,
+        "result_count": 24,
+        "compute_cycles": 410,
+        "transfer_compute_cycles": 187,
+        "soc_cycles": 4972
+      },
+      "precision": "W8A4",
+      "scope": "Final design only; CPU checks 24 classes, passive TB checks all hidden/score/class values"
+    }
   },
-  "soc_samples_per_version_per_backend": 24,
-  "packet_abort_order_reset": "PASS",
+  "memory_backends": [
+    "portable-sram",
+    "ra1shd"
+  ],
   "generic_synthesis": {
     "har_stream_top": {
       "multipliers": 172,
       "latches": 0,
       "memory_bits": 17920,
-      "explicit_dff_bits": 11227
+      "explicit_dff_bits": 11211
     },
     "har_stream_dma": {
       "multipliers": 0,
@@ -45,35 +98,144 @@
     },
     "scope": "Generic structure only; no mapped area/timing/power or native 4x8 multiplier claim",
     "source_sha256": {
-      "rtl/npu/common/har_dot_tile.sv": "f708d37b9e1e29d18ebd7deac1e6bb70ae08cf6cb86b8ab9f8e25b6790a4b035",
-      "rtl/npu/common/har_weight_store.sv": "c96e643656f232e4928437511c39f0bca68b72fb92c7f8eb32e73cad27969950",
-      "rtl/npu/har_stream_core.sv": "e5f6222bdac07dcf74d08ed3d20d9efc7238a03d48fdb6ccc8d3a539209d9018",
-      "rtl/npu/har_stream_top.sv": "45f2f9ebdab20bc80667202f77998bc02a1a18100b170504fb0f6f49afca6a60",
+      "rtl/npu/har_dot_tile.sv": "f708d37b9e1e29d18ebd7deac1e6bb70ae08cf6cb86b8ab9f8e25b6790a4b035",
+      "rtl/npu/har_weight_store.sv": "c96e643656f232e4928437511c39f0bca68b72fb92c7f8eb32e73cad27969950",
+      "rtl/npu/har_stream_core.sv": "c06c20a66331cff72786dfd28aaa3141c40712445e9777e87aaceb90d89ad72b",
+      "rtl/npu/har_stream_top.sv": "6810932a074ba294e97f302ef7bd9b81d222af5a7ffca9e693147ef626ef2335",
       "rtl/dma/har_stream_dma.sv": "4aec7184d5fd5399137ec18171c1780795e4ae352bf49e0bc4919fc82bb57c3c"
     }
   },
-  "compatibility_regression": {
-    "synthetic_cases": 1000,
-    "inferences": 3000,
-    "dma_protocol_cases": 227,
-    "int8_real_model_soc_samples": 24,
-    "memory_backends": [
-      "portable-sram",
-      "ra1shd"
-    ],
-    "npu_sram_dma_synthesis": "PASS"
-  },
-  "layout": {
-    "directories": [
-      "soc",
-      "platform",
-      "npu",
-      "dma"
-    ],
-    "compared_to_commit": "383499adfaec10f38f48e235d8b72f890a2d2833",
-    "all_87_sv_svh_files_byte_identical": true,
-    "relocated_sv_svh_files": 81
+  "main_memory_synthesis": {
+    "portable": {
+      "bits": 65536,
+      "synchronous_read_ports": 1,
+      "pass": true
+    },
+    "macro": {
+      "blackbox_instances": 1,
+      "pass": true
+    },
+    "tool": "Yosys 0.18+29 (git sha1 b2408df31, x86_64-w64-mingw32-g++ 9.2.1 -Os)",
+    "scope": "Generic inference/connectivity only; no vendor library, timing or physical signoff"
   },
   "source_unchanged_during_all_runs": true,
-  "scope": "Functional RTL simulation and generic structure only"
+  "source_sha256": {
+    "model/deployment.json": "db9bb565634df96919c76cfd2c3f70963eec11150f390dcacac0cfe08e2d0456",
+    "model/quantization/w8a4.json": "a06f726d466072a8cbdfc72b446fd0abbcc3e37e06a812c791094d96700476e6",
+    "model/reference/mlp.py": "c5b4f03730b84a78b634d0e556c673170704b27a13e25d34dd76cda324b84888",
+    "model/weights.npz": "bc22b7cce4ec039e4eab18de5140b555e8cb9c8345ce081a5cb11e3538e071f6",
+    "rtl/dma/har_dma_axi.sv": "a339a645b70294749ecee844969e759536a0f0f44872427691ce0d1fc0ae7e02",
+    "rtl/dma/har_stream_dma.sv": "4aec7184d5fd5399137ec18171c1780795e4ae352bf49e0bc4919fc82bb57c3c",
+    "rtl/filelist.f": "71a1a882cfd66967a1bf5925064a7ee5dfd3d49f9881146508960f4b09c4a196",
+    "rtl/npu/har_dot_tile.sv": "f708d37b9e1e29d18ebd7deac1e6bb70ae08cf6cb86b8ab9f8e25b6790a4b035",
+    "rtl/npu/har_stream_core.sv": "c06c20a66331cff72786dfd28aaa3141c40712445e9777e87aaceb90d89ad72b",
+    "rtl/npu/har_stream_top.sv": "6810932a074ba294e97f302ef7bd9b81d222af5a7ffca9e693147ef626ef2335",
+    "rtl/npu/har_weight_store.sv": "c96e643656f232e4928437511c39f0bca68b72fb92c7f8eb32e73cad27969950",
+    "rtl/platform/axi/addr_decode.sv": "84e2b6d49c834b21f13b12d94919efd9a7d541b191a0651d2cca97435a5ca85a",
+    "rtl/platform/axi/axi2mem.sv": "fff8e7e11c584755f4b0abf638880c51e77cea199a4fa40f15ac6ef2a803d39e",
+    "rtl/platform/axi/axi_adapter.sv": "e50bf7d69b52544a7c5d032f6f41817fd58aa4fb21c60dc999a89de738092c9a",
+    "rtl/platform/axi/axi_atop_filter.sv": "328ce02dcbdca8917393b2f399b856be3c4e06f561cb1347368210c9aae3f9e3",
+    "rtl/platform/axi/axi_demux.sv": "75ff0775043bea786d54781358558579e701042b2e687339fe53eb696de6e020",
+    "rtl/platform/axi/axi_err_slv.sv": "15365a63f8a7b66bb61fce39b03ad5401845f244b5acd06d7140daab2c7906a4",
+    "rtl/platform/axi/axi_id_prepend.sv": "37472cac2adfea0f0127f395ad2df8de9d0643122234113a5965dbfd82566bd7",
+    "rtl/platform/axi/axi_intf.sv": "c610a66a6c58f0f53dc4a44c2932ff034cf5855ca3fdfd2e3621b0aa30e7fb43",
+    "rtl/platform/axi/axi_mux.sv": "71b6b0187138fe1a659154f939678a92b1b36c3db7a5b74f7b64329beb107e97",
+    "rtl/platform/axi/axi_pkg.sv": "76b3797792ee5b95ab5937f3d457b48852e5c427de48298dafbdde43d0916ac2",
+    "rtl/platform/axi/axi_xbar.sv": "fe402e3efc15236b4ba66409777c0f7e959373344bd04ebbcba8bbf2582f0b16",
+    "rtl/platform/clk_rst/cluster_clk_cells.sv": "0bf54e372850c1af22264711d311d943718dc4c8d918e47cc98e9a8d07461d44",
+    "rtl/platform/clk_rst/cv32e40p_fpga_clock_gate.sv": "34cca41fb001e179819e899ad1cfe0e251193233b34e25da172db0bbbc55604e",
+    "rtl/platform/clk_rst/pulp_clk_cells.sv": "717fc6e7ec754807440f346d9b8bb930da302fffd294550e30ceae78009f4e87",
+    "rtl/platform/clk_rst/rstgen.sv": "83d9f70bab3b514062a7a79a581919afd5de466167dfcd08733c773f36ba094a",
+    "rtl/platform/clk_rst/rstgen_bypass.sv": "51322d03a0479f16a4acb66cccee48003e2e224c02a7d3188cbaea9b2f8b2756",
+    "rtl/platform/clk_rst/tc_clk.sv": "7eb340f76c76d18f4ac3b6d1d61433c7372118d24f57f83a6ceae82cdbf51c2d",
+    "rtl/platform/common_cells/cdc_2phase.sv": "3720278ce00b5591a1a63fe5515528dd4223a35070303e58cf2e48bd0b56c8c1",
+    "rtl/platform/common_cells/cf_math_pkg.sv": "afc32fcae21f6cbb834c5ee602a1aaee1b518fc436a86d4fe1b97942473d35c8",
+    "rtl/platform/common_cells/counter.sv": "b7a9b5fc11ce4def51133f27ec0470a18ae7c8c6b1161f21c948ae848b693f58",
+    "rtl/platform/common_cells/delta_counter.sv": "698851a015f2b093d5688faa02ae60f0b3ed4324a7584846a99726e1c93732f7",
+    "rtl/platform/common_cells/fifo_v2.sv": "cff163332b28e84904955e88691f973a47f90a4209b3f0ae0d2afe94f6a49921",
+    "rtl/platform/common_cells/fifo_v3.sv": "08cc968a5b26b5a68ad2c548755e6b3b0d07a7ad75a3f11e92bc1bab71eeb7c6",
+    "rtl/platform/common_cells/lzc.sv": "c47046cab67cd9e9ff46f9b2a4c055f301eabd0f135d76d96639eb41c9fa3609",
+    "rtl/platform/common_cells/rr_arb_tree.sv": "c7361280318a605131345932ab3325bc53f8fc76e67c5579b991b96a5b4ffeed",
+    "rtl/platform/common_cells/spill_register.sv": "97bf85128f538c54c749896b8eee5fcfe4b27c16845d2a17990979a63b09f2ec",
+    "rtl/platform/common_cells/spill_register_flushable.sv": "f25965444dd82ef32a8a5eaaf6bcc5f05d1ab577b42ee4157dffb38aff5ccfe9",
+    "rtl/platform/common_cells/stream_register.sv": "b4292350fdfaf9471b736dbd610d4cb0a450ed757e9f13431e4b195c53834b1c",
+    "rtl/platform/cpu_cv32e40p/include/cv32e40p_apu_core_pkg.sv": "33d7c06b0fef3ae2c8814b040abe3cdaa23065cf12643de20e8275f44f97abe1",
+    "rtl/platform/cpu_cv32e40p/include/cv32e40p_fpu_pkg.sv": "ae738f408ba2ade41bfcf0488c8f611a2c39b26915191890dac907b8a7a518e5",
+    "rtl/platform/cpu_cv32e40p/include/cv32e40p_pkg.sv": "3fee39d262ef44bff6ee00b591fe08830e5e35cdd1b9e5eb9eb06da6f6525805",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_aligner.sv": "c78cd8c09fee10e45536dc5b8d1fb17c3a130e2270168279fcaa43a19580e4f3",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_alu.sv": "6eca8d4c2e299adcc498417220478360cc22898ba9037cdad6a1b81e80373c7b",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_alu_div.sv": "11035bcbb28447fa5a3e40d5cad4f257e763f75e49664ce8098ab6247a9a57cb",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_apu_disp.sv": "27931c8004e4d266c6ea02c9d5c19968c67d7e6ab86e57da4088531b13c8c48f",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_compressed_decoder.sv": "db90df2f8737aff29d73b3d242dd33aeb6750ae69ae7eb8e118b531180945d7f",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_controller.sv": "858b172963e17529de0b40a5be6ddfdadfc60bdca967819e4fc558b0ed6d7b87",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_core.sv": "6a78a0d77d32e6795f63e5149f77b98320ce504c67c44a2e359c9aea70989224",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv": "e2cec8f3d273748783275c60b1ec89101336608638d7e7783b03dd6b9dbb0345",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_decoder.sv": "6e12f673e05380e34a35c38d8ee8b6878935d96b6f2dfda72c67f8a6e92a6e4e",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_ex_stage.sv": "1510df315721b370c2d86b1c1d134a3ff6beefba2d072de7a4a611e3ecffb753",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_ff_one.sv": "6b646e6aa931f8ab56b85ee27549a422450b456270a54d68a4130329823226b6",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_fifo.sv": "d910cbd0751f38d349e8975de22b43d0a2937f9e905b0d9b82894fd83c53fe8a",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_fp_wrapper.sv": "1579104bf82f2e18a13029a7e299d867415a660ccff24c20ca3bb4ee4e315e9d",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_hwloop_regs.sv": "c2a0787c07bcd6c198b6338c4c6ee372b4bce96ec4a4def467ff0ae03da4e43a",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv": "98b246d9ada45a7073d217d5c3bbc86941ee76bb00e7e0edda61d3bbec83728e",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_if_stage.sv": "e2d1cc9bc433a093938f2d4e4268c611f9a9bf199101e85114d417ff04597626",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_int_controller.sv": "24df51d9cb33f5c8760a8cfbc7931aafc94c2ab0523c7df55b2635e7778af16f",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_load_store_unit.sv": "857962513fc5bd3eb3d6b28c55fdfb15ef53f8ce8a59173a7d583efb8caee66f",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_mult.sv": "6a0cf2f15c69886ad5497222aa203f6f5b1fdd004b32a4ab87b36a0960ba2254",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv": "2b0a58e5c2f758dbe5f6e8f786c547da5508ce466007517434e2f7d817b758ed",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_popcnt.sv": "7a2dbeded21929832b40fc8d068b35b7281c75a63c426feed207127d4da08e4e",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_prefetch_buffer.sv": "a2fcbe6b783659ebecaf25d105f30c68af9b68c2850b833af64a2cec3ec29262",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_prefetch_controller.sv": "66e6078ea3b3acd3ceea4b974c0488d25e02324935532de1f2d39cdc34c875a0",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_register_file_ff.sv": "cd04d46afbf778ff3f1573bdd390784e5461a09b33fd670fa126ae7d3c433e89",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_sleep_unit.sv": "1cf012a83b54472931ad9944e7774e311222641a0aa026229c19467f90bf5448",
+    "rtl/platform/cpu_cv32e40p/rtl/cv32e40p_top.sv": "2467f6b3c2745e687edad1a0c88ab5267b4ba8642c91e1fc0f282cf4223e5dc3",
+    "rtl/platform/debug/debug_rom.sv": "fa60eaab03518e8e145a3f0a626bc7945e79265e8322ce874a6c8f6996f0e10b",
+    "rtl/platform/debug/dm_csrs.sv": "0538bf1d829187699085de361d20ab79d04a459b06060a8f04709105f61818dc",
+    "rtl/platform/debug/dm_mem.sv": "cf047a8b7654f2cb0d36050c41b57cf95bf0a0a21f5dea346d38aa0da57c24fe",
+    "rtl/platform/debug/dm_pkg.sv": "c46075cb09de0e773c91da62d02497673945b7a3e5de176363e5b5e118f82eea",
+    "rtl/platform/debug/dm_sba.sv": "e7e30ce0f0e6f652dcf59e586933cada245018b80f2529da476b4272e86e4380",
+    "rtl/platform/debug/dm_top.sv": "5fa2656a11759ff10fd016ed885761c9c379627b9a1b83ddee6e03a35ee9e23f",
+    "rtl/platform/debug/dmi_cdc.sv": "ad8a13c8314b9a3c28228db2844466c9d750460d6afa8f6299a7229d80f8dd47",
+    "rtl/platform/debug/dmi_jtag.sv": "807cf3fb86fe7060cdb1fa21dfbc843220b09a4d694d23ad4bc1cdd3e7118264",
+    "rtl/platform/debug/dmi_jtag_tap.sv": "50d1b4d325694f4e898d5b2f2e7b26a7e631a5abdd1cd283500c900b079275ab",
+    "rtl/platform/include/axi/assign.svh": "fda021db4c1c67e0345bcf8feb5a501d77e759ce56cef31e6293bdce89ec6a84",
+    "rtl/platform/include/axi/typedef.svh": "c2ef2098fea077e07100b9b9c40f2ac5453e7e01af407e236a810b43aeb8b2ef",
+    "rtl/platform/include/common_cells/assertions.svh": "d44ed5ffbbfb69c65f5b398428c6b5b5a1103883b925040cbc7bece257d13b1a",
+    "rtl/platform/include/common_cells/registers.svh": "a4e19da894564fd30a4dec4ca8466d181592c9202be2bf124fc4caa82b432d25",
+    "rtl/platform/include/my_soc_pkg.sv": "1366702d96b1ea493246dd813261956309bd14bccdb627121662de2b014ea83b",
+    "rtl/platform/memory/bootram.sv": "4aa5f14dbb92a7ac9855f3019486a51a42ba210242a58b653b3e59049c2d82bf",
+    "rtl/platform/memory/bootrom.sv": "24f7966a9f6bd58e6cf28e9803b0bf1c66bb84feb5aef6306c472caba7be3710",
+    "rtl/platform/memory/chip_sram_2048x32.sv": "a0d9920d941e58cd5c55a26392446b1ad4f1072b9050828537e44d49b39f646b",
+    "rtl/platform/memory/my_mainmem.sv": "d51f738950f52a014b67affb24dc2e5c9d54d9f8e47a6e9b968a0c5693cace0f",
+    "rtl/platform/memory/ra1shd_blackbox.sv": "bc8f3dbb1f1e7bc13338f986431a731aec51e457f8f1c93ca4eb90a0a2782874",
+    "rtl/project.json": "790a1482c70befbc28dc813bf4ce2daabfcb2e88e44c8361fc9b9fb75ce5e929",
+    "rtl/soc/my_npu_subsystem.sv": "16674e05f1e65ab5030da9d2ee216cd0a1e6de46abf1a6ac978d0a21379fcfbd",
+    "rtl/soc/my_soc_top.sv": "972ea1f9585d4a20fe11fe8f24065df36f3e4c97de84f482ea9c985eefcc6130",
+    "test/2026-10-20/fixtures/provenance.json": "dea0c2c2c8862a6e29f2f61de76445cc0fa8dc86cdb893e42bd37050a5811ee6",
+    "test/2026-10-20/fixtures/w8a4_soc24.json": "ea489b05bfe8ebd1e28e09e2a6bbc2ddab079f1613033f1089eaac4dead4a184",
+    "test/2026-10-20/rtl/tb_mainmem_sram.sv": "f90c21b7ec1ce99917cd299877b5d3b59e6db7301507bc7bef0c493d2547b4eb",
+    "test/2026-10-20/rtl/tb_soc.sv": "b9889a2eaf20054aa37eb01614101366622c7dad447e4bfe9b855181fe4c509e",
+    "test/2026-10-20/rtl/tb_stream_dma.sv": "708db6d5b5ee95bc6d3e4ba1fdf6cb3bd5091bd646880739bc77e57c7315f3f5",
+    "test/2026-10-20/rtl/tb_stream_npu.sv": "ca0be4c28aa764beee58bed83d201e8fb009ef71f9430b19fe7eb1afc3545bfa",
+    "test/2026-10-20/scripts/check_sram_synthesis.py": "d5f6fe20a531c1386ba1f055af9621965a333deee32f8aa027671424dc56c90c",
+    "test/2026-10-20/scripts/check_stream_synthesis.py": "7fae9d4cec2a138488091fb459e3e7591ae19bc542f9e095a096f2b279b13a82",
+    "test/2026-10-20/scripts/run_soc_tests.py": "24bf50931c41686f70b1c7073a51b7b9f746769118d39b9244391d3b2c21a02c",
+    "test/2026-10-20/scripts/run_sram_tests.py": "2c329c4670156e88c92cff49f2114c4d4304199f6797480f15a9bb2b4e025112",
+    "test/2026-10-20/scripts/run_stream_tests.py": "104145b49fc6980e6d338b841e18c99be1b75706674737c4a7fc77cadae3f9e6",
+    "tools/check_hardware.py": "23a6ab2d9d4b1695df6e79a59a87dac1405f493787f5b99340acf80671bcb9b4",
+    "tools/check_repo.py": "ad5903f11bb7b31680123174309ead40887b93e91ac420d64760b24b2c1d4fa2",
+    "tools/download_uci_har.py": "1c7540f297f45dfb289fddd51147d3e521cf21f26450120fe191e71fa5f11218",
+    "tools/memory_profile.py": "88280cccfc10efce1acd1d9268a24d99394b2ba4e2ae74c4158a810db09b688c",
+    "tools/project.py": "dadbcdd52a4176476b501daab2d810f8832cedb84caf9af846a91db3614e1cb9",
+    "tools/riscv_assembler.py": "895f0971e33a290dd40a4981f6987f73273e0f735e37bad676842f3d66cce46a",
+    "tools/simulation.py": "f72446bf735fb6fea5def4bafd730ff4b76dac5144acb21b3874c6dbf79719af",
+    "tools/workspace.py": "58fd9d922dfad7459e648eb9cb818a24994cd0aa0643bb0d6d3161fd6f3dd329"
+  },
+  "finished_at": {
+    "final-only-ci": "2026-10-20T17:27:09.925450+08:00",
+    "final-only-model": "2026-10-20T17:27:39.310701+08:00",
+    "final-only-soc": "2026-10-20T17:27:11.222675+08:00",
+    "final-only-vendor": "2026-10-20T17:27:10.652116+08:00",
+    "final-only-vendor-memory": "2026-10-20T17:26:55.079151+08:00"
+  },
+  "scope": "Final design only; functional simulation and generic structure, no physical signoff"
 }

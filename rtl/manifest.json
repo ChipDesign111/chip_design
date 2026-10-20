@@ -371,11 +371,13 @@
     {
       "source": "soc/rtl/my_npu_subsystem.sv",
       "path": "rtl/soc/my_npu_subsystem.sv",
-      "sha256": "66bd4ae033caae78d4333926c445d4f9cd758e8d275ae76fc973eacc102ae036",
+      "sha256": "16674e05f1e65ab5030da9d2ee216cd0a1e6de46abf1a6ac978d0a21379fcfbd",
       "previous_sha256": "4d09e3bf393b9571e7c2da52a64161deec6e3812d513600465fa32c1e192fe24",
       "project_override": "2026-10-15: user-requested AXI DMA master and NPU CSR routing; integration source intentionally updated, not original-byte identity",
       "stream_previous_sha256": "b0b6b9000d63845282840c9d56ffcfed00c34f454457e35231e680510557a2f0",
-      "stream_override": "Optional CHIP_STREAM_NPU compile profile and local input-slot readiness; default legacy mode preserved."
+      "stream_override": "Optional CHIP_STREAM_NPU compile profile and local input-slot readiness; default legacy mode preserved.",
+      "final_only_previous_sha256": "66bd4ae033caae78d4333926c445d4f9cd758e8d275ae76fc973eacc102ae036",
+      "final_only_override": "2026-10-20: directly instantiate final W8A4 NPU; remove alternate INT8 compile path."
     },
     {
       "source": "soc/rtl/my_soc_top.sv",
@@ -399,6 +401,6 @@
     "date": "2026-10-20",
     "perimeter_root": "rtl/platform",
     "integration_root": "rtl/soc",
-    "policy": "Path-only relocation; source, original provenance and all existing SHA-256 values preserved."
+    "policy": "Single final W8A4 design; tile and weight storage are direct NPU modules. Prior public implementation is archived locally."
   }
 }

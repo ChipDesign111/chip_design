@@ -1,0 +1,43 @@
+{
+  "dataset": "UCI Human Activity Recognition Using Smartphones",
+  "doi": "10.24432/C54S4K",
+  "license": "CC BY 4.0",
+  "source_url": "https://archive.ics.uci.edu/dataset/240/human+activity+recognition+using+smartphones",
+  "X_test_sha256": "99035209add50d17650e847d8a4658d784a5707466ebb7c2deb97c28e5250a78",
+  "y_test_sha256": "2a94cb53ca46b956c1b2aebd4a09a72badd8a8e9ea9cdfe9f31b3306a08666bb",
+  "zero_based_row_ids": [
+    79,
+    857,
+    1803,
+    2888,
+    133,
+    1038,
+    2008,
+    2946,
+    109,
+    1017,
+    2003,
+    2936,
+    31,
+    947,
+    1914,
+    2822,
+    0,
+    929,
+    1885,
+    2788,
+    55,
+    980,
+    1943,
+    2858
+  ],
+  "label_order": [
+    "WALKING",
+    "WALKING_UPSTAIRS",
+    "WALKING_DOWNSTAIRS",
+    "SITTING",
+    "STANDING",
+    "LAYING"
+  ],
+  "quantization": "model/quantization/w8a4.json"
+}

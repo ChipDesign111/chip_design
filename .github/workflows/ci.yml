@@ -36,51 +36,16 @@ jobs:
           python-version: "3.12"
       - name: Install simulator
         run: sudo apt-get update && sudo apt-get install -y iverilog
+      - run: python -m pip install -r model/requirements.txt
       - name: Verify prerequisites
         run: python tools/project.py doctor --require unit
       - run: python tools/project.py test --suite unit
       - run: python tools/project.py test --suite memory
-      - run: python tools/project.py test --suite dma-unit
       - name: Retain regression evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: rtl-regression
-          path: |
-            test/*/runs/**/report.md
-            test/*/runs/**/manifest.json
-            test/*/runs/**/results/*.json
-            test/*/runs/**/logs/*.log
-            test/*/runs/**/scripts/*.py
-            test/*/runs/**/testbench/*.sv
-            test/*/runs/**/tools/*.py
-            test/*/runs/**/synthesis/**/*.log
-            test/*/runs/**/synthesis/**/summary.json
-          if-no-files-found: ignore
-          retention-days: 14
-
-  model:
-    name: Trained model
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          cache: pip
-          cache-dependency-path: model/requirements.txt
-      - run: python -m pip install -r model/requirements.txt
-      - run: sudo apt-get update && sudo apt-get install -y iverilog
-      - name: Verify prerequisites
-        run: python tools/project.py doctor --require model
-      - run: python tools/project.py test --suite model
-      - run: python tools/project.py test --suite stream-unit
-      - name: Retain model evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: trained-model
           path: |
             test/*/runs/**/report.md
             test/*/runs/**/manifest.json
@@ -107,7 +72,6 @@ jobs:
       - name: Verify prerequisites
         run: python tools/project.py doctor --require synthesis
       - run: python tools/project.py synth
-      - run: python test/2026-10-20/scripts/check_stream_synthesis.py
       - name: Retain structure evidence
         if: always()
         uses: actions/upload-artifact@v4

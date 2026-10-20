@@ -147,7 +147,7 @@ module tb_stream_dma;
         for(i=0;i<2048;i=i+1) source[i]=32'h12345678^(i*32'h10204081);
         for(i=0;i<1024;i=i+1) target[i]=32'hdeadbeef;
         repeat(3) @(negedge clk);rst_n=1;
-        // Same responder/TB and payload checks for baseline-vs-streaming timing.
+        // Check FIFO throughput using the same responder and payload scoreboard.
         // Ideal independent AXI targets; full SoC timing is measured separately.
         if($test$plusargs("BENCHMARK")) begin
             for(i=0;i<4;i=i+1) begin

@@ -1,13 +1,7 @@
-# DMA：AXI 接入与输入流搬运
+# 最终流式 DMA
 
-| 文件 | 作用 |
-| --- | --- |
-| [har_dma_axi.sv](har_dma_axi.sv) | SoC AXI通道/元数据适配；根据CHIP_STREAM_NPU选择引擎 |
-| [har_stream_dma.sv](har_stream_dma.sv) | 最终版：独立读写推进、16字FIFO、NPU信用、成功响应后提交 |
-| [baseline/har_dma.sv](baseline/har_dma.sv) | INT8兼容引擎：先读完整块，再写入目标窗口 |
+[har_stream_dma.sv](har_stream_dma.sv) 是唯一搬运引擎；[har_dma_axi.sv](har_dma_axi.sv) 直接接入SoC AXI，不再按宏选择旧引擎。
 
-CPU配置DMA CSR（NPU基址0x70000000，加偏移0xD00），DMA经AXI从8 KiB主SRAM读数据，再写NPU。它不直接修改权重bank内部信号，也不绕过总线。权重按原598字布局装载一次；最终版输入64维INT4打包成8个32 bit字，最多两条输入/16字突发。
+CPU配置0x70000D00的DMA寄存器，经32 bit总线从8 KiB主SRAM读数据并写NPU。权重/偏置共598字，输入每条8字。16字FIFO与两帧输入暂存允许读、写、计算重叠；仅收到正确RLAST/RRESP及OKAY BRESP后提交输入，错误不提交。
 
-最终版流目的地址是0x70000E00。软件先配置并ARM NPU，再提交1～64条输入的DMA；源地址32 B对齐，长度为8×样本数个字。两帧暂存的信用阻止覆盖；只有完整正确的RLAST/RRESP和OKAY BRESP才提交输入，错误则丢弃暂存帧。32 bit读写总线、FIFO和计算可以重叠，不等于整层权重一次全并行装载。
-
-改最终引擎运行 `python tools/project.py test --suite stream-unit`（248项协议及NPU检查），再跑 `--suite stream --memory portable-sram|ra1shd --vsim /path/to/vsim`。改兼容引擎还需跑 `dma-unit` 和 `dma`。完整协议、错误恢复、接口与性能见 [最终版设计](../../report/streaming.md)；[INT8 DMA说明](../../report/dma.md) 属于兼容路径。
+软件先配置并ARM NPU，再搬运1～64条输入到0x70000E00；源32 B对齐、长度为8×样本数个字。信用防止覆盖未消费的包。运行 `python tools/project.py test --suite unit`、双后端 `soc` 及 `synth`。协议与异常恢复见 [设计](../../report/streaming.md)。

@@ -23,14 +23,9 @@ module har_dma_axi (
     assign master.aw_lock=0;assign master.aw_cache=0;assign master.aw_prot=0;
     assign master.aw_qos=0;assign master.aw_region=0;assign master.aw_atop=0;
     assign master.aw_user=1;assign master.w_user=1;assign master.w_strb=4'hf;
-`ifdef CHIP_STREAM_NPU
     har_stream_dma i_engine (
         .stream_ready_i(stream_ready_i),
         .stream_commit_o(stream_commit_o),.stream_abort_o(stream_abort_o),.stream_commit_count_o(stream_commit_count_o),
-`else
-    assign stream_commit_o=0;assign stream_abort_o=0;assign stream_commit_count_o=0;
-    har_dma i_engine (
-`endif
         .clk_i(clk_i),.rst_ni(rst_ni),.reg_req_i(reg_req_i),.reg_we_i(reg_we_i),
         .reg_addr_i(reg_addr_i),.reg_wdata_i(reg_wdata_i),.reg_rdata_o(reg_rdata_o),
         .npu_busy_i(npu_busy_i),.conflict_i(conflict_i),.busy_o(busy_o),

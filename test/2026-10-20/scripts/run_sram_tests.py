@@ -9,7 +9,7 @@ sys.path.insert(0,str(ROOT))
 from tools.workspace import WORK, TEST_ROOT
 sys.path.insert(0, str(ROOT))
 from tools.memory_profile import sources
-from run_tests import RESULTS, execute, tool
+from tools.simulation import RESULTS, execute, tool
 
 
 def main():
@@ -29,7 +29,7 @@ def main():
     try:
         execute(name + "_compile", [tool("iverilog", args.iverilog), "-g2012", *flags,
             "-s", "tb_mainmem_sram", "-o", image, *inputs,
-            ROOT / "test/2026-10-15/rtl/tb_mainmem_sram.sv"])
+            ROOT / "test/2026-10-20/rtl/tb_mainmem_sram.sv"])
         execute(name, [tool("vvp", args.vvp), image], cwd=out,
                 marker="SRAM_UNIT PASS reads=6128 writes=4064 masks=16")
     finally:

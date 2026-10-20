@@ -16,17 +16,12 @@ sys.path.insert(0, str(ROOT))
 from tools.workspace import SCRIPTS, begin_run, finish_run
 PROFILE_REQUIREMENTS = {
     "repository": ("python",),
-    "unit": ("python", "iverilog", "vvp"),
+    "unit": ("python", "numpy", "iverilog", "vvp"),
     "memory": ("python", "iverilog", "vvp"),
-    "dma-unit": ("python", "iverilog", "vvp"),
-    "dma": ("python", "numpy", "iverilog", "vvp", "vsim"),
-    "stream-unit": ("python", "numpy", "iverilog", "vvp"),
-    "stream": ("python", "numpy", "iverilog", "vvp", "vsim"),
-    "model": ("python", "numpy", "iverilog", "vvp"),
-    "soc": ("python", "vsim"),
-    "model-soc": ("python", "numpy", "iverilog", "vvp", "vsim"),
+    "soc": ("python", "numpy", "vsim"),
     "synthesis": ("python", "yosys"),
 }
+
 
 
 def resolve_tool(name: str, override: str | None) -> str | None:
@@ -82,153 +77,68 @@ def require_profiles(details: dict, profiles: list[str]) -> bool:
     return True
 
 
-def command_plan(args: argparse.Namespace, tools: dict) -> list[list[str]]:
-    def command(script: str, *flags: str) -> list[str]:
-        directory = ROOT / "tools" if script in ("check_repo.py", "check_hardware.py", "download_uci_har.py") else SCRIPTS
-        return [sys.executable, str(directory / script), *flags]
+def command_plan(args, tools):
+    def flags(*names):
+        return [v for name in names if tools[name] for v in ("--"+name,tools[name])]
+    def script(name,*extra):return [sys.executable,str(SCRIPTS/name),*extra]
+    checks=[[sys.executable,str(ROOT/"tools"/name)] for name in ("check_repo.py","check_hardware.py")]
+    unit=script("run_stream_tests.py",*flags("iverilog","vvp"))
+    if getattr(args,"data_root",None):unit += ["--data-root",str(args.data_root.expanduser().resolve())]
+    memory=script("run_sram_tests.py","--memory",getattr(args,"memory","portable-sram"),*flags("iverilog","vvp"))
+    soc=script("run_soc_tests.py","--memory",getattr(args,"memory","portable-sram"),*flags("vsim"))
+    synthesis=[script(name,*flags("yosys")) for name in ("check_stream_synthesis.py","check_sram_synthesis.py")]
+    if args.command=="check":return checks
+    if args.command=="download-data":return [[sys.executable,str(ROOT/"tools/download_uci_har.py")]]
+    if args.command=="synth":return synthesis
+    if args.command=="ci":return checks+[unit,memory]+synthesis
+    return {"unit":[unit],"memory":[memory],"soc":[soc],"all":[unit,memory,soc]}[args.suite]
 
-    def simulator_flags(*names: str) -> list[str]:
-        flags = []
-        for name in names:
-            if tools[name]:
-                flags.extend(["--" + name, tools[name]])
-        return flags
-
-    def test_command(suite: str) -> list[str]:
-        if suite in ("stream-unit", "stream"):
-            flags = simulator_flags("iverilog", "vvp")
-            flags.append("--unit")
-            if args.data_root: flags.extend(["--data-root", str(args.data_root.expanduser().resolve())])
-            return [sys.executable, str(ROOT/"test/2026-10-20/scripts/run_stream_tests.py"), *flags]
-
-        if suite in ("dma-unit", "dma"):
-            flags = simulator_flags("iverilog", "vvp")
-            if suite == "dma-unit":flags.append("--unit")
-            else:flags.extend(["--memory", args.memory, *simulator_flags("vsim")])
-            return command("run_dma_tests.py", *flags)
-        if suite == "memory":
-            return command("run_sram_tests.py", "--memory", args.memory,
-                           *simulator_flags("iverilog", "vvp"))
-        if suite == "unit":
-            return command("run_tests.py", "--unit", "--count", str(args.count),
-                           *simulator_flags("iverilog", "vvp"))
-        if suite == "soc":
-            return command("run_tests.py", "--soc", "--memory", args.memory,
-                           *simulator_flags("vsim"))
-        flags = simulator_flags("iverilog", "vvp")
-        if suite == "model":
-            flags.append("--unit")
-        else:
-            flags.extend(simulator_flags("vsim"))
-            flags.extend(["--memory", args.memory])
-        if args.data_root:
-            flags.extend(["--data-root", str(args.data_root.expanduser().resolve())])
-        return command("run_model_tests.py", *flags)
-
-    checks = [command("check_repo.py"), command("check_hardware.py")]
-    if args.command == "check":
-        return checks
-    if args.command == "download-data":
-        return [command("download_uci_har.py")]
-    if args.command == "synth":
-        return [command(name, *simulator_flags("yosys"))
-                for name in ("check_synthesis.py", "check_sram_synthesis.py", "check_dma_synthesis.py")]
-    if args.command == "ci":
-        return checks + [
-            command("run_tests.py", "--unit", *simulator_flags("iverilog", "vvp")),
-            command("run_sram_tests.py", *simulator_flags("iverilog", "vvp")),
-            command("run_dma_tests.py", "--unit", *simulator_flags("iverilog", "vvp")),
-            command("run_model_tests.py", "--unit", *simulator_flags("iverilog", "vvp")),
-            command("check_synthesis.py", *simulator_flags("yosys")),
-            command("check_sram_synthesis.py", *simulator_flags("yosys")),
-            command("check_dma_synthesis.py", *simulator_flags("yosys")),
-        ]
-    suites = ["unit", "memory", "dma-unit", "model", "soc", "model-soc", "dma"] if args.suite == "all" else [args.suite]
-    planned = [test_command(suite) for suite in suites]
-    if args.suite == "stream":
-        planned.append([sys.executable, str(ROOT/"test/2026-10-20/scripts/run_version_compare.py"),
-                        "--memory", args.memory, *simulator_flags("vsim")])
-    return planned
-
-
-def parser() -> argparse.ArgumentParser:
-    result = argparse.ArgumentParser(description=__doc__)
-    commands = result.add_subparsers(dest="command", required=True)
-
-    def add_tools(command: argparse.ArgumentParser) -> None:
-        for name in ("iverilog", "vvp", "vsim", "yosys"):
-            command.add_argument("--" + name, help=f"Explicit {name} executable")
-
-    doctor = commands.add_parser("doctor", help="Report local prerequisites without changing the host")
-    doctor.add_argument("--require", action="append", choices=PROFILE_REQUIREMENTS, default=[])
-    add_tools(doctor)
-    commands.add_parser("check", help="Check repository policy, links, configuration and frozen inputs")
-    test = commands.add_parser("test", help="Run a verification suite")
-    test.add_argument("--suite", choices=["unit", "memory", "dma-unit", "dma", "model", "soc", "model-soc", "stream-unit", "stream", "all"], default="unit")
-    test.add_argument("--memory", choices=["portable-sram", "ra1shd"], default="portable-sram",
-                      help="CPU main-memory backend for memory/SoC suites")
-    test.add_argument("--count", type=int, default=1000, help="Synthetic cases, 12..1000 (unit suite)")
-    test.add_argument("--data-root", type=Path, help="Official UCI root; omitted uses 24 real fixtures")
+def parser():
+    result=argparse.ArgumentParser(description=__doc__)
+    commands=result.add_subparsers(dest="command",required=True)
+    def add_tools(command):
+        for name in ("iverilog","vvp","vsim","yosys"):command.add_argument("--"+name)
+    doctor=commands.add_parser("doctor",help="Report prerequisites")
+    doctor.add_argument("--require",action="append",choices=PROFILE_REQUIREMENTS,default=[]);add_tools(doctor)
+    commands.add_parser("check",help="Check final-design paths, links, MMIO and perimeter")
+    test=commands.add_parser("test",help="Test the single final W8A4 design")
+    test.add_argument("--suite",choices=["unit","memory","soc","all"],default="unit")
+    test.add_argument("--memory",choices=["portable-sram","ra1shd"],default="portable-sram")
+    test.add_argument("--data-root",type=Path,help="Official UCI dataset; unit/all adds all 2947 inputs")
     add_tools(test)
-    add_tools(commands.add_parser("synth", help="Check generic Yosys structure without a technology library"))
-    add_tools(commands.add_parser("ci", help="Run the same local suites as public CI"))
-    commands.add_parser("download-data", help="Download official UCI test data to ignored data/")
+    add_tools(commands.add_parser("synth",help="Final NPU/DMA and main SRAM generic structure"))
+    add_tools(commands.add_parser("ci",help="Public final-design checks without a licensed SoC simulator"))
+    commands.add_parser("download-data")
     return result
 
-
-def main(argv: list[str] | None = None) -> int:
-    cli = parser()
-    args = cli.parse_args(argv)
-    try:
-        details, tools = environment(args)
-    except ValueError as error:
-        cli.error(str(error))
-    if args.command == "doctor":
-        print(json.dumps(details, indent=2))
-        return 0 if require_profiles(details, args.require or ["repository"]) else 1
-
-    required = ["repository"]
-    if args.command == "synth":
-        required.append("synthesis")
-    elif args.command == "ci":
-        required.extend(["unit", "model", "synthesis"])
-    elif args.command == "test":
-        if args.suite in ("dma", "dma-unit") and args.data_root:
-            cli.error("DMA benchmark uses the fixed 24-row real fixture; --data-root applies to model suites")
-        if args.memory == "ra1shd" and args.suite in ("unit", "model"):
-            cli.error("--memory applies to memory, soc, model-soc or all suites")
-        if args.memory == "ra1shd":
+def main(argv=None):
+    cli=parser();args=cli.parse_args(argv)
+    try:details,tools=environment(args)
+    except ValueError as e:cli.error(str(e))
+    if args.command=="doctor":
+        print(json.dumps(details,indent=2));return 0 if require_profiles(details,args.require or ["repository"]) else 1
+    required=["repository"]
+    if args.command=="synth":required += ["synthesis"]
+    elif args.command=="ci":required += ["unit","memory","synthesis"]
+    elif args.command=="test":
+        required += ["unit","memory","soc"] if args.suite=="all" else [args.suite]
+        if args.memory=="ra1shd":
             from tools.memory_profile import vendor_model
-            try:
-                vendor_model()
-            except FileNotFoundError as error:
-                cli.error(str(error))
-        if not 12 <= args.count <= 1000:
-            cli.error("--count must be in 12..1000")
+            try:vendor_model()
+            except FileNotFoundError as e:cli.error(str(e))
         if args.data_root:
-            path = args.data_root.expanduser().resolve()
-            if not all((path / "test" / name).is_file() for name in ("X_test.txt", "y_test.txt")):
-                cli.error("--data-root must contain test/X_test.txt and test/y_test.txt")
-        required.extend(["unit", "memory", "dma-unit", "dma", "model", "soc", "model-soc"] if args.suite == "all" else [args.suite])
-    if not require_profiles(details, required):
-        return 1
-
-    record = begin_run(args.command + (" " + args.suite if args.command == "test" else "")) if args.command in ("test", "ci", "synth") else None
-    exit_code = 0
+            if args.suite not in ("unit","all"):cli.error("--data-root applies to unit/all; SoC uses the fixed 24-row self-check")
+            if not all((args.data_root/"test"/n).is_file() for n in ("X_test.txt","y_test.txt")):cli.error("Invalid --data-root")
+    if not require_profiles(details,required):return 1
+    record=begin_run(args.command+(" "+args.suite if args.command=="test" else "")) if args.command in ("test","ci","synth") else None
+    code=0
     try:
-        for command in command_plan(args, tools):
-            print(">>> " + Path(command[1]).name + " " + " ".join(command[2:]), flush=True)
-            result = subprocess.run(command, cwd=ROOT, check=False)
-            if result.returncode:
-                print(f"FAILED: {Path(command[1]).name} (exit {result.returncode})", file=sys.stderr)
-                exit_code = result.returncode if result.returncode > 0 else 1
-                break
+        for command in command_plan(args,tools):
+            print(">>> "+Path(command[1]).name+" "+" ".join(command[2:]),flush=True)
+            code=subprocess.run(command,cwd=ROOT,check=False).returncode
+            if code:break
     except Exception:
-        if record:
-            finish_run(record, 1)
+        if record:finish_run(record,1)
         raise
-    return finish_run(record, exit_code) if record else exit_code
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+    return finish_run(record,code) if record else code
+if __name__=="__main__":raise SystemExit(main())

@@ -67,16 +67,13 @@ rtl/platform/cpu_cv32e40p/rtl/cv32e40p_sleep_unit.sv
 rtl/platform/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv
 rtl/platform/cpu_cv32e40p/rtl/cv32e40p_core.sv
 rtl/platform/cpu_cv32e40p/rtl/cv32e40p_top.sv
-rtl/dma/baseline/har_dma.sv
 rtl/dma/har_dma_axi.sv
 rtl/soc/my_npu_subsystem.sv
 rtl/soc/my_soc_top.sv
 rtl/platform/memory/chip_sram_2048x32.sv
 rtl/platform/memory/my_mainmem.sv
-rtl/npu/common/har_dot_tile.sv
-rtl/npu/common/har_weight_store.sv
-rtl/npu/baseline/har_npu_core.sv
-rtl/npu/baseline/simple_npu_top.sv
+rtl/npu/har_dot_tile.sv
+rtl/npu/har_weight_store.sv
 
 rtl/npu/har_stream_core.sv
 rtl/npu/har_stream_top.sv

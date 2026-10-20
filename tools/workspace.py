@@ -7,7 +7,7 @@ from pathlib import Path
 import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
-TEST_ROOT = ROOT / "test/2026-10-15"
+TEST_ROOT = ROOT / "test/2026-10-20"
 SCRIPTS = TEST_ROOT / "scripts"
 now = datetime.now(timezone(timedelta(hours=8)))
 default_run = ROOT / "test" / now.strftime("%Y-%m-%d") / "runs" / (now.strftime("%H%M%S_%f") + "_" + str(os.getpid()))
@@ -20,9 +20,9 @@ os.environ["CHIP_TEST_RUN"] = str(WORK)
 def source_hashes():
     candidates = list((ROOT / "rtl").rglob("*.sv")) + list((ROOT / "rtl").rglob("*.svh"))
     candidates += list((ROOT / "test").glob("*/scripts/*.py")) + list((ROOT / "test").glob("*/rtl/*.sv"))
-    candidates += list((ROOT / "tools").glob("*.py")) + list((ROOT / "model/export").glob("*"))
+    candidates += list((ROOT / "tools").glob("*.py")) + list((ROOT / "model").glob("*.npz")) + list((ROOT / "model").glob("*.json")) + list((ROOT / "model/reference").glob("*.py"))
     candidates += list((ROOT / "model/quantization").glob("*.json")) + list((ROOT / "test/2026-10-20/fixtures").glob("*.json"))
-    candidates += [ROOT / "rtl/filelist.f", ROOT / "rtl/project.json", TEST_ROOT / "fixtures/har_uci24.json"]
+    candidates += [ROOT / "rtl/filelist.f", ROOT / "rtl/project.json"]
     return {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
             for p in sorted(candidates) if p.is_file() and p.suffix != ".md"}
 
