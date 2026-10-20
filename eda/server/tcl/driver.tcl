@@ -73,6 +73,7 @@ if {[catch {
     }
     if {!$eda_headless} {win}
     source [file join $eda_work flow config repair.tcl]
+    source [file join $eda_work flow tcl fanout.tcl]
     set sram_objects [dbGet -e top.insts.cell.name RA1SHD_2048x32M8 -p2]
     if {[llength $sram_objects] != 1} {error "Expected exactly one native main SRAM macro"}
     set eda_sram [dbGet [lindex $sram_objects 0].name]
@@ -126,6 +127,7 @@ if {[catch {
                 eda_run 32_initial.tcl
                 for {set iteration 0} {$iteration < $eda_repair_iterations} {incr iteration} {
                     set current_dir [expr {$iteration == 0 ? "../my_soc_top/reports/postRoute" : "../my_soc_top/reports/postRoute_holdAuto_check"}]
+                    if {[eda_fix_fanout $current_dir] > 0} {set current_dir ../my_soc_top/reports/postRoute_fanout_check}
                     set bad [eda_timing_bad $current_dir]
                     if {$bad == 0} {break}
                     if {[eda_timing_bad $current_dir Setup] > 0} {

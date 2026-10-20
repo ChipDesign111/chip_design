@@ -25,11 +25,13 @@ def clear_step_outputs(work, step):
     candidates.extend(root / name for name in names.get(step, []))
     for prefix in {31: ['postRoute', 'postAntennaFix'], 32: ['postHoldAuto'], 33: ['postFiller']}.get(step, []):
         candidates.extend(root.glob('my_soc_top_' + prefix + '*.rpt'))
-    directories = {26: ['preCTS'], 28: ['postCTS'], 29: ['postCTS_holdFix', 'postCTS_holdFix_check'], 32: ['postRoute', 'postRoute_setupAuto', 'postRoute_holdAuto', 'postRoute_holdAuto_check'], 33: ['postFiller']}
+    directories = {26: ['preCTS'], 28: ['postCTS'], 29: ['postCTS_holdFix', 'postCTS_holdFix_check'], 32: ['postRoute', 'postRoute_setupAuto', 'postRoute_holdAuto', 'postRoute_holdAuto_check', 'postRoute_fanout_check'], 33: ['postFiller']}
     for name in directories.get(step, []):
         candidates.extend((root / 'reports' / name).glob('*.summary*'))
     if step == 34:
         candidates.extend((root / 'outputs/manual_final').glob('*'))
+    if step == 32:
+        candidates.extend((work / 'evidence/fanout_plans').glob('*.json'))
     candidates.extend((work / 'evidence/commands' / ('%02d' % step)).glob('*.tcl'))
     for p in candidates:
         if p.is_file():
@@ -119,6 +121,26 @@ def antenna_count(path):
     raise ValueError('Unrecognized antenna report: ' + str(path))
 
 
+def fanout_targets(path):
+    """Read real, report-listed violations; never turn an unknown format into zero."""
+    text = load_text(path)
+    total = re.search(r'\*info: there are (\d+) max fanout load violations in the design\.', text)
+    real = re.search(r'\*info: (\d+) violations are real', text)
+    number = r'[-+]?(?:\d+(?:\.\d*)?|\.\d+)'
+    rows = re.findall(r'^(\S+)\s*\n[ \t]+(\S+)[ \t]+(' + number + r')[ \t]+(' + number + r')[ \t]+(' + number + r')[ \t]+(\S+)[ \t]+R[ \t]*$', text, re.M)
+    if not total or not real or int(total.group(1)) != int(real.group(1)) or len(rows) != int(total.group(1)):
+        raise ValueError('Incomplete/non-real fanout report; inspect before ECO: ' + str(path))
+    result = []
+    for net, driver, maximum, actual, slack, master_pin in rows:
+        maximum, actual, slack = map(float, [maximum, actual, slack])
+        if maximum <= 0 or actual <= maximum or abs(maximum - actual - slack) > 0.003:
+            raise ValueError('Inconsistent fanout load row: ' + net)
+        result.append({'net': net, 'driver': driver, 'maximum_load': maximum, 'actual_load': actual, 'master_pin': master_pin})
+    if len({row['net'] for row in result}) != len(result):
+        raise ValueError('Duplicate fanout target nets')
+    return result
+
+
 def placement(path):
     text = load_text(path)
     unplaced = re.search(r'Number of Unplaced Instances\s*=\s*(\d+)', text)
@@ -181,6 +203,20 @@ def signal_connectivity(work, path):
         raise ValueError('Unverified signal connectivity problem: ' + str(path))
     record = json.loads(proof.read_text())
     identity = hashlib.sha256((work / 'evidence/input_manifest.json').read_bytes()).hexdigest()
+    if record.get('input_manifest_sha256') != identity:
+        fixture_path = work / 'evidence/physical_fixture.json'
+        reaudit_path = work / 'evidence/inherited_io_reaudit.json'
+        if not fixture_path.is_file() or not reaudit_path.is_file():
+            raise ValueError('IO abstract exception lacks same-run native/placement evidence')
+        fixture = json.loads(fixture_path.read_text())
+        reaudit = json.loads(reaudit_path.read_text())
+        original_sha = hashlib.sha256(proof.read_bytes()).hexdigest()
+        if (fixture.get('target_input_manifest_sha256') != identity
+                or fixture.get('inherited_stage_records_sha256', {}).get('22') != original_sha
+                or record.get('input_manifest_sha256') != fixture.get('reference_input_manifest_sha256')
+                or reaudit.get('source_step22_sha256') != original_sha):
+            raise ValueError('Invalid checkpoint inheritance for IO evidence')
+        record = reaudit
     native = record.get('automatic_checks', {}).get('io_native_geometry', {})
     if record.get('input_manifest_sha256') != identity or not native.get('native_rails_and_corner_turns_checked') or native.get('actual_perimeter_continuity_checked_at_step') != 12 or not (work / 'evidence/native_io_rails_check.json').is_file():
         raise ValueError('IO abstract exception lacks same-run native/placement evidence')

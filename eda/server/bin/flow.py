@@ -21,7 +21,7 @@ if sys.version_info < (3, 8):
 
 SERVER = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SERVER / 'tools'))
-from checks import audit_step, area_summary, load_text, mapped_netlist_check, clear_step_outputs
+from checks import audit_step, area_summary, load_text, mapped_netlist_check, clear_step_outputs, timing, fanout_targets
 from generate import generate_steps
 
 
@@ -342,6 +342,31 @@ def sizing(work):
     return record
 
 
+def fanout_plan(work, directory):
+    verify_inputs(work)
+    directory = directory.resolve()
+    directory.relative_to((work / 'pnr/my_soc_top/reports').resolve())
+    counts = timing(directory)['Setup']['drv']['max_fanout']
+    targets, source = [], None
+    if counts['real'] or counts['total']:
+        files = list(directory.glob('*.fanout')) + list(directory.glob('*.fanout.gz'))
+        if len(files) != 1:
+            raise ValueError('Expected one current fanout detail report')
+        source = files[0]
+        targets = fanout_targets(source)
+        if len(targets) != counts['real'] or counts['real'] != counts['total']:
+            raise ValueError('Summary/fanout detail counts disagree')
+    folder = work / 'evidence/fanout_plans'
+    number = len(list(folder.glob('plan_*.json'))) + 1
+    record = {'input_manifest_sha256': sha(work / 'evidence/input_manifest.json'), 'summary_directory': str(directory), 'reported_counts': counts, 'targets': targets, 'fanout_report_sha256': sha(source) if source else None, 'scope': 'Report-derived ECO targets, not a pass assertion; native timing/DRV/antenna/DRC checks follow'}
+    write_json(folder / ('plan_%02d.json' % number), record)
+    lines = ['set eda_fanout_targets {}']
+    for row in targets:
+        lines.append('lappend eda_fanout_targets [list %s %s %g %g]' % (tcl(row['net']), tcl(row['driver']), row['maximum_load'], row['actual_load']))
+    (work / 'pnr/generated/32_fanout_plan.tcl').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+    print('EDA_FANOUT_PLAN targets=%d source=%s' % (len(targets), directory))
+
+
 @contextmanager
 def display_environment(work, headless):
     env = os.environ.copy()
@@ -396,6 +421,17 @@ def pnr(work, until, headless=False):
     plan = sizing(work)
     last_file = work / 'evidence/last_step.txt'
     last = int(last_file.read_text()) if last_file.exists() else 0
+    fixture_path = work / 'evidence/physical_fixture.json'
+    if fixture_path.is_file():
+        fixture = json.loads(fixture_path.read_text())
+        if sha(work / 'evidence/input_manifest.json') != fixture['target_input_manifest_sha256']:
+            raise ValueError('Physical fixture input identity changed')
+        if last == fixture['seed_step']:
+            for name, expected in fixture['seed_files_sha256'].items():
+                p = (work / name).resolve()
+                p.relative_to(work)
+                if not p.is_file() or sha(p) != expected:
+                    raise ValueError('Physical seed checkpoint changed: ' + name)
     if until <= last:
         raise ValueError('Requested step already completed; use a later --until or a new project')
     driver = work / 'pnr/generated/driver.tcl'
@@ -443,6 +479,11 @@ def classify_tool_errors(work, text):
 def report(work):
     preparation = json.loads((work / 'evidence/preparation.json').read_text())
     lines = ['# 本轮EDA运行记录', '', '工程：`' + str(work) + '`', '', '配置与源身份：见input_manifest.json、source.json和preparation.json。', '', '功能证据已附：' + str(preparation['functional_evidence_attached']) + '。EDA流程不等于功能回归或独立工艺签核。', '']
+    fixture_path = work / 'evidence/physical_fixture.json'
+    fixture = json.loads(fixture_path.read_text()) if fixture_path.exists() else None
+    current_identity = sha(work / 'evidence/input_manifest.json')
+    if fixture:
+        lines.extend(['**检查点继承：** 本工程从已验证来源工程的第%d步物理检查点继续，来源为`%s`。早期步骤保留原始证据和原输入身份，不表示在本工程重跑。具体输入比对及种子数据库SHA见physical_fixture.json。' % (fixture['seed_step'], fixture['reference_work']), ''])
     if (work / 'evidence/unexpected_tool_errors.json').exists():
         lines.extend(['**存在未解决的工具错误，不能按阶段进度宣布整轮通过。** 见unexpected_tool_errors.json。', ''])
     lines.extend(['## Genus输入、展开、综合与交接', '', '输入清单有%d份RTL；主存选择与源身份见preparation.json。' % preparation['rtl_files'], ''])
@@ -468,7 +509,14 @@ def report(work):
             for command in commands:
                 lines.extend(['`' + command.name + '`', '', '```tcl', command.read_text(encoding='utf-8').rstrip(), '```', ''])
         if n in stages:
-            lines.extend(['**本轮结果：** 步骤命令与对应自动检查已通过；详见`step_%02d.json`，独立验收范围以该JSON为准。' % n, '', '```json', json.dumps(stages[n], ensure_ascii=False, indent=2), '```', ''])
+            inherited = stages[n]['input_manifest_sha256'] != current_identity
+            if inherited:
+                if not fixture or sha(work / ('evidence/step_%02d.json' % n)) != fixture['inherited_stage_records_sha256'].get(str(n)):
+                    raise ValueError('Stage evidence has an unverified input identity: %d' % n)
+                message = '**继承结果：** 来源工程已执行并通过此步骤；保留其原始输入身份与报告，不声称本工程重新执行。'
+            else:
+                message = '**本轮结果：** 步骤命令与对应自动检查已通过；详见`step_%02d.json`，独立验收范围以该JSON为准。' % n
+            lines.extend([message, '', '```json', json.dumps(stages[n], ensure_ascii=False, indent=2), '```', ''])
         else:
             lines.extend(['**本轮结果：未完成。**', ''])
     output = work / 'evidence/运行报告.md'
@@ -520,7 +568,7 @@ def package(work):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
-    for name in ['prepare', 'doctor', 'elaborate', 'synth', 'size', 'pnr', 'all', 'status', 'report', 'package', 'unlock', 'geometry', 'begin-step', 'audit-step']:
+    for name in ['prepare', 'doctor', 'elaborate', 'synth', 'size', 'pnr', 'all', 'status', 'report', 'package', 'unlock', 'geometry', 'begin-step', 'audit-step', 'fanout-plan']:
         p = sub.add_parser(name)
         p.add_argument('--work', required=True)
         if name in ['prepare', 'all']:
@@ -532,6 +580,8 @@ def main():
             p.add_argument('--step', type=int, required=True)
         if name == 'geometry':
             p.add_argument('--die', type=float, nargs=4, required=True)
+        if name == 'fanout-plan':
+            p.add_argument('--directory', type=Path, required=True)
     args = parser.parse_args()
     work = Path(args.work).expanduser().resolve()
     if args.command == 'prepare':
@@ -546,6 +596,9 @@ def main():
         return 0
     if args.command == 'begin-step':
         clear_step_outputs(work, args.step)
+        return 0
+    if args.command == 'fanout-plan':
+        fanout_plan(work, args.directory)
         return 0
     if args.command == 'all' and not work.exists():
         prepare(args)

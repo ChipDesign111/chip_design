@@ -17,7 +17,7 @@ from unittest import mock
 EDA = Path(__file__).resolve().parents[1]
 SERVER = EDA / 'server'
 sys.path.insert(0, str(SERVER / 'tools'))
-from checks import area_summary, antenna_count, placement, timing, require_clean_report, signal_connectivity, clear_step_outputs, archive_report_references
+from checks import area_summary, antenna_count, placement, timing, require_clean_report, signal_connectivity, clear_step_outputs, archive_report_references, fanout_targets
 from generate import generate_steps
 spec = importlib.util.spec_from_file_location('eda_flow', SERVER / 'bin/flow.py')
 flow = importlib.util.module_from_spec(spec)
@@ -153,6 +153,40 @@ class FlowTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             signal_connectivity(self.root, p)
 
+    def inherited_io_proof(self):
+        self.io_proof()
+        old_path = self.root / 'evidence/step_22.json'
+        old = json.loads(old_path.read_text())
+        old_sha = hashlib.sha256(old_path.read_bytes()).hexdigest()
+        new_manifest = self.write('evidence/input_manifest.json', '{"new_controller":true}\n')
+        identity = hashlib.sha256(new_manifest.read_bytes()).hexdigest()
+        fixture = {'target_input_manifest_sha256': identity, 'reference_input_manifest_sha256': old['input_manifest_sha256'], 'inherited_stage_records_sha256': {'22': old_sha}}
+        self.write('evidence/physical_fixture.json', json.dumps(fixture))
+        reaudit = {'input_manifest_sha256': identity, 'source_step22_sha256': old_sha, 'automatic_checks': old['automatic_checks']}
+        self.write('evidence/inherited_io_reaudit.json', json.dumps(reaudit))
+
+    def test_inherited_io_needs_matching_source_record_and_fresh_reaudit(self):
+        p = self.io_report(); self.inherited_io_proof()
+        self.assertEqual(signal_connectivity(self.root, p)['unresolved_signal_problems'], 0)
+        (self.root / 'evidence/inherited_io_reaudit.json').unlink()
+        with self.assertRaises(ValueError):
+            signal_connectivity(self.root, p)
+
+    def test_changed_inherited_io_record_is_rejected(self):
+        p = self.io_report(); self.inherited_io_proof()
+        q = self.root / 'evidence/step_22.json'
+        q.write_text(q.read_text() + '\n')
+        with self.assertRaises(ValueError):
+            signal_connectivity(self.root, p)
+
+    def test_reaudit_from_another_target_input_is_rejected(self):
+        p = self.io_report(); self.inherited_io_proof()
+        q = self.root / 'evidence/inherited_io_reaudit.json'
+        value = json.loads(q.read_text()); value['input_manifest_sha256'] = 'other-input'
+        q.write_text(json.dumps(value))
+        with self.assertRaises(ValueError):
+            signal_connectivity(self.root, p)
+
     def test_placement_message_exception_needs_current_step_and_check(self):
         text = 'EDA_BEGIN_STEP 24\n**ERROR: (IMPSP-9099) placement diagnostic\n'
         self.assertEqual(len(flow.classify_tool_errors(self.root, text)[0]), 1)
@@ -243,7 +277,7 @@ class FlowTests(unittest.TestCase):
             self.skipTest('tkinter not installed; remote tclsh validation is separate')
         tcl = tkinter.Tcl()
         out = self.geometry()
-        paths = list(out.glob('*.tcl')) + [SERVER / 'tcl/driver.tcl']
+        paths = list(out.glob('*.tcl')) + list((SERVER / 'tcl').glob('*.tcl'))
         for p in paths:
             self.assertTrue(int(tcl.call('info', 'complete', p.read_text(encoding='utf-8'))), p.name)
 
@@ -263,7 +297,7 @@ class FlowTests(unittest.TestCase):
         self.write('pnr/generated/08.tcl', 'set observed i_mainmem/i_mainmem\n')
         for key, value in [('eda_work', self.root.as_posix()), ('step', 8), ('eda_command_index', 0), ('eda_sram', 'i_mainmem/i_sram/i_macro')]:
             tcl.setvar(key, value)
-        tcl.call('eda_run', '08.tcl')
+        self.assertEqual(tcl.call('eda_run', '08.tcl'), 'i_mainmem/i_sram/i_macro')
         self.assertEqual(tcl.getvar('observed'), 'i_mainmem/i_sram/i_macro')
         records = list((self.root / 'evidence/commands/08').glob('*.tcl'))
         self.assertEqual(len(records), 1)
@@ -301,6 +335,52 @@ class FlowTests(unittest.TestCase):
             pin = 'I' if signal['direction'] == 'output' else 'C'
             self.assertEqual(tcl.getvar('connections(%s,%s)' % (pad, pin)), 'core_' + port)
             self.assertEqual(tcl.getvar('connections(%s,PAD)' % pad), port)
+
+    def fanout_report(self):
+        return ('weights/net_1\n    weights/driver/ZN 16.000 17.000 -1.000 INVD6BWP7T/ZN R\n'
+                'weights/net_2\n    weights/driver2/Z 16.000 17.000 -1.000 BUFFD2BWP7T/Z R\n'
+                '*info: there are 2 max fanout load violations in the design.\n'
+                '*info: 2 violations are real (remark R).\n')
+
+    def test_fanout_parser_extracts_real_report_targets(self):
+        targets = fanout_targets(self.write('fanout.rpt', self.fanout_report()))
+        self.assertEqual([r['net'] for r in targets], ['weights/net_1', 'weights/net_2'])
+        self.assertEqual(targets[0]['maximum_load'], 16)
+        self.assertEqual(targets[0]['actual_load'], 17)
+
+    def test_fanout_missing_row_cannot_look_like_zero(self):
+        text = self.fanout_report().splitlines()
+        with self.assertRaises(ValueError):
+            fanout_targets(self.write('fanout.rpt', '\n'.join(text[2:])))
+
+    def test_fanout_nonreal_or_inconsistent_report_is_rejected(self):
+        for value in [self.fanout_report().replace('2 violations are real', '1 violations are real'), self.fanout_report().replace('-1.000', '-2.000')]:
+            with self.assertRaises(ValueError):
+                fanout_targets(self.write('fanout.rpt', value))
+
+    def test_fanout_branch_keeps_antenna_on_original_net(self):
+        tcl = self.tcl_helpers()
+        tcl.eval((SERVER / 'tcl/fanout.tcl').read_text(encoding='utf-8'))
+        rows = [(i, 10, 'logic_%02d/A' % i, 'ND2D1BWP7T') for i in range(16)]
+        rows.insert(0, (-1, 10, 'DIODE_11/I', 'ANTENNABWP7T'))
+        selected = tcl.call('eda_choose_fanout_terms', tuple(rows))
+        self.assertEqual(len(selected), 8)
+        self.assertNotIn('DIODE_11/I', selected)
+        self.assertEqual(list(selected), ['logic_%02d/A' % i for i in range(8)])
+
+    def test_fanout_no_two_logical_receivers_requires_adaptation(self):
+        tcl = self.tcl_helpers()
+        tcl.eval((SERVER / 'tcl/fanout.tcl').read_text(encoding='utf-8'))
+        with self.assertRaises(Exception):
+            tcl.call('eda_choose_fanout_terms', ((1, 2, 'DIODE/I', 'ANTENNABWP7T'), (2, 3, 'logic/A', 'ND2D1BWP7T')))
+
+    def test_fanout_regex_matches_literal_bus_and_special_net_name(self):
+        tcl = self.tcl_helpers()
+        tcl.eval((SERVER / 'tcl/fanout.tcl').read_text(encoding='utf-8'))
+        name = 'weights/data[7].net*'
+        pattern = tcl.call('eda_literal_net_pattern', name)
+        self.assertEqual(int(tcl.call('regexp', pattern, name)), 1)
+        self.assertEqual(int(tcl.call('regexp', pattern, 'weights/data7XnetANY')), 0)
 
     def test_deployment_archive_has_linux_checksum_and_no_libraries(self):
         archive = self.root / 'deploy.tar.gz'

@@ -26,4 +26,4 @@ python tools/project.py synth --yosys /path/to/yosys
 
 旧INT8实现、旧驱动/测试/训练材料及版本比较程序保存在仓库外的本地归档，含完整源码、Git bundle和SHA清单。管理方法见 [归档说明](report/local_archive.md)。当前分支不依赖本地归档或旧Git历史即可构建和测试。
 
-当前功能结果见test记录；EDA提供部署与执行流程，具体完成阶段及验证范围见 [EDA验证说明](eda/validation/README.md)。FPGA和独立目标工艺签核尚未完成。来源与授权见 [组件声明](report/THIRD_PARTY_NOTICES.md)。
+当前功能结果见test记录；EDA已实测完成当前单TT教学配置下的综合、布局布线和GDS导出，阶段数据及输入/检查点来源见 [EDA验证说明](eda/validation/README.md)。FPGA和独立目标工艺签核尚未完成。来源与授权见 [组件声明](report/THIRD_PARTY_NOTICES.md)。

@@ -25,3 +25,7 @@ bash server/bin/eda.sh package --work "$HOME/chip_eda_runs/w8a4_run01"
 `template/`是带来源注释的课程流程适配基础；`tcl/steps/`按讲义保存操作。执行入口会把它们变换到工程`pnr/generated/`：适配工作目录、当前宏实例、实际裸片尺寸、PAD映射与动态检查。不要绕过命令入口直接source原步骤文件。
 
 GUI截图使用当前DISPLAY，或自动申请100–199间一个空闲Xvfb显示；只回收本次启动的Xvfb。无图形环境可加`--headless`，执行范围相同但不生成截图。日志和JSON必须保留；完整签核范围见操作指南。
+
+第32步会读取当前扇出明细，对普通单驱动网络插非反相缓冲分支；保留原天线二极管，重新布线和提取RC，再按同一约束复核。不会提高扇出限制或放宽时钟。详细步骤、支持范围和失败处理见操作指南。
+
+完整package之后，可用`bash server/bin/review.sh --work <本轮工作目录>`生成review_delivery.tar.gz、校验文件和review_manifest.json。轻量包保留配置、源文件、阶段证据、报告、截图和gzip层次网表，大型DEF/GDS/flat网表/SPEF/SDF留远端并记录SHA及大小。review.sh使用部署程序收集结果，验证本轮冻结控制程序的输入与库身份，不改已有工程输入。
