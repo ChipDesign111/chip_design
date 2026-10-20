@@ -20,7 +20,7 @@ REQUIRED_FILES = (
     ".github/workflows/ci.yml", "test/README.md", "tools/README.md",
 )
 REQUIRED_DIRS = ("rtl", "model", "tools", "test", "report", "fpga", "eda")
-EXCLUDED_PARTS = {".git", "data", "local", "runs", ".venv", "venv", "__pycache__"}
+EXCLUDED_PARTS = {".git", "data", "local", "runs", "dist", ".venv", "venv", "__pycache__"}
 
 
 def files(suffix: str):
@@ -64,9 +64,16 @@ def check() -> list[str]:
     rtl_text = "\n".join(p.read_text(encoding="utf-8") for p in files(".sv"))
     if "CHIP_STREAM_NPU" in rtl_text or "module simple_npu_top" in rtl_text or "module har_npu_core" in rtl_text:
         errors.append("Only the final W8A4 hardware may be present")
-    for name in ("fpga", "eda"):
+    for name in ("fpga",):
         if (ROOT/name).exists() and any(p.name != ".gitkeep" for p in (ROOT/name).iterdir()):
             errors.append(name + " must remain empty except for its Git placeholder")
+    for name in ("eda/README.md", "eda/docs/操作指南.md", "eda/server/bin/flow.py", "eda/package_server.py"):
+        if not (ROOT/name).is_file():
+            errors.append("Missing EDA deployment/documentation entry: " + name)
+    for path in (ROOT/"eda").rglob("*"):
+        if path.is_file() and not {"dist", "runs", "__pycache__"}.intersection(path.relative_to(ROOT/"eda").parts):
+            if any(s.lower() in {".lib", ".lef", ".vclef", ".gds", ".gds2", ".cdl", ".spi", ".db"} for s in path.suffixes):
+                errors.append("Licensed/process implementation data must stay outside EDA source: " + str(path.relative_to(ROOT)))
     if (ROOT/"rtl/npu/lab3").exists(): errors.append("Original NPU must not be retained")
     for doc in files(".md"):
         content = doc.read_text(encoding="utf-8")

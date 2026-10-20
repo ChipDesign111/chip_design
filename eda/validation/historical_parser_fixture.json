@@ -1,0 +1,40 @@
+{
+  "scope": "New parsers against original Lab4 real final reports/exports; NOT new W8A4 physical results. Same-run IO proof container simulated from historical native-rail evidence for this parser fixture.",
+  "final_checks_passed": true,
+  "export_checks": {
+    "independent_foundry_DRC_LVS_executed": false,
+    "SDF_simulation_executed": false,
+    "def_pins": {
+      "ports": [
+        "VDD",
+        "VDDPST",
+        "VSS",
+        "VSSPST",
+        "clk_i",
+        "rst_ni",
+        "tck_i",
+        "td_i",
+        "td_o",
+        "tms_i"
+      ],
+      "dbu_per_um": 2000,
+      "all_rectangles_directions_uses_match_geometry_plan": true
+    },
+    "sdf_non_top_instances_matched": 29322,
+    "spef_networks": 31554,
+    "gds_structures": 562,
+    "gds_undefined_references": [],
+    "scope": "Structural correspondence only; not equivalence, foundry DRC/LVS, IR/EM/ESD or actual SDF backannotation"
+  },
+  "source_fixture_sha256": {
+    "my_soc_top.def": "756eb50cf056b3e605b5099eb624a37dddbf060983352d7980bbfff96158b9b9",
+    "my_soc_top.gds.gz": "cacd2230cf7b5a9d2c1c9e5a280fa680d4fb6831a1930d785b2ed6abdafa442d",
+    "my_soc_top.lef": "ab94f76c4d9f76d9e46b6c5b0c95a51ab8a80795e6d15b3f2d35c6e56812c1b1",
+    "my_soc_top.sdc": "0e15478ecac22c015b656a9aa1750cd8dda751752585922d259b528fb564916e",
+    "my_soc_top_flat_lvs.v": "235a56fc0c088e6a3e0ea18f1a91be60e30a1bdbb3b0a0a1bb8f895ebacdd83c",
+    "my_soc_top_hier_postpnr.v": "05ff5c07ed28977cf481bd80dba6e6d317ecd12e8dece0f4b9a8254d7730d464",
+    "my_soc_top_path_adjust.tcl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "my_soc_top_tt_io.sdf.gz": "8dea7589017b8aa1324334b05cc37b534d9150a12d991805969ca5460d500792",
+    "my_soc_top_tt_io.spef.gz": "f95d236607824405fda336624c0556a0883ddd5dd09d514130b8304dfc97b373"
+  }
+}

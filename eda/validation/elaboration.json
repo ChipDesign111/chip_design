@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-20",
+  "scope": "Fresh complete W8A4 SoC RTL elaboration, not mapped PPA or physical signoff",
+  "remote_work": "/home/s2400011041/eda_validation/20261020_eda_9d2c7f/work",
+  "rtl_files": 77,
+  "main_sram_define": "CHIP_USE_RA1SHD",
+  "commands_completed": true,
+  "error_lines": 0,
+  "no_unresolved_references": true,
+  "no_empty_modules": true,
+  "warnings_retained": true,
+  "other_check_design_items_require_contextual_review": true,
+  "tool": "Genus 19.17-s144_1",
+  "controller_sha256": "3e842e7c9f679072cfbf1f530150dc873c6a961d18a970945f658df36a643b2f",
+  "evidence_sha256": {
+    "genus_elaborate.log": "88e1eaa796d09a30bd0bfd2213b08d65bb3aa1e020ce464ffa2cc4a70518812f",
+    "elaborate_check.rpt": "d9c9398a1e8dc1dd37b4d2015558dccc1d347e9dc04f5ada5d376b606258606b",
+    "input_manifest.json": "bf903b687849c57a20990756a44cbad2ac7267a3a7b0fe18db68f0fba3c04eba",
+    "elaboration_status.json": "ede58ee716170bbc1ebd95acf58824e98a14a0be124e04283690b2c344f89047"
+  }
+}

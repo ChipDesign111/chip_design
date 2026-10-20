@@ -24,6 +24,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: python tools/project.py check
+      - name: EDA deployment and controller regression
+        run: python -m unittest discover -s eda/tests -v
 
   rtl:
     name: RTL regression

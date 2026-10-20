@@ -11,7 +11,8 @@
 | [test](test/README.md) | 最终版核级、DMA、SRAM及完整SoC验证 |
 | [report](report/README.md) | 最终版架构、接口、设计与验证方法 |
 | [tools](tools/README.md) | 统一入口、RV32I固件生成及检查 |
-| fpga / eda | 后续实现占位 |
+| [eda](eda/README.md) | TSMC180部署包、阶段脚本、逐步操作指南与验收 |
+| fpga | 后续实现占位 |
 
 ```sh
 python -m pip install -r model/requirements.txt
@@ -25,4 +26,4 @@ python tools/project.py synth --yosys /path/to/yosys
 
 旧INT8实现、旧驱动/测试/训练材料及版本比较程序保存在仓库外的本地归档，含完整源码、Git bundle和SHA清单。管理方法见 [归档说明](report/local_archive.md)。当前分支不依赖本地归档或旧Git历史即可构建和测试。
 
-当前仅交付功能仿真与通用结构检查，FPGA和目标工艺签核尚未完成。来源与授权见 [组件声明](report/THIRD_PARTY_NOTICES.md)。
+当前功能结果见test记录；EDA提供部署与执行流程，具体完成阶段及验证范围见 [EDA验证说明](eda/validation/README.md)。FPGA和独立目标工艺签核尚未完成。来源与授权见 [组件声明](report/THIRD_PARTY_NOTICES.md)。

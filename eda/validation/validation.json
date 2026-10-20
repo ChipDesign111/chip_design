@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-20",
+  "rtl_baseline_commit": "e5015aa375ee210f6c600262fd4ae1a1c5d9f624",
+  "scope": "EDA deployment, control programs and explicitly listed fresh tool stages; no claim of full physical implementation or independent foundry signoff",
+  "local": {
+    "python": "3.12.10",
+    "unit_tests_passed": 29,
+    "repository_policy": "PASS",
+    "retained_hardware_sha256_checks": 75,
+    "server_python_38_grammar_files": 7,
+    "functional_rtl_hashes_matched_to_existing_evidence": 86,
+    "functional_simulation_rerun_for_this_change": false,
+    "rtl_modified_by_this_change": false
+  },
+  "deployment": {
+    "archive_payload_files": 170,
+    "contains_licensed_library_models": false,
+    "contains_datasets": false,
+    "contains_historical_eda_databases": false,
+    "linux_checksum_and_shell_newlines_tested": true,
+    "large_delivery_files_retained_remote_and_recorded": true
+  },
+  "records": {
+    "server_compatibility": "remote_compatibility.json",
+    "fresh_elaboration": "elaboration.json",
+    "historical_parser_fixtures": "historical_parser_fixture.json",
+    "fresh_mapped_synthesis": "synthesis_execution.json",
+    "current_physical_code_smoke": "pnr_smoke.json"
+  },
+  "full_01_to_34_completed_for_new_soc": false,
+  "independent_foundry_DRC_LVS_executed": false,
+  "IR_EM_ESD_signoff_executed": false,
+  "SDF_simulation_executed": false,
+  "mapped_synthesis_completed_for_new_soc": true,
+  "physical_steps_tested": {
+    "last_completed_step": 14,
+    "separate_process_resume_from_step13_passed": true,
+    "same_input_mapped_synthesis_fixture_reused": true
+  }
+}

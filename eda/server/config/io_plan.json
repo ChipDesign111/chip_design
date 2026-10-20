@@ -1,0 +1,83 @@
+{
+  "signals": [
+    {
+      "port": "clk_i",
+      "pad": "clk",
+      "direction": "input",
+      "side": "N",
+      "offset_um": 300
+    },
+    {
+      "port": "rst_ni",
+      "pad": "rst_n",
+      "direction": "input",
+      "side": "N",
+      "offset_um": 1400
+    },
+    {
+      "port": "tck_i",
+      "pad": "tck",
+      "direction": "input",
+      "side": "S",
+      "offset_um": 250
+    },
+    {
+      "port": "tms_i",
+      "pad": "tms",
+      "direction": "input",
+      "side": "S",
+      "offset_um": 450
+    },
+    {
+      "port": "td_i",
+      "pad": "tdi",
+      "direction": "input",
+      "side": "S",
+      "offset_um": 1400
+    },
+    {
+      "port": "td_o",
+      "pad": "tdo",
+      "direction": "output",
+      "side": "S",
+      "offset_um": 1600
+    }
+  ],
+  "power_slots": [
+    {
+      "suffix": "vss_1",
+      "master": "PVSS1CDG",
+      "offset_um": 600
+    },
+    {
+      "suffix": "vss_2",
+      "master": "PVSS1CDG",
+      "offset_um": 700
+    },
+    {
+      "suffix": "vssio",
+      "master": "PVSS2CDG",
+      "offset_um": 800
+    },
+    {
+      "suffix": "vdd_1",
+      "master": "PVDD1CDG",
+      "offset_um": 900
+    },
+    {
+      "suffix": "vdd_2",
+      "master": "PVDD1CDG",
+      "offset_um": 1000
+    },
+    {
+      "suffix": "vddio",
+      "master": "PVDD2CDG",
+      "offset_um": 1100
+    },
+    {
+      "suffix": "poc",
+      "master": "PVDD2POC",
+      "offset_um": 1200
+    }
+  ]
+}
