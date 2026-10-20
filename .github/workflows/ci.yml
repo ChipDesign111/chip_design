@@ -75,6 +75,7 @@ jobs:
       - name: Verify prerequisites
         run: python tools/project.py doctor --require model
       - run: python tools/project.py test --suite model
+      - run: python tools/project.py test --suite stream-unit
       - name: Retain model evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -106,6 +107,7 @@ jobs:
       - name: Verify prerequisites
         run: python tools/project.py doctor --require synthesis
       - run: python tools/project.py synth
+      - run: python test/2026-10-20/scripts/check_stream_synthesis.py
       - name: Retain structure evidence
         if: always()
         uses: actions/upload-artifact@v4

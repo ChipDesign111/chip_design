@@ -20,6 +20,8 @@ PROFILE_REQUIREMENTS = {
     "memory": ("python", "iverilog", "vvp"),
     "dma-unit": ("python", "iverilog", "vvp"),
     "dma": ("python", "numpy", "iverilog", "vvp", "vsim"),
+    "stream-unit": ("python", "numpy", "iverilog", "vvp"),
+    "stream": ("python", "numpy", "iverilog", "vvp", "vsim"),
     "model": ("python", "numpy", "iverilog", "vvp"),
     "soc": ("python", "vsim"),
     "model-soc": ("python", "numpy", "iverilog", "vvp", "vsim"),
@@ -93,6 +95,13 @@ def command_plan(args: argparse.Namespace, tools: dict) -> list[list[str]]:
         return flags
 
     def test_command(suite: str) -> list[str]:
+        if suite in ("stream-unit", "stream"):
+            flags = simulator_flags("iverilog", "vvp")
+            if suite == "stream-unit": flags.append("--unit")
+            else: flags.extend(["--memory", args.memory, *simulator_flags("vsim")])
+            if args.data_root: flags.extend(["--data-root", str(args.data_root.expanduser().resolve())])
+            return [sys.executable, str(ROOT/"test/2026-10-20/scripts/run_stream_tests.py"), *flags]
+
         if suite in ("dma-unit", "dma"):
             flags = simulator_flags("iverilog", "vvp")
             if suite == "dma-unit":flags.append("--unit")
@@ -152,7 +161,7 @@ def parser() -> argparse.ArgumentParser:
     add_tools(doctor)
     commands.add_parser("check", help="Check repository policy, links, configuration and frozen inputs")
     test = commands.add_parser("test", help="Run a verification suite")
-    test.add_argument("--suite", choices=["unit", "memory", "dma-unit", "dma", "model", "soc", "model-soc", "all"], default="unit")
+    test.add_argument("--suite", choices=["unit", "memory", "dma-unit", "dma", "model", "soc", "model-soc", "stream-unit", "stream", "all"], default="unit")
     test.add_argument("--memory", choices=["portable-sram", "ra1shd"], default="portable-sram",
                       help="CPU main-memory backend for memory/SoC suites")
     test.add_argument("--count", type=int, default=1000, help="Synthetic cases, 12..1000 (unit suite)")

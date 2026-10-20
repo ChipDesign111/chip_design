@@ -7,3 +7,5 @@
 历史全 2947 条测试：浮点 85.5107%，权重量化/浮点激活 85.1035%，全整数 84.9678%。RTL 单/双模式 5894 次逐值一致；详细证据在 [真实模型历史记录](../test/2026-10-13/real-model/report.md)。当前 24 条六类样例用于 SoC 集成，18 条分类正确；硬件逐值一致不代表分类全部正确。
 
 原训练用测试划分选最佳 checkpoint，因此不是额外独立盲测。验证导出权重无需加载 best.pt；NumPy 使用 requirements.txt。原始数据下载到忽略的 model/data。运行：python tools/project.py test --suite model 或 --suite model-soc。
+
+可选 [W8A4连续流水RTL](../report/streaming.md) 使用单独冻结的偏置、M=39986、SHIFT=24，输入INT4、隐藏UINT4、权重INT8。原export保持不变；新参数见 [精度比较](../test/2026-10-20/precision/results.json)。完整2947条低位宽RTL逐值验证及24条真实CPU/SoC验证见 [新报告](../test/2026-10-20/stream/report.md)。

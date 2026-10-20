@@ -9,11 +9,13 @@ module my_npu_subsystem (
     input  logic [31:0] wdata_i,
     output wire [31:0] rdata_o,
     input logic dma_write_i, dma_busy_i,
+    input logic stream_commit_i,stream_abort_i,
+    input logic [1:0] stream_commit_count_i,
     input logic [31:0] dma_rdata_i,
     output wire dma_req_o, dma_we_o,
     output wire [4:0] dma_addr_o,
     output wire [31:0] dma_wdata_o,
-    output wire dma_conflict_o, npu_busy_o
+    output wire dma_conflict_o, npu_busy_o, stream_ready_o
 );
   wire dma_select=addr_i[13:5]==9'h068;
   wire block_write=dma_busy_i && !dma_write_i && we_i && !dma_select;
@@ -29,7 +31,14 @@ module my_npu_subsystem (
   assign dma_wdata_o=wdata_i;
   assign dma_conflict_o=req_i && block_write;
 
+`ifdef CHIP_STREAM_NPU
+  har_stream_top i_npu_core (
+      .stream_ready_o(stream_ready_o),
+      .stream_commit_i(stream_commit_i),.stream_abort_i(stream_abort_i),.stream_commit_count_i(stream_commit_count_i),
+`else
+  assign stream_ready_o=0;
   simple_npu_top i_npu_core (
+`endif
       .clka  (clk_i),
       .wea   (we_i),
       .ena   (req_i && !dma_select && !block_write),

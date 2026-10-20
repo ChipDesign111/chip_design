@@ -36,3 +36,5 @@ python tools/project.py synth
 当前源码仅保留替换后的 HAR NPU，原 Lab3 NPU、4×4 回归与导入入口已删除。固定外围的 75 个保留文件沿用原字节校验；模型参数保持不变。来源和授权见 [组件声明](report/THIRD_PARTY_NOTICES.md)。
 
 CPU 主 SRAM→NPU 装载支持独立 AXI burst DMA；协议和基准命令见 [DMA](report/dma.md)。
+
+新增可选 [W8A4连续流水实现](report/streaming.md)：保持FC1 32×4、FC2 6×2和32路重定标，通过CHIP_STREAM_NPU启用连续调度、两帧DMA暂存及响应成功后提交。运行 `python tools/project.py test --suite stream-unit`；完整SoC基准使用 `--suite stream --vsim /path/to/vsim`。默认INT8路径继续保留；[实测报告](test/2026-10-20/stream/report.md)区分核心吞吐与整机加速。

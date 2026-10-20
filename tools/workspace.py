@@ -19,8 +19,9 @@ os.environ["CHIP_TEST_RUN"] = str(WORK)
 
 def source_hashes():
     candidates = list((ROOT / "rtl").rglob("*.sv")) + list((ROOT / "rtl").rglob("*.svh"))
-    candidates += list(SCRIPTS.glob("*.py")) + list((TEST_ROOT / "rtl").glob("*.sv"))
+    candidates += list((ROOT / "test").glob("*/scripts/*.py")) + list((ROOT / "test").glob("*/rtl/*.sv"))
     candidates += list((ROOT / "tools").glob("*.py")) + list((ROOT / "model/export").glob("*"))
+    candidates += list((ROOT / "model/quantization").glob("*.py")) + list((ROOT / "test/2026-10-20/precision").glob("*.json"))
     candidates += [ROOT / "rtl/filelist.f", ROOT / "rtl/project.json", TEST_ROOT / "fixtures/har_uci24.json"]
     return {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
             for p in sorted(candidates) if p.is_file() and p.suffix != ".md"}
@@ -34,6 +35,12 @@ def begin_run(command):
         for path in source.iterdir():
             if path.is_file() and path.suffix in (".py", ".sv"):
                 shutil.copyfile(path, destination / path.name)
+    for kind, suffix in (("scripts", ".py"), ("rtl", ".sv")):
+        for directory in sorted((ROOT/"test").glob("*/"+kind)):
+            if directory.parent == TEST_ROOT: continue
+            destination=WORK/(kind+"_"+directory.parent.name)
+            destination.mkdir(exist_ok=True)
+            for path in directory.glob("*"+suffix): shutil.copyfile(path, destination/path.name)
     metadata = {"started_at": now.isoformat(), "timezone": "Asia/Shanghai",
                 "command": command, "source_sha256": source_hashes(),
                 "scope": "Functional simulation / generic structure; no physical timing signoff"}

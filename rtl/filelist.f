@@ -77,3 +77,7 @@ rtl/npu/har_dot_tile.sv
 rtl/npu/har_weight_store.sv
 rtl/npu/har_npu_core.sv
 rtl/npu/simple_npu_top.sv
+
+rtl/npu/har_stream_core.sv
+rtl/npu/har_stream_top.sv
+rtl/dma/har_stream_dma.sv

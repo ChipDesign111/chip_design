@@ -427,7 +427,8 @@ module my_soc_top (
   );
 
   logic        npu_req, npu_we;
-  logic npu_user, npu_busy, dma_busy, dma_req, dma_we, dma_conflict;
+  logic npu_user, npu_busy, dma_busy, dma_req, dma_we, dma_conflict, stream_ready, stream_commit, stream_abort;
+  logic [1:0] stream_commit_count;
   logic [4:0] dma_addr;
   logic [31:0] dma_wdata, dma_rdata;
   logic [31:0] npu_addr, npu_wdata, npu_rdata;
@@ -446,13 +447,13 @@ module my_soc_top (
       .addr_i(npu_addr), .wdata_i(npu_wdata), .rdata_o(npu_rdata),
       .dma_write_i(npu_user), .dma_busy_i(dma_busy), .dma_rdata_i(dma_rdata),
       .dma_req_o(dma_req), .dma_we_o(dma_we), .dma_addr_o(dma_addr),
-      .dma_wdata_o(dma_wdata), .dma_conflict_o(dma_conflict), .npu_busy_o(npu_busy)
+      .dma_wdata_o(dma_wdata), .dma_conflict_o(dma_conflict), .npu_busy_o(npu_busy), .stream_ready_o(stream_ready), .stream_commit_i(stream_commit), .stream_abort_i(stream_abort), .stream_commit_count_i(stream_commit_count)
   );
 
   har_dma_axi i_dma (
       .clk_i(clk_i), .rst_ni(ndmreset_n), .master(slave[3]),
       .reg_req_i(dma_req), .reg_we_i(dma_we), .reg_addr_i(dma_addr),
       .reg_wdata_i(dma_wdata), .reg_rdata_o(dma_rdata),
-      .npu_busy_i(npu_busy), .conflict_i(dma_conflict), .busy_o(dma_busy)
+      .npu_busy_i(npu_busy), .conflict_i(dma_conflict), .busy_o(dma_busy), .stream_ready_i(stream_ready), .stream_commit_o(stream_commit), .stream_abort_o(stream_abort), .stream_commit_count_o(stream_commit_count)
   );
 endmodule

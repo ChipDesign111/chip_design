@@ -10,6 +10,7 @@
 | [sram.md](sram.md) | SRAM 后端、本地资料和仿真边界 |
 | [development.md](development.md) | 工具依赖、修改方法、验证与交付 |
 | [整数规则](../model/numerics.md) | MLP 数值契约 |
+| [连续流水RTL](streaming.md) | 可选W8A4实现、去空泡、DMA协同、MMIO与性能测量 |
 | [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) | 组件来源与授权 |
 | [CHANGELOG.md](CHANGELOG.md) | 工程变更 |
 
