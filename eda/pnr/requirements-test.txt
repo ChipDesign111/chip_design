@@ -1,0 +1,2 @@
+# GDS geometry tests use synthetic fixtures, without licensed PDK materials.
+gdstk==1.0.1

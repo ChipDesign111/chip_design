@@ -2,6 +2,15 @@
 
 输入是已通过 [综合与引脚级前后仿](../RESULTS.md) 的完整 `my_soc_top`，不是原 Lab 4 CPU 模板网表。RTL、固件和原引脚测试台保持冻结。本目录新增物理实现、审计和布线后仿真入口；实际验收见 [结果记录](RESULTS.md)。
 
+审计器的公开回归不启动 EDA，也不需要工艺库。GDS 几何用例使用合成数据，需要安装 [gdstk 依赖](requirements-test.txt)：
+
+```sh
+python -m pip install -r eda/pnr/requirements-test.txt
+python -m unittest discover -s eda/pnr -p 'test_*.py' -v
+```
+
+`test_audit_joint.py` 的五个真实证据集成用例另需下载私有审计证据；未提供时明确跳过，不能据此声明完整物理验收通过。
+
 ## 阶段与恢复
 
 流程为 `init → floorplan → io → power → place → cts → route → finish → export`。系统/JTAG 周期保持 20/100 ns，虚拟参考时钟 1000 ns，setup/hold uncertainty 保持 0.52/0.2 ns，不使用额外 path adjustment。主 SRAM 采用课程宏，权重 bank 保留综合得到的标准单元实现。

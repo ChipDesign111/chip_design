@@ -23,6 +23,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install open-source geometry dependency
+        run: python -m pip install -r eda/pnr/requirements-test.txt
       - run: python -m unittest discover -s eda/pnr -p 'test_*.py' -v
 
   repository:
