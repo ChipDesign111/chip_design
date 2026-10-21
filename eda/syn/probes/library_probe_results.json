@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-20",
+  "tool": "Cadence Genus 19.17-s144_1",
+  "scope": "Library initialization only; no RTL read, elaboration, synthesis or design timing claim",
+  "pdk_files_modified": false,
+  "messages_suppressed": false,
+  "evidence_root": "eda/work",
+  "cases": [
+    {
+      "directory": "library-probe-empty",
+      "order": "LEF then read_mmmc",
+      "sdc": "empty",
+      "lbr_163_errors": 2,
+      "lbr_714_warnings": 1,
+      "normal_exit": true
+    },
+    {
+      "directory": "library-probe-units",
+      "order": "LEF then read_mmmc",
+      "sdc": "set_units -time ns -capacitance pF only",
+      "lbr_163_errors": 2,
+      "lbr_714_warnings": 1,
+      "normal_exit": true
+    },
+    {
+      "directory": "library-probe-preload_both",
+      "order": "LEF then read_libs then read_mmmc",
+      "result": "Rejected: read_libs initializes MMMC implicitly, so subsequent read_mmmc reports already done",
+      "usable_solution": false
+    },
+    {
+      "directory": "library-probe-nolef_units",
+      "order": "read_mmmc without LEF",
+      "sdc": "set_units -time ns -capacitance pF only",
+      "lbr_163_errors": 0,
+      "lbr_714_warnings": 0,
+      "normal_exit": true
+    },
+    {
+      "directory": "library-probe-lef_after",
+      "order": "read_mmmc then LEF",
+      "sdc": "empty",
+      "lbr_163_errors": 0,
+      "lbr_714_warnings": 0,
+      "normal_exit": true
+    },
+    {
+      "directory": "library-probe-full_lef_after",
+      "order": "read_mmmc then LEF",
+      "sdc": "unchanged full project constraints.sdc",
+      "lbr_163_errors": 0,
+      "lbr_714_warnings": 0,
+      "normal_exit": true,
+      "standard_cell_library_time_ps": 1000,
+      "standard_cell_library_capacitance_ff": 1000,
+      "sram_library_time_ps": 1000,
+      "sram_library_capacitance_ff": 1000
+    }
+  ],
+  "solution": "Move set_db lef_library $lef_files after read_mmmc and before read_hdl. Do not preload read_libs, change technology files or suppress errors.",
+  "public_path_note": "Project-relative display path; original private run records retain their absolute paths."
+}

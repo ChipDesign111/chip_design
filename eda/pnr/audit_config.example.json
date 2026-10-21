@@ -1,0 +1,48 @@
+{
+  "top": "my_soc_top",
+  "pre_io_netlist": "../../work/physical-flow/synthesis/outputs/my_soc_top_postsyn.v",
+  "post_io_netlist": "../../work/physical-flow/pnr/outputs/my_soc_top_postIO.v",
+  "final_netlist": "../../work/physical-flow/pnr/outputs/my_soc_top_postroute_phys.v",
+  "def": "../../work/physical-flow/pnr/outputs/my_soc_top_postroute.def",
+  "lef_files": [
+    "/private/pdk/technology-and-standard-cells.lef",
+    "/private/pdk/RA1SHD_2048x32M8.vclef",
+    "/private/pdk/IO.lef",
+    "/private/pdk/Bond.lef"
+  ],
+  "native_io_gds": "/private/pdk/IO.gds",
+  "sram_instance": "i_mainmem/i_sram/i_macro",
+  "sram_master": "RA1SHD_2048x32M8",
+  "minimum_macro_halo_um": 26,
+  "geometry_tolerance_um": 0.0011,
+  "signal_pad_master": "PDDW0204CDG",
+  "corner_master": "PCORNER",
+  "bond_master": "PAD60LU_OBV",
+  "signal_pads": {
+    "clk_i": "i_pad_clk",
+    "rst_ni": "i_pad_rst_n",
+    "tck_i": "i_pad_tck",
+    "tms_i": "i_pad_tms",
+    "td_i": "i_pad_tdi",
+    "td_o": "i_pad_tdo"
+  },
+  "tie_cells": {
+    "TIEHBWP7T": {"Z": 1},
+    "TIELBWP7T": {"ZN": 0}
+  },
+  "ring_pad_masters": ["PDDW0204CDG", "PVDD1CDG", "PVSS1CDG", "PVDD2CDG", "PVSS2CDG", "PVDD2POC"],
+  "native_io_m4_gds_layer": 31,
+  "native_io_m4_gds_datatype": 0,
+  "native_io_rail_samples_um": {"VSSPST": 20.95, "VDDPST": 63.92},
+  "native_io_unrouted_net_allowlist": ["VDDPST", "VSSPST"],
+  "placement_report": "../../work/physical-flow/pnr/reports/postroute_place.rpt",
+  "special_connectivity_report": "../../work/physical-flow/pnr/reports/postroute_core_pg.rpt",
+  "signal_connectivity_report": "../../work/physical-flow/pnr/reports/postroute_signal.rpt",
+  "route_drc_report": "../../work/physical-flow/pnr/reports/postroute_drc.rpt",
+  "stage_artifacts": [
+    {"label": "synthesis-input", "path": "../../work/physical-flow/synthesis/outputs/my_soc_top_postsyn.v", "sha256": "REPLACE_WITH_FROZEN_SHA256"},
+    {"label": "immediate-post-IO", "path": "../../work/physical-flow/pnr/outputs/my_soc_top_postIO.v", "sha256": "REPLACE_WITH_FROZEN_SHA256"},
+    {"label": "final-physical-netlist", "path": "../../work/physical-flow/pnr/outputs/my_soc_top_postroute_phys.v", "sha256": "REPLACE_WITH_FROZEN_SHA256"},
+    {"label": "final-routed-DEF", "path": "../../work/physical-flow/pnr/outputs/my_soc_top_postroute.def", "sha256": "REPLACE_WITH_FROZEN_SHA256"}
+  ]
+}

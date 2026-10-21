@@ -14,14 +14,22 @@ module my_soc_top (
 
   logic ndmreset;
   logic ndmreset_n;
+  logic ndmreset_sync_n;
 
   rstgen i_rstgen_main (
       .clk_i       (clk_i),
       .rst_ni      (rst_ni & (~ndmreset)),
       .test_mode_i (1'b0),
-      .rst_no      (ndmreset_n),
+      .rst_no      (ndmreset_sync_n),
       .init_no     ()
   );
+
+  // Retain four-stage synchronization; release downstream positive-edge
+  // registers on the falling edge to provide recovery/removal margin.
+  always_ff @(negedge clk_i or negedge ndmreset_sync_n) begin
+    if (!ndmreset_sync_n) ndmreset_n <= 1'b0;
+    else                  ndmreset_n <= 1'b1;
+  end
 
   AXI_BUS #(
       .AXI_ADDR_WIDTH (32),

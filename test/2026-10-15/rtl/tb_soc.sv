@@ -66,7 +66,27 @@ module tb_soc #(
         release dut.i_mainmem.addr_i;
         release dut.i_mainmem.wdata_i;
         repeat (8) @(negedge clk_i);
+        // Legacy simulation-only port loader: publish the boot instruction at
+        // the first clock after external reset release, while the four-stage
+        // CPU reset synchronizer still holds the core in reset. This is not
+        // the external-pin JTAG loading/boot acceptance test in eda/sim/.
+        force dut.i_bootram.req_i = 1'b1;
+        force dut.i_bootram.wen_i = 1'b1;
+        force dut.i_bootram.addr_i = 4'd0;
+        force dut.i_bootram.data_i = 32'h800002b7;
         rst_ni = 1;
+        @(posedge clk_i); #2;
+        @(negedge clk_i);
+        force dut.i_bootram.wen_i = 1'b0;
+        @(posedge clk_i); #2;
+        if (dut.boot_rdata !== 32'h800002b7)
+            $fatal(1, "Legacy boot-vector port readback failed: %08x", dut.boot_rdata);
+        @(negedge clk_i);
+        release dut.i_bootram.req_i;
+        release dut.i_bootram.wen_i;
+        release dut.i_bootram.addr_i;
+        release dut.i_bootram.data_i;
+        $display("LEGACY_PORT_BOOT_VECTOR_READY instruction=800002b7");
         while (cycle_count < 1000000) begin
             @(posedge clk_i); #2;
             cycle_count = cycle_count + 1;

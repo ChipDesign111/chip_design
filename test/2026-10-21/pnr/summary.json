@@ -1,0 +1,622 @@
+{
+  "schema": "chip-design-full-soc-postroute-v1",
+  "status": "PASS",
+  "scope": "Full my_soc_top, TSMC180 TT core/SRAM 1.8V and IO 3.3V, 25C, extracted native post-route RC",
+  "source": {
+    "base_revision": "52be8c57b365b70536500526a52905352e505666",
+    "actual_label": "52be8c57b365b70536500526a52905352e505666+bootwait-resetfall-working-tree",
+    "synthesized_netlist_sha256": "0ae65d8bf555fbd8214116300dd45670f627eb0bf4f2241e9f284baf844d3a67",
+    "input_sdc_sha256": "05d3373b7530e1f1e78b0f6ccde61afb0ce641b43709d659034c532058ceec78",
+    "final_def_sha256": "70b8db7c5d28260f9e44b762aa8661e9d64bd1ba3818f80a683e96e9d183b7bc",
+    "original_raw_sdf_sha256": "341605722ed4b48816a35b9ef4caf0dc708890bca90c3737b4e6c7ea776234f9",
+    "paired_gls_sdf_sha256": "eef269650b36652c7178bc6f5e0770967ac76a75aec138e56389c4c0417fee08"
+  },
+  "physical": {
+    "tool_stages": "COMPLETED",
+    "die_um": [
+      3400.32,
+      3400.32
+    ],
+    "core_box_um": [
+      150.08,
+      150.08,
+      3250.24,
+      3250.24
+    ],
+    "placed_instances": 565775,
+    "unplaced_instances": 0,
+    "route_drc_violations": 0,
+    "native_antenna_violations": 0,
+    "core_pg_stubs_after_trim": 0,
+    "independent_geometry_checks": {
+      "status": "PASS",
+      "passed": 8,
+      "total": 8
+    },
+    "joint_report_audit": "PASS",
+    "preserved_native_diagnostics": {
+      "io_rail_no_routing": 2,
+      "intentional_bond_pad_overlaps": 34
+    },
+    "final_placement_rectangle_area": {
+      "scope": "Exact sums of placed DEF component rectangles using oriented LEF SIZE; not Liberty area, a new synthesis report, mask/transistor area, or power estimation.",
+      "method": "Reuse audit_physical.parse_def/parse_lefs and render_layout.category, retaining source decimal SIZE lexemes. Build exact oriented bboxes at DEF database-unit locations, then sum (xmax-xmin)*(ymax-ymin) using Decimal.",
+      "die_bbox_um": [
+        "0.0",
+        "0.0",
+        "3400.32",
+        "3400.32"
+      ],
+      "core_bbox_um": [
+        "150.08",
+        "150.08",
+        "3250.24",
+        "3250.24"
+      ],
+      "die_box": {
+        "count": 0,
+        "area_um2": 11562176.1024,
+        "area_um2_exact": "11562176.1024",
+        "area_mm2": 11.5621761024,
+        "area_mm2_exact": "11.5621761024"
+      },
+      "core_box": {
+        "count": 0,
+        "area_um2": 9610992.0256,
+        "area_um2_exact": "9610992.0256",
+        "area_mm2": 9.6109920256,
+        "area_mm2_exact": "9.6109920256"
+      },
+      "categories": {
+        "bond": {
+          "count": 34,
+          "area_um2": 149246.4,
+          "area_um2_exact": "149246.400000",
+          "area_mm2": 0.1492464,
+          "area_mm2_exact": "0.1492464"
+        },
+        "corner": {
+          "count": 4,
+          "area_um2": 52900.0,
+          "area_um2_exact": "52900.000000",
+          "area_mm2": 0.0529,
+          "area_mm2_exact": "0.052900"
+        },
+        "io_filler": {
+          "count": 2132,
+          "area_um2": 1223747.2,
+          "area_um2_exact": "1223747.200000",
+          "area_mm2": 1.2237472,
+          "area_mm2_exact": "1.2237472"
+        },
+        "logic": {
+          "count": 175354,
+          "area_um2": 4336110.5088,
+          "area_um2_exact": "4336110.508800",
+          "area_mm2": 4.3361105088,
+          "area_mm2_exact": "4.3361105088"
+        },
+        "macro": {
+          "count": 1,
+          "area_um2": 401443.59075,
+          "area_um2_exact": "401443.590750",
+          "area_mm2": 0.40144359075,
+          "area_mm2_exact": "0.40144359075"
+        },
+        "physical": {
+          "count": 388216,
+          "area_um2": 4803468.5888,
+          "area_um2_exact": "4803468.588800",
+          "area_mm2": 4.8034685888,
+          "area_mm2_exact": "4.8034685888"
+        },
+        "power_pad": {
+          "count": 28,
+          "area_um2": 193200.0,
+          "area_um2_exact": "193200.000000",
+          "area_mm2": 0.1932,
+          "area_mm2_exact": "0.193200"
+        },
+        "signal_pad": {
+          "count": 6,
+          "area_um2": 41400.0,
+          "area_um2_exact": "41400.000000",
+          "area_mm2": 0.0414,
+          "area_mm2_exact": "0.041400"
+        }
+      },
+      "all_placed_rectangles": {
+        "count": 565775,
+        "area_um2": 11201516.28835,
+        "area_um2_exact": "11201516.288350",
+        "area_mm2": 11.20151628835,
+        "area_mm2_exact": "11.20151628835"
+      },
+      "core_logic_excluding_fillers_taps": {
+        "count": 175354,
+        "area_um2": 4336110.5088,
+        "area_um2_exact": "4336110.508800",
+        "area_mm2": 4.3361105088,
+        "area_mm2_exact": "4.3361105088"
+      },
+      "main_SRAM": {
+        "count": 1,
+        "area_um2": 401443.59075,
+        "area_um2_exact": "401443.590750",
+        "area_mm2": 0.40144359075,
+        "area_mm2_exact": "0.40144359075",
+        "instance": "i_mainmem/i_sram/i_macro",
+        "master": "RA1SHD_2048x32M8",
+        "size_um": [
+          "554.595",
+          "723.85"
+        ]
+      },
+      "logic_plus_SRAM_excluding_fillers": {
+        "count": 175355,
+        "area_um2": 4737554.09955,
+        "area_um2_exact": "4737554.099550",
+        "area_mm2": 4.73755409955,
+        "area_mm2_exact": "4.73755409955"
+      },
+      "logic_by_preserved_DEF_prefix": {
+        "i_cpu": {
+          "count": 15381,
+          "area_um2": 354737.7344,
+          "area_um2_exact": "354737.734400",
+          "area_mm2": 0.3547377344,
+          "area_mm2_exact": "0.3547377344"
+        },
+        "i_dma": {
+          "count": 2131,
+          "area_um2": 59432.8448,
+          "area_um2_exact": "59432.844800",
+          "area_mm2": 0.0594328448,
+          "area_mm2_exact": "0.0594328448"
+        },
+        "i_npu_subsystem": {
+          "count": 139038,
+          "area_um2": 3454171.3472,
+          "area_um2_exact": "3454171.347200",
+          "area_mm2": 3.4541713472,
+          "area_mm2_exact": "3.4541713472"
+        },
+        "other_hierarchical_logic": {
+          "count": 18537,
+          "area_um2": 465053.12,
+          "area_um2_exact": "465053.120000",
+          "area_mm2": 0.46505312,
+          "area_mm2_exact": "0.46505312"
+        },
+        "top_level_unattributed_logic": {
+          "count": 267,
+          "area_um2": 2715.4624,
+          "area_um2_exact": "2715.462400",
+          "area_mm2": 0.0027154624,
+          "area_mm2_exact": "0.0027154624"
+        }
+      },
+      "fraction_of_core_box": {
+        "logic_only": 0.45116159676860235,
+        "logic_plus_SRAM_excluding_fillers": 0.49293081160935015,
+        "all_core_rectangles_including_fillers": 0.9927198631459033
+      },
+      "limits": [
+        "Hierarchy membership is geometric attribution, not proof of original functional ownership or insertion stage.",
+        "Top-level CTS/hold/buffer/tie cells are not forced into NPU, CPU or DMA. FE_/CTS_ subgrouping is based only on observed names; exact insertion stages and repair roles are not inferred.",
+        "Physical category includes CORE spacer/welltap/antenna and FILL/TAP/DCAP names, matching the already-verified renderer classification.",
+        "Core rectangle totals include fillers/taps; their near-full occupancy is not logic utilization.",
+        "All-placed rectangle sum includes intentional IO/Bond overlaps and therefore is not a union area or die area.",
+        "No dynamic/static power, switching activity, IR/EM, all-PVT or foundry signoff result is computed."
+      ]
+    },
+    "final_placement_area_source_sha256": "45e88352e79d9d5ec5c8979eb60bef6bcca4750ab8a02c61059b48d3610e1376"
+  },
+  "timing": {
+    "system_period_ns": 20,
+    "jtag_period_ns": 100,
+    "virtual_reference_period_ns": 1000,
+    "analyzed_setup_wns_ns": 1.217,
+    "analyzed_hold_wns_ns": 0.018,
+    "setup_tns_ns": 0,
+    "hold_tns_ns": 0,
+    "violating_paths": 0,
+    "drv_violations": 0,
+    "supplemental_constraint_coverage_audit": {
+      "status": "PASS_WITH_EXPLICIT_CLASSIFICATION",
+      "late_untested_records_preserved": 3138,
+      "early_untested_records_preserved": 3220,
+      "extra_hold_records_matched_to_existing_cdc_exception": 82,
+      "new_exceptions_added": 0,
+      "unexplained_reasons": 0,
+      "source_sha256": "bdd653810c5633bfe448619c58635f449f9033074db79bfea75cd2bc93aa8433"
+    }
+  },
+  "postroute_simulation": {
+    "status": "PASS",
+    "required_corners": [
+      "MAXIMUM",
+      "MINIMUM"
+    ],
+    "required_firmware_cases": [
+      "synthetic",
+      "dma"
+    ],
+    "boots_per_case": 2,
+    "program_words_downloaded_and_read_back_per_case": 2048,
+    "timing_checks_disabled": false,
+    "xrun_alias_annotation_option": "-caint",
+    "runner_sha256": "b43edb24af41fbcf3fa21049e0938e4c16382519a1546e5d18174754ed00b30b",
+    "parallel_driver_sha256": "a66fea1baadda1089601a26ee698f493d7cdb4eeb44757b415f70d5da68703fe",
+    "output_directories": [
+      "postroute-poweron-max-20261021",
+      "postroute-poweron-min-20261021"
+    ],
+    "startup_protocol": {
+      "external_clock_held_low_ns": 1000,
+      "first_system_posedge_ns": 1010,
+      "reset_release_ns": 1160,
+      "derived_testbench_sha256": "a67a3b52d789ce8370b74cd51da86b039748b27b3c83e475e7c73793f6461892",
+      "changed_regions": 1,
+      "original_frozen_testbench_untouched": true
+    },
+    "actual_cases": [
+      {
+        "corner": "MAXIMUM",
+        "case": "dma",
+        "status": "PASS",
+        "boots": 2,
+        "downloaded_words": 2048,
+        "read_back_words": 2048,
+        "timing_diagnostics": 0,
+        "elapsed_seconds": 2194.723,
+        "case_audit": {
+          "name": "dma",
+          "status": "PASS",
+          "issues": [],
+          "simulator_errors": [],
+          "timing_diagnostics": [],
+          "observed_timing_violations": 0,
+          "benchmark_cycles": {
+            "0": {
+              "0": 1872,
+              "1": 6960,
+              "2": 36342,
+              "3": 2708,
+              "4": 34371
+            },
+            "1": {
+              "0": 1872,
+              "1": 6960,
+              "2": 36342,
+              "3": 2708,
+              "4": 34371
+            }
+          },
+          "annotation_statistics_raw": [
+            "\t\t No. of Pathdelays = 1737175 \t No. of Disabled Pathdelays = 0        Annotated = 100.00% (1737175/1737175) ",
+            "\t\t No. of Tchecks    = 214543  \t No. of Disabled Tchecks    = 0        Annotated = 100.00% (214543/214543) "
+          ],
+          "annotation_statistics_denominator": "All potential specify objects in compiled models, not source-SDF requested coverage",
+          "annotated_elements": 1951718,
+          "warning_counts": {
+            "CUVWSB": 16,
+            "CUVWSP": 10,
+            "CUVWSI": 1000,
+            "MXWARN": 1,
+            "DSEMEL": 1,
+            "CSINFI": 32,
+            "TRNNOP": 28,
+            "DSEM2009": 1
+          },
+          "evidence": [
+            "PIN_CONFIG sys_period_ns=20.000 tck_period_ns=100.000 boots=2",
+            "PIN_TAP_PASS idcode=00000001 dtmcs=00001071",
+            "PIN_CPU_HALTED dmstatus=000c0382",
+            "PIN_LOAD words=256",
+            "PIN_LOAD words=512",
+            "PIN_LOAD words=768",
+            "PIN_LOAD words=1024",
+            "PIN_LOAD words=1280",
+            "PIN_LOAD words=1536",
+            "PIN_LOAD words=1792",
+            "PIN_LOAD words=2048",
+            "PIN_IMAGE_VERIFIED words=2048",
+            "PIN_BOOT_VECTOR_READY address=00010000 instruction=800002b7",
+            "PIN_CPU_PASS run=0 magic=c0dec0de",
+            "PIN_BENCH run=0 metric=0 cycles=1872",
+            "PIN_BENCH run=0 metric=1 cycles=6960",
+            "PIN_BENCH run=0 metric=2 cycles=36342",
+            "PIN_BENCH run=0 metric=3 cycles=2708",
+            "PIN_BENCH run=0 metric=4 cycles=34371",
+            "PIN_CPU_PASS run=1 magic=c0dec0de",
+            "PIN_BENCH run=1 metric=0 cycles=1872",
+            "PIN_BENCH run=1 metric=1 cycles=6960",
+            "PIN_BENCH run=1 metric=2 cycles=36342",
+            "PIN_BENCH run=1 metric=3 cycles=2708",
+            "PIN_BENCH run=1 metric=4 cycles=34371",
+            "SOC_PINS PASS downloaded_words=2048 verified_words=2048 boots=2 dmi_transactions=6220"
+          ]
+        },
+        "case_audit_canonical_sha256": "7928ebc343d7bcbb8e9e26c809ba52fc07a174719ac67601051f92af2f6ef03f",
+        "corner_audit_file_sha256": "6a0648775d4b1d555a16035bf2146e8d00d9a5115f4d2c5e4552c4e6b30717b9",
+        "corner_results_file_sha256": "37dd4b6354105c15151b0fce9c256daa27efdcd2817c1f5cf9b6ecd6f6685dbe",
+        "source_proof_canonical_sha256": "802eeba2002b549626a2319afab3d35320c5ab2a201435376a9ad35e1a46cf5c",
+        "firmware_image_sha256": "54c32dca604287846adf60fca7c0aa9a5125c69dc96dc69ecea6df03bce3689f",
+        "actual_command_canonical_sha256": "2fa31d9754090e47515c692a27ccae086eda7d1bc1b312c069f0ff7cf149cd27",
+        "compiled_sdf_sha256": "1914e877deead33b1e38993ddbdd166afc92218dac6058f30ceeabde0e601b47",
+        "sdf_command_sha256": "653a037fcc1358ed2b90ceca6008b5e4afe40a9a9e877896066025b14365c54f"
+      },
+      {
+        "corner": "MAXIMUM",
+        "case": "synthetic",
+        "status": "PASS",
+        "boots": 2,
+        "downloaded_words": 2048,
+        "read_back_words": 2048,
+        "timing_diagnostics": 0,
+        "elapsed_seconds": 2151.718,
+        "case_audit": {
+          "name": "synthetic",
+          "status": "PASS",
+          "issues": [],
+          "simulator_errors": [],
+          "timing_diagnostics": [],
+          "observed_timing_violations": 0,
+          "benchmark_cycles": {
+            "0": {},
+            "1": {}
+          },
+          "annotation_statistics_raw": [
+            "\t\t No. of Pathdelays = 1737175 \t No. of Disabled Pathdelays = 0        Annotated = 100.00% (1737175/1737175) ",
+            "\t\t No. of Tchecks    = 214543  \t No. of Disabled Tchecks    = 0        Annotated = 100.00% (214543/214543) "
+          ],
+          "annotation_statistics_denominator": "All potential specify objects in compiled models, not source-SDF requested coverage",
+          "annotated_elements": 1951718,
+          "warning_counts": {
+            "CUVWSB": 16,
+            "CUVWSP": 10,
+            "CUVWSI": 1000,
+            "MXWARN": 1,
+            "DSEMEL": 1,
+            "CSINFI": 32,
+            "TRNNOP": 28,
+            "DSEM2009": 1
+          },
+          "evidence": [
+            "PIN_CONFIG sys_period_ns=20.000 tck_period_ns=100.000 boots=2",
+            "PIN_TAP_PASS idcode=00000001 dtmcs=00001071",
+            "PIN_CPU_HALTED dmstatus=000c0382",
+            "PIN_LOAD words=256",
+            "PIN_LOAD words=512",
+            "PIN_LOAD words=768",
+            "PIN_LOAD words=1024",
+            "PIN_LOAD words=1280",
+            "PIN_LOAD words=1536",
+            "PIN_LOAD words=1792",
+            "PIN_LOAD words=2048",
+            "PIN_IMAGE_VERIFIED words=2048",
+            "PIN_BOOT_VECTOR_READY address=00010000 instruction=800002b7",
+            "PIN_CPU_PASS run=0 magic=c0dec0de",
+            "PIN_CPU_PASS run=1 magic=c0dec0de",
+            "SOC_PINS PASS downloaded_words=2048 verified_words=2048 boots=2 dmi_transactions=6198"
+          ]
+        },
+        "case_audit_canonical_sha256": "28e31b7665812cad59834f381e59c89a602c22d11abf4e42e0c0f3d7b4f3ff8e",
+        "corner_audit_file_sha256": "6a0648775d4b1d555a16035bf2146e8d00d9a5115f4d2c5e4552c4e6b30717b9",
+        "corner_results_file_sha256": "37dd4b6354105c15151b0fce9c256daa27efdcd2817c1f5cf9b6ecd6f6685dbe",
+        "source_proof_canonical_sha256": "f53a1cbee801be2a9449c0bbced7839f9fc2d9139a4d5e1ab83651a63f94b256",
+        "firmware_image_sha256": "29cbca3b259644d244b7c0952e5ebdf68d95990f83aed8375c5239da757264a0",
+        "actual_command_canonical_sha256": "12009227fa3cd7692462db47dbe6f7e5d816e20360de8102cdf992cdb88f379a",
+        "compiled_sdf_sha256": "1914e877deead33b1e38993ddbdd166afc92218dac6058f30ceeabde0e601b47",
+        "sdf_command_sha256": "9ae4aff135c984834a6bd67532f8d8d4eb75872a85cb99f1c28e9b1cd9606f4a"
+      },
+      {
+        "corner": "MINIMUM",
+        "case": "dma",
+        "status": "PASS",
+        "boots": 2,
+        "downloaded_words": 2048,
+        "read_back_words": 2048,
+        "timing_diagnostics": 0,
+        "elapsed_seconds": 2186.701,
+        "case_audit": {
+          "name": "dma",
+          "status": "PASS",
+          "issues": [],
+          "simulator_errors": [],
+          "timing_diagnostics": [],
+          "observed_timing_violations": 0,
+          "benchmark_cycles": {
+            "0": {
+              "0": 1872,
+              "1": 6960,
+              "2": 36342,
+              "3": 2708,
+              "4": 34371
+            },
+            "1": {
+              "0": 1872,
+              "1": 6960,
+              "2": 36342,
+              "3": 2708,
+              "4": 34371
+            }
+          },
+          "annotation_statistics_raw": [
+            "\t\t No. of Pathdelays = 1737175 \t No. of Disabled Pathdelays = 0        Annotated = 100.00% (1737175/1737175) ",
+            "\t\t No. of Tchecks    = 214543  \t No. of Disabled Tchecks    = 0        Annotated = 100.00% (214543/214543) "
+          ],
+          "annotation_statistics_denominator": "All potential specify objects in compiled models, not source-SDF requested coverage",
+          "annotated_elements": 1951718,
+          "warning_counts": {
+            "CUVWSB": 16,
+            "CUVWSP": 10,
+            "CUVWSI": 1000,
+            "MXWARN": 1,
+            "DSEMEL": 1,
+            "CSINFI": 32,
+            "TRNNOP": 28,
+            "DSEM2009": 1
+          },
+          "evidence": [
+            "PIN_CONFIG sys_period_ns=20.000 tck_period_ns=100.000 boots=2",
+            "PIN_TAP_PASS idcode=00000001 dtmcs=00001071",
+            "PIN_CPU_HALTED dmstatus=000c0382",
+            "PIN_LOAD words=256",
+            "PIN_LOAD words=512",
+            "PIN_LOAD words=768",
+            "PIN_LOAD words=1024",
+            "PIN_LOAD words=1280",
+            "PIN_LOAD words=1536",
+            "PIN_LOAD words=1792",
+            "PIN_LOAD words=2048",
+            "PIN_IMAGE_VERIFIED words=2048",
+            "PIN_BOOT_VECTOR_READY address=00010000 instruction=800002b7",
+            "PIN_CPU_PASS run=0 magic=c0dec0de",
+            "PIN_BENCH run=0 metric=0 cycles=1872",
+            "PIN_BENCH run=0 metric=1 cycles=6960",
+            "PIN_BENCH run=0 metric=2 cycles=36342",
+            "PIN_BENCH run=0 metric=3 cycles=2708",
+            "PIN_BENCH run=0 metric=4 cycles=34371",
+            "PIN_CPU_PASS run=1 magic=c0dec0de",
+            "PIN_BENCH run=1 metric=0 cycles=1872",
+            "PIN_BENCH run=1 metric=1 cycles=6960",
+            "PIN_BENCH run=1 metric=2 cycles=36342",
+            "PIN_BENCH run=1 metric=3 cycles=2708",
+            "PIN_BENCH run=1 metric=4 cycles=34371",
+            "SOC_PINS PASS downloaded_words=2048 verified_words=2048 boots=2 dmi_transactions=6220"
+          ]
+        },
+        "case_audit_canonical_sha256": "7928ebc343d7bcbb8e9e26c809ba52fc07a174719ac67601051f92af2f6ef03f",
+        "corner_audit_file_sha256": "63ce15adb7d437639d8a90e097bcd084090a2ba73d482331a5261f1bb9063bfd",
+        "corner_results_file_sha256": "6d4266e22ae7278293578aa1274c8f5f3372c59d8c120a2acc8dee4ba00099ec",
+        "source_proof_canonical_sha256": "e2ae08a835c57215dcef053db86b9116ca59e4b93c543efb86e1219ce06aaf0a",
+        "firmware_image_sha256": "54c32dca604287846adf60fca7c0aa9a5125c69dc96dc69ecea6df03bce3689f",
+        "actual_command_canonical_sha256": "6073451fcdae9366fc7cc61d202dd5e324f7b0a8487a65e7034f0540d9ee1c57",
+        "compiled_sdf_sha256": "7450dea93fe52563eeb085266fa62998cd2e467b6aa94bc41e80edd44d0190cf",
+        "sdf_command_sha256": "e2fb1b4de1437293367413403aae9f98ca811e05357f839683f4bdb6b89c20b3"
+      },
+      {
+        "corner": "MINIMUM",
+        "case": "synthetic",
+        "status": "PASS",
+        "boots": 2,
+        "downloaded_words": 2048,
+        "read_back_words": 2048,
+        "timing_diagnostics": 0,
+        "elapsed_seconds": 2187.337,
+        "case_audit": {
+          "name": "synthetic",
+          "status": "PASS",
+          "issues": [],
+          "simulator_errors": [],
+          "timing_diagnostics": [],
+          "observed_timing_violations": 0,
+          "benchmark_cycles": {
+            "0": {},
+            "1": {}
+          },
+          "annotation_statistics_raw": [
+            "\t\t No. of Pathdelays = 1737175 \t No. of Disabled Pathdelays = 0        Annotated = 100.00% (1737175/1737175) ",
+            "\t\t No. of Tchecks    = 214543  \t No. of Disabled Tchecks    = 0        Annotated = 100.00% (214543/214543) "
+          ],
+          "annotation_statistics_denominator": "All potential specify objects in compiled models, not source-SDF requested coverage",
+          "annotated_elements": 1951718,
+          "warning_counts": {
+            "CUVWSB": 16,
+            "CUVWSP": 10,
+            "CUVWSI": 1000,
+            "MXWARN": 1,
+            "DSEMEL": 1,
+            "CSINFI": 32,
+            "TRNNOP": 28,
+            "DSEM2009": 1
+          },
+          "evidence": [
+            "PIN_CONFIG sys_period_ns=20.000 tck_period_ns=100.000 boots=2",
+            "PIN_TAP_PASS idcode=00000001 dtmcs=00001071",
+            "PIN_CPU_HALTED dmstatus=000c0382",
+            "PIN_LOAD words=256",
+            "PIN_LOAD words=512",
+            "PIN_LOAD words=768",
+            "PIN_LOAD words=1024",
+            "PIN_LOAD words=1280",
+            "PIN_LOAD words=1536",
+            "PIN_LOAD words=1792",
+            "PIN_LOAD words=2048",
+            "PIN_IMAGE_VERIFIED words=2048",
+            "PIN_BOOT_VECTOR_READY address=00010000 instruction=800002b7",
+            "PIN_CPU_PASS run=0 magic=c0dec0de",
+            "PIN_CPU_PASS run=1 magic=c0dec0de",
+            "SOC_PINS PASS downloaded_words=2048 verified_words=2048 boots=2 dmi_transactions=6198"
+          ]
+        },
+        "case_audit_canonical_sha256": "28e31b7665812cad59834f381e59c89a602c22d11abf4e42e0c0f3d7b4f3ff8e",
+        "corner_audit_file_sha256": "63ce15adb7d437639d8a90e097bcd084090a2ba73d482331a5261f1bb9063bfd",
+        "corner_results_file_sha256": "6d4266e22ae7278293578aa1274c8f5f3372c59d8c120a2acc8dee4ba00099ec",
+        "source_proof_canonical_sha256": "96cf1f93fe65fb858f44afcd928a2397400e218a325ebc900ed11bc96e1e8824",
+        "firmware_image_sha256": "29cbca3b259644d244b7c0952e5ebdf68d95990f83aed8375c5239da757264a0",
+        "actual_command_canonical_sha256": "ee8788a3911424955298d80fd46d598c9880164e2b16a061b8cd2170cf2bbc7c",
+        "compiled_sdf_sha256": "7450dea93fe52563eeb085266fa62998cd2e467b6aa94bc41e80edd44d0190cf",
+        "sdf_command_sha256": "ebafade680b6654208a445758b29be5b5629ffc19433e289a3e8c3f9534aec9e"
+      }
+    ],
+    "acceptance_sha256": "20d01657fe76a51ac5aac03981d628d09b27da190ef90edb37f3f498de158287",
+    "source_sdf_coverage": "Not inferred from model-object annotation percentages; raw statistics preserved per case"
+  },
+  "sdf_compatibility": {
+    "method": "Native explicit STA write_sdf, same-session candidate adds only -filter",
+    "negative_iopath_records_clipped": 18,
+    "negative_numeric_components_clipped": 46,
+    "signed_zero_components_normalized": 5,
+    "total_iopath_records_changed": 19,
+    "negative_timing_check_records_preserved": 63129,
+    "negative_timing_checks_disabled": false,
+    "raw_restore_difference": "38 CELLs with <=1ps differences, separately audited; same-session RAW1/RAW2/RAW_after stable except DATE"
+  },
+  "not_in_scope": [
+    "Full PVT signoff",
+    "Independent foundry DRC/LVS",
+    "IR/EM or ESD signoff",
+    "Formal equivalence or CDC proof",
+    "FPGA/board verification"
+  ],
+  "historical_attempts": {
+    "immediate_clock_MAXIMUM": {
+      "status": "FAIL",
+      "real_startup_timing_violations": 3,
+      "functional_synthetic_two_boots_passed": true,
+      "dma_sibling": "ABORTED"
+    },
+    "immediate_clock_MINIMUM": {
+      "status": "PASS",
+      "cases": [
+        "synthetic",
+        "dma"
+      ],
+      "additional_baseline_only": true
+    },
+    "settled_clock_5000ns_smokes": {
+      "MAXIMUM": "STARTUP_SMOKE_CLEAN",
+      "MINIMUM": "STARTUP_SMOKE_CLEAN",
+      "full_matrix_complete": false
+    }
+  },
+  "finalized_utc": "2026-10-21T11:13:48.658071+00:00",
+  "evidence_sha256": {
+    "frozen_artifacts.json": "832a260972d478576178f9736fcf6977c592ed9e5b1f82df316af1071e35bc01",
+    "joint_audit.json": "90115f0c493c062c6184d2efc9e7202eb6fc0786eba1d7166e5a34c4558e58ec",
+    "physical_audit_fixed.json": "7617a4d92be2df9956b4c509108dc0c371d0389b279fe86eabb6de33563b686a",
+    "timing_audit.json": "aed24ef0eaae3e661cac443ab6fb29d4adf238652cad3de5d84480394c2dff66",
+    "constraint-coverage-audit.json": "bdd653810c5633bfe448619c58635f449f9033074db79bfea75cd2bc93aa8433",
+    "sdf-pair-stability.json": "7431e4d3f2aaa7c2329776b5d172c6264ce4becfe0672be4b9331798d39642b9",
+    "sdf-pair-filter-diff.json": "c0258b432e822807f2eafaed53c36c64590965f9d43b67a31607b59a7916cf25",
+    "sdf-original-restored-diff.json": "809fa6cbadc24eb7e57a4851e9d15ff55a153e1ca9c37d54ef04487085360e06",
+    "caint-readiness.json": "1c1b0c8c1f649f35c7b68492431aa0c8b9892033908b3bae9ca88514a6a4a012",
+    "startup-protocol-review.json": "da02f8a8c3644dae60b83289072a9be96ceb17e5ce3222d8da4fd8cb3adee6ea",
+    "sdf_pair/manifest.json": "6b1084f90812ddd044257976de73fd787ce5d11e261f5cd41707a1e439fdabf8",
+    "acceptance.json": "20d01657fe76a51ac5aac03981d628d09b27da190ef90edb37f3f498de158287",
+    "final-placement-area.json": "45e88352e79d9d5ec5c8979eb60bef6bcca4750ab8a02c61059b48d3610e1376"
+  }
+}

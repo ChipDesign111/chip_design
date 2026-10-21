@@ -1,6 +1,7 @@
 # Timestamped local work, waveforms and licensed IP
 /test/*/runs/
 /tools/local/
+/eda/work/
 /model/data/
 **/__pycache__/
 *.py[cod]

@@ -1,0 +1,47 @@
+{
+  "source_revision": "52be8c57b365b70536500526a52905352e505666",
+  "image_origin": "Previously verified JTAG images from reference/github-chip-design-dma-52be8c5/test/2026-10-15/jtag-boot",
+  "generators": [
+    "test/2026-10-15/scripts/build_har_firmware.py",
+    "test/2026-10-15/scripts/build_model_firmware.py"
+  ],
+  "cases": {
+    "synthetic": {
+      "image": "har_selftest.hex",
+      "sha256": "29cbca3b259644d244b7c0952e5ebdf68d95990f83aed8375c5239da757264a0",
+      "checks": [
+        "Six synthetic single samples: exact hidden INT8, scores INT32, predicted class, 39 cycles",
+        "One two-sample batch: exact hidden, scores, classes, 59 cycles, 18 overlap cycles, 38/38 layer active cycles",
+        "Exercise edge INT8 values and quantization multiply/shift configurations"
+      ]
+    },
+    "cpu": {
+      "image": "model_selftest_cpu.hex",
+      "sha256": "7096cfbea06e99bc4d9526fc988804d99258880ed6a56d5b99bed980e45fc599",
+      "checks": [
+        "24 real model inputs, 12 two-sample batches loaded by CPU",
+        "Every hidden value, score, class equals integer reference",
+        "Every batch: 59 cycles, 18 overlap cycles, 38/38 layer active cycles"
+      ]
+    },
+    "dma": {
+      "image": "model_selftest_dma.hex",
+      "sha256": "54c32dca604287846adf60fca7c0aa9a5125c69dc96dc69ecea6df03bce3689f",
+      "checks": [
+        "24 real model inputs, 12 two-sample batches loaded by actual DMA",
+        "598 parameter words and 384 input words copied; CPU checks done/error and copied count per descriptor",
+        "Every hidden value, score, class equals integer reference",
+        "Every batch: 59 cycles, 18 overlap cycles, 38/38 layer active cycles"
+      ]
+    }
+  },
+  "generator_sha256": {
+    "test/2026-10-15/scripts/build_har_firmware.py": "0cce8b0c4d5fee7d898494224c49b515f734477f4b4f2836831f76d9bd6557d4",
+    "test/2026-10-15/scripts/build_model_firmware.py": "5326abd5a99d83109be3ad46b33bb6a35e2d373cc800a68afb8a729648ab5cf1"
+  },
+  "generator_contract": "No generator or firmware checks were modified for gate simulation. Images copied byte-for-byte from the previously verified JTAG test workspace.",
+  "memory_image_words": 2048,
+  "success_signature": "CPU stores 0xc0dec0de to 0x80001fe0 only after all self-checks; failure stores 0xdeadbeef with stage/expected/observed diagnostics.",
+  "reference_model": "model/reference/mlp_int.py",
+  "reference_model_sha256": "9aa08e7e1ba38a5bd5da8e01c0ea5939fae38af820ba896ca17f91d1040956f0"
+}

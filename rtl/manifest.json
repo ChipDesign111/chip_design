@@ -361,7 +361,13 @@
     {
       "source": "soc/rtl/mem/bootram.sv",
       "path": "rtl/memory/bootram.sv",
-      "sha256": "4aa5f14dbb92a7ac9855f3019486a51a42ba210242a58b653b3e59049c2d82bf"
+      "sha256": "adb547aafe4656ab07aa6f69481dc67d97c6622a9f4575d7c6da22a6995904aa",
+      "original_sha256": "4aa5f14dbb92a7ac9855f3019486a51a42ba210242a58b653b3e59049c2d82bf",
+      "project_override": {
+        "date": "2026-10-20",
+        "reason": "Wait in boot RAM until JTAG installs a verified program and restores the startup vector; prevents execution of uninitialized SRAM.",
+        "details": "eda/BOOT_PROTOCOL.md"
+      }
     },
     {
       "source": "soc/rtl/mem/bootrom.sv",
@@ -378,9 +384,17 @@
     {
       "source": "soc/rtl/my_soc_top.sv",
       "path": "rtl/soc/my_soc_top.sv",
-      "sha256": "46970e8d4fd61c49c804ed89fdf920a4e1160ff01ecb555228fdd35d80768436",
+      "sha256": "718e540b9f357aad5d9455026cdba52161e21ea29c0e67dbcfecd62d4439186f",
       "previous_sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6",
-      "project_override": "2026-10-15: user-requested AXI DMA master and NPU CSR routing; integration source intentionally updated, not original-byte identity"
+      "project_override": "2026-10-15: user-requested AXI DMA master and NPU CSR routing; integration source intentionally updated, not original-byte identity",
+      "integration_history": [
+        {
+          "date": "2026-10-21",
+          "previous_sha256": "46970e8d4fd61c49c804ed89fdf920a4e1160ff01ecb555228fdd35d80768436",
+          "reason": "Keep original four-stage reset synchronizer, then release downstream reset on the falling clock edge to meet recovery/removal timing.",
+          "details": "eda/BOOT_PROTOCOL.md"
+        }
+      ]
     }
   ],
   "dma_integration": {

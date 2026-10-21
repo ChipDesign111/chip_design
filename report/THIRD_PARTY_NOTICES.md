@@ -9,6 +9,6 @@
 | UCI HAR 固定输入 | test/2026-10-15/fixtures | Reyes-Ortiz 等（2013），DOI 10.24432/C54S4K；CC BY 4.0、来源行号及 SHA 保存在 fixture |
 | 可选 SRAM 厂商视图 | tools/local/vendor | 授权本地依赖，不由公开仓库分发 |
 
-75 个保留外围文件在 rtl/manifest.json 记录原相对来源和字节 SHA。路径迁移没有改写版权和源内容。原课程 NPU、专用测试及导入脚本不再保留在当前源码。
+75 个保留外围文件在 rtl/manifest.json 记录来源和字节 SHA。2026-10-20 至 21 日修改 bootram 默认首条指令，并在 SoC 顶层增加下降沿复位释放寄存器；原 SHA、新 SHA 和原因通过 `project_override`、`integration_history` 保留，见 [启动与复位协议](../eda/BOOT_PROTOCOL.md)。清单保留此前两处 DMA 集成修改的原哈希；共有三个集成文件有修改，其余 72 个保持原始课程字节，既有版权不变。原课程 NPU、专用测试及导入脚本不再保留在当前源码。
 
 此仓库未新增覆盖所有原创文件/训练产物的统一授权声明，见 [LICENSES.md](LICENSES.md)。第三方条款不自动扩展到其他文件。数据来源：[UCI HAR](https://archive.ics.uci.edu/dataset/240/human+activity+recognition+using+smartphones)。
