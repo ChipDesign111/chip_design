@@ -6,7 +6,7 @@
       "architecture": "INT8 2x32 / 1x6, two 64B tiles, product pipeline, CUT_ALL_PORTS crossbar",
       "synthesis_cell_count": 66675,
       "synthesis_cell_area_um2": 2171670.432,
-      "native_sram_area_um2": 401444.091,
+      "native_sram_area_um2": 401443.591,
       "standard_cell_area_um2": 1770226.841,
       "npu_cell_area_um2": 865369.792,
       "axi_xbar_cell_area_um2": 339961.843,
@@ -15,7 +15,30 @@
       "last_completed_physical_step": 0,
       "result": "Synthesis passed; fixed 1500um core at utilization 0.70 planning failed. No physical die-area pass or final export.",
       "evidence": "Original area.rpt and flow.log retained in local archives, source server work remains immutable."
+    },
+    {
+      "upload": "20261023_005520_eec38ed",
+      "source_commit": "eec38eda37f234227d245134ad8e3c07f9df210e",
+      "architecture": "INT8 2x32 / 1x6, NO_LATENCY crossbar, products directly into INT32 accumulators",
+      "synthesis_cell_count": 58635,
+      "synthesis_cell_area_um2": 1894546.189,
+      "native_sram_area_um2": 401443.591,
+      "whole_die_um": [
+        1996.4,
+        1996.4
+      ],
+      "whole_die_area_mm2": 3.98561296,
+      "system_period_ns": 20,
+      "last_completed_physical_step": 32,
+      "post_route_step32_setup_wns_ns": 0.042,
+      "post_route_step32_hold_wns_ns": 0.021,
+      "step32_timing_violating_paths": 0,
+      "step32_electrical_drv_real_total": 0,
+      "step32_drc_violations": 0,
+      "result": "Area within4.0mm2 and step32 timing/DRV/DRC clean; step33 audit FAILED:48 IMPVFC-94 VDD dangling-wire problems near SRAM METAL5. No step33/34 acceptance or final export.",
+      "repair": "Native editTrim on VDD/VSS after PG hookup and final filler; retain full connectivity/DRC/timing checks. Fresh upload required.",
+      "evidence": "Original server work immutable; selected raw reports copied to local lab4/int8_eec38ed_partial_20261023."
     }
   ],
-  "next_iteration": "Internal crossbar spill stages and product pipeline registers removed; preserve 70 INT8 multipliers; user corrected whole-die limit to4.0mm2, core request1696um/utilization0.68; measured result pending"
+  "next_iteration": "Same validated RTL and1696um core/20ns constraints, native PG stub cleanup at steps21/33; fresh full EDA verification pending."
 }
