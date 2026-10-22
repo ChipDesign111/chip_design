@@ -44,10 +44,14 @@ def index(root, uploads):
 <style>body{font-family:"Noto Sans CJK SC",sans-serif;max-width:1100px;margin:36px auto;padding:0 24px;line-height:1.8;color:#203044;background:#f5f7fa}table{border-collapse:collapse;background:white;width:100%%}td,th{border:1px solid #d7dfe8;padding:12px;text-align:left}a{color:#075ea9}pre{background:#152b40;color:white;padding:20px;white-space:pre-wrap}</style>
 <h1>fullstack_chipdesign：按上传版本隔离</h1><p>每次上传先在uploads下新建目录，将压缩包放入该目录。顶层unpack.sh是唯一公共解压入口；解压、脚本、配置、日志、报告及结果全部留在对应上传目录内。不同版本不共享deploy、work或配置，没有全局current_run。</p>
 <h2>上传版本</h2><table><tr><th>版本（点击查看GUI说明）</th><th>部署源码提交</th></tr>%s</table>
-<h2>公共解压</h2><pre>bash unpack.sh uploads/本次新建目录</pre><p>解压器校验包与源码SHA，拒绝在已有版本中覆盖不同原包，不启动EDA。进入对应版本目录后执行bash run_all.sh启动或继续该版本。</p>
+<h2>从解压到结果</h2><pre>bash unpack.sh uploads/本次新建目录
+cd uploads/本次新建目录
+bash ./check_env.sh
+bash ./run_eda.sh
+bash ./collect_results.sh</pre><p>公共解压器校验包和源码SHA，不启动EDA。三个独立脚本依次检查环境并准备工程、执行综合及01–34、整理报告与回传包；也可在版本目录用bash run_all.sh连续调用。长任务用tmux或nohup。点击版本README查看参数、完成标志、日志和结果链接。</p><p>结果查看从work/evidence/运行报告.md、第33步和第34步JSON开始。本机仓库运行python eda/remote.py fetch --upload 本版本完整路径 --wait，会抓取小包、校验并解压，随后打开本机结果目录README.html。</p>
 <h2>保留资料</h2><ul><li><a href="lab4/">lab4/</a>：完整保留的原Lab 4工程、资料与辅助内容。</li><li><a href="history/">history/</a>：历史有效结果；旧绝对路径代表当时来源，不作为当前上传输入。</li></ul>
 <p>顶层只保留公共解压器、版本索引、uploads及保留资料。运行和收集结果只使用版本自己的脚本。原始上传包留在各版本根目录，交付包清理也只作用于对应版本的work。</p></html>''' % rows
-    text = '# 按上传版本隔离的服务器工作区\n\n双击README.html查看版本索引。\n\n- unpack.sh：公共解压器。\n- uploads/每次新建目录/：原包、deploy、configs、work、logs、results、docs及全部操作脚本。\n- lab4/：原Lab 4内容完整保留。\n- history/：历史有效结果，非当前输入。\n\n每次上传新建目录；用bash unpack.sh uploads/目录解压，再进入该目录运行bash run_all.sh。没有全局deploy、runs、config或current_run。\n'
+    text = '# 服务器EDA：解压、三个独立阶段、结果查看\n\n双击README.html选择上传版本，再阅读该版本完整README。\n\n```bash\nbash unpack.sh uploads/本次新建目录\ncd uploads/本次新建目录\nbash ./check_env.sh\nbash ./run_eda.sh\nbash ./collect_results.sh\n```\n\ncheck_env.sh准备输入并检查环境；run_eda.sh完成综合与01–34；collect_results.sh生成报告和小型回传包。run_all.sh仅依次调度三者，可用nohup后台运行。\n\n结果从版本work/evidence/运行报告.md、step_33.json、step_34.json阅读；大视图留在work/pnr/my_soc_top/outputs/manual_final。Windows仓库执行python eda/remote.py fetch --upload 完整版本路径 --wait，下载校验后打开本机README.html。详细参数和日志见版本README。\n\n- unpack.sh：唯一公共解压器。\n- uploads/每次新建目录/：原包、deploy、configs、work、logs、results、docs、三个阶段入口及README。\n- lab4/：原Lab4完整内容。\n- history/：历史有效结果，不参与新输入。\n\n不同上传不共享配置、脚本、work或结果，没有全局当前版本指针。旧版本保留当时入口；新部署版本包含上述三个阶段。\n'
     for name, body in [('README.html', page), ('README.md', text)]:
         fd, temporary = tempfile.mkstemp(prefix='.readme_', dir=str(root))
         os.close(fd)
