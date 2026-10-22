@@ -1,0 +1,9 @@
+{
+  "archive_sha256": "7524c51c84b70ad5e830b9fd3900e918dd338d5a0e6655c69541d3c8d6a80139",
+  "files_verified": 618,
+  "input_manifest_sha256": "3b029821e0d7de870e6c91b5e06844bc3055f808f26f6f05afa6b49b952ecba5",
+  "remote_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261023_031855_c97325b",
+  "all_34_steps_same_input": true,
+  "whole_die_area_mm2": 3.9856129600000005,
+  "max_whole_die_area_mm2": 4.0
+}

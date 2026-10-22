@@ -49,7 +49,24 @@
       "last_completed_physical_step": 30,
       "result": "Step21 full PG clean after early trim; step31 audit FAILED: one METAL2 short npu_rdata[4]/sram_rdata[5] following selected antenna repair. Intermediate PG report also lists VSS opens after later physical cells were added. No final acceptance.",
       "repair": "Defer editTrim until final physical cells/fillers exist at33; add measured-DRC-driven full detail-route repair after selected antenna repair, with bounded iterations and unchanged independent audits."
+    },
+    {
+      "upload": "20261023_031855_c97325b",
+      "source_commit": "c97325b137204416b6794f493a4b735bccf31a96",
+      "synthesis_cell_area_um2": 1894546.189,
+      "whole_die_area_mm2": 3.9856129600000005,
+      "system_period_ns": 20,
+      "last_completed_physical_step": 34,
+      "final_setup_wns_ns": 0.042,
+      "final_hold_wns_ns": 0.021,
+      "stage_exit_codes": {
+        "environment": 0,
+        "eda": 0,
+        "collect": 0,
+        "pipeline": 0
+      },
+      "result": "All34 same-input stages and environment/EDA/collect passed. Final fullPG/DRC/antenna/time clean; IO abstract classification with native geometry proof. Verified618file download; SDF export only."
     }
   ],
-  "next_iteration": "Same validated RTL/1696um core/20ns. Final-only PG trim, bounded post-antenna DRC repair; fresh full run pending."
+  "latest_completed": "int8_20261023/README.md"
 }

@@ -1,0 +1,158 @@
+{
+  "die_um": [
+    0.0,
+    0.0,
+    1996.4,
+    1996.4
+  ],
+  "whole_die_area_mm2": 3.9856129600000005,
+  "max_whole_die_area_mm2": 4.0,
+  "signal_pads": [
+    {
+      "port": "clk_i",
+      "pad": "clk",
+      "direction": "input",
+      "side": "N",
+      "offset_um": 300
+    },
+    {
+      "port": "rst_ni",
+      "pad": "rst_n",
+      "direction": "input",
+      "side": "N",
+      "offset_um": 1400
+    },
+    {
+      "port": "tck_i",
+      "pad": "tck",
+      "direction": "input",
+      "side": "S",
+      "offset_um": 250
+    },
+    {
+      "port": "tms_i",
+      "pad": "tms",
+      "direction": "input",
+      "side": "S",
+      "offset_um": 450
+    },
+    {
+      "port": "td_i",
+      "pad": "tdi",
+      "direction": "input",
+      "side": "S",
+      "offset_um": 1400
+    },
+    {
+      "port": "td_o",
+      "pad": "tdo",
+      "direction": "output",
+      "side": "S",
+      "offset_um": 1600
+    }
+  ],
+  "power_slots": [
+    {
+      "suffix": "vss_1",
+      "master": "PVSS1CDG",
+      "offset_um": 600
+    },
+    {
+      "suffix": "vss_2",
+      "master": "PVSS1CDG",
+      "offset_um": 700
+    },
+    {
+      "suffix": "vssio",
+      "master": "PVSS2CDG",
+      "offset_um": 800
+    },
+    {
+      "suffix": "vdd_1",
+      "master": "PVDD1CDG",
+      "offset_um": 900
+    },
+    {
+      "suffix": "vdd_2",
+      "master": "PVDD1CDG",
+      "offset_um": 1000
+    },
+    {
+      "suffix": "vddio",
+      "master": "PVDD2CDG",
+      "offset_um": 1100
+    },
+    {
+      "suffix": "poc",
+      "master": "PVDD2POC",
+      "offset_um": 1200
+    }
+  ],
+  "pin_rectangles_um": {
+    "clk_i": [
+      310,
+      1994.0,
+      320,
+      1995.0
+    ],
+    "rst_ni": [
+      1410,
+      1994.0,
+      1420,
+      1995.0
+    ],
+    "tck_i": [
+      260,
+      1,
+      270,
+      2
+    ],
+    "tms_i": [
+      460,
+      1,
+      470,
+      2
+    ],
+    "td_i": [
+      1410,
+      1,
+      1420,
+      2
+    ],
+    "td_o": [
+      1610,
+      1,
+      1620,
+      2
+    ],
+    "VDD": [
+      910,
+      1994.0,
+      920,
+      1995.0
+    ],
+    "VSS": [
+      610,
+      1994.0,
+      620,
+      1995.0
+    ],
+    "VDDPST": [
+      1110,
+      1994.0,
+      1120,
+      1995.0
+    ],
+    "VSSPST": [
+      810,
+      1994.0,
+      820,
+      1995.0
+    ]
+  },
+  "main_macro_xy_um": [
+    250,
+    650
+  ],
+  "generated_from_measured_database_geometry": true
+}
