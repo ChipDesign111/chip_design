@@ -6,6 +6,9 @@ module har_dma_axi (
     input logic [31:0] reg_wdata_i,
     output wire [31:0] reg_rdata_o,
     input logic npu_busy_i, conflict_i,
+    input logic auto_start_i,
+    input logic [31:0] auto_source_i,auto_dest_i,auto_words_i,
+    output wire done_o,error_o,read_active_o,write_active_o,
     output wire busy_o,
     AXI_BUS.Master master
 );
@@ -23,6 +26,8 @@ module har_dma_axi (
     har_dma i_engine (
         .clk_i(clk_i),.rst_ni(rst_ni),.reg_req_i(reg_req_i),.reg_we_i(reg_we_i),
         .reg_addr_i(reg_addr_i),.reg_wdata_i(reg_wdata_i),.reg_rdata_o(reg_rdata_o),
+        .auto_start_i(auto_start_i),.auto_source_i(auto_source_i),.auto_dest_i(auto_dest_i),.auto_words_i(auto_words_i),
+        .done_o(done_o),.error_o(error_o),.read_active_o(read_active_o),.write_active_o(write_active_o),
         .npu_busy_i(npu_busy_i),.conflict_i(conflict_i),.busy_o(busy_o),
         .ar_addr_o(master.ar_addr),.ar_len_o(master.ar_len),.ar_valid_o(master.ar_valid),.ar_ready_i(master.ar_ready),
         .r_data_i(master.r_data),.r_resp_i(master.r_resp),.r_last_i(master.r_last),.r_valid_i(master.r_valid),.r_ready_o(master.r_ready),

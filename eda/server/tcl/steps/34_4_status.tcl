@@ -1,0 +1,1 @@
+dbGet top.statusRCExtracted

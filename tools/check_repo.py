@@ -13,14 +13,14 @@ from urllib.parse import unquote
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_FILES = (
     "README.md", ".gitignore", ".gitattributes", ".editorconfig",
-    "tools/project.py", "tools/workspace.py", "tools/check_hardware.py",
+    "tools/project.py", "tools/check_hardware.py",
     "model/requirements.txt", "rtl/project.json", "rtl/filelist.f", "rtl/manifest.json",
     "report/README.md", "report/architecture.md", "report/development.md", "report/mmio.md",
     "report/sram.md", "report/THIRD_PARTY_NOTICES.md", "model/numerics.md",
     ".github/workflows/ci.yml", "test/README.md", "tools/README.md",
 )
 REQUIRED_DIRS = ("rtl", "model", "tools", "test", "report", "fpga", "eda")
-EXCLUDED_PARTS = {".git", "data", "local", "runs", ".venv", "venv", "__pycache__"}
+EXCLUDED_PARTS = {".git", "data", "local", "runs", ".venv", "venv", "__pycache__", "dist"}
 
 
 def files(suffix: str):
@@ -43,9 +43,6 @@ def check() -> list[str]:
         if not (ROOT / name).is_dir(): errors.append(f"Missing directory: {name}")
     visible = {p.name for p in ROOT.iterdir() if p.is_dir() and not p.name.startswith(".")}
     if visible != set(REQUIRED_DIRS): errors.append("Top-level directories must be exactly rtl/fpga/model/eda/test/report/tools")
-    for name in ("fpga", "eda"):
-        if (ROOT/name).exists() and any(p.name != ".gitkeep" for p in (ROOT/name).iterdir()):
-            errors.append(name + " must remain empty except for its Git placeholder")
     if (ROOT/"rtl/npu/lab3").exists(): errors.append("Original NPU must not be retained")
     for doc in files(".md"):
         content = doc.read_text(encoding="utf-8")

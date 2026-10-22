@@ -363,7 +363,9 @@
     {
       "source": "soc/rtl/mem/bootram.sv",
       "path": "rtl/memory/bootram.sv",
-      "sha256": "4aa5f14dbb92a7ac9855f3019486a51a42ba210242a58b653b3e59049c2d82bf"
+      "sha256": "537ad5ccbce367cd216ff0d8b1134c18eecd72b9c638f67597b761dbb3992db9",
+      "upstream_sha256": "4aa5f14dbb92a7ac9855f3019486a51a42ba210242a58b653b3e59049c2d82bf",
+      "project_override": "INT8 autonomous tile DMA integration; guarded boot commit and synchronized reset release"
     },
     {
       "source": "soc/rtl/mem/bootrom.sv",
@@ -373,17 +375,19 @@
     {
       "source": "soc/rtl/my_npu_subsystem.sv",
       "path": "rtl/soc/my_npu_subsystem.sv",
-      "sha256": "b0b6b9000d63845282840c9d56ffcfed00c34f454457e35231e680510557a2f0",
+      "sha256": "85f4fe6b1bf0a093224eb16524ffc5e950e921e9e9a9d21ea73787fddc1cfe21",
       "previous_sha256": "4d09e3bf393b9571e7c2da52a64161deec6e3812d513600465fa32c1e192fe24",
-      "project_override": "2026-10-15: user-requested AXI DMA master and NPU CSR routing; integration source intentionally updated, not original-byte identity"
+      "project_override": "INT8 autonomous tile DMA integration; guarded boot commit and synchronized reset release",
+      "upstream_sha256": "b0b6b9000d63845282840c9d56ffcfed00c34f454457e35231e680510557a2f0"
     },
     {
       "source": "soc/rtl/my_soc_top.sv",
       "path": "rtl/soc/my_soc_top.sv",
-      "sha256": "174207c5682648222a6f280705666d272d1d44406df6193370c0e8efc7ed374e",
+      "sha256": "d39a6e1545eba5dafe3abfbacfc55164bb139a2df36b7608725e8d7541558a7a",
       "previous_sha256": "46970e8d4fd61c49c804ed89fdf920a4e1160ff01ecb555228fdd35d80768436",
       "original_sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6",
-      "project_override": "2026-10-22: propagate the synthesis-time FPGA main-memory initialization file through my_soc_top"
+      "project_override": "INT8 tile DMA; safe boot commit and POR/system reset synchronization",
+      "upstream_sha256": "174207c5682648222a6f280705666d272d1d44406df6193370c0e8efc7ed374e"
     }
   ],
   "dma_integration": {

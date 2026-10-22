@@ -1,16 +1,7 @@
-# Design reports
+# 当前设计说明
 
-这里保存现行设计与使用说明。每次测试的结果、日志和报告统一放在 [test](../test/README.md)，不在这里重复存档。
+从 [架构](architecture.md) 理解信号与数据通路，再看 [NPU](npu.md)、[MMIO](mmio.md)、[DMA](dma.md) 和 [SRAM/启动](sram.md)。[开发与验证](development.md) 说明复现功能测试的方法；物理实现从 [EDA 操作指南](../eda/README.md) 开始。
 
-| 文档 | 内容 |
-| --- | --- |
-| [architecture.md](architecture.md) | 完整 SoC、目录边界、存储与修改范围 |
-| [npu.md](npu.md) | tile 配比、两级流水、bank 存储和周期 |
-| [mmio.md](mmio.md) | 寄存器、数据布局和协议 |
-| [sram.md](sram.md) | SRAM 后端、本地资料和仿真边界 |
-| [development.md](development.md) | 工具依赖、修改方法、验证与交付 |
-| [整数规则](../model/numerics.md) | MLP 数值契约 |
-| [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) | 组件来源与授权 |
-| [CHANGELOG.md](CHANGELOG.md) | 工程变更 |
+当前真实功能证据：2026-10-23，32 组随机单/双样本批次、12 组训练模型双样本批次共 24 条 UCI 固定输入逐值通过；另有 DMA 错误、重启、复位中断和完整 CPU 自检。完整 SoC 自检 7341 个释放启动密钥后的观测时钟，实际 DMA 读/MAC 与 DMA 写/MAC 各重叠 62 拍。该数字含 CPU 软件与检查开销，不是纯 NPU 延迟。
 
-[DMA](dma.md)：AXI burst 装载、CSR、错误/并发规则与加速比测量；[验证记录](../test/2026-10-15/dma/report.md)。
+功能仿真不是物理签核；实际 EDA 状态及最终面积以本次上传的 evidence 和最终视图为准，不能引用旧 xzx/rtl 结果。

@@ -1,5 +1,3 @@
-# SoC integration
+# SoC 集成
 
-my_soc_top 集成 CV32E40P、AXI、Debug、Boot、SRAM 与 NPU。my_npu_subsystem 保持 MMIO 到 simple_npu_top 的接入边界。原外围字节由 rtl/manifest.json 校验；加速器只选择当前 HAR 实现。
-
-DMA integration adds a fourth AXI initiator and routes its CSR through the NPU window. Tagged DMA writes are admitted while untagged host writes are blocked during DMA activity. See [DMA](../../report/dma.md).
+my_soc_top 保留六个信号端口、四发起端/四目标端 AXI、CPU 和 Debug。NPU 自动描述符连接 har_dma_axi；Boot 控制器在 SRAM 完整装载提交后才放行 CPU 取指。my_npu_subsystem 负责 NPU MMIO 与 DMA CSR 选择。见 [架构](../../report/architecture.md)。

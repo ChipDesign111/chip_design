@@ -1,29 +1,9 @@
-# Main SRAM
+# 主 SRAM、启动和复位
 
-## 实现与资料
+主存为一个 2048×32（8 KiB）单端口 SRAM。chip_sram_2048x32 以 CHIP_USE_RA1SHD 选择授权 RA1SHD_2048x32M8 原生宏，否则使用无数据复位的行为模型。FPGA_INIT_FILE 非空仅用于 FPGA BRAM 预装载；ASIC 默认空，真实 SRAM 上电内容未知。
 
-rtl/memory/my_mainmem.sv 和 chip_sram_2048x32.sv 实现 2048×32、8192 B 单端口主存。默认 portable-sram 使用项目自有行为存储；--memory ra1shd 连接授权本地模型。旧 reference 实现已移除，SoC 只编译一份 my_mainmem。
+CPU 上电不取指。先释放外部复位，调试模块经过同步后可以工作；通过 Debug SBA 顺序写满 0x80000000–0x80001ffc 的 2048 个完整字（空白区域也写零）。建议读回校验，然后向 0x0001003c 写密钥 0xb007c0de。Boot 控制器检查覆盖计数，再经 5 拍余量才置 boot_ready，CPU 从固定跳板进入 SRAM。只写密钥、只写末字、部分字节写和半份程序都不能启动。
 
-九个原始 SRAM 文件保留在 tools/local/vendor/RA1SHD_2048x32M8，清单为 tools/local/vendor/local-inventory.json。目录迁移前后逐文件 SHA 一致。tools/local 整体忽略，不上传原始 Verilog、Liberty、CDL 或版图资料；fpga、eda 保持空目录。
+POR/系统域复位异步断言、同步释放，共两组四级寄存器；所有启动许可在复位时撤销。JTAG TAP 的外部复位保留其 TCK 域接口。重新加载应先停机/系统复位，再完整装载，不能假设已经运行的 CPU 会被 fetch_enable 的下降沿立即硬复位。
 
-## 接口
-
-CPU 地址基址 0x80000000，word 地址 addr[12:2]；CLK=clk_i，CEN=~req_i，WEN=~(be_i & {4{we_i}})，D/Q 为 32 bit，OEN=0。读在上升沿采样后返回，读不受 be 值影响；req 无效不写。写期间 Q 不作为有效读值，不规定旧值/新值语义。
-
-宏无数据复位，上电内容未定义。TB 在 CPU 复位期间通过实际端口写入镜像，再释放端口并运行 CPU；不访问厂商内部数组，不注入 PASS。硬件程序下载/装载方案仍需后续实现。
-
-## 验证
-
-```sh
-python tools/project.py test --suite memory
-python tools/project.py test --suite memory --memory ra1shd
-python tools/project.py test --suite soc --memory ra1shd --vsim /path/to/vsim
-python tools/project.py test --suite model-soc --memory ra1shd --vsim /path/to/vsim
-python tools/project.py synth
-```
-
-SRAM 单元覆盖 2048 地址、16 字节掩码、禁写、随机读写、同步采样和复位保持。完整 SoC 使用当前 MLP 自检，原 4×4 程序不再运行。
-
-厂商模型在零延迟 RTL 中使用明确的 +notimingchecks 功能模式；Icarus 不启用 specify。它不证明 setup/hold、目标频率或 STA/SDF 通过。Yosys 仅检查 65536-bit 同步 RAM 与单 blackbox 连接，不读取厂商 Liberty/CDL/版图内容。
-
-此宏用于 CPU 主存，不能直接折叠 NPU 的 38 个并行权重 bank。目标宏映射、电源/物理视图、时序、面积/功耗及签核仍需授权 EDA 环境完成。历史 SRAM 测试见 [2026-10-15](../test/2026-10-15/sram-integration/report.md)，该记录保留旧目录和配置语境。
+测试镜像布局：0x0000–0x0fff 程序空间，0x1000–0x17ff 第一层权重，0x1800–0x18ff 第二层含填充权重，0x1900 起偏置，0x1a00 起两个输入，0x1b00 起参考结果，0x1fc0 起统计及完成标志。均为 SRAM 内偏移；不把模型和代码叠放。

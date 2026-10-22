@@ -14,12 +14,16 @@ module my_soc_top #(
 
   import my_soc_pkg::*;
 
+  logic por_reset_n,boot_ready;
+  // Four system-clock edges for debug/POR, then four for the functional SoC.
+  // Assertion is asynchronous at both stages; deassertion is synchronous.
+  rstgen i_rstgen_por(.clk_i(clk_i),.rst_ni(rst_ni),.test_mode_i(1'b0),.rst_no(por_reset_n),.init_no());
   logic ndmreset;
   logic ndmreset_n;
 
   rstgen i_rstgen_main (
       .clk_i       (clk_i),
-      .rst_ni      (rst_ni & (~ndmreset)),
+      .rst_ni      (por_reset_n & (~ndmreset)),
       .test_mode_i (1'b0),
       .rst_no      (ndmreset_n),
       .init_no     ()
@@ -145,7 +149,7 @@ module my_soc_top #(
       .debug_havereset_o   (),
       .debug_running_o     (),
       .debug_halted_o      (),
-      .fetch_enable_i      (1'b1),
+      .fetch_enable_i      (boot_ready),
       .core_sleep_o        ()
   );
 
@@ -234,7 +238,7 @@ module my_soc_top #(
 
   dmi_jtag i_dmi_jtag (
       .clk_i           (clk_i),
-      .rst_ni          (rst_ni),
+      .rst_ni          (por_reset_n),
       .dmi_rst_no      (),
       .testmode_i      (1'b0),
       .dmi_req_valid_o (debug_req_valid),
@@ -284,7 +288,7 @@ module my_soc_top #(
       .AXI_USER_WIDTH (1)
   ) i_dm_axi2mem (
       .clk_i  (clk_i),
-      .rst_ni (rst_ni),
+      .rst_ni (por_reset_n),
       .slave  (master[IDX_DM]),
       .req_o  (dm_slave_req),
       .we_o   (dm_slave_we),
@@ -300,7 +304,7 @@ module my_soc_top #(
       .SelectableHarts (1'b1)
   ) i_dm_top (
       .clk_i            (clk_i),
-      .rst_ni           (rst_ni), // PoR(Power-on Reset)
+      .rst_ni           (por_reset_n), // PoR(Power-on Reset)
       .testmode_i       (1'b0),
       .ndmreset_o       (ndmreset),
       .dmactive_o       (),
@@ -321,7 +325,7 @@ module my_soc_top #(
       .master_gnt_i     (dm_master_gnt),
       .master_r_valid_i (dm_master_r_valid),
       .master_r_rdata_i (dm_master_r_rdata),
-      .dmi_rst_ni       (rst_ni),
+      .dmi_rst_ni       (por_reset_n),
       .dmi_req_valid_i  (debug_req_valid),
       .dmi_req_ready_o  (debug_req_ready),
       .dmi_req_i        (debug_req),
@@ -340,7 +344,7 @@ module my_soc_top #(
       .axi_rsp_t          (axi_resp_t)
   ) i_axi_adapter_dm (
       .clk_i                 (clk_i),
-      .rst_ni                (rst_ni),
+      .rst_ni                (por_reset_n),
       .req_i                 (dm_master_req),
       .type_i                (1'b0),
       .amo_i                 (4'b0000),
@@ -360,15 +364,24 @@ module my_soc_top #(
       .axi_resp_i            (dm_axi_m_resp)
   );
 
+  logic        sram_req;
+  logic        sram_we;
+  logic [31:0] sram_addr;
+  logic [31:0] sram_wdata;
+  logic [3:0]  sram_be;
+  logic [31:0] sram_rdata;
+
   logic        boot_req;
   logic        boot_we;
   logic [31:0] boot_addr;
   logic [31:0] boot_wdata;
   logic [31:0] boot_rdata;
 
-  bootram i_bootram (
+  bootram #(.PREINITIALIZED(FPGA_INIT_FILE!="")) i_bootram (
+      .sram_write_i(sram_req && sram_we),.sram_addr_i(sram_addr),.sram_be_i(sram_be),
+      .ready_o(boot_ready),
       .clk_i (clk_i),
-      .rst_ni(rst_ni),
+      .rst_ni(ndmreset_n),
       .req_i (boot_req),
       .wen_i (boot_we),
       .addr_i(boot_addr[5:2]),
@@ -392,13 +405,6 @@ module my_soc_top #(
       .data_o (boot_wdata),
       .data_i (boot_rdata)
   );
-
-  logic        sram_req;
-  logic        sram_we;
-  logic [31:0] sram_addr;
-  logic [31:0] sram_wdata;
-  logic [3:0]  sram_be;
-  logic [31:0] sram_rdata;
 
   my_mainmem #(
       .INIT_FILE(FPGA_INIT_FILE)
@@ -430,6 +436,8 @@ module my_soc_top #(
       .data_i (sram_rdata)
   );
 
+  logic auto_start,dma_done,dma_error,dma_read_active,dma_write_active;
+  logic [31:0] auto_source,auto_dest,auto_words;
   logic        npu_req, npu_we;
   logic npu_user, npu_busy, dma_busy, dma_req, dma_we, dma_conflict;
   logic [4:0] dma_addr;
@@ -448,6 +456,8 @@ module my_soc_top #(
   my_npu_subsystem i_npu_subsystem (
       .clk_i(clk_i), .rst_ni(ndmreset_n), .req_i(npu_req), .we_i(npu_we),
       .addr_i(npu_addr), .wdata_i(npu_wdata), .rdata_o(npu_rdata),
+      .auto_start_o(auto_start),.auto_source_o(auto_source),.auto_dest_o(auto_dest),.auto_words_o(auto_words),
+      .dma_done_i(dma_done),.dma_error_i(dma_error),.dma_read_i(dma_read_active),.dma_write_active_i(dma_write_active),
       .dma_write_i(npu_user), .dma_busy_i(dma_busy), .dma_rdata_i(dma_rdata),
       .dma_req_o(dma_req), .dma_we_o(dma_we), .dma_addr_o(dma_addr),
       .dma_wdata_o(dma_wdata), .dma_conflict_o(dma_conflict), .npu_busy_o(npu_busy)
@@ -457,6 +467,8 @@ module my_soc_top #(
       .clk_i(clk_i), .rst_ni(ndmreset_n), .master(slave[3]),
       .reg_req_i(dma_req), .reg_we_i(dma_we), .reg_addr_i(dma_addr),
       .reg_wdata_i(dma_wdata), .reg_rdata_o(dma_rdata),
+      .auto_start_i(auto_start),.auto_source_i(auto_source),.auto_dest_i(auto_dest),.auto_words_i(auto_words),
+      .done_o(dma_done),.error_o(dma_error),.read_active_o(dma_read_active),.write_active_o(dma_write_active),
       .npu_busy_i(npu_busy), .conflict_i(dma_conflict), .busy_o(dma_busy)
   );
 endmodule

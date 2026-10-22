@@ -1,3 +1,5 @@
-# NPU loading DMA
+# 流式权重 DMA
 
-har_dma is a bounded AXI4 burst engine with a 16-word buffer; har_dma_axi adapts its channels to the SoC interface. Public protocol tests do not require vendor views. See [DMA design](../../report/dma.md).
+har_dma：独立 AXI 读写通道，两字 FIFO、突发边界拆分及错误处理。
+har_dma_axi：AXI_BUS 元数据适配；USER=1 标记 DMA 写入。
+正常推理由 NPU 自动提交描述符。见 [DMA](../../report/dma.md)。

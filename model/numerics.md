@@ -1,6 +1,6 @@
 # Integer arithmetic contract
 
-状态：算术契约已实现，tiled V2 沿用；训练模型来自 [model/export](export/README.md)，参数以 [quant_params.json](export/quant_params.json) 为准。实际 MULT=1064、SHIFT=20、舍入加数 524288，均在当前硬件支持范围，无需改动 RTL。
+状态：当前 INT8 tile DMA 实现；训练模型来自 [model/export](export/README.md)，参数以 [quant_params.json](export/quant_params.json) 为准。实际 MULT=1064、SHIFT=20、舍入加数 524288，均在当前硬件支持范围，无需改动 RTL。
 
 ## 计算定义
 
@@ -12,10 +12,10 @@
 `score[k] = bias2[k] + sum(weight2[k][j] * hidden[j])`，j=0..31，k=0..5。
 类别取最大有符号 score 下标；平局取最小下标。第二层不做 ReLU。
 
-输入和两层权重为 -128..127，偏置和累加 INT32。每个偏置及每一步累加必须在 INT32 范围内，溢出不属于 V1 合法输入；参考生成器拒绝溢出。真实模型导出要对允许的输入范围做界限检查。
+输入和两层权重为 -128..127，偏置和累加 INT32。硬件 INT32 累加按二进制补码回绕；训练模型应避免溢出，导出时检查偏置及允许输入范围的界限，不能依靠回绕改善模型结果。
 
 第一层定义 value=max(acc,0)×MULT，MULT=0..65535；s=SHIFT=0..31。
-若 s=0，rounded=value；否则 rounded=(value+2^(s-1))>>s。使用 64 位非负中间值，hidden=min(127,rounded)。MULT=0 得到零，正数平局向上舍入。默认 MULT=1、SHIFT=0。
+若 s=0，rounded=value；否则 rounded=(value+2^(s-1))>>s。使用 48 位非负中间值（足以容纳正 INT32×UINT16 与舍入加数），hidden=min(127,rounded)。MULT=0 得到零，正数平局向上舍入。默认 MULT=1、SHIFT=0。
 输入和 hidden 为零点 0；两层得分需同一正比例尺度，才能直接 Argmax。逐项参考位于 model/reference/mlp_int.py。
 
 所有乘法先按有符号解释；加入累加器前显式符号扩展。中间运算不能因表达式位宽提前截断。

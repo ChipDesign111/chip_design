@@ -1,0 +1,240 @@
+{
+  "1": {
+    "title": "导入新门级设计",
+    "what": "读入新版SoC网表、库外形与时间模型，并查找唯一主SRAM。",
+    "why": "网表只写连接，库资料才给出实际器件；先排除旧网表、缺模型和选错宏。",
+    "effect": "设计名my_soc_top，主SRAM恰好一个，记录综合后真实实例路径。",
+    "parameters": "顶层固定为my_soc_top，宏型号固定RA1SHD_2048x32M8；实例名从当前数据库查询，不照搬旧层次路径。"
+  },
+  "2": {
+    "title": "确定核心与裸片尺寸",
+    "what": "根据新综合面积和目标放置密度估算核心，再由工具建立合法行网格。",
+    "why": "面积目标约束含 PAD 的整个 Die；先用当前综合结果核对核心空间，不能照搬旧大尺寸或仅缩小边框。",
+    "effect": "生成floorplan_plan.json与geometry.json，后续外围统一使用实际Die尺寸。",
+    "parameters": "当前请求 core 1500 μm、四侧余量150 μm、目标利用率0.70；实际网格对齐后整个 Die 必须≤3.5 mm²。core_size_um为空时自动估算，但仍受整颗面积上限保护。"
+  },
+  "3": {
+    "title": "识别SRAM硬宏",
+    "what": "查询宏的型号、实例名、尺寸和分类。",
+    "why": "型号是库里的模板，实例是本设计使用一次；后续放置必须找对具体实例。",
+    "effect": "确认RA1SHD_2048x32M8并保存查询结果，尚不改变位置。",
+    "parameters": "`cell.size`是LEF定义的物理大小；`baseClass=block`区分硬宏与标准单元。RTL中预计为i_mainmem/i_sram/i_macro；综合可能改名，以本步数据库查询的唯一实例为准。"
+  },
+  "4": {
+    "title": "保存插PAD之前的恢复点",
+    "what": "核对六个逻辑信号端口、确认尚无PAD，保存prePad。",
+    "why": "接下来要改变端口与内部网络关系，出错时可以恢复到清楚的基线。",
+    "effect": "六路接口存在但六个PAD还未摆放；本步不是布局动作。",
+    "parameters": "`saveDesign`保存数据库及配套.enc.dat；保存文件名不是验收结论。每边为2核心VDD、2核心VSS、1IO VDD、1IO VSS、1POC。"
+  },
+  "5": {
+    "title": "摆放四角单元",
+    "what": "在实际裸片四角放置PCORNER并固定方向。",
+    "why": "外围直线单元里的电源轨需要在角部转接，位置和方向都影响连通。",
+    "effect": "四角均fixed且方向正确；这些不是需要计算功能的信号单元。",
+    "parameters": "角块115×115 um；东/北边起点分别是实际宽/高减115，方向R0/MY/MX/R180必须与边别对应。"
+  },
+  "6": {
+    "title": "把IO时间模型纳入分析",
+    "what": "在核心与SRAM时间库上增加IO库，并激活func_tt_io分析视图。",
+    "why": "信号经过PAD也需要时间；只放几何而没启用时间模型会漏算延时。",
+    "effect": "Setup/Hold使用包含核心、SRAM与IO的同一单TT视图。",
+    "parameters": "library_set描述单元延时库，rc_corner描述导线RC，delay_corner把两者组合，analysis_view再加入constraint_mode。本流程明确-si_enabled false。"
+  },
+  "7": {
+    "title": "摆放六个信号PAD",
+    "what": "按io_plan.json把clk/rst放北边，四路JTAG放南边。",
+    "why": "外部接口需要真实输入输出电路，不能把RTL端口名当作完整外围。",
+    "effect": "六个PDDW0204CDG实例都有位置且fixed，但下一步才接内部信号。",
+    "parameters": "每个PAD60×115 um，北边R180、南边R0。沿边偏移取io_plan.json；北边y=实际高度−115，不能沿用旧1685.4。"
+  },
+  "8": {
+    "title": "连接PAD与核心",
+    "what": "先记录内部单元引脚，再把顶层端口转到外侧网络，从原引脚找到拆分后的内部网络，连接PAD/C/I及控制脚。",
+    "why": "输入应先经过接收电路，输出应经过发送电路；原内部端点必须一个不漏。",
+    "effect": "导出改接网表并与综合网表比较，六路外侧只连接各自PAD。",
+    "parameters": "输入PAD：OEN=1关闭输出，IE=1开启输入，I/PE/DS=0。输出PAD：I接核心输出，OEN=0开启输出，IE/PE/DS=0。PAD是外侧端，C是接收输出，I是发送输入，不能混接。"
+  },
+  "9": {
+    "title": "摆放供电与上电控制PAD",
+    "what": "四边各放七个供电/POC单元，并按实际坐标登记IO侧别。",
+    "why": "后续外围填充依赖正确侧别；核心电源和IO电源的作用与网络不能混淆。",
+    "effect": "新增28个单元，IO登记前后位置不变，角块/边别通过几何检查。",
+    "parameters": "每边2个核心VDD、2个核心VSS、1个IO VDD、1个IO VSS、1个POC；默认沿边偏移600到1200 um。loadIoFile只登记指定对象，不调整Die。"
+  },
+  "10": {
+    "title": "摆放键合焊盘",
+    "what": "为六个信号和28个供电/POC单元放34个Bond PAD。",
+    "why": "IO PAD提供电路，Bond PAD提供封装金线接触的大金属，两者需要对齐。",
+    "effect": "34个键合焊盘与对应IO覆盖，这些预期覆盖区别于普通单元碰撞。",
+    "parameters": "Bond使用PAD60LU_OBV，沿边与对应IO一致；北/东边按实际尺寸和73.16 um深度计算，覆盖对应PAD是设计意图。"
+  },
+  "11": {
+    "title": "绑定四个供电网络",
+    "what": "把核心PG引脚与VDD/VSS绑定，普通IO供电端绑定VDDPST/VSSPST。",
+    "why": "网络归属先正确，后面金属供电才能接对；Tie常量输出不能代替电源。",
+    "effect": "导出物理网表，逐个核对28个供电PAD、12普通端及四网独立。",
+    "parameters": "globalNetConnect是电气归属绑定，尚未画线。四网保持独立；N/S/W/E每侧vddio、poc接VDDPST，vssio接VSSPST。"
+  },
+  "12": {
+    "title": "填充外围空隙",
+    "what": "在四边IO之间插入库规定的Filler并逐段检查。",
+    "why": "空隙可能使单元内部的外围供电轨中断，不能只看PAD数目正确。",
+    "effect": "四边从角块到角块连续、无意外间隙/重叠且朝向正确。",
+    "parameters": "候选宽度20/10/5/1/0.5/0.005 μm由库决定，工具自动组合；四边使用独立前缀，便于定位和有范围返修。"
+  },
+  "13": {
+    "title": "固定主SRAM并留白",
+    "what": "按配置放置唯一主SRAM，增加Halo并核对实际四边留白。",
+    "why": "宏内部几何已固定，旁边要留接线空间；指定26不一定等于实际26。",
+    "effect": "实际留白每边至少20 um，宏和留白在规划允许区域内。",
+    "parameters": "macro_xy_um默认(250,650)；Halo参数26 um用于补偿本宏LEF边界差异，最终实际四边留白仍必须至少20 um。"
+  },
+  "14": {
+    "title": "建立顶层物理端口",
+    "what": "为六个信号与四个电源接口创建明确的M4矩形。",
+    "why": "逻辑端口只表示接口名称，DEF/LEF/GDS还需要知道哪层金属、哪个位置。",
+    "effect": "十个端口的矩形、方向和用途与当前geometry计划一致。",
+    "parameters": "十个M4矩形均10×1 um，位置跟随实际Die与PAD偏移；五INPUT、一OUTPUT、四INOUT，电源USE正确。"
+  },
+  "15": {
+    "title": "建立核心及SRAM电源环",
+    "what": "用M4/M5在核心和宏周围生成VDD/VSS环。",
+    "why": "供电需要较低阻抗的分配骨架，环提供后续条带和引脚接入目标。",
+    "effect": "环的特殊布线DRC通过；此时还不表示所有单元已有金属供电。",
+    "parameters": "上下M5、左右M4；核心宽10/间距2/偏移5，宏环宽4/间距2/偏移10，单位μm。selected限定宏环只围绕目标SRAM。"
+  },
+  "16": {
+    "title": "铺设基础供电条带",
+    "what": "生成M4纵向与M5横向VDD/VSS条带。",
+    "why": "只在边缘做环无法把电流送到内部，条带向核心深处分配供电。",
+    "effect": "建立基础网格，线宽/间距/节距采用明确的教学工艺配置。",
+    "parameters": "M4宽2、双网间距1、同组重复间距20；M5宽4、双网间距2、重复间距30。break_at限制在block/outer ring处断开，不直接穿越被阻挡的低层宏几何。"
+  },
+  "17": {
+    "title": "连接SRAM原生电源引脚",
+    "what": "通过sroute把真实宏电源引脚接到宏环。",
+    "why": "绑定网络名不等于金属已接通；要尊重宏引脚层和内部阻挡。",
+    "effect": "宏PG引脚归属正确并生成接入金属，保留查询记录。",
+    "parameters": "connect blockPin限定宏针脚；inst只选本轮按宏型号查询出的唯一SRAM实例；M3/M4为针脚范围，M3–M5为引出跨层范围。"
+  },
+  "18": {
+    "title": "使用高层跨越SRAM",
+    "what": "在宏区域上方增加M6供电条带。",
+    "why": "宏占用了部分低层资源，需要合法的高层连接帮助跨越。",
+    "effect": "按当前宏位置生成区域，使用VDD/VSS分别错开的高层供电。",
+    "parameters": "M6区域根据宏当前位置与固定宏尺寸生成；VDD/VSS错开，不能把高层跨越误当作穿越宏内部低层阻挡。"
+  },
+  "19": {
+    "title": "补充宏附近横向供电",
+    "what": "在宏区域生成M5横向条带并检查特殊布线。",
+    "why": "不同层之间需要过孔和合适接入，不能只看二维图有交叉就认为连通。",
+    "effect": "补充网格并导出阶段DEF，特殊布线DRC通过。",
+    "parameters": "M5区域随宏位置移动；线宽4、间距2、组距30 um为当前教学工艺配置，最终看特殊布线DRC与连通。"
+  },
+  "20": {
+    "title": "连接核心供电PAD与环",
+    "what": "从16个核心供电PAD引脚接到核心电源环。",
+    "why": "外部供电必须经过实际PAD金属进入环，不能只在网表中同名。",
+    "effect": "形成外围到核心环的金属连接，保留阶段连通/DRC报告。",
+    "parameters": "PAD接入区域使用实际宽/高减边缘余量，padPinSplit、M2到M5过孔范围遵循当前库，不把旧1720坐标写死。"
+  },
+  "21": {
+    "title": "建立标准单元行电源轨",
+    "what": "用M1沿单元行布置VDD/VSS轨并接到网格。",
+    "why": "每行标准单元都需要就近电源，只有高层环和条带仍不能直接供电。",
+    "effect": "保留完整PG及排除悬线检查的阶段报告；最终步骤33仍要求完整PG清零。",
+    "parameters": "行轨在M1，向M4连接；这里连通检查的noAntenna排除悬线检查，与步骤31的工艺天线检查不是同一件事。完整PG报告保留且最终重新验收。"
+  },
+  "22": {
+    "title": "核对IO原生供电轨",
+    "what": "检查IO侧连通报告，并读取真实库GDS核对长轨截面和角部转接。",
+    "why": "本库LEF没有完整呈现部分原生轨，需要用真实几何与步骤12连续位置共同判断。",
+    "effect": "仅对经验证的VDDPST/VSSPST两项抽象限制分类记录，不放过其他开短路。",
+    "parameters": "先核对步骤12四边连续/朝向；解析原生IO GDS的M4长轨和Corner转角。该检查只覆盖所述轨几何，不代替全芯片独立LVS。"
+  },
+  "23": {
+    "title": "插入Tap和去耦电容",
+    "what": "按库规则插阱连接单元及Decap，绑定PG并复查。",
+    "why": "器件的硅体区域需要参考电压；去耦电容帮助缓和短时供电波动。",
+    "effect": "Tap覆盖规则和特殊布线DRC通过；这不代替供电压降分析。",
+    "parameters": "Tap cellInterval60、checkerBoard；verifyWellTap rule30对应该教学目标，不是独立核实的foundry签核规则。site吸附后间距59.920；Decap skipRow1隔行插入。"
+  },
+  "24": {
+    "title": "放置标准单元",
+    "what": "运行place_opt_design，按连接与时序安排大量普通逻辑。",
+    "why": "既要放得下，又要给布线留空间并减少长距离连接。",
+    "effect": "没有未放置或非法普通单元；仅保留明确的34组IO/Bond覆盖。",
+    "parameters": "preroute_as_obs={}避免将高层PG投影成整条禁放带；显式ignore_scan=true/reorder_scan=false。ignoreOutOfCore限定此标准单元检查范围，不豁免核心违规。"
+  },
+  "25": {
+    "title": "给常量输入插Tie",
+    "what": "先为PAD控制脚插常量单元，再插核心常量并排除12个普通供电端。",
+    "why": "常量驱动给逻辑输入提供0/1，不能误接到IO电源网络。",
+    "effect": "细查六个PAD控制值、四网独立、供电端未被Tie取代。",
+    "parameters": "先写12端排除表；keepExisting保持第一轮IO Tie；刷新PG、refinePlace，导出postTie.v。最终是否满足电容仍以RC报告为准。"
+  },
+  "26": {
+    "title": "检查时钟树之前的时序",
+    "what": "分别计算preCTS Setup和Hold并检查核心PG。",
+    "why": "时钟树尚未真实建立，先定位估计线长和理想时钟假设下的问题。",
+    "effect": "保存两类报告；早期残项被记录，最终是否达标在布线后重新判断。",
+    "parameters": "expandedViews展开活动视图结果；WNS/TNS、违规数量与Real/Total DRV要分开读。preCTS仍未包含最终时钟树和真实全部信号RC。"
+  },
+  "27": {
+    "title": "定义时钟树与源模型",
+    "what": "为sys_clk和jtag_clk准备时钟树，设置源转换时间、电容能力和时间预算。",
+    "why": "同一时钟要驱动很多寄存器；外部源也有有限驱动能力。",
+    "effect": "两路真实树有完整规格，虚拟JTAG参考不创建物理树。",
+    "parameters": "仅sys_clk/jtag_clk是真实树；0.5 ns输入转换、5 pF源允许负载、0.47/0.2 ns Setup/Hold不确定度沿用已说明的首轮模型，不代表物理添加对应电容或延时。"
+  },
+  "28": {
+    "title": "构建并分析真实时钟树",
+    "what": "运行CCOpt，将真实时钟网络延时纳入Setup/Hold分析。",
+    "why": "时钟到各处不再完全同时；偏差可能帮助Setup却恶化Hold。",
+    "effect": "保存树后检查点，放置合法，输出两类时序/电气报告。",
+    "parameters": "set_propagated_clock只作用于sys_clk/jtag_clk；timing_io_use_clock_network_latency always按讲义使用网络延迟。虚拟参考不传播。"
+  },
+  "29": {
+    "title": "按当前报告处理树后Hold",
+    "what": "只有当前报告需要时才做Hold优化，然后独立重查。",
+    "why": "新数据来得太早会破坏采样，可以加适当延时，同时保护Setup。",
+    "effect": "保存实际修复后结果；pre-route估计残项不会被写成最终通过。",
+    "parameters": "只按当前Hold报告决定是否运行修复，保护Setup；布线前估计残项明确记录，不假称最终满足。"
+  },
+  "30": {
+    "title": "正式布线",
+    "what": "按允许金属层执行时序驱动布线，连接真实信号网络。",
+    "why": "前面的连接估计还不是完整可制造的金属，正式布线会改变延时。",
+    "effect": "生成正式导线和过孔，随后必须检查几何、连通、天线及真实RC。",
+    "parameters": "clock nets first优先时钟路由；postRoute low、tQuantusForPostRoute=false使用现有CapTable，不调用缺少Quantus techfile的medium设置；SI保持关闭。"
+  },
+  "31": {
+    "title": "检查并修工艺天线",
+    "what": "独立检查，再从本轮天线报告提取实际违规网，有限次修复。",
+    "why": "制造期间金属积累电荷可能损伤薄绝缘结构，不能复用旧违规网名。",
+    "effect": "天线、default DRC和常规信号连通通过，保留原始和修复报告。",
+    "parameters": "从当前独立报告提取违规网络，最多max_repair_iterations次，默认3次；不使用历史网名。两项IO抽象限制只有同源步骤22证据齐备才可分类。"
+  },
+  "32": {
+    "title": "真实RC下修复时序",
+    "what": "提取布线寄生，按当前报告修复普通网络扇出，再按需要优化Setup、处理Hold并独立重查。",
+    "why": "导线电阻电容会影响到达时间；布线前通过不等于布线后通过。",
+    "effect": "两种时序违规与Real/Total电气DRV归零，否则停止，不自动放宽时钟。",
+    "parameters": "扇出修复用BUFFD2BWP7T分流普通单驱动网络，保留原天线二极管并重布线；不改库限制。按当前Setup和Hold/DRV运行优化，hold_target_ns默认0.02 ns；目标不修改原SDC，达到上限仍不清零就停止。"
+  },
+  "33": {
+    "title": "核心填充及最终复核",
+    "what": "插核心Filler后重新提取RC，检查放置、完整核心PG、几何、天线和时序。",
+    "why": "填充后设计发生变化，要在最终状态验收；中途排除悬线的PG检查不够。",
+    "effect": "最终各检查通过，保存可恢复的完整阶段点。",
+    "parameters": "ecoMode/fitGap按讲义匹配剩余空隙；check_signal_drc=true且add_fillers_with_drc=false，不允许为了填满而引入已知DRC。"
+  },
+  "34": {
+    "title": "导出并交叉核对",
+    "what": "导出DEF、两种网表、SDC、SPEF/SDF、LEF、合并GDS。",
+    "why": "后续工具需要连接、位置、时间和真实几何的不同表达，它们必须一致。",
+    "effect": "核对十端口、尺寸、网表/SDF路径、寄生记录和GDS引用；不冒称独立工艺签核。",
+    "parameters": "GDS合并四套原生库输入，使用当前层映射和2000 DBU/um；SPEF/SDF取func_tt_io。检查尺寸与当前geometry.json一致，不硬编码旧实例数或GDS结构数。"
+  }
+}

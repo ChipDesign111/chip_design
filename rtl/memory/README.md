@@ -1,5 +1,8 @@
-# SoC memory
+# 存储和启动
 
-bootram / bootrom 为保留外围。my_mainmem + chip_sram_2048x32 实现 8192 B 主存：默认 portable-sram，授权本地环境可选 ra1shd。ra1shd_blackbox 仅为自主编写的连接声明，不含厂商内容。
+my_mainmem/chip_sram_2048x32：8 KiB 主 SRAM 的可移植/原生宏后端。
+bootram：固定跳板、完整镜像覆盖检查和启动提交寄存器。
+bootrom：未进入当前 filelist 的原课程常量模块，不参与实现。
+ra1shd_blackbox：外部授权宏接口声明，不含工艺实现。
 
-主存不因复位擦除，上电内容未定义，仿真镜像通过 TB 端口装载。NPU 权重 bank 是独立存储。见 [SRAM](../../report/sram.md)。
+启动步骤和测试镜像布局见 [SRAM](../../report/sram.md)。

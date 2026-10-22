@@ -73,7 +73,6 @@ rtl/soc/my_npu_subsystem.sv
 rtl/soc/my_soc_top.sv
 rtl/memory/chip_sram_2048x32.sv
 rtl/memory/my_mainmem.sv
-rtl/npu/har_dot_tile.sv
 rtl/npu/har_weight_store.sv
 rtl/npu/har_npu_core.sv
 rtl/npu/simple_npu_top.sv

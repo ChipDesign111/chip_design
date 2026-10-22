@@ -1,7 +1,10 @@
-# Tools
+# 工程工具
 
-project.py：统一入口；check_repo.py：目录/链接/配置检查；check_hardware.py：保留外围校验；workspace.py：日期与独立测试记录；memory_profile.py：主存选择；download_uci_har.py：官方数据下载。
+project.py：doctor 查看工具，check 检查项目资料，test 运行当前 INT8/训练模型回归，加 --soc 运行商业仿真器上的完整 SoC。
+export_tiles.py：将已有模型导出为当前 DMA 的 SRAM tile 字节布局，无 NumPy 依赖。
+check_hardware.py：依据 manifest 核对保留外围及已说明的集成覆盖项。
+check_repo.py：项目文件、说明链接、Python 语法和 MMIO 元数据检查。
+memory_profile.py：授权 SRAM 模型路径/编译方式说明。
+download_uci_har.py：下载训练数据。tools/local 是忽略目录，放授权依赖和本机产物。
 
-测试/固件生成/模型导出/通用综合脚本归 test/2026-10-15/scripts。临时工具与授权 SRAM 原始资料归 tools/local，整个目录忽略。FPGA/EDA 未开始，避免将本地资料放入空占位目录。使用见 [开发说明](../report/development.md)。
-
-DMA: project.py test --suite dma-unit runs protocol/ingress checks; --suite dma runs matched real-model CPU/DMA SoC benchmarks. See [DMA](../report/dma.md).
+功能测试详见 [开发与验证](../report/development.md)，EDA 从 [操作指南](../eda/README.md) 开始。

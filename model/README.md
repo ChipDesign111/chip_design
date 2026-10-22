@@ -1,9 +1,7 @@
-# HAR MLP
+# HAR MLP 模型
 
-64→32→6 MLP，2278 参数。training 保存训练脚本与 checkpoint，export 保存原始浮点/INT8 权重、特征下标、量化参数和历史指标，reference 保存精确整数实现。既有权重与量化参数不因目录重组改变。
+保留 main 的 64→32→6 训练模型、INT8 权重、偏置和量化参数。MULT=1064、SHIFT=20；数值契约见 [numerics](numerics.md)。历史全测试集整数准确率 84.9678% 是既有模型指标，不是本轮重新训练/全量验证的结果。
 
-输入为加速度计/陀螺仪窗口预处理后的 64 个 INT8 特征；标签为 0 步行、1 上楼、2 下楼、3 坐、4 站立、5 躺卧。当前 MULT=1064、SHIFT=20，算术见 [numerics.md](numerics.md)。
+当前 RTL 回归已对固定 24 条六类 UCI 输入逐值比较隐藏层、六个分数和类别；完整 SoC CPU 另跑其中两个样本。数据来源、行号与哈希保存在 test/int8/har_uci24.json。硬件与整数参考一致，不表示所有分类标签都正确。
 
-历史全 2947 条测试：浮点 85.5107%，权重量化/浮点激活 85.1035%，全整数 84.9678%。RTL 单/双模式 5894 次逐值一致；详细证据在 [真实模型历史记录](../test/2026-10-13/real-model/report.md)。当前 24 条六类样例用于 SoC 集成，18 条分类正确；硬件逐值一致不代表分类全部正确。
-
-原训练用测试划分选最佳 checkpoint，因此不是额外独立盲测。验证导出权重无需加载 best.pt；NumPy 使用 requirements.txt。原始数据下载到忽略的 model/data。运行：python tools/project.py test --suite model 或 --suite model-soc。
+用 python tools/export_tiles.py --output tools/local/int8_tiles 导出两层 tile 权重及量化元数据。原 NPZ 按输出×输入排列，不能直接作为本设计的 DMA 内存布局。新布局见 [DMA](../report/dma.md)。读取现有导出无需 NumPy；训练需要 requirements.txt。

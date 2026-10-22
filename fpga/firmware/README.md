@@ -1,16 +1,5 @@
-# FPGA firmware image
+# 当前 FPGA 自检镜像
 
-`model_selftest_dma.hex` is the current 24-row HAR self-test using the DMA
-parameter/input loader. It is a 2048-word, 32-bit memory image consumed by
-`fpga_top` through the `FPGA_INIT_FILE` parameter.
+int8_selftest.hex 是当前 INT8 tile DMA 的 8 KiB 完整镜像，包含训练模型 tile 权重、两个固定 UCI 输入、偏置、参考结果及 RV32I 自检。由 test/int8/firmware.py 的 build 生成；不要使用旧常驻权重窗口协议的镜像。
 
-Generate the CPU and DMA variants from the repository root with:
-
-```sh
-export CHIP_TEST_RUN="$PWD/test/2026-10-22/runs/fpga_firmware"
-python test/2026-10-15/scripts/export_real_model.py
-python -c "import sys; sys.path.insert(0, 'test/2026-10-15/scripts'); from build_model_firmware import build_model; build_model(use_dma=False, benchmark=True); build_model(use_dma=True, benchmark=True)"
-```
-
-The checked-in image is `model_selftest_dma.hex`, SHA-256
-`54c32dca604287846adf60fca7c0aa9a5125c69dc96dc69ecea6df03bce3689f`.
+配置脚本应将 FPGA_INIT_FILE 设置为此文件在当前机器的绝对路径。非空初始化路径表示 BRAM 在 FPGA 配置时已装载，启动控制器等待后自动放行。

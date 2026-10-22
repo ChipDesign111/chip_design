@@ -1,13 +1,11 @@
-# Tests by date
+# 当前功能回归
 
-| 日期 | 内容 |
-| --- | --- |
-| 2026-10-08 | 初始功能验证历史记录 |
-| 2026-10-13 | tiled、真实模型和工程入口历史记录 |
-| [2026-10-15](2026-10-15/README.md) | SRAM 接入、当前验证脚本/TB/固定输入与目录迁移验证 |
+```bash
+python test/int8/run.py --count 32 --trained --soc
+```
 
-每个测试案例放在日期下，保存脚本身份、结果 JSON 和 report.md。当前可复用脚本在 2026-10-15/scripts，testbench 在 rtl，24 条真实输入在 fixtures。后续新增测试在新日期目录组织，并更新统一入口的测试版本选择。
+单元回归需 Icarus；--soc 另需 ModelSim（可 --vsim 指定路径）。--trained 增加固定 24 条 UCI 输入的训练模型逐值对照，无 NumPy 依赖。每次结果在本地忽略的 int8/runs/时间戳；int8/ 只保留当前 testbench、固件生成器和固定输入，旧版测试已归档工作区。
 
-每次运行自动生成同一天的 runs/时间戳目录：脚本快照、testbench、tools、源 SHA manifest、results、logs、report.md 均独立保存。大产物默认不入 Git，CI 以 artifact 保留公开运行证据；提交时归档精简案例结果。
+当前覆盖范围和已测结果见 [开发与验证](../report/development.md)。
 
-历史 JSON 不改写旧路径或 SHA；历史报告不证明当前版本通过。旧 NPU 设计与其专用脚本/镜像已删除，Git 历史仍可追溯当时源码。
+原生授权 SRAM 行为模型可加 --vendor-model /本地授权路径/RA1SHD_2048x32M8.v（同时使用 --soc）。该 RTL 功能运行关闭模型 timing notifier，不作为 SDF 时序后仿。

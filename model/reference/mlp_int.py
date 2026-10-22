@@ -1,4 +1,4 @@
-"""Exact V1 integer contract, independent of RTL implementation."""
+"""Exact current INT8 integer contract, independent of RTL implementation."""
 def infer(x, w1, w2, b1, b2, multiplier=1, shift=0):
     if not 0 <= multiplier <= 65535 or not 0 <= shift <= 31:
         raise ValueError('Invalid requantization configuration')
@@ -10,7 +10,7 @@ def infer(x, w1, w2, b1, b2, multiplier=1, shift=0):
         raise ValueError('INT8 operand out of range')
     def checked(value):
         if not -(1 << 31) <= value < (1 << 31):
-            raise ValueError('Accumulator overflow is outside the V1 contract')
+            return ((value+(1<<31))%(1<<32))-(1<<31)
         return value
     hidden = []
     for row, bias in zip(w1, b1):

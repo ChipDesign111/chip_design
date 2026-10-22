@@ -1,17 +1,3 @@
-# Changelog
+# 当前架构变更
 
-## Unreleased — 2026-10-15
-
-- 顶层业务目录统一为 rtl / fpga / model / eda / test / report / tools。
-- 完整 SoC 收入 rtl；仅保留当前 HAR NPU，删除原 NPU、4×4 测试及旧导入入口。
-- 默认主存统一为 portable-sram，授权环境可选 ra1shd；旧 reference 配置移除。
-- 测试按日期归档，每次运行独立保留脚本快照、源 SHA、结果和报告；工具入口改为 python tools/project.py。
-- 厂商资料移至 tools/local；fpga 与 eda 保持空占位。
-
-## Prior baselines
-
-2026-10-13：tiled MLP、真实模型及工程化验证。2026-10-15：主 SRAM 宏功能接入。具体实测记录按日期见 [test](../test/README.md)。
-
-## DMA integration
-
-新增独立 AXI burst DMA，用于主 SRAM 到 NPU 参数/输入装载；最多 16-word 缓冲，新增 0xD00 CSR。显式更新两个 SoC 集成文件及其来源记录，保持算术核心和原寄存器兼容。增加协议、并发、错误、复位与真实模型端到端周期对比。见 [DMA](dma.md)。
+2026-10-23：从 main 267c873 重建 xzx；改为 INT8 2×32 / 1×6、两份 64B tile 缓冲、共享重定标和流式 DMA；完整权重放主 SRAM，按 tile 复用当前批全部样本。加入完整镜像覆盖、显式启动提交和复位同步余量。部署仍按单次上传隔离，三个阶段分别运行，面积按含 PAD 的整个 Die 验收。

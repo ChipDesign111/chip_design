@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "HAR_TILED_V2_LAB3_PERIMETER_FIXED",
+  "status": "INT8_64MAC_6MAC_SRAM_TILE_DMA",
   "organization": "ChipDesign111",
   "repository": "chip_design",
   "network": {
@@ -17,38 +17,33 @@
     "score_bits": 32
   },
   "architecture": {
-    "fc1_tiles": 2,
-    "fc1_outputs_per_tile": 16,
-    "fc1_lanes_per_tile": 4,
-    "fc2_tiles": 1,
-    "fc2_outputs_per_tile": 6,
-    "fc2_lanes_per_tile": 2,
-    "dot_product_multipliers": 140,
-    "requant_multipliers": 32,
-    "weight_banks": 38,
+    "fc1_input_lanes": 2,
+    "fc1_parallel_outputs": 32,
+    "fc2_input_lanes": 1,
+    "fc2_parallel_outputs": 6,
+    "dot_product_multipliers": 70,
+    "requant_multipliers": 1,
+    "weight_tile_buffers": 2,
+    "weight_tile_bytes": 64,
     "batch_max": 2,
-    "single_cycles": 39,
-    "batch2_cycles": 59
+    "fc1_mac_issue_cycles_per_sample": 32,
+    "fc2_mac_issue_cycles_per_sample": 32,
+    "weight_layout": "FC1[tile32][output32][lane2]; FC2[input32][output6+padding2]"
   },
   "mmio": {
     "base_address": 1879048192,
     "window_bytes": 16384,
-    "register_area_bytes": 40,
+    "register_area_bytes": 60,
     "windows": [
       {
-        "name": "input",
+        "name": "input0",
         "offset": 64,
         "size_bytes": 64
       },
       {
-        "name": "weight1",
+        "name": "weight_tiles_dma_only",
         "offset": 256,
-        "size_bytes": 2048
-      },
-      {
-        "name": "weight2",
-        "offset": 2304,
-        "size_bytes": 192
+        "size_bytes": 128
       },
       {
         "name": "bias1",
@@ -61,12 +56,12 @@
         "size_bytes": 24
       },
       {
-        "name": "hidden",
+        "name": "hidden0",
         "offset": 2688,
         "size_bytes": 32
       },
       {
-        "name": "scores",
+        "name": "scores0",
         "offset": 2816,
         "size_bytes": 24
       },
@@ -100,11 +95,22 @@
   "course_main_sram_bytes": 8192,
   "target_clock_hz": null,
   "dma": {
-    "direction": "SRAM_TO_NPU",
+    "direction": "SRAM_TO_WEIGHT_TILE",
     "max_burst_words": 16,
-    "buffer_bytes": 64,
+    "buffer_bytes": 8,
     "outstanding_bursts": 1,
     "source_bytes": 8192,
-    "compute_overlap": false
+    "compute_overlap": true
+  },
+  "boot": {
+    "commit_address": "0x0001003c",
+    "commit_key": "0xb007c0de",
+    "required_sequential_full_words": 2048,
+    "reset_synchronizer_clocks": 8,
+    "post_commit_margin_clocks": 5
+  },
+  "physical_target": {
+    "whole_die_with_pad_mm2_max": 3.5,
+    "period_ns": 20
   }
 }

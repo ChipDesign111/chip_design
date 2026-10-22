@@ -1,38 +1,26 @@
-# HAR SoC
+# INT8 HAR 全芯片实现
 
-[![CI](https://github.com/ChipDesign111/chip_design/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ChipDesign111/chip_design/actions/workflows/ci.yml)
+活动分支 **xzx** 从更新后的 main 267c873 创建。完整 SoC 包含 CV32E40P、AXI、JTAG Debug、8 KiB 主 SRAM 和 64→32→6 NPU。第一层 2 输入×32 输出、第二层 1×6；两个 64B 权重 tile 缓冲由 DMA 从主 SRAM 按需填充。输入/权重/隐藏激活 INT8，偏置/累加/分数 INT32。目标是含 PAD 整颗 Die ≤3.5 mm²。
 
-面向人体活动识别的 RISC-V SoC：CV32E40P + AXI + INT8 64→32→6 MLP NPU。当前交付为 RTL / SoC 功能仿真，FPGA 与 EDA 实现尚未开始。
+从本机打包上传到服务器、三个独立阶段和结果回传，直接跟随 [EDA 操作指南](eda/README.md)。服务器从每个上传版本目录的 README.html 开始。结构、启动流程和寄存器见 [设计报告](report/README.md)。
 
 | 目录 | 内容 |
 | --- | --- |
-| [rtl](rtl/README.md) | 完整 SoC 硬件：CPU、AXI、Debug、时钟/复位、存储、当前 NPU、统一源清单 |
-| fpga | 空占位，后续 FPGA 实现 |
-| [model](model/README.md) | MLP 训练、导出权重、量化规则和整数参考 |
-| eda | 空占位，后续 EDA 工程 |
-| [test](test/README.md) | 按日期组织测试脚本、testbench、输入、结果与报告 |
-| [report](report/README.md) | 现行设计、接口和开发说明 |
-| [tools](tools/README.md) | 工程入口、检查与下载工具；本地临时工具/受限资料 |
+| [rtl](rtl/README.md) | 当前完整 SoC 硬件及统一 filelist |
+| [eda](eda/README.md) | 正式部署脚本、服务器 EDA 程序、讲义逐步解释及结果分析 |
+| [model](model/README.md) | 保留的训练模型、量化参数和整数参考 |
+| [test](test/README.md) | 当前 INT8/DMA/启动保护功能回归 |
+| [report](report/README.md) | 架构、MMIO、DMA、SRAM 和验证范围 |
+| [fpga](fpga/README.md) | main 更新带来的 Vivado 工程，已更换当前固件；本轮验收在 ASIC 服务器 |
+| [tools](tools/README.md) | 正常工程入口、权重导出和本地依赖管理 |
 
-## 运行
-
-Python 3.11+；RTL 使用 Icarus，模型验证另需 NumPy，完整 SoC 使用 ModelSim，结构检查使用 Yosys。
-
-```sh
-python -m pip install -r model/requirements.txt
+```bash
 python tools/project.py doctor
-python tools/project.py check
-python tools/project.py test --suite unit
-python tools/project.py test --suite model
-python tools/project.py test --suite memory
-python tools/project.py test --suite model-soc --vsim /path/to/vsim
-python tools/project.py synth
+python test/int8/run.py --count 32 --trained --soc
+python tools/export_tiles.py --output tools/local/int8_tiles
+python eda/remote.py run
 ```
 
-厂商 SRAM 功能仿真增加 `--memory ra1shd`，本地模型放入 tools/local/vendor；默认使用 portable-sram。详见 [开发说明](report/development.md) 和 [SRAM](report/sram.md)。每次测试在 `test/日期/runs/时间戳/` 保存脚本快照、结果、日志和报告。
+本机功能测试使用 Icarus；完整 SoC 另需 ModelSim。当前训练权重读取与 tile 导出无需 NumPy；训练仍使用 model/requirements.txt。EDA 总控需要 Python 3.8+ 与 OpenSSH。大版图、授权库和中间数据库保留服务器；轻量结果回传 lab4 下新目录。
 
-当前 NPU 使用两个 FC1 tile、一个 FC2 tile，38 个同步权重 bank。单输入 39 周期，双输入 59 周期，重叠 18 周期。现有 MLP 全测试集历史整数准确率为 2504/2947（84.9678%）；硬件逐值一致性与模型分类准确率分别报告。
-
-当前源码仅保留替换后的 HAR NPU，原 Lab3 NPU、4×4 回归与导入入口已删除。固定外围的 75 个保留文件沿用原字节校验；模型参数保持不变。来源和授权见 [组件声明](report/THIRD_PARTY_NOTICES.md)。
-
-CPU 主 SRAM→NPU 装载支持独立 AXI burst DMA；协议和基准命令见 [DMA](report/dma.md)。
+旧分支、旧 RTL 和旧范式记录保存在本地 archives，当前分支只保留更新后实现。第三方源码许可及固定输入来源见 [组件声明](report/THIRD_PARTY_NOTICES.md)。

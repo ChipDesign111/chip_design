@@ -1,0 +1,165 @@
+# 从本机部署到完整 EDA 结果
+
+本分支名为 **xzx**，从 main 的 267c873 创建。设计是完整 CV32E40P SoC：第一层每拍 2 个输入×32 个输出，第二层 1×6，输入、权重、隐藏值使用 INT8，偏置、累加和分类分数使用 INT32。主 SRAM 保存完整权重；DMA 将当前需要的小块搬入两个 64 字节缓冲。面积验收是 **包含 PAD 的整个 Die ≤3.5 mm²**。
+
+本指南从你电脑上的仓库开始。服务器上的阅读入口是每次上传目录的 README.html；逐项参数解释见[实施与适配说明](docs/实施与适配说明.md)，术语见[基础知识](docs/基础知识.md)，34 步解释见[讲义对照](docs/讲义34步与文件对照.md)。
+
+## 1．确认本机代码和连接
+
+在 Windows PowerShell 执行：
+
+```powershell
+Set-Location 'C:\Users\zixiang\OneDrive\Desktop\advanced_chip_study\tmp\npu-stream-rtl'
+git branch --show-current
+git status --short
+python --version
+ssh -o ClearAllForwardings=yes -o BatchMode=yes chipdesign hostname
+```
+
+分支应为 xzx，根目录包含 rtl 和 eda。本机用 Python 3.8+、Git 和 OpenSSH；EDA 总控无需额外 Python 包。这里确认“压缩哪份代码”和“传到哪台机器”，避免从另一个分支打包。先提交计划部署的修改；归档还记录逐文件校验值和未提交状态。
+
+硬件修改后，先运行功能回归（需 Icarus 和 ModelSim）：
+
+```powershell
+python test/int8/run.py --count 32 --trained --soc
+```
+
+它用随机停顿的真实 DMA 和 Python 整数参考逐值核对隐藏层、分数与类别，再让完整 SoC 的 CPU 执行自检。测试还覆盖未装载、部分装载、错误启动密钥、DMA 读错误、复位中断和重新运行。运行产物在本地 test/int8/runs，功能 PASS 不代替物理验证。
+
+## 2．一键压缩、上传、调用三个阶段、回传
+
+```powershell
+python eda/remote.py run --output 'C:\Users\zixiang\OneDrive\Desktop\advanced_chip_study\lab4\int8_本次版本'
+```
+
+输出目录必须不存在或为空，名称每次换新。此命令按顺序完成：
+
+| 动作 | 文件作用、为什么做 | 结果 |
+| --- | --- | --- |
+| 压缩 | package_server.py 选择 rtl、server 和 docs，记录 Git 提交及每个文件 SHA-256 | 本机 eda/dist/chip_design_eda.tar.gz 和 .sha256 |
+| 上传 | ssh 创建 uploads/时间_提交，scp 传入原包；每次上传有自己的目录 | 版本目录及 upload.json |
+| 解压 | 公共 unpack.sh 校验包和路径，再生成该版本自己的三个入口 | deploy、configs、README、阶段脚本 |
+| 环境准备 | check_env.sh 建立独立 work，冻结 RTL/配置/流程，检查工具及工艺库 | logs/environment.log、work/evidence/doctor.json |
+| EDA | run_eda.sh 完成 Genus、规划及 Innovus 01–34 | 日志、报告、数据库和最终物理文件 |
+| 整理 | collect_results.sh 核对完整性，建立报告与小型回传包 | work/review_delivery.tar.gz、清单与校验文件 |
+| 回传 | 下载并检查整包、逐文件、34 步输入身份和压缩网表，再解压 | 本机 README.html、receipt.json 及核心结果 |
+
+SHA-256 是内容校验值，用于识别文件和传输错误；不能证明设计功能正确。服务器任务由 nohup 运行，关闭本机窗口不会停止 EDA。默认每 30 秒读取一次真实进度；不要同时运行多个 8 核任务，当前服务器实际配额是 8 核、16 GiB。
+
+只想先启动：
+
+```powershell
+python eda/remote.py run --detach
+python eda/remote.py status
+python eda/remote.py fetch --wait --output 'C:\Users\zixiang\OneDrive\Desktop\advanced_chip_study\lab4\int8_本次结果'
+```
+
+last_upload.json 只在本机 eda/dist 保存最近版本位置。选择更早版本时，status、fetch 和 resume 都加 --upload '/home/s2400011041/Desktop/fullstack_chipdesign/uploads/本次版本'。本机等待中断用 fetch --wait；服务器已经停止且原因解决后，用 resume --upload '完整路径' 续跑同一份冻结输入。改 RTL、工艺库或配置必须新上传。
+
+## 3．手动压缩与上传
+
+如果希望清楚看到每个动作，在 PowerShell 执行：
+
+```powershell
+python eda/package_server.py
+$version = (Get-Date -Format 'yyyyMMdd_HHmmss') + '_' + (git rev-parse --short HEAD)
+$remote = '/home/s2400011041/Desktop/fullstack_chipdesign'
+ssh chipdesign "mkdir -p '$remote/uploads/$version'"
+scp eda/unpack.sh "chipdesign:$remote/unpack.sh"
+scp eda/dist/chip_design_eda.tar.gz eda/dist/chip_design_eda.tar.gz.sha256 "chipdesign:$remote/uploads/$version/"
+ssh chipdesign
+```
+
+记下 $version 的实际值。压缩包只带本分支 RTL、正式服务器脚本及讲解，不带 PDK、授权 SRAM 模型、旧工程、波形或 EDA 数据库。解压器是唯一公用脚本，其他脚本和结果全部在本次版本目录展开。
+
+## 4．服务器解压和参数准备
+
+在 SSH 登录后的 Bash 中执行（把版本名替换成上一步实际值）：
+
+```bash
+cd ~/Desktop/fullstack_chipdesign/uploads/本次版本
+bash ../../unpack.sh "$PWD"
+cat configs/design.json
+```
+
+本次目录下的 deploy 是压缩包解出的源码；configs/design.json 是本版本可编辑配置。默认 PDK 为 /lec/pdk/tsmc180，宏资料来自 /lec/lab4，周期 20 ns，核数 8；核心请求 1500×1500 μm，四侧余量 150 μm，目标利用率 0.70，包含 PAD 的面积上限 3.5 mm²。
+
+**第一次运行 check_env 前** 修改 configs/design.json。准备完成后 work 中的输入被固定，禁止修改来冒充续跑。更换参数请新建上传目录。1500+2×150=1800 μm 只是请求值；实际尺寸按工具网格对齐后的数据库和最终输出核对。
+
+## 5．独立阶段一：环境检查
+
+```bash
+bash ./check_env.sh
+```
+
+check_env.sh 将本版本 RTL、EDA 程序、配置和授权宏视图复制到 work，形成输入快照，再检查 Genus、Innovus、Tcl/Python、PDK、宏视图和显示环境。生成 work/evidence/input_manifest.json、doctor.json 和 logs/environment.log。退出码必须为 0，才能继续。
+
+文件作用：filelist.f 指明编译顺序；design.json 指定工艺、周期、面积及资源；宏的 .lib 给出延时和面积、LEF 给出外形及布线障碍、GDS 给出真实版图。没有匹配视图就无法完成对应阶段。
+
+## 6．独立阶段二：综合和物理实现
+
+```bash
+bash ./run_eda.sh
+```
+
+Genus 将 RTL 变成当前工艺的门级网表；先检查 SRAM 恰好一个、CPU/NPU/DMA 没被错误裁掉、锁存器为零，再依据单元面积和 SRAM 障碍估算摆放空间。若规划容不下，或整个 Die 超过上限，流程停止，不能只把边框缩小强行通过。
+
+Innovus 随后依次完成楼层规划、六个信号 PAD、四边 28 个供电/POC 单元、供电网格、标准单元摆放、时钟树、布线、修复和输出。每一步实际执行正文在 work/evidence/commands/NN，解释和结果在 work/evidence/运行报告.md，检查点在 work/pnr/my_soc_top/backup/stepNN.enc 及 .enc.dat。
+
+允许整段脚本运行；它按讲义顺序执行并在每步审计，失败停止。分段学习时先 source ./run_env.sh，再调用 bash "$EDA_DEPLOY/server/bin/eda.sh" pnr --work "$EDA_WORK" --until N。未完成综合时先调用同入口的 synth；具体步骤见 34 步说明。不要在已有步骤 34 的工程从头覆盖运行。
+
+默认保存 GUI 截图；无截图需求可用 bash ./run_eda.sh --headless。这个选项只跳过图片，仍然执行 EDA 检查。大型数据库不搬回本机。
+
+## 7．独立阶段三：整理结果
+
+```bash
+bash ./collect_results.sh
+```
+
+此阶段重新核对最终输出、形成交付清单并压缩小型回传包。只有同一份输入的 34 步都成功，才能生成可回传状态。它不会把部分完成的工程写成成功。还可 bash ./run_all.sh 依次调用上述三个脚本；需要 SSH 断开后继续时，优先使用本机 remote.py run --detach。
+
+## 8．找报告、判断是否达标
+
+双击本版本 README.html，或执行：
+
+```bash
+cat results/summary.json
+cat work/evidence/geometry.json
+cat work/evidence/synthesis.json
+cat work/evidence/step_33.json
+cat work/evidence/step_34.json
+```
+
+先确认 pipeline_exit_code 为 0、last_completed_step 为 34，再确认以下项目：
+
+| 关注点 | 文件及判断方法 |
+| --- | --- |
+| 整颗面积 | geometry.json 的 whole_die_area_mm2 和最终 LEF/DEF/GDS 的 Die 外框一致，且 ≤3.5；Genus cell_area 是单元面积，不能代替它 |
+| 综合结构 | synthesis.json：一个原生主 SRAM，无不明叶子单元，latch_area 为零；CPU、NPU、DMA 层次存在 |
+| 时序 | reports/postFiller 下分别看 Setup/Hold summary；WNS≥0、TNS=0、违例路径=0 |
+| 电气规则 | Setup summary 的 max_cap、max_tran、max_fanout 的 real/total 均为 0；Hold 没该表时不能当作“自动为零” |
+| 物理问题 | step_31/33 的真实 DRC、天线、普通信号连通；IO 抽象层例外必须有本轮原生电源轨几何证据 |
+| 最终视图 | step_34 与 delivery_manifest：DEF、网表、SDC、SPEF、SDF、LEF、GDS 均生成且相互对应 |
+
+WNS 是最差时间余量；负值表示至少有一条路径未达标。Setup 检查数据是否来得及，Hold 检查数据是否变化过早。SDF 是延时注释文件，**导出 SDF 不等于做过 SDF 后仿**；独立工艺 DRC/LVS、IR/EM 等结果也不能由本教学流程推断。完整分析见[报告查找与分析](docs/报告查找与分析.md)。
+
+## 9．回传和保留文件
+
+回到本机 PowerShell：
+
+```powershell
+python eda/remote.py fetch --upload '/home/s2400011041/Desktop/fullstack_chipdesign/uploads/本次版本' --wait --output 'C:\Users\zixiang\OneDrive\Desktop\advanced_chip_study\lab4\int8_结果版本'
+```
+
+本机结果目录保留核心 RTL、配置、阶段脚本、逐步报告、轻量报告和压缩层次网表。receipt.json 说明来源和已完成的完整性校验。服务器 work/pnr/my_soc_top/outputs/manual_final 保留大文件：GDS、DEF、SDF、SPEF、完整网表，backup 保留中间数据库。文件路径及 SHA 在 review_manifest.json 中，可按需单独 scp。
+
+## 10．清理与重跑
+
+原始上传包是版本身份的一部分，默认保留。临时重打包文件、过期交付包可先预览再清理：
+
+```bash
+bash deploy/server/bin/eda.sh clean --work "$PWD/work" --dry-run
+bash deploy/server/bin/eda.sh clean --work "$PWD/work"
+```
+
+清理仅操作该工程约定的遗留压缩包和临时文件，保留正常中间结果、报告、检查点和最终视图。不同源码或参数重新上传；失败工程保留日志，不拼接别的版本结果。Lab4 内容独立放在根目录 lab4，不属于新 SoC 版本，保留不动。

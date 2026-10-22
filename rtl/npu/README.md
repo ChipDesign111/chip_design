@@ -1,7 +1,7 @@
-# Tiled MLP NPU
+# 当前 INT8 NPU
 
-har_dot_tile：乘法/累加流水；har_weight_store：38 个同步权重 bank；har_npu_core：两级调度、双缓冲、ReLU/量化/Argmax；simple_npu_top：MMIO 包装。
+har_npu_core：64+6 个 INT8 乘法器、双样本累加、共享重定标、分类。
+har_weight_store：两个 64B tile bank，无完整模型常驻 bank。
+simple_npu_top：MMIO、自动 DMA 描述符、缓冲发布/释放与保护。
 
-只保留当前 64→32→6 实现。接口及周期变更需要同步参考、固件生成与测试。见 [设计](../../report/npu.md) 和 [寄存器](../../report/mmio.md)。
-
-Parameter/input loading can use the independent SoC DMA. Arithmetic, bank layout and core cycles are unchanged. See [DMA](../../report/dma.md).
+文件和使用方法见 [NPU](../../report/npu.md)、[MMIO](../../report/mmio.md)。
