@@ -301,7 +301,9 @@
     {
       "source": "soc/rtl/debug/dm_mem.sv",
       "path": "rtl/debug/dm_mem.sv",
-      "sha256": "cf047a8b7654f2cb0d36050c41b57cf95bf0a0a21f5dea346d38aa0da57c24fe"
+      "sha256": "fa416bea75e91c7e1b2ea3302c46d04574ecb0ff4b0e37b451b6afd873dc4bc5",
+      "previous_sha256": "cf047a8b7654f2cb0d36050c41b57cf95bf0a0a21f5dea346d38aa0da57c24fe",
+      "project_override": "2026-10-22: retain Lab6 inline abstract-command encodings to avoid Vivado 2019.1 elaboration failure"
     },
     {
       "source": "soc/rtl/debug/dm_pkg.sv",

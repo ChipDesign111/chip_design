@@ -328,23 +328,26 @@ module dm_mem #(
     data_o = data_bits;
   end
 
+  // Vivado 2019.1 crashes when elaborating this block with the dm package
+  // instruction-encoding helpers. Keep the equivalent bit encodings inline.
   always_comb begin : p_abstract_cmd_rom
     // this abstract command is currently unsupported
     unsupported_command = 1'b0;
     // default memory
     // if ac_ar.transfer is not set then we can take a shortcut to the program buffer
-    abstract_cmd[0][31:0]  = dm::illegal();
+    abstract_cmd[0][31:0]  = 32'h0000_0000;
     // load debug module base address into a0, this is shared among all commands
-    abstract_cmd[0][63:32] = HasSndScratch ? dm::auipc(5'd10, '0) : dm::nop();
+    abstract_cmd[0][63:32] = HasSndScratch ? 32'h0000_0517 : 32'h0000_0013;
     // clr lowest 12b -> DM base offset
-    abstract_cmd[1][31:0]  = HasSndScratch ? dm::srli(5'd10, 5'd10, 6'd12) : dm::nop();
-    abstract_cmd[1][63:32] = HasSndScratch ? dm::slli(5'd10, 5'd10, 6'd12) : dm::nop();
-    abstract_cmd[2][31:0]  = dm::nop();
-    abstract_cmd[2][63:32] = dm::nop();
-    abstract_cmd[3][31:0]  = dm::nop();
-    abstract_cmd[3][63:32] = dm::nop();
-    abstract_cmd[4][31:0]  = HasSndScratch ? dm::csrr(dm::CSR_DSCRATCH1, 5'd10) : dm::nop();
-    abstract_cmd[4][63:32] = dm::ebreak();
+    abstract_cmd[1][31:0]  = HasSndScratch ? 32'h00c5_5513 : 32'h0000_0013;
+    abstract_cmd[1][63:32] = HasSndScratch ? 32'h00c5_1513 : 32'h0000_0013;
+    abstract_cmd[2][31:0]  = 32'h0000_0013;
+    abstract_cmd[2][63:32] = 32'h0000_0013;
+    abstract_cmd[3][31:0]  = 32'h0000_0013;
+    abstract_cmd[3][63:32] = 32'h0000_0013;
+    abstract_cmd[4][31:0]  = HasSndScratch ?
+        {dm::CSR_DSCRATCH1, 5'h0, 3'h2, 5'd10, 7'h73} : 32'h0000_0013;
+    abstract_cmd[4][63:32] = 32'h0010_0073;
     abstract_cmd[7:5]      = '0;
 
     // this depends on the command being executed
@@ -355,93 +358,127 @@ module dm_mem #(
       dm::AccessRegister: begin
         if (32'(ac_ar.aarsize) < MaxAar && ac_ar.transfer && ac_ar.write) begin
           // store a0 in dscratch1
-          abstract_cmd[0][31:0] = HasSndScratch ? dm::csrw(dm::CSR_DSCRATCH1, 5'd10) : dm::nop();
+          abstract_cmd[0][31:0] = HasSndScratch ?
+              {dm::CSR_DSCRATCH1, 5'd10, 3'h1, 5'h0, 7'h73} :
+              32'h0000_0013;
           // this range is reserved
           if (ac_ar.regno[15:14] != '0) begin
-            abstract_cmd[0][31:0] = dm::ebreak(); // we leave asap
+            abstract_cmd[0][31:0] = 32'h0010_0073; // we leave asap
             unsupported_command = 1'b1;
           // A0 access needs to be handled separately, as we use A0 to load
           // the DM address offset need to access DSCRATCH1 in this case
           end else if (HasSndScratch && ac_ar.regno[12] && (!ac_ar.regno[5]) &&
                       (ac_ar.regno[4:0] == 5'd10)) begin
             // store s0 in dscratch
-            abstract_cmd[2][31:0]  = dm::csrw(dm::CSR_DSCRATCH0, 5'd8);
+            abstract_cmd[2][31:0]  =
+                {dm::CSR_DSCRATCH0, 5'd8, 3'h1, 5'h0, 7'h73};
             // load from data register
-            abstract_cmd[2][63:32] = dm::load(ac_ar.aarsize, 5'd8, LoadBaseAddr, dm::DataAddr);
+            abstract_cmd[2][63:32] = {
+                dm::DataAddr, LoadBaseAddr, ac_ar.aarsize, 5'd8, 7'h03
+            };
             // and store it in the corresponding CSR
-            abstract_cmd[3][31:0]  = dm::csrw(dm::CSR_DSCRATCH1, 5'd8);
+            abstract_cmd[3][31:0]  =
+                {dm::CSR_DSCRATCH1, 5'd8, 3'h1, 5'h0, 7'h73};
             // restore s0 again from dscratch
-            abstract_cmd[3][63:32] = dm::csrr(dm::CSR_DSCRATCH0, 5'd8);
+            abstract_cmd[3][63:32] =
+                {dm::CSR_DSCRATCH0, 5'h0, 3'h2, 5'd8, 7'h73};
           // GPR/FPR access
           end else if (ac_ar.regno[12]) begin
             // determine whether we want to access the floating point register or not
             if (ac_ar.regno[5]) begin
-              abstract_cmd[2][31:0] =
-                  dm::float_load(ac_ar.aarsize, ac_ar.regno[4:0], LoadBaseAddr, dm::DataAddr);
+              abstract_cmd[2][31:0] = {
+                  dm::DataAddr, LoadBaseAddr, ac_ar.aarsize,
+                  ac_ar.regno[4:0], 7'b00_001_11
+              };
             end else begin
-              abstract_cmd[2][31:0] =
-                  dm::load(ac_ar.aarsize, ac_ar.regno[4:0], LoadBaseAddr, dm::DataAddr);
+              abstract_cmd[2][31:0] = {
+                  dm::DataAddr, LoadBaseAddr, ac_ar.aarsize,
+                  ac_ar.regno[4:0], 7'h03
+              };
             end
           // CSR access
           end else begin
             // data register to CSR
             // store s0 in dscratch
-            abstract_cmd[2][31:0]  = dm::csrw(dm::CSR_DSCRATCH0, 5'd8);
+            abstract_cmd[2][31:0]  =
+                {dm::CSR_DSCRATCH0, 5'd8, 3'h1, 5'h0, 7'h73};
             // load from data register
-            abstract_cmd[2][63:32] = dm::load(ac_ar.aarsize, 5'd8, LoadBaseAddr, dm::DataAddr);
+            abstract_cmd[2][63:32] = {
+                dm::DataAddr, LoadBaseAddr, ac_ar.aarsize, 5'd8, 7'h03
+            };
             // and store it in the corresponding CSR
-            abstract_cmd[3][31:0]  = dm::csrw(dm::csr_reg_t'(ac_ar.regno[11:0]), 5'd8);
+            abstract_cmd[3][31:0]  = {
+                ac_ar.regno[11:0], 5'd8, 3'h1, 5'h0, 7'h73
+            };
             // restore s0 again from dscratch
-            abstract_cmd[3][63:32] = dm::csrr(dm::CSR_DSCRATCH0, 5'd8);
+            abstract_cmd[3][63:32] =
+                {dm::CSR_DSCRATCH0, 5'h0, 3'h2, 5'd8, 7'h73};
           end
         end else if (32'(ac_ar.aarsize) < MaxAar && ac_ar.transfer && !ac_ar.write) begin
           // store a0 in dscratch1
           abstract_cmd[0][31:0]  = HasSndScratch ?
-                                   dm::csrw(dm::CSR_DSCRATCH1, LoadBaseAddr) :
-                                   dm::nop();
+              {dm::CSR_DSCRATCH1, LoadBaseAddr, 3'h1, 5'h0, 7'h73} :
+              32'h0000_0013;
           // this range is reserved
           if (ac_ar.regno[15:14] != '0) begin
-              abstract_cmd[0][31:0] = dm::ebreak(); // we leave asap
+              abstract_cmd[0][31:0] = 32'h0010_0073; // we leave asap
               unsupported_command = 1'b1;
           // A0 access needs to be handled separately, as we use A0 to load
           // the DM address offset need to access DSCRATCH1 in this case
           end else if (HasSndScratch && ac_ar.regno[12] && (!ac_ar.regno[5]) &&
                       (ac_ar.regno[4:0] == 5'd10)) begin
             // store s0 in dscratch
-            abstract_cmd[2][31:0]  = dm::csrw(dm::CSR_DSCRATCH0, 5'd8);
+            abstract_cmd[2][31:0]  =
+                {dm::CSR_DSCRATCH0, 5'd8, 3'h1, 5'h0, 7'h73};
             // read value from CSR into s0
-            abstract_cmd[2][63:32] = dm::csrr(dm::CSR_DSCRATCH1, 5'd8);
+            abstract_cmd[2][63:32] =
+                {dm::CSR_DSCRATCH1, 5'h0, 3'h2, 5'd8, 7'h73};
             // and store s0 into data section
-            abstract_cmd[3][31:0]  = dm::store(ac_ar.aarsize, 5'd8, LoadBaseAddr, dm::DataAddr);
+            abstract_cmd[3][31:0]  = {
+                dm::DataAddr[11:5], 5'd8, LoadBaseAddr,
+                ac_ar.aarsize, dm::DataAddr[4:0], 7'h23
+            };
             // restore s0 again from dscratch
-            abstract_cmd[3][63:32] = dm::csrr(dm::CSR_DSCRATCH0, 5'd8);
+            abstract_cmd[3][63:32] =
+                {dm::CSR_DSCRATCH0, 5'h0, 3'h2, 5'd8, 7'h73};
           // GPR/FPR access
           end else if (ac_ar.regno[12]) begin
             // determine whether we want to access the floating point register or not
             if (ac_ar.regno[5]) begin
-              abstract_cmd[2][31:0] =
-                  dm::float_store(ac_ar.aarsize, ac_ar.regno[4:0], LoadBaseAddr, dm::DataAddr);
+              abstract_cmd[2][31:0] = {
+                  dm::DataAddr[11:5], ac_ar.regno[4:0], LoadBaseAddr,
+                  ac_ar.aarsize, dm::DataAddr[4:0], 7'b01_001_11
+              };
             end else begin
-              abstract_cmd[2][31:0] =
-                  dm::store(ac_ar.aarsize, ac_ar.regno[4:0], LoadBaseAddr, dm::DataAddr);
+              abstract_cmd[2][31:0] = {
+                  dm::DataAddr[11:5], ac_ar.regno[4:0], LoadBaseAddr,
+                  ac_ar.aarsize, dm::DataAddr[4:0], 7'h23
+              };
             end
           // CSR access
           end else begin
             // CSR register to data
             // store s0 in dscratch
-            abstract_cmd[2][31:0]  = dm::csrw(dm::CSR_DSCRATCH0, 5'd8);
+            abstract_cmd[2][31:0]  =
+                {dm::CSR_DSCRATCH0, 5'd8, 3'h1, 5'h0, 7'h73};
             // read value from CSR into s0
-            abstract_cmd[2][63:32] = dm::csrr(dm::csr_reg_t'(ac_ar.regno[11:0]), 5'd8);
+            abstract_cmd[2][63:32] = {
+                ac_ar.regno[11:0], 5'h0, 3'h2, 5'd8, 7'h73
+            };
             // and store s0 into data section
-            abstract_cmd[3][31:0]  = dm::store(ac_ar.aarsize, 5'd8, LoadBaseAddr, dm::DataAddr);
+            abstract_cmd[3][31:0]  = {
+                dm::DataAddr[11:5], 5'd8, LoadBaseAddr,
+                ac_ar.aarsize, dm::DataAddr[4:0], 7'h23
+            };
             // restore s0 again from dscratch
-            abstract_cmd[3][63:32] = dm::csrr(dm::CSR_DSCRATCH0, 5'd8);
+            abstract_cmd[3][63:32] =
+                {dm::CSR_DSCRATCH0, 5'h0, 3'h2, 5'd8, 7'h73};
           end
         end else if (32'(ac_ar.aarsize) >= MaxAar || ac_ar.aarpostincrement == 1'b1) begin
           // this should happend when e.g. ac_ar.aarsize >= MaxAar
           // Openocd will try to do an access with aarsize=64 bits
           // first before falling back to 32 bits.
-          abstract_cmd[0][31:0] = dm::ebreak(); // we leave asap
+          abstract_cmd[0][31:0] = 32'h0010_0073; // we leave asap
           unsupported_command = 1'b1;
         end
 
@@ -451,14 +488,14 @@ module dm_mem #(
         // for the debugger to recover
         if (ac_ar.postexec && !unsupported_command) begin
           // issue a nop, we will automatically run into the program buffer
-          abstract_cmd[4][63:32] = dm::nop();
+          abstract_cmd[4][63:32] = 32'h0000_0013;
         end
       end
       // not supported at the moment
       // dm::QuickAccess:;
       // dm::AccessMemory:;
       default: begin
-        abstract_cmd[0][31:0] = dm::ebreak();
+        abstract_cmd[0][31:0] = 32'h0010_0073;
         unsupported_command = 1'b1;
       end
     endcase
