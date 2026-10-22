@@ -5,6 +5,7 @@ from datetime import datetime
 import gzip
 import hashlib
 import json
+import math
 import os
 from pathlib import Path, PurePosixPath
 import re
@@ -155,6 +156,17 @@ def verify_and_extract(directory):
         stage = json.loads((core / ('evidence/step_%02d.json' % step)).read_text(encoding='utf-8'))
         if stage['input_manifest_sha256'] != identity or not stage['commands_completed']:
             raise ValueError('Incomplete or inherited stage identity: ' + str(step))
+    geometry=json.loads((core/'evidence/geometry.json').read_text(encoding='utf-8'))
+    config=json.loads((core/'config/design.json').read_text(encoding='utf-8'))
+    die=geometry['die_um'];limit=config['max_die_area_mm2']
+    if len(die)!=4 or die[:2]!=[0,0] or not all(isinstance(v,(int,float)) and math.isfinite(v) and v>0 for v in die[2:]):
+        raise ValueError('Invalid whole Die geometry')
+    whole_area=die[2]*die[3]/1e6
+    if not isinstance(limit,(int,float)) or not math.isfinite(limit) or not 0<limit<=3.5 or whole_area>limit:
+        raise ValueError('Whole Die including PAD exceeds the 3.5 mm2 target')
+    audit=json.loads((core/'evidence/export_audit.json').read_text(encoding='utf-8'))
+    if abs(audit['whole_die_area_mm2']-whole_area)>1e-9:
+        raise ValueError('Export and floorplan whole Die area differ')
     hierarchy = manifest['compressed_hierarchy_source']
     h, size = hashlib.sha256(), 0
     with gzip.open(str(core / (hierarchy['file'] + '.gz')), 'rb') as stream:
@@ -164,7 +176,7 @@ def verify_and_extract(directory):
     if h.hexdigest() != hierarchy['sha256'] or size != hierarchy['bytes']:
         raise ValueError('Compressed hierarchy source mismatch')
     return {'archive_sha256': digest(archive), 'files_verified': len(manifest['files']), 'input_manifest_sha256': identity,
-            'remote_upload': str(PurePosixPath(manifest['remote_work']).parent), 'all_34_steps_same_input': True}
+            'remote_upload': str(PurePosixPath(manifest['remote_work']).parent), 'all_34_steps_same_input': True, 'whole_die_area_mm2':whole_area, 'max_whole_die_area_mm2':limit}
 
 
 def fetch(host, upload, output):
@@ -186,6 +198,7 @@ def fetch(host, upload, output):
             raise ValueError('Bundle belongs to a different upload')
         save(staging / 'receipt.json', receipt)
         md = '# 本地EDA结果\n\n服务器版本：`' + upload + '`\n\n压缩包、逐文件及34步输入身份已核对；大型GDS/DEF/SDF/SPEF与数据库保留服务器。\n\n- [逐步运行报告](core/evidence/运行报告.md)：每步做什么、为什么和实际输出。\n- [最终时序与物理检查](core/evidence/step_33.json)：Setup/Hold、DRV、DRC、供电、信号与天线。\n- [最终导出检查](core/evidence/step_34.json)：DEF、SDF、SPEF与GDS结构对应关系。\n- [布局图](core/evidence/34_final_layout.gif)。\n- [原始综合报告](core/syn/my_soc_top/reports/)。\n- [原始后端报告](core/pnr/my_soc_top/reports/)。\n- [大文件服务器位置与SHA](review_manifest.json)。\n\n解读方法见仓库eda/docs/报告查找与分析.md。压缩文本报告用gzip读取或先解压，时间单位为ns。独立晶圆厂签核和SDF回标仿真不在本流程结果中。\n'
+        md+='\n含 PAD 的整个 Die：'+str(receipt['whole_die_area_mm2'])+' mm²，上限 '+str(receipt['max_whole_die_area_mm2'])+' mm²。\n'
         (staging / 'README.md').write_text(md, encoding='utf-8')
         import importlib.util
         spec = importlib.util.spec_from_file_location('eda_readme_renderer', EDA / 'server/tools/workspace.py')

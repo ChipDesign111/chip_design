@@ -2,9 +2,11 @@
 
 版本目录：`{{UPLOAD}}`。源码提交：`{{COMMIT}}`。
 
-状态：{{STATUS}}，完成 {{STEP}}/34。最终 Setup/Hold WNS：{{SETUP}} / {{HOLD}} ns。尚未生成不表示通过。
+状态：{{STATUS}}，完成 {{STEP}}/34。最终 Setup/Hold WNS：{{SETUP}} / {{HOLD}} ns。含 PAD 的整个 Die：{{AREA}} mm²，上限 {{AREA_LIMIT}} mm²。尚未生成不表示通过。
 
 本版本为 INT8 64→32→6 完整 SoC：第一层 2 输入×32 输出、第二层 1×6，DMA 从主 SRAM 预取权重，两个 64 字节缓冲交替使用。整颗含 PAD 面积上限 3.5 mm²。双击本目录 README.html 阅读；各版本独立。
+
+先读[当前设计数据流](../docs/当前设计数据流.md)理解本设计，再按以下阶段执行。
 
 ## 1．服务器解压和参数准备
 

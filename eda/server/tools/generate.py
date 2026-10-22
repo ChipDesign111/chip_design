@@ -1,11 +1,12 @@
 """Generate this SoC's physical steps from measured Die geometry and IO data."""
 import json
+import math
 from pathlib import Path
 import re
 
 
 def generate_steps(work, die):
-    if len(die) != 4 or die[:2] != [0, 0]:
+    if len(die) != 4 or die[:2] != [0, 0] or any(not isinstance(v,(int,float)) or not math.isfinite(v) for v in die):
         raise ValueError('Expected a rectangular Die with origin at zero')
     w, h = die[2:]
     if min(w, h) < 1800:

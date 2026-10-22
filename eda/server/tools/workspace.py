@@ -108,7 +108,11 @@ def initialize(root, deploy):
     timing = stage.get('timing', {})
     setup, hold = [timing.get(k, {}).get('wns_ns', '尚未生成') for k in ['Setup', 'Hold']]
     error = (work / 'evidence/unexpected_tool_errors.json').is_file()
-    summary = {'upload': str(root), 'archive_sha256': upload.get('archive_sha256'),
+    geometry=read_json(work/'evidence/geometry.json')
+    whole_area=geometry.get('whole_die_area_mm2')
+    limit=read_json(work/'config/design.json').get('max_die_area_mm2',3.5)
+    summary = {'whole_die_area_mm2':whole_area,'max_whole_die_area_mm2':limit,
+               'whole_die_area_within_limit':None if whole_area is None else whole_area<=limit, 'upload': str(root), 'archive_sha256': upload.get('archive_sha256'),
                'deployment_commit': source.get('git_commit'), 'work': str(work),
                'last_completed_step': progress, 'unexpected_tool_errors': error,
                'setup_wns_ns': setup, 'hold_wns_ns': hold,
@@ -126,7 +130,7 @@ def initialize(root, deploy):
         status = '34步及结果整理已完成'
     template = (deploy / 'server/README.md').read_text(encoding='utf-8').replace('(../docs/', '(docs/')
     replacements = {'UPLOAD': str(root), 'COMMIT': str(source.get('git_commit')), 'STATUS': status,
-                    'STEP': str(progress), 'SETUP': str(setup), 'HOLD': str(hold)}
+                    'STEP': str(progress), 'SETUP': str(setup), 'HOLD': str(hold), 'AREA':str(whole_area) if whole_area is not None else '尚未生成', 'AREA_LIMIT':str(limit)}
     md = template
     for key, value in replacements.items():
         md = md.replace('{{' + key + '}}', value)

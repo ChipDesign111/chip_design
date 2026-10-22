@@ -302,15 +302,24 @@ def sizing(work):
     reserved_macro = (554.595 + 52) * (723.85 + 52)
     wanted = logic_area / c['target_utilization'] + reserved_macro
     side = c['core_size_um'] or max(c['min_core_size_um'], math.ceil(math.sqrt(wanted) / 10) * 10)
+    # Preserve measured inputs and an explicit failed planning result too.
+    # The existence of this report is not a pass marker; sizing must return.
+    preliminary=dict(area, standard_cell_area_estimate_um2=logic_area,
+        reserved_macro_halo_um2=reserved_macro, requested_core_size_um=side,
+        required_core_area_um2=wanted, target_utilization=c['target_utilization'],
+        planned_whole_die_area_mm2=(side+2*c['core_margin_um'])**2/1e6,
+        max_whole_die_area_mm2=c['max_die_area_mm2'],
+        planning_pass=False, planning_only_not_timing_or_IR_proof=True)
+    write_json(work / 'evidence/floorplan_plan.json', preliminary)
     if side * side < wanted:
-        raise ValueError('Fixed core too small for configured planning utilization; select a new configuration/project')
+        raise ValueError('Core planning failed: %.0f um2 required, %.0f um2 available; standard cells %.0f um2 at utilization %.2f. See floorplan_plan.json; use a NEW configuration/project.' % (wanted,side*side,logic_area,c['target_utilization']))
     x, y = c['macro_xy_um']
     if x < c['core_margin_um'] + 50 or y < c['core_margin_um'] + 50 or x + 554.595 + 30 > side + c['core_margin_um'] or y + 723.85 + 30 > side + c['core_margin_um']:
         raise ValueError('Macro + halo does not fit the planned core')
     planned_die_area=(side+2*c['core_margin_um'])**2/1e6
     if planned_die_area>c['max_die_area_mm2']:
         raise ValueError('Whole die including PAD exceeds area limit: %.6f mm2' % planned_die_area)
-    record = dict(area, planned_whole_die_area_mm2=planned_die_area, max_whole_die_area_mm2=c['max_die_area_mm2'], standard_cell_area_estimate_um2=logic_area, reserved_macro_halo_um2=reserved_macro, target_utilization=c['target_utilization'], core_size_um=side, planning_only_not_timing_or_IR_proof=True)
+    record = dict(area, planning_pass=True, required_core_area_um2=wanted, planned_whole_die_area_mm2=planned_die_area, max_whole_die_area_mm2=c['max_die_area_mm2'], standard_cell_area_estimate_um2=logic_area, reserved_macro_halo_um2=reserved_macro, target_utilization=c['target_utilization'], core_size_um=side, planning_only_not_timing_or_IR_proof=True)
     write_json(work / 'evidence/floorplan_plan.json', record)
     return record
 
