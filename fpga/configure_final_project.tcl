@@ -21,8 +21,7 @@ if {[llength [get_files -quiet $constraint_file]] == 0} {
 
 # The SoC fixes FPU=0 and does not carry the FPnew package sources.
 if {[llength [get_files -quiet $fp_wrapper_file]] != 0} {
-    set_property used_in_synthesis false [get_files $fp_wrapper_file]
-    set_property used_in_implementation false [get_files $fp_wrapper_file]
+    remove_files [get_files $fp_wrapper_file]
 }
 
 set_property top fpga_top [get_filesets sources_1]
