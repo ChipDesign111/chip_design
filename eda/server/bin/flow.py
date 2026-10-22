@@ -23,6 +23,7 @@ SERVER = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SERVER / 'tools'))
 from checks import audit_step, area_summary, load_text, mapped_netlist_check, clear_step_outputs, timing, fanout_targets
 from generate import generate_steps
+from cleanup import clean_work, generated_path, remove_generated
 
 
 def write_json(path, value):
@@ -505,20 +506,27 @@ def package(work):
             del selected[name]
     manifest = {'files': {name: {'bytes': p.stat().st_size, 'sha256': sha(p)} for name, p in selected.items()}, 'skipped_over_50_MiB_bytes': skipped_large, 'kept_remote': ['src/macro (licensed)', 'PDK', 'pnr/my_soc_top/backup'], 'scope': 'Lab4 teaching implementation; independent foundry signoff not performed'}
     write_json(work / 'delivery_manifest.json', manifest)
-    archive = work / 'core_delivery.tar.gz'
-    with tarfile.open(str(archive), 'w:gz') as tar:
-        for name, p in sorted(selected.items()):
-            tar.add(str(p), arcname=name, recursive=False)
-        tar.add(str(work / 'delivery_manifest.json'), arcname='delivery_manifest.json')
+    archive = generated_path(work, 'core_delivery.tar.gz')
+    partial = generated_path(work, 'core_delivery.tar.gz.part')
+    try:
+        with tarfile.open(str(partial), 'w:gz') as tar:
+            for name, p in sorted(selected.items()):
+                tar.add(str(p), arcname=name, recursive=False)
+            tar.add(str(work / 'delivery_manifest.json'), arcname='delivery_manifest.json')
+        os.replace(str(partial), str(archive))
+    finally:
+        remove_generated(work, ('core_delivery.tar.gz.part',))
     print(archive)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
-    for name in ['prepare', 'doctor', 'elaborate', 'synth', 'size', 'pnr', 'all', 'status', 'report', 'package', 'unlock', 'geometry', 'begin-step', 'audit-step', 'fanout-plan']:
+    for name in ['prepare', 'doctor', 'elaborate', 'synth', 'size', 'pnr', 'all', 'status', 'report', 'package', 'clean', 'unlock', 'geometry', 'begin-step', 'audit-step', 'fanout-plan']:
         p = sub.add_parser(name)
         p.add_argument('--work', required=True)
+        if name == 'clean':
+            p.add_argument('--dry-run', action='store_true')
         if name in ['prepare', 'all']:
             p.add_argument('--config')
         if name in ['pnr', 'all']:
@@ -532,6 +540,11 @@ def main():
             p.add_argument('--directory', type=Path, required=True)
     args = parser.parse_args()
     work = Path(args.work).expanduser().resolve()
+    # Packaging cleanup also works on older frozen projects. It does not
+    # change their inputs or use their old command parser.
+    if args.command == 'clean':
+        clean_work(Path(args.work), project_lock, args.dry_run)
+        return 0
     if args.command == 'prepare':
         prepare(args)
         return 0
