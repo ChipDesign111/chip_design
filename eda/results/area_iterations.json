@@ -1,0 +1,21 @@
+{
+  "acceptance": "Whole Die including PAD <=4.0 mm2 (user corrected limit); synthesis cell area is not die area",
+  "iterations": [
+    {
+      "upload": "20261023_001729_267c873",
+      "architecture": "INT8 2x32 / 1x6, two 64B tiles, product pipeline, CUT_ALL_PORTS crossbar",
+      "synthesis_cell_count": 66675,
+      "synthesis_cell_area_um2": 2171670.432,
+      "native_sram_area_um2": 401444.091,
+      "standard_cell_area_um2": 1770226.841,
+      "npu_cell_area_um2": 865369.792,
+      "axi_xbar_cell_area_um2": 339961.843,
+      "latch_area_um2": 0,
+      "native_sram_count": 1,
+      "last_completed_physical_step": 0,
+      "result": "Synthesis passed; fixed 1500um core at utilization 0.70 planning failed. No physical die-area pass or final export.",
+      "evidence": "Original area.rpt and flow.log retained in local archives, source server work remains immutable."
+    }
+  ],
+  "next_iteration": "Internal crossbar spill stages and product pipeline registers removed; preserve 70 INT8 multipliers; user corrected whole-die limit to4.0mm2, core request1696um/utilization0.68; measured result pending"
+}

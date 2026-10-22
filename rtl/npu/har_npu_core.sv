@@ -22,7 +22,8 @@ module har_npu_core (
 );
     localparam [2:0] IDLE=0,WAIT_TILE=1,ISSUE=2,DRAIN=3,QUANT=4,FINISH=5;
     logic [2:0] state;
-    logic layer,two,sample,product_valid,product_sample;
+    logic layer,two,sample;
+    wire product_valid,product_sample;
     logic [4:0] quant_index;
     logic quant_sample;
     logic signed [15:0] p1[0:31][0:1],p2[0:5];
@@ -32,7 +33,9 @@ module har_npu_core (
     wire [511:0] x=sample ? input_features1:input_features;
     wire [255:0] hs=h[sample];
     assign layer_o=layer;
-    assign tile_consumed_o=state==DRAIN && product_valid && product_sample==two;
+    assign tile_consumed_o=state==DRAIN;
+    assign product_valid=issue;
+    assign product_sample=sample;
     assign hidden=h[0]; assign hidden1=h[1];
     genvar k;
     generate for(k=0;k<6;k=k+1) begin: score_outputs
@@ -60,20 +63,22 @@ module har_npu_core (
                 if($signed(v[j*32+:32])>best) begin best=$signed(v[j*32+:32]);argmax=3'(j);end
         end
     endfunction
-    integer o,s,j;
-    // Valid bits suppress uninitialized product data, keeping reset trees small.
-    always_ff @(posedge clk) if(issue) begin
-        if(!layer) for(j=0;j<32;j=j+1) begin
-            p1[j][0]<=$signed(x[tile_index_o*16+:8])*$signed(tile_data_i[j*16+:8]);
-            p1[j][1]<=$signed(x[tile_index_o*16+8+:8])*$signed(tile_data_i[j*16+8+:8]);
-        end
-        else for(j=0;j<6;j=j+1)
-            p2[j]<=$signed(hs[tile_index_o*8+:8])*$signed(tile_data_i[j*8+:8]);
+    integer o,s;
+    // Multiply and accumulate in one cycle. Keep INT8 operands and INT32
+    // accumulation; remove the 1120-bit product pipeline rather than MACs.
+    // The clock period is verified by real synthesis and post-route STA.
+    genvar j;
+    generate for(j=0;j<32;j=j+1) begin: fc1_products
+        assign p1[j][0]=$signed(x[tile_index_o*16+:8])*$signed(tile_data_i[j*16+:8]);
+        assign p1[j][1]=$signed(x[tile_index_o*16+8+:8])*$signed(tile_data_i[j*16+8+:8]);
     end
+    for(j=0;j<6;j=j+1) begin: fc2_products
+        assign p2[j]=$signed(hs[tile_index_o*8+:8])*$signed(tile_data_i[j*8+:8]);
+    end endgenerate
     always_ff @(posedge clk or negedge rst_ni) begin
         if(!rst_ni) begin
             state<=IDLE;busy<=0;done<=0;layer<=0;two<=0;sample<=0;
-            product_valid<=0;product_sample<=0;tile_index_o<=0;
+            tile_index_o<=0;
             quant_index<=0;quant_sample<=0;h[0]<=0;h[1]<=0;
             class_id<=0;class_id1<=0;cycle_count<=0;overlap_count<=0;
             read_overlap_count<=0;write_overlap_count<=0;fc1_cycles<=0;fc2_cycles<=0;
@@ -82,7 +87,6 @@ module har_npu_core (
                 for(o=0;o<6;o=o+1) a2[s][o]<=0;
             end
         end else begin
-            product_valid<=issue;product_sample<=sample;
             if(busy) cycle_count<=cycle_count+1'b1;
             if(product_valid) begin
                 if(dma_read_i || dma_write_i) overlap_count<=overlap_count+1'b1;
@@ -123,7 +127,7 @@ module har_npu_core (
                 FINISH:begin class_id<=argmax(scores);class_id1<=argmax(scores1);busy<=0;done<=1;state<=IDLE;end
                 default:state<=IDLE;
             endcase
-            if(abort_i && busy) begin state<=IDLE;busy<=0;done<=1;product_valid<=0;end
+            if(abort_i && busy) begin state<=IDLE;busy<=0;done<=1;end
         end
     end
 endmodule

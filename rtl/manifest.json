@@ -383,10 +383,10 @@
     {
       "source": "soc/rtl/my_soc_top.sv",
       "path": "rtl/soc/my_soc_top.sv",
-      "sha256": "d39a6e1545eba5dafe3abfbacfc55164bb139a2df36b7608725e8d7541558a7a",
+      "sha256": "6ff7907978ad2aaeaf058314a889d239df9377ca83d3b8fb22869e08bb5407a3",
       "previous_sha256": "46970e8d4fd61c49c804ed89fdf920a4e1160ff01ecb555228fdd35d80768436",
       "original_sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6",
-      "project_override": "INT8 tile DMA; safe boot commit and POR/system reset synchronization",
+      "project_override": "INT8 tile DMA and guarded boot; crossbar internal spill stages removed, endpoint adapters retained",
       "upstream_sha256": "174207c5682648222a6f280705666d272d1d44406df6193370c0e8efc7ed374e"
     }
   ],
@@ -396,6 +396,6 @@
       "rtl/soc/my_npu_subsystem.sv",
       "rtl/soc/my_soc_top.sv"
     ],
-    "unchanged": "CPU, AXI library, debug, clocks, boot and NPU arithmetic/weight store"
+    "unchanged": "Vendor CPU, AXI library, Debug and clock/reset library sources; integration overrides are listed per file"
   }
 }

@@ -49,7 +49,10 @@ module my_soc_top #(
       MaxMstTrans:        1,
       MaxSlvTrans:        1,
       FallThrough:        1'b0,
-      LatencyMode:        axi_pkg::CUT_ALL_PORTS,
+      // At 50 MHz the registered CPU/DMA adapters and target bridges
+      // provide the transaction boundaries. Avoid duplicating spill-register
+      // banks at every internal crossbar channel; STA checks the longer paths.
+      LatencyMode:        axi_pkg::NO_LATENCY,
       AxiIdWidthSlvPorts: 2,
       AxiIdUsedSlvPorts:  2,
       UniqueIds:          1'b0,

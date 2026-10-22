@@ -28,7 +28,9 @@
     "batch_max": 2,
     "fc1_mac_issue_cycles_per_sample": 32,
     "fc2_mac_issue_cycles_per_sample": 32,
-    "weight_layout": "FC1[tile32][output32][lane2]; FC2[input32][output6+padding2]"
+    "weight_layout": "FC1[tile32][output32][lane2]; FC2[input32][output6+padding2]",
+    "mac_pipeline": "combinational INT8 multiplication into INT32 accumulator per ISSUE cycle",
+    "axi_crossbar_latency": "NO_LATENCY, registered initiator/target adapters retained"
   },
   "mmio": {
     "base_address": 1879048192,
@@ -110,7 +112,7 @@
     "post_commit_margin_clocks": 5
   },
   "physical_target": {
-    "whole_die_with_pad_mm2_max": 3.5,
+    "whole_die_with_pad_mm2_max": 4.0,
     "period_ns": 20
   }
 }
