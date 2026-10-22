@@ -1,12 +1,14 @@
 # 服务器部署文件
 
-这个目录是部署专用程序，但单独上传它还不够：需要同版本`rtl/`及`source.json`。在仓库根目录运行`python eda/package_server.py`生成完整部署包，按仓库`eda/docs/操作指南.md`上传和解压。
+这个目录是部署专用程序，但单独上传它还不够：需要同版本`rtl/`及`source.json`。在仓库根目录运行`python eda/package_server.py`生成完整部署包，按仓库`eda/docs/操作指南.md`上传和解压。查结果与原始报告的方法见仓库`eda/docs/报告查找与分析.md`；这些文档不随部署包上传。
+
+课程PDK在`/lec/pdk/tsmc180`，宏资料在`/lec/lab4`。默认design.json仍指向原课程安装路径`/home/almalinux/tsmc180`；先复制一份配置，设置实际可读的pdk_root和macro_source，再在第一次prepare/all传`--config /完整路径/design.json`。不要直接改已被source.json记录SHA的部署文件。
 
 服务器使用Python 3.8+标准库，不要求安装仓库功能测试使用的NumPy、Icarus、Yosys或ModelSim。功能测试应在相应环境另外运行并核对源码SHA。
 
 ```sh
-# 解压包根目录包含server/和rtl/；替换为自己的新工程路径
-bash server/bin/eda.sh prepare --work "$HOME/chip_eda_runs/w8a4_run01"
+# 解压包根目录包含server/和rtl/；先按主指南设置EDA_CONFIG为配置副本
+bash server/bin/eda.sh prepare --work "$HOME/chip_eda_runs/w8a4_run01" --config "$EDA_CONFIG"
 bash server/bin/eda.sh doctor --work "$HOME/chip_eda_runs/w8a4_run01"
 bash server/bin/eda.sh elaborate --work "$HOME/chip_eda_runs/w8a4_run01"
 bash server/bin/eda.sh synth --work "$HOME/chip_eda_runs/w8a4_run01"
