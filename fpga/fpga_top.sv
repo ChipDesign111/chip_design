@@ -2,7 +2,12 @@
 
 // Lab6-compatible board top for the current HAR SoC.
 // The 100 MHz board clock is converted to 50 MHz by clk_wiz_0.
-module fpga_top (
+module fpga_top #(
+    // Absolute by default because Vivado resolves $readmemh relative paths
+    // against its launch directory. Override this parameter if the tree moves.
+    parameter SRAM_INIT_FILE =
+        "D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/fpga/firmware/model_selftest_dma.hex"
+) (
     input  logic fpga_clk_i,
     input  logic rst_ni,
     input  logic tck_i,
@@ -17,9 +22,6 @@ module fpga_top (
   localparam [31:0] TEST_RUNNING = 32'h1234_5678;
   localparam [31:0] TEST_PASS    = 32'hC0DE_C0DE;
   localparam [31:0] TEST_FAIL    = 32'hDEAD_BEEF;
-
-  // Relative to final_project.runs/synth_1 during Vivado synthesis.
-  localparam SRAM_INIT_FILE = "../../../firmware/model_selftest_dma.hex";
 
   logic clk_sys;
   logic clk_locked;
