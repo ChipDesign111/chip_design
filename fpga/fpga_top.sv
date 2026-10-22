@@ -19,7 +19,7 @@ module fpga_top (
   localparam [31:0] TEST_FAIL    = 32'hDEAD_BEEF;
 
   // Relative to final_project.runs/synth_1 during Vivado synthesis.
-  localparam string SRAM_INIT_FILE = "../../../firmware/model_selftest_dma.hex";
+  localparam SRAM_INIT_FILE = "../../../firmware/model_selftest_dma.hex";
 
   logic clk_sys;
   logic clk_locked;
