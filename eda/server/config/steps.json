@@ -141,10 +141,10 @@
   },
   "21": {
     "title": "建立标准单元行电源轨",
-    "what": "用M1沿单元行布置VDD/VSS轨并接到网格。 所有PG接入后，用editTrim修剪VDD/VSS无负载的多余线端。",
-    "why": "每行标准单元都需要就近电源，只有高层环和条带仍不能直接供电。 SRAM上方横向电源条可越过最后一个连接点，需修剪无用尾段。",
+    "what": "用M1沿单元行布置VDD/VSS轨并接到网格。",
+    "why": "每行标准单元都需要就近电源，只有高层环和条带仍不能直接供电。",
     "effect": "保留完整PG及排除悬线检查的阶段报告；最终步骤33仍要求完整PG清零。",
-    "parameters": "行轨在M1，向M4连接；这里连通检查的noAntenna排除悬线检查，与步骤31的工艺天线检查不是同一件事。完整PG报告保留且最终重新验收。"
+    "parameters": "行轨在M1，向M4连接；这里连通检查的noAntenna排除悬线检查，与步骤31的工艺天线检查不是同一件事。完整PG报告保留且最终重新验收。 保留暂时无负载的电源线端，直到第33步物理单元和Filler全部接入后才修剪。"
   },
   "22": {
     "title": "核对IO原生供电轨",
@@ -211,10 +211,10 @@
   },
   "31": {
     "title": "检查并修工艺天线",
-    "what": "独立检查，再从本轮天线报告提取实际违规网，有限次修复。",
+    "what": "独立检查，从本轮天线报告提取实际违规网，有限次修复；若修复后独立DRC仍有违规，再执行全设计detailRoute并复核。",
     "why": "制造期间金属积累电荷可能损伤薄绝缘结构，不能复用旧违规网名。",
     "effect": "天线、default DRC和常规信号连通通过，保留原始和修复报告。",
-    "parameters": "从当前独立报告提取违规网络，最多max_repair_iterations次，默认3次；不使用历史网名。两项IO抽象限制只有同源步骤22证据齐备才可分类。"
+    "parameters": "从当前独立报告提取违规网络，最多max_repair_iterations次，默认3次；不使用历史网名。两项IO抽象限制只有同源步骤22证据齐备才可分类。 选择网修复可能碰到相邻信号；先归档本轮before报告，再按当前DRC执行31_drc_fix.tcl，不以天线归零作为唯一退出条件。超过上限或报告格式不明仍停止。"
   },
   "32": {
     "title": "真实RC下修复时序",
@@ -228,7 +228,7 @@
     "what": "插核心Filler后用editTrim修剪VDD/VSS多余线端，重新提取RC，检查放置、完整核心PG、几何、天线和时序。",
     "why": "填充后设计发生变化，要在最终状态验收；中途排除悬线的PG检查不够。",
     "effect": "最终各检查通过，保存可恢复的完整阶段点。",
-    "parameters": "ecoMode/fitGap按讲义匹配剩余空隙；check_signal_drc=true且add_fillers_with_drc=false，不允许为了填满而引入已知DRC。 editTrim -nets {VDD VSS}作用于真实电源几何；完整verifyConnectivity仍包含悬线检查，没有使用noAntenna跳过。"
+    "parameters": "ecoMode/fitGap按讲义匹配剩余空隙；check_signal_drc=true且add_fillers_with_drc=false，不允许为了填满而引入已知DRC。 仅在最终物理单元和Filler接入后，editTrim -nets {VDD VSS}作用于真实电源几何；完整verifyConnectivity仍包含悬线检查，没有使用noAntenna跳过。"
   },
   "34": {
     "title": "导出并交叉核对",

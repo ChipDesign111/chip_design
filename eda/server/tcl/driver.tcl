@@ -53,6 +53,15 @@ proc eda_timing_bad {directory {mode all}} {
     }
     return $bad
 }
+proc eda_drc_count {path} {
+    set fd [open $path r]; set text [read $fd]; close $fd
+    if {[regexp {Total Violations\s*:\s*([0-9]+)\s+Viols\.} $text -> count]} {
+        if {[string first "No DRC violations were found" $text] >= 0} {error "Conflicting DRC report: $path"}
+        return $count
+    }
+    if {[string first "No DRC violations were found" $text] >= 0} {return 0}
+    error "Unrecognized DRC report: $path"
+}
 if {[catch {
     if {$eda_last == 0} {
         source [file join $eda_work pnr scripts init_pnr.tcl]
@@ -117,9 +126,20 @@ if {[catch {
                 set eda_antenna_report ../my_soc_top/my_soc_top_postRoute_antenna.rpt
                 for {set iteration 0} {$iteration < $eda_repair_iterations} {incr iteration} {
                     eda_run 31_fix.tcl
+                    # Selected-net antenna repair can conflict with a neighbor.
+                    # Preserve its independent reports before any global repair.
+                    set repair_dir [file join $eda_work evidence route_repair 31 $iteration]
+                    file mkdir $repair_dir
+                    foreach suffix {drc antenna signal pg} {
+                        file copy -force ../my_soc_top/my_soc_top_postAntennaFix_${suffix}.rpt [file join $repair_dir before_${suffix}.rpt]
+                    }
+                    if {[eda_drc_count ../my_soc_top/my_soc_top_postAntennaFix_drc.rpt] > 0} {
+                        eda_run 31_drc_fix.tcl
+                    }
                     set eda_antenna_report ../my_soc_top/my_soc_top_postAntennaFix_antenna.rpt
                     set fd [open $eda_antenna_report r]; set ant_data [read $fd]; close $fd
-                    if {[string first "No Violations Found" $ant_data] >= 0 || [regexp {Number of nets violated:\s+0\y} $ant_data]} {break}
+                    set ant_clean [expr {[string first "No Violations Found" $ant_data] >= 0 || [regexp {Number of nets violated:\s+0\y} $ant_data]}]
+                    if {$ant_clean && [eda_drc_count ../my_soc_top/my_soc_top_postAntennaFix_drc.rpt] == 0} {break}
                 }
             }
             32 {

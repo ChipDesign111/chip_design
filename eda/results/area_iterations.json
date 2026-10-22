@@ -38,7 +38,18 @@
       "result": "Area within4.0mm2 and step32 timing/DRV/DRC clean; step33 audit FAILED:48 IMPVFC-94 VDD dangling-wire problems near SRAM METAL5. No step33/34 acceptance or final export.",
       "repair": "Native editTrim on VDD/VSS after PG hookup and final filler; retain full connectivity/DRC/timing checks. Fresh upload required.",
       "evidence": "Original server work immutable; selected raw reports copied to local lab4/int8_eec38ed_partial_20261023."
+    },
+    {
+      "upload": "20261023_020019_818ade1",
+      "source_commit": "818ade1c3d85319122b5528588e32667018926de",
+      "synthesis_cell_count": 58635,
+      "synthesis_cell_area_um2": 1894546.189,
+      "whole_die_area_mm2": 3.98561296,
+      "system_period_ns": 20,
+      "last_completed_physical_step": 30,
+      "result": "Step21 full PG clean after early trim; step31 audit FAILED: one METAL2 short npu_rdata[4]/sram_rdata[5] following selected antenna repair. Intermediate PG report also lists VSS opens after later physical cells were added. No final acceptance.",
+      "repair": "Defer editTrim until final physical cells/fillers exist at33; add measured-DRC-driven full detail-route repair after selected antenna repair, with bounded iterations and unchanged independent audits."
     }
   ],
-  "next_iteration": "Same validated RTL and1696um core/20ns constraints, native PG stub cleanup at steps21/33; fresh full EDA verification pending."
+  "next_iteration": "Same validated RTL/1696um core/20ns. Final-only PG trim, bounded post-antenna DRC repair; fresh full run pending."
 }

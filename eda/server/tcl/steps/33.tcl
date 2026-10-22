@@ -5,8 +5,8 @@ addFiller
 globalNetConnect VDD -type pgpin -pin VDD -all
 globalNetConnect VSS -type pgpin -pin VSS -all
 checkPlace ../my_soc_top/my_soc_top_postFiller_place.rpt -ignoreOutOfCore
-# Filler/route repair may have changed PG connections since step21. Trim
-# remaining redundant stubs, then require the unfiltered full PG report clean.
+# All physical cells, route repair and fillers now exist. Only now trim
+# redundant stubs, then require the unfiltered full PG report clean.
 editTrim -nets {VDD VSS}
 verifyConnectivity -type special -net {VDD VSS} -allPGPinPort -error 100000 -report ../my_soc_top/my_soc_top_postFiller_pg.rpt
 verify_drc -check_only default -limit 100000 -report ../my_soc_top/my_soc_top_postFiller_drc.rpt
