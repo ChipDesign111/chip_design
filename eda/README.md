@@ -7,6 +7,7 @@
 ```text
 eda/
 ├── package_server.py  生成服务器部署包
+├── unpack.sh          一次安装到服务器顶层的公共解压脚本
 ├── server/            正式配置、综合/后端脚本和运行模块
 ├── docs/              操作、34步解释、报告分析、基础知识
 └── results/           实测结果、原始报告、布局图和分析
@@ -28,4 +29,4 @@ python eda/package_server.py
 
 结果下载校验后，`bash server/bin/eda.sh clean --work "$EDA_WORK" --dry-run`可预览重复压缩包及打包暂存文件，去掉`--dry-run`执行；保留中间文件、检查点、报告与最终视图。具体范围见操作指南第10.1节。
 
-服务器统一使用`~/Desktop/fullstack_chipdesign`，不在主目录散放工程。部署到`deploy/`后调用`server/bin/workspace.sh`生成GUI用README.html和完整运行入口，详见[桌面工作区](docs/服务器桌面工作区.md)。
+服务器采用按上传版本隔离的结构：顶层`~/Desktop/fullstack_chipdesign/unpack.sh`是公共解压器；每次先在`uploads/`下新建目录，把原包放入其中，再调用公共脚本。该版本的deploy、configs、work、日志、报告、脚本与GUI说明全部在自己的目录内，没有共享current_run。详见[上传目录结构](docs/服务器桌面工作区.md)。

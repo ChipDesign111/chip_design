@@ -8,16 +8,16 @@
 
 ```sh
 # 解压包根目录包含server/和rtl/；先按主指南设置EDA_CONFIG为配置副本
-bash server/bin/eda.sh prepare --work "$HOME/Desktop/fullstack_chipdesign/runs/w8a4_run01" --config "$EDA_CONFIG"
-bash server/bin/eda.sh doctor --work "$HOME/Desktop/fullstack_chipdesign/runs/w8a4_run01"
-bash server/bin/eda.sh elaborate --work "$HOME/Desktop/fullstack_chipdesign/runs/w8a4_run01"
-bash server/bin/eda.sh synth --work "$HOME/Desktop/fullstack_chipdesign/runs/w8a4_run01"
-bash server/bin/eda.sh size --work "$HOME/Desktop/fullstack_chipdesign/runs/w8a4_run01"
-bash server/bin/eda.sh pnr --work "$HOME/Desktop/fullstack_chipdesign/runs/w8a4_run01" --until 14
-bash server/bin/eda.sh pnr --work "$HOME/Desktop/fullstack_chipdesign/runs/w8a4_run01" --until 26
-bash server/bin/eda.sh pnr --work "$HOME/Desktop/fullstack_chipdesign/runs/w8a4_run01" --until 34
-bash server/bin/eda.sh report --work "$HOME/Desktop/fullstack_chipdesign/runs/w8a4_run01"
-bash server/bin/eda.sh package --work "$HOME/Desktop/fullstack_chipdesign/runs/w8a4_run01"
+bash server/bin/eda.sh prepare --work "$EDA_WORK" --config "$EDA_CONFIG"
+bash server/bin/eda.sh doctor --work "$EDA_WORK"
+bash server/bin/eda.sh elaborate --work "$EDA_WORK"
+bash server/bin/eda.sh synth --work "$EDA_WORK"
+bash server/bin/eda.sh size --work "$EDA_WORK"
+bash server/bin/eda.sh pnr --work "$EDA_WORK" --until 14
+bash server/bin/eda.sh pnr --work "$EDA_WORK" --until 26
+bash server/bin/eda.sh pnr --work "$EDA_WORK" --until 34
+bash server/bin/eda.sh report --work "$EDA_WORK"
+bash server/bin/eda.sh package --work "$EDA_WORK"
 ```
 
 全流程入口为`bash server/bin/eda.sh all --work <新目录>`；它执行准备、doctor、综合、后端和报告。已准备过的工程可用同一命令继续已通过的步骤；输入身份变化则拒绝续跑。这个固定profile只覆盖文档中六路信号、一个RA1SHD主存和当前W8A4 SoC。
@@ -34,6 +34,6 @@ GUI截图使用当前DISPLAY，或自动申请100–199间一个空闲Xvfb显示
 
 下载并校验后，使用`bash server/bin/eda.sh clean --work <本轮工作目录> --dry-run`预览；去掉`--dry-run`执行。只清理已知交付压缩包、校验文件、`.part`和压缩网表暂存副本，保留清单、报告、日志、所有中间文件、检查点和最终视图。新部署入口可对旧工程执行该清理，无需改变旧工程输入；流程锁被占用时拒绝清理。不会遍历其他工程或主目录压缩包。
 
-打包先写`.part`，完整写入后替换正式包；review自动清理自己的暂存网表与未完成包。操作指南第10.1节另给出删除主目录中两个已解压上传文件的明确命令。
+打包先写`.part`，完整写入后替换正式包；review自动清理自己的暂存网表与未完成包。原始上传包保留在该版本根目录，作为来源，不由clean删除。
 
-所有服务器文件统一放在`~/Desktop/fullstack_chipdesign`。将部署包解压到其`deploy/`后，执行`bash deploy/server/bin/workspace.sh`生成README.html、run_env.sh及run_all.sh。双击README.html阅读目录和结果链接；终端在工作区执行`bash run_all.sh`从RTL实现并收集结果。
+所有服务器文件统一放在`~/Desktop/fullstack_chipdesign`。公共脚本是顶层unpack.sh；每次上传必须新建uploads下的独立目录，原包放在该目录。公共解压器调用本版本的workspace.sh，生成该目录自己的README.html、run_env.sh和run_all.sh。后续脚本、配置、work、日志、结果都属于本上传目录，不使用全局deploy/runs或当前版本指针。
