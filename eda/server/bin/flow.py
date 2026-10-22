@@ -561,7 +561,8 @@ def main():
     if args.command == 'fanout-plan':
         fanout_plan(work, args.directory)
         return 0
-    if args.command == 'all' and not work.exists():
+    freshly_prepared = args.command == 'all' and not work.exists()
+    if freshly_prepared:
         prepare(args)
     elif args.command == 'all' and args.config:
         raise ValueError('--config is for a NEW project only. Resume without it, or choose a new work directory.')
@@ -571,7 +572,14 @@ def main():
     # prepare. Updating the deployment directory must not change an old run.
     snapshot = work / 'flow/bin/flow.py'
     if snapshot.is_file() and snapshot.resolve() != Path(__file__).resolve():
-        os.execv(sys.executable, [sys.executable, str(snapshot)] + sys.argv[1:])
+        forwarded = sys.argv[1:]
+        if freshly_prepared:
+            # prepare consumed the external configuration and froze it in work.
+            # The snapshot must resume that prepared project without --config.
+            forwarded = ['all', '--work', str(work), '--until', str(args.until)]
+            if args.headless:
+                forwarded.append('--headless')
+        os.execv(sys.executable, [sys.executable, str(snapshot)] + forwarded)
     if args.command == 'unlock':
         p = work / 'evidence/flow.lock'
         value = json.loads(p.read_text())
