@@ -20,7 +20,7 @@ REQUIRED_FILES = (
     ".github/workflows/ci.yml", "test/README.md", "tools/README.md",
 )
 REQUIRED_DIRS = ("rtl", "model", "tools", "test", "report", "fpga", "eda")
-EXCLUDED_PARTS = {".git", "data", "local", "runs", ".venv", "venv", "__pycache__"}
+EXCLUDED_PARTS = {".git", "data", "local", "runs", "work", ".venv", "venv", "__pycache__"}
 
 
 def files(suffix: str):
@@ -43,7 +43,8 @@ def check() -> list[str]:
         if not (ROOT / name).is_dir(): errors.append(f"Missing directory: {name}")
     visible = {p.name for p in ROOT.iterdir() if p.is_dir() and not p.name.startswith(".")}
     if visible != set(REQUIRED_DIRS): errors.append("Top-level directories must be exactly rtl/fpga/model/eda/test/report/tools")
-    for name in ("fpga", "eda"):
+    # FPGA is still a placeholder. EDA now contains the authorized ASIC flow.
+    for name in ("fpga",):
         if (ROOT/name).exists() and any(p.name != ".gitkeep" for p in (ROOT/name).iterdir()):
             errors.append(name + " must remain empty except for its Git placeholder")
     if (ROOT/"rtl/npu/lab3").exists(): errors.append("Original NPU must not be retained")

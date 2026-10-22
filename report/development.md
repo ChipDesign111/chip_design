@@ -53,3 +53,9 @@ PR 说明问题、最终行为、影响和实测证据。文档运行 check；�
 ## DMA
 
 新增 `test --suite dma-unit`（公开协议/入口回归）与 `test --suite dma --memory portable-sram|ra1shd --vsim /path/to/vsim`（同模型 CPU/DMA 对比）。`ci` 包含 dma-unit 和 DMA 通用综合；`all` 也包含完整 DMA 基准。见 [DMA](dma.md)。
+
+## ASIC 工艺综合和前后仿
+
+`tools/project.py synth` 保留为无工艺库的 Yosys 结构检查。实际 TSMC180 映射使用 `python3 eda/run_flow.py --out eda/work/asic-example`，需先加载课程 Genus/Xcelium 环境。此入口依次执行相同固件的 RTL 前仿、工艺综合、门级功能后仿、综合后 SDF 延时仿真及证据核查；驱动脚本使用 Python 3.8 标准库。流程、存储映射和验收范围见 [EDA](../eda/README.md)。
+
+上电默认在 boot RAM 等待 JTAG 装载和发布启动字，详见 [启动协议](../eda/BOOT_PROTOCOL.md)。旧 SoC 功能测试台仍使用存储端口预加载；外部引脚下载验收统一使用 `eda/sim/run_pins.py`。旧的未提交 JTAG 实验入口尚未适配本协议。

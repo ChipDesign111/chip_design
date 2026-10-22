@@ -14,6 +14,7 @@
 *.hex text eol=lf
 *.png binary
 *.pdf binary
+*.pptx binary
 *.npz binary
 *.pt binary
 rtl/cpu_cv32e40p/** -text
@@ -24,3 +25,5 @@ rtl/debug/** -text
 rtl/include/** -text
 rtl/soc/** -text
 rtl/memory/boot*.sv -text
+# EDA evidence pins exact script/testbench/firmware bytes, including line endings.
+eda/** -text

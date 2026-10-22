@@ -58,6 +58,8 @@ python tools/project.py test --suite dma --memory ra1shd --vsim /path/to/vsim
 
 NPU 每批仍为 59 周期，39/59/18 核心契约不变。DMA 加速来源是批量搬运及减少 CPU 指令取数开销，不是算术核心提速。小输入的描述符开销使其收益低于大参数块。当前为功能仿真周期；厂商 SRAM SoC 仍显式关闭时序检查，不代表目标频率或 STA/SDF 签核通过。
 
-## 基线更新
+## 2026-10-15 DMA 集成基线
 
 新增 DMA 要求四个 AXI 发起端（原为 CPU 指令、CPU 数据、Debug 三个）；地址目标仍是原四个。项目集成文件 my_soc_top/my_npu_subsystem 明确更新，manifest 保存其旧 SHA 和修改理由。CPU、AXI 库、Debug、时钟、Boot 代码及 NPU 点积/权重/调度核心不改写。simple_npu_top 增加内部 busy 状态输出，现有 MMIO 端口和寄存器行为兼容。
+
+以上修改范围和周期是当时 DMA 集成记录。本轮 ASIC 验证另修改 bootram 首条指令与 SoC 顶层复位释放，见 [启动与复位协议](../eda/BOOT_PROTOCOL.md)；当前前后仿验收以 [EDA 结果](../eda/RESULTS.md) 为准。

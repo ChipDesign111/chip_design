@@ -1,0 +1,144 @@
+{
+  "schema": "public-soc-layout-preview-provenance-v1",
+  "records": [
+    {
+      "kind": "Actual DEF/LEF geometry rendering; not an EDA GUI screenshot",
+      "created_utc": "2026-10-21T07:20:31.330668+00:00",
+      "embedded_def_stage": "postcts",
+      "stage_label": "placement",
+      "image_size_px": [
+        2200,
+        1840
+      ],
+      "die_bbox_um": [
+        0.0,
+        0.0,
+        3400.32,
+        3400.32
+      ],
+      "core_um": [
+        150.08,
+        150.08,
+        3250.24,
+        3250.24
+      ],
+      "component_counts": {
+        "corner": 4,
+        "io_filler": 2132,
+        "power_pad": 28,
+        "signal_pad": 6,
+        "macro": 1,
+        "bond": 34,
+        "logic": 174749,
+        "physical": 60476
+      },
+      "total_components": 237430,
+      "route_sampling": "Deterministic reservoir sampling; seeds 20261021 and 20261022",
+      "route_segments": {
+        "NETS": {
+          "parsed": 92220,
+          "sampled": 24000,
+          "drawn": 24000,
+          "parsed_by_layer": {
+            "METAL2": 17018,
+            "METAL3": 44701,
+            "METAL4": 27624,
+            "METAL5": 2316,
+            "METAL6": 561
+          }
+        },
+        "SPECIALNETS": {
+          "parsed": 3766,
+          "sampled": 3766,
+          "drawn": 3766,
+          "parsed_by_layer": {
+            "METAL5": 321,
+            "METAL1": 2941,
+            "METAL2": 56,
+            "METAL3": 34,
+            "METAL4": 386,
+            "METAL6": 28
+          }
+        }
+      },
+      "route_omissions": {
+        "via_occurrences_omitted": 522773,
+        "patch_rectangles_omitted": 37707
+      },
+      "scope": "Component outlines / path centre-lines only; not full mask geometry or DRC/LVS/signoff",
+      "image": "soc-postcts-layout.png",
+      "image_sha256": "ca472865b7160591efad909e2f66b48279e83ce9547e6dba1496eeab707a39a4",
+      "source_def_sha256": "f499d8fdaa3251b55b18220ff416bdac25b6f296d8c44d32eeff2efa74c8aa81"
+    },
+    {
+      "kind": "Actual DEF/LEF geometry rendering; not an EDA GUI screenshot",
+      "created_utc": "2026-10-21T08:32:27.161308+00:00",
+      "embedded_def_stage": "postroute",
+      "stage_label": "postroute",
+      "image_size_px": [
+        2200,
+        1840
+      ],
+      "die_bbox_um": [
+        0.0,
+        0.0,
+        3400.32,
+        3400.32
+      ],
+      "core_um": [
+        150.08,
+        150.08,
+        3250.24,
+        3250.24
+      ],
+      "component_counts": {
+        "corner": 4,
+        "io_filler": 2132,
+        "power_pad": 28,
+        "signal_pad": 6,
+        "macro": 1,
+        "bond": 34,
+        "logic": 175354,
+        "physical": 388216
+      },
+      "total_components": 565775,
+      "route_sampling": "Deterministic reservoir sampling; seeds 20261021 and 20261022",
+      "route_segments": {
+        "NETS": {
+          "parsed": 2312314,
+          "sampled": 24000,
+          "drawn": 24000,
+          "parsed_by_layer": {
+            "METAL2": 1067164,
+            "METAL3": 724685,
+            "METAL4": 313796,
+            "METAL5": 150947,
+            "METAL6": 55715,
+            "METAL1": 7
+          }
+        },
+        "SPECIALNETS": {
+          "parsed": 3762,
+          "sampled": 3762,
+          "drawn": 3762,
+          "parsed_by_layer": {
+            "METAL5": 321,
+            "METAL1": 2941,
+            "METAL2": 56,
+            "METAL3": 30,
+            "METAL4": 386,
+            "METAL6": 28
+          }
+        }
+      },
+      "route_omissions": {
+        "via_occurrences_omitted": 1924196,
+        "patch_rectangles_omitted": 190407
+      },
+      "scope": "Component outlines / path centre-lines only; not full mask geometry or DRC/LVS/signoff",
+      "image": "soc-postroute-layout.png",
+      "image_sha256": "b227f2df8f28d0a81a4a2961b1b8d48d33191208aab0894d47165f5cdc77e0c3",
+      "source_def_sha256": "70b8db7c5d28260f9e44b762aa8661e9d64bd1ba3818f80a683e96e9d183b7bc"
+    }
+  ]
+}

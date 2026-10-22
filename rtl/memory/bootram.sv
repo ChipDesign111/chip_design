@@ -14,7 +14,7 @@ module bootram(
     
     always@ (posedge clk_i or negedge rst_ni) begin
 	if(!rst_ni) begin
-	    mem_q[0] <= 32'h800002b7; //lui t0,0x80000 base addr of sram_ff 
+	    mem_q[0] <= 32'h0000006f; // jal x0,0: wait for JTAG to install the boot vector 
         mem_q[1] <= 32'h00028293;
 	    //mem_q[1] <= 32'h10028313; //addi t1,t0,0x100
 	    //mem_q[2] <= 32'h0062a023; //sw t1,0(t0)
