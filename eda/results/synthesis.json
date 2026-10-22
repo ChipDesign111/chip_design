@@ -1,0 +1,15 @@
+{
+  "cell_count": 165606,
+  "cell_area_um2": 4672791.309,
+  "net_area_um2": 1788325.962,
+  "latch_area_um2": 0.0,
+  "memory_area_um2": 401443.591,
+  "report": "/home/s2400011041/eda_validation/20261020_eda_9d2c7f/work_fanoutfix/syn/my_soc_top/reports/area/area.rpt",
+  "mapped_design": {
+    "native_main_srams": 1,
+    "mapped_leaf_instances": 165606,
+    "all_leaf_types_have_library_models": true,
+    "npu_dma_area_hierarchy_present": true,
+    "latch_area_um2": 0
+  }
+}

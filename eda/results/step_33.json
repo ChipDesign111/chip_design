@@ -1,0 +1,124 @@
+{
+  "step": 33,
+  "commands_completed": true,
+  "input_manifest_sha256": "ba51412939c9da5916f7d5bb3807b5b7a1eb39d30bea03dab192d3f73311ee60",
+  "automatic_checks": {
+    "placement": {
+      "report": "/home/s2400011041/eda_validation/20261020_eda_9d2c7f/work_fanoutfix/pnr/my_soc_top/my_soc_top_postFiller_place.rpt",
+      "unplaced": 0,
+      "expected_io_bond_covers": [
+        "i_pad_E_poc",
+        "i_pad_E_vdd_1",
+        "i_pad_E_vdd_2",
+        "i_pad_E_vddio",
+        "i_pad_E_vss_1",
+        "i_pad_E_vss_2",
+        "i_pad_E_vssio",
+        "i_pad_N_poc",
+        "i_pad_N_vdd_1",
+        "i_pad_N_vdd_2",
+        "i_pad_N_vddio",
+        "i_pad_N_vss_1",
+        "i_pad_N_vss_2",
+        "i_pad_N_vssio",
+        "i_pad_S_poc",
+        "i_pad_S_vdd_1",
+        "i_pad_S_vdd_2",
+        "i_pad_S_vddio",
+        "i_pad_S_vss_1",
+        "i_pad_S_vss_2",
+        "i_pad_S_vssio",
+        "i_pad_W_poc",
+        "i_pad_W_vdd_1",
+        "i_pad_W_vdd_2",
+        "i_pad_W_vddio",
+        "i_pad_W_vss_1",
+        "i_pad_W_vss_2",
+        "i_pad_W_vssio",
+        "i_pad_clk",
+        "i_pad_rst_n",
+        "i_pad_tck",
+        "i_pad_tdi",
+        "i_pad_tdo",
+        "i_pad_tms"
+      ],
+      "no_other_listed_placement_violations": true,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_place.rpt",
+      "report_sha256": "0ae7ca73dab0b31295fa4474877169b50086404feec994e08c16e046405b1e0d"
+    },
+    "timing": {
+      "Setup": {
+        "report": "/home/s2400011041/eda_validation/20261020_eda_9d2c7f/work_fanoutfix/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute.summary.gz",
+        "wns_ns": 0.71,
+        "tns_ns": 0.0,
+        "violating_paths": 0,
+        "drv": {
+          "max_cap": {
+            "real": 0,
+            "total": 0
+          },
+          "max_tran": {
+            "real": 0,
+            "total": 0
+          },
+          "max_fanout": {
+            "real": 0,
+            "total": 0
+          },
+          "max_length": {
+            "real": 0,
+            "total": 0
+          }
+        },
+        "electrical_drv_table_reported_here": true,
+        "targets_met": true,
+        "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute.summary.gz",
+        "report_sha256": "14ccfca60c53be848d036bacd631577d6d2348f8be36a49cef944edae2d0c86a"
+      },
+      "Hold": {
+        "report": "/home/s2400011041/eda_validation/20261020_eda_9d2c7f/work_fanoutfix/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute_hold.summary.gz",
+        "wns_ns": 0.015,
+        "tns_ns": 0.0,
+        "violating_paths": 0,
+        "drv": {},
+        "electrical_drv_table_reported_here": false,
+        "targets_met": true,
+        "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute_hold.summary.gz",
+        "report_sha256": "29c85c2813b9b84a33d4d48657171a09ab67f5c994fa6f7094dbdbf5206901ee"
+      }
+    },
+    "default_drc": {
+      "report": "/home/s2400011041/eda_validation/20261020_eda_9d2c7f/work_fanoutfix/pnr/my_soc_top/my_soc_top_postFiller_drc.rpt",
+      "zero_reported_violations": true,
+      "scope": "drc",
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_drc.rpt",
+      "report_sha256": "6fb56f506016cbcb345d713d53bb7f3357a9f18e537ca9a235296854af452920"
+    },
+    "signal_connectivity": {
+      "report": "/home/s2400011041/eda_validation/20261020_eda_9d2c7f/work_fanoutfix/pnr/my_soc_top/my_soc_top_postFiller_signal.rpt",
+      "unresolved_signal_problems": 0,
+      "classified_io_abstract_nets": [
+        "VDDPST",
+        "VSSPST"
+      ],
+      "same_input_native_geometry_proof_step": 22,
+      "not_independent_LVS": true,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_signal.rpt",
+      "report_sha256": "cac81d422c40080788f6828cae4381835cd56ed4b5637efb43f6e0ceb0aa74d7"
+    },
+    "full_core_pg": {
+      "report": "/home/s2400011041/eda_validation/20261020_eda_9d2c7f/work_fanoutfix/pnr/my_soc_top/my_soc_top_postFiller_pg.rpt",
+      "zero_reported_violations": true,
+      "scope": "connectivity",
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_pg.rpt",
+      "report_sha256": "210da46676ee2883c91df191043cda9f4ea8d3f5b7074e847312b82a4976ca96"
+    },
+    "antenna": {
+      "report": "/home/s2400011041/eda_validation/20261020_eda_9d2c7f/work_fanoutfix/pnr/my_soc_top/my_soc_top_postFiller_antenna.rpt",
+      "violating_nets": 0,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_antenna.rpt",
+      "report_sha256": "029d3852c77c706229d7719ca164953a7207e87ed6035f8c36b833813c435b6e"
+    }
+  },
+  "scope": "Only the listed automatic checks are asserted. Tcl guards also check object counts, IO geometry and halo. Not complete signoff."
+}

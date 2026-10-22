@@ -3,7 +3,7 @@
   "profile": "xzx_rtl_tsmc180_lab4",
   "top": "my_soc_top",
   "rtl_commit_baseline": "e5015aa375ee210f6c600262fd4ae1a1c5d9f624",
-  "pdk_root": "/home/almalinux/tsmc180",
+  "pdk_root": "/lec/pdk/tsmc180",
   "macro_source": "/lec/lab4/soc_cv32e40p_template_pnr-stu/src/macro/RA1SHD_2048x32M8",
   "system_period_ns": 20.0,
   "cpus": 8,
@@ -18,6 +18,5 @@
   "max_repair_iterations": 3,
   "hold_target_ns": 0.02,
   "cpu_clock_gate": "repository_passthrough",
-  "analysis_profile": "single_TT_SI_off_native_low_RC",
-  "functional_evidence": null
+  "analysis_profile": "single_TT_SI_off_native_low_RC"
 }

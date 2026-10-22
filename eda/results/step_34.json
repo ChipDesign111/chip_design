@@ -1,0 +1,33 @@
+{
+  "step": 34,
+  "commands_completed": true,
+  "input_manifest_sha256": "ba51412939c9da5916f7d5bb3807b5b7a1eb39d30bea03dab192d3f73311ee60",
+  "automatic_checks": {
+    "exports": {
+      "independent_foundry_DRC_LVS_executed": false,
+      "SDF_simulation_executed": false,
+      "def_pins": {
+        "ports": [
+          "VDD",
+          "VDDPST",
+          "VSS",
+          "VSSPST",
+          "clk_i",
+          "rst_ni",
+          "tck_i",
+          "td_i",
+          "td_o",
+          "tms_i"
+        ],
+        "dbu_per_um": 2000,
+        "all_rectangles_directions_uses_match_geometry_plan": true
+      },
+      "sdf_non_top_instances_matched": 165244,
+      "spef_networks": 185556,
+      "gds_structures": 615,
+      "gds_undefined_references": [],
+      "scope": "Structural correspondence only; not equivalence, foundry DRC/LVS, IR/EM/ESD or actual SDF backannotation"
+    }
+  },
+  "scope": "Only the listed automatic checks are asserted. Tcl guards also check object counts, IO geometry and halo. Not complete signoff."
+}

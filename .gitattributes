@@ -24,3 +24,6 @@ rtl/platform/debug/** -text
 rtl/platform/include/** -text
 rtl/soc/** -text
 rtl/platform/memory/boot*.sv -text
+
+# Preserve verbatim EDA tool reports, including aligned trailing spaces.
+eda/results/reports/** -text -whitespace

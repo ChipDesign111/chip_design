@@ -203,20 +203,6 @@ def signal_connectivity(work, path):
         raise ValueError('Unverified signal connectivity problem: ' + str(path))
     record = json.loads(proof.read_text())
     identity = hashlib.sha256((work / 'evidence/input_manifest.json').read_bytes()).hexdigest()
-    if record.get('input_manifest_sha256') != identity:
-        fixture_path = work / 'evidence/physical_fixture.json'
-        reaudit_path = work / 'evidence/inherited_io_reaudit.json'
-        if not fixture_path.is_file() or not reaudit_path.is_file():
-            raise ValueError('IO abstract exception lacks same-run native/placement evidence')
-        fixture = json.loads(fixture_path.read_text())
-        reaudit = json.loads(reaudit_path.read_text())
-        original_sha = hashlib.sha256(proof.read_bytes()).hexdigest()
-        if (fixture.get('target_input_manifest_sha256') != identity
-                or fixture.get('inherited_stage_records_sha256', {}).get('22') != original_sha
-                or record.get('input_manifest_sha256') != fixture.get('reference_input_manifest_sha256')
-                or reaudit.get('source_step22_sha256') != original_sha):
-            raise ValueError('Invalid checkpoint inheritance for IO evidence')
-        record = reaudit
     native = record.get('automatic_checks', {}).get('io_native_geometry', {})
     if record.get('input_manifest_sha256') != identity or not native.get('native_rails_and_corner_turns_checked') or native.get('actual_perimeter_continuity_checked_at_step') != 12 or not (work / 'evidence/native_io_rails_check.json').is_file():
         raise ValueError('IO abstract exception lacks same-run native/placement evidence')

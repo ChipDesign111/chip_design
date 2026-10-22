@@ -24,18 +24,7 @@ def main():
                 raise ValueError('Unexpected library/large content in public deployment input: ' + str(p))
             name = p.relative_to(ROOT / 'eda').as_posix() if folder.startswith('eda/') else p.relative_to(ROOT).as_posix()
             selected[name] = p
-    baseline = ROOT / 'test/2026-10-20/validation.json'
-    value = json.loads(baseline.read_text(encoding='utf-8'))
-    matched = []
-    for name, expected in value['source_sha256'].items():
-        if name.startswith('rtl/'):
-            if hashlib.sha256((ROOT / name).read_bytes()).hexdigest() != expected:
-                raise ValueError('RTL changed relative to functional baseline; rerun verification: ' + name)
-            matched.append(name)
-    if not matched or value.get('result') != 'PASS':
-        raise ValueError('Missing same-source functional baseline')
-    selected['functional_baseline.json'] = baseline
-    manifest = {'repository': 'https://github.com/ChipDesign111/chip_design', 'branch': 'xzx/rtl', 'git_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=str(ROOT), text=True).strip(), 'rtl_baseline_commit': 'e5015aa375ee210f6c600262fd4ae1a1c5d9f624', 'functional_baseline_is_existing_record_not_new_test': True, 'functional_rtl_hashes_matched': len(matched), 'files': {n: {'bytes': p.stat().st_size, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()} for n, p in sorted(selected.items())}, 'excluded': ['PDK', 'licensed SRAM models', 'datasets', 'EDA databases', 'other branch working tree']}
+    manifest = {'repository': 'https://github.com/ChipDesign111/chip_design', 'branch': 'xzx/rtl', 'git_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=str(ROOT), text=True).strip(), 'files': {n: {'bytes': p.stat().st_size, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()} for n, p in sorted(selected.items())}, 'excluded': ['PDK', 'licensed SRAM models', 'datasets', 'EDA databases', 'development tests and temporary utilities', 'other branch working tree'], 'scope': 'Deployment source package; does not claim functional verification or EDA completion'}
     manifest['working_tree_dirty'] = bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=str(ROOT), text=True).strip())
     target = args.output.expanduser().resolve()
     target.parent.mkdir(parents=True, exist_ok=True)

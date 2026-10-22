@@ -120,43 +120,21 @@ def prepare(args):
     shutil.copytree(str(SERVER), str(work / 'flow'), ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
     shutil.copytree(str(root / 'rtl'), str(work / 'src/chip_design/rtl'))
     shutil.copytree(str(macro), str(work / 'src/macro/RA1SHD_2048x32M8'))
-    template = work / 'flow/template'
-    for name in ['Makefile', 'config', 'syn', 'pnr']:
-        source, target = template / name, work / name
-        if source.is_dir():
-            shutil.copytree(str(source), str(target))
-        else:
-            shutil.copyfile(str(source), str(target))
+    (work / 'config').mkdir()
+    for name in ['user_define.tcl', 'global_define.tcl', 'constraints_my_soc_top.sdc']:
+        shutil.copyfile(str(work / 'flow/config' / name), str(work / 'config' / name))
+    for name in ['syn', 'pnr']:
+        shutil.copytree(str(work / 'flow' / name), str(work / name))
     (work / 'config/design.json').write_text(json.dumps(config, indent=2) + '\n', encoding='utf-8')
     shutil.copyfile(str(SERVER / 'config/io_plan.json'), str(work / 'config/io_plan.json'))
     (work / 'flow/config/repair.tcl').write_text('set eda_repair_iterations %d\nset eda_hold_target %g\n' % (config['max_repair_iterations'], config['hold_target_ns']), encoding='utf-8')
     user = work / 'config/user_define.tcl'
     text = user.read_text(encoding='utf-8')
-    for key, value in [('PROJECT_ROOT', tcl(work)), ('rm_clock_period', config['system_period_ns']), ('syn_cpus', config['cpus']), ('pnr_cpus', config['cpus'])]:
-        text, n = re.subn(r'^set ' + key + r' .*$', 'set ' + key + ' ' + str(value), text, flags=re.M)
+    for key, value in [('PROJECT_ROOT', tcl(work)), ('PDK_ROOT', tcl(pdk)), ('rm_clock_period', config['system_period_ns']), ('syn_cpus', config['cpus']), ('pnr_cpus', config['cpus'])]:
+        text, n = re.subn(r'^set ' + key + r' .*$', lambda match: 'set ' + key + ' ' + str(value), text, flags=re.M)
         if n != 1:
-            raise ValueError('Template variable missing: ' + key)
+            raise ValueError('Project configuration variable missing: ' + key)
     user.write_text(text, encoding='utf-8')
-    global_file = work / 'config/global_define.tcl'
-    global_file.write_text(global_file.read_text(encoding='utf-8').replace('/home/almalinux/tsmc180', str(pdk)), encoding='utf-8')
-    init = work / 'syn/scripts/init_syn_standard_opt.tcl'
-    text = init.read_text(encoding='utf-8').replace('{../../src/SoC_cv32e40p/soc/rtl/include}', '{../../src/chip_design/rtl/platform/include ../../src/chip_design/rtl/platform}')
-    text = text.replace('set_db information_level 6', 'set_db information_level 3')
-    if text.index('set_db lef_library $tech(lef_list)') < text.index('read_mmmc ../scripts/syn_mmmc.tcl'):
-        raise ValueError('Unexpected Genus library loading order')
-    init.write_text(text, encoding='utf-8')
-    # Keep one explicit system timing target; disable the inherited opaque
-    # path_adjust tightening (old template multiplied ns by 1000).
-    main = work / 'syn/scripts/genus_synthesis.tcl'
-    text = main.read_text(encoding='utf-8')
-    text = re.sub(r'^\s*path_adjust .*$', '# EDA profile: no hidden path_adjust tightening; use the explicit SDC target.', text, flags=re.M)
-    main.write_text(text + '\nputs "EDA_SYNTHESIS_COMMANDS_COMPLETE"\n', encoding='utf-8')
-    # The old async* pattern is accepted only if it resolves in this new design.
-    sdc = work / 'config/constraints_my_soc_top.sdc'
-    text = sdc.read_text(encoding='utf-8')
-    text = text.replace('set_max_delay [expr 0.6*$rm_clock_period] -through [get_nets -hierarchical async*] -ignore_clock_latency\nset_false_path -hold -through [get_nets -hierarchical async*]',
-        'set eda_async_nets [get_nets -hierarchical async*]\nif {[sizeof_collection $eda_async_nets] > 0} {\n  set_max_delay [expr 0.6*$rm_clock_period] -through $eda_async_nets -ignore_clock_latency\n  set_false_path -hold -through $eda_async_nets\n}')
-    sdc.write_text(text, encoding='utf-8')
     listed, includes, lines = [], [], ['+define+SYNTHESIS', '+define+CHIP_USE_RA1SHD']
     rtl = work / 'src/chip_design'
     for raw in (root / 'rtl/filelist.f').read_text(encoding='utf-8').splitlines():
@@ -186,18 +164,7 @@ def prepare(args):
     provenance = root / 'source.json'
     if provenance.exists():
         shutil.copyfile(str(provenance), str(work / 'evidence/source.json'))
-    functional = config.get('functional_evidence') or (str(root / 'functional_baseline.json') if (root / 'functional_baseline.json').is_file() else None)
-    if functional:
-        supplied = json.loads(Path(functional).expanduser().read_text(encoding='utf-8'))
-        sources = supplied.get('source_sha256', {})
-        rtl_sources = {k: v for k, v in sources.items() if k.startswith('rtl/')}
-        for name, expected in rtl_sources.items():
-            if sha(rtl / name) != expected:
-                raise ValueError('Functional evidence/source mismatch: ' + name)
-        if len(rtl_sources) < 77 or supplied.get('result') != 'PASS':
-            raise ValueError('Expected PASS evidence with RTL source SHA-256')
-        write_json(work / 'evidence/functional_baseline.json', supplied)
-    write_json(work / 'evidence/preparation.json', {'rtl_files': len(listed), 'include_dirs': includes, 'macro_source': str(macro), 'work': str(work), 'functional_retested_here': False, 'functional_evidence_attached': bool(functional), 'profile_changes': ['CHIP_USE_RA1SHD and SYNTHESIS', 'absolute source paths', 'no hidden path_adjust tightening', 'guard empty async net selection', 'original CPU clock passthrough']})
+    write_json(work / 'evidence/preparation.json', {'rtl_files': len(listed), 'include_dirs': includes, 'macro_source': str(macro), 'work': str(work), 'functional_retested_here': False, 'profile_changes': ['CHIP_USE_RA1SHD and SYNTHESIS', 'absolute source paths', 'no hidden path_adjust tightening', 'guard empty async net selection', 'original CPU clock passthrough']})
     write_json(work / 'evidence/input_manifest.json', fingerprint_inputs(work))
     print('Prepared NEW project: ' + str(work))
     print('Next: bash ' + str(work / 'flow/bin/eda.sh') + ' doctor --work ' + str(work))
@@ -240,7 +207,7 @@ def doctor(work):
         raise ValueError('Configuration/library check failed: ' + result.stderr)
     paths = [Path(x) for x in result.stdout.splitlines() if x.startswith('/')]
     lib_hashes = {str(p): sha(p) for p in paths}
-    record = {'python': sys.version.split()[0], 'genus': shutil.which('genus'), 'innovus': shutil.which('innovus'), 'libraries_sha256': lib_hashes, 'Xvfb': shutil.which('Xvfb'), 'functional_evidence_attached': (work / 'evidence/functional_baseline.json').exists(), 'no_eda_stage_executed': True}
+    record = {'python': sys.version.split()[0], 'genus': shutil.which('genus'), 'innovus': shutil.which('innovus'), 'libraries_sha256': lib_hashes, 'Xvfb': shutil.which('Xvfb'), 'no_eda_stage_executed': True}
     previous = work / 'evidence/doctor.json'
     if previous.exists() and json.loads(previous.read_text())['libraries_sha256'] != lib_hashes:
         raise ValueError('Library identity changed since preparation; doctor cannot re-bless old checkpoints. Prepare a new project.')
@@ -421,17 +388,6 @@ def pnr(work, until, headless=False):
     plan = sizing(work)
     last_file = work / 'evidence/last_step.txt'
     last = int(last_file.read_text()) if last_file.exists() else 0
-    fixture_path = work / 'evidence/physical_fixture.json'
-    if fixture_path.is_file():
-        fixture = json.loads(fixture_path.read_text())
-        if sha(work / 'evidence/input_manifest.json') != fixture['target_input_manifest_sha256']:
-            raise ValueError('Physical fixture input identity changed')
-        if last == fixture['seed_step']:
-            for name, expected in fixture['seed_files_sha256'].items():
-                p = (work / name).resolve()
-                p.relative_to(work)
-                if not p.is_file() or sha(p) != expected:
-                    raise ValueError('Physical seed checkpoint changed: ' + name)
     if until <= last:
         raise ValueError('Requested step already completed; use a later --until or a new project')
     driver = work / 'pnr/generated/driver.tcl'
@@ -478,12 +434,8 @@ def classify_tool_errors(work, text):
 
 def report(work):
     preparation = json.loads((work / 'evidence/preparation.json').read_text())
-    lines = ['# 本轮EDA运行记录', '', '工程：`' + str(work) + '`', '', '配置与源身份：见input_manifest.json、source.json和preparation.json。', '', '功能证据已附：' + str(preparation['functional_evidence_attached']) + '。EDA流程不等于功能回归或独立工艺签核。', '']
-    fixture_path = work / 'evidence/physical_fixture.json'
-    fixture = json.loads(fixture_path.read_text()) if fixture_path.exists() else None
+    lines = ['# 本轮EDA运行记录', '', '工程：`' + str(work) + '`', '', '配置与源身份：见input_manifest.json、source.json和preparation.json。', '', '本流程不运行功能仿真；EDA结果与独立工艺签核的范围分别说明。', '']
     current_identity = sha(work / 'evidence/input_manifest.json')
-    if fixture:
-        lines.extend(['**检查点继承：** 本工程从已验证来源工程的第%d步物理检查点继续，来源为`%s`。早期步骤保留原始证据和原输入身份，不表示在本工程重跑。具体输入比对及种子数据库SHA见physical_fixture.json。' % (fixture['seed_step'], fixture['reference_work']), ''])
     if (work / 'evidence/unexpected_tool_errors.json').exists():
         lines.extend(['**存在未解决的工具错误，不能按阶段进度宣布整轮通过。** 见unexpected_tool_errors.json。', ''])
     lines.extend(['## Genus输入、展开、综合与交接', '', '输入清单有%d份RTL；主存选择与源身份见preparation.json。' % preparation['rtl_files'], ''])
@@ -509,13 +461,9 @@ def report(work):
             for command in commands:
                 lines.extend(['`' + command.name + '`', '', '```tcl', command.read_text(encoding='utf-8').rstrip(), '```', ''])
         if n in stages:
-            inherited = stages[n]['input_manifest_sha256'] != current_identity
-            if inherited:
-                if not fixture or sha(work / ('evidence/step_%02d.json' % n)) != fixture['inherited_stage_records_sha256'].get(str(n)):
-                    raise ValueError('Stage evidence has an unverified input identity: %d' % n)
-                message = '**继承结果：** 来源工程已执行并通过此步骤；保留其原始输入身份与报告，不声称本工程重新执行。'
-            else:
-                message = '**本轮结果：** 步骤命令与对应自动检查已通过；详见`step_%02d.json`，独立验收范围以该JSON为准。' % n
+            if stages[n]['input_manifest_sha256'] != current_identity:
+                raise ValueError('Stage evidence belongs to another project input: %d' % n)
+            message = '**本轮结果：** 步骤命令与对应自动检查已通过；详见`step_%02d.json`，独立验收范围以该JSON为准。' % n
             lines.extend([message, '', '```json', json.dumps(stages[n], ensure_ascii=False, indent=2), '```', ''])
         else:
             lines.extend(['**本轮结果：未完成。**', ''])

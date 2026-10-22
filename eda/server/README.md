@@ -2,7 +2,7 @@
 
 这个目录是部署专用程序，但单独上传它还不够：需要同版本`rtl/`及`source.json`。在仓库根目录运行`python eda/package_server.py`生成完整部署包，按仓库`eda/docs/操作指南.md`上传和解压。查结果与原始报告的方法见仓库`eda/docs/报告查找与分析.md`；这些文档不随部署包上传。
 
-课程PDK在`/lec/pdk/tsmc180`，宏资料在`/lec/lab4`。默认design.json仍指向原课程安装路径`/home/almalinux/tsmc180`；先复制一份配置，设置实际可读的pdk_root和macro_source，再在第一次prepare/all传`--config /完整路径/design.json`。不要直接改已被source.json记录SHA的部署文件。
+课程PDK在`/lec/pdk/tsmc180`，宏资料在`/lec/lab4`。默认design.json已使用共享PDK路径；先复制一份配置，设置实际可读的pdk_root和macro_source，再在第一次prepare/all传`--config /完整路径/design.json`。不要直接改已被source.json记录SHA的部署文件。
 
 服务器使用Python 3.8+标准库，不要求安装仓库功能测试使用的NumPy、Icarus、Yosys或ModelSim。功能测试应在相应环境另外运行并核对源码SHA。
 
@@ -24,7 +24,7 @@ bash server/bin/eda.sh package --work "$HOME/chip_eda_runs/w8a4_run01"
 
 配置必须在准备之前确定：复制`config/design.json`到自己的配置文件，修改后通过`--config /完整路径/design.json`传给prepare或第一次all。使用默认配置时不需该参数。修改已准备工程的输入会触发保护，应重新准备新目录。
 
-`template/`是带来源注释的课程流程适配基础；`tcl/steps/`按讲义保存操作。执行入口会把它们变换到工程`pnr/generated/`：适配工作目录、当前宏实例、实际裸片尺寸、PAD映射与动态检查。不要绕过命令入口直接source原步骤文件。
+`config/`是当前设计的正式参数、库配置与SDC，`syn/scripts/`是正式Genus流程，`pnr/scripts/`是正式Innovus初始化和分析视图。prepare直接复制这些文件并写入本轮路径与参数；不再依赖参考模板。`tcl/steps/`按讲义保存后端动作，运行时按实际几何生成`pnr/generated/`。不要绕过入口直接source步骤文件。
 
 GUI截图使用当前DISPLAY，或自动申请100–199间一个空闲Xvfb显示；只回收本次启动的Xvfb。无图形环境可加`--headless`，执行范围相同但不生成截图。日志和JSON必须保留；完整签核范围见操作指南。
 
