@@ -9,7 +9,8 @@ open_project $project_file
 file mkdir $build_dir
 cd $build_dir
 
-synth_design -top fpga_top -part xc7a35tcsg324-1 -directive Default
+synth_design -top fpga_top -part xc7a35tcsg324-1 \
+    -directive RuntimeOptimized -flatten_hierarchy none
 read_xdc $constraint_file
 opt_design
 place_design

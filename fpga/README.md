@@ -23,3 +23,7 @@ D:\Xilinx\Vivado\2019.1\bin\vivado.bat -mode batch `
 `build_final_project.tcl` uses normal Vivado project runs. `build_direct.tcl`
 is a fallback for environments where `launch_runs` cannot create its Windows
 job wrapper.
+
+The project uses the `Flow_RuntimeOptimized` synthesis strategy and preserves
+the RTL hierarchy for faster bring-up iterations. Use `reset_runs.tcl` after a
+canceled or interrupted run before launching synthesis again.

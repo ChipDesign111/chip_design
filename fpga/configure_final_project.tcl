@@ -29,4 +29,12 @@ set_property top_file $top_file [get_filesets sources_1]
 set_property top_auto_set FALSE [get_filesets sources_1]
 update_compile_order -fileset sources_1
 
+# Favor turnaround time while bringing up the board. The final release can
+# switch back to a performance-oriented strategy.
+set_property strategy Flow_RuntimeOptimized [get_runs synth_1]
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.DIRECTIVE} \
+    -value RuntimeOptimized -objects [get_runs synth_1]
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.FLATTEN_HIERARCHY} \
+    -value none -objects [get_runs synth_1]
+
 close_project
