@@ -16,7 +16,7 @@ def main():
     parser.add_argument('--output', type=Path, default=EDA / 'dist/chip_design_eda.tar.gz')
     args = parser.parse_args()
     selected = {}
-    for folder in ['eda/server', 'rtl']:
+    for folder in ['eda/server', 'rtl', 'eda/docs']:
         for p in (ROOT / folder).rglob('*'):
             if not p.is_file() or p.is_symlink() or '__pycache__' in p.parts or p.suffix == '.pyc':
                 continue

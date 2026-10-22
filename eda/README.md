@@ -18,7 +18,7 @@ eda/
 python eda/package_server.py
 ```
 
-将 `eda/dist/chip_design_eda.tar.gz` 与对应 `.sha256` 上传，解压后包含 `server/`、`rtl/`、`source.json`。不包含 PDK、授权 SRAM、开发自检、临时工具或历史数据库。课程 PDK 在 `/lec/pdk/tsmc180`，SRAM 资料在 `/lec/lab4`。
+将 `eda/dist/chip_design_eda.tar.gz` 与对应 `.sha256` 上传，解压后包含 `server/`、`rtl/`、`docs/`、`source.json`。不包含 PDK、授权 SRAM、开发自检、临时工具或历史数据库。课程 PDK 在 `/lec/pdk/tsmc180`，SRAM 资料在 `/lec/lab4`。
 
 `server/config/` 是本设计的正式配置，`server/syn/scripts/` 是直接使用的综合脚本，`server/pnr/scripts/` 是直接使用的后端初始化/分析脚本；没有参考模板目录。`server/tcl/steps/` 组织讲义的 34 个操作，`bin/eda.sh` 负责调用。
 
@@ -27,3 +27,5 @@ python eda/package_server.py
 完整文件作用见[文件结构与功能说明](docs/文件结构与功能说明.md)。本流程覆盖单 TT 教学实现，独立晶圆厂签核和 SDF 回标仿真需另行执行。
 
 结果下载校验后，`bash server/bin/eda.sh clean --work "$EDA_WORK" --dry-run`可预览重复压缩包及打包暂存文件，去掉`--dry-run`执行；保留中间文件、检查点、报告与最终视图。具体范围见操作指南第10.1节。
+
+服务器统一使用`~/Desktop/fullstack_chipdesign`，不在主目录散放工程。部署到`deploy/`后调用`server/bin/workspace.sh`生成GUI用README.html和完整运行入口，详见[桌面工作区](docs/服务器桌面工作区.md)。
