@@ -1,5 +1,7 @@
 // Project-owned single-port memory interface. No vendor implementation included.
-module chip_sram_2048x32 (
+module chip_sram_2048x32 #(
+    parameter INIT_FILE = ""
+) (
     input  logic        clk_i,
     input  logic        req_i,
     input  logic [3:0]  byte_we_i,
@@ -16,9 +18,16 @@ module chip_sram_2048x32 (
 `else
     // Portable functional backend, uninitialized and without a data reset.
     // Read-during-write output is not part of the interface contract.
-    logic [31:0] memory [0:2047];
+    (* ram_style = "block" *) logic [31:0] memory [0:2047];
     logic [31:0] read_q;
     assign rdata_o = read_q;
+
+    initial begin
+        if (INIT_FILE != "") begin
+            $readmemh(INIT_FILE, memory);
+        end
+    end
+
     always @(posedge clk_i) begin
         if (req_i) begin
             if (byte_we_i == 4'b0) read_q <= memory[addr_i];

@@ -1,0 +1,23 @@
+# Lab6-compatible pinout. Keep these names and locations unchanged.
+set_property PACKAGE_PIN P17 [get_ports fpga_clk_i]
+set_property PACKAGE_PIN P15 [get_ports rst_ni]
+set_property PACKAGE_PIN E15 [get_ports tck_i]
+set_property PACKAGE_PIN E16 [get_ports td_i]
+set_property PACKAGE_PIN D15 [get_ports td_o]
+set_property PACKAGE_PIN C15 [get_ports tms_i]
+set_property IOSTANDARD LVCMOS33 [get_ports fpga_clk_i]
+set_property IOSTANDARD LVCMOS33 [get_ports rst_ni]
+set_property IOSTANDARD LVCMOS33 [get_ports tck_i]
+set_property IOSTANDARD LVCMOS33 [get_ports td_i]
+set_property IOSTANDARD LVCMOS33 [get_ports td_o]
+set_property IOSTANDARD LVCMOS33 [get_ports tms_i]
+
+create_clock -period 1000.000 -name tck_i -waveform {0.000 500.000} [get_ports tck_i]
+set_clock_groups -asynchronous -group [get_clocks tck_i] -group [get_clocks -include_generated_clocks fpga_clk_i]
+
+set_property PACKAGE_PIN K3 [get_ports led_heartbeat]
+set_property PACKAGE_PIN M1 [get_ports led_locked]
+set_property PACKAGE_PIN K1 [get_ports led_tck]
+set_property IOSTANDARD LVCMOS33 [get_ports led_heartbeat]
+set_property IOSTANDARD LVCMOS33 [get_ports led_locked]
+set_property IOSTANDARD LVCMOS33 [get_ports led_tck]

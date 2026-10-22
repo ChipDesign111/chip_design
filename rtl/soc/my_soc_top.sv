@@ -1,7 +1,9 @@
 `include "axi/typedef.svh"
 `include "axi/assign.svh"
 
-module my_soc_top (
+module my_soc_top #(
+    parameter FPGA_INIT_FILE = ""
+) (
     input   logic   clk_i,
     input   logic   rst_ni,
     input   logic   tck_i,
@@ -398,7 +400,9 @@ module my_soc_top (
   logic [3:0]  sram_be;
   logic [31:0] sram_rdata;
 
-  my_mainmem i_mainmem (
+  my_mainmem #(
+      .INIT_FILE(FPGA_INIT_FILE)
+  ) i_mainmem (
       .clk_i  (clk_i),
       .rst_ni (ndmreset_n),
       .req_i  (sram_req),

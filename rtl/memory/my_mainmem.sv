@@ -13,17 +13,17 @@ module my_mainmem #(
     input  logic [DATA_W-1:0] wdata_i,
     output wire [DATA_W-1:0] rdata_o
 );
-    // SRAM has no reset or hardware hex initialization. Like the reference
-    // main memory, reset does not erase data. Simulation loads via port writes.
+    // SRAM has no data reset. Testbenches may still load through the port;
+    // FPGA builds pass INIT_FILE to initialize the inferred block RAM.
 `ifndef SYNTHESIS
     initial begin
         if (ADDR_W != 11 || DATA_W != 32)
             $fatal(1, "SRAM adapter requires 2048 x 32");
-        if (INIT_FILE != "")
-            $fatal(1, "Use the SRAM testbench port loader, not INIT_FILE");
     end
 `endif
-    chip_sram_2048x32 i_sram (
+    chip_sram_2048x32 #(
+        .INIT_FILE(INIT_FILE)
+    ) i_sram (
         .clk_i(clk_i), .req_i(req_i),
         .byte_we_i(be_i & {4{we_i}}), .addr_i(addr_i[12:2]),
         .wdata_i(wdata_i), .rdata_o(rdata_o)

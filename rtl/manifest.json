@@ -380,9 +380,10 @@
     {
       "source": "soc/rtl/my_soc_top.sv",
       "path": "rtl/soc/my_soc_top.sv",
-      "sha256": "46970e8d4fd61c49c804ed89fdf920a4e1160ff01ecb555228fdd35d80768436",
-      "previous_sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6",
-      "project_override": "2026-10-15: user-requested AXI DMA master and NPU CSR routing; integration source intentionally updated, not original-byte identity"
+      "sha256": "174207c5682648222a6f280705666d272d1d44406df6193370c0e8efc7ed374e",
+      "previous_sha256": "46970e8d4fd61c49c804ed89fdf920a4e1160ff01ecb555228fdd35d80768436",
+      "original_sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6",
+      "project_override": "2026-10-22: propagate the synthesis-time FPGA main-memory initialization file through my_soc_top"
     }
   ],
   "dma_integration": {
