@@ -66,16 +66,25 @@
         "pipeline": 0
       },
       "result": "All34 same-input stages and environment/EDA/collect passed. Final fullPG/DRC/antenna/time clean; IO abstract classification with native geometry proof. Verified618file download; SDF export only."
+    },
+    {
+      "upload": "20261023_225536_e15483c",
+      "source_commit": "e15483c479d399faa3849186a29c871e4c1540b1",
+      "target_utilization": 0.85,
+      "actual_final_density_percent": 67.575,
+      "whole_die_area_mm2": 3.7956390976,
+      "system_period_ns": 20,
+      "last_completed_physical_step": 34,
+      "final_setup_wns_ns": 0.226,
+      "final_hold_wns_ns": 0.019,
+      "stage_exit_codes": {
+        "environment": 0,
+        "eda": 0,
+        "collect": 0,
+        "pipeline": 0
+      },
+      "result": "34steps/all3stages passed, verified618file download. ActualDie<=3.8. SDF export only."
     }
   ],
-  "latest_completed": "int8_20261023/README.md",
-  "active_requested_iteration": {
-    "status": "Pending fresh full EDA, not a measured result",
-    "target_utilization": 0.85,
-    "core_size_um": 1648,
-    "max_whole_die_area_mm2": 3.8,
-    "requested_whole_die_area_mm2": 3.794704,
-    "system_period_ns": 20,
-    "basis": "Use same validated RTL; previous actual final density63.089%. Target utilization is planning parameter, not promised final measured density."
-  }
+  "latest_completed": "int8_3p8_20261024/README.md"
 }

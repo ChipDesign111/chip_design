@@ -1,0 +1,240 @@
+{
+  "result": "34steps and all3stages passed; wholeDie<=3.8mm2 and20ns single-TT checks met",
+  "deployment_commit": "e15483c479d399faa3849186a29c871e4c1540b1",
+  "documentation_note": "Later commits document these results; deployment remains e15483c",
+  "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261023_225536_e15483c",
+  "source_archive_sha256": "eff28008395b08e48b215bcf499602f7f101eead7e0f9dd07fb459dd005a09ae",
+  "receipt": {
+    "archive_sha256": "fa01f8232adbc4894787b804b860a1fe54750a52c04ec68ded17858cdf53ccdd",
+    "files_verified": 618,
+    "input_manifest_sha256": "a0d0027efc2abcc0ed7de162c5ddafe43a0ea1cbfe33b401f3ed8bb9ba01583c",
+    "remote_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261023_225536_e15483c",
+    "all_34_steps_same_input": true,
+    "whole_die_area_mm2": 3.7956390976,
+    "max_whole_die_area_mm2": 3.8
+  },
+  "stage_exit_codes": {
+    "environment": 0,
+    "eda": 0,
+    "collect": 0,
+    "pipeline": 0
+  },
+  "system_period_ns": 20,
+  "target_utilization": 0.85,
+  "actual_final_density_percent": 67.575,
+  "die_um": [
+    0.0,
+    0.0,
+    1948.24,
+    1948.24
+  ],
+  "whole_die_area_mm2": 3.7956390976,
+  "max_whole_die_area_mm2": 3.8,
+  "previous_passed_die_area_mm2": 3.98561296,
+  "area_reduction_mm2": 0.18997386240000003,
+  "area_reduction_percent": 4.766490482307144,
+  "area_headroom_mm2": 0.004360902399999755,
+  "analysis_profile": "single TT/1.8V/25C; SI off; native CapTable low RC",
+  "synthesis": {
+    "cell_count": 58635,
+    "cell_area_um2": 1894546.189,
+    "net_area_um2": 657824.468,
+    "latch_area_um2": 0.0,
+    "memory_area_um2": 401443.591,
+    "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261023_225536_e15483c/work/syn/my_soc_top/reports/area/area.rpt",
+    "mapped_design": {
+      "native_main_srams": 1,
+      "mapped_leaf_instances": 58635,
+      "all_leaf_types_have_library_models": true,
+      "npu_dma_area_hierarchy_present": true,
+      "latch_area_um2": 0
+    }
+  },
+  "final_stage_checks": {
+    "placement": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261023_225536_e15483c/work/pnr/my_soc_top/my_soc_top_postFiller_place.rpt",
+      "unplaced": 0,
+      "expected_io_bond_covers": [
+        "i_pad_E_poc",
+        "i_pad_E_vdd_1",
+        "i_pad_E_vdd_2",
+        "i_pad_E_vddio",
+        "i_pad_E_vss_1",
+        "i_pad_E_vss_2",
+        "i_pad_E_vssio",
+        "i_pad_N_poc",
+        "i_pad_N_vdd_1",
+        "i_pad_N_vdd_2",
+        "i_pad_N_vddio",
+        "i_pad_N_vss_1",
+        "i_pad_N_vss_2",
+        "i_pad_N_vssio",
+        "i_pad_S_poc",
+        "i_pad_S_vdd_1",
+        "i_pad_S_vdd_2",
+        "i_pad_S_vddio",
+        "i_pad_S_vss_1",
+        "i_pad_S_vss_2",
+        "i_pad_S_vssio",
+        "i_pad_W_poc",
+        "i_pad_W_vdd_1",
+        "i_pad_W_vdd_2",
+        "i_pad_W_vddio",
+        "i_pad_W_vss_1",
+        "i_pad_W_vss_2",
+        "i_pad_W_vssio",
+        "i_pad_clk",
+        "i_pad_rst_n",
+        "i_pad_tck",
+        "i_pad_tdi",
+        "i_pad_tdo",
+        "i_pad_tms"
+      ],
+      "no_other_listed_placement_violations": true,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_place.rpt",
+      "report_sha256": "99610c0ce51456926e5f5000979bcfe72997d0299bc8fd6b61cc055ff51f8dda"
+    },
+    "timing": {
+      "Setup": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261023_225536_e15483c/work/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute.summary.gz",
+        "wns_ns": 0.226,
+        "tns_ns": 0.0,
+        "violating_paths": 0,
+        "drv": {
+          "max_cap": {
+            "real": 0,
+            "total": 0
+          },
+          "max_tran": {
+            "real": 0,
+            "total": 0
+          },
+          "max_fanout": {
+            "real": 0,
+            "total": 0
+          },
+          "max_length": {
+            "real": 0,
+            "total": 0
+          }
+        },
+        "electrical_drv_table_reported_here": true,
+        "targets_met": true,
+        "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute.summary.gz",
+        "report_sha256": "5b66ebee1ec92c295a224947362f0c78ee08add10c1db56fc9e14b4c832af2a6"
+      },
+      "Hold": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261023_225536_e15483c/work/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute_hold.summary.gz",
+        "wns_ns": 0.019,
+        "tns_ns": 0.0,
+        "violating_paths": 0,
+        "drv": {},
+        "electrical_drv_table_reported_here": false,
+        "targets_met": true,
+        "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute_hold.summary.gz",
+        "report_sha256": "7a38b19ea4f92919dac94e82189f9c041cd0da40d40e812011f162ec6ca5d8c4"
+      }
+    },
+    "default_drc": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261023_225536_e15483c/work/pnr/my_soc_top/my_soc_top_postFiller_drc.rpt",
+      "zero_reported_violations": true,
+      "scope": "drc",
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_drc.rpt",
+      "report_sha256": "1189a212e0fbc9dd984b7e4abf72177db3edef392632cba2fd2ab1401f232999"
+    },
+    "signal_connectivity": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261023_225536_e15483c/work/pnr/my_soc_top/my_soc_top_postFiller_signal.rpt",
+      "unresolved_signal_problems": 0,
+      "classified_io_abstract_nets": [
+        "VDDPST",
+        "VSSPST"
+      ],
+      "same_input_native_geometry_proof_step": 22,
+      "not_independent_LVS": true,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_signal.rpt",
+      "report_sha256": "597956142c89c99009f011954d5491924151391f2dfda2b42b1c5a55d340b112"
+    },
+    "full_core_pg": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261023_225536_e15483c/work/pnr/my_soc_top/my_soc_top_postFiller_pg.rpt",
+      "zero_reported_violations": true,
+      "scope": "connectivity",
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_pg.rpt",
+      "report_sha256": "b0e95b4e2d39e08c70e6ef0d445a2bde6934ceed6f0da8f9a71def4d674675f3"
+    },
+    "antenna": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261023_225536_e15483c/work/pnr/my_soc_top/my_soc_top_postFiller_antenna.rpt",
+      "violating_nets": 0,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_antenna.rpt",
+      "report_sha256": "ecc130f9728f5a2570cb04d58f76935ae52667dbe88a9a31870f14cc0639c598"
+    }
+  },
+  "exports": {
+    "independent_foundry_DRC_LVS_executed": false,
+    "SDF_simulation_executed": false,
+    "def_pins": {
+      "ports": [
+        "VDD",
+        "VDDPST",
+        "VSS",
+        "VSSPST",
+        "clk_i",
+        "rst_ni",
+        "tck_i",
+        "td_i",
+        "td_o",
+        "tms_i"
+      ],
+      "dbu_per_um": 2000,
+      "all_rectangles_directions_uses_match_geometry_plan": true
+    },
+    "whole_die_area_mm2": 3.7956390976,
+    "max_whole_die_area_mm2": 3.8,
+    "sdf_non_top_instances_matched": 56920,
+    "spef_networks": 63495,
+    "gds_structures": 627,
+    "gds_undefined_references": [],
+    "scope": "Structural correspondence only; not equivalence, foundry DRC/LVS, IR/EM/ESD or actual SDF backannotation"
+  },
+  "large_views_retained_remote": {
+    "pnr/my_soc_top/outputs/manual_final/my_soc_top.def": {
+      "bytes": 88242773,
+      "sha256": "9fb54f900d817ccc9989b8e5de13a32858efb70a92af74bf68d5eab3cb580f8e"
+    },
+    "pnr/my_soc_top/outputs/manual_final/my_soc_top.gds.gz": {
+      "bytes": 14080417,
+      "sha256": "e990844398034197e12dcf086b6d2731dac140b98f6ca7d9926591ca38abfaa3"
+    },
+    "pnr/my_soc_top/outputs/manual_final/my_soc_top_flat_lvs.v": {
+      "bytes": 24442870,
+      "sha256": "5b8365097bd39f9b494cc243d63bd71b8aee37f8957fa1bee640c79e61dd19de"
+    },
+    "pnr/my_soc_top/outputs/manual_final/my_soc_top_tt_io.sdf.gz": {
+      "bytes": 12824681,
+      "sha256": "c3e9033e5ea2ade0c9dd6b88e5c83776472e7df29a210bd8fcd02d1c910425d4"
+    },
+    "pnr/my_soc_top/outputs/manual_final/my_soc_top_tt_io.spef.gz": {
+      "bytes": 22754863,
+      "sha256": "a4b401f5f8fda787a070176efb97632165ed9aa1d68f8fdbc7d5043fae26f40a"
+    }
+  },
+  "functional_results": {
+    "unit_cases": 44,
+    "trained_samples": 24,
+    "soc": true,
+    "vendor_model_sha256": "52fd590082b4f63573856baf44d8e59b5ab21db56b9c11aeaf4d45376b32d54d",
+    "passed": true
+  },
+  "full_soc_functional_results": {
+    "post_commit_observed_cycles": 3659,
+    "dma_read_mac_overlap_cycles": 62,
+    "dma_write_mac_overlap_cycles": 93
+  },
+  "rtl_functional_current_deployed_hashes_matching": 84,
+  "not_executed": [
+    "SDF backannotation simulation",
+    "independent foundry DRC/LVS",
+    "multiPVT signoff",
+    "IR/EM/ESD signoff",
+    "formal equivalence"
+  ]
+}
