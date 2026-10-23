@@ -52,8 +52,8 @@ def read_config(path):
     for key in ['system_period_ns', 'target_utilization', 'min_core_size_um', 'core_margin_um']:
         if not isinstance(c[key], (int, float)) or not math.isfinite(c[key]) or c[key] <= 0:
             raise ValueError('Invalid numeric configuration: ' + key)
-    if not 0 < c['target_utilization'] < 0.75 or not isinstance(c['cpus'], int) or not 1 <= c['cpus'] <= 16:
-        raise ValueError('Expected utilization below 0.75 and CPU count in 1..16')
+    if not 0 < c['target_utilization'] <= 0.85 or not isinstance(c['cpus'], int) or not 1 <= c['cpus'] <= 16:
+        raise ValueError('Expected utilization in (0,0.85] and CPU count in 1..16')
     if c['min_core_size_um'] < 1500 or c['core_margin_um'] != 150:
         raise ValueError('Validated perimeter profile requires core >=1500 um and 150 um margins')
     if not isinstance(c.get('max_die_area_mm2'),(int,float)) or not math.isfinite(c['max_die_area_mm2']) or not 0<c['max_die_area_mm2']<=4.0:

@@ -4,7 +4,7 @@
 
 状态：{{STATUS}}，完成 {{STEP}}/34。最终 Setup/Hold WNS：{{SETUP}} / {{HOLD}} ns。含 PAD 的整个 Die：{{AREA}} mm²，上限 {{AREA_LIMIT}} mm²。尚未生成不表示通过。
 
-本版本为 INT8 64→32→6 完整 SoC：第一层 2 输入×32 输出、第二层 1×6，DMA 从主 SRAM 预取权重，两个 64 字节缓冲交替使用。整颗含 PAD 面积上限 4.0 mm²。双击本目录 README.html 阅读；各版本独立。
+本版本为 INT8 64→32→6 完整 SoC：第一层 2 输入×32 输出、第二层 1×6，DMA 从主 SRAM 预取权重，两个 64 字节缓冲交替使用。整颗含 PAD 面积上限 3.8 mm²。双击本目录 README.html 阅读；各版本独立。
 
 先读[当前设计数据流](../docs/当前设计数据流.md)理解本设计，再按以下阶段执行。
 
@@ -18,9 +18,11 @@ bash ../../unpack.sh "$PWD"
 cat configs/design.json
 ```
 
-本次目录下的 deploy 是压缩包解出的源码；configs/design.json 是本版本可编辑配置。默认 PDK 为 /lec/pdk/tsmc180，宏资料来自 /lec/lab4，周期 20 ns，核数 8；核心请求 1696×1696 μm，四侧余量 150 μm，目标利用率 0.68，包含 PAD 的面积上限 4.0 mm²。
+本次目录下的 deploy 是压缩包解出的源码；configs/design.json 是本版本可编辑配置。默认 PDK 为 /lec/pdk/tsmc180，宏资料来自 /lec/lab4，周期 20 ns，核数 8；核心请求 1648×1648 μm，四侧余量 150 μm，目标利用率 0.85，包含 PAD 的面积上限 3.8 mm²。
 
-**第一次运行 check_env 前** 修改 configs/design.json。准备完成后 work 中的输入被固定，禁止修改来冒充续跑。更换参数请新建上传目录。1696+2×150=1996 μm 只是请求值；实际尺寸按工具网格对齐后的数据库和最终输出核对。
+目标利用率0.85用于标准逻辑面积规划检查；固定核心边长1648µm才直接决定本轮外框。上一轮最终实测密度63.089%，并非规划参数0.68。新外框请求1948×1948µm（3.794704mm²），网格对齐后需核对≤3.8mm²；不把85%参数或含Filler密度当作实测逻辑密度。
+
+**第一次运行 check_env 前** 修改 configs/design.json。准备完成后 work 中的输入被固定，禁止修改来冒充续跑。更换参数请新建上传目录。1648+2×150=1948 μm 只是请求值；实际尺寸按工具网格对齐后的数据库和最终输出核对。
 
 ## 2．独立阶段一：环境检查
 
@@ -70,7 +72,7 @@ cat work/evidence/step_34.json
 
 | 关注点 | 文件及判断方法 |
 | --- | --- |
-| 整颗面积 | geometry.json 的 whole_die_area_mm2 和最终 LEF/DEF/GDS 的 Die 外框一致，且 ≤4.0；Genus cell_area 是单元面积，不能代替它 |
+| 整颗面积 | geometry.json 的 whole_die_area_mm2 和最终 LEF/DEF/GDS 的 Die 外框一致，且 ≤3.8；Genus cell_area 是单元面积，不能代替它 |
 | 综合结构 | synthesis.json：一个原生主 SRAM，无不明叶子单元，latch_area 为零；CPU、NPU、DMA 层次存在 |
 | 时序 | reports/postFiller 下分别看 Setup/Hold summary；WNS≥0、TNS=0、违例路径=0 |
 | 电气规则 | Setup summary 的 max_cap、max_tran、max_fanout 的 real/total 均为 0；Hold 没该表时不能当作“自动为零” |
