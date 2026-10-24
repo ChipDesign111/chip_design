@@ -15,6 +15,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, default=EDA / 'dist/chip_design_eda.tar.gz')
     args = parser.parse_args()
+    branch = subprocess.check_output(
+        ['git', 'branch', '--show-current'], cwd=str(ROOT), text=True
+    ).strip() or None
     selected = {}
     for folder in ['eda/server', 'rtl', 'eda/docs']:
         for p in (ROOT / folder).rglob('*'):
@@ -24,7 +27,7 @@ def main():
                 raise ValueError('Unexpected library/large content in public deployment input: ' + str(p))
             name = p.relative_to(ROOT / 'eda').as_posix() if folder.startswith('eda/') else p.relative_to(ROOT).as_posix()
             selected[name] = p
-    manifest = {'repository': 'https://github.com/ChipDesign111/chip_design', 'branch': 'xzx', 'git_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=str(ROOT), text=True).strip(), 'files': {n: {'bytes': p.stat().st_size, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()} for n, p in sorted(selected.items())}, 'excluded': ['PDK', 'licensed SRAM models', 'datasets', 'EDA databases', 'development tests and temporary utilities', 'other branch working tree'], 'scope': 'Deployment source package; does not claim functional verification or EDA completion'}
+    manifest = {'repository': 'https://github.com/ChipDesign111/chip_design', 'branch': branch, 'git_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=str(ROOT), text=True).strip(), 'files': {n: {'bytes': p.stat().st_size, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()} for n, p in sorted(selected.items())}, 'excluded': ['PDK', 'licensed SRAM models', 'datasets', 'EDA databases', 'development tests and temporary utilities', 'other branch working tree'], 'scope': 'Deployment source package; does not claim functional verification or EDA completion'}
     manifest['working_tree_dirty'] = bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=str(ROOT), text=True).strip())
     target = args.output.expanduser().resolve()
     target.parent.mkdir(parents=True, exist_ok=True)

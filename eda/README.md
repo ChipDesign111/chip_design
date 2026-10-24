@@ -4,7 +4,7 @@
 
 上一轮已完成实测：含 PAD **3.9856 mm²**，系统 **20 ns**，最终 Setup/Hold **+0.042 / +0.021 ns**，34/34 及三个阶段通过。详见[本轮结果与逐步报告](results/int8_20261023/README.md)；SDF 已导出，尚未执行回标后仿。
 
-本分支名为 **xzx**，从 main 的 267c873 创建。设计是完整 CV32E40P SoC：第一层每拍 2 个输入×32 个输出，第二层 1×6，输入、权重、隐藏值使用 INT8，偏置、累加和分类分数使用 INT32。主 SRAM 保存完整权重；DMA 将当前需要的小块搬入两个 64 字节缓冲。面积验收是 **包含 PAD 的整个 Die ≤3.8 mm²**。
+本实现由 **xzx** 合并至 **main**，开发基线为原 main 267c873。设计是完整 CV32E40P SoC：第一层每拍 2 个输入×32 个输出，第二层 1×6，输入、权重、隐藏值使用 INT8，偏置、累加和分类分数使用 INT32。主 SRAM 保存完整权重；DMA 将当前需要的小块搬入两个 64 字节缓冲。面积验收是 **包含 PAD 的整个 Die ≤3.8 mm²**。
 
 建议先读[当前设计数据流](docs/当前设计数据流.md)，用两个输入理解 MAC、tile、DMA、启动和 PAD。
 
@@ -22,7 +22,7 @@ python --version
 ssh -o ClearAllForwardings=yes -o BatchMode=yes chipdesign hostname
 ```
 
-分支应为 xzx，根目录包含 rtl 和 eda。本机用 Python 3.8+、Git 和 OpenSSH；EDA 总控无需额外 Python 包。这里确认“压缩哪份代码”和“传到哪台机器”，避免从另一个分支打包。先提交计划部署的修改；归档还记录逐文件校验值和未提交状态。
+从当前主线复现时，分支应为 main，根目录包含 rtl 和 eda。本机用 Python 3.8+、Git 和 OpenSSH；EDA 总控无需额外 Python 包。这里确认“压缩哪份代码”和“传到哪台机器”，避免从另一个分支打包。先提交计划部署的修改；归档还记录逐文件校验值和未提交状态。
 
 硬件修改后，先运行功能回归（需 Icarus 和 ModelSim）：
 
