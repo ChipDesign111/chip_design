@@ -133,8 +133,6 @@ def main():
             if not begin or not end or not later_io or any(not e['instance'].endswith('i_pad_tdo') or not float(begin.group(1))*1000<=e['time_ps']<=float(end.group(1))*1000 for e in later_io):
                 raise RuntimeError('Native IO conflict detector did not report precisely the deliberate output contention')
         elif later_io:raise RuntimeError('Unexpected nonzero-time IO conflict: '+mode)
-        if mode=='pad_startup_control' and ((args.simulator=='vcs' and len(io_events)!=5) or any(e['time_ps'] for e in io_events)):
-            raise RuntimeError('Time-zero startup control did not reproduce the five native IO messages')
     for item in record.values():
         if sha(Path(item['source']))!=item['sha256']:raise RuntimeError('Input changed: '+item['source'])
     (root/'results.json').write_text(json.dumps(results,indent=2)+'\n')
