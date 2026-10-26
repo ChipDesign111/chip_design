@@ -3,9 +3,11 @@
 // Supply nets establish the same constants at elaboration instead of exposing
 // a time-zero delta-cycle X from a primitive buffer to the bidirectional PAD.
 // No IO behavior, conflict check, SDF value or timing notifier is modified.
-module TIEHBWP7T(output wire Z);
+module TIEHBWP7T(Z);
+    output Z;
     supply1 Z;
 endmodule
-module TIELBWP7T(output wire ZN);
+module TIELBWP7T(ZN);
+    output ZN;
     supply0 ZN;
 endmodule
