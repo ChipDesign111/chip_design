@@ -22,7 +22,7 @@ def html_page(markdown):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command',choices=['run','status','fetch'])
+    parser.add_argument('command',choices=['run','status','fetch','timing'])
     parser.add_argument('--host',default='chipdesign')
     parser.add_argument('--eda-upload',help='Completed physical upload; defaults to last_upload.json')
     parser.add_argument('--output',type=Path)
@@ -55,6 +55,19 @@ def main():
         print(remote.ssh(args.host,'set -e\nsource /etc/profile.d/eda.sh\ncd '+shlex.quote(upload)+'\nnohup '+cmd+' >logs/postsim.log 2>&1 < /dev/null &\necho $! >logs/postsim.pid\ncat logs/postsim.pid\n'))
         print('Postsim upload: '+upload);return
     state=json.loads((DIST/'last_postsim.json').read_text());upload=remote.valid_upload(state['upload'])
+    if args.command=='timing':
+        # Run only after simulation, keeping heavy server tools sequential.
+        eda=remote.valid_upload(state['eda_upload'])
+        tool=ROOT/'eda/server/postsim/sram_timing.tcl'
+        output=upload+'/postsim/sram_timing'
+        remote.ssh(args.host,'set -e\ntest -f '+shlex.quote(upload+'/postsim/results.json')+'\ntest ! -e '+shlex.quote(output)+'\nmkdir '+shlex.quote(output)+'\n')
+        remote.scp(args.host,[tool],output+'/')
+        driver='set eda_work {'+eda+'/work}\nset timing_output {'+output+'}\nsource {'+output+'/sram_timing.tcl}\n'
+        local=DIST/'sram_timing_driver.tcl';local.write_text(driver,encoding='utf-8')
+        remote.scp(args.host,[local],output+'/driver.tcl')
+        print(remote.ssh(args.host,'set -e\nsource /etc/profile.d/eda.sh\ncd '+shlex.quote(output)+'\ninnovus -batch -files driver.tcl -log timing >tool.log 2>&1\ngrep SRAM_PORT_TIMING_REPORTED_NO_ECO tool.log\n'))
+        remote.save(DIST/'last_sram_timing.json',{'upload':upload,'eda_upload':eda,'output':output,'script_sha256':remote.digest(tool)})
+        print('Read-only SRAM timing reports: '+output);return
     if args.command=='status':
         script='''source /etc/profile.d/eda.sh
 python3 - <<'PY'

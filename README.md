@@ -1,6 +1,6 @@
 # INT8 HAR 全芯片实现
 
-当前 xzx 已修正 SRAM 复位接口并通过 RTL 回归：上升沿寄存命令、下降沿执行，复位保持宏地址/数据稳定。80相位读写测试，以及开启原生 SRAM 时序检查的16组完整SoC复位矩阵均通过。新版独立 EDA/SDF 验证进行中，详见[修正与验证状态](report/reset_fix.md)。以下已完成物理数字属于旧版 e15483c。
+当前 xzx 的 SRAM 复位修正版已完成 RTL 回归、独立34步EDA及16组SDF+1组无SDF对照：含PAD **3.795639mm²**、20ns下Setup/Hold **+0.371/+0.019ns**，所有SDF阶段动态时序违规 **0条**，专门半周期路径检查通过。详见[新版完整结果](eda/results/sram_reset_20261027/README.md)和[后仿与main对比](eda/results/sram_reset_20261027/postsim/README.md)。17条负IOPATH和时间0 PAD模型消息保留为限制。以下为旧版 e15483c 的历史结果。
 
 2026-10-26 后仿补充：16组完整SoC MAXIMUM SDF及无SDF对照通过功能自检，回标error/缺失实例/缺失检查均0，工作窗口动态违规0；复位事件及19条负IOPATH截零限制仍保留。详见[与现有main结果对比](eda/results/postsim_ntc_20261026/README.md)。下方“未后仿”描述对应原物理交付时点。
 

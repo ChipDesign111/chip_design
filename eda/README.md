@@ -1,6 +1,6 @@
 # 从本机部署到完整 EDA 结果
 
-当前 xzx 包含 SRAM 复位接口修正，RTL 回归已通过，正在重新验证物理实现和 SDF。见[修正内容与证据](../report/reset_fix.md)。下方已完成的面积与后仿数字属于旧版 e15483c，不代表本次修改后的物理结果。
+当前 xzx 的 SRAM 复位修正版已通过34步与三个阶段、16组SDF及无SDF对照。含PAD **3.795639mm²**，20ns下Setup/Hold **+0.371/+0.019ns**；全部SDF阶段时序违规0条，半周期路径明确检查通过。见[新版物理结果](results/sram_reset_20261027/README.md)、[后仿与main对比](results/sram_reset_20261027/postsim/README.md)和[修改原因](../report/reset_fix.md)。负IOPATH与时间0 PAD模型消息仍列为限制。下方为旧版 e15483c 的历史数字。
 
 2026-10-26 后仿补充：16组完整SoC MAXIMUM SDF及无SDF对照通过功能自检，回标error/缺失实例/缺失检查均0，工作窗口动态违规0；复位事件及19条负IOPATH截零限制仍保留。详见[与现有main结果对比](results/postsim_ntc_20261026/README.md)。下方“未后仿”描述对应原物理交付时点。
 
@@ -26,7 +26,7 @@ python --version
 ssh -o ClearAllForwardings=yes -o BatchMode=yes chipdesign hostname
 ```
 
-从当前主线复现时，分支应为 main，根目录包含 rtl 和 eda。本机用 Python 3.8+、Git 和 OpenSSH；EDA 总控无需额外 Python 包。这里确认“压缩哪份代码”和“传到哪台机器”，避免从另一个分支打包。先提交计划部署的修改；归档还记录逐文件校验值和未提交状态。
+复现本次SRAM修正版时，分支应为 xzx，根目录包含 rtl 和 eda。本机用 Python 3.8+、Git 和 OpenSSH；EDA 总控无需额外 Python 包。这里确认“压缩哪份代码”和“传到哪台机器”，避免从另一个分支打包。先提交计划部署的修改；归档还记录逐文件校验值和未提交状态。
 
 硬件修改后，先运行功能回归（需 Icarus 和 ModelSim）：
 

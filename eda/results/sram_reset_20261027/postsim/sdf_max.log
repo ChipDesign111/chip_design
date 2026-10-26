@@ -1,0 +1,26 @@
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version Q-2020.03-SP2-7_Full64; Runtime version Q-2020.03-SP2-7_Full64;  Oct 26 16:33 2026
+Doing SDF annotation ...... Done
+ANNOTATION_CALLED path=timing.sdf time_ns=0.000
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tdi
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tms
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tck
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_rst_n
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_clk
+CLOCK_AT_CORE time_ns=10.640
+CLOCK_AT_CORE time_ns=30.640
+CLOCK_AT_CORE time_ns=50.640
+CLOCK_AT_CORE time_ns=70.640
+ACTIVE_START time_ns=600.000
+CPU_WAIT_START time_ns=165320.000
+FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238840.000
+ACTIVE_END time_ns=238840.000
+RESET_ASSERT offset_ps=2000 time_ns=238842.000
+POSTSIM_DONE time_ns=238920.000
+$finish called from file "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_003144_postsim_bfc53d4/postsim/inputs/tb_postsim.sv", line 116.
+$finish at simulation time            238920000
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 238920000 ps
+CPU Time:      9.550 seconds;       Data structure size:  27.1Mb
+Mon Oct 26 16:33:30 2026

@@ -58,10 +58,38 @@
     }
   },
   "physical_validation": {
-    "status": "pending_new_synthesis_PnR_and_SDF",
+    "status": "passed_same_input34steps_and17postsim_cases",
+    "source_commit": "5191064405ba4242bce70db63577f322899234d5",
+    "whole_die_area_mm2": 3.7956390976,
     "period_ns": 20,
-    "whole_die_limit_mm2": 3.8,
-    "previous_e15483c_result_is_not_this_RTL": true
+    "setup_ns": 0.371,
+    "hold_ns": 0.019,
+    "sram_port_timing": {
+      "sram_input_hold": {
+        "worst_reported_slack_ns": 10.194,
+        "paths_reported": 20,
+        "sha256": "3871f94f863a67ab790d1335f75ca5a82fbc31b8d086b733de1d4fabe9c2a6bf"
+      },
+      "sram_input_setup": {
+        "worst_reported_slack_ns": 6.29,
+        "paths_reported": 20,
+        "sha256": "689966bfa31a6401f2e67df1aec50b7930e35c1960bc503f27404d1b0645c8be"
+      },
+      "sram_output_hold": {
+        "worst_reported_slack_ns": 11.476,
+        "paths_reported": 20,
+        "sha256": "5734ed1bdc3d39048e0ac7a9c1c0e34058b169bae8f1fb74a3b946b7228c7c25"
+      },
+      "sram_output_setup": {
+        "worst_reported_slack_ns": 3.188,
+        "paths_reported": 20,
+        "sha256": "778d4fc6451da722e5b7b07619e5ce08c02f03b8ffdc3a3711e4d4b053919985"
+      }
+    },
+    "SDF_all_phases_timing_violations": 0,
+    "negative_iopath_clamps": 17,
+    "io_time_zero_messages_per_run": 5,
+    "result": "eda/results/sram_reset_20261027/postsim/analysis.json"
   },
   "rtl_sha256": {
     "rtl/filelist.f": "4b8e87b3a8cda942c21040861d82d8207b5a345eb86f258dc3ba3c9147005114",

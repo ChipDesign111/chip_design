@@ -1,0 +1,487 @@
+{
+  "source_commit": "5191064405ba4242bce70db63577f322899234d5",
+  "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261026_214621_5191064",
+  "source_archive_sha256": "90df1fd3b3065da9835f08f683c3e17c62445c50fc4deee352ee1d27e7a575da",
+  "receipt": {
+    "archive_sha256": "fa02e55209b5d8dd1de4338ba56fffbe3d0a0a49b46d986bd575e5a491c7b16e",
+    "files_verified": 606,
+    "input_manifest_sha256": "daf0fa6d68fdfeee8614d3984d1ba78002df4e9683ab9a7b0a2cfb1bf7e98810",
+    "remote_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261026_214621_5191064",
+    "all_34_steps_same_input": true,
+    "whole_die_area_mm2": 3.7956390976,
+    "max_whole_die_area_mm2": 3.8
+  },
+  "whole_die_area_mm2": 3.7956390976,
+  "actual_logic_density_percent": 67.682,
+  "system_period_ns": 20,
+  "planning_utilization": 0.85,
+  "synthesis": {
+    "cell_count": 58729,
+    "cell_area_um2": 1897147.501,
+    "net_area_um2": 658806.192,
+    "latch_area_um2": 0.0,
+    "memory_area_um2": 401443.591,
+    "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261026_214621_5191064/work/syn/my_soc_top/reports/area/area.rpt",
+    "mapped_design": {
+      "native_main_srams": 1,
+      "mapped_leaf_instances": 58729,
+      "all_leaf_types_have_library_models": true,
+      "npu_dma_area_hierarchy_present": true,
+      "latch_area_um2": 0
+    }
+  },
+  "final_setup_ns": 0.371,
+  "final_hold_ns": 0.019,
+  "compared_with_main1192c32_physical_e15483c": {
+    "die_delta_mm2": 0.0,
+    "cell_area_delta_um2": 2601.312,
+    "cell_area_delta_percent": 0.13730528266364672,
+    "cell_count_delta": 94,
+    "setup_delta_ns": 0.145
+  },
+  "half_cycle_STA_evidence": {
+    "sram_input_hold": {
+      "worst_reported_slack_ns": 10.194,
+      "paths_reported": 20,
+      "sha256": "3871f94f863a67ab790d1335f75ca5a82fbc31b8d086b733de1d4fabe9c2a6bf"
+    },
+    "sram_input_setup": {
+      "worst_reported_slack_ns": 6.29,
+      "paths_reported": 20,
+      "sha256": "689966bfa31a6401f2e67df1aec50b7930e35c1960bc503f27404d1b0645c8be"
+    },
+    "sram_output_hold": {
+      "worst_reported_slack_ns": 11.476,
+      "paths_reported": 20,
+      "sha256": "5734ed1bdc3d39048e0ac7a9c1c0e34058b169bae8f1fb74a3b946b7228c7c25"
+    },
+    "sram_output_setup": {
+      "worst_reported_slack_ns": 3.188,
+      "paths_reported": 20,
+      "sha256": "778d4fc6451da722e5b7b07619e5ce08c02f03b8ffdc3a3711e4d4b053919985"
+    }
+  },
+  "SDF_validation": {
+    "physical_source_commit": "5191064405ba4242bce70db63577f322899234d5",
+    "postsim_source_commit": "bfc53d4b33faceb871aadc804ff8e562f8135096",
+    "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261026_214621_5191064",
+    "postsim_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_003144_postsim_bfc53d4",
+    "verified_report_files": 74,
+    "review_archive_sha256": "0661151f0434619c83a15178b6b5bf90f5a5d4a240548ff47955e9eb874ac760",
+    "sdf_cases": 16,
+    "gate_control_cases": 1,
+    "all_functional_pass": true,
+    "trained_inputs": 24,
+    "random_inputs": 8,
+    "initial_timing_events_total": 0,
+    "active_timing_events_total": 0,
+    "final_reset_timing_events_total": 0,
+    "annotation_errors": 0,
+    "missing_instances": 0,
+    "unmatched_timing_checks": 0,
+    "negative_iopath_clamps": 17,
+    "timing_checks_and_notifiers_enabled_for_all_SDF_runs": true,
+    "sram_clock": "propagated sys_clk period20ns, leading0ns/trailing10ns; no generated unrelated clock or path exception added",
+    "sram_port_timing": {
+      "sram_input_hold": {
+        "worst_reported_slack_ns": 10.194,
+        "paths_reported": 20,
+        "sha256": "3871f94f863a67ab790d1335f75ca5a82fbc31b8d086b733de1d4fabe9c2a6bf"
+      },
+      "sram_input_setup": {
+        "worst_reported_slack_ns": 6.29,
+        "paths_reported": 20,
+        "sha256": "689966bfa31a6401f2e67df1aec50b7930e35c1960bc503f27404d1b0645c8be"
+      },
+      "sram_output_hold": {
+        "worst_reported_slack_ns": 11.476,
+        "paths_reported": 20,
+        "sha256": "5734ed1bdc3d39048e0ac7a9c1c0e34058b169bae8f1fb74a3b946b7228c7c25"
+      },
+      "sram_output_setup": {
+        "worst_reported_slack_ns": 3.188,
+        "paths_reported": 20,
+        "sha256": "778d4fc6451da722e5b7b07619e5ce08c02f03b8ffdc3a3711e4d4b053919985"
+      }
+    },
+    "native_io_time_zero_bus_messages": {
+      "sdf_firmware_1": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "sdf_firmware_10001": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "sdf_firmware_10002": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "sdf_firmware_10003": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "sdf_firmware_10004": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "sdf_firmware_10005": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "sdf_firmware_10006": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "sdf_firmware_10007": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "sdf_firmware_10008": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "sdf_firmware_10009": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "sdf_firmware_10010": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "sdf_firmware_10011": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "sdf_firmware_3": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "sdf_firmware_5": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "sdf_firmware_7": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "sdf_max": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ],
+      "gate_zero": [
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tdi"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tms"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_tck"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_rst_n"
+        },
+        {
+          "time_ps": 0,
+          "instance": "tb_postsim.dut.i_pad_clk"
+        }
+      ]
+    },
+    "io_model_check": "Native model reports when PAD===X and countdrivers(PAD) at time0; retained unchanged, no bus_conflict_off. No such message after time0 in these runs; not a PAD power-on/ESD proof.",
+    "limits": "TT MAXIMUM finite stimulus; 17 negative IOPATH clamps and5time-zero PAD checks per run retained; not lossless negative-delay/multiPVT/foundryLVS/IR/EM/ESD/equivalence signoff"
+  },
+  "scope": "Same-input34steps, all3stages pipeline0, listed TT checks; not multiPVT/foundryLVS/IR/EM/equivalence"
+}
