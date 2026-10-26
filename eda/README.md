@@ -173,3 +173,7 @@ bash deploy/server/bin/eda.sh clean --work "$PWD/work"
 ```
 
 清理仅操作该工程约定的遗留压缩包和临时文件，保留正常中间结果、报告、检查点和最终视图。不同源码或参数重新上传；失败工程保留日志，不拼接别的版本结果。Lab4 内容独立放在根目录 lab4，不属于新 SoC 版本，保留不动。
+
+## 继续执行SDF回标后仿
+
+物理实现完成后，按[后仿真操作指南](docs/后仿真操作指南.md)运行 `python eda/postsim.py run`、`status`、`fetch`。该流程新建独立上传，原版图work保持不变。

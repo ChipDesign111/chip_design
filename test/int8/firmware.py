@@ -1,8 +1,10 @@
 """RV32I self-check using the public MMIO protocol and tile-major SRAM data."""
 from assembler import Assembler
 from run import make_case
-def build(run):
-    mem=make_case(10000);a=Assembler()
+def build(run,seed=10000):
+    mem=make_case(seed)
+    if mem[0x1f08//4]!=2:raise ValueError('Full SoC firmware expects a two-sample batch')
+    a=Assembler()
     a.li(20,0x70000000)
     def put(offset,value):a.li(5,value);a.sw(5,20,offset)
     put(0x20,0x80001000);put(0x24,0x80001800)
