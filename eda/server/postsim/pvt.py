@@ -4,6 +4,7 @@ import argparse,hashlib,json,re,subprocess,sys,tarfile
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 from checks import timing
+from pvt_collect import collect
 
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def save(p,d):p.write_text(json.dumps(d,indent=2)+'\n')
@@ -56,16 +57,6 @@ def main():
     command=['innovus','-batch','-files',str(driver),'-log',str(out/'pvt')];save(out/'command.json',command)
     with (out/'tool.log').open('w') as f:code=subprocess.call(command,cwd=str(out),stdout=f,stderr=subprocess.STDOUT)
     if code or 'PVT_REPORTED_NO_ECO' not in (out/'tool.log').read_text():raise RuntimeError('Read-only PVT tool failed')
-    results={}
-    for name,*_ in specs:results[name]=timing(out/'reports'/('qa_'+name),require_clean=False)
-    for path,h in records.items():
-        if sha(Path(path))!=h:raise RuntimeError('Original input changed: '+path)
-    result={'analysis_complete':True,'all_available_pvt_passed':all(x['targets_met'] for v in results.values() for x in v.values()),
-            'views':results,'original_inputs_unchanged':True,'scope':'Available matched TT/SS/FF0/FF-40 libraries; same typical RC technology. Not full foundry RC/SI/IR/EM/LVS signoff'}
-    save(out/'results.json',result)
-    files={str(p.relative_to(out)):sha(p) for p in out.rglob('*') if p.is_file() and (p.suffix in ['.json','.tcl','.log'] or p.name.endswith('.summary.gz')) and p.stat().st_size<25000000}
-    with tarfile.open(out/'review.tar.gz','w:gz') as t:
-        for n in sorted(files):t.add(out/n,arcname=n,recursive=False)
-    save(out/'review_manifest.json',{'archive_sha256':sha(out/'review.tar.gz'),'files':files,'remote_root':str(out)})
+    result=collect(out)
     print(json.dumps(result,indent=2))
 if __name__=='__main__':main()

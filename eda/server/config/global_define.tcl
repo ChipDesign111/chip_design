@@ -234,6 +234,10 @@ set proj(constraints,func) ../../config/constraints_${rm_core_top}.sdc
 # 'pwd' == [syn|pnr]/logs
 set SRC_DIR [file normalize ../../src]
 
+if {[info exists eda_enable_pvt] && $eda_enable_pvt} {
+    source [file join $PROJECT_ROOT flow config pvt_views.tcl]
+}
+
 set macro_gds [list ]
 
 # specify MACRO GDS directory

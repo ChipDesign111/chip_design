@@ -27,6 +27,7 @@ def main():
     ap=argparse.ArgumentParser();ap.add_argument('--eda-work',type=Path,required=True)
     ap.add_argument('--run-root',type=Path,required=True);ap.add_argument('--firmware',type=Path,required=True)
     ap.add_argument('--simulator',choices=['vcs','xcelium'],default='vcs')
+    ap.add_argument('--sdf-mode',choices=['tt','pvt-min','pvt-max'],default='tt')
     args=ap.parse_args();work=args.eda_work.resolve();root=args.run_root.resolve()
     if root.exists():raise ValueError('Choose a NEW post-simulation run directory')
     if not (work/'evidence/step_34.json').is_file():raise ValueError('Missing completed EDA input')
@@ -34,7 +35,7 @@ def main():
     out=work/'pnr/my_soc_top/outputs/manual_final'
     config=json.loads((work/'config/design.json').read_text())
     if config['system_period_ns']!=20:raise ValueError('Bench requires20ns matching physical timing')
-    paths={'netlist':out/'my_soc_top_hier_postpnr.v','sdf_gz':out/'my_soc_top_tt_io.sdf.gz',
+    paths={'netlist':out/'my_soc_top_hier_postpnr.v','sdf_gz':out/('my_soc_top_tt_io.sdf.gz' if args.sdf_mode=='tt' else 'my_soc_top_pvt.sdf.gz'),
            'firmware':args.firmware.resolve(),'testbench':Path(__file__).resolve().with_name('tb_postsim.sv'),
            'standard_cells':Path('/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v'),
            'io_cells':Path('/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Front_End/verilog/tpd018nv_260a/tpd018nv.v'),
@@ -42,7 +43,7 @@ def main():
     record={k:{'source':str(p),'sha256':sha(p)} for k,p in paths.items()}
     additional=sorted(args.firmware.parent.glob('firmware_*.hex'))
     for p in additional:record[p.stem]={'source':str(p.resolve()),'sha256':sha(p)}
-    (root/'input_manifest.json').write_text(json.dumps({'eda_work':str(work),'simulator':args.simulator,'files':record},indent=2)+'\n')
+    (root/'input_manifest.json').write_text(json.dumps({'eda_work':str(work),'simulator':args.simulator,'sdf_mode':args.sdf_mode,'files':record},indent=2)+'\n')
     driver=root/'export.tcl'
     driver.write_text('set eda_work {'+str(work)+'}\nset sim_inputs {'+str(inputs)+'}\nsource {'+str(Path(__file__).resolve().with_name('export_view.tcl'))+'}\n')
     execute(['innovus','-batch','-files',str(driver),'-log',str(root/'view_export')],root,'view_export.log')
@@ -58,7 +59,7 @@ def main():
     macro=inputs/'sram_period_adapter.v';macro.write_text(text)
     record['simulation_netlist']={'source':str(inputs/'netlist.v'),'sha256':sha(inputs/'netlist.v')}
     record['sram_simulation_adapter']={'source':str(macro),'sha256':sha(macro),'change':'Add negedge period declaration; native notifier, SDF limits; licensed copy retained server-only'}
-    (root/'input_manifest.json').write_text(json.dumps({'eda_work':str(work),'simulator':args.simulator,'files':record},indent=2)+'\n')
+    (root/'input_manifest.json').write_text(json.dumps({'eda_work':str(work),'simulator':args.simulator,'sdf_mode':args.sdf_mode,'files':record},indent=2)+'\n')
     build=root/'build';build.mkdir()
     # VCS precompiles literal $sdf_annotate inputs during elaboration.
     shutil.copyfile(inputs/'timing.sdf',build/'timing.sdf')
@@ -75,6 +76,8 @@ def main():
                  str(inputs/'tb_postsim.sv'),str(inputs/'netlist.v')]
         for key in ['standard_cells','io_cells']:command+=['-v',str(paths[key])]
         command+=['-v',str(macro)]
+    if args.sdf_mode=='pvt-min':
+        command+=(['+define+SDF_MINIMUM'] if args.simulator=='vcs' else ['-define','SDF_MINIMUM'])
     execute(command,build,'compile.log')
     results={}
     cases=[('sdf_max',[],inputs/'firmware.hex'),('gate_zero',['+NO_SDF'],inputs/'firmware.hex'),

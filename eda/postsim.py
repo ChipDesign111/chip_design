@@ -28,6 +28,7 @@ def main():
     parser.add_argument('--output',type=Path)
     parser.add_argument('--simulator',choices=['vcs','xcelium'],default='vcs')
     parser.add_argument('--upload',help='An existing isolated post-simulation upload for status/fetch/timing')
+    parser.add_argument('--sdf-mode',choices=['tt','pvt-min','pvt-max'],default='tt')
     args=parser.parse_args()
     if args.command=='run':
         eda=remote.valid_upload(args.eda_upload or json.loads((DIST/'last_upload.json').read_text())['upload'])
@@ -41,7 +42,7 @@ def main():
             (firmware/name).write_bytes((p/'firmware.hex').read_bytes())
         subprocess.run([sys.executable,str(ROOT/'eda/package_server.py')],cwd=ROOT,check=True)
         parent=str(Path(eda).parent).replace('\\','/')
-        name=datetime.now().strftime('%Y%m%d_%H%M%S')+'_postsim_'+args.simulator+'_'+subprocess.check_output(['git','rev-parse','--short','HEAD'],cwd=ROOT).decode().strip()
+        name=datetime.now().strftime('%Y%m%d_%H%M%S')+'_postsim_'+args.simulator+'_'+args.sdf_mode+'_'+subprocess.check_output(['git','rev-parse','--short','HEAD'],cwd=ROOT).decode().strip()
         upload=remote.valid_upload(parent+'/'+name)
         remote.ssh(args.host,'set -e\nmkdir '+shlex.quote(upload)+'\n')
         remote.scp(args.host,[DIST/'chip_design_eda.tar.gz',DIST/'chip_design_eda.tar.gz.sha256'],upload+'/')
@@ -52,8 +53,8 @@ def main():
         ui=firmware/'gui';ui.mkdir();(ui/'README.md').write_text(guide,encoding='utf-8');(ui/'README.html').write_text(html_page(guide),encoding='utf-8')
         remote.scp(args.host,[ui/'README.md',ui/'README.html'],upload+'/')
         remote.scp(args.host,list(firmware.glob('firmware*.hex')),upload+'/configs/')
-        remote.save(DIST/'last_postsim.json',{'host':args.host,'upload':upload,'eda_upload':eda,'simulator':args.simulator})
-        cmd='python3 -u deploy/server/postsim/run.py --eda-work '+shlex.quote(eda+'/work')+' --run-root '+shlex.quote(upload+'/postsim')+' --firmware '+shlex.quote(upload+'/configs/firmware.hex')+' --simulator '+args.simulator
+        remote.save(DIST/'last_postsim.json',{'host':args.host,'upload':upload,'eda_upload':eda,'simulator':args.simulator,'sdf_mode':args.sdf_mode})
+        cmd='python3 -u deploy/server/postsim/run.py --eda-work '+shlex.quote(eda+'/work')+' --run-root '+shlex.quote(upload+'/postsim')+' --firmware '+shlex.quote(upload+'/configs/firmware.hex')+' --simulator '+args.simulator+' --sdf-mode '+args.sdf_mode
         print(remote.ssh(args.host,'set -e\nsource /etc/profile.d/eda.sh\ncd '+shlex.quote(upload)+'\nnohup '+cmd+' >logs/postsim.log 2>&1 < /dev/null &\necho $! >logs/postsim.pid\ncat logs/postsim.pid\n'))
         print('Postsim upload: '+upload);return
     state=json.loads((DIST/'last_postsim.json').read_text());upload=remote.valid_upload(args.upload or state['upload'])
@@ -94,7 +95,12 @@ PY
     if output is None:raise ValueError('fetch requires an empty --output directory')
     if output.exists() and any(output.iterdir()):raise ValueError('Use an empty output directory')
     output.mkdir(parents=True,exist_ok=True)
-    remote.ssh(args.host,'set -e\nsource /etc/profile.d/eda.sh\npython3 '+shlex.quote(upload+'/deploy/server/postsim/collect.py')+' '+shlex.quote(upload+'/postsim')+'\n',capture=False)
+    # Version the evaluator in generated analysis space, leaving frozen deploy
+    # and original simulation inputs unchanged. The report records its SHA.
+    evaluator=upload+'/postsim/analysis_tools'
+    remote.ssh(args.host,'set -e\nmkdir -p '+shlex.quote(evaluator)+'\n')
+    remote.scp(args.host,[ROOT/'eda/server/postsim/collect.py'],evaluator+'/')
+    remote.ssh(args.host,'set -e\nsource /etc/profile.d/eda.sh\npython3 '+shlex.quote(evaluator+'/collect.py')+' '+shlex.quote(upload+'/postsim')+'\n',capture=False)
     remote.scp(args.host,[upload+'/postsim/review.tar.gz',upload+'/postsim/review_manifest.json'],output,download=True)
     manifest=json.loads((output/'review_manifest.json').read_text())
     if remote.digest(output/'review.tar.gz')!=manifest['archive_sha256']:raise ValueError('Archive SHA mismatch')

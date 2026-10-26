@@ -29,7 +29,11 @@ module tb_postsim;
   reg [31:0] value,stats[0:3];
   initial begin
 `ifndef NO_SDF
+`ifdef SDF_MINIMUM
+      $sdf_annotate("timing.sdf",dut,,"sdf.log","MINIMUM");
+`else
       $sdf_annotate("timing.sdf",dut,,"sdf.log","MAXIMUM");
+`endif
       $display("ANNOTATION_CALLED path=timing.sdf time_ns=%0.3f",$realtime);
 `else
       $display("NO_SDF_CONTROL");

@@ -25,7 +25,8 @@ def audit(root):
         failed_negative=int(matched.group(1)) if matched else 0
         unmatched_paths=warnings.get('SDFNEP',0)
         clamped=warnings.get('SDFNDP',0)
-    summary={'simulator':engine,'annotation_errors':error_count,'warning_categories':warnings,
+    summary={'audit_tool_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+             'simulator':engine,'annotation_errors':error_count,'warning_categories':warnings,
              'negative_timing_checks_enabled':True,'native_NTC_RECREM_enabled':True,
              'negative_iopath_clamped_by_simulator':clamped,
              'negative_paths_failed_to_adjust':failed_negative,

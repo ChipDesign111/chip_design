@@ -1,5 +1,7 @@
 # 从本机部署到完整 EDA 结果
 
+main已合并d40b217。当前xzx的100ps最低Hold余量、0.3ns信号转换时间约束及多库角分析正在验证，状态见[后续改进](../report/quality_followup.md)。下方5191064的已验收数字不能直接用作新配置结果。
+
 当前 xzx 的 SRAM 复位修正版已通过34步与三个阶段、16组SDF及无SDF对照。含PAD **3.795639mm²**，20ns下Setup/Hold **+0.371/+0.019ns**；全部SDF阶段时序违规0条，半周期路径明确检查通过。见[新版物理结果](results/sram_reset_20261027/README.md)、[后仿与main对比](results/sram_reset_20261027/postsim/README.md)和[修改原因](../report/reset_fix.md)。负IOPATH与时间0 PAD模型消息仍列为限制。下方为旧版 e15483c 的历史数字。
 
 2026-10-26 后仿补充：16组完整SoC MAXIMUM SDF及无SDF对照通过功能自检，回标error/缺失实例/缺失检查均0，工作窗口动态违规0；复位事件及19条负IOPATH截零限制仍保留。详见[与现有main结果对比](results/postsim_ntc_20261026/README.md)。下方“未后仿”描述对应原物理交付时点。

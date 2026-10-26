@@ -380,8 +380,19 @@ def audit_step(work, step):
         checks['io_controls'] = helper(work, 'audit_io_ties.py')
     timing_dirs = {26: 'preCTS', 28: 'postCTS', 29: 'postCTS_holdFix_check', 32: 'postRoute_holdAuto_check', 33: 'postFiller'}
     if step in timing_dirs:
-        minimum=json.loads((work/'config/design.json').read_text()).get('min_hold_slack_ns',0.0) if step in [32,33] else 0.0
+        cfg=json.loads((work/'config/design.json').read_text())
+        minimum=cfg.get('min_hold_slack_ns',0.0) if step in [32,33] else 0.0
         checks['timing'] = timing(pnr / 'reports' / timing_dirs[step], step in [32, 33], minimum)
+        if cfg.get('analysis_profile','').startswith('matched_'):
+            checks['expanded_analysis_views']={}
+            for view in ['func_tt_io','func_ss_io','func_ff0_io','func_ffm40_io']:
+                directory=pnr/'reports'/timing_dirs[step]/view
+                pair={}
+                for mode,pattern in [('Setup','*_all.tarpt.gz'),('Hold','*_all_hold.tarpt.gz')]:
+                    reports=list(directory.glob(pattern))
+                    if len(reports)!=1 or not load_text(reports[0]).strip():raise ValueError('Missing expanded PVT path report: '+view+' '+mode)
+                    pair[mode]={'report':str(reports[0]),'analysis_view':view}
+                checks['expanded_analysis_views'][view]=pair
         if step in [26, 28, 29]:
             checks['timing_scope'] = 'Pre-route diagnostic: residuals are recorded; only post-route steps32/33 require all timing/electrical targets met.'
     if step == 14:

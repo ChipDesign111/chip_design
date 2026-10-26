@@ -1,7 +1,12 @@
 set_ccopt_property primary_delay_corner delay_tt_io
+set eda_cts_views {func_tt_io}
+if {[info exists eda_enable_pvt] && $eda_enable_pvt} {
+    set_ccopt_property primary_delay_corner delay_ss_io
+    set eda_cts_views {func_tt_io func_ss_io func_ff0_io func_ffm40_io}
+}
 set_ccopt_property update_io_latency false
 set_ccopt_property force_update_io_latency false
-create_ccopt_clock_tree_spec -views {func_tt_io}
+create_ccopt_clock_tree_spec -views $eda_cts_views
 set_interactive_constraint_modes [all_constraint_modes -active]
 set_clock_uncertainty -setup 0.47 [get_clocks {sys_clk jtag_clk}]
 set_clock_uncertainty -hold 0.2 [get_clocks {sys_clk jtag_clk}]

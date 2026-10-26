@@ -63,6 +63,8 @@ def read_config(path):
     if c['cpu_clock_gate'] != 'repository_passthrough':
         raise ValueError('Changing CPU clock gating requires a separate validated profile')
     c.setdefault('min_hold_slack_ns',0.0)
+    if c['analysis_profile'] not in ['single_TT_SI_off_native_low_RC','matched_TT_SS_FF0_FFm40_SI_off_native_low_RC']:
+        raise ValueError('Unknown library PVT profile')
     if not isinstance(c['max_repair_iterations'], int) or not 1 <= c['max_repair_iterations'] <= 10 or not 0 <= c['min_hold_slack_ns'] <= c['hold_target_ns'] <= 0.2:
         raise ValueError('Invalid repair iteration count/target')
     if len(c['macro_xy_um']) != 2 or any(not isinstance(x, (int, float)) or not math.isfinite(x) or x < 200 for x in c['macro_xy_um']):
@@ -138,6 +140,7 @@ def prepare(args):
         text, n = re.subn(r'^set ' + key + r' .*$', lambda match: 'set ' + key + ' ' + str(value), text, flags=re.M)
         if n != 1:
             raise ValueError('Project configuration variable missing: ' + key)
+    text+='\nset eda_enable_pvt %d\n'%int(config['analysis_profile'].startswith('matched_'))
     user.write_text(text, encoding='utf-8')
     listed, includes, lines = [], [], ['+define+SYNTHESIS', '+define+CHIP_USE_RA1SHD']
     rtl = work / 'src/chip_design'
@@ -205,7 +208,8 @@ def doctor(work):
         raise ValueError('Missing EDA dependencies: ' + ', '.join(missing))
     # Evaluate only variable/configuration Tcl in plain tclsh: no licenses used.
     source = 'cd ' + tcl(work / 'pnr/logs') + '\nsource ../../config/user_define.tcl\nsource ../../config/global_define.tcl\n'
-    source += 'foreach p [concat $rm_lef_reflib $tt_1p80v_25c_libs $gds_list [list ${io_lib}tc.lib $rm_captable_file $rm_lef_layer_map]] {if {![file readable $p]} {error "Missing library: $p"}; puts [file normalize $p]}\n'
+    source += 'set eda_check_libs {}\nforeach c $proj(corners) {set eda_check_libs [concat $eda_check_libs $proj(library_set,$c)]}\nlappend eda_check_libs ${io_lib}tc.lib\nif {[info exists eda_enable_pvt] && $eda_enable_pvt} {foreach s {wc bc lt} {lappend eda_check_libs ${io_lib}${s}.lib}}\n'
+    source += 'foreach p [concat $rm_lef_reflib $eda_check_libs $gds_list [list $rm_captable_file $rm_lef_layer_map]] {if {![file readable $p]} {error "Missing library: $p"}; puts [file normalize $p]}\n'
     result = subprocess.run(['tclsh'], input=source, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if result.returncode or result.stderr.strip():
         raise ValueError('Configuration/library check failed: ' + result.stderr)

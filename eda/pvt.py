@@ -30,6 +30,10 @@ PY
 '''.replace('UPLOAD',repr(u));print(remote.ssh(a.host,script));return
     out=a.output
     if out is None or (out.exists() and any(out.iterdir())):raise ValueError('Use an empty --output')
+    evaluator=u+'/pvt/analysis_tools'
+    remote.ssh(a.host,'set -e\nmkdir -p '+shlex.quote(evaluator)+'\n')
+    remote.scp(a.host,[ROOT/'eda/server/postsim/pvt_collect.py'],evaluator+'/')
+    remote.ssh(a.host,'set -e\nsource /etc/profile.d/eda.sh\npython3 '+shlex.quote(evaluator+'/pvt_collect.py')+' '+shlex.quote(u+'/pvt')+'\n',capture=False)
     out.mkdir(parents=True,exist_ok=True);remote.scp(a.host,[u+'/pvt/review.tar.gz',u+'/pvt/review_manifest.json'],out,download=True)
     m=json.loads((out/'review_manifest.json').read_text());assert remote.digest(out/'review.tar.gz')==m['archive_sha256']
     with tarfile.open(out/'review.tar.gz') as t:
