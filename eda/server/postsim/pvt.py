@@ -44,7 +44,9 @@ def main():
     lines=['setMultiCpuUsage -localCpu '+str(c['cpus']),'source '+q(work/'pnr/my_soc_top/backup/step34.enc')]+parts
     views=' '.join('qa_'+x[0] for x in specs)
     lines+=['set_analysis_view -setup {'+views+'} -hold {'+views+'}',
+            'set_interactive_constraint_modes {func}',
             'set_propagated_clock [get_clocks {sys_clk jtag_clk}]',
+            'set_interactive_constraint_modes {}',
             'timeDesign -postRoute -expandedViews -outDir '+q(out/'reports'),
             'timeDesign -postRoute -hold -expandedViews -outDir '+q(out/'reports')]
     for name,*_ in specs:

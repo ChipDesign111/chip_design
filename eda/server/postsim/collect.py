@@ -10,15 +10,29 @@ import tarfile
 
 def audit(root):
     sdf=(root/'build/sdf.log').read_text(errors='replace')
-    warnings=dict(collections.Counter(re.findall(r'Warning-\[([^]]+)\]',sdf)))
-    totals=re.findall(r'Total errors:\s*(\d+)',sdf)
-    if len(totals)!=1:raise ValueError('Missing/ambiguous SDF annotation totals')
-    error_count=int(totals[0])
-    summary={'annotation_errors':error_count,'warning_categories':warnings,
+    inputs=json.loads((root/'input_manifest.json').read_text())
+    engine=inputs.get('simulator','vcs');compile=(root/'build/compile.log').read_text(errors='replace')
+    failed_negative=0;unmatched_paths=0
+    if engine=='vcs':
+        warnings=dict(collections.Counter(re.findall(r'Warning-\[([^]]+)\]',sdf)))
+        totals=re.findall(r'Total errors:\s*(\d+)',sdf)
+        if len(totals)!=1:raise ValueError('Missing/ambiguous SDF annotation totals')
+        error_count=int(totals[0]);clamped=warnings.get('SDFCOM_NIOD',0)
+    else:
+        warnings=dict(collections.Counter(re.findall(r'\*W,([A-Z0-9]+)',compile)))
+        error_count=len(re.findall(r'\*[EF],',compile))
+        matched=re.search(r'Number of negative path delay that failed to adjust:\s*(\d+)',compile)
+        failed_negative=int(matched.group(1)) if matched else 0
+        unmatched_paths=warnings.get('SDFNEP',0)
+        clamped=warnings.get('SDFNDP',0)
+    summary={'simulator':engine,'annotation_errors':error_count,'warning_categories':warnings,
              'negative_timing_checks_enabled':True,'native_NTC_RECREM_enabled':True,
-             'negative_iopath_clamped_by_simulator':warnings.get('SDFCOM_NIOD',0),
-             'missing_instances':warnings.get('SDFCOM_CFIIS',0),
-             'unmatched_timing_checks':warnings.get('SDFCOM_CFTC',0),'cases':{}}
+             'negative_iopath_clamped_by_simulator':clamped,
+             'negative_paths_failed_to_adjust':failed_negative,
+             'unmatched_paths_printed_lower_bound':unmatched_paths,
+             'warning_counts_are_printed_messages_not_uncapped_totals':engine=='xcelium',
+             'missing_instances':warnings.get('SDFCOM_CFIIS',0)+warnings.get('SDFINF',0),
+             'unmatched_timing_checks':warnings.get('SDFCOM_CFTC',0)+warnings.get('SDFNET',0),'cases':{}}
     for mode in sorted(root.glob('sdf_*')):
         if not mode.is_dir():continue
         text=(mode/'simulation.log').read_text(errors='replace')
@@ -38,7 +52,11 @@ def audit(root):
             'active_start_ns':start,'active_end_ns':end,'clock_core_edges_ns':clocks,
             'timing_counts':dict(collections.Counter(x['phase'] for x in violations)),
             'timing_violations':violations}
-    summary['binding_complete_for_instances_and_checks']=not (error_count or summary['missing_instances'] or summary['unmatched_timing_checks'])
+        reported=len(re.findall(r'Timing violation',text,re.I))
+        if reported!=len(violations):raise ValueError('Unparsed timing violations; cannot claim clean: '+mode.name)
+    summary['binding_complete_for_instances_and_checks']=not (error_count or summary['missing_instances'] or summary['unmatched_timing_checks'] or unmatched_paths)
+    summary['negative_path_delay_support_complete']=not (clamped or failed_negative)
+    summary['raw_annotation_warnings_retained']=True
     summary['active_window_dynamic_timing_clean']=all(not x['timing_counts'].get('active',0) for x in summary['cases'].values())
     summary['scope']='Full notifier/message checking in all SDF runs; reset events retained, not masked. Unsupported negative IOPATH clamps remain explicit; not complete signoff.'
     (root/'audit.json').write_text(json.dumps(summary,indent=2)+'\n')

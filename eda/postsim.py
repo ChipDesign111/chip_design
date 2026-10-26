@@ -27,6 +27,7 @@ def main():
     parser.add_argument('--eda-upload',help='Completed physical upload; defaults to last_upload.json')
     parser.add_argument('--output',type=Path)
     parser.add_argument('--simulator',choices=['vcs','xcelium'],default='vcs')
+    parser.add_argument('--upload',help='An existing isolated post-simulation upload for status/fetch/timing')
     args=parser.parse_args()
     if args.command=='run':
         eda=remote.valid_upload(args.eda_upload or json.loads((DIST/'last_upload.json').read_text())['upload'])
@@ -55,7 +56,7 @@ def main():
         cmd='python3 -u deploy/server/postsim/run.py --eda-work '+shlex.quote(eda+'/work')+' --run-root '+shlex.quote(upload+'/postsim')+' --firmware '+shlex.quote(upload+'/configs/firmware.hex')+' --simulator '+args.simulator
         print(remote.ssh(args.host,'set -e\nsource /etc/profile.d/eda.sh\ncd '+shlex.quote(upload)+'\nnohup '+cmd+' >logs/postsim.log 2>&1 < /dev/null &\necho $! >logs/postsim.pid\ncat logs/postsim.pid\n'))
         print('Postsim upload: '+upload);return
-    state=json.loads((DIST/'last_postsim.json').read_text());upload=remote.valid_upload(state['upload'])
+    state=json.loads((DIST/'last_postsim.json').read_text());upload=remote.valid_upload(args.upload or state['upload'])
     if args.command=='timing':
         # Run only after simulation, keeping heavy server tools sequential.
         eda=remote.valid_upload(state['eda_upload'])
