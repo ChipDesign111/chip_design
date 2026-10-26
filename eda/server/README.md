@@ -20,6 +20,8 @@ cat configs/design.json
 
 本次目录下的 deploy 是压缩包解出的源码；configs/design.json 是本版本可编辑配置。默认 PDK 为 /lec/pdk/tsmc180，宏资料来自 /lec/lab4，周期 20 ns，核数 8；核心请求 1648×1648 μm，四侧余量 150 μm，目标利用率 0.85，包含 PAD 的面积上限 3.8 mm²。
 
+当前修复分支使用analysis_profile=matched_TT_SS_FF0_FFm40_SI_off_native_low_RC：同时考虑匹配的TT25、SS125、FF0、FF−40标准单元/IO/SRAM库。信号转换时间上限0.3ns、时钟0.5ns；postRoute最低Hold余量0.10ns、优化目标0.12ns。正余量但不足0.10ns也必须修复，最终32/33步独立核验。RC仍为供应的typical技术表随温度分析，不等同独立RC最小/最大角签核。旧版本是否使用这些要求，以该版本configs/design.json为准。
+
 目标利用率0.85用于标准逻辑面积规划检查；固定核心边长1648µm才直接决定本轮外框。上一轮最终实测密度63.089%，并非规划参数0.68。新外框请求1948×1948µm（3.794704mm²），网格对齐后需核对≤3.8mm²；不把85%参数或含Filler密度当作实测逻辑密度。
 
 **第一次运行 check_env 前** 修改 configs/design.json。准备完成后 work 中的输入被固定，禁止修改来冒充续跑。更换参数请新建上传目录。1648+2×150=1948 μm 只是请求值；实际尺寸按工具网格对齐后的数据库和最终输出核对。
