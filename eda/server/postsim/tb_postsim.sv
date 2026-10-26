@@ -15,6 +15,8 @@ module tb_postsim;
     $display("PAD_DRIVE_ON time_ns=%0.3f delay_ps=%0d",$realtime,pad_drive_ps);
   end
   wire tdo;
+  reg conflict_en=0, conflict_value=0;
+  assign tdo=conflict_en ? conflict_value : 1'bz;
   my_soc_top dut(.clk_i(board_pads[4]),.rst_ni(board_pads[3]),.tck_i(board_pads[2]),
                  .tms_i(board_pads[1]),.td_i(board_pads[0]),.td_o(tdo));
   reg load_req=0,load_we=0;
@@ -117,6 +119,18 @@ module tb_postsim;
     $display("FUNCTIONAL_PASS cycles=%0d npu_cycles=%0d dma_mac_overlap=%0d read_overlap=%0d write_overlap=%0d time_ns=%0.3f",
              cycles,stats[0],stats[1],stats[2],stats[3],$realtime);
     $display("ACTIVE_END time_ns=%0.3f",$realtime);
+    // Positive diagnostic control: oppose the output PAD only after all
+    // functional work, proving the native conflict detector remains active.
+    if($test$plusargs("INJECT_PAD_CONFLICT")) begin
+      #1;
+      if(tdo!==1'b0 && tdo!==1'b1) $fatal(1,"Output PAD was unknown before conflict control");
+      conflict_value=~tdo;
+      $display("EXPECTED_IO_CONFLICT_BEGIN time_ns=%0.3f",$realtime);
+      conflict_en=1;#2;
+      if(tdo!==1'bx) $fatal(1,"Deliberate PAD contention was not observed");
+      conflict_en=0;#2;
+      $display("EXPECTED_IO_CONFLICT_END time_ns=%0.3f",$realtime);
+    end
     if(!$value$plusargs("RESET_OFFSET_PS=%d",reset_offset_ps)) reset_offset_ps=2000;
     if(reset_offset_ps<1 || reset_offset_ps>=20000) $fatal(1,"Reset phase must be inside one20ns period");
     #(reset_offset_ps/1000.0);

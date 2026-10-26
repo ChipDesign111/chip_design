@@ -83,7 +83,7 @@ logs=list((p/'postsim').glob('*/simulation.log'))
 count=sum('FUNCTIONAL_PASS' in f.read_text(errors='replace') for f in logs)
 plan=p/'postsim/run_plan.json'
 print(json.dumps({'upload':str(p),'running':running,'functional_passes':count,
- 'expected_cases':len(json.loads(plan.read_text())) if plan.is_file() else 3+len(list((p/'configs').glob('firmware_*.hex'))),
+ 'expected_cases':len(json.loads(plan.read_text())) if plan.is_file() else 4+len(list((p/'configs').glob('firmware_*.hex'))),
  'complete':q.exists(),'results':json.loads(q.read_text()) if q.exists() else None,
  'last_log':(p/'logs/postsim.log').read_text(errors='replace')[-2000:]}))
 PY
