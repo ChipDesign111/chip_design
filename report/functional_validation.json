@@ -1,5 +1,5 @@
 {
-  "validated_at": "2026-10-26T21:44:23.061308+08:00",
+  "validated_at": "2026-10-26T21:49:39.746321+08:00",
   "scope": "RTL functional tests after phase-separated SRAM command capture; full SoC authorized model uses disabled timing checks. Separate native SRAM reset sweep keeps timing checks enabled. No new physical/SDF result yet.",
   "results": {
     "unit_cases": 44,
@@ -153,5 +153,206 @@
     "rtl/include/axi/typedef.svh": "c2ef2098fea077e07100b9b9c40f2ac5453e7e01af407e236a810b43aeb8b2ef",
     "rtl/include/common_cells/assertions.svh": "d44ed5ffbbfb69c65f5b398428c6b5b5a1103883b925040cbc7bece257d13b1a",
     "rtl/include/common_cells/registers.svh": "a4e19da894564fd30a4dec4ca8466d181592c9202be2bf124fc4caa82b432d25"
+  },
+  "full_soc_reset_matrix": {
+    "passed": true,
+    "native_sram_timing_checks_enabled": true,
+    "native_timing_violations": 0,
+    "scope": "RTL full SoC 20ns, original SRAM timing checks ON; not SDF; only physical PAD diagnostic replaced by RTL clock",
+    "testbench_sha256": "30d5da736131557b6fed48d7c99459eef6044476a17591a78f965f5285ca147b",
+    "cases": [
+      {
+        "seed": 10000,
+        "reset_offset_ps": 2000,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "07863f4f0d9d19145bc4ef0b88caaad644a235bf9a34a9715997448a71d94503"
+      },
+      {
+        "seed": 10001,
+        "reset_offset_ps": 250,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "4a6fa1dcca65c38fe6522f80b7984e67bc7f7e1d29c72579417b2a5abd5fc80e"
+      },
+      {
+        "seed": 10002,
+        "reset_offset_ps": 1650,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "72819f3afc93bb844fe4e104c3492f6d105b54727d9e1b7572737a21c4518fa0"
+      },
+      {
+        "seed": 10003,
+        "reset_offset_ps": 3050,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "12719e2cbf15e458f69968c93d958d734698b00b1e584248cb5c8262d0039001"
+      },
+      {
+        "seed": 10004,
+        "reset_offset_ps": 4450,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "5de676ab83688a02980db95ec15708b300954121fd38678a3badf480b7c195a1"
+      },
+      {
+        "seed": 10005,
+        "reset_offset_ps": 5850,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "e737c2babb7454f4a399a2b62b3f6fb814f01371725d3742c096f92a1798b2e1"
+      },
+      {
+        "seed": 10006,
+        "reset_offset_ps": 7250,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "265dd44d491a559d024f86fff0477a4df81276c4f6dfbfc55588ff431e546f4a"
+      },
+      {
+        "seed": 10007,
+        "reset_offset_ps": 8650,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "8e172da892d75cf2a77ec0c07221972d15be14995db3a35e14bd85dafe1f618b"
+      },
+      {
+        "seed": 10008,
+        "reset_offset_ps": 10050,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "365e23d204c1a3cc60b1b8ad760e8dd2bf9a4ffc01758810312d76632c6b7d55"
+      },
+      {
+        "seed": 10009,
+        "reset_offset_ps": 11450,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "00c4eb2d83733e96c88d8890ab44eec0af6de0985a0719713a7d34a200c3bdce"
+      },
+      {
+        "seed": 10010,
+        "reset_offset_ps": 12850,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "1664828382b92dca2995b1030a52a34e236d0eae628c2e5b831848548254f3ed"
+      },
+      {
+        "seed": 10011,
+        "reset_offset_ps": 14250,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "ce925344fc841e26a53a0a275ff294ce46cd173ed5ca9927085b3678bb78f0e5"
+      },
+      {
+        "seed": 1,
+        "reset_offset_ps": 15650,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "45536f3f8d334139f533c34000f5115fd0df140b32b7b8f384cc454fd5cb0a28"
+      },
+      {
+        "seed": 3,
+        "reset_offset_ps": 17050,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "31f5357ffd91049039433d3e864314e26d0137b518671e8ec27ab5e9c74301e9"
+      },
+      {
+        "seed": 5,
+        "reset_offset_ps": 18450,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "35cd44871939fbad79a57d2b2e1ede83c22ca8cb003a59961d001a00475c4e1a"
+      },
+      {
+        "seed": 7,
+        "reset_offset_ps": 19850,
+        "metrics": [
+          3659,
+          1035,
+          93,
+          62,
+          93
+        ],
+        "sha256": "a840d8efc572e8c98ce9b22bc4e2367a29c13e536f8b61942f7b6f3ffaaf6315"
+      }
+    ]
   }
 }
