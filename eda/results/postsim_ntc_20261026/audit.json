@@ -1,0 +1,1331 @@
+{
+  "annotation_errors": 0,
+  "warning_categories": {
+    "SDFCOM_SWC": 2267,
+    "SDFCOM_UHICD": 1,
+    "SDFCOM_IWSBA": 1055,
+    "SDFCOM_NIOD": 19
+  },
+  "negative_timing_checks_enabled": true,
+  "native_NTC_RECREM_enabled": true,
+  "negative_iopath_clamped_by_simulator": 19,
+  "missing_instances": 0,
+  "unmatched_timing_checks": 0,
+  "cases": {
+    "sdf_firmware_1": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    },
+    "sdf_firmware_10001": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    },
+    "sdf_firmware_10002": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    },
+    "sdf_firmware_10003": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    },
+    "sdf_firmware_10004": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    },
+    "sdf_firmware_10005": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    },
+    "sdf_firmware_10006": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    },
+    "sdf_firmware_10007": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    },
+    "sdf_firmware_10008": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    },
+    "sdf_firmware_10009": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    },
+    "sdf_firmware_10010": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    },
+    "sdf_firmware_10011": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    },
+    "sdf_firmware_3": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    },
+    "sdf_firmware_5": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    },
+    "sdf_firmware_7": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    },
+    "sdf_max": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3658,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 238840.0,
+      "clock_core_edges_ns": [
+        10.64,
+        30.64,
+        50.64,
+        70.64
+      ],
+      "timing_counts": {
+        "initial_reset": 9,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST",
+          "time_ns": 11.271,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST",
+          "time_ns": 11.427,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST",
+          "time_ns": 11.467,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[1].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.59,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[2].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.655,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][0]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi_xbar.i_xbar.\\gen_mst_port_mux[0].i_axi_mux .\\gen_mux.i_w_fifo .\\mem_q_reg[0][1]",
+          "time_ns": 11.673,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.i_sram.i_macro",
+          "time_ns": 238851.51,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );"
+        }
+      ]
+    }
+  },
+  "binding_complete_for_instances_and_checks": true,
+  "active_window_dynamic_timing_clean": true,
+  "scope": "Full notifier/message checking in all SDF runs; reset events retained, not masked. Unsupported negative IOPATH clamps remain explicit; not complete signoff."
+}

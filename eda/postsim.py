@@ -3,6 +3,7 @@
 import argparse
 from datetime import datetime
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import shlex
@@ -13,6 +14,11 @@ import remote
 
 ROOT=Path(__file__).resolve().parents[1]
 DIST=ROOT/'eda/dist'
+
+def html_page(markdown):
+    spec=importlib.util.spec_from_file_location('postsim_renderer',ROOT/'eda/server/tools/workspace.py')
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    return '<!doctype html><meta charset="utf-8"><title>SDF后仿</title><style>body{font-family:sans-serif;max-width:1100px;margin:32px auto;padding:24px;line-height:1.8}table{border-collapse:collapse}td{border:1px solid #ccd;padding:8px}pre{white-space:pre-wrap;overflow-wrap:anywhere}p,code{overflow-wrap:anywhere}</style>'+module.render_markdown(markdown)
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
@@ -40,6 +46,9 @@ def main():
         public=str(Path(parent).parent).replace('\\','/')
         remote.scp(args.host,[ROOT/'eda/unpack.sh'],public+'/unpack.sh')
         remote.ssh(args.host,'bash '+shlex.quote(public+'/unpack.sh')+' '+shlex.quote(upload)+'\n',capture=False)
+        guide='# 本次是已完成版图的后仿运行\n\n物理输入：`'+eda+'`。后仿目录：`'+upload+'`。不重新运行34步，原work不修改。\n\n'+(ROOT/'eda/docs/后仿真操作指南.md').read_text(encoding='utf-8')
+        ui=firmware/'gui';ui.mkdir();(ui/'README.md').write_text(guide,encoding='utf-8');(ui/'README.html').write_text(html_page(guide),encoding='utf-8')
+        remote.scp(args.host,[ui/'README.md',ui/'README.html'],upload+'/')
         remote.scp(args.host,list(firmware.glob('firmware*.hex')),upload+'/configs/')
         remote.save(DIST/'last_postsim.json',{'host':args.host,'upload':upload,'eda_upload':eda})
         cmd='python3 -u deploy/server/postsim/run.py --eda-work '+shlex.quote(eda+'/work')+' --run-root '+shlex.quote(upload+'/postsim')+' --firmware '+shlex.quote(upload+'/configs/firmware.hex')
@@ -47,7 +56,24 @@ def main():
         print('Postsim upload: '+upload);return
     state=json.loads((DIST/'last_postsim.json').read_text());upload=remote.valid_upload(state['upload'])
     if args.command=='status':
-        print(remote.ssh(args.host,'source /etc/profile.d/eda.sh\npython3 - <<\'PY\'\nfrom pathlib import Path\np=Path('+repr(upload)+')\nq=p/"postsim/results.json"\nprint(q.read_text() if q.exists() else (p/"logs/postsim.log").read_text()[-2000:])\nPY\n'));return
+        script='''source /etc/profile.d/eda.sh
+python3 - <<'PY'
+from pathlib import Path
+import json
+p=Path(UPLOAD)
+q=p/'postsim/results.json'
+pid=int((p/'logs/postsim.pid').read_text())
+live=Path('/proc/%d/cmdline'%pid)
+running=live.exists() and b'postsim/run.py' in live.read_bytes()
+logs=list((p/'postsim').glob('*/simulation.log'))
+count=sum('FUNCTIONAL_PASS' in f.read_text(errors='replace') for f in logs)
+print(json.dumps({'upload':str(p),'running':running,'functional_passes':count,
+ 'expected_cases':2+len(list((p/'configs').glob('firmware_*.hex'))),
+ 'complete':q.exists(),'results':json.loads(q.read_text()) if q.exists() else None,
+ 'last_log':(p/'logs/postsim.log').read_text(errors='replace')[-2000:]}))
+PY
+'''.replace('UPLOAD',repr(upload))
+        print(remote.ssh(args.host,script));return
     output=args.output
     if output is None:raise ValueError('fetch requires an empty --output directory')
     if output.exists() and any(output.iterdir()):raise ValueError('Use an empty output directory')
@@ -62,6 +88,9 @@ def main():
             p=(output/member.name).resolve();p.relative_to(output.resolve());data=tar.extractfile(member).read()
             if hashlib.sha256(data).hexdigest()!=manifest['files'][member.name]:raise ValueError('File SHA mismatch')
             p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data)
+    audit=json.loads((output/'audit.json').read_text());results=json.loads((output/'results.json').read_text())
+    md='# SDF完整SoC后仿结果\n\n服务器：`'+upload+'`。本包'+str(len(manifest['files']))+'个文件已核验SHA。\n\n功能通过 '+str(sum(v['functional_pass'] for v in results.values()))+'/'+str(len(results))+'；回标error '+str(audit['annotation_errors'])+'，缺失实例 '+str(audit['missing_instances'])+'，缺失检查 '+str(audit['unmatched_timing_checks'])+'。\n\n工作窗口检查：'+str(audit['active_window_dynamic_timing_clean'])+'。原始复位事件及负IOPATH截零限制仍须查看，不等于全程无违规。\n\n- [完整审核](audit.json)\n- [全部功能结果](results.json)\n- [输入身份](input_manifest.json)\n- [回标原文](build/sdf.log)\n- [SDF运行](sdf_max/simulation.log)\n- [无SDF功能对照](gate_zero/simulation.log)\n\n大网表、SDF、授权模型和编译数据库仅留服务器。本轮不宣称独立签核。\n'
+    (output/'README.md').write_text(md,encoding='utf-8');(output/'README.html').write_text(html_page(md),encoding='utf-8')
     print('Verified post-simulation reports: '+str(output))
 
 if __name__=='__main__':main()

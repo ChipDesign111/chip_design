@@ -52,6 +52,7 @@ def main():
     for q in root.rglob('*'):
         if not q.is_file():continue
         relative=q.relative_to(root)
+        if relative.as_posix()=='review_manifest.json':continue
         if any(x in relative.parts for x in ['csrc','simv.daidir','inputs','objs']):continue
         if q.suffix in ['.json','.log','.tcl'] and q.stat().st_size<25*1024*1024:
             files[relative.as_posix()]=hashlib.sha256(q.read_bytes()).hexdigest()

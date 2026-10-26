@@ -1,0 +1,62 @@
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version Q-2020.03-SP2-7_Full64; Runtime version Q-2020.03-SP2-7_Full64;  Oct 26 11:31 2026
+Doing SDF annotation ...... Done
+ANNOTATION_CALLED path=timing.sdf time_ns=0.000
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tdi
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tms
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tck
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_rst_n
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_clk
+CLOCK_AT_CORE time_ns=10.640
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4056: Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.RC_CG_HIER_INST176.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11271, negedge E:11138, limits: (151,-62) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4056: Timing violation in tb_postsim.dut.i_axi_xbar.i_xbar.\gen_mst_port_mux[1].i_axi_mux .\gen_mux.i_w_fifo .RC_CG_HIER_INST30.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11427, negedge E:11349, limits: (142,-58) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4056: Timing violation in tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.fifo_i.RC_CG_HIER_INST223.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11467, negedge E:11392, limits: (146,-59) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 23642: Timing violation in tb_postsim.dut.i_axi_xbar.i_xbar.\gen_mst_port_mux[1].i_axi_mux .\gen_mux.i_w_fifo .\mem_q_reg[0][0] 
+    $setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 23642: Timing violation in tb_postsim.dut.i_axi_xbar.i_xbar.\gen_mst_port_mux[1].i_axi_mux .\gen_mux.i_w_fifo .\mem_q_reg[0][1] 
+    $setuphold( posedge CP:11590, posedge SE:11340, limits: (513,-173) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 23642: Timing violation in tb_postsim.dut.i_axi_xbar.i_xbar.\gen_mst_port_mux[2].i_axi_mux .\gen_mux.i_w_fifo .\mem_q_reg[0][0] 
+    $setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 23642: Timing violation in tb_postsim.dut.i_axi_xbar.i_xbar.\gen_mst_port_mux[2].i_axi_mux .\gen_mux.i_w_fifo .\mem_q_reg[0][1] 
+    $setuphold( posedge CP:11655, posedge SE:11465, limits: (513,-173) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 23642: Timing violation in tb_postsim.dut.i_axi_xbar.i_xbar.\gen_mst_port_mux[0].i_axi_mux .\gen_mux.i_w_fifo .\mem_q_reg[0][0] 
+    $setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 23642: Timing violation in tb_postsim.dut.i_axi_xbar.i_xbar.\gen_mst_port_mux[0].i_axi_mux .\gen_mux.i_w_fifo .\mem_q_reg[0][1] 
+    $setuphold( posedge CP:11673, posedge SE:11478, limits: (512,-173) );
+
+CLOCK_AT_CORE time_ns=30.640
+CLOCK_AT_CORE time_ns=50.640
+CLOCK_AT_CORE time_ns=70.640
+ACTIVE_START time_ns=600.000
+CPU_WAIT_START time_ns=165320.000
+FUNCTIONAL_PASS cycles=3658 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238840.000
+ACTIVE_END time_ns=238840.000
+
+"/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261026_193037_postsim_e7852dc/postsim/inputs/sram_period_adapter.v", 629: Timing violation in tb_postsim.dut.i_mainmem.i_sram.i_macro
+    $setuphold( posedge CLK &&& re_flag:238851510, negedge A[0]:238851388, limits: (477,39) );
+
+POSTSIM_DONE time_ns=238920.000
+$finish called from file "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261026_193037_postsim_e7852dc/postsim/inputs/tb_postsim.sv", line 104.
+$finish at simulation time            238920000
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 238920000 ps
+CPU Time:      9.070 seconds;       Data structure size:  27.1Mb
+Mon Oct 26 11:31:57 2026
