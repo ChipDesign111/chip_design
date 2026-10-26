@@ -1,0 +1,13 @@
+{
+  "remote_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_013823_9a6f4eb",
+  "acceptance": false,
+  "files_sha256": {
+    "failure_excerpt.log": "f391cb4484caf852226d89bb8d4f4762d7f3755cd70a0f891adf9653563d2a2e",
+    "my_soc_top_postRoute.summary.gz": "5daceb27060fb1f6bd0702e4b32df24a88497777405230ba14330d32958e723a",
+    "my_soc_top_postRoute_hold.summary.gz": "1d625e3b9dd384dcb6ec82ed1f736d18cc97263f6ce7904a6632bcafd219c2e4",
+    "README.md": "e369fee11ca5399533fbd06ccffdd8792345560f10c62b9d066b3011068198b5",
+    "repair_validation.json": "c13318fd55a3b1854740e3ca0ceb9303905fe103ae1ac4e2f346965f84795458",
+    "step_31.json": "f175f44be2a8d5e38b5f714082ecb891868923ff62a088d4f8db3bfe89e8a906",
+    "summary.json": "8ea9169e357533b68c2f0a040131e11549d50899f2af3d4c0259e34871ed2576"
+  }
+}

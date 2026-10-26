@@ -1,0 +1,12 @@
+EDA_STAGE_FAILED: Fanout net not uniquely resolved: slave[3]_b_ready
+Fanout net not uniquely resolved: slave[3]_b_ready
+    while executing
+"error "Fanout net not uniquely resolved: $net_name""
+    (procedure "eda_fix_fanout" line 13)
+    invoked from within
+"eda_fix_fanout $current_dir"
+
+*** Memory Usage v#1 (Current mem = 9048.531M, initial mem = 492.910M) ***
+*** Message Summary: 1944 warning(s), 2 error(s)
+
+--- Ending "Innovus" (totcpu=4:02:42, real=0:54:38, mem=9048.5M) ---

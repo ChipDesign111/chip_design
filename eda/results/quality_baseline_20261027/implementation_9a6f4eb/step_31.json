@@ -1,0 +1,33 @@
+{
+  "step": 31,
+  "commands_completed": true,
+  "input_manifest_sha256": "e27421f51bbfd526e4db3d5e3c8ce1ab3144522d89ee87f263c41f8468ffd60a",
+  "automatic_checks": {
+    "default_drc": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_013823_9a6f4eb/work/pnr/my_soc_top/my_soc_top_postAntennaFix_drc.rpt",
+      "zero_reported_violations": true,
+      "scope": "drc",
+      "archived_report": "evidence/stage_reports/31/pnr/my_soc_top/my_soc_top_postAntennaFix_drc.rpt",
+      "report_sha256": "77c9770505d17d3b8a10088b77b5190432a1448709b3da1f68143277c4fb4ca2"
+    },
+    "signal_connectivity": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_013823_9a6f4eb/work/pnr/my_soc_top/my_soc_top_postAntennaFix_signal.rpt",
+      "unresolved_signal_problems": 0,
+      "classified_io_abstract_nets": [
+        "VDDPST",
+        "VSSPST"
+      ],
+      "same_input_native_geometry_proof_step": 22,
+      "not_independent_LVS": true,
+      "archived_report": "evidence/stage_reports/31/pnr/my_soc_top/my_soc_top_postAntennaFix_signal.rpt",
+      "report_sha256": "5c324883880d282e5fc52df00a1ad9b16c16826a58f97ae869d25604926873c9"
+    },
+    "antenna": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_013823_9a6f4eb/work/pnr/my_soc_top/my_soc_top_postAntennaFix_antenna.rpt",
+      "violating_nets": 0,
+      "archived_report": "evidence/stage_reports/31/pnr/my_soc_top/my_soc_top_postAntennaFix_antenna.rpt",
+      "report_sha256": "900c116ea3087958b78a9815b194af9b2a0e5cf49c3361605b3110a102632c85"
+    }
+  },
+  "scope": "Only the listed automatic checks are asserted. Tcl guards also check object counts, IO geometry and halo. Not complete signoff."
+}

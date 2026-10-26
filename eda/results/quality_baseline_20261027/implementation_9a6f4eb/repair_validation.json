@@ -1,0 +1,42 @@
+{
+  "scope": "Flow-script validation only; no accepted physical result or SDF implied",
+  "frozen_physical_input": "9a6f4eb9bea58615d9137cf87f0705fff425a87f",
+  "repair_file": "eda/server/tcl/fanout.tcl",
+  "repair_file_sha256": "08344b4dc57a5c758a505d75924b8ecd9d6c072f6dee9c6856eef5c2d1b69b7b",
+  "all_targets_read_only_preflight": {
+    "targets": 676,
+    "bus_net_names": 190,
+    "passed": true
+  },
+  "native_ECO_tests": {
+    "diagnostic_directory": "analysis/fanout_production_checked",
+    "LEQCheck": true,
+    "checkpoint_saved": false,
+    "production_foreach_body_executed": true,
+    "cases": [
+      {
+        "net": "slave[3]_b_ready",
+        "receiver_pins": 136,
+        "moved_pins": 68,
+        "all_sink_and_driver_connections_verified": true
+      },
+      {
+        "net": "i_axi_xbar/i_xbar/gen_mst_port_mux[2].i_axi_mux/gen_mux.i_aw_arbiter/n_84",
+        "receiver_pins": 44,
+        "moved_pins": 22,
+        "all_sink_and_driver_connections_verified": true
+      }
+    ]
+  },
+  "local_tests": [
+    "Tcl list scalar extraction for literal bus and hierarchy names",
+    "Missing or ambiguous dbGet scalar results rejected",
+    "Native term parser receives flat string without list braces",
+    "Whitespace/brace/empty ECO selections rejected",
+    "Database pointer string identity preserved without expr numeric normalization",
+    "Repository policy and local documentation links",
+    "75 retained hardware SHA256 checks"
+  ],
+  "RTL_diff_against_main": [],
+  "next_requirement": "New clean-source upload, fresh synthesis and complete34-step validation; no diagnostic checkpoint reused"
+}
