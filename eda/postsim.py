@@ -26,6 +26,7 @@ def main():
     parser.add_argument('--host',default='chipdesign')
     parser.add_argument('--eda-upload',help='Completed physical upload; defaults to last_upload.json')
     parser.add_argument('--output',type=Path)
+    parser.add_argument('--simulator',choices=['vcs','xcelium'],default='vcs')
     args=parser.parse_args()
     if args.command=='run':
         eda=remote.valid_upload(args.eda_upload or json.loads((DIST/'last_upload.json').read_text())['upload'])
@@ -39,7 +40,7 @@ def main():
             (firmware/name).write_bytes((p/'firmware.hex').read_bytes())
         subprocess.run([sys.executable,str(ROOT/'eda/package_server.py')],cwd=ROOT,check=True)
         parent=str(Path(eda).parent).replace('\\','/')
-        name=datetime.now().strftime('%Y%m%d_%H%M%S')+'_postsim_'+subprocess.check_output(['git','rev-parse','--short','HEAD'],cwd=ROOT).decode().strip()
+        name=datetime.now().strftime('%Y%m%d_%H%M%S')+'_postsim_'+args.simulator+'_'+subprocess.check_output(['git','rev-parse','--short','HEAD'],cwd=ROOT).decode().strip()
         upload=remote.valid_upload(parent+'/'+name)
         remote.ssh(args.host,'set -e\nmkdir '+shlex.quote(upload)+'\n')
         remote.scp(args.host,[DIST/'chip_design_eda.tar.gz',DIST/'chip_design_eda.tar.gz.sha256'],upload+'/')
@@ -50,8 +51,8 @@ def main():
         ui=firmware/'gui';ui.mkdir();(ui/'README.md').write_text(guide,encoding='utf-8');(ui/'README.html').write_text(html_page(guide),encoding='utf-8')
         remote.scp(args.host,[ui/'README.md',ui/'README.html'],upload+'/')
         remote.scp(args.host,list(firmware.glob('firmware*.hex')),upload+'/configs/')
-        remote.save(DIST/'last_postsim.json',{'host':args.host,'upload':upload,'eda_upload':eda})
-        cmd='python3 -u deploy/server/postsim/run.py --eda-work '+shlex.quote(eda+'/work')+' --run-root '+shlex.quote(upload+'/postsim')+' --firmware '+shlex.quote(upload+'/configs/firmware.hex')
+        remote.save(DIST/'last_postsim.json',{'host':args.host,'upload':upload,'eda_upload':eda,'simulator':args.simulator})
+        cmd='python3 -u deploy/server/postsim/run.py --eda-work '+shlex.quote(eda+'/work')+' --run-root '+shlex.quote(upload+'/postsim')+' --firmware '+shlex.quote(upload+'/configs/firmware.hex')+' --simulator '+args.simulator
         print(remote.ssh(args.host,'set -e\nsource /etc/profile.d/eda.sh\ncd '+shlex.quote(upload)+'\nnohup '+cmd+' >logs/postsim.log 2>&1 < /dev/null &\necho $! >logs/postsim.pid\ncat logs/postsim.pid\n'))
         print('Postsim upload: '+upload);return
     state=json.loads((DIST/'last_postsim.json').read_text());upload=remote.valid_upload(state['upload'])

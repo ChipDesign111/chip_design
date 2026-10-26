@@ -26,6 +26,7 @@ def execute(command, directory, log):
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--eda-work',type=Path,required=True)
     ap.add_argument('--run-root',type=Path,required=True);ap.add_argument('--firmware',type=Path,required=True)
+    ap.add_argument('--simulator',choices=['vcs','xcelium'],default='vcs')
     args=ap.parse_args();work=args.eda_work.resolve();root=args.run_root.resolve()
     if root.exists():raise ValueError('Choose a NEW post-simulation run directory')
     if not (work/'evidence/step_34.json').is_file():raise ValueError('Missing completed EDA input')
@@ -41,7 +42,7 @@ def main():
     record={k:{'source':str(p),'sha256':sha(p)} for k,p in paths.items()}
     additional=sorted(args.firmware.parent.glob('firmware_*.hex'))
     for p in additional:record[p.stem]={'source':str(p.resolve()),'sha256':sha(p)}
-    (root/'input_manifest.json').write_text(json.dumps({'eda_work':str(work),'files':record},indent=2)+'\n')
+    (root/'input_manifest.json').write_text(json.dumps({'eda_work':str(work),'simulator':args.simulator,'files':record},indent=2)+'\n')
     driver=root/'export.tcl'
     driver.write_text('set eda_work {'+str(work)+'}\nset sim_inputs {'+str(inputs)+'}\nsource {'+str(Path(__file__).resolve().with_name('export_view.tcl'))+'}\n')
     execute(['innovus','-batch','-files',str(driver),'-log',str(root/'view_export')],root,'view_export.log')
@@ -57,7 +58,7 @@ def main():
     macro=inputs/'sram_period_adapter.v';macro.write_text(text)
     record['simulation_netlist']={'source':str(inputs/'netlist.v'),'sha256':sha(inputs/'netlist.v')}
     record['sram_simulation_adapter']={'source':str(macro),'sha256':sha(macro),'change':'Add negedge period declaration; native notifier, SDF limits; licensed copy retained server-only'}
-    (root/'input_manifest.json').write_text(json.dumps({'eda_work':str(work),'files':record},indent=2)+'\n')
+    (root/'input_manifest.json').write_text(json.dumps({'eda_work':str(work),'simulator':args.simulator,'files':record},indent=2)+'\n')
     build=root/'build';build.mkdir()
     # VCS precompiles literal $sdf_annotate inputs during elaboration.
     shutil.copyfile(inputs/'timing.sdf',build/'timing.sdf')
@@ -66,6 +67,14 @@ def main():
              '-o',str(build/'simv'),str(inputs/'tb_postsim.sv'),str(inputs/'netlist.v')]
     for key in ['standard_cells','io_cells']:command+=['-v',str(paths[key])]
     command+=['-v',str(macro)]
+    if args.simulator=='xcelium':
+        command=['xrun','-64bit','-sv','-elaborate','-xmlibdirname',str(build/'xcelium.d'),
+                 '-snapshot','tb_postsim_sdf','-access','+rwc','-negdelay','-neg_verbose',
+                 '-sdf_verbose','-sdfstats',str(build/'sdfstats.log'),'-define','NTC',
+                 '-define','RECREM','-timescale','1ns/1ps','-top','tb_postsim',
+                 str(inputs/'tb_postsim.sv'),str(inputs/'netlist.v')]
+        for key in ['standard_cells','io_cells']:command+=['-v',str(paths[key])]
+        command+=['-v',str(macro)]
     execute(command,build,'compile.log')
     results={}
     cases=[('sdf_max',[],inputs/'firmware.hex'),('gate_zero',['+NO_SDF'],inputs/'firmware.hex'),
@@ -82,10 +91,21 @@ def main():
             # A zero-delay netlist driving a native nonzero-setup SRAM is not
             # a timing experiment. This explicit control alone disables checks.
             control=root/'build_zero';control.mkdir()
-            zero=command.copy();zero[zero.index('-o')+1]=str(control/'simv')
-            zero+=['+notimingcheck','+define+NO_SDF']
+            zero=command.copy()
+            if args.simulator=='vcs':
+                zero[zero.index('-o')+1]=str(control/'simv')
+                zero+=['+notimingcheck','+define+NO_SDF']
+            else:
+                zero[zero.index('-xmlibdirname')+1]=str(control/'xcelium.d')
+                zero[zero.index('-sdfstats')+1]=str(control/'sdfstats.log')
+                zero+=['-notimingchecks','-define','NO_SDF']
             execute(zero,control,'compile.log');executable=control/'simv'
-        execute([str(executable)]+flags,run,'simulation.log')
+        if args.simulator=='vcs':
+            execute([str(executable)]+flags,run,'simulation.log')
+        else:
+            cache=control if mode=='gate_zero' else build
+            execute(['xrun','-64bit','-R','-xmlibdirname',str(cache/'xcelium.d'),
+                     '-snapshot','tb_postsim_sdf']+flags,run,'simulation.log')
         text=(run/'simulation.log').read_text(errors='replace')
         match=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
         reset_match=re.search(r'RESET_ASSERT offset_ps=(\d+)',text)
@@ -98,7 +118,7 @@ def main():
                        'io_bus_conflicts':io_events,'startup_control':mode=='pad_startup_control'}
         (root/'partial_results.json').write_text(json.dumps(results,indent=2)+'\n')
         if mode!='pad_startup_control' and io_events:raise RuntimeError('Unexpected IO conflict: '+mode)
-        if mode=='pad_startup_control' and (len(io_events)!=5 or any(e['time_ps'] for e in io_events)):
+        if mode=='pad_startup_control' and ((args.simulator=='vcs' and len(io_events)!=5) or any(e['time_ps'] for e in io_events)):
             raise RuntimeError('Time-zero startup control did not reproduce the five native IO messages')
     for item in record.values():
         if sha(Path(item['source']))!=item['sha256']:raise RuntimeError('Input changed: '+item['source'])
