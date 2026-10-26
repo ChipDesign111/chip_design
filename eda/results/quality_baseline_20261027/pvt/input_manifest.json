@@ -1,0 +1,56 @@
+{
+  "eda_work": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261026_214621_5191064/work",
+  "files": {
+    "/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tcb018gbwp7t_270a/tcb018gbwp7ttc.lib": "7378c9a4ae778909fe36956e2c7b42b90851eb7e6d37af84290ac6c4c64cc10f",
+    "/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tpd018nv_280a/tpd018nvtc.lib": "09ec264c1f98b5827fedcbeb0c8432c57fa178826bdd18f44af7d005224cbb57",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261026_214621_5191064/work/src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8_tt_1p8_25C_syn.lib": "e179b0f6842b66e34c4ae95c2ee3253ace2e35475300b6cfcb15f0bc079fd6fe",
+    "/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tcb018gbwp7t_270a/tcb018gbwp7twc.lib": "9a689cf68d3f05a14659b3c229aefd2e2efa431d37dc59dc9ac2eeb5fdba065c",
+    "/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tpd018nv_280a/tpd018nvwc.lib": "a73580446059cdcd0266d66b3c87c24ffa4ce10b18ed85e4fabbfb41b1607166",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261026_214621_5191064/work/src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8_ss_1p62_125C_syn.lib": "01895c490ce7417259dc29e295375fa3c9001498acedf9ee1d36fafd9363a1f8",
+    "/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tcb018gbwp7t_270a/tcb018gbwp7tbc.lib": "5cf5207ef9e067f4c8622cd25e2792840660889f0267c632dc9246400b193ac0",
+    "/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tpd018nv_280a/tpd018nvbc.lib": "e934b6324265a253de11d92c25e8017343ad3c7a7bf4e40f2cd98ace21661ef1",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261026_214621_5191064/work/src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8_ff_1p98_0C_syn.lib": "78fea04d224a6b51e39a4e734003fe7f6063489ee04050c30e1cfebb4d154e11",
+    "/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tcb018gbwp7t_270a/tcb018gbwp7tlt.lib": "28a749259b0e6d394f42d3a4731f3ffb29f92ef046c3921ce83635a72fe891de",
+    "/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tpd018nv_280a/tpd018nvlt.lib": "a5608c5a7c6ba0e0918a44d3105944979b985273547538088498be479a2eaa48",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261026_214621_5191064/work/src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8_ff_1p98_-40C_syn.lib": "78fb06d928e4a1aaa3e62d5f403d5d0130b71847229440eb106371966f7a55dc",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261026_214621_5191064/work/evidence/input_manifest.json": "daf0fa6d68fdfeee8614d3984d1ba78002df4e9683ab9a7b0a2cfb1bf7e98810",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261026_214621_5191064/work/evidence/step_34.json": "74e73825876dc48dc1f5456834bdb4995eb6ea1c325f7056f82e6703231bc0de",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261026_214621_5191064/work/pnr/my_soc_top/backup/step34.enc": "bc2b00ea1451254f77e6b2cd3c7254533e29bbc34e1ba4512ee149e726bcb655"
+  },
+  "available_pvt": [
+    [
+      "tt",
+      "tc",
+      "tt_1p8_25C",
+      25,
+      1.8,
+      3.3
+    ],
+    [
+      "ss",
+      "wc",
+      "ss_1p62_125C",
+      125,
+      1.62,
+      3.0
+    ],
+    [
+      "ff0",
+      "bc",
+      "ff_1p98_0C",
+      0,
+      1.98,
+      3.6
+    ],
+    [
+      "ffm40",
+      "lt",
+      "ff_1p98_-40C",
+      -40,
+      1.98,
+      3.6
+    ]
+  ],
+  "RC_scope": "Same supplied typical captable at each temperature; not foundry min/max RC corners",
+  "no_ECO": true
+}

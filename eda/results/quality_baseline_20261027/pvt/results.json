@@ -1,0 +1,95 @@
+{
+  "analysis_complete": true,
+  "all_available_pvt_passed": false,
+  "views": {
+    "tt": {
+      "setup": {
+        "wns_ns": 0.371,
+        "worst_paths_reported": 5,
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_012840_pvt_b72fe2a/pvt/tt_setup.log",
+        "tns_ns": null,
+        "violating_path_count": null,
+        "nonnegative": true
+      },
+      "hold": {
+        "wns_ns": 0.019,
+        "worst_paths_reported": 5,
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_012840_pvt_b72fe2a/pvt/tt_hold.log",
+        "tns_ns": null,
+        "violating_path_count": null,
+        "nonnegative": true
+      }
+    },
+    "ss": {
+      "setup": {
+        "wns_ns": -12.435,
+        "worst_paths_reported": 5,
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_012840_pvt_b72fe2a/pvt/ss_setup.log",
+        "tns_ns": null,
+        "violating_path_count": null,
+        "nonnegative": false
+      },
+      "hold": {
+        "wns_ns": 0.094,
+        "worst_paths_reported": 5,
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_012840_pvt_b72fe2a/pvt/ss_hold.log",
+        "tns_ns": null,
+        "violating_path_count": null,
+        "nonnegative": true
+      }
+    },
+    "ff0": {
+      "setup": {
+        "wns_ns": 5.19,
+        "worst_paths_reported": 5,
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_012840_pvt_b72fe2a/pvt/ff0_setup.log",
+        "tns_ns": null,
+        "violating_path_count": null,
+        "nonnegative": true
+      },
+      "hold": {
+        "wns_ns": -0.058,
+        "worst_paths_reported": 5,
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_012840_pvt_b72fe2a/pvt/ff0_hold.log",
+        "tns_ns": null,
+        "violating_path_count": null,
+        "nonnegative": false
+      }
+    },
+    "ffm40": {
+      "setup": {
+        "wns_ns": 5.408,
+        "worst_paths_reported": 5,
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_012840_pvt_b72fe2a/pvt/ffm40_setup.log",
+        "tns_ns": null,
+        "violating_path_count": null,
+        "nonnegative": true
+      },
+      "hold": {
+        "wns_ns": -0.066,
+        "worst_paths_reported": 5,
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_012840_pvt_b72fe2a/pvt/ffm40_hold.log",
+        "tns_ns": null,
+        "violating_path_count": null,
+        "nonnegative": false
+      }
+    }
+  },
+  "aggregate": {
+    "hold": {
+      "wns_ns": -0.066,
+      "tns_ns": -3.458,
+      "violating_paths": 165,
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_012840_pvt_b72fe2a/pvt/reports/my_soc_top_postRoute_hold.summary.gz"
+    },
+    "setup": {
+      "wns_ns": -12.435,
+      "tns_ns": -46971.7,
+      "violating_paths": 7155,
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_012840_pvt_b72fe2a/pvt/reports/my_soc_top_postRoute.summary.gz"
+    }
+  },
+  "original_inputs_unchanged": true,
+  "collector_sha256": "1a7ee00d3937bbdfa3c03f702006d80d34e24086e732bd6c114dbaeaf55f4268",
+  "scope": "Matched TT/SS125/FF0/FF-40 library WNS and aggregate TNS/path counts; per-view TNS not separately reported; same typical RC technology, not full foundry RC/SI/IR/EM/LVS signoff"
+}

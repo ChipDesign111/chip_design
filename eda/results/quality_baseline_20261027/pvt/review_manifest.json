@@ -1,0 +1,22 @@
+{
+  "archive_sha256": "520fcff171d7bc6e2333b9d769d77ef0dc9a09d6829186369e43e65f08adb86d",
+  "files": {
+    "pvt.tcl": "6da176afcb98b9f3563f39c3f721ef6923aa86ecaa9521a9a99be5d3cd02aa87",
+    "ss_setup.log": "44091a9696652a7bad429b9d94f1ecf5d96c318e262504306a3adc74e4a701fd",
+    "ffm40_setup.log": "31c3cc3ef4b1e8ed362322b82cc9b255ad5f5ffe17e281ea1888c21310106e99",
+    "ss_hold.log": "674175da9f1a925374bdf33d55e834025058bb418ea852e19176d59edd6877a3",
+    "ffm40_hold.log": "6731a049195594e128c7748d252678a3fe3e2b3f55415ff81c0364bb02ea73ac",
+    "tt_hold.log": "6e175d48ccea74a15dfdb649df7f9022f2854989024b7b64f6dbcd56ed35b954",
+    "pvt.log": "67f24aa37ec97a458952e7bf36f447a07e337591143d1807c75f6d90782b4535",
+    "ff0_hold.log": "0e4e5e67f7ad7fdc12ae5d49b7edc098a7881bfc8c5b37e37bc638094d61447b",
+    "input_manifest.json": "715db98494d7178292b4edf5ce8c0d8c649849123edd9c9e9eacbc2185a38d02",
+    "tt_setup.log": "9240592aefe2129755dd924fb54bf72c029b9076422308a4e7a8e8212aca886c",
+    "ff0_setup.log": "afb5aaa493fc72ac60683bae06194f599099ef9a0c32d42e274a4f4226295c93",
+    "results.json": "2e01b40ddb4fa5397fc70787b913e24e103576b4f35dc5516f6ab02cbdc75f66",
+    "command.json": "76fa45e934901ce5713ae535d2a52db2f83cf8f029497a4f2cb90bea5d4af3fd",
+    "tool.log": "5d8c120e7f4159ce03e0e317583a7b5b38070b7ddc21c11000d754b9ec11418f",
+    "reports/my_soc_top_postRoute_hold.summary.gz": "afe7d8dbf6e782fd9b5a0042fffd48559b4dbb471c41434e0ea996ae50cf5103",
+    "reports/my_soc_top_postRoute.summary.gz": "497ad38be0577a88da1acdcfd9d1db43d96a2bf2d7b75d877b7f56f63dbe28bf"
+  },
+  "remote_root": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_012840_pvt_b72fe2a/pvt"
+}
