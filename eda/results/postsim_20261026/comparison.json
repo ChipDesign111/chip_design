@@ -1,0 +1,19 @@
+{
+  "control": {
+    "violations": 14,
+    "pass": true
+  },
+  "reset_window": {
+    "violations": 0,
+    "pass": true
+  },
+  "active_window": {
+    "timing_disabled_until_ns": 300,
+    "timing_enabled_from_ns": 300,
+    "timing_disabled_again_at_ns": 238502
+  },
+  "exit_codes": {
+    "control": 0,
+    "reset_window": 0
+  }
+}
