@@ -62,7 +62,8 @@ def read_config(path):
         raise ValueError('Fixed core size is below profile minimum')
     if c['cpu_clock_gate'] != 'repository_passthrough':
         raise ValueError('Changing CPU clock gating requires a separate validated profile')
-    if not isinstance(c['max_repair_iterations'], int) or not 1 <= c['max_repair_iterations'] <= 10 or not 0 <= c['hold_target_ns'] <= 0.1:
+    c.setdefault('min_hold_slack_ns',0.0)
+    if not isinstance(c['max_repair_iterations'], int) or not 1 <= c['max_repair_iterations'] <= 10 or not 0 <= c['min_hold_slack_ns'] <= c['hold_target_ns'] <= 0.2:
         raise ValueError('Invalid repair iteration count/target')
     if len(c['macro_xy_um']) != 2 or any(not isinstance(x, (int, float)) or not math.isfinite(x) or x < 200 for x in c['macro_xy_um']):
         raise ValueError('Macro coordinates must leave room for core rings and halo')
@@ -130,7 +131,7 @@ def prepare(args):
         shutil.copytree(str(work / 'flow' / name), str(work / name))
     (work / 'config/design.json').write_text(json.dumps(config, indent=2) + '\n', encoding='utf-8')
     shutil.copyfile(str(SERVER / 'config/io_plan.json'), str(work / 'config/io_plan.json'))
-    (work / 'flow/config/repair.tcl').write_text('set eda_repair_iterations %d\nset eda_hold_target %g\n' % (config['max_repair_iterations'], config['hold_target_ns']), encoding='utf-8')
+    (work / 'flow/config/repair.tcl').write_text('set eda_repair_iterations %d\nset eda_hold_target %g\nset eda_min_hold_slack %g\n' % (config['max_repair_iterations'], config['hold_target_ns'], config['min_hold_slack_ns']), encoding='utf-8')
     user = work / 'config/user_define.tcl'
     text = user.read_text(encoding='utf-8')
     for key, value in [('PROJECT_ROOT', tcl(work)), ('PDK_ROOT', tcl(pdk)), ('rm_clock_period', config['system_period_ns']), ('syn_cpus', config['cpus']), ('pnr_cpus', config['cpus'])]:

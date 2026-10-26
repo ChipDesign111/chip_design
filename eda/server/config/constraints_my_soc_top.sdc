@@ -102,5 +102,5 @@ set_max_fanout ${rm_max_fanout} ${rm_core_top}
 
 # specify maximum transition for whole design
 # override clock maximum transition
-# set_max_transition ${rm_max_transition} ${rm_core_top}
-# set_max_transition ${rm_max_clock_transition} [get_clocks] -clock_path
+set_max_transition ${rm_max_transition} ${rm_core_top}
+set_max_transition ${rm_max_clock_transition} [get_clocks {sys_clk jtag_clk}] -clock_path

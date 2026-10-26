@@ -72,7 +72,7 @@ def area_summary(path):
     return {'cell_count': int(numbers[0]), 'cell_area_um2': numbers[1], 'net_area_um2': numbers[2], 'latch_area_um2': numbers[7], 'memory_area_um2': numbers[9], 'report': str(path)}
 
 
-def timing(directory, require_clean=False):
+def timing(directory, require_clean=False, min_hold_ns=0.0):
     found = {}
     for p in sorted(directory.glob('*.summary*')):
         text = load_text(p)
@@ -89,7 +89,8 @@ def timing(directory, require_clean=False):
         if mode == 'Setup' and not {'max_cap', 'max_tran', 'max_fanout'}.issubset(drv):
             raise ValueError('Missing electrical DRV fields: ' + str(p))
         value = {'report': str(p), 'wns_ns': float(fields[0].group(1)), 'tns_ns': float(fields[1].group(1)), 'violating_paths': int(fields[2].group(1)), 'drv': drv, 'electrical_drv_table_reported_here': bool(drv)}
-        value['targets_met'] = value['wns_ns'] >= 0 and value['tns_ns'] == 0 and value['violating_paths'] == 0 and all(x['real'] == x['total'] == 0 for x in drv.values())
+        value['minimum_wns_ns'] = min_hold_ns if mode=='Hold' else 0.0
+        value['targets_met'] = value['wns_ns'] >= value['minimum_wns_ns'] and value['tns_ns'] == 0 and value['violating_paths'] == 0 and all(x['real'] == x['total'] == 0 for x in drv.values())
         if mode in found:
             raise ValueError('Ambiguous multiple timing summaries for ' + mode + ': ' + str(directory))
         found[mode] = value
@@ -379,7 +380,8 @@ def audit_step(work, step):
         checks['io_controls'] = helper(work, 'audit_io_ties.py')
     timing_dirs = {26: 'preCTS', 28: 'postCTS', 29: 'postCTS_holdFix_check', 32: 'postRoute_holdAuto_check', 33: 'postFiller'}
     if step in timing_dirs:
-        checks['timing'] = timing(pnr / 'reports' / timing_dirs[step], step in [32, 33])
+        minimum=json.loads((work/'config/design.json').read_text()).get('min_hold_slack_ns',0.0) if step in [32,33] else 0.0
+        checks['timing'] = timing(pnr / 'reports' / timing_dirs[step], step in [32, 33], minimum)
         if step in [26, 28, 29]:
             checks['timing_scope'] = 'Pre-route diagnostic: residuals are recorded; only post-route steps32/33 require all timing/electrical targets met.'
     if step == 14:

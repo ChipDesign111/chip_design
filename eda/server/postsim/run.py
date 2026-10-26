@@ -39,13 +39,6 @@ def main():
            'standard_cells':Path('/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v'),
            'io_cells':Path('/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Front_End/verilog/tpd018nv_260a/tpd018nv.v'),
            'sram':work/'src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8.v'}
-    ties=Path(__file__).resolve().with_name('constant_ties.sv')
-    if args.simulator=='vcs':
-        native=paths['standard_cells'].read_text()
-        for name,pin,value in [('TIEHBWP7T','Z','1'),('TIELBWP7T','ZN','0')]:
-            pattern=r'module\s+'+name+r'\s*\(\s*'+pin+r'\s*\)\s*;\s*output\s+'+pin+r'\s*;\s*buf\s*\(\s*'+pin+r"\s*,\s*1'b"+value+r'\s*\)\s*;\s*endmodule'
-            if not re.search(pattern,native):raise ValueError('Native tie model is not the verified zero-input/zero-delay constant: '+name)
-        paths['constant_tie_view']=ties
     record={k:{'source':str(p),'sha256':sha(p)} for k,p in paths.items()}
     additional=sorted(args.firmware.parent.glob('firmware_*.hex'))
     for p in additional:record[p.stem]={'source':str(p.resolve()),'sha256':sha(p)}
@@ -74,7 +67,6 @@ def main():
              '-o',str(build/'simv'),str(inputs/'tb_postsim.sv'),str(inputs/'netlist.v')]
     for key in ['standard_cells','io_cells']:command+=['-v',str(paths[key])]
     command+=['-v',str(macro)]
-    if args.simulator=='vcs':command.append(str(ties))
     if args.simulator=='xcelium':
         command=['xrun','-64bit','-sv','-elaborate','-xmlibdirname',str(build/'xcelium.d'),
                  '-snapshot','tb_postsim_sdf','-access','+rwc','-negdelay','-neg_verbose',
@@ -86,7 +78,7 @@ def main():
     execute(command,build,'compile.log')
     results={}
     cases=[('sdf_max',[],inputs/'firmware.hex'),('gate_zero',['+NO_SDF'],inputs/'firmware.hex'),
-           ('pad_startup_control',[],inputs/'firmware.hex'),
+           ('pad_startup_control',['+PAD_DRIVE_PS=0'],inputs/'firmware.hex'),
            ('pad_conflict_control',['+INJECT_PAD_CONFLICT'],inputs/'firmware.hex')]
     # Sweep asynchronous reset assertion across a full system period, without
     # masking timing checks/notifiers. Keep the first case at the old2ns phase.
@@ -109,12 +101,6 @@ def main():
                 zero[zero.index('-sdfstats')+1]=str(control/'sdfstats.log')
                 zero+=['-notimingchecks','-define','NO_SDF']
             execute(zero,control,'compile.log');executable=control/'simv'
-        if mode=='pad_startup_control' and args.simulator=='vcs':
-            control=root/'build_native_ties';control.mkdir()
-            native_command=[s for s in command if s!=str(ties)]
-            native_command[native_command.index('-o')+1]=str(control/'simv')
-            shutil.copyfile(inputs/'timing.sdf',control/'timing.sdf')
-            execute(native_command,control,'compile.log');executable=control/'simv'
         if args.simulator=='vcs':
             execute([str(executable)]+flags,run,'simulation.log')
         else:
@@ -130,14 +116,18 @@ def main():
                        'timing_violation_messages':len(re.findall(r'Timing violation',text,re.I)),
                        'reset_offset_ps':int(reset_match.group(1)),
                        'pad_drive_ps':int(re.search(r'PAD_DRIVE_ON time_ns=[\d.]+ delay_ps=(\d+)',text).group(1)),
-                       'io_bus_conflicts':io_events,'startup_control':mode=='pad_startup_control'}
+                       'io_bus_conflicts':io_events,'startup_control':mode=='pad_startup_control',
+                       'timezero_io_warning_free':not io_events}
         (root/'partial_results.json').write_text(json.dumps(results,indent=2)+'\n')
         if mode=='pad_conflict_control':
             begin=re.search(r'EXPECTED_IO_CONFLICT_BEGIN time_ns=([\d.]+)',text)
             end=re.search(r'EXPECTED_IO_CONFLICT_END time_ns=([\d.]+)',text)
             if not begin or not end or not io_events or any(not e['instance'].endswith('i_pad_tdo') or not float(begin.group(1))*1000<=e['time_ps']<=float(end.group(1))*1000 for e in io_events):
                 raise RuntimeError('Native IO conflict detector did not report precisely the deliberate output contention')
-        elif mode!='pad_startup_control' and io_events:raise RuntimeError('Unexpected IO conflict: '+mode)
+        elif io_events:
+            expected={'tb_postsim.dut.i_pad_'+n for n in ['clk','rst_n','tck','tms','tdi']}
+            if len(io_events)!=5 or {e['instance'] for e in io_events}!=expected or any(e['time_ps'] for e in io_events):
+                raise RuntimeError('Unexpected IO conflict: '+mode)
         if mode=='pad_startup_control' and ((args.simulator=='vcs' and len(io_events)!=5) or any(e['time_ps'] for e in io_events)):
             raise RuntimeError('Time-zero startup control did not reproduce the five native IO messages')
     for item in record.values():

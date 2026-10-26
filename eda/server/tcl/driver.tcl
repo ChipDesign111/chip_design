@@ -62,6 +62,20 @@ proc eda_drc_count {path} {
     if {[string first "No DRC violations were found" $text] >= 0} {return 0}
     error "Unrecognized DRC report: $path"
 }
+proc eda_hold_margin_bad {directory} {
+    global eda_min_hold_slack
+    set seen 0
+    foreach p [glob -nocomplain [file join $directory *.summary] [file join $directory *.summary.gz]] {
+        set fd [open $p rb];set data [read $fd];close $fd
+        if {[file extension $p] eq ".gz"} {set data [zlib gunzip $data]}
+        if {[string first "Hold mode" $data]<0} {continue}
+        if {![regexp {WNS \(ns\):\|\s*([-0-9.]+)} $data -> wns]} {error "Missing hold WNS: $p"}
+        incr seen
+        if {$wns < $eda_min_hold_slack} {return 1}
+    }
+    if {$seen!=1} {error "Missing or ambiguous hold margin summary: $directory"}
+    return 0
+}
 if {[catch {
     if {$eda_last == 0} {
         source [file join $eda_work pnr scripts init_pnr.tcl]
@@ -149,7 +163,7 @@ if {[catch {
                     set current_dir [expr {$iteration == 0 ? "../my_soc_top/reports/postRoute" : "../my_soc_top/reports/postRoute_holdAuto_check"}]
                     if {[eda_fix_fanout $current_dir] > 0} {set current_dir ../my_soc_top/reports/postRoute_fanout_check}
                     set bad [eda_timing_bad $current_dir]
-                    if {$bad == 0} {break}
+                    if {$bad == 0 && ![eda_hold_margin_bad $current_dir]} {break}
                     if {[eda_timing_bad $current_dir Setup] > 0} {
                         eda_eval 32_setup_opt {optDesign -postRoute -expandedViews -outDir ../my_soc_top/reports/postRoute_setupAuto}
                     }
