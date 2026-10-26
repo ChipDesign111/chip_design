@@ -36,3 +36,11 @@ ECO后的保护也改为核对数据库连接对象：选中引脚所在网络�
 正式ECO主体已在原31步数据库的两个实际网络上验证通过：`slave[3]_b_ready`原136个接收引脚、移动68个；另一个带数组层次的仲裁器网络原44个、移动22个，所有选中/未选中引脚与驱动连接均正确。原网络名称有时保留在输出侧，属于工具的命名方式。诊断仅修改内存中的数据库，不保存、不接入正式结果。专项验证、75项保留硬件SHA和仓库检查均通过，详见[验证记录](../eda/results/quality_baseline_20261027/implementation_9a6f4eb/repair_validation.json)。完整时序/物理/后仿仍待新版本全流程。
 
 修复只影响流程脚本，不改功能RTL、时钟、路径例外或验收上限。服务器只读预检使用原31步数据库；它不保存ECO数据库，也不把诊断输出拼入正式结果。正式验证必须提交后创建新上传版本，从综合重新执行34步。首轮原始摘要与失败证据见[首轮实现记录](../eda/results/quality_baseline_20261027/implementation_9a6f4eb/README.md)。
+
+## 修复后的独立重跑
+
+正式物理源码为`bcc483e94bdf8ae8836ffcbb05eebf673b9ffa2b`，已推送xzx。干净源码包SHA256为`3594b4632d9afd1ff5eb67c646e20ef7984a1887ba78fecd08e06cc20ee88202`，独立上传目录为`/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e`。源包191项输入与source.json共192项，远端fanout.tcl SHA与已验证修复一致。环境阶段已退出0，Genus正在进行全新综合；后端、结果整理与新SDF测试尚未完成。
+
+服务器GUI打开该目录README.html查看解压、三个阶段入口、逐步报告和结果路径。此版本已启动，不要再次执行run_all.sh。Windows可执行`python eda/remote.py status`读取进度；通过最终验收后，用`python eda/remote.py fetch --upload /home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e --wait --output 本机新结果目录`抓取并校验小包。后仿仍须使用本轮新导出的SDF；不能拿旧main结果证明本轮通过。
+
+main远端仍为d40b217；本轮流程修复与后续结果保留xzx，不自动再次合并。
