@@ -68,10 +68,12 @@ def main():
     command+=['-v',str(macro)]
     execute(command,build,'compile.log')
     results={}
-    cases=[('sdf_max',[],inputs/'firmware.hex'),('gate_zero',['+NO_SDF'],inputs/'firmware.hex')]
+    cases=[('sdf_max',[],inputs/'firmware.hex'),('gate_zero',['+NO_SDF'],inputs/'firmware.hex'),
+           ('pad_startup_control',['+PAD_DRIVE_PS=0'],inputs/'firmware.hex')]
     # Sweep asynchronous reset assertion across a full system period, without
     # masking timing checks/notifiers. Keep the first case at the old2ns phase.
     cases += [('sdf_'+p.stem,['+RESET_OFFSET_PS=%d'%(250+1400*i)],p) for i,p in enumerate(additional)]
+    (root/'run_plan.json').write_text(json.dumps([{'mode':m,'flags':f,'firmware':str(p)} for m,f,p in cases],indent=2)+'\n')
     for mode,flags,firmware in cases:
         run=root/mode;run.mkdir();shutil.copyfile(firmware,run/'firmware.hex')
         os.link(inputs/'timing.sdf',run/'timing.sdf')
@@ -88,9 +90,16 @@ def main():
         match=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
         reset_match=re.search(r'RESET_ASSERT offset_ps=(\d+)',text)
         if not match or not reset_match or 'POSTSIM_DONE' not in text:raise RuntimeError('Functional/reset result missing: '+mode)
+        io_events=[{'time_ps':int(t),'instance':i.strip()} for t,i in re.findall(r'ERROR\s*:\s*(\d+)\s*\+\+BUS CONFLICT\+\+\s*:\s*([^\r\n]+)',text)]
         results[mode]={'functional_pass':bool(match),'values':list(map(int,match.groups())) if match else None,
                        'timing_violation_messages':len(re.findall(r'Timing violation',text,re.I)),
-                       'reset_offset_ps':int(reset_match.group(1))}
+                       'reset_offset_ps':int(reset_match.group(1)),
+                       'pad_drive_ps':int(re.search(r'PAD_DRIVE_ON time_ns=[\d.]+ delay_ps=(\d+)',text).group(1)),
+                       'io_bus_conflicts':io_events,'startup_control':mode=='pad_startup_control'}
+        (root/'partial_results.json').write_text(json.dumps(results,indent=2)+'\n')
+        if mode!='pad_startup_control' and io_events:raise RuntimeError('Unexpected IO conflict: '+mode)
+        if mode=='pad_startup_control' and (len(io_events)!=5 or any(e['time_ps'] for e in io_events)):
+            raise RuntimeError('Time-zero startup control did not reproduce the five native IO messages')
     for item in record.values():
         if sha(Path(item['source']))!=item['sha256']:raise RuntimeError('Input changed: '+item['source'])
     (root/'results.json').write_text(json.dumps(results,indent=2)+'\n')

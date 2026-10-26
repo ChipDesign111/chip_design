@@ -2,9 +2,21 @@
 module tb_postsim;
   reg clk=0, rst_n=0;
   always #10 clk=~clk; // Same 20 ns system period as the physical implementation.
+  // The board starts with its drivers disconnected while native IO tie and
+  // pull controls settle. This changes stimulus, never the IO model/checks.
+  reg pad_drive_en=0;
+  integer pad_drive_ps=2000;
+  wire [4:0] board_pads;
+  assign board_pads=pad_drive_en ? {clk,rst_n,3'b000} : 5'bzzzzz;
+  initial begin
+    if(!$value$plusargs("PAD_DRIVE_PS=%d",pad_drive_ps)) pad_drive_ps=2000;
+    if(pad_drive_ps<0 || pad_drive_ps>5000) $fatal(1,"Board drive must settle before first clock");
+    #(pad_drive_ps/1000.0);pad_drive_en=1;
+    $display("PAD_DRIVE_ON time_ns=%0.3f delay_ps=%0d",$realtime,pad_drive_ps);
+  end
   wire tdo;
-  my_soc_top dut(.clk_i(clk),.rst_ni(rst_n),.tck_i(1'b0),
-                 .tms_i(1'b0),.td_i(1'b0),.td_o(tdo));
+  my_soc_top dut(.clk_i(board_pads[4]),.rst_ni(board_pads[3]),.tck_i(board_pads[2]),
+                 .tms_i(board_pads[1]),.td_i(board_pads[0]),.td_o(tdo));
   reg load_req=0,load_we=0;
   reg [3:0] load_be=15;
   reg [31:0] load_addr=0,load_data=0;
