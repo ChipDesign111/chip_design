@@ -8,6 +8,7 @@
   "system_period_ns": 20.0,
   "cpus": 8,
   "target_utilization": 0.85,
+  "optimizer_max_density": 0.85,
   "core_size_um": 1648,
   "min_core_size_um": 1500,
   "core_margin_um": 150,

@@ -221,7 +221,7 @@
     "what": "提取布线寄生，按当前报告修复普通网络扇出，再按需要优化Setup、处理Hold并独立重查。",
     "why": "导线电阻电容会影响到达时间；布线前通过不等于布线后通过。",
     "effect": "两种时序违规与Real/Total电气DRV归零，否则停止，不自动放宽时钟。",
-    "parameters": "扇出修复用BUFFD2BWP7T分流普通单驱动网络，保留原天线二极管并重布线；不改库限制。按当前Setup和Hold/DRV运行优化，hold_target_ns默认0.02 ns；目标不修改原SDC，达到上限仍不清零就停止。"
+    "parameters": "扇出修复用BUFFD2BWP7T分流普通单驱动网络，保留原天线二极管并重布线；不改库限制。按当前Setup和Hold/DRV运行优化。design.json当前Hold优化目标0.12ns、最低0.10ns，最多5轮；optimizer_max_density=0.85控制优化器增加单元的密度上限，prepare传入物理初始化，不能沿用写死的75%。不修改原SDC，达到修复轮数上限仍未满足门禁就停止。"
   },
   "33": {
     "title": "核心填充及最终复核",

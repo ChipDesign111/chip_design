@@ -1,0 +1,41 @@
+{
+  "physical_source_commit": "bcc483e94bdf8ae8836ffcbb05eebf673b9ffa2b",
+  "archive_sha256": "3594b4632d9afd1ff5eb67c646e20ef7984a1887ba78fecd08e06cc20ee88202",
+  "input_manifest_sha256": "2245dbd79e04f7790addbedd6231e79cff26d1fa415d43e4e7ccc61c49c8a48e",
+  "environment_exit": 0,
+  "EDA_exit": 1,
+  "last_audited_step": 31,
+  "step32_optimization_attempts": 5,
+  "final_diagnostic": {
+    "Setup_WNS_ns": 0.014,
+    "Setup_TNS_ns": 0,
+    "Setup_violating_paths": 0,
+    "Hold_WNS_ns": -0.829,
+    "Hold_TNS_ns": -13.686,
+    "Hold_violating_paths": 138,
+    "min_hold_required_ns": 0.1,
+    "actual_DRV_nets": {
+      "max_cap": 0,
+      "max_tran": 681,
+      "max_fanout": 0
+    },
+    "density_percent": 81.445,
+    "whole_die_mm2": 3.7956390976
+  },
+  "root_cause": "Inherited init_pnr_standard.tcl hardcoded setOptMode -maxDensity0.75; native tool explicitly stopped hold fixing above75percent",
+  "repair": "Explicit optimizer_max_density0.85 through read_config/prepare/user_define to setOptMode; reject nonfinite, below planning or above0.85; new clean source upload required",
+  "validation": {
+    "real_config_and_Tcl_tests_passed": true,
+    "retained_hardware_SHA_checks": 75,
+    "clock_20ns_and_die_limit3p8_unchanged": true,
+    "RTL_unchanged": true,
+    "new_physical_validation_pending": true,
+    "Innovus21_16_loaded_database_option_check": {
+      "previous": 0.75,
+      "configured": 0.85,
+      "pass": true,
+      "no_ECO_no_save": true,
+      "scope": "Parameter acceptance only; physical optimization and timing remain to be validated"
+    }
+  }
+}

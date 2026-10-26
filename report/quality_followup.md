@@ -39,8 +39,18 @@ ECO后的保护也改为核对数据库连接对象：选中引脚所在网络�
 
 ## 修复后的独立重跑
 
-正式物理源码为`bcc483e94bdf8ae8836ffcbb05eebf673b9ffa2b`，已推送xzx。干净源码包SHA256为`3594b4632d9afd1ff5eb67c646e20ef7984a1887ba78fecd08e06cc20ee88202`，独立上传目录为`/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e`。源包191项输入与source.json共192项，远端fanout.tcl SHA与已验证修复一致。环境阶段已退出0，Genus正在进行全新综合；后端、结果整理与新SDF测试尚未完成。
+正式物理源码为`bcc483e94bdf8ae8836ffcbb05eebf673b9ffa2b`，已推送xzx。干净源码包SHA256为`3594b4632d9afd1ff5eb67c646e20ef7984a1887ba78fecd08e06cc20ee88202`，独立上传目录为`/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e`。源包191项输入与source.json共192项，远端fanout.tcl SHA与已验证修复一致。环境阶段退出0，综合及31步完成；32步经过完整5轮修复后未通过审计，EDA退出1。
 
 服务器GUI打开该目录README.html查看解压、三个阶段入口、逐步报告和结果路径。此版本已启动，不要再次执行run_all.sh。Windows可执行`python eda/remote.py status`读取进度；通过最终验收后，用`python eda/remote.py fetch --upload /home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e --wait --output 本机新结果目录`抓取并校验小包。后仿仍须使用本轮新导出的SDF；不能拿旧main结果证明本轮通过。
 
 main远端仍为d40b217；本轮流程修复与后续结果保留xzx，不自动再次合并。
+
+## 优化密度上限修复
+
+bcc483e中总计847次扇出分流成功，扇出、电容违规最终为0；Setup +0.014ns，但Hold −0.829ns、138条违规路径，转换时间仍有681个实际违规网络。失败原文与摘要见[密度阻塞记录](../eda/results/quality_baseline_20261027/implementation_bcc483e/README.md)。
+
+原物理初始化脚本硬编码`setOptMode -maxDensity 0.75`，实际逻辑密度81.445%时，工具每轮明确显示停止Hold修复。target_utilization=0.85只控制规划检查，没有传入优化器。现在增加独立的optimizer_max_density=0.85：配置校验后由prepare写入user_define.tcl，物理初始化读取该变量，实际选项同时在工具日志打印。新参数不得低于规划利用率或高于85%，拒绝非有限值。
+
+修改允许在固定核心范围内增加修复单元，不改变20ns、含PAD整颗≤3.8mm²、0.10ns最低Hold余量或任何路径例外。配置读取、旧配置默认值对齐、实际Tcl选项85%与75项保留硬件SHA检查通过。原冻结输入及失败结果保持，新版本需从干净源码重新综合和完成34步，随后才可运行对应新SDF后仿。
+
+在服务器Innovus 21.16加载原31步数据库，getOptMode确认原设置0.75，应用新选项后读回0.85，工具无错误；未执行ECO或保存数据库。这证明工具接受参数，不代表85%配置下时序已经达标。

@@ -1,0 +1,33 @@
+setOptMode -maxDensity                                       0.75
+setOptMode -maxDensity                                       0.75
+setOptMode -maxDensity                                       0.75
+setOptMode -maxDensity                                       0.75
+*** Starting Core Fixing (fixHold) cpu=0:03:25 real=0:00:49.0 totSessionCpu=3:20:28 mem=8215.6M density=75.754% ***
+**Info: Stopping hold fixing due to density exceeding max design density 75.000%
+**Info: Stopping hold fixing due to density exceeding max design density 75.000%
+setOptMode -maxDensity                                          0.75
+setOptMode -maxDensity                                          0.75
+*** Starting Core Fixing (fixHold) cpu=0:03:44 real=0:00:49.0 totSessionCpu=4:49:11 mem=10938.1M density=80.767% ***
+**Info: Stopping hold fixing due to density exceeding max design density 75.000%
+**Info: Stopping hold fixing due to density exceeding max design density 75.000%
+setOptMode -maxDensity                                          0.75
+setOptMode -maxDensity                                          0.75
+*** Starting Core Fixing (fixHold) cpu=0:03:45 real=0:00:49.0 totSessionCpu=5:28:19 mem=12519.3M density=81.320% ***
+**Info: Stopping hold fixing due to density exceeding max design density 75.000%
+**Info: Stopping hold fixing due to density exceeding max design density 75.000%
+setOptMode -maxDensity                                          0.75
+setOptMode -maxDensity                                          0.75
+*** Starting Core Fixing (fixHold) cpu=0:03:54 real=0:00:54.0 totSessionCpu=6:00:11 mem=14082.4M density=81.406% ***
+**Info: Stopping hold fixing due to density exceeding max design density 75.000%
+**Info: Stopping hold fixing due to density exceeding max design density 75.000%
+setOptMode -maxDensity                                          0.75
+setOptMode -maxDensity                                          0.75
+*** Starting Core Fixing (fixHold) cpu=0:03:54 real=0:00:53.0 totSessionCpu=6:25:52 mem=15308.9M density=81.433% ***
+**Info: Stopping hold fixing due to density exceeding max design density 75.000%
+**Info: Stopping hold fixing due to density exceeding max design density 75.000%
+setOptMode -maxDensity                                          0.75
+setOptMode -maxDensity                                          0.75
+*** Starting Core Fixing (fixHold) cpu=0:03:51 real=0:00:51.0 totSessionCpu=6:50:51 mem=16528.9M density=81.445% ***
+**Info: Stopping hold fixing due to density exceeding max design density 75.000%
+**Info: Stopping hold fixing due to density exceeding max design density 75.000%
+EDA_STAGE_FAILED: EDA STOP: Timing/electrical targets still violated: {"Setup": {"report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/work/pnr/my_soc_top/reports/postRoute_holdAuto_check/my_soc_top_postRoute.summary.gz", "wns_ns": 0.014, "tns_ns": 0.0, "violating_paths": 0, "drv": {"max_cap": {"real": 0, "total": 0}, "max_tran": {"real": 681, "total": 694}, "max_fanout": {"real": 0, "total": 0}, "max_length": {"real": 0, "total": 0}}, "electrical_drv_table_reported_here": true, "minimum_wns_ns": 0.0, "targets_met": false}, "Hold": {"report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/work/pnr/my_soc_top/reports/postRoute_holdAuto_check/my_soc_top_postRoute_hold.summary.gz", "wns_ns": -0.829, "tns_ns": -13.686, "violating_paths": 138, "drv": {}, "electrical_drv_table_reported_here": false, "minimum_wns_ns": 0.1, "targets_met": false}}

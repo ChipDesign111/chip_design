@@ -81,7 +81,7 @@ setOptMode  -allEndPoints                       true \
             -honorDensityScreenInOpt            false \
             -honorFence                         true \
             -leakageToDynamicRatio              1 \
-            -maxDensity                         0.75 \
+            -maxDensity                         ${eda_opt_max_density} \
             -multiBitFlopOpt                    false \
             -postRouteAreaReclaim               none \
             -postRouteSetupRecovery             auto \
@@ -97,6 +97,7 @@ setOptMode  -allEndPoints                       true \
             -usefulSkewPostRoute                true \
             -usefulSkewPreCTS                   true \
             -verbose                            true
+puts "EDA_OPTIMIZER_MAX_DENSITY $eda_opt_max_density"
 
 # control certain aspects of how the software places cells, affect "place_design" "refinePlace"
 # place_design_floorplan_mode:                      used for prototyping and runs quickly to gauge the feasibility of the netlist, default: false
