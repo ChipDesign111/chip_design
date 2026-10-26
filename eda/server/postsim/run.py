@@ -122,15 +122,17 @@ def main():
                        'io_bus_conflicts':io_events,'startup_control':mode=='pad_startup_control',
                        'timezero_io_warning_free':not io_events}
         (root/'partial_results.json').write_text(json.dumps(results,indent=2)+'\n')
+        initial_io=[e for e in io_events if e['time_ps']==0]
+        later_io=[e for e in io_events if e['time_ps']!=0]
+        expected={'tb_postsim.dut.i_pad_'+n for n in ['clk','rst_n','tck','tms','tdi']}
+        if initial_io and (len(initial_io)!=5 or {e['instance'] for e in initial_io}!=expected):
+            raise RuntimeError('Unclassified time-zero IO conflict: '+mode)
         if mode=='pad_conflict_control':
             begin=re.search(r'EXPECTED_IO_CONFLICT_BEGIN time_ns=([\d.]+)',text)
             end=re.search(r'EXPECTED_IO_CONFLICT_END time_ns=([\d.]+)',text)
-            if not begin or not end or not io_events or any(not e['instance'].endswith('i_pad_tdo') or not float(begin.group(1))*1000<=e['time_ps']<=float(end.group(1))*1000 for e in io_events):
+            if not begin or not end or not later_io or any(not e['instance'].endswith('i_pad_tdo') or not float(begin.group(1))*1000<=e['time_ps']<=float(end.group(1))*1000 for e in later_io):
                 raise RuntimeError('Native IO conflict detector did not report precisely the deliberate output contention')
-        elif io_events:
-            expected={'tb_postsim.dut.i_pad_'+n for n in ['clk','rst_n','tck','tms','tdi']}
-            if len(io_events)!=5 or {e['instance'] for e in io_events}!=expected or any(e['time_ps'] for e in io_events):
-                raise RuntimeError('Unexpected IO conflict: '+mode)
+        elif later_io:raise RuntimeError('Unexpected nonzero-time IO conflict: '+mode)
         if mode=='pad_startup_control' and ((args.simulator=='vcs' and len(io_events)!=5) or any(e['time_ps'] for e in io_events)):
             raise RuntimeError('Time-zero startup control did not reproduce the five native IO messages')
     for item in record.values():
