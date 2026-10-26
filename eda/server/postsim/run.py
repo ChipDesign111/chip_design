@@ -69,7 +69,9 @@ def main():
     execute(command,build,'compile.log')
     results={}
     cases=[('sdf_max',[],inputs/'firmware.hex'),('gate_zero',['+NO_SDF'],inputs/'firmware.hex')]
-    cases += [('sdf_'+p.stem,[],p) for p in additional]
+    # Sweep asynchronous reset assertion across a full system period, without
+    # masking timing checks/notifiers. Keep the first case at the old2ns phase.
+    cases += [('sdf_'+p.stem,['+RESET_OFFSET_PS=%d'%(250+1400*i)],p) for i,p in enumerate(additional)]
     for mode,flags,firmware in cases:
         run=root/mode;run.mkdir();shutil.copyfile(firmware,run/'firmware.hex')
         os.link(inputs/'timing.sdf',run/'timing.sdf')
@@ -84,9 +86,11 @@ def main():
         execute([str(executable)]+flags,run,'simulation.log')
         text=(run/'simulation.log').read_text(errors='replace')
         match=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
+        reset_match=re.search(r'RESET_ASSERT offset_ps=(\d+)',text)
+        if not match or not reset_match or 'POSTSIM_DONE' not in text:raise RuntimeError('Functional/reset result missing: '+mode)
         results[mode]={'functional_pass':bool(match),'values':list(map(int,match.groups())) if match else None,
-                       'timing_violation_messages':len(re.findall(r'Timing violation',text,re.I))}
-        if not match or 'POSTSIM_DONE' not in text:raise RuntimeError('Functional result missing: '+mode)
+                       'timing_violation_messages':len(re.findall(r'Timing violation',text,re.I)),
+                       'reset_offset_ps':int(reset_match.group(1))}
     for item in record.values():
         if sha(Path(item['source']))!=item['sha256']:raise RuntimeError('Input changed: '+item['source'])
     (root/'results.json').write_text(json.dumps(results,indent=2)+'\n')

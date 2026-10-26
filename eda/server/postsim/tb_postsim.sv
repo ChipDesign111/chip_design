@@ -11,6 +11,7 @@ module tb_postsim;
   reg [31:0] image[0:2047];
   reg [31:0] magic=0;
   integer cycles=0,i;
+  integer reset_offset_ps=2000;
   reg [31:0] value,stats[0:3];
   initial begin
 `ifndef NO_SDF
@@ -54,8 +55,14 @@ module tb_postsim;
   always @(negedge clk) begin
     if(dut.ndmreset_n===1'b1 && dut.boot_ready===1'b0 && dut.instr_req===1'b1)
       $fatal(1,"CPU fetch before image commit");
-    if(dut.sram_req===1'b1 && dut.sram_we===1'b1 && dut.sram_addr==32'h80001fe0)
-      magic<=dut.sram_wdata;
+  end
+  // Observe the physical write at the macro clock, independent of the AXI
+  // command/response phase. Do not report completion before the SRAM access.
+  always @(posedge dut.i_mainmem.i_sram.i_macro.CLK) begin
+    if(dut.i_mainmem.i_sram.i_macro.CEN===1'b0 &&
+       dut.i_mainmem.i_sram.i_macro.WEN===4'b0000 &&
+       dut.i_mainmem.i_sram.i_macro.A===11'h7f8)
+      magic<=dut.i_mainmem.i_sram.i_macro.D;
   end
   initial begin
     force dut.dm_master_req=load_req;force dut.dm_master_we=load_we;
@@ -98,8 +105,13 @@ module tb_postsim;
     $display("FUNCTIONAL_PASS cycles=%0d npu_cycles=%0d dma_mac_overlap=%0d read_overlap=%0d write_overlap=%0d time_ns=%0.3f",
              cycles,stats[0],stats[1],stats[2],stats[3],$realtime);
     $display("ACTIVE_END time_ns=%0.3f",$realtime);
-    #2;rst_n=0;repeat(4) @(negedge clk);
+    if(!$value$plusargs("RESET_OFFSET_PS=%d",reset_offset_ps)) reset_offset_ps=2000;
+    if(reset_offset_ps<1 || reset_offset_ps>=20000) $fatal(1,"Reset phase must be inside one20ns period");
+    #(reset_offset_ps/1000.0);
+    $display("RESET_ASSERT offset_ps=%0d time_ns=%0.3f",reset_offset_ps,$realtime);
+    rst_n=0;repeat(4) @(negedge clk);
     if(dut.ndmreset_n!==1'b0 || dut.boot_ready!==1'b0) $fatal(1,"Reset did not revoke boot");
+    if(dut.i_mainmem.i_sram.i_macro.CEN!==1'b1) $fatal(1,"SRAM requests continued during reset");
     $display("POSTSIM_DONE time_ns=%0.3f",$realtime);
     $finish;
   end

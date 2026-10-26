@@ -1,6 +1,6 @@
 {
-  "validated_at": "2026-10-23 Asia/Shanghai",
-  "scope": "RTL functional tests, including authorized SRAM behavior model with timing checks disabled; not SDF backannotation",
+  "validated_at": "2026-10-26T21:44:23.061308+08:00",
+  "scope": "RTL functional tests after phase-separated SRAM command capture; full SoC authorized model uses disabled timing checks. Separate native SRAM reset sweep keeps timing checks enabled. No new physical/SDF result yet.",
   "results": {
     "unit_cases": 44,
     "trained_samples": 24,
@@ -13,8 +13,59 @@
     "dma_read_mac_overlap_cycles": 62,
     "dma_write_mac_overlap_cycles": 93
   },
+  "portable_soc": {
+    "results": {
+      "unit_cases": 44,
+      "trained_samples": 24,
+      "soc": true,
+      "vendor_model_sha256": null,
+      "passed": true
+    },
+    "full_soc": {
+      "post_commit_observed_cycles": 3659,
+      "dma_read_mac_overlap_cycles": 62,
+      "dma_write_mac_overlap_cycles": 93
+    }
+  },
+  "sram_reset_sweep": {
+    "models": [
+      "portable",
+      "authorized_RA1SHD"
+    ],
+    "clock_period_ns": 20,
+    "assertion_offsets_ns": {
+      "start": 0.125,
+      "step": 0.25,
+      "count": 80
+    },
+    "read_and_write_reset_cases_per_model": 160,
+    "accepted_writes_per_model": 114,
+    "actual_writes_per_model": 114,
+    "native_timing_checks_enabled": true,
+    "native_timing_violations": 0,
+    "checks": [
+      "byte writes",
+      "back-to-back commands",
+      "read available at next AXI sampling edge",
+      "accepted access completes once",
+      "no new access while reset low",
+      "SRAM contents survive reset",
+      "payload stable at reset"
+    ],
+    "logs_sha256": {
+      "memory_portable": "d3f5a3eca99be74750e013df66ca7a7d4ad5ef2c5e2865e73830a37fcca9f98a",
+      "memory_native": "5e464390e664f2364a15e775bac1d7ab8f904d4714d985575fc56bd530006c5f"
+    }
+  },
+  "physical_validation": {
+    "status": "pending_new_synthesis_PnR_and_SDF",
+    "period_ns": 20,
+    "whole_die_limit_mm2": 3.8,
+    "previous_e15483c_result_is_not_this_RTL": true
+  },
   "rtl_sha256": {
     "rtl/filelist.f": "4b8e87b3a8cda942c21040861d82d8207b5a345eb86f258dc3ba3c9147005114",
+    "rtl/README.md": "a061ca75d9080381b9a3eb337751179a537c0a02cfaf85fe13cd657f8747d3c4",
     "rtl/axi/addr_decode.sv": "84e2b6d49c834b21f13b12d94919efd9a7d541b191a0651d2cca97435a5ca85a",
     "rtl/axi/axi2mem.sv": "fff8e7e11c584755f4b0abf638880c51e77cea199a4fa40f15ac6ef2a803d39e",
     "rtl/axi/axi_adapter.sv": "e50bf7d69b52544a7c5d032f6f41817fd58aa4fb21c60dc999a89de738092c9a",
@@ -54,17 +105,21 @@
     "rtl/debug/dm_top.sv": "5fa2656a11759ff10fd016ed885761c9c379627b9a1b83ddee6e03a35ee9e23f",
     "rtl/dma/har_dma.sv": "48002b6b81816a65d7c71c8cac1c6485d6a6fef7917aa3b96d18a7c1abb79ac4",
     "rtl/dma/har_dma_axi.sv": "a1feba50769690c3fd1016c93931ddc1411d447a7ff1cc3b6ebcd82f64d7814d",
+    "rtl/dma/README.md": "690748462e992aa2965053a989d11a70d15c37ed297697b23681f2f7aefea47a",
     "rtl/include/my_soc_pkg.sv": "1366702d96b1ea493246dd813261956309bd14bccdb627121662de2b014ea83b",
     "rtl/memory/bootram.sv": "537ad5ccbce367cd216ff0d8b1134c18eecd72b9c638f67597b761dbb3992db9",
     "rtl/memory/bootrom.sv": "24f7966a9f6bd58e6cf28e9803b0bf1c66bb84feb5aef6306c472caba7be3710",
     "rtl/memory/chip_sram_2048x32.sv": "8e2d5241c81dfb3fbeb0f64a7b042c8e553561f2ea6a42ee7c5f2331f32f22de",
-    "rtl/memory/my_mainmem.sv": "0135a4e5d4153c37f36a1af8751c83fc76d18d5b6ae4ff64c33a2eb986300b7c",
+    "rtl/memory/my_mainmem.sv": "b642aaa94bcfce2d2326037ce15438bd2d16da2a90e34ca47971ccb20a9ac14c",
     "rtl/memory/ra1shd_blackbox.sv": "bc8f3dbb1f1e7bc13338f986431a731aec51e457f8f1c93ca4eb90a0a2782874",
+    "rtl/memory/README.md": "6e59eb9657182c9eb477e300e236b82cb54b4ceb284a27835c2b6f2d43c823ef",
     "rtl/npu/har_npu_core.sv": "38fd42a868327628efdfefa14b155a1d75f93800e7167222c48b623c2e8bebff",
     "rtl/npu/har_weight_store.sv": "28cacfba43cd72f336cecbd80a658fc8f627836ce923700d3193b06a440f7386",
+    "rtl/npu/README.md": "dc95a39eb796127094bdaa3ad2b4eb86b2a5724da7721b0305c19bfbc8a10df0",
     "rtl/npu/simple_npu_top.sv": "6f7524c8130ef0151d3d962083c7c8ee4217cd89fe5b21f4f70d507deb53d6f1",
     "rtl/soc/my_npu_subsystem.sv": "85f4fe6b1bf0a093224eb16524ffc5e950e921e9e9a9d21ea73787fddc1cfe21",
     "rtl/soc/my_soc_top.sv": "6ff7907978ad2aaeaf058314a889d239df9377ca83d3b8fb22869e08bb5407a3",
+    "rtl/soc/README.md": "f42df65df147d5c21bf5ab0cf3fe4a962da7ee361c4d2b1d8f338481676351d4",
     "rtl/cpu_cv32e40p/include/cv32e40p_apu_core_pkg.sv": "33d7c06b0fef3ae2c8814b040abe3cdaa23065cf12643de20e8275f44f97abe1",
     "rtl/cpu_cv32e40p/include/cv32e40p_fpu_pkg.sv": "ae738f408ba2ade41bfcf0488c8f611a2c39b26915191890dac907b8a7a518e5",
     "rtl/cpu_cv32e40p/include/cv32e40p_pkg.sv": "3fee39d262ef44bff6ee00b591fe08830e5e35cdd1b9e5eb9eb06da6f6525805",
@@ -98,25 +153,5 @@
     "rtl/include/axi/typedef.svh": "c2ef2098fea077e07100b9b9c40f2ac5453e7e01af407e236a810b43aeb8b2ef",
     "rtl/include/common_cells/assertions.svh": "d44ed5ffbbfb69c65f5b398428c6b5b5a1103883b925040cbc7bece257d13b1a",
     "rtl/include/common_cells/registers.svh": "a4e19da894564fd30a4dec4ca8466d181592c9202be2bf124fc4caa82b432d25"
-  },
-  "coverage": [
-    "random single/two-sample batches",
-    "24 trained-model fixed UCI inputs, all hidden/scores/classes",
-    "DMA randomized backpressure",
-    "zero requant multiplier and rounding/saturation",
-    "4KiB read burst split",
-    "read/write response errors, early/late RLAST",
-    "busy configuration/CPU tile write rejection",
-    "reset during DMA and restart",
-    "Debug SBA loader through real AXI",
-    "uninitialized/partial/byte/out-of-order image and wrong boot key rejection",
-    "asynchronous reset assertion and synchronized release"
-  ],
-  "source_scope": "Compiled HDL and filelist; descriptive JSON/docs are not functional simulation inputs",
-  "portable_sram_soc": {
-    "passed": true,
-    "observed_cycles": 3659,
-    "dma_read_mac_overlap_cycles": 62,
-    "dma_write_mac_overlap_cycles": 93
   }
 }
