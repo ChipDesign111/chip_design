@@ -1,6 +1,6 @@
 # main合并后的质量验证基线
 
-main已合并并推送d40b217。下面是对该版实际物理数据库的补充测量，不是新配置已通过的结果。xzx四库角首轮实现9a6f4eb完成31步后在32步扇出ECO脚本处停止，见[首轮诊断与原始摘要](implementation_9a6f4eb/README.md)。修复后的bcc483e已消除扇出/电容违规，但因初始化脚本写死75%密度上限而停止Hold修复，最终32步审计拒绝，见[密度上限阻塞](implementation_bcc483e/README.md)。后续新配置显式向优化器传入85%，仍保持20ns与含PAD≤3.8mm²，尚待新上传验证。
+main已合并并推送d40b217。下面是对该版实际物理数据库的补充测量，不是新配置已通过的结果。xzx四库角首轮9a6f4eb在32步扇出ECO脚本处停止，见[首轮诊断](implementation_9a6f4eb/README.md)。修复后的bcc483e消除扇出/电容违规，但被75%优化密度上限阻止Hold修复，见[密度阻塞](implementation_bcc483e/README.md)。随后全阶段85%的c8da454被Setup先耗尽预算，审计到29步后主动结束，见[分阶段预留空间](implementation_c8da454/README.md)。隔离实验已经测得留有余量时Hold可到+0.114ns，但Setup/DRV尚未同时通过；普通83%、Hold85%的组合仍在验证。20ns和整颗≤3.8mm²保持，尚无新的完整34步通过结果。
 
 ## 多库角测量
 

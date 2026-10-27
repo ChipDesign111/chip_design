@@ -1,0 +1,15 @@
+{
+  "reason": "Operator stopped own run after native hold stop at configured85percent, actual85.001percent; setup consumed hold headroom. Not natural tool failure or accepted result. Frozen input unchanged.",
+  "processes": [
+    {
+      "pid": 1811238,
+      "command": "/opt/eda/Cadence/INNOVUS211/tools/innovus/bin/64bit/innovus -batch -files /home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_063343_c8da454/work/pnr/generated/driver.tcl -log eda_01_to_34 -oa22 ",
+      "uid": 11180
+    },
+    {
+      "pid": 1811546,
+      "command": "/opt/eda/Cadence/INNOVUS211/tools/innovus/bin/64bit/innovus -batch -files /home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_063343_c8da454/work/pnr/generated/driver.tcl -log eda_01_to_34 -oa22 ",
+      "uid": 11180
+    }
+  ]
+}

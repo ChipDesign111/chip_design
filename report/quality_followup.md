@@ -55,4 +55,12 @@ bcc483e中总计847次扇出分流成功，扇出、电容违规最终为0；Set
 
 在服务器Innovus 21.16加载原31步数据库，getOptMode确认原设置0.75，应用新选项后读回0.85，工具无错误；未执行ECO或保存数据库。这证明工具接受参数，不代表85%配置下时序已经达标。
 
-密度修复正式源码为`c8da4549d8506cd772beaa53ce5ee65c1ae41b94`，源包SHA256 `89596aab2abba164765a780ed53eceeb36b7c1953aa86c780c9071f0357b61f9`。已从干净工作树独立部署至`/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_063343_c8da454`并启动全新流程；环境退出0，work/config/design.json的优化/规划密度均为0.85，user_define.tcl中的桥接变量也为0.85。当前处于Genus综合，尚未完成新物理验证。服务器README已随新包生成，说明两个密度参数的作用。旧bcc483e冻结输入和失败数据保留。
+密度修复正式源码为`c8da4549d8506cd772beaa53ce5ee65c1ae41b94`，源包SHA256 `89596aab2abba164765a780ed53eceeb36b7c1953aa86c780c9071f0357b61f9`。从干净工作树独立部署至`/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_063343_c8da454`，环境退出0，work/config/design.json的优化/规划密度均为0.85，user_define.tcl中的桥接变量也为0.85。随后完成综合及29步，因下述密度预算问题主动结束，尚未通过物理验证。服务器README随当时源包生成，旧bcc483e冻结输入和失败数据保留。
+
+## 分阶段预留Hold空间
+
+c8da454实际已完成综合和29步，但普通Setup优化先用到了85.001%密度，Hold再次在85%上限处停止。确认该固定配置不会释放Hold预算后，仅结束本轮自有进程，保留冻结输入和全部结果；这是主动结束，未完成34步，不能称自然失败或已通过。停止前诊断与记录见[全阶段85%版本](../eda/results/quality_baseline_20261027/implementation_c8da454/README.md)。
+
+隔离实验从旧bcc483e的失败32步数据库开始，只在内存中将Hold上限提高到85%，未保存或接入正式结果。实测密度81.445%→82.316%，Hold −0.829ns→+0.114ns；Setup −0.019ns、4条违规，转换时间仍917个实际违规。这证明需要为Hold预留空间，也说明只修Hold还不够。
+
+当前方案把optimizer_max_density用于普通Setup/DRV，设为0.83；hold_optimizer_max_density用于Hold，设为0.85。prepare分别写入user_define.tcl，29/32步切换，结束后恢复普通上限。规划target_utilization仍0.85，和两个优化预算独立；配置只要求有限且0<普通上限≤Hold上限≤0.85，不再把规划参数误当优化器下限。29步也在正Hold余量不足100ps时触发0.12ns目标。两阶段组合正在隔离验证，尚未产生新的正式物理通过结果。

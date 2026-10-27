@@ -132,8 +132,12 @@ if {[catch {
             }
             27 {eda_run 27.tcl; eda_run 27_verify.tcl}
             29 {
-                if {[eda_timing_bad ../my_soc_top/reports/postCTS Hold] > 0} {eda_run 29_fix.tcl}
+                if {[eda_timing_bad ../my_soc_top/reports/postCTS Hold] > 0 || [eda_hold_margin_bad ../my_soc_top/reports/postCTS]} {
+                    eda_eval 29_hold_mode [list setOptMode -maxDensity $eda_hold_opt_max_density -fixHoldAllowSetupTnsDegrade false -holdTargetSlack $eda_hold_target]
+                    eda_run 29_fix.tcl
+                }
                 eda_run 29_check.tcl
+                eda_eval 29_setup_density_restore [list setOptMode -maxDensity $eda_opt_max_density]
             }
             31 {
                 eda_run 31_check.tcl
@@ -160,6 +164,7 @@ if {[catch {
                 eda_eval 32_extractRC {extractRC}
                 eda_run 32_initial.tcl
                 for {set iteration 0} {$iteration < $eda_repair_iterations} {incr iteration} {
+                    eda_eval 32_setup_density [list setOptMode -maxDensity $eda_opt_max_density]
                     set current_dir [expr {$iteration == 0 ? "../my_soc_top/reports/postRoute" : "../my_soc_top/reports/postRoute_holdAuto_check"}]
                     if {[eda_fix_fanout $current_dir] > 0} {set current_dir ../my_soc_top/reports/postRoute_fanout_check}
                     set bad [eda_timing_bad $current_dir]
@@ -167,11 +172,12 @@ if {[catch {
                     if {[eda_timing_bad $current_dir Setup] > 0} {
                         eda_eval 32_setup_opt {optDesign -postRoute -expandedViews -outDir ../my_soc_top/reports/postRoute_setupAuto}
                     }
-                    eda_eval 32_hold_mode [list setOptMode -fixHoldAllowSetupTnsDegrade false -holdTargetSlack $eda_hold_target]
+                    eda_eval 32_hold_mode [list setOptMode -maxDensity $eda_hold_opt_max_density -fixHoldAllowSetupTnsDegrade false -holdTargetSlack $eda_hold_target]
                     eda_eval 32_hold_opt {optDesign -postRoute -hold -expandedViews -outDir ../my_soc_top/reports/postRoute_holdAuto}
                     eda_run 32_check.tcl
                 }
                 # Independent final checks even if no optimization was needed.
+                eda_eval 32_setup_density_restore [list setOptMode -maxDensity $eda_opt_max_density]
                 eda_run 32_check.tcl
             }
             34 {

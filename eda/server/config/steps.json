@@ -200,7 +200,7 @@
     "what": "只有当前报告需要时才做Hold优化，然后独立重查。",
     "why": "新数据来得太早会破坏采样，可以加适当延时，同时保护Setup。",
     "effect": "保存实际修复后结果；pre-route估计残项不会被写成最终通过。",
-    "parameters": "只按当前Hold报告决定是否运行修复，保护Setup；布线前估计残项明确记录，不假称最终满足。"
+    "parameters": "按当前Hold报告决定是否修复，正余量不足100ps也触发120ps优化目标；临时使用hold_optimizer_max_density=0.85，完成后恢复普通optimizer_max_density=0.83，保护Setup。布线前估计残项明确记录，不假称最终满足。"
   },
   "30": {
     "title": "正式布线",
@@ -214,14 +214,14 @@
     "what": "独立检查，从本轮天线报告提取实际违规网，有限次修复；若修复后独立DRC仍有违规，再执行全设计detailRoute并复核。",
     "why": "制造期间金属积累电荷可能损伤薄绝缘结构，不能复用旧违规网名。",
     "effect": "天线、default DRC和常规信号连通通过，保留原始和修复报告。",
-    "parameters": "从当前独立报告提取违规网络，最多max_repair_iterations次，默认3次；不使用历史网名。两项IO抽象限制只有同源步骤22证据齐备才可分类。 选择网修复可能碰到相邻信号；先归档本轮before报告，再按当前DRC执行31_drc_fix.tcl，不以天线归零作为唯一退出条件。超过上限或报告格式不明仍停止。"
+    "parameters": "从当前独立报告提取违规网络，最多max_repair_iterations次，当前配置5次；不使用历史网名。两项IO抽象限制只有同源步骤22证据齐备才可分类。选择网修复可能碰到相邻信号；先归档本轮before报告，再按当前DRC执行31_drc_fix.tcl，不以天线归零作为唯一退出条件。超过上限或报告格式不明仍停止。"
   },
   "32": {
     "title": "真实RC下修复时序",
     "what": "提取布线寄生，按当前报告修复普通网络扇出，再按需要优化Setup、处理Hold并独立重查。",
     "why": "导线电阻电容会影响到达时间；布线前通过不等于布线后通过。",
     "effect": "两种时序违规与Real/Total电气DRV归零，否则停止，不自动放宽时钟。",
-    "parameters": "扇出修复用BUFFD2BWP7T分流普通单驱动网络，保留原天线二极管并重布线；不改库限制。按当前Setup和Hold/DRV运行优化。design.json当前Hold优化目标0.12ns、最低0.10ns，最多5轮；optimizer_max_density=0.85控制优化器增加单元的密度上限，prepare传入物理初始化，不能沿用写死的75%。不修改原SDC，达到修复轮数上限仍未满足门禁就停止。"
+    "parameters": "扇出修复用BUFFD2BWP7T分流普通单驱动网络，保留原天线二极管并重布线；不改库限制。按当前Setup和Hold/DRV运行优化。design.json当前Hold优化目标0.12ns、最低0.10ns，最多5轮；optimizer_max_density=0.83供Setup/DRV使用，hold_optimizer_max_density=0.85供Hold使用，29/32步切换并恢复，为Hold预留2个百分点；prepare传入物理初始化，不能只把全部阶段设成同一个85%。不修改原SDC，达到修复轮数上限仍未满足门禁就停止。"
   },
   "33": {
     "title": "核心填充及最终复核",

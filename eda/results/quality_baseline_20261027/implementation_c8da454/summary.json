@@ -1,0 +1,17 @@
+{
+  "whole_die_area_mm2": 3.7956390976,
+  "max_whole_die_area_mm2": 3.8,
+  "whole_die_area_within_limit": true,
+  "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_063343_c8da454",
+  "archive_sha256": "89596aab2abba164765a780ed53eceeb36b7c1953aa86c780c9071f0357b61f9",
+  "deployment_commit": "c8da4549d8506cd772beaa53ce5ee65c1ae41b94",
+  "work": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_063343_c8da454/work",
+  "last_completed_step": 29,
+  "unexpected_tool_errors": false,
+  "setup_wns_ns": "尚未生成",
+  "hold_wns_ns": "尚未生成",
+  "final_stage_checks": {},
+  "export_checks": {},
+  "pipeline_exit_code": 1,
+  "review_archive_ready": false
+}

@@ -54,10 +54,11 @@ def read_config(path):
             raise ValueError('Invalid numeric configuration: ' + key)
     if not 0 < c['target_utilization'] <= 0.85 or not isinstance(c['cpus'], int) or not 1 <= c['cpus'] <= 16:
         raise ValueError('Expected utilization in (0,0.85] and CPU count in 1..16')
-    c.setdefault('optimizer_max_density', max(0.75, c['target_utilization']))
-    density = c['optimizer_max_density']
-    if not isinstance(density, (int, float)) or not math.isfinite(density) or not c['target_utilization'] <= density <= 0.85:
-        raise ValueError('Optimizer density must be finite, at least planning utilization and at most 0.85')
+    c.setdefault('optimizer_max_density', min(0.83, max(0.75, c['target_utilization'])))
+    c.setdefault('hold_optimizer_max_density', 0.85)
+    density, hold_density = c['optimizer_max_density'], c['hold_optimizer_max_density']
+    if any(not isinstance(v, (int, float)) or not math.isfinite(v) for v in [density, hold_density]) or not 0 < density <= hold_density <= 0.85:
+        raise ValueError('Optimizer densities must be finite with 0 < setup <= hold <= 0.85')
     if c['min_core_size_um'] < 1500 or c['core_margin_um'] != 150:
         raise ValueError('Validated perimeter profile requires core >=1500 um and 150 um margins')
     if not isinstance(c.get('max_die_area_mm2'),(int,float)) or not math.isfinite(c['max_die_area_mm2']) or not 0<c['max_die_area_mm2']<=4.0:
@@ -140,7 +141,7 @@ def prepare(args):
     (work / 'flow/config/repair.tcl').write_text('set eda_repair_iterations %d\nset eda_hold_target %g\nset eda_min_hold_slack %g\n' % (config['max_repair_iterations'], config['hold_target_ns'], config['min_hold_slack_ns']), encoding='utf-8')
     user = work / 'config/user_define.tcl'
     text = user.read_text(encoding='utf-8')
-    for key, value in [('PROJECT_ROOT', tcl(work)), ('PDK_ROOT', tcl(pdk)), ('rm_clock_period', config['system_period_ns']), ('eda_opt_max_density', config['optimizer_max_density']), ('syn_cpus', config['cpus']), ('pnr_cpus', config['cpus'])]:
+    for key, value in [('PROJECT_ROOT', tcl(work)), ('PDK_ROOT', tcl(pdk)), ('rm_clock_period', config['system_period_ns']), ('eda_opt_max_density', config['optimizer_max_density']), ('eda_hold_opt_max_density', config['hold_optimizer_max_density']), ('syn_cpus', config['cpus']), ('pnr_cpus', config['cpus'])]:
         text, n = re.subn(r'^set ' + key + r' .*$', lambda match: 'set ' + key + ' ' + str(value), text, flags=re.M)
         if n != 1:
             raise ValueError('Project configuration variable missing: ' + key)

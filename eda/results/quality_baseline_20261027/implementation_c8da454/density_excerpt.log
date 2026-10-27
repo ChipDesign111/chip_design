@@ -1,0 +1,8 @@
+EDA_OPTIMIZER_MAX_DENSITY 0.85
+setOptMode -maxDensity                                       0.85
+setOptMode -maxDensity                                       0.85
+setOptMode -maxDensity                                       0.85
+setOptMode -maxDensity                                       0.85
+*** Starting Core Fixing (fixHold) cpu=0:03:12 real=0:00:43.0 totSessionCpu=2:02:27 mem=8339.3M density=85.001% ***
+**Info: Stopping hold fixing due to density exceeding max design density 85.000%
+**Info: Stopping hold fixing due to density exceeding max design density 85.000%
