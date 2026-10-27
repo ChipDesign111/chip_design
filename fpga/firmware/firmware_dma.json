@@ -1,13 +1,13 @@
 {
-  "samples": 24,
-  "batches": 12,
-  "code_bytes": 1116,
-  "image_used_bytes": 6580,
+  "samples": 8,
+  "batches": 1,
+  "code_bytes": 1956,
+  "image_used_bytes": 7952,
   "sram_bytes": 8192,
-  "sha256": "54c32dca604287846adf60fca7c0aa9a5125c69dc96dc69ecea6df03bce3689f",
+  "sha256": "f2339f0e51c18d31a324389d50bec7b53ed1104a13d02709ef173200f82ac477",
   "comparison": "Every hidden, score and predicted class against integer gold, not against the true activity label",
   "transport": "dma",
-  "parameter_words": 598,
-  "input_words": 384,
-  "measured": "mcycle: parameter copy, cumulative input copy, application including identical result checks"
+  "parameter_words": 38,
+  "input_words": 128,
+  "measured": "post-commit CPU self-check includes configuration, eight-sample inference and identical result checks"
 }

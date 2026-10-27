@@ -27,7 +27,8 @@ def make_case(seed):
     # Tile-major order: input pair, output neuron, lane.
     w1_address=0xffc if seed<10000 and seed%4==0 else 0x1000
     store(w1_address,pack([w1[o][2*t+k] for t in range(32) for o in range(32) for k in range(2)]))
-    store(0x1800,pack([w2[o][t] if o<6 else 0 for t in range(32) for o in range(8)]))
+    # Each FC2 bank packet holds eight packed six-byte output rows (48 B).
+    store(0x1800,pack([w2[o][t] for t in range(32) for o in range(6)]))
     store(0x1900,b1);store(0x1980,b2)
     for n,x in enumerate(xs):store(0x1a00+n*64,pack(x))
     for n,x in enumerate(xs):
@@ -47,7 +48,9 @@ def execute(command,run,name,marker=None):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--count',type=int,default=32);p.add_argument('--soc',action='store_true');p.add_argument('--trained',action='store_true');p.add_argument('--vsim',default='vsim');p.add_argument('--vendor-model',type=Path);args=p.parse_args()
     run=HERE/'runs'/datetime.datetime.now().strftime('%Y%m%d_%H%M%S');run.mkdir(parents=True)
-    source_sha={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for folder in ['rtl','test/int8'] for p in (ROOT/folder).rglob('*') if p.is_file() and 'runs' not in p.parts and '__pycache__' not in p.parts}
+    source_files=[p for folder in ['rtl','test/int8'] for p in (ROOT/folder).rglob('*') if p.is_file() and 'runs' not in p.parts and '__pycache__' not in p.parts]
+    source_files.append(ROOT/'model/reference/tile_layout.py')
+    source_sha={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in source_files}
     (run/'source_manifest.json').write_text(json.dumps(source_sha,indent=2)+'\n')
     seeds=list(range(args.count))+(list(range(10000,10003)) if args.trained else [])
     for index,seed in enumerate(seeds):(run/('case_%d.hex'%index)).write_text(''.join('%08x\n'%v for v in make_case(seed)))

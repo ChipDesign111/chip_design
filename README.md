@@ -10,6 +10,8 @@
 
 本实现已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。完整 SoC 包含 CV32E40P、AXI、JTAG Debug、8 KiB 主 SRAM 和 64→32→6 NPU。第一层 2 输入×32 输出、第二层 1×6；两个 64B 权重 tile 缓冲由 DMA 从主 SRAM 按需填充。输入/权重/隐藏激活 INT8，偏置/累加/分数 INT32。当前目标是含 PAD 整颗 Die ≤3.8 mm²。
 
+`rtl-dev` 当前支持最多八样本寄存器批次，并完成 tile 零气泡交接、FC2 四组 48B 粗粒度权重包和 W1 尾部 W2 预取。固定基准下 batch=8 单批从 2025 拍降至 1808 拍，详见[性能对比](report/performance.md)。这些是 RTL 周期结果，batch=8 的物理面积和 20ns 时序尚未签核。
+
 从本机打包上传到服务器、三个独立阶段和结果回传，直接跟随 [EDA 操作指南](eda/README.md)。服务器从每个上传版本目录的 README.html 开始。结构、启动流程和寄存器见 [设计报告](report/README.md)。
 
 | 目录 | 内容 |
@@ -18,7 +20,7 @@
 | [eda](eda/README.md) | 正式部署脚本、服务器 EDA 程序、讲义逐步解释及结果分析 |
 | [model](model/README.md) | 保留的训练模型、量化参数和整数参考 |
 | [test](test/README.md) | 当前 INT8/DMA/启动保护功能回归 |
-| [report](report/README.md) | 架构、MMIO、DMA、SRAM 和验证范围 |
+| [report](report/README.md) | 架构、MMIO、DMA、性能、SRAM 和验证范围 |
 | [fpga](fpga/README.md) | main 更新带来的 Vivado 工程，已更换当前固件；本轮验收在 ASIC 服务器 |
 | [tools](tools/README.md) | 正常工程入口、权重导出和本地依赖管理 |
 

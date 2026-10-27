@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "INT8_64MAC_6MAC_SRAM_TILE_DMA_BATCH8",
+  "status": "INT8_64MAC_6MAC_SRAM_TILE_DMA_BATCH8_ZERO_BUBBLE_W2_PACKED",
   "organization": "ChipDesign111",
   "repository": "chip_design",
   "network": {
@@ -28,7 +28,9 @@
     "batch_max": 8,
     "fc1_mac_issue_cycles_per_sample": 32,
     "fc2_mac_issue_cycles_per_sample": 32,
-    "weight_layout": "FC1[tile32][output32][lane2]; FC2[input32][output6+padding2]",
+    "weight_layout": "FC1[tile32][output32][lane2]; FC2[packet4][tile8][output6], 48 bytes per packet",
+    "tile_handoff": "last-sample consumed pulse, direct ISSUE when next bank is ready",
+    "fc2_prefetch": "two 64-byte banks preloaded during final W1 tile and requant",
     "mac_pipeline": "combinational INT8 multiplication into INT32 accumulator per ISSUE cycle",
     "axi_crossbar_latency": "NO_LATENCY, registered initiator/target adapters retained"
   },
@@ -111,6 +113,9 @@
     "max_burst_words": 16,
     "buffer_bytes": 8,
     "outstanding_bursts": 1,
+    "fc1_transfers_per_batch": 32,
+    "fc2_transfers_per_batch": 4,
+    "weight_bytes_per_batch": 2240,
     "source_bytes": 8192,
     "compute_overlap": true
   },
