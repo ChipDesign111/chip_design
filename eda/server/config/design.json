@@ -20,6 +20,7 @@
   "hold_target_ns": 0.02,
   "cpu_clock_gate": "repository_passthrough",
   "insert_automatic_clock_gating": false,
+  "functional_enable_mapping": "mux_dff",
   "analysis_profile": "matched_TT_SS_FF0_FFm40_SI_off_native_low_RC",
   "max_die_area_mm2": 3.8,
   "acceptance_profile": "native_library_zero_slack"

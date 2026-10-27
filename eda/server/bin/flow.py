@@ -75,6 +75,9 @@ def read_config(path):
     c.setdefault('insert_automatic_clock_gating', True)
     if not isinstance(c['insert_automatic_clock_gating'], bool):
         raise ValueError('insert_automatic_clock_gating must be a JSON boolean')
+    c.setdefault('functional_enable_mapping','library_enable')
+    if c['functional_enable_mapping'] not in ['library_enable','mux_dff']:
+        raise ValueError('Unknown functional register-enable implementation')
     if c['analysis_profile'] not in ['single_TT_SI_off_native_low_RC','matched_TT_SS_FF0_FFm40_SI_off_native_low_RC']:
         raise ValueError('Unknown library PVT profile')
     if not isinstance(c['max_repair_iterations'], int) or not 1 <= c['max_repair_iterations'] <= 10 or c['hold_target_ns'] not in [0,0.02]:
@@ -156,6 +159,7 @@ def prepare(args):
     # lp_clock_gating_infer_enable is an enum in Genus 19.17: it accepts
     # literal true/false, unlike a Boolean attribute it rejects numeric 0/1.
     text+='set eda_insert_clock_gating %s\n'%('true' if config['insert_automatic_clock_gating'] else 'false')
+    text+='set eda_enable_mapping %s\n'%config['functional_enable_mapping']
     user.write_text(text, encoding='utf-8')
     listed, includes, lines = [], [], ['+define+SYNTHESIS', '+define+CHIP_USE_RA1SHD']
     rtl = work / 'src/chip_design'

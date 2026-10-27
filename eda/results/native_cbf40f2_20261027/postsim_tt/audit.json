@@ -1,0 +1,507 @@
+{
+  "audit_tool_sha256": "619151a31792f72359524c7ae67c0909911bf10860e30e65db5f10d3c5f9da2e",
+  "simulator": "vcs",
+  "annotation_errors": 0,
+  "warning_categories": {
+    "SDFCOM_SWC": 2646,
+    "SDFCOM_IWSBA": 952,
+    "SDFCOM_UHICD": 1,
+    "SDFCOM_NIOD": 9
+  },
+  "negative_timing_checks_enabled": true,
+  "native_NTC_RECREM_enabled": true,
+  "negative_iopath_clamped_by_simulator": 9,
+  "negative_paths_failed_to_adjust": 0,
+  "unmatched_paths_printed_lower_bound": 0,
+  "warning_counts_are_printed_messages_not_uncapped_totals": false,
+  "missing_instances": 0,
+  "unmatched_timing_checks": 0,
+  "cases": {
+    "sdf_firmware_1": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10001": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {
+        "final_reset": 26
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[3]",
+          "time_ns": 238891.423,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891423, negedge E:238891145, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[4]",
+          "time_ns": 238891.423,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891423, negedge E:238891144, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[0]",
+          "time_ns": 238891.424,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891424, negedge E:238891145, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[1]",
+          "time_ns": 238891.424,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891424, negedge E:238891145, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[2]",
+          "time_ns": 238891.424,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891424, negedge E:238891145, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[5]",
+          "time_ns": 238891.425,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891425, negedge E:238891144, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[6]",
+          "time_ns": 238891.426,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891426, negedge E:238891144, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[7]",
+          "time_ns": 238891.426,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891426, negedge E:238891144, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[8]",
+          "time_ns": 238891.426,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891426, negedge E:238891143, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[9]",
+          "time_ns": 238891.426,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891426, negedge E:238891143, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[10]",
+          "time_ns": 238891.426,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891426, negedge E:238891143, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[16]",
+          "time_ns": 238891.441,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891441, negedge E:238891205, limits: (365,-227) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[18]",
+          "time_ns": 238891.441,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891441, negedge E:238891205, limits: (365,-227) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[11]",
+          "time_ns": 238891.462,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891462, negedge E:238891142, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[12]",
+          "time_ns": 238891.462,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891462, negedge E:238891142, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[13]",
+          "time_ns": 238891.462,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891462, negedge E:238891141, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[14]",
+          "time_ns": 238891.462,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891462, negedge E:238891140, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[15]",
+          "time_ns": 238891.462,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891462, negedge E:238891140, limits: (330,-206) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[31]",
+          "time_ns": 238891.516,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891516, negedge E:238891208, limits: (356,-222) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[24]",
+          "time_ns": 238891.523,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891523, negedge E:238891206, limits: (356,-222) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[25]",
+          "time_ns": 238891.524,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891524, negedge E:238891206, limits: (356,-222) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[26]",
+          "time_ns": 238891.532,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891532, negedge E:238891206, limits: (357,-222) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[27]",
+          "time_ns": 238891.532,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891532, negedge E:238891206, limits: (357,-222) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[28]",
+          "time_ns": 238891.533,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891533, negedge E:238891207, limits: (357,-222) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[29]",
+          "time_ns": 238891.533,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891533, negedge E:238891207, limits: (357,-222) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_wdata_q_reg[30]",
+          "time_ns": 238891.533,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891533, negedge E:238891207, limits: (357,-222) );"
+        }
+      ]
+    },
+    "sdf_firmware_10002": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10003": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10004": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10005": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10006": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10007": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10008": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10009": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10010": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10011": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_3": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_5": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_7": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_max": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.65,
+        70.65,
+        90.65,
+        110.65
+      ],
+      "timing_counts": {
+        "final_reset": 4
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_byte_we_q_reg[3]",
+          "time_ns": 238891.468,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP:238891468, posedge SE:238891332, limits: (343,-86) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_byte_we_q_reg[0]",
+          "time_ns": 238891.476,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP:238891476, posedge SE:238891333, limits: (343,-86) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_byte_we_q_reg[1]",
+          "time_ns": 238891.476,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP:238891476, posedge SE:238891333, limits: (343,-86) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_byte_we_q_reg[2]",
+          "time_ns": 238891.476,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP:238891476, posedge SE:238891332, limits: (343,-86) );"
+        }
+      ]
+    }
+  },
+  "binding_complete_for_instances_and_checks": true,
+  "negative_path_delay_support_complete": false,
+  "raw_annotation_warnings_retained": true,
+  "active_window_dynamic_timing_clean": true,
+  "normal_acceptance": {
+    "functional_pass": true,
+    "sdf_binding_complete": true,
+    "dynamic_timing_clean": false,
+    "warnings_are_reported_not_required_to_be_zero": true
+  },
+  "normal_postsim_pass": false,
+  "scope": "Full notifier/message checking in all SDF runs; reset events retained, not masked. Unsupported negative IOPATH clamps remain explicit; not complete signoff."
+}

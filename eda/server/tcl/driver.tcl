@@ -83,6 +83,8 @@ if {[catch {
             extractRC
         }
     }
+    source [file join $eda_work flow tcl register_mapping.tcl]
+    eda_apply_register_mapping_innovus
     if {!$eda_headless} {win}
     source [file join $eda_work flow config repair.tcl]
     set sram_objects [dbGet -e top.insts.cell.name RA1SHD_2048x32M8 -p2]

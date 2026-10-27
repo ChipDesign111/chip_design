@@ -9,6 +9,7 @@ set rm_core_top my_soc_top
 set rm_clock_period 20
 set eda_opt_max_density 0.85
 set eda_insert_clock_gating false
+set eda_enable_mapping mux_dff
 
 set PROJECT_ROOT {}
 set PDK_ROOT /lec/pdk/tsmc180

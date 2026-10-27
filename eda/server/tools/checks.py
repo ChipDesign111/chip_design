@@ -243,9 +243,12 @@ def mapped_netlist_check(work):
         raise ValueError('Expected NPU/DMA area hierarchy absent; inspect accidental pruning')
     config=json.loads((work/'config/design.json').read_text())
     automatic_gates=[path for path in leaves if 'RC_CG_HIER_INST' in path]
+    controlled_ffs=[path for path,master in leaves.items() if re.match(r'^(EDF|SDF|SEDF|GSDF|DFK|DFX)',master)]
     return {'native_main_srams': 1, 'mapped_leaf_instances': len(leaves), 'all_leaf_types_have_library_models': True, 'npu_dma_area_hierarchy_present': True, 'latch_area_um2': 0,
             'automatic_clock_gating_requested':config.get('insert_automatic_clock_gating',True),
-            'mapped_automatic_clock_gate_instances':len(automatic_gates)}
+            'mapped_automatic_clock_gate_instances':len(automatic_gates),
+            'functional_enable_mapping':config.get('functional_enable_mapping','library_enable'),
+            'mapped_controlled_flip_flop_instances':len(controlled_ffs)}
 
 
 def physical_pins(work, path):

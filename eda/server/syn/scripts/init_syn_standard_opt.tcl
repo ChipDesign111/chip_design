@@ -147,6 +147,8 @@ read_mmmc ../scripts/syn_mmmc.tcl
 
 # Timing libraries must exist before LEF unit synchronization.
 set_db lef_library $tech(lef_list)
+source ../../flow/tcl/register_mapping.tcl
+eda_apply_register_mapping_genus
 
 # read RTL in filelist
 read_hdl -language sv -f $log_syn(sv_list)
