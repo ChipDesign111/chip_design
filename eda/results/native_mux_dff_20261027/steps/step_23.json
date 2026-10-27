@@ -1,0 +1,28 @@
+{
+  "step": 23,
+  "commands_completed": true,
+  "input_manifest_sha256": "c1b350a1f2550de2e21af03963a3450d3a6ad885f83b8e2bc00b99558cf63f6d",
+  "automatic_checks": {
+    "actual_rc_temperatures_C": {
+      "tt_1p80v_25c": 25,
+      "ss_pvt": 125,
+      "ff0_pvt": 0,
+      "ffm40_pvt": -40
+    },
+    "tap": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/my_soc_top_welltap.rpt",
+      "zero_reported_violations": true,
+      "scope": "tap",
+      "archived_report": "evidence/stage_reports/23/pnr/my_soc_top/my_soc_top_welltap.rpt",
+      "report_sha256": "ed8c36df4596cf994a7be25ae0e27dca931d2ea971994f8f1aad80c38771d09c"
+    },
+    "special_drc": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/my_soc_top_postPhysCells_pg_drc.rpt",
+      "zero_reported_violations": true,
+      "scope": "drc",
+      "archived_report": "evidence/stage_reports/23/pnr/my_soc_top/my_soc_top_postPhysCells_pg_drc.rpt",
+      "report_sha256": "79f01056c04dcd0d48649f4c6ff82b9183cd1297cb283672187af538345944aa"
+    }
+  },
+  "scope": "Only the listed automatic checks are asserted. Tcl guards also check object counts, IO geometry and halo. Not complete signoff."
+}

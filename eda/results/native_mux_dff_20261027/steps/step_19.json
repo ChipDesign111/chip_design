@@ -1,0 +1,21 @@
+{
+  "step": 19,
+  "commands_completed": true,
+  "input_manifest_sha256": "c1b350a1f2550de2e21af03963a3450d3a6ad885f83b8e2bc00b99558cf63f6d",
+  "automatic_checks": {
+    "actual_rc_temperatures_C": {
+      "tt_1p80v_25c": 25,
+      "ss_pvt": 125,
+      "ff0_pvt": 0,
+      "ffm40_pvt": -40
+    },
+    "special_drc": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/my_soc_top_pg_drc.rpt",
+      "zero_reported_violations": true,
+      "scope": "drc",
+      "archived_report": "evidence/stage_reports/19/pnr/my_soc_top/my_soc_top_pg_drc.rpt",
+      "report_sha256": "da1bf5f6c32092232f3fa3494514716b2bc3c595e4336bb45216409a741aec08"
+    }
+  },
+  "scope": "Only the listed automatic checks are asserted. Tcl guards also check object counts, IO geometry and halo. Not complete signoff."
+}

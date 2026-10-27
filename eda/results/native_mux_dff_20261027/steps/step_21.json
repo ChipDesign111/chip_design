@@ -1,0 +1,29 @@
+{
+  "step": 21,
+  "commands_completed": true,
+  "input_manifest_sha256": "c1b350a1f2550de2e21af03963a3450d3a6ad885f83b8e2bc00b99558cf63f6d",
+  "automatic_checks": {
+    "actual_rc_temperatures_C": {
+      "tt_1p80v_25c": 25,
+      "ss_pvt": 125,
+      "ff0_pvt": 0,
+      "ffm40_pvt": -40
+    },
+    "special_drc": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/my_soc_top_pg_drc.rpt",
+      "zero_reported_violations": true,
+      "scope": "drc",
+      "archived_report": "evidence/stage_reports/21/pnr/my_soc_top/my_soc_top_pg_drc.rpt",
+      "report_sha256": "07bb2024d7dbab6e4d56455efc795adfaeaff914d1986d5b9e87e4ce73bb5236"
+    },
+    "core_pg_without_dangling_check": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/my_soc_top_pg_noDangling.rpt",
+      "zero_reported_violations": true,
+      "scope": "connectivity",
+      "archived_report": "evidence/stage_reports/21/pnr/my_soc_top/my_soc_top_pg_noDangling.rpt",
+      "report_sha256": "ba42625d424964cd9f2fcb88740f15a839ec803d2eeb0db1b600d253d9e64d41"
+    },
+    "scope_note": "Full connectivity report retained; noAntenna scope excludes dangling checks here. Final step33 requires the full PG report clean."
+  },
+  "scope": "Only the listed automatic checks are asserted. Tcl guards also check object counts, IO geometry and halo. Not complete signoff."
+}

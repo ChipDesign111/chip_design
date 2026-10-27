@@ -1,0 +1,119 @@
+[
+  {
+    "mode": "sdf_max",
+    "flags": [],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/postsim/inputs/firmware.hex"
+  },
+  {
+    "mode": "gate_zero",
+    "flags": [
+      "+NO_SDF"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/postsim/inputs/firmware.hex"
+  },
+  {
+    "mode": "sdf_firmware_1",
+    "flags": [
+      "+RESET_OFFSET_PS=250"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_1.hex"
+  },
+  {
+    "mode": "sdf_firmware_10001",
+    "flags": [
+      "+RESET_OFFSET_PS=1650"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10001.hex"
+  },
+  {
+    "mode": "sdf_firmware_10002",
+    "flags": [
+      "+RESET_OFFSET_PS=3050"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10002.hex"
+  },
+  {
+    "mode": "sdf_firmware_10003",
+    "flags": [
+      "+RESET_OFFSET_PS=4450"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10003.hex"
+  },
+  {
+    "mode": "sdf_firmware_10004",
+    "flags": [
+      "+RESET_OFFSET_PS=5850"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10004.hex"
+  },
+  {
+    "mode": "sdf_firmware_10005",
+    "flags": [
+      "+RESET_OFFSET_PS=7250"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10005.hex"
+  },
+  {
+    "mode": "sdf_firmware_10006",
+    "flags": [
+      "+RESET_OFFSET_PS=8650"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10006.hex"
+  },
+  {
+    "mode": "sdf_firmware_10007",
+    "flags": [
+      "+RESET_OFFSET_PS=10050"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10007.hex"
+  },
+  {
+    "mode": "sdf_firmware_10008",
+    "flags": [
+      "+RESET_OFFSET_PS=11450"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10008.hex"
+  },
+  {
+    "mode": "sdf_firmware_10009",
+    "flags": [
+      "+RESET_OFFSET_PS=12850"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10009.hex"
+  },
+  {
+    "mode": "sdf_firmware_10010",
+    "flags": [
+      "+RESET_OFFSET_PS=14250"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10010.hex"
+  },
+  {
+    "mode": "sdf_firmware_10011",
+    "flags": [
+      "+RESET_OFFSET_PS=15650"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10011.hex"
+  },
+  {
+    "mode": "sdf_firmware_3",
+    "flags": [
+      "+RESET_OFFSET_PS=17050"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_3.hex"
+  },
+  {
+    "mode": "sdf_firmware_5",
+    "flags": [
+      "+RESET_OFFSET_PS=18450"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_5.hex"
+  },
+  {
+    "mode": "sdf_firmware_7",
+    "flags": [
+      "+RESET_OFFSET_PS=19850"
+    ],
+    "firmware": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_7.hex"
+  }
+]

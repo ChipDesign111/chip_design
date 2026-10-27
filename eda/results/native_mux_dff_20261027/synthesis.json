@@ -1,0 +1,19 @@
+{
+  "cell_count": 69768,
+  "cell_area_um2": 2039855.258,
+  "net_area_um2": 785828.944,
+  "latch_area_um2": 0.0,
+  "memory_area_um2": 401443.591,
+  "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/syn/my_soc_top/reports/area/area.rpt",
+  "mapped_design": {
+    "native_main_srams": 1,
+    "mapped_leaf_instances": 69768,
+    "all_leaf_types_have_library_models": true,
+    "npu_dma_area_hierarchy_present": true,
+    "latch_area_um2": 0,
+    "automatic_clock_gating_requested": false,
+    "mapped_automatic_clock_gate_instances": 0,
+    "functional_enable_mapping": "mux_dff",
+    "mapped_controlled_flip_flop_instances": 0
+  }
+}

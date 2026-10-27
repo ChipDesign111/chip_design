@@ -1,0 +1,159 @@
+{
+  "step": 28,
+  "commands_completed": true,
+  "input_manifest_sha256": "c1b350a1f2550de2e21af03963a3450d3a6ad885f83b8e2bc00b99558cf63f6d",
+  "automatic_checks": {
+    "actual_rc_temperatures_C": {
+      "tt_1p80v_25c": 25,
+      "ss_pvt": 125,
+      "ff0_pvt": 0,
+      "ffm40_pvt": -40
+    },
+    "placement": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/my_soc_top_postCTS_place_check.rpt",
+      "unplaced": 0,
+      "expected_io_bond_covers": [
+        "i_pad_E_poc",
+        "i_pad_E_vdd_1",
+        "i_pad_E_vdd_2",
+        "i_pad_E_vddio",
+        "i_pad_E_vss_1",
+        "i_pad_E_vss_2",
+        "i_pad_E_vssio",
+        "i_pad_N_poc",
+        "i_pad_N_vdd_1",
+        "i_pad_N_vdd_2",
+        "i_pad_N_vddio",
+        "i_pad_N_vss_1",
+        "i_pad_N_vss_2",
+        "i_pad_N_vssio",
+        "i_pad_S_poc",
+        "i_pad_S_vdd_1",
+        "i_pad_S_vdd_2",
+        "i_pad_S_vddio",
+        "i_pad_S_vss_1",
+        "i_pad_S_vss_2",
+        "i_pad_S_vssio",
+        "i_pad_W_poc",
+        "i_pad_W_vdd_1",
+        "i_pad_W_vdd_2",
+        "i_pad_W_vddio",
+        "i_pad_W_vss_1",
+        "i_pad_W_vss_2",
+        "i_pad_W_vssio",
+        "i_pad_clk",
+        "i_pad_rst_n",
+        "i_pad_tck",
+        "i_pad_tdi",
+        "i_pad_tdo",
+        "i_pad_tms"
+      ],
+      "no_other_listed_placement_violations": true,
+      "archived_report": "evidence/stage_reports/28/pnr/my_soc_top/my_soc_top_postCTS_place_check.rpt",
+      "report_sha256": "9f849f316553ee3ab898e13bf1198cb2d4e69dd32207afb0597894f3a288c7f4"
+    },
+    "timing": {
+      "Setup": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postCTS/my_soc_top_postCTS.summary.gz",
+        "wns_ns": 0.004,
+        "tns_ns": 0.0,
+        "violating_paths": 0,
+        "drv": {
+          "max_cap": {
+            "real": 0,
+            "total": 0
+          },
+          "max_tran": {
+            "real": 0,
+            "total": 0
+          },
+          "max_fanout": {
+            "real": 0,
+            "total": 0
+          },
+          "max_length": {
+            "real": 0,
+            "total": 0
+          }
+        },
+        "electrical_drv_table_reported_here": true,
+        "minimum_wns_ns": 0.0,
+        "targets_met": true,
+        "archived_report": "evidence/stage_reports/28/pnr/my_soc_top/reports/postCTS/my_soc_top_postCTS.summary.gz",
+        "report_sha256": "61007ed0337714a999c42965343e05a84ba9ba36a408ab20efd4cfc6ce1cfde3"
+      },
+      "Hold": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postCTS/my_soc_top_postCTS_hold.summary.gz",
+        "wns_ns": -1.143,
+        "tns_ns": -14.484,
+        "violating_paths": 103,
+        "drv": {},
+        "electrical_drv_table_reported_here": false,
+        "minimum_wns_ns": 0.0,
+        "targets_met": false,
+        "archived_report": "evidence/stage_reports/28/pnr/my_soc_top/reports/postCTS/my_soc_top_postCTS_hold.summary.gz",
+        "report_sha256": "49113c925fba5f030c49aa972ed09538703c88ba6ae4bfea9e0e3c45fe59ee35"
+      }
+    },
+    "expanded_analysis_views": {
+      "func_tt_io": {
+        "Setup": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postCTS/func_tt_io/my_soc_top_postCTS_all.tarpt.gz",
+          "analysis_view": "func_tt_io",
+          "archived_report": "evidence/stage_reports/28/pnr/my_soc_top/reports/postCTS/func_tt_io/my_soc_top_postCTS_all.tarpt.gz",
+          "report_sha256": "4d777b3b9d203e5c40788d6f5012db21f95c1e35bc075aaa84af95aefe312944"
+        },
+        "Hold": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postCTS/func_tt_io/my_soc_top_postCTS_all_hold.tarpt.gz",
+          "analysis_view": "func_tt_io",
+          "archived_report": "evidence/stage_reports/28/pnr/my_soc_top/reports/postCTS/func_tt_io/my_soc_top_postCTS_all_hold.tarpt.gz",
+          "report_sha256": "96c0a1dd98cb8b1e08ed1b3514e07073ac32d4f830027b52a5af8cf66b8dac77"
+        }
+      },
+      "func_ss_io": {
+        "Setup": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postCTS/func_ss_io/my_soc_top_postCTS_all.tarpt.gz",
+          "analysis_view": "func_ss_io",
+          "archived_report": "evidence/stage_reports/28/pnr/my_soc_top/reports/postCTS/func_ss_io/my_soc_top_postCTS_all.tarpt.gz",
+          "report_sha256": "1d60bba4a5fec376b2c61cb3b69e13c1892cab3845fc0a77f61cc672228683c3"
+        },
+        "Hold": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postCTS/func_ss_io/my_soc_top_postCTS_all_hold.tarpt.gz",
+          "analysis_view": "func_ss_io",
+          "archived_report": "evidence/stage_reports/28/pnr/my_soc_top/reports/postCTS/func_ss_io/my_soc_top_postCTS_all_hold.tarpt.gz",
+          "report_sha256": "fa1a48ee64b0fab5fdc89f35eb0b42aae485b1635ffea83f68dc4e1ea443ec95"
+        }
+      },
+      "func_ff0_io": {
+        "Setup": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postCTS/func_ff0_io/my_soc_top_postCTS_all.tarpt.gz",
+          "analysis_view": "func_ff0_io",
+          "archived_report": "evidence/stage_reports/28/pnr/my_soc_top/reports/postCTS/func_ff0_io/my_soc_top_postCTS_all.tarpt.gz",
+          "report_sha256": "678a4d10652b016b9ebada137be9321ed1b0004c1f1d39546858a652d2ac5df8"
+        },
+        "Hold": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postCTS/func_ff0_io/my_soc_top_postCTS_all_hold.tarpt.gz",
+          "analysis_view": "func_ff0_io",
+          "archived_report": "evidence/stage_reports/28/pnr/my_soc_top/reports/postCTS/func_ff0_io/my_soc_top_postCTS_all_hold.tarpt.gz",
+          "report_sha256": "acfeb8a0505b21866037996d7e4e9b48eaac772ef43b7b8dcc0934351432126c"
+        }
+      },
+      "func_ffm40_io": {
+        "Setup": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postCTS/func_ffm40_io/my_soc_top_postCTS_all.tarpt.gz",
+          "analysis_view": "func_ffm40_io",
+          "archived_report": "evidence/stage_reports/28/pnr/my_soc_top/reports/postCTS/func_ffm40_io/my_soc_top_postCTS_all.tarpt.gz",
+          "report_sha256": "94ca3f80d7dba6199f7b2cb2d69b695204a83f32c00bb0c6f80a45123803ce06"
+        },
+        "Hold": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postCTS/func_ffm40_io/my_soc_top_postCTS_all_hold.tarpt.gz",
+          "analysis_view": "func_ffm40_io",
+          "archived_report": "evidence/stage_reports/28/pnr/my_soc_top/reports/postCTS/func_ffm40_io/my_soc_top_postCTS_all_hold.tarpt.gz",
+          "report_sha256": "7b8196f4f2a64066ffddc095057fccc36cf22d69c34968070030baa91eca0fda"
+        }
+      }
+    },
+    "timing_scope": "Pre-route diagnostic: residuals are recorded; only post-route steps32/33 require all timing/electrical targets met."
+  },
+  "scope": "Only the listed automatic checks are asserted. Tcl guards also check object counts, IO geometry and halo. Not complete signoff."
+}

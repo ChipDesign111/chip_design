@@ -1,4 +1,6 @@
-# SRAM 复位修正与验证状态
+# SRAM复位RTL修正与main单TT基线
+
+本文记录已合并main的5191064 RTL修正及其单TT实现。功能RTL未再变化；后续四角实现与三组SDF已完成，见[本轮最终结果](../eda/results/native_mux_dff_20261027/README.md)。下文“未做多PVT”对应本历史实现交付时点，不代表最新xzx状态。
 
 ## 要解决的问题
 

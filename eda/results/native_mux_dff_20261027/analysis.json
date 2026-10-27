@@ -1,0 +1,443 @@
+{
+  "physical_source_commit": "4427c4bd1f7b4197c4b2b8a4645a8f9427b6bf36",
+  "postsim_source_commit": "415a43cefdf2cc81ee49f3ec8a82f231dc1b0a49",
+  "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b",
+  "physical_source_archive_sha256": "9e27990542fd775f10ed00e001008bdc3b2a3222de8a11b998c5690cef71e01c",
+  "physical_source_manifest_sha256": "ede0aaf31599ce0560f251454022fed8946ad6f843d61c731a3f605ea70ff84e",
+  "main_unchanged": "d40b2172e0d7461f9efea5a28208da10a9b5db59",
+  "RTL_equal_to_main": true,
+  "RTL_tree": "b41b96c3b8bb9d570dc288019764d71c6ab9c44c",
+  "whole_die_area_mm2": 3.7956390976,
+  "actual_logic_density_percent": 74.138,
+  "planning_utilization": 0.85,
+  "synthesis": {
+    "cell_count": 69768,
+    "cell_area_um2": 2039855.258,
+    "net_area_um2": 785828.944,
+    "latch_area_um2": 0.0,
+    "memory_area_um2": 401443.591,
+    "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/syn/my_soc_top/reports/area/area.rpt",
+    "mapped_design": {
+      "native_main_srams": 1,
+      "mapped_leaf_instances": 69768,
+      "all_leaf_types_have_library_models": true,
+      "npu_dma_area_hierarchy_present": true,
+      "latch_area_um2": 0,
+      "automatic_clock_gating_requested": false,
+      "mapped_automatic_clock_gate_instances": 0,
+      "functional_enable_mapping": "mux_dff",
+      "mapped_controlled_flip_flop_instances": 0
+    }
+  },
+  "corners": {
+    "func_tt_io": {
+      "Setup": 4.062,
+      "Hold": 0.115
+    },
+    "func_ss_io": {
+      "Setup": 0.001,
+      "Hold": 0.289
+    },
+    "func_ff0_io": {
+      "Setup": 5.743,
+      "Hold": 0.029
+    },
+    "func_ffm40_io": {
+      "Setup": 5.935,
+      "Hold": 0.02
+    }
+  },
+  "exit_files": {
+    "collect_exit_code.txt": "0\n",
+    "environment_exit_code.txt": "0\n",
+    "eda_exit_code.txt": "0\n",
+    "run_exit_code.txt": "0\n"
+  },
+  "physical_files_verified": 852,
+  "postsim": {
+    "tt": {
+      "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c",
+      "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b",
+      "functional_cases": 17,
+      "SDF_cases": 16,
+      "dynamic_timing_events": 0,
+      "annotation_errors": 0,
+      "missing_instances": 0,
+      "unmatched_checks": 0,
+      "normal_postsim_pass": true,
+      "negative_iopath_clamped": 18,
+      "negative_path_delay_support_complete": false,
+      "warning_categories": {
+        "SDFCOM_SWC": 2711,
+        "SDFCOM_IWSBA": 1014,
+        "SDFCOM_UHICD": 1,
+        "SDFCOM_NIOD": 18
+      },
+      "files_verified": 67,
+      "archive_sha256": "5c5341a5045869d8c604e8a1bf51fec2194641cd0a9dbb574d0688fcc4c01c86",
+      "inputs": {
+        "netlist": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/outputs/manual_final/my_soc_top_hier_postpnr.v",
+          "sha256": "768532067dc7af00604715b8f7ad8e8b216ff8384843902cc5ca90d4032462a4"
+        },
+        "sdf_gz": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/outputs/manual_final/my_soc_top_tt_io.sdf.gz",
+          "sha256": "1bcc5d0b05396ccf7ca32747c161f48cfcee103230ae5c7b3e8f622023b9f532"
+        },
+        "firmware": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware.hex",
+          "sha256": "3dcd4ca932b501d55f71349d2cde61c744b42ab09578623e183a4b56e72382cd"
+        },
+        "testbench": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/deploy/server/postsim/tb_postsim.sv",
+          "sha256": "614b761a3fe6cce6db70eef445ff704a0b50dddf962bea4b0adcc6425b184832"
+        },
+        "standard_cells": {
+          "source": "/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v",
+          "sha256": "e1d4d2b7b789f9b7e5bfdc1b1597434b53d65699b68823c457dc78e146c636b3"
+        },
+        "io_cells": {
+          "source": "/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Front_End/verilog/tpd018nv_260a/tpd018nv.v",
+          "sha256": "57d800247aa58b8113d89ec5584b646e7d620248eec08381cb024734e8cfa2c2"
+        },
+        "sram": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8.v",
+          "sha256": "52fd590082b4f63573856baf44d8e59b5ab21db56b9c11aeaf4d45376b32d54d"
+        },
+        "firmware_1": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware_1.hex",
+          "sha256": "38747e36f85a714705b40f6ef21077eefbb2c0bb9b09d21ec624eaba83d49924"
+        },
+        "firmware_10001": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware_10001.hex",
+          "sha256": "09dd02bb0ccc5ce532c938465fa4cad5674c170a0195879393bc6d69d8eebdf7"
+        },
+        "firmware_10002": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware_10002.hex",
+          "sha256": "9bc3e73261a1cec923bb30a2408329b926028e5b1baae49581fbe6b92c035250"
+        },
+        "firmware_10003": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware_10003.hex",
+          "sha256": "c96fa27844a2caca74571a61a015997be22b2b73cb1f1633b4aae8d7982404d7"
+        },
+        "firmware_10004": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware_10004.hex",
+          "sha256": "a6df95b27d7b7f327f4b912dd49d41ecbfdfe16471fe2e0ffafdcad9af56f48e"
+        },
+        "firmware_10005": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware_10005.hex",
+          "sha256": "252276d55c1476ced25a1f723747482356aff2442bdb70fde366f695ec991564"
+        },
+        "firmware_10006": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware_10006.hex",
+          "sha256": "c519fcdfb84bab5beed91a37b8c251684a7481afd15f934bffcd8d58e88f8616"
+        },
+        "firmware_10007": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware_10007.hex",
+          "sha256": "21f713d90f9829f28e020405fe73bbf63d165b7b6e095ea7ee45547ffd791b26"
+        },
+        "firmware_10008": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware_10008.hex",
+          "sha256": "e81a6f84cc4d02b91571fbe67c6fb02b6a9febfff689b451f0c6ce0116e70b32"
+        },
+        "firmware_10009": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware_10009.hex",
+          "sha256": "4bf5bb28b6d9782b255ac9dfabd8c010e00280111b6a4f97fdfd73752333ec3d"
+        },
+        "firmware_10010": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware_10010.hex",
+          "sha256": "875a9c64611155a5f7564d1049883812fed83e53ea7651531be5161399bb8ff9"
+        },
+        "firmware_10011": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware_10011.hex",
+          "sha256": "8b33e5891a9cc17144ff4d4221f8e6ea46d6febe41900f2ec076e67d4ceb9743"
+        },
+        "firmware_3": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware_3.hex",
+          "sha256": "2981b0996504b49edcafd4026216895513b62bc5e292ea2344a25ccf1bda314b"
+        },
+        "firmware_5": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware_5.hex",
+          "sha256": "06fe60806fe484e1a970edcb1578ba8ba34f168e6b188c459d3fbc9f170df6ef"
+        },
+        "firmware_7": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/configs/firmware_7.hex",
+          "sha256": "e67893935d8dc38bbb116a1d2c2c1e024850c50130f7ae65a19b68c67e47b6a7"
+        },
+        "simulation_netlist": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/postsim/inputs/netlist.v",
+          "sha256": "b97be9a7e46237a588b3be3a1c1f6cb603486a047006c637af52be5692021b43"
+        },
+        "sram_simulation_adapter": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_214145_postsim_vcs_tt_415a43c/postsim/inputs/sram_period_adapter.v",
+          "sha256": "f348b8b1f9d5dc8b23714bde247371ce556ed8ac12c772f6f140527920e36b3d",
+          "change": "Add negedge period declaration; native notifier, SDF limits; licensed copy retained server-only"
+        }
+      }
+    },
+    "pvt-min": {
+      "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c",
+      "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b",
+      "functional_cases": 17,
+      "SDF_cases": 16,
+      "dynamic_timing_events": 0,
+      "annotation_errors": 0,
+      "missing_instances": 0,
+      "unmatched_checks": 0,
+      "normal_postsim_pass": true,
+      "negative_iopath_clamped": 438,
+      "negative_path_delay_support_complete": false,
+      "warning_categories": {
+        "SDFCOM_SWC": 2711,
+        "SDFCOM_IWSBA": 1014,
+        "SDFCOM_UHICD": 1,
+        "SDFCOM_ANIOD": 34,
+        "SDFCOM_NIOD": 438
+      },
+      "files_verified": 67,
+      "archive_sha256": "8c6afd271a2a06dfe891874921ee7db3accf8e803049f8495c104bfd641323a7",
+      "inputs": {
+        "netlist": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/outputs/manual_final/my_soc_top_hier_postpnr.v",
+          "sha256": "768532067dc7af00604715b8f7ad8e8b216ff8384843902cc5ca90d4032462a4"
+        },
+        "sdf_gz": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/outputs/manual_final/my_soc_top_pvt.sdf.gz",
+          "sha256": "c6cafba0f4e59b95b1cc3e6e3ae69eeb6bc4168091aa30ca81ee76f847919317"
+        },
+        "firmware": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware.hex",
+          "sha256": "3dcd4ca932b501d55f71349d2cde61c744b42ab09578623e183a4b56e72382cd"
+        },
+        "testbench": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/deploy/server/postsim/tb_postsim.sv",
+          "sha256": "614b761a3fe6cce6db70eef445ff704a0b50dddf962bea4b0adcc6425b184832"
+        },
+        "standard_cells": {
+          "source": "/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v",
+          "sha256": "e1d4d2b7b789f9b7e5bfdc1b1597434b53d65699b68823c457dc78e146c636b3"
+        },
+        "io_cells": {
+          "source": "/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Front_End/verilog/tpd018nv_260a/tpd018nv.v",
+          "sha256": "57d800247aa58b8113d89ec5584b646e7d620248eec08381cb024734e8cfa2c2"
+        },
+        "sram": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8.v",
+          "sha256": "52fd590082b4f63573856baf44d8e59b5ab21db56b9c11aeaf4d45376b32d54d"
+        },
+        "firmware_1": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware_1.hex",
+          "sha256": "38747e36f85a714705b40f6ef21077eefbb2c0bb9b09d21ec624eaba83d49924"
+        },
+        "firmware_10001": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware_10001.hex",
+          "sha256": "09dd02bb0ccc5ce532c938465fa4cad5674c170a0195879393bc6d69d8eebdf7"
+        },
+        "firmware_10002": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware_10002.hex",
+          "sha256": "9bc3e73261a1cec923bb30a2408329b926028e5b1baae49581fbe6b92c035250"
+        },
+        "firmware_10003": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware_10003.hex",
+          "sha256": "c96fa27844a2caca74571a61a015997be22b2b73cb1f1633b4aae8d7982404d7"
+        },
+        "firmware_10004": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware_10004.hex",
+          "sha256": "a6df95b27d7b7f327f4b912dd49d41ecbfdfe16471fe2e0ffafdcad9af56f48e"
+        },
+        "firmware_10005": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware_10005.hex",
+          "sha256": "252276d55c1476ced25a1f723747482356aff2442bdb70fde366f695ec991564"
+        },
+        "firmware_10006": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware_10006.hex",
+          "sha256": "c519fcdfb84bab5beed91a37b8c251684a7481afd15f934bffcd8d58e88f8616"
+        },
+        "firmware_10007": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware_10007.hex",
+          "sha256": "21f713d90f9829f28e020405fe73bbf63d165b7b6e095ea7ee45547ffd791b26"
+        },
+        "firmware_10008": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware_10008.hex",
+          "sha256": "e81a6f84cc4d02b91571fbe67c6fb02b6a9febfff689b451f0c6ce0116e70b32"
+        },
+        "firmware_10009": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware_10009.hex",
+          "sha256": "4bf5bb28b6d9782b255ac9dfabd8c010e00280111b6a4f97fdfd73752333ec3d"
+        },
+        "firmware_10010": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware_10010.hex",
+          "sha256": "875a9c64611155a5f7564d1049883812fed83e53ea7651531be5161399bb8ff9"
+        },
+        "firmware_10011": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware_10011.hex",
+          "sha256": "8b33e5891a9cc17144ff4d4221f8e6ea46d6febe41900f2ec076e67d4ceb9743"
+        },
+        "firmware_3": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware_3.hex",
+          "sha256": "2981b0996504b49edcafd4026216895513b62bc5e292ea2344a25ccf1bda314b"
+        },
+        "firmware_5": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware_5.hex",
+          "sha256": "06fe60806fe484e1a970edcb1578ba8ba34f168e6b188c459d3fbc9f170df6ef"
+        },
+        "firmware_7": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/configs/firmware_7.hex",
+          "sha256": "e67893935d8dc38bbb116a1d2c2c1e024850c50130f7ae65a19b68c67e47b6a7"
+        },
+        "simulation_netlist": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/postsim/inputs/netlist.v",
+          "sha256": "b24eb0036bbdfbbfb50b96ac34f9fc740167c6b29a5929c8bbefe0e0c314000f"
+        },
+        "sram_simulation_adapter": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215009_postsim_vcs_pvt-min_415a43c/postsim/inputs/sram_period_adapter.v",
+          "sha256": "f348b8b1f9d5dc8b23714bde247371ce556ed8ac12c772f6f140527920e36b3d",
+          "change": "Add negedge period declaration; native notifier, SDF limits; licensed copy retained server-only"
+        }
+      }
+    },
+    "pvt-max": {
+      "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c",
+      "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b",
+      "functional_cases": 17,
+      "SDF_cases": 16,
+      "dynamic_timing_events": 0,
+      "annotation_errors": 0,
+      "missing_instances": 0,
+      "unmatched_checks": 0,
+      "normal_postsim_pass": true,
+      "negative_iopath_clamped": 0,
+      "negative_path_delay_support_complete": true,
+      "warning_categories": {
+        "SDFCOM_SWC": 2711,
+        "SDFCOM_IWSBA": 1014,
+        "SDFCOM_UHICD": 1
+      },
+      "files_verified": 76,
+      "archive_sha256": "6bf193db081803a823b181c85c14d1589e55258674b65def30b7f3f6b66b2553",
+      "inputs": {
+        "netlist": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/outputs/manual_final/my_soc_top_hier_postpnr.v",
+          "sha256": "768532067dc7af00604715b8f7ad8e8b216ff8384843902cc5ca90d4032462a4"
+        },
+        "sdf_gz": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/outputs/manual_final/my_soc_top_pvt.sdf.gz",
+          "sha256": "c6cafba0f4e59b95b1cc3e6e3ae69eeb6bc4168091aa30ca81ee76f847919317"
+        },
+        "firmware": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware.hex",
+          "sha256": "3dcd4ca932b501d55f71349d2cde61c744b42ab09578623e183a4b56e72382cd"
+        },
+        "testbench": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/deploy/server/postsim/tb_postsim.sv",
+          "sha256": "614b761a3fe6cce6db70eef445ff704a0b50dddf962bea4b0adcc6425b184832"
+        },
+        "standard_cells": {
+          "source": "/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v",
+          "sha256": "e1d4d2b7b789f9b7e5bfdc1b1597434b53d65699b68823c457dc78e146c636b3"
+        },
+        "io_cells": {
+          "source": "/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Front_End/verilog/tpd018nv_260a/tpd018nv.v",
+          "sha256": "57d800247aa58b8113d89ec5584b646e7d620248eec08381cb024734e8cfa2c2"
+        },
+        "sram": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8.v",
+          "sha256": "52fd590082b4f63573856baf44d8e59b5ab21db56b9c11aeaf4d45376b32d54d"
+        },
+        "firmware_1": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_1.hex",
+          "sha256": "38747e36f85a714705b40f6ef21077eefbb2c0bb9b09d21ec624eaba83d49924"
+        },
+        "firmware_10001": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10001.hex",
+          "sha256": "09dd02bb0ccc5ce532c938465fa4cad5674c170a0195879393bc6d69d8eebdf7"
+        },
+        "firmware_10002": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10002.hex",
+          "sha256": "9bc3e73261a1cec923bb30a2408329b926028e5b1baae49581fbe6b92c035250"
+        },
+        "firmware_10003": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10003.hex",
+          "sha256": "c96fa27844a2caca74571a61a015997be22b2b73cb1f1633b4aae8d7982404d7"
+        },
+        "firmware_10004": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10004.hex",
+          "sha256": "a6df95b27d7b7f327f4b912dd49d41ecbfdfe16471fe2e0ffafdcad9af56f48e"
+        },
+        "firmware_10005": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10005.hex",
+          "sha256": "252276d55c1476ced25a1f723747482356aff2442bdb70fde366f695ec991564"
+        },
+        "firmware_10006": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10006.hex",
+          "sha256": "c519fcdfb84bab5beed91a37b8c251684a7481afd15f934bffcd8d58e88f8616"
+        },
+        "firmware_10007": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10007.hex",
+          "sha256": "21f713d90f9829f28e020405fe73bbf63d165b7b6e095ea7ee45547ffd791b26"
+        },
+        "firmware_10008": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10008.hex",
+          "sha256": "e81a6f84cc4d02b91571fbe67c6fb02b6a9febfff689b451f0c6ce0116e70b32"
+        },
+        "firmware_10009": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10009.hex",
+          "sha256": "4bf5bb28b6d9782b255ac9dfabd8c010e00280111b6a4f97fdfd73752333ec3d"
+        },
+        "firmware_10010": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10010.hex",
+          "sha256": "875a9c64611155a5f7564d1049883812fed83e53ea7651531be5161399bb8ff9"
+        },
+        "firmware_10011": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_10011.hex",
+          "sha256": "8b33e5891a9cc17144ff4d4221f8e6ea46d6febe41900f2ec076e67d4ceb9743"
+        },
+        "firmware_3": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_3.hex",
+          "sha256": "2981b0996504b49edcafd4026216895513b62bc5e292ea2344a25ccf1bda314b"
+        },
+        "firmware_5": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_5.hex",
+          "sha256": "06fe60806fe484e1a970edcb1578ba8ba34f168e6b188c459d3fbc9f170df6ef"
+        },
+        "firmware_7": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/configs/firmware_7.hex",
+          "sha256": "e67893935d8dc38bbb116a1d2c2c1e024850c50130f7ae65a19b68c67e47b6a7"
+        },
+        "simulation_netlist": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/postsim/inputs/netlist.v",
+          "sha256": "fe04c22ea560653b53852edcbe6bf3a9700927b20e55e5f9978c358f6870a29c"
+        },
+        "sram_simulation_adapter": {
+          "source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_215803_postsim_vcs_pvt-max_415a43c/postsim/inputs/sram_period_adapter.v",
+          "sha256": "f348b8b1f9d5dc8b23714bde247371ce556ed8ac12c772f6f140527920e36b3d",
+          "change": "Add negedge period declaration; native notifier, SDF limits; licensed copy retained server-only"
+        }
+      }
+    }
+  },
+  "same_database_SRAM_timing": {
+    "sram_input_setup": {
+      "worst_reported_slack_ns": 2.044,
+      "reported_paths": 20,
+      "sha256": "2ac4670b5d384a95af3a1e76275e965dc334d4131a27f9da31c4b18f1ff5fef4"
+    },
+    "sram_input_hold": {
+      "worst_reported_slack_ns": 9.876,
+      "reported_paths": 20,
+      "sha256": "df0fc5623166cb8fba3f08b520247a8a7e844ee9aebe9a3ee24bcb7fe4e6bb49"
+    },
+    "sram_output_setup": {
+      "worst_reported_slack_ns": 0.176,
+      "reported_paths": 20,
+      "sha256": "52848230f9f5162cdafff254d447144812905050c3fdc79c806d25ba551e1edf"
+    },
+    "sram_output_hold": {
+      "worst_reported_slack_ns": 10.917,
+      "reported_paths": 20,
+      "sha256": "1ac09f8fdeca4868567e4790894bbc62dd0241a7551d1b3de7448dab5d17ac88"
+    }
+  },
+  "accepted_normal_teaching_EDA_and_SDF": true,
+  "independent_foundry_signoff_claimed": false
+}

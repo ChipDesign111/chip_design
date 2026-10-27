@@ -1,36 +1,27 @@
-# INT8 HAR 全芯片实现
+# INT8 HAR完整SoC
 
-main已合并已验收的d40b217。当前xzx继续改进后仿审计、100ps最低Hold余量和0.3ns信号转换时间约束，尚在新验证中；详见[后续修改与状态](report/quality_followup.md)。以下5191064物理/SDF数据作为已验收基线保留，不能代替本轮新约束验证。
+2026-10-27，xzx已完成正常条件下的四库角EDA及TT/快角/慢角三组SDF验证：系统20ns，含PAD整颗 **3.7956390976mm²**，四角最差Setup/Hold **+0.001/+0.020ns**，三组各17例通过，全部SDF阶段动态时序违规0。实测逻辑密度74.138%，规划/优化预算85%。详见[本轮结果与main比较](eda/results/native_mux_dff_20261027/README.md)。
 
-当前 xzx 的 SRAM 复位修正版已完成 RTL 回归、独立34步EDA及16组SDF+1组无SDF对照：含PAD **3.795639mm²**、20ns下Setup/Hold **+0.371/+0.019ns**，所有SDF阶段动态时序违规 **0条**，专门半周期路径检查通过。详见[新版完整结果](eda/results/sram_reset_20261027/README.md)和[后仿与main对比](eda/results/sram_reset_20261027/postsim/README.md)。17条负IOPATH和时间0 PAD模型消息保留为限制。以下为旧版 e15483c 的历史结果。
+main保持`d40b217`，当前xzx功能RTL与main完全相同；本轮修改综合/后端的寄存器映射及运行脚本，后续改动没有自动合并main。原main的TT验证保留为[历史基线](eda/results/sram_reset_20261027/README.md)。TT/快角仍有18/438条负IOPATH截零消息，慢角0条，原始警告如实保留，不宣称完整延时无损或独立工艺签核。
 
-2026-10-26 后仿补充：16组完整SoC MAXIMUM SDF及无SDF对照通过功能自检，回标error/缺失实例/缺失检查均0，工作窗口动态违规0；复位事件及19条负IOPATH截零限制仍保留。详见[与现有main结果对比](eda/results/postsim_ntc_20261026/README.md)。下方“未后仿”描述对应原物理交付时点。
+设计包含CV32E40P、AXI、JTAG Debug、8KiB主SRAM和64→32→6 NPU。第一层每拍2输入×32输出，第二层1×6，共70个INT8乘法器；偏置、累加与分数为INT32。DMA从主SRAM向两个64B权重tile搬运；当前tile完成本批所有样本的相关计算后替换，读写可与MAC并行。CPU在完整镜像覆盖和正确密钥提交前禁止启动。
 
-最新完成：含PAD **3.79564mm²**，规划85%、实际密度 **67.575%**，20ns下Setup/Hold **+0.226/+0.019ns**，完整34步及三个阶段通过。详见[本轮结果与逐步报告](eda/results/int8_3p8_20261024/README.md)；下方3.9856mm²为上一轮基线。
-
-上一轮已完成实测：含 PAD **3.9856 mm²**，系统 **20 ns**，最终 Setup/Hold **+0.042 / +0.021 ns**，34/34 及三个阶段通过。详见[本轮结果与逐步报告](eda/results/int8_20261023/README.md)；SDF 已导出，尚未执行回标后仿。
-
-本实现已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。完整 SoC 包含 CV32E40P、AXI、JTAG Debug、8 KiB 主 SRAM 和 64→32→6 NPU。第一层 2 输入×32 输出、第二层 1×6；两个 64B 权重 tile 缓冲由 DMA 从主 SRAM 按需填充。输入/权重/隐藏激活 INT8，偏置/累加/分数 INT32。当前目标是含 PAD 整颗 Die ≤3.8 mm²。
-
-从本机打包上传到服务器、三个独立阶段和结果回传，直接跟随 [EDA 操作指南](eda/README.md)。服务器从每个上传版本目录的 README.html 开始。结构、启动流程和寄存器见 [设计报告](report/README.md)。
+从本机打包、上传开始，按[EDA操作指南](eda/README.md)运行独立的环境检查、EDA、结果整理三个脚本；物理完成后按[后仿指南](eda/docs/后仿真操作指南.md)执行并回传。每次上传新建目录，原包、解压文件和全部结果仅在该版本目录展开。服务器GUI从版本README.html查看。
 
 | 目录 | 内容 |
 | --- | --- |
-| [rtl](rtl/README.md) | 当前完整 SoC 硬件及统一 filelist |
-| [eda](eda/README.md) | 正式部署脚本、服务器 EDA 程序、讲义逐步解释及结果分析 |
-| [model](model/README.md) | 保留的训练模型、量化参数和整数参考 |
-| [test](test/README.md) | 当前 INT8/DMA/启动保护功能回归 |
-| [report](report/README.md) | 架构、MMIO、DMA、SRAM 和验证范围 |
-| [fpga](fpga/README.md) | main 更新带来的 Vivado 工程，已更换当前固件；本轮验收在 ASIC 服务器 |
-| [tools](tools/README.md) | 正常工程入口、权重导出和本地依赖管理 |
+| [rtl](rtl/README.md) | 当前完整SoC及filelist |
+| [eda](eda/README.md) | 正式部署、服务器脚本、步骤说明和正常结果 |
+| [model](model/README.md) | 训练模型、量化参数和整数参考 |
+| [test](test/README.md) | INT8、DMA与启动保护功能回归 |
+| [report](report/README.md) | 架构、寄存器及验证范围 |
+| [fpga](fpga/README.md) | FPGA工程；本轮验收在ASIC服务器 |
+| [tools](tools/README.md) | 正常工程入口、权重导出与依赖 |
 
 ```bash
 python tools/project.py doctor
 python test/int8/run.py --count 32 --trained --soc
-python tools/export_tiles.py --output tools/local/int8_tiles
 python eda/remote.py run
 ```
 
-本机功能测试使用 Icarus；完整 SoC 另需 ModelSim。当前训练权重读取与 tile 导出无需 NumPy；训练仍使用 model/requirements.txt。EDA 总控需要 Python 3.8+ 与 OpenSSH。大版图、授权库和中间数据库保留服务器；轻量结果回传 lab4 下新目录。
-
-旧分支、旧 RTL 和旧范式记录保存在本地 archives，当前分支只保留更新后实现。第三方源码许可及固定输入来源见 [组件声明](report/THIRD_PARTY_NOTICES.md)。
+本机功能测试使用Icarus，完整SoC另需ModelSim。EDA总控使用Python和OpenSSH。大GDS/DEF/SDF/SPEF、授权库及数据库保留服务器；核心结果回传本地lab4独立新目录。开发自检/临时工具与退役RTL仅保存在本地archives，不进入分支。第三方固定输入及许可见[组件声明](report/THIRD_PARTY_NOTICES.md)。

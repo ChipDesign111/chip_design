@@ -1,0 +1,236 @@
+{
+  "acceptance_profile": "native_library_zero_slack",
+  "minimum_setup_and_hold_wns_ns": 0.0,
+  "whole_die_area_mm2": 3.7956390976,
+  "max_whole_die_area_mm2": 3.8,
+  "whole_die_area_within_limit": true,
+  "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b",
+  "archive_sha256": "9e27990542fd775f10ed00e001008bdc3b2a3222de8a11b998c5690cef71e01c",
+  "deployment_commit": "4427c4bd1f7b4197c4b2b8a4645a8f9427b6bf36",
+  "work": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work",
+  "last_completed_step": 34,
+  "unexpected_tool_errors": false,
+  "setup_wns_ns": 0.001,
+  "hold_wns_ns": 0.02,
+  "final_stage_checks": {
+    "actual_rc_temperatures_C": {
+      "tt_1p80v_25c": 25,
+      "ss_pvt": 125,
+      "ff0_pvt": 0,
+      "ffm40_pvt": -40
+    },
+    "placement": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/my_soc_top_postFiller_place.rpt",
+      "unplaced": 0,
+      "expected_io_bond_covers": [
+        "i_pad_E_poc",
+        "i_pad_E_vdd_1",
+        "i_pad_E_vdd_2",
+        "i_pad_E_vddio",
+        "i_pad_E_vss_1",
+        "i_pad_E_vss_2",
+        "i_pad_E_vssio",
+        "i_pad_N_poc",
+        "i_pad_N_vdd_1",
+        "i_pad_N_vdd_2",
+        "i_pad_N_vddio",
+        "i_pad_N_vss_1",
+        "i_pad_N_vss_2",
+        "i_pad_N_vssio",
+        "i_pad_S_poc",
+        "i_pad_S_vdd_1",
+        "i_pad_S_vdd_2",
+        "i_pad_S_vddio",
+        "i_pad_S_vss_1",
+        "i_pad_S_vss_2",
+        "i_pad_S_vssio",
+        "i_pad_W_poc",
+        "i_pad_W_vdd_1",
+        "i_pad_W_vdd_2",
+        "i_pad_W_vddio",
+        "i_pad_W_vss_1",
+        "i_pad_W_vss_2",
+        "i_pad_W_vssio",
+        "i_pad_clk",
+        "i_pad_rst_n",
+        "i_pad_tck",
+        "i_pad_tdi",
+        "i_pad_tdo",
+        "i_pad_tms"
+      ],
+      "no_other_listed_placement_violations": true,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_place.rpt",
+      "report_sha256": "d25eeb90dbc1853a92db3b69f5650d9dc29ca52c853b5e730d679d57d64b8c59"
+    },
+    "timing": {
+      "Setup": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute.summary.gz",
+        "wns_ns": 0.001,
+        "tns_ns": 0.0,
+        "violating_paths": 0,
+        "drv": {
+          "max_cap": {
+            "real": 0,
+            "total": 0
+          },
+          "max_tran": {
+            "real": 0,
+            "total": 0
+          },
+          "max_fanout": {
+            "real": 0,
+            "total": 0
+          },
+          "max_length": {
+            "real": 0,
+            "total": 0
+          }
+        },
+        "electrical_drv_table_reported_here": true,
+        "minimum_wns_ns": 0.0,
+        "targets_met": true,
+        "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute.summary.gz",
+        "report_sha256": "a0a641b3626a52e6531d0b0d9e033d5a74754e36556e5e85a53a3fb36072f846"
+      },
+      "Hold": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute_hold.summary.gz",
+        "wns_ns": 0.02,
+        "tns_ns": 0.0,
+        "violating_paths": 0,
+        "drv": {},
+        "electrical_drv_table_reported_here": false,
+        "minimum_wns_ns": 0.0,
+        "targets_met": true,
+        "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute_hold.summary.gz",
+        "report_sha256": "008666dbf4c44f9b09c27d56bb26295eeee09ee6a19ae222a63ac27e7eb54219"
+      }
+    },
+    "expanded_analysis_views": {
+      "func_tt_io": {
+        "Setup": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postFiller/func_tt_io/my_soc_top_postRoute_all.tarpt.gz",
+          "analysis_view": "func_tt_io",
+          "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/func_tt_io/my_soc_top_postRoute_all.tarpt.gz",
+          "report_sha256": "9988d6a9fc8ad1e5322f3ea62627bbb5352fa7d26839db316ee42e64ab049a62"
+        },
+        "Hold": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postFiller/func_tt_io/my_soc_top_postRoute_all_hold.tarpt.gz",
+          "analysis_view": "func_tt_io",
+          "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/func_tt_io/my_soc_top_postRoute_all_hold.tarpt.gz",
+          "report_sha256": "37856fe9fc3a6046e6e93ffe8270baf00fbec847af342dc13b9ffff12f638ad4"
+        }
+      },
+      "func_ss_io": {
+        "Setup": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postFiller/func_ss_io/my_soc_top_postRoute_all.tarpt.gz",
+          "analysis_view": "func_ss_io",
+          "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/func_ss_io/my_soc_top_postRoute_all.tarpt.gz",
+          "report_sha256": "367e5bc280327201133e2cb6a502b70211b00ee0ae54fbe98b8a717573cab1d9"
+        },
+        "Hold": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postFiller/func_ss_io/my_soc_top_postRoute_all_hold.tarpt.gz",
+          "analysis_view": "func_ss_io",
+          "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/func_ss_io/my_soc_top_postRoute_all_hold.tarpt.gz",
+          "report_sha256": "40144bc50b4769ad2dbcd578cd333ce5fa08d375906e182fae843b91708b9595"
+        }
+      },
+      "func_ff0_io": {
+        "Setup": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postFiller/func_ff0_io/my_soc_top_postRoute_all.tarpt.gz",
+          "analysis_view": "func_ff0_io",
+          "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/func_ff0_io/my_soc_top_postRoute_all.tarpt.gz",
+          "report_sha256": "75839a6cf1a9747a347dd6fb150216070cc34ae309e81293067f4bc5a307b343"
+        },
+        "Hold": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postFiller/func_ff0_io/my_soc_top_postRoute_all_hold.tarpt.gz",
+          "analysis_view": "func_ff0_io",
+          "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/func_ff0_io/my_soc_top_postRoute_all_hold.tarpt.gz",
+          "report_sha256": "b66b2289c5db77aae33d663283ccc771f7a86ab4a49fad68650a00bf0e3b08d6"
+        }
+      },
+      "func_ffm40_io": {
+        "Setup": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postFiller/func_ffm40_io/my_soc_top_postRoute_all.tarpt.gz",
+          "analysis_view": "func_ffm40_io",
+          "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/func_ffm40_io/my_soc_top_postRoute_all.tarpt.gz",
+          "report_sha256": "b0dd7282d577780f4a6a97c2fd1e9d8f7ee77c2b1082d3433ad239cde7948dd9"
+        },
+        "Hold": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/reports/postFiller/func_ffm40_io/my_soc_top_postRoute_all_hold.tarpt.gz",
+          "analysis_view": "func_ffm40_io",
+          "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/func_ffm40_io/my_soc_top_postRoute_all_hold.tarpt.gz",
+          "report_sha256": "111ea74b5993153611abd5d12c6f44650ddf26c1f744438e9b14ff706d15405d"
+        }
+      }
+    },
+    "default_drc": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/my_soc_top_postFiller_drc.rpt",
+      "zero_reported_violations": true,
+      "scope": "drc",
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_drc.rpt",
+      "report_sha256": "91cddd102b1b8d6680d9001152431b22bad3d91f99926274544f359b3d839c5e"
+    },
+    "signal_connectivity": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/my_soc_top_postFiller_signal.rpt",
+      "unresolved_signal_problems": 0,
+      "classified_io_abstract_nets": [
+        "VDDPST",
+        "VSSPST"
+      ],
+      "same_input_native_geometry_proof_step": 22,
+      "not_independent_LVS": true,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_signal.rpt",
+      "report_sha256": "a79d7fea701a25b4cbbfee3762481d9b5d05eb996ba9d7ee4a4b001546076e1f"
+    },
+    "full_core_pg": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/my_soc_top_postFiller_pg.rpt",
+      "zero_reported_violations": true,
+      "scope": "connectivity",
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_pg.rpt",
+      "report_sha256": "71e9dfc4d89e031a5c33a8c9add812db265f60cba4ae33e446e45910902caa50"
+    },
+    "antenna": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b/work/pnr/my_soc_top/my_soc_top_postFiller_antenna.rpt",
+      "violating_nets": 0,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_antenna.rpt",
+      "report_sha256": "2b89e6bd87b9abc0728de7d40c4f7881fe368efac941960037310e35e567d010"
+    }
+  },
+  "export_checks": {
+    "actual_rc_temperatures_C": {
+      "tt_1p80v_25c": 25,
+      "ss_pvt": 125,
+      "ff0_pvt": 0,
+      "ffm40_pvt": -40
+    },
+    "exports": {
+      "independent_foundry_DRC_LVS_executed": false,
+      "SDF_simulation_executed": false,
+      "def_pins": {
+        "ports": [
+          "VDD",
+          "VDDPST",
+          "VSS",
+          "VSSPST",
+          "clk_i",
+          "rst_ni",
+          "tck_i",
+          "td_i",
+          "td_o",
+          "tms_i"
+        ],
+        "dbu_per_um": 2000,
+        "all_rectangles_directions_uses_match_geometry_plan": true
+      },
+      "whole_die_area_mm2": 3.7956390976,
+      "max_whole_die_area_mm2": 3.8,
+      "sdf_non_top_instances_matched": 68808,
+      "spef_networks": 74944,
+      "gds_structures": 667,
+      "gds_undefined_references": [],
+      "scope": "Structural correspondence only; not equivalence, foundry DRC/LVS, IR/EM/ESD or actual SDF backannotation"
+    }
+  },
+  "pipeline_exit_code": 0,
+  "review_archive_ready": true
+}

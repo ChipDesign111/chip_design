@@ -1,0 +1,321 @@
+{
+  "audit_tool_sha256": "619151a31792f72359524c7ae67c0909911bf10860e30e65db5f10d3c5f9da2e",
+  "simulator": "vcs",
+  "annotation_errors": 0,
+  "warning_categories": {
+    "SDFCOM_SWC": 2711,
+    "SDFCOM_IWSBA": 1014,
+    "SDFCOM_UHICD": 1,
+    "SDFCOM_NIOD": 18
+  },
+  "negative_timing_checks_enabled": true,
+  "native_NTC_RECREM_enabled": true,
+  "negative_iopath_clamped_by_simulator": 18,
+  "negative_paths_failed_to_adjust": 0,
+  "unmatched_paths_printed_lower_bound": 0,
+  "warning_counts_are_printed_messages_not_uncapped_totals": false,
+  "missing_instances": 0,
+  "unmatched_timing_checks": 0,
+  "cases": {
+    "sdf_firmware_1": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10001": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10002": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10003": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10004": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10005": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10006": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10007": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10008": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10009": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10010": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10011": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_3": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_5": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_7": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_max": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.63,
+        70.63,
+        90.63,
+        110.63
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    }
+  },
+  "binding_complete_for_instances_and_checks": true,
+  "negative_path_delay_support_complete": false,
+  "raw_annotation_warnings_retained": true,
+  "active_window_dynamic_timing_clean": true,
+  "normal_acceptance": {
+    "functional_pass": true,
+    "sdf_binding_complete": true,
+    "dynamic_timing_clean": true,
+    "warnings_are_reported_not_required_to_be_zero": true
+  },
+  "normal_postsim_pass": true,
+  "scope": "Full notifier/message checking in all SDF runs; reset events retained, not masked. Unsupported negative IOPATH clamps remain explicit; not complete signoff."
+}

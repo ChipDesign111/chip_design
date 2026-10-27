@@ -1,0 +1,30 @@
+{
+  "step": 14,
+  "commands_completed": true,
+  "input_manifest_sha256": "c1b350a1f2550de2e21af03963a3450d3a6ad885f83b8e2bc00b99558cf63f6d",
+  "automatic_checks": {
+    "actual_rc_temperatures_C": {
+      "tt_1p80v_25c": 25,
+      "ss_pvt": 125,
+      "ff0_pvt": 0,
+      "ffm40_pvt": -40
+    },
+    "physical_pins": {
+      "ports": [
+        "VDD",
+        "VDDPST",
+        "VSS",
+        "VSSPST",
+        "clk_i",
+        "rst_ni",
+        "tck_i",
+        "td_i",
+        "td_o",
+        "tms_i"
+      ],
+      "dbu_per_um": 2000,
+      "all_rectangles_directions_uses_match_geometry_plan": true
+    }
+  },
+  "scope": "Only the listed automatic checks are asserted. Tcl guards also check object counts, IO geometry and halo. Not complete signoff."
+}
