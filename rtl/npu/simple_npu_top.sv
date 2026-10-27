@@ -48,6 +48,8 @@ module simple_npu_top (
         addra[4]==loading_bank && !ready[loading_bank];
     wire load_finished=pending && !dma_busy_i && dma_done_i;
     wire load_failed=load_finished && (dma_error_i || received!=(layer_q ? 16'h0003:16'hffff));
+    wire next_tile_valid=ready[~tile_index[0]] && layer==layer_q && !auto_start_o &&
+        (!pending || dma_write_active_i);
     assign busy_o=busy;
     assign auto_start_o=busy && layer==layer_q && !pending && !dma_busy_i &&
         next_load<32 && !ready[next_load[0]];
@@ -61,7 +63,8 @@ module simple_npu_top (
         .input_features(input_packed),.bias1(b1),.bias2(b2),
         .requant_mult(mult),.requant_shift(shift),
         .tile_valid_i(ready[tile_index[0]] && layer==layer_q && !auto_start_o &&
-                      (!pending || dma_write_active_i)),.tile_data_i(tile_data),
+                      (!pending || dma_write_active_i)),.tile_next_valid_i(next_tile_valid),
+        .tile_data_i(tile_data),
         .layer_o(layer),.tile_index_o(tile_index),.tile_consumed_o(consumed),
         .dma_read_i(dma_read_i),.dma_write_i(dma_write_active_i),.busy(busy),.done(done),
         .hidden_all(hidden_all),.scores_all(scores_all),.class_all(class_all),

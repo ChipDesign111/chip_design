@@ -9,7 +9,7 @@ module har_npu_core (
     input logic [191:0] bias2,
     input logic [15:0] requant_mult,
     input logic [4:0] requant_shift,
-    input logic tile_valid_i,
+    input logic tile_valid_i,tile_next_valid_i,
     input logic [511:0] tile_data_i,
     input logic dma_read_i,dma_write_i,
     output wire layer_o,
@@ -22,7 +22,7 @@ module har_npu_core (
     output logic [31:0] cycle_count,overlap_count,fc1_cycles,fc2_cycles,
     output logic [31:0] read_overlap_count,write_overlap_count
 );
-    localparam [2:0] IDLE=0,WAIT_TILE=1,ISSUE=2,DRAIN=3,QUANT=4,FINISH=5;
+    localparam [2:0] IDLE=0,WAIT_TILE=1,ISSUE=2,QUANT=3,FINISH=4;
     localparam int MAX_BATCH=8;
     logic [2:0] state;
     logic layer;
@@ -35,10 +35,13 @@ module har_npu_core (
     logic [255:0] h[0:7];
     logic [2:0] class_id_q[0:7];
     wire issue=state==ISSUE;
+    wire last_sample_issue=issue && sample==batch_q[2:0]-1'b1;
     wire [511:0] x=input_features[sample*512+:512];
     wire [255:0] hs=h[sample];
     assign layer_o=layer;
-    assign tile_consumed_o=state==DRAIN;
+    // Release the current bank on its final use, then either hand off to an
+    // already-ready bank without a bubble or wait only for a real prefetch.
+    assign tile_consumed_o=last_sample_issue;
     assign product_valid=issue;
     assign product_first=tile_index_o==0;
     assign product_sample=sample;
@@ -173,20 +176,19 @@ module har_npu_core (
                     sample<=0;
                     state<=ISSUE;
                 end
-                ISSUE:if(sample==batch_q[2:0]-1'b1) state<=DRAIN;
-                       else sample<=sample+1'b1;
-                DRAIN:if(tile_consumed_o) begin
-                    if(tile_index_o!=31) begin
-                        tile_index_o<=tile_index_o+1'b1;
-                        state<=WAIT_TILE;
-                    end else if(!layer) begin
+                ISSUE:if(last_sample_issue) begin
+                    if(tile_index_o==31 && !layer) begin
                         quant_sample<=0;
                         tile_index_o<=0;
                         state<=QUANT;
-                    end else begin
+                    end else if(tile_index_o==31) begin
                         state<=FINISH;
+                    end else begin
+                        tile_index_o<=tile_index_o+1'b1;
+                        sample<=0;
+                        state<=tile_next_valid_i ? ISSUE:WAIT_TILE;
                     end
-                end
+                end else sample<=sample+1'b1;
                 QUANT:begin
                     h[quant_sample][tile_index_o*8+:8]<=quant(a1[quant_sample][tile_index_o]);
                     if(tile_index_o==31) begin
