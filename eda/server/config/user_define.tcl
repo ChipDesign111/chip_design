@@ -7,8 +7,7 @@
 # ONLY ONE SPACE between 'rm_core_top' keyword and module name!
 set rm_core_top my_soc_top
 set rm_clock_period 20
-set eda_opt_max_density 0.83
-set eda_hold_opt_max_density 0.85
+set eda_opt_max_density 0.85
 
 set PROJECT_ROOT {}
 set PDK_ROOT /lec/pdk/tsmc180

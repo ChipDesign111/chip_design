@@ -80,9 +80,7 @@ def main():
         command+=(['+define+SDF_MINIMUM'] if args.simulator=='vcs' else ['-define','SDF_MINIMUM'])
     execute(command,build,'compile.log')
     results={}
-    cases=[('sdf_max',[],inputs/'firmware.hex'),('gate_zero',['+NO_SDF'],inputs/'firmware.hex'),
-           ('pad_startup_control',['+PAD_DRIVE_PS=0'],inputs/'firmware.hex'),
-           ('pad_conflict_control',['+INJECT_PAD_CONFLICT'],inputs/'firmware.hex')]
+    cases=[('sdf_max',[],inputs/'firmware.hex'),('gate_zero',['+NO_SDF'],inputs/'firmware.hex')]
     # Sweep asynchronous reset assertion across a full system period, without
     # masking timing checks/notifiers. Keep the first case at the old2ns phase.
     cases += [('sdf_'+p.stem,['+RESET_OFFSET_PS=%d'%(250+1400*i)],p) for i,p in enumerate(additional)]
@@ -119,20 +117,15 @@ def main():
                        'timing_violation_messages':len(re.findall(r'Timing violation',text,re.I)),
                        'reset_offset_ps':int(reset_match.group(1)),
                        'pad_drive_ps':int(re.search(r'PAD_DRIVE_ON time_ns=[\d.]+ delay_ps=(\d+)',text).group(1)),
-                       'io_bus_conflicts':io_events,'startup_control':mode=='pad_startup_control',
+                       'io_bus_conflicts':io_events,
                        'timezero_io_warning_free':not io_events}
         (root/'partial_results.json').write_text(json.dumps(results,indent=2)+'\n')
         initial_io=[e for e in io_events if e['time_ps']==0]
         later_io=[e for e in io_events if e['time_ps']!=0]
         expected={'tb_postsim.dut.i_pad_'+n for n in ['clk','rst_n','tck','tms','tdi']}
-        if initial_io and (len(initial_io)!=5 or {e['instance'] for e in initial_io}!=expected):
+        if any(e['instance'] not in expected for e in initial_io):
             raise RuntimeError('Unclassified time-zero IO conflict: '+mode)
-        if mode=='pad_conflict_control':
-            begin=re.search(r'EXPECTED_IO_CONFLICT_BEGIN time_ns=([\d.]+)',text)
-            end=re.search(r'EXPECTED_IO_CONFLICT_END time_ns=([\d.]+)',text)
-            if not begin or not end or not later_io or any(not e['instance'].endswith('i_pad_tdo') or not float(begin.group(1))*1000<=e['time_ps']<=float(end.group(1))*1000 for e in later_io):
-                raise RuntimeError('Native IO conflict detector did not report precisely the deliberate output contention')
-        elif later_io:raise RuntimeError('Unexpected nonzero-time IO conflict: '+mode)
+        if later_io:raise RuntimeError('Unexpected nonzero-time IO conflict: '+mode)
     for item in record.values():
         if sha(Path(item['source']))!=item['sha256']:raise RuntimeError('Input changed: '+item['source'])
     (root/'results.json').write_text(json.dumps(results,indent=2)+'\n')

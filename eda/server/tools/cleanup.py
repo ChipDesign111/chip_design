@@ -60,7 +60,7 @@ def clean_work(work, lock_factory, dry_run=False):
             raise ValueError('Not a prepared EDA project: missing ' + name)
     config = json.loads((root / 'config/design.json').read_text(encoding='utf-8'))
     preparation = json.loads((root / 'evidence/preparation.json').read_text(encoding='utf-8'))
-    if (config.get('profile') != 'xzx_rtl_tsmc180_lab4'
+    if (config.get('profile') not in ['xzx_rtl_tsmc180_lab4','xzx_int8_tiled_tsmc180']
             or config.get('top') != 'my_soc_top'
             or Path(preparation.get('work', '')).resolve() != root):
         raise ValueError('Project identity does not match the requested work directory')

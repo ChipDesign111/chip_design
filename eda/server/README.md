@@ -20,19 +20,17 @@ cat configs/design.json
 
 本次目录下的 deploy 是压缩包解出的源码；configs/design.json 是本版本可编辑配置。默认 PDK 为 /lec/pdk/tsmc180，宏资料来自 /lec/lab4，周期 20 ns，核数 8；核心请求 1648×1648 μm，四侧余量 150 μm，目标利用率 0.85，包含 PAD 的面积上限 3.8 mm²。
 
-当前修复分支使用analysis_profile=matched_TT_SS_FF0_FFm40_SI_off_native_low_RC：同时考虑匹配的TT25、SS125、FF0、FF−40标准单元/IO/SRAM库。信号转换时间上限0.3ns、时钟0.5ns；postRoute最低Hold余量0.10ns、优化目标0.12ns。正余量但不足0.10ns也必须修复，最终32/33步独立核验。RC仍为供应的typical技术表随温度分析，不等同独立RC最小/最大角签核。旧版本是否使用这些要求，以该版本configs/design.json为准。
 
 目标利用率0.85用于标准逻辑面积规划检查；固定核心边长1648µm才直接决定本轮外框。上一轮最终实测密度63.089%，并非规划参数0.68。新外框请求1948×1948µm（3.794704mm²），网格对齐后需核对≤3.8mm²；不把85%参数或含Filler密度当作实测逻辑密度。
 
-optimizer_max_density=0.83限制普通Setup/DRV优化，hold_optimizer_max_density=0.85单独允许Hold修复增加单元。环境准备把两个值写入user_define.tcl，29/32步按阶段切换并恢复setOptMode -maxDensity。这样预留2个百分点，避免Setup先用完85%预算；target_utilization仍是规划参数0.85。固定核心、20ns、整颗3.8mm²和最低Hold余量0.10ns保持。旧冻结版本保留当时设置，更改须新上传。
 
-deploy/server/config/io_plan.json明确六个信号PAD的单元、方位和位置；五个输入使用PDDW0204CDG，TDO使用同尺寸、驱动更强的PDDW1216CDG。generate.py生成07步并核对类型，25步连接控制脚常量。slew_scope.tcl按当前物理数据库给内部数据0.3ns、内部时钟0.5ns、外部PAD0.6ns，优化后、报告前刷新全部引脚，计数保存在work/evidence/slew_scope。库中更严格的限制保留，最终实际和总电气违规均须为零。全局0.3ns会同时压住外部端口，单独补写端口0.6ns不能解决；不要自行省掉分类或最终审核。新脚本的实际完成状态以本上传版本结果为准。
 
-32步在后期85%预算下联合修复Setup/Hold，postroute_setup_target_ns=0.20要求优化器额外争取200ps Setup余量，Hold目标仍0.12ns。这是修复目标，最终独立验收仍为Setup非负、Hold至少0.10ns，时钟20ns不变。首个时序图建立前若无时钟网络标记，未知内部引脚暂按更严0.3ns处理；时钟树后必须识别真实时钟引脚，缺失则停止。
 
 rc_temperatures.tcl在创建及每次恢复数据库后，用Innovus原生get_rc_corner -T读回RC角25/125/0/−40°C，保存evidence/rc_temperatures.json；不一致便停止。Genus使用-temperature，Innovus使用-T，不能混用。旧版本曾只有库温度匹配、RC实际均25°C，是否包含此修正应看本版本源码和实际读回记录。
 
 **第一次运行 check_env 前** 修改 configs/design.json。准备完成后 work 中的输入被固定，禁止修改来冒充续跑。更换参数请新建上传目录。1648+2×150=1948 μm 只是请求值；实际尺寸按工具网格对齐后的数据库和最终输出核对。
+
+验收使用native_library_zero_slack：保留四个匹配库角、系统20ns、含PAD整颗≤3.8mm²。最终Setup/Hold均要求WNS≥0、TNS=0、违规路径数=0，电气检查遵守原生Liberty及讲义原SDC；不增加设计级边沿限制。default DRC、真实信号/核心供电连通及天线须通过，IO抽象限制按同源原生几何证据记录。只在真实负余量时修复Hold：先0目标，仍有残项时按讲义尝试0.02ns优化目标；0.02ns不是验收门槛。普通优化密度上限统一0.85，不再分83%/85%预算。详见[验收条件](../docs/验收条件.md)。
 
 ## 2．独立阶段一：环境检查
 

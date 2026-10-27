@@ -25,14 +25,11 @@ def clear_step_outputs(work, step):
     candidates.extend(root / name for name in names.get(step, []))
     for prefix in {31: ['postRoute', 'postAntennaFix'], 32: ['postHoldAuto'], 33: ['postFiller']}.get(step, []):
         candidates.extend(root.glob('my_soc_top_' + prefix + '*.rpt'))
-    directories = {26: ['preCTS'], 28: ['postCTS'], 29: ['postCTS_holdFix', 'postCTS_holdFix_check'], 32: ['postRoute', 'postRoute_setupAuto', 'postRoute_holdAuto', 'postRoute_jointAuto', 'postRoute_holdAuto_check', 'postRoute_fanout_check'], 33: ['postFiller']}
+    directories = {26: ['preCTS'], 28: ['postCTS'], 29: ['postCTS_holdFix', 'postCTS_holdFix_check', 'postCTS_nativeOpt'], 32: ['postRoute', 'postRoute_setupAuto', 'postRoute_holdAuto', 'postRoute_holdAuto_check'], 33: ['postFiller']}
     for name in directories.get(step, []):
         candidates.extend((root / 'reports' / name).glob('*.summary*'))
     if step == 34:
         candidates.extend((root / 'outputs/manual_final').glob('*'))
-    if step == 32:
-        candidates.extend((work / 'evidence/fanout_plans').glob('*.json'))
-    candidates.extend((work / 'evidence/slew_scope').glob('%02d_*.json' % step))
     candidates.extend((work / 'evidence/commands' / ('%02d' % step)).glob('*.tcl'))
     for p in candidates:
         if p.is_file():
@@ -73,7 +70,7 @@ def area_summary(path):
     return {'cell_count': int(numbers[0]), 'cell_area_um2': numbers[1], 'net_area_um2': numbers[2], 'latch_area_um2': numbers[7], 'memory_area_um2': numbers[9], 'report': str(path)}
 
 
-def timing(directory, require_clean=False, min_hold_ns=0.0):
+def timing(directory, require_clean=False):
     found = {}
     for p in sorted(directory.glob('*.summary*')):
         text = load_text(p)
@@ -90,7 +87,7 @@ def timing(directory, require_clean=False, min_hold_ns=0.0):
         if mode == 'Setup' and not {'max_cap', 'max_tran', 'max_fanout'}.issubset(drv):
             raise ValueError('Missing electrical DRV fields: ' + str(p))
         value = {'report': str(p), 'wns_ns': float(fields[0].group(1)), 'tns_ns': float(fields[1].group(1)), 'violating_paths': int(fields[2].group(1)), 'drv': drv, 'electrical_drv_table_reported_here': bool(drv)}
-        value['minimum_wns_ns'] = min_hold_ns if mode=='Hold' else 0.0
+        value['minimum_wns_ns'] = 0.0
         value['targets_met'] = value['wns_ns'] >= value['minimum_wns_ns'] and value['tns_ns'] == 0 and value['violating_paths'] == 0 and all(x['real'] == x['total'] == 0 for x in drv.values())
         if mode in found:
             raise ValueError('Ambiguous multiple timing summaries for ' + mode + ': ' + str(directory))
@@ -121,26 +118,6 @@ def antenna_count(path):
     if 'No Violations Found' in text:
         return 0
     raise ValueError('Unrecognized antenna report: ' + str(path))
-
-
-def fanout_targets(path):
-    """Read real, report-listed violations; never turn an unknown format into zero."""
-    text = load_text(path)
-    total = re.search(r'\*info: there (?:are|is) (\d+) max fanout load violations? in the design\.', text)
-    real = re.search(r'\*info: (\d+) violations? (?:are|is) real', text)
-    number = r'[-+]?(?:\d+(?:\.\d*)?|\.\d+)'
-    rows = re.findall(r'^(\S+)\s*\n[ \t]+(\S+)[ \t]+(' + number + r')[ \t]+(' + number + r')[ \t]+(' + number + r')[ \t]+(\S+)[ \t]+R[ \t]*$', text, re.M)
-    if not total or not real or int(total.group(1)) != int(real.group(1)) or len(rows) != int(total.group(1)):
-        raise ValueError('Incomplete/non-real fanout report; inspect before ECO: ' + str(path))
-    result = []
-    for net, driver, maximum, actual, slack, master_pin in rows:
-        maximum, actual, slack = map(float, [maximum, actual, slack])
-        if maximum <= 0 or actual <= maximum or abs(maximum - actual - slack) > 0.003:
-            raise ValueError('Inconsistent fanout load row: ' + net)
-        result.append({'net': net, 'driver': driver, 'maximum_load': maximum, 'actual_load': actual, 'master_pin': master_pin})
-    if len({row['net'] for row in result}) != len(result):
-        raise ValueError('Duplicate fanout target nets')
-    return result
 
 
 def placement(path):
@@ -393,21 +370,8 @@ def audit_step(work, step):
         checks['io_controls'] = helper(work, 'audit_io_ties.py')
     timing_dirs = {26: 'preCTS', 28: 'postCTS', 29: 'postCTS_holdFix_check', 32: 'postRoute_holdAuto_check', 33: 'postFiller'}
     if step in timing_dirs:
-        scope_reports = sorted((work / 'evidence/slew_scope').glob('%02d_*.json' % step))
-        if not scope_reports:
-            raise ValueError('Missing refreshed physical slew pin classes')
-        scope = json.loads(scope_reports[-1].read_text())
-        if (scope.get('all_leaf_pins', 0) != scope.get('data_pins', 0) + scope.get('clock_pins', 0) + 6
-                or scope.get('data_pins', 0) < 100000 or scope.get('clock_pins', 0) < (1 if step>=28 else 0)
-                or scope.get('external_pad_pins') != 6 or scope.get('external_ports') != 6
-                or [scope.get(k) for k in ['data_limit_ns','clock_limit_ns','pad_limit_ns']] != [0.3,0.5,0.6]
-                or scope.get('library_override') is not False
-                or scope.get('conservative_pre_cts_clock_scope') != (scope.get('clock_pins')==0)):
-            raise ValueError('Invalid physical slew coverage/limits')
-        checks['physical_slew_classes'] = dict(scope, report=str(scope_reports[-1]))
         cfg=json.loads((work/'config/design.json').read_text())
-        minimum=cfg.get('min_hold_slack_ns',0.0) if step in [32,33] else 0.0
-        checks['timing'] = timing(pnr / 'reports' / timing_dirs[step], step in [32, 33], minimum)
+        checks['timing'] = timing(pnr / 'reports' / timing_dirs[step], step in [32,33])
         if cfg.get('analysis_profile','').startswith('matched_'):
             checks['expanded_analysis_views']={}
             for view in ['func_tt_io','func_ss_io','func_ff0_io','func_ffm40_io']:

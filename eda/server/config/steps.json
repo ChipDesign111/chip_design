@@ -200,7 +200,7 @@
     "what": "只有当前报告需要时才做Hold优化，然后独立重查。",
     "why": "新数据来得太早会破坏采样，可以加适当延时，同时保护Setup。",
     "effect": "保存实际修复后结果；pre-route估计残项不会被写成最终通过。",
-    "parameters": "按当前Hold报告决定是否修复，正余量不足100ps也触发120ps优化目标；临时使用hold_optimizer_max_density=0.85，完成后恢复普通optimizer_max_density=0.83，保护Setup。布线前估计残项明确记录，不假称最终满足。"
+    "parameters": "仅当前Hold违规数非零时按0目标进行原生修复，保护Setup；原生postCTS优化处理实际Setup/DRV。预布线残项记录，最终仍以postRoute报告为准。"
   },
   "30": {
     "title": "正式布线",
@@ -218,10 +218,10 @@
   },
   "32": {
     "title": "真实RC下修复时序",
-    "what": "提取布线寄生，按当前报告修复普通网络扇出，再按需要优化Setup、处理Hold并独立重查。",
+    "what": "提取真实RC，按当前报告调用原生全设计Setup/DRV和Hold优化，独立重查。",
     "why": "导线电阻电容会影响到达时间；布线前通过不等于布线后通过。",
     "effect": "两种时序违规与Real/Total电气DRV归零，否则停止，不自动放宽时钟。",
-    "parameters": "扇出修复用BUFFD2BWP7T分流普通单驱动网络，保留原天线二极管并重布线；不改库限制。按当前Setup和Hold/DRV运行优化。design.json当前Hold优化目标0.12ns、最低0.10ns，最多5轮；optimizer_max_density=0.83供Setup/DRV使用，hold_optimizer_max_density=0.85供Hold使用，29/32步切换并恢复，为Hold预留2个百分点；prepare传入物理初始化，不能只把全部阶段设成同一个85%。不修改原SDC，达到修复轮数上限仍未满足门禁就停止。"
+    "parameters": "四库角最终Setup/Hold WNS均≥0、TNS=0、违规路径数=0；不要求100ps正余量。Hold先0目标，仍有负余量时按讲义尝试20ps优化目标，不改变验收零阈值。无手写扇出ECO，无额外Setup目标或人为转换时间限制。"
   },
   "33": {
     "title": "核心填充及最终复核",

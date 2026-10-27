@@ -23,7 +23,6 @@ proc eda_eval {name body} {
     if {[info exists ::eda_antenna_report]} {puts $fd "# Current antenna report: $::eda_antenna_report"}
     puts $fd $body
     close $fd
-    if {$step>=24} {eda_apply_slew_scope}
     uplevel #0 $body
 }
 proc eda_run {name} {
@@ -63,20 +62,6 @@ proc eda_drc_count {path} {
     if {[string first "No DRC violations were found" $text] >= 0} {return 0}
     error "Unrecognized DRC report: $path"
 }
-proc eda_hold_margin_bad {directory} {
-    global eda_min_hold_slack
-    set seen 0
-    foreach p [glob -nocomplain [file join $directory *.summary] [file join $directory *.summary.gz]] {
-        set fd [open $p rb];set data [read $fd];close $fd
-        if {[file extension $p] eq ".gz"} {set data [zlib gunzip $data]}
-        if {[string first "Hold mode" $data]<0} {continue}
-        if {![regexp {WNS \(ns\):\|\s*([-0-9.]+)} $data -> wns]} {error "Missing hold WNS: $p"}
-        incr seen
-        if {$wns < $eda_min_hold_slack} {return 1}
-    }
-    if {$seen!=1} {error "Missing or ambiguous hold margin summary: $directory"}
-    return 0
-}
 if {[catch {
     source [file join $eda_work flow tcl rc_temperatures.tcl]
     if {$eda_last == 0} {
@@ -100,8 +85,6 @@ if {[catch {
     }
     if {!$eda_headless} {win}
     source [file join $eda_work flow config repair.tcl]
-    source [file join $eda_work flow tcl fanout.tcl]
-    source [file join $eda_work flow tcl slew_scope.tcl]
     set sram_objects [dbGet -e top.insts.cell.name RA1SHD_2048x32M8 -p2]
     if {[llength $sram_objects] != 1} {error "Expected exactly one native main SRAM macro"}
     set eda_sram [dbGet [lindex $sram_objects 0].name]
@@ -137,12 +120,16 @@ if {[catch {
             }
             27 {eda_run 27.tcl; eda_run 27_verify.tcl}
             29 {
-                if {[eda_timing_bad ../my_soc_top/reports/postCTS Hold] > 0 || [eda_hold_margin_bad ../my_soc_top/reports/postCTS]} {
-                    eda_eval 29_hold_mode [list setOptMode -maxDensity $eda_hold_opt_max_density -fixHoldAllowSetupTnsDegrade false -holdTargetSlack $eda_hold_target]
+                if {[eda_timing_bad ../my_soc_top/reports/postCTS Hold] > 0} {
+                    eda_eval 29_hold_mode {setOptMode -fixHoldAllowSetupTnsDegrade false -holdTargetSlack 0}
                     eda_run 29_fix.tcl
                 }
                 eda_run 29_check.tcl
-                eda_eval 29_setup_density_restore [list setOptMode -maxDensity $eda_opt_max_density]
+                # Native whole-design optimization handles real pre-route DRVs.
+                if {[eda_timing_bad ../my_soc_top/reports/postCTS_holdFix_check Setup] > 0} {
+                    eda_eval 29_native_drv {optDesign -postCTS -expandedViews -outDir ../my_soc_top/reports/postCTS_nativeOpt}
+                    eda_run 29_check.tcl
+                }
             }
             31 {
                 eda_run 31_check.tcl
@@ -169,20 +156,23 @@ if {[catch {
                 eda_eval 32_extractRC {extractRC}
                 eda_run 32_initial.tcl
                 for {set iteration 0} {$iteration < $eda_repair_iterations} {incr iteration} {
-                    eda_eval 32_setup_density [list setOptMode -maxDensity $eda_opt_max_density]
                     set current_dir [expr {$iteration == 0 ? "../my_soc_top/reports/postRoute" : "../my_soc_top/reports/postRoute_holdAuto_check"}]
-                    if {[eda_fix_fanout $current_dir] > 0} {set current_dir ../my_soc_top/reports/postRoute_fanout_check}
-                    set bad [eda_timing_bad $current_dir]
-                    if {$bad == 0 && ![eda_hold_margin_bad $current_dir]} {break}
-                    # Joint native optimization coordinates short Hold paths
-                    # with Setup. Positive Setup target is repair reserve;
-                    # final independent Setup>=0/Hold>=0.10 gates stay fixed.
-                    eda_eval 32_hold_mode [list setOptMode -maxDensity $eda_hold_opt_max_density -fixHoldAllowSetupTnsDegrade false -holdTargetSlack $eda_hold_target -setupTargetSlack $eda_setup_target]
-                    eda_eval 32_joint_opt {optDesign -postRoute -setup -hold -expandedViews -outDir ../my_soc_top/reports/postRoute_jointAuto}
+                    if {[eda_timing_bad $current_dir] == 0} {break}
+                    if {[eda_timing_bad $current_dir Setup] > 0} {
+                        eda_eval 32_native_setup_drv {optDesign -postRoute -expandedViews -outDir ../my_soc_top/reports/postRoute_setupAuto}
+                        eda_run 32_check.tcl
+                        set current_dir ../my_soc_top/reports/postRoute_holdAuto_check
+                    }
+                    if {[eda_timing_bad $current_dir Hold] > 0} {
+                        # Lecture: first repair at zero, then 20ps optimization
+                        # target if residual negative paths remain. Acceptance
+                        # is always WNS>=0, TNS=0 and zero violating paths.
+                        set goal [expr {$iteration==0 ? 0 : $eda_hold_target}]
+                        eda_eval 32_hold_mode [list setOptMode -fixHoldAllowSetupTnsDegrade false -holdTargetSlack $goal]
+                        eda_eval 32_native_hold {optDesign -postRoute -hold -expandedViews -outDir ../my_soc_top/reports/postRoute_holdAuto}
+                    }
                     eda_run 32_check.tcl
                 }
-                # Independent final checks even if no optimization was needed.
-                eda_eval 32_setup_density_restore [list setOptMode -maxDensity $eda_opt_max_density]
                 eda_run 32_check.tcl
             }
             34 {

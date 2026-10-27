@@ -59,6 +59,12 @@ def audit(root):
     summary['negative_path_delay_support_complete']=not (clamped or failed_negative)
     summary['raw_annotation_warnings_retained']=True
     summary['active_window_dynamic_timing_clean']=all(not x['timing_counts'].get('active',0) for x in summary['cases'].values())
+    summary['normal_acceptance']={
+        'functional_pass':bool(summary['cases']) and all(x['functional_pass'] for x in summary['cases'].values()),
+        'sdf_binding_complete':summary['binding_complete_for_instances_and_checks'],
+        'dynamic_timing_clean':bool(summary['cases']) and all(not x['timing_violations'] for x in summary['cases'].values()),
+        'warnings_are_reported_not_required_to_be_zero':True}
+    summary['normal_postsim_pass']=all(summary['normal_acceptance'][k] for k in ['functional_pass','sdf_binding_complete','dynamic_timing_clean'])
     summary['scope']='Full notifier/message checking in all SDF runs; reset events retained, not masked. Unsupported negative IOPATH clamps remain explicit; not complete signoff.'
     (root/'audit.json').write_text(json.dumps(summary,indent=2)+'\n')
     return summary

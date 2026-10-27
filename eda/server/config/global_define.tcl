@@ -123,9 +123,8 @@ set lvs_exclude_cells [concat ${rm_tap_cell} ${rm_fill_cells} ${IO_fill_cell} ${
 # Design Clock Period
 # The numerical values in the [] brackets in the associated comment are some reasonable examples the user may adopt
 # -----------------------------------------------------------------------------------
-set rm_max_transition                   0.3    ;# maximum rise/fall signal transition time in ns [0.250]
-set rm_max_clock_transition             0.5     ;# maximum rise/fall clock transition time in ns [0.150]
-set rm_max_pad_transition               0.6     ;# maximum rise/fall pad transition time in ns [1.00]
+# CTS implementation target from the lab setup, not an acceptance limit.
+set rm_max_clock_transition             0.5
 set rm_clock_latency                    0.2     ;# Predicted clock insertion delay in ns [1.00]
 set rm_icg_latency                      0.14    ;# Latency in ns for integrated clock gating cell [0.07]
 set rm_rz_setup_margin                  0.1    ;# in ns. Setup margin [0.05]

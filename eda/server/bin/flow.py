@@ -21,7 +21,7 @@ if sys.version_info < (3, 8):
 
 SERVER = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SERVER / 'tools'))
-from checks import audit_step, area_summary, load_text, mapped_netlist_check, clear_step_outputs, timing, fanout_targets
+from checks import audit_step, area_summary, load_text, mapped_netlist_check, clear_step_outputs, timing
 from generate import generate_steps
 from cleanup import clean_work, generated_path, remove_generated
 
@@ -52,13 +52,16 @@ def read_config(path):
     for key in ['system_period_ns', 'target_utilization', 'min_core_size_um', 'core_margin_um']:
         if not isinstance(c[key], (int, float)) or not math.isfinite(c[key]) or c[key] <= 0:
             raise ValueError('Invalid numeric configuration: ' + key)
-    if not 0 < c['target_utilization'] <= 0.85 or not isinstance(c['cpus'], int) or not 1 <= c['cpus'] <= 16:
-        raise ValueError('Expected utilization in (0,0.85] and CPU count in 1..16')
-    c.setdefault('optimizer_max_density', min(0.83, max(0.75, c['target_utilization'])))
-    c.setdefault('hold_optimizer_max_density', 0.85)
-    density, hold_density = c['optimizer_max_density'], c['hold_optimizer_max_density']
-    if any(not isinstance(v, (int, float)) or not math.isfinite(v) for v in [density, hold_density]) or not 0 < density <= hold_density <= 0.85:
-        raise ValueError('Optimizer densities must be finite with 0 < setup <= hold <= 0.85')
+    if not 0 < c['target_utilization'] <= 1 or not isinstance(c['cpus'], int) or not 1 <= c['cpus'] <= 16:
+        raise ValueError('Expected utilization fraction in (0,1] and CPU count in 1..16')
+    c.setdefault('optimizer_max_density', c['target_utilization'])
+    density=c['optimizer_max_density']
+    if not isinstance(density,(int,float)) or not math.isfinite(density) or not 0<density<=1:
+        raise ValueError('Optimizer density must be a finite fraction in (0,1]')
+    if c.get('acceptance_profile') != 'native_library_zero_slack':
+        raise ValueError('Use the current native-library, zero-slack acceptance configuration')
+    obsolete={'min_hold_slack_ns','postroute_setup_target_ns','hold_optimizer_max_density'} & set(c)
+    if obsolete:raise ValueError('Remove retired custom acceptance/budget keys: '+','.join(sorted(obsolete)))
     if c['min_core_size_um'] < 1500 or c['core_margin_um'] != 150:
         raise ValueError('Validated perimeter profile requires core >=1500 um and 150 um margins')
     if not isinstance(c.get('max_die_area_mm2'),(int,float)) or not math.isfinite(c['max_die_area_mm2']) or not 0<c['max_die_area_mm2']<=4.0:
@@ -67,14 +70,9 @@ def read_config(path):
         raise ValueError('Fixed core size is below profile minimum')
     if c['cpu_clock_gate'] != 'repository_passthrough':
         raise ValueError('Changing CPU clock gating requires a separate validated profile')
-    c.setdefault('min_hold_slack_ns',0.0)
-    c.setdefault('postroute_setup_target_ns',0.20)
-    target = c['postroute_setup_target_ns']
-    if not isinstance(target,(int,float)) or not math.isfinite(target) or not 0 <= target <= 0.5:
-        raise ValueError('Post-route Setup optimization target must be finite in 0..0.5 ns')
     if c['analysis_profile'] not in ['single_TT_SI_off_native_low_RC','matched_TT_SS_FF0_FFm40_SI_off_native_low_RC']:
         raise ValueError('Unknown library PVT profile')
-    if not isinstance(c['max_repair_iterations'], int) or not 1 <= c['max_repair_iterations'] <= 10 or not 0 <= c['min_hold_slack_ns'] <= c['hold_target_ns'] <= 0.2:
+    if not isinstance(c['max_repair_iterations'], int) or not 1 <= c['max_repair_iterations'] <= 10 or c['hold_target_ns'] not in [0,0.02]:
         raise ValueError('Invalid repair iteration count/target')
     if len(c['macro_xy_um']) != 2 or any(not isinstance(x, (int, float)) or not math.isfinite(x) or x < 200 for x in c['macro_xy_um']):
         raise ValueError('Macro coordinates must leave room for core rings and halo')
@@ -142,10 +140,10 @@ def prepare(args):
         shutil.copytree(str(work / 'flow' / name), str(work / name))
     (work / 'config/design.json').write_text(json.dumps(config, indent=2) + '\n', encoding='utf-8')
     shutil.copyfile(str(SERVER / 'config/io_plan.json'), str(work / 'config/io_plan.json'))
-    (work / 'flow/config/repair.tcl').write_text('set eda_repair_iterations %d\nset eda_hold_target %g\nset eda_min_hold_slack %g\nset eda_setup_target %g\n' % (config['max_repair_iterations'], config['hold_target_ns'], config['min_hold_slack_ns'], config['postroute_setup_target_ns']), encoding='utf-8')
+    (work / 'flow/config/repair.tcl').write_text('set eda_repair_iterations %d\nset eda_hold_target %g\n' % (config['max_repair_iterations'],config['hold_target_ns']),encoding='utf-8')
     user = work / 'config/user_define.tcl'
     text = user.read_text(encoding='utf-8')
-    for key, value in [('PROJECT_ROOT', tcl(work)), ('PDK_ROOT', tcl(pdk)), ('rm_clock_period', config['system_period_ns']), ('eda_opt_max_density', config['optimizer_max_density']), ('eda_hold_opt_max_density', config['hold_optimizer_max_density']), ('syn_cpus', config['cpus']), ('pnr_cpus', config['cpus'])]:
+    for key, value in [('PROJECT_ROOT', tcl(work)), ('PDK_ROOT', tcl(pdk)), ('rm_clock_period', config['system_period_ns']), ('eda_opt_max_density', config['optimizer_max_density']), ('syn_cpus', config['cpus']), ('pnr_cpus', config['cpus'])]:
         text, n = re.subn(r'^set ' + key + r' .*$', lambda match: 'set ' + key + ' ' + str(value), text, flags=re.M)
         if n != 1:
             raise ValueError('Project configuration variable missing: ' + key)
@@ -338,31 +336,6 @@ def sizing(work):
     return record
 
 
-def fanout_plan(work, directory):
-    verify_inputs(work)
-    directory = directory.resolve()
-    directory.relative_to((work / 'pnr/my_soc_top/reports').resolve())
-    counts = timing(directory)['Setup']['drv']['max_fanout']
-    targets, source = [], None
-    if counts['real'] or counts['total']:
-        files = list(directory.glob('*.fanout')) + list(directory.glob('*.fanout.gz'))
-        if len(files) != 1:
-            raise ValueError('Expected one current fanout detail report')
-        source = files[0]
-        targets = fanout_targets(source)
-        if len(targets) != counts['real'] or counts['real'] != counts['total']:
-            raise ValueError('Summary/fanout detail counts disagree')
-    folder = work / 'evidence/fanout_plans'
-    number = len(list(folder.glob('plan_*.json'))) + 1
-    record = {'input_manifest_sha256': sha(work / 'evidence/input_manifest.json'), 'summary_directory': str(directory), 'reported_counts': counts, 'targets': targets, 'fanout_report_sha256': sha(source) if source else None, 'scope': 'Report-derived ECO targets, not a pass assertion; native timing/DRV/antenna/DRC checks follow'}
-    write_json(folder / ('plan_%02d.json' % number), record)
-    lines = ['set eda_fanout_targets {}']
-    for row in targets:
-        lines.append('lappend eda_fanout_targets [list %s %s %g %g]' % (tcl(row['net']), tcl(row['driver']), row['maximum_load'], row['actual_load']))
-    (work / 'pnr/generated/32_fanout_plan.tcl').write_text('\n'.join(lines) + '\n', encoding='utf-8')
-    print('EDA_FANOUT_PLAN targets=%d source=%s' % (len(targets), directory))
-
-
 @contextmanager
 def display_environment(work, headless):
     env = os.environ.copy()
@@ -550,7 +523,7 @@ def package(work):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
-    for name in ['prepare', 'doctor', 'elaborate', 'synth', 'size', 'pnr', 'all', 'status', 'report', 'package', 'clean', 'unlock', 'geometry', 'begin-step', 'audit-step', 'fanout-plan']:
+    for name in ['prepare', 'doctor', 'elaborate', 'synth', 'size', 'pnr', 'all', 'status', 'report', 'package', 'clean', 'unlock', 'geometry', 'begin-step', 'audit-step']:
         p = sub.add_parser(name)
         p.add_argument('--work', required=True)
         if name == 'clean':
@@ -564,8 +537,6 @@ def main():
             p.add_argument('--step', type=int, required=True)
         if name == 'geometry':
             p.add_argument('--die', type=float, nargs=4, required=True)
-        if name == 'fanout-plan':
-            p.add_argument('--directory', type=Path, required=True)
     args = parser.parse_args()
     work = Path(args.work).expanduser().resolve()
     # Packaging cleanup also works on older frozen projects. It does not
@@ -585,9 +556,6 @@ def main():
         return 0
     if args.command == 'begin-step':
         clear_step_outputs(work, args.step)
-        return 0
-    if args.command == 'fanout-plan':
-        fanout_plan(work, args.directory)
         return 0
     freshly_prepared = args.command == 'all' and not work.exists()
     if freshly_prepared:

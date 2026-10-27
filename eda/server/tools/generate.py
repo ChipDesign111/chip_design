@@ -115,9 +115,6 @@ def generate_steps(work, die):
     bodies['31_fix.tcl'] = bodies['31_fix.tcl'].replace('open ../my_soc_top/my_soc_top_postRoute_antenna.rpt r', 'open $eda_antenna_report r')
     bodies['33.tcl'] = bodies['33.tcl'].replace('timeDesign -postRoute -expandedViews', 'extractRC\ntimeDesign -postRoute -expandedViews', 1)
     for name, body in bodies.items():
-        # Native placement/CTS/repair commands can create new pins inside one
-        # step. Refresh the physical classes immediately before each report.
-        body = re.sub(r'^([ \t]*)(timeDesign\b)', r'\1eda_apply_slew_scope\n\1\2', body, flags=re.M)
         body = re.sub(r'^fit\s*$', '', body, flags=re.M)
         body = re.sub(r'^dumpToGIF ../../evidence/(\S+)\s*$', r'eda_picture \1', body, flags=re.M)
         (out / name).write_text(body, encoding='utf-8')

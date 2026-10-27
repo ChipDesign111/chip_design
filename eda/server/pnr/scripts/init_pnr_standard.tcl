@@ -98,7 +98,6 @@ setOptMode  -allEndPoints                       true \
             -usefulSkewPreCTS                   true \
             -verbose                            true
 puts "EDA_OPTIMIZER_MAX_DENSITY $eda_opt_max_density"
-puts "EDA_HOLD_OPTIMIZER_MAX_DENSITY $eda_hold_opt_max_density"
 
 # control certain aspects of how the software places cells, affect "place_design" "refinePlace"
 # place_design_floorplan_mode:                      used for prototyping and runs quickly to gauge the feasibility of the netlist, default: false

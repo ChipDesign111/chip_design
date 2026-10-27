@@ -1,14 +1,6 @@
 # 从本机部署到完整 EDA 结果
 
-main已合并d40b217。当前xzx的100ps最低Hold余量、0.3ns信号转换时间约束及多库角分析正在验证，状态见[后续改进](../report/quality_followup.md)。下方5191064的已验收数字不能直接用作新配置结果。
-
-当前 xzx 的 SRAM 复位修正版已通过34步与三个阶段、16组SDF及无SDF对照。含PAD **3.795639mm²**，20ns下Setup/Hold **+0.371/+0.019ns**；全部SDF阶段时序违规0条，半周期路径明确检查通过。见[新版物理结果](results/sram_reset_20261027/README.md)、[后仿与main对比](results/sram_reset_20261027/postsim/README.md)和[修改原因](../report/reset_fix.md)。负IOPATH与时间0 PAD模型消息仍列为限制。下方为旧版 e15483c 的历史数字。
-
-2026-10-26 后仿补充：16组完整SoC MAXIMUM SDF及无SDF对照通过功能自检，回标error/缺失实例/缺失检查均0，工作窗口动态违规0；复位事件及19条负IOPATH截零限制仍保留。详见[与现有main结果对比](results/postsim_ntc_20261026/README.md)。下方“未后仿”描述对应原物理交付时点。
-
-最新完成：含PAD **3.79564mm²**，规划85%、实际密度 **67.575%**，20ns下Setup/Hold **+0.226/+0.019ns**，完整34步及三个阶段通过。详见[本轮结果与逐步报告](results/int8_3p8_20261024/README.md)；下方3.9856mm²为上一轮基线。
-
-上一轮已完成实测：含 PAD **3.9856 mm²**，系统 **20 ns**，最终 Setup/Hold **+0.042 / +0.021 ns**，34/34 及三个阶段通过。详见[本轮结果与逐步报告](results/int8_20261023/README.md)；SDF 已导出，尚未执行回标后仿。
+当前按用户确认的正常条件重新实施；旧版已验收结果只作历史对照，不能代替这次新运行。main保持d40b217，后续修复仅在xzx。历史有效结果见[SRAM修正版](results/sram_reset_20261027/README.md)。
 
 本实现由 **xzx** 合并至 **main**，开发基线为原 main 267c873。设计是完整 CV32E40P SoC：第一层每拍 2 个输入×32 个输出，第二层 1×6，输入、权重、隐藏值使用 INT8，偏置、累加和分类分数使用 INT32。主 SRAM 保存完整权重；DMA 将当前需要的小块搬入两个 64 字节缓冲。面积验收是 **包含 PAD 的整个 Die ≤3.8 mm²**。
 
@@ -37,6 +29,8 @@ python test/int8/run.py --count 32 --trained --soc
 ```
 
 它用随机停顿的真实 DMA 和 Python 整数参考逐值核对隐藏层、分数与类别，再让完整 SoC 的 CPU 执行自检。测试还覆盖未装载、部分装载、错误启动密钥、DMA 读错误、复位中断和重新运行。运行产物在本地 test/int8/runs，功能 PASS 不代替物理验证。
+
+验收使用native_library_zero_slack：保留四个匹配库角、系统20ns、含PAD整颗≤3.8mm²。最终Setup/Hold均要求WNS≥0、TNS=0、违规路径数=0，电气检查遵守原生Liberty及讲义原SDC；不增加设计级边沿限制。default DRC、真实信号/核心供电连通及天线须通过，IO抽象限制按同源原生几何证据记录。只在真实负余量时修复Hold：先0目标，仍有残项时按讲义尝试0.02ns优化目标；0.02ns不是验收门槛。普通优化密度上限统一0.85，不再分83%/85%预算。详见[验收条件](docs/验收条件.md)。
 
 ## 2．一键压缩、上传、调用三个阶段、回传
 
@@ -98,11 +92,8 @@ cat configs/design.json
 
 目标利用率0.85用于标准逻辑面积规划检查；固定核心边长1648µm才直接决定本轮外框。上一轮最终实测密度63.089%，并非规划参数0.68。新外框请求1948×1948µm（3.794704mm²），网格对齐后需核对≤3.8mm²；不把85%参数或含Filler密度当作实测逻辑密度。
 
-optimizer_max_density=0.83用于普通Setup/DRV优化，hold_optimizer_max_density=0.85用于Hold修复；环境准备把两个值写入user_define.tcl，29/32步按阶段传给setOptMode -maxDensity，再恢复普通上限。原脚本75%会阻止Hold，而只把所有阶段一起提高到85%又会让Setup先用完修复空间，因此现在预留2个百分点。target_utilization仍为规划85%，实际逻辑密度须看工具报告。两个优化上限不改变核心边长、20ns、整颗3.8mm²或最低Hold余量0.10ns；修改后须新上传。
 
-deploy/server/config/io_plan.json说明六个信号PAD的单元、方位和位置：五个输入使用PDDW0204CDG，TDO输出使用驱动更强、同尺寸的PDDW1216CDG。generate.py生成07步并核对实例和类型；25步连接控制引脚的常量单元。slew_scope.tcl把当前物理引脚完整分为内部数据0.3ns、内部时钟0.5ns、外部PAD0.6ns，优化后、报告前刷新，覆盖计数在work/evidence/slew_scope。库中更严格的限制继续有效，32/33步仍要求实际和总电气违规为零。不能只设置全局0.3ns再给端口写0.6ns，因为工具会取更严格的限制。修改依据和未完成项见[质量跟进](../report/quality_followup.md)；这些脚本改动尚未产生新的完整通过结果。
 
-32步采用原生Setup/Hold联合修复，后期允许85%密度，postroute_setup_target_ns=0.20用于额外争取200ps Setup余量，Hold目标0.12ns；它不改变20ns时钟或最终Setup非负、Hold至少0.10ns的门禁。早期普通优化仍83%。首个时序图建立前未标记的内部引脚按更严0.3ns暂管，时钟树后必须识别真实时钟引脚，否则停止。
 
 RC温度也必须看实际读回：rc_temperatures.tcl在初始化和恢复检查点后核对25/125/0/−40°C，结果保存work/evidence/rc_temperatures.json并纳入各步审核。Genus的-temperature与Innovus的-T语法不同；旧版物理RC角实际均25°C，不能用匹配的库温度代替RC生效证明。新版本仍仅使用供应的typical RC技术表，不能称独立RC最小/最大角或SI签核。
 

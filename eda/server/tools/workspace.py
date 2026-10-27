@@ -111,7 +111,9 @@ def initialize(root, deploy):
     geometry=read_json(work/'evidence/geometry.json')
     whole_area=geometry.get('whole_die_area_mm2')
     limit=read_json(work/'config/design.json').get('max_die_area_mm2',4.0)
-    summary = {'whole_die_area_mm2':whole_area,'max_whole_die_area_mm2':limit,
+    summary = {'acceptance_profile':read_json(root/'configs/design.json').get('acceptance_profile'),
+               'minimum_setup_and_hold_wns_ns':0.0,
+               'whole_die_area_mm2':whole_area,'max_whole_die_area_mm2':limit,
                'whole_die_area_within_limit':None if whole_area is None else whole_area<=limit, 'upload': str(root), 'archive_sha256': upload.get('archive_sha256'),
                'deployment_commit': source.get('git_commit'), 'work': str(work),
                'last_completed_step': progress, 'unexpected_tool_errors': error,
