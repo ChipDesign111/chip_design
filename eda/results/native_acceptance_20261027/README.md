@@ -13,6 +13,8 @@
 
 本地`lab4/native_5b60015_final_20261027`已回传904个文件并逐项核验SHA；大GDS/DEF/SDF/SPEF/数据库保留服务器。[部署身份](deployment.json)、[物理结果与回传凭据](physical_result.json)记录源码、输入和交付包SHA。
 
+复查顺序：[逐步运行记录](逐步运行报告.md)说明综合和01–34的实际执行及各阶段输出；[最终Setup](final_setup.rpt)与[最终Hold](final_hold.rpt)列出四角余量、TNS和违规路径数；[33步检查](step_33.json)记录布线/Filler后的时序、电气、供电、DRC和天线结果；[34步检查](step_34.json)核对最终交付视图。[实际几何](geometry.json)用于计算含PAD面积，[实际RC温度](rc_temperatures.json)证明工具读回正确温度。原理与每一步为什么这样做，配合[讲义34步说明](../../docs/讲义34步与文件对照.md)阅读。
+
 新目录：`/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_132429_5b60015`；源码：`5b60015ce7e418d8632dcaf13a84bdc9f0b845d2`。服务器该版本README从解压、三个阶段到报告查看完整说明当前规则。main保持d40b217；本轮只修改EDA/后仿平台/文档，全部RTL与main一致。
 
 对应的新SDF后仿尚未完成。首轮TT的首组SDF功能通过，10条时序消息全部在首个时钟沿；无SDF对照因仍混有原生模型延时而失败。同一冻结网表/SDF诊断确认：对照显式使用真正零延时后功能通过；时钟先保持低电平40ns再以20ns周期运行，SDF功能通过且全程时序消息为0。正式脚本已修正，将重新完整执行17例和跨角后仿，诊断结果不替代正式矩阵。详见[后仿指南](../../docs/后仿真操作指南.md)。
