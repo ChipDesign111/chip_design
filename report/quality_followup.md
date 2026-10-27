@@ -63,4 +63,6 @@ c8da454实际已完成综合和29步，但普通Setup优化先用到了85.001%�
 
 隔离实验从旧bcc483e的失败32步数据库开始，只在内存中将Hold上限提高到85%，未保存或接入正式结果。实测密度81.445%→82.316%，Hold −0.829ns→+0.114ns；Setup −0.019ns、4条违规，转换时间仍917个实际违规。这证明需要为Hold预留空间，也说明只修Hold还不够。
 
-当前方案把optimizer_max_density用于普通Setup/DRV，设为0.83；hold_optimizer_max_density用于Hold，设为0.85。prepare分别写入user_define.tcl，29/32步切换，结束后恢复普通上限。规划target_utilization仍0.85，和两个优化预算独立；配置只要求有限且0<普通上限≤Hold上限≤0.85，不再把规划参数误当优化器下限。29步也在正Hold余量不足100ps时触发0.12ns目标。两阶段组合正在隔离验证，尚未产生新的正式物理通过结果。
+当前方案把optimizer_max_density用于普通Setup/DRV，设为0.83；hold_optimizer_max_density用于Hold，设为0.85。prepare分别写入user_define.tcl，29/32步切换，结束后恢复普通上限。规划target_utilization仍0.85，和两个优化预算独立；配置只要求有限且0<普通上限≤Hold上限≤0.85，不再把规划参数误当优化器下限。29步也在正Hold余量不足100ps时触发0.12ns目标。两阶段组合已完成下述隔离验证，尚未产生新的正式物理通过结果。
+
+该组合分开执行两轮的实测为：密度82.955%、Hold +0.114ns，实际转换时间违规513个，但Setup −0.294ns、50条违规。它解决了预算阻塞，却还没有同时满足所有目标。因此暂不盲目重启完整实现，先用工具文档支持的optDesign -postRoute -setup -hold联合优化协调两类时序，再核对全部电气规则。所有实验只在独立analysis目录改变内存，不保存或复用到正式流程；开发工具留本地archives。

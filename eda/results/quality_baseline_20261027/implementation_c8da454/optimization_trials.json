@@ -1,0 +1,191 @@
+{
+  "scope": "Isolated optimization measurements on BCC failed32DB, not formal results for C8 or new source; no diagnostic checkpoint reused",
+  "base_implementation": "bcc483e94bdf8ae8836ffcbb05eebf673b9ffa2b",
+  "clock_ns": 20,
+  "trials": [
+    {
+      "name": "hold_only85",
+      "tool_exit_code": 0,
+      "original_input_sha": {
+        "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/work/evidence/input_manifest.json": "2245dbd79e04f7790addbedd6231e79cff26d1fa415d43e4e7ccc61c49c8a48e",
+        "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/work/pnr/my_soc_top/backup/step32.enc": "4a13f3d67f154ecbfa0cde5c6e8b4e538646952481f502c339bdab95b64ed819"
+      },
+      "input_sha_unchanged": true,
+      "ECO_saved": false,
+      "density_percent_after": 82.316,
+      "timing": {
+        "before": {
+          "Setup": {
+            "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/hold_reserve85_diag/before/my_soc_top_postRoute.summary.gz",
+            "wns_ns": 0.014,
+            "tns_ns": 0.0,
+            "violating_paths": 0,
+            "drv": {
+              "max_cap": {
+                "real": 0,
+                "total": 0
+              },
+              "max_tran": {
+                "real": 681,
+                "total": 694
+              },
+              "max_fanout": {
+                "real": 0,
+                "total": 0
+              },
+              "max_length": {
+                "real": 0,
+                "total": 0
+              }
+            },
+            "electrical_drv_table_reported_here": true,
+            "minimum_wns_ns": 0.0,
+            "targets_met": false
+          },
+          "Hold": {
+            "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/hold_reserve85_diag/before/my_soc_top_postRoute_hold.summary.gz",
+            "wns_ns": -0.829,
+            "tns_ns": -13.686,
+            "violating_paths": 138,
+            "drv": {},
+            "electrical_drv_table_reported_here": false,
+            "minimum_wns_ns": 0.1,
+            "targets_met": false
+          }
+        },
+        "after": {
+          "Setup": {
+            "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/hold_reserve85_diag/after/my_soc_top_postRoute.summary.gz",
+            "wns_ns": -0.019,
+            "tns_ns": -0.033,
+            "violating_paths": 4,
+            "drv": {
+              "max_cap": {
+                "real": 0,
+                "total": 0
+              },
+              "max_tran": {
+                "real": 917,
+                "total": 934
+              },
+              "max_fanout": {
+                "real": 0,
+                "total": 0
+              },
+              "max_length": {
+                "real": 0,
+                "total": 0
+              }
+            },
+            "electrical_drv_table_reported_here": true,
+            "minimum_wns_ns": 0.0,
+            "targets_met": false
+          },
+          "Hold": {
+            "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/hold_reserve85_diag/after/my_soc_top_postRoute_hold.summary.gz",
+            "wns_ns": 0.114,
+            "tns_ns": 0.0,
+            "violating_paths": 0,
+            "drv": {},
+            "electrical_drv_table_reported_here": false,
+            "minimum_wns_ns": 0.1,
+            "targets_met": true
+          }
+        }
+      },
+      "acceptance": false
+    },
+    {
+      "name": "two_setup83_hold85_passes",
+      "tool_exit_code": 0,
+      "original_input_sha": {
+        "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/work/evidence/input_manifest.json": "2245dbd79e04f7790addbedd6231e79cff26d1fa415d43e4e7ccc61c49c8a48e",
+        "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/work/pnr/my_soc_top/backup/step32.enc": "4a13f3d67f154ecbfa0cde5c6e8b4e538646952481f502c339bdab95b64ed819"
+      },
+      "input_sha_unchanged": true,
+      "ECO_saved": false,
+      "density_percent_after": 82.955,
+      "timing": {
+        "before": {
+          "Setup": {
+            "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/combined83_85_diag/before/my_soc_top_postRoute.summary.gz",
+            "wns_ns": 0.014,
+            "tns_ns": 0.0,
+            "violating_paths": 0,
+            "drv": {
+              "max_cap": {
+                "real": 0,
+                "total": 0
+              },
+              "max_tran": {
+                "real": 681,
+                "total": 694
+              },
+              "max_fanout": {
+                "real": 0,
+                "total": 0
+              },
+              "max_length": {
+                "real": 0,
+                "total": 0
+              }
+            },
+            "electrical_drv_table_reported_here": true,
+            "minimum_wns_ns": 0.0,
+            "targets_met": false
+          },
+          "Hold": {
+            "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/combined83_85_diag/before/my_soc_top_postRoute_hold.summary.gz",
+            "wns_ns": -0.829,
+            "tns_ns": -13.686,
+            "violating_paths": 138,
+            "drv": {},
+            "electrical_drv_table_reported_here": false,
+            "minimum_wns_ns": 0.1,
+            "targets_met": false
+          }
+        },
+        "after": {
+          "Setup": {
+            "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/combined83_85_diag/after/my_soc_top_postRoute.summary.gz",
+            "wns_ns": -0.294,
+            "tns_ns": -3.214,
+            "violating_paths": 50,
+            "drv": {
+              "max_cap": {
+                "real": 0,
+                "total": 0
+              },
+              "max_tran": {
+                "real": 513,
+                "total": 542
+              },
+              "max_fanout": {
+                "real": 0,
+                "total": 0
+              },
+              "max_length": {
+                "real": 0,
+                "total": 0
+              }
+            },
+            "electrical_drv_table_reported_here": true,
+            "minimum_wns_ns": 0.0,
+            "targets_met": false
+          },
+          "Hold": {
+            "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/combined83_85_diag/after/my_soc_top_postRoute_hold.summary.gz",
+            "wns_ns": 0.114,
+            "tns_ns": 0.0,
+            "violating_paths": 0,
+            "drv": {},
+            "electrical_drv_table_reported_here": false,
+            "minimum_wns_ns": 0.1,
+            "targets_met": true
+          }
+        }
+      },
+      "acceptance": false
+    }
+  ]
+}
