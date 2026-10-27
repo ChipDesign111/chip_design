@@ -21,6 +21,10 @@ def generate_steps(work, die):
         raise ValueError('Changed IO contract; this six-signal profile must be adapted explicitly')
     if len({s['pad'] for s in signals}) != 6 or any(s['side'] not in ['N', 'S'] for s in signals):
         raise ValueError('Signal PAD names must be unique; this profile supports north/south signals')
+    for signal in signals:
+        expected_master = 'PDDW1216CDG' if signal['port'] == 'td_o' else 'PDDW0204CDG'
+        if signal.get('master') != expected_master:
+            raise ValueError('Unverified signal PAD mapping for ' + signal['port'])
     for side in 'NSWE':
         offsets = [p['offset_um'] for p in powers] + [s['offset_um'] for s in signals if s['side'] == side]
         length = w if side in 'NS' else h
@@ -46,8 +50,10 @@ def generate_steps(work, die):
         x, y = location(side, offset, depth)
         return 'addInst %s-cell %s -inst %s -loc {%.6f %.6f} -ori %s -place_status fixed -dontSnapToPlacementGrid\n' % ('-physical ' if physical else '', master, name, x, y, ori[side])
 
-    bodies['07.tcl'] = ''.join(add('PDDW0204CDG', 'i_pad_' + s['pad'], s['side'], s['offset_um']) for s in signals)
-    bodies['07.tcl'] += 'if {[llength [dbGet -e top.insts.cell.name PDDW0204CDG -p2]] != 6} {error "Signal PAD count mismatch"}\n'
+    bodies['07.tcl'] = ''.join(add(s['master'], 'i_pad_' + s['pad'], s['side'], s['offset_um']) for s in signals)
+    for signal in signals:
+        bodies['07.tcl'] += 'if {[dbGet [dbGet top.insts.name i_pad_%s -p].cell.name] ne "%s"} {error "Signal PAD master mismatch"}\n' % (signal['pad'], signal['master'])
+    bodies['07.tcl'] += 'if {[llength [dbGet -e top.insts.cell.name PDDW0204CDG -p2]] != 5 || [llength [dbGet -e top.insts.cell.name PDDW1216CDG -p2]] != 1} {error "Signal PAD count mismatch"}\n'
     lines = []
     for s in signals:
         port, pad = s['port'], 'i_pad_' + s['pad']
@@ -109,6 +115,9 @@ def generate_steps(work, die):
     bodies['31_fix.tcl'] = bodies['31_fix.tcl'].replace('open ../my_soc_top/my_soc_top_postRoute_antenna.rpt r', 'open $eda_antenna_report r')
     bodies['33.tcl'] = bodies['33.tcl'].replace('timeDesign -postRoute -expandedViews', 'extractRC\ntimeDesign -postRoute -expandedViews', 1)
     for name, body in bodies.items():
+        # Native placement/CTS/repair commands can create new pins inside one
+        # step. Refresh the physical classes immediately before each report.
+        body = re.sub(r'^([ \t]*)(timeDesign\b)', r'\1eda_apply_slew_scope\n\1\2', body, flags=re.M)
         body = re.sub(r'^fit\s*$', '', body, flags=re.M)
         body = re.sub(r'^dumpToGIF ../../evidence/(\S+)\s*$', r'eda_picture \1', body, flags=re.M)
         (out / name).write_text(body, encoding='utf-8')

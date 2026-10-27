@@ -5,7 +5,7 @@ import json
 root = Path.cwd()
 data = json.loads((root / 'evidence/native_io_gds.json').read_text())
 scale = data['dbu_um']
-widths = {'PDDW0204CDG':60, 'PVDD1CDG':60, 'PVSS1CDG':60,
+widths = {'PDDW0204CDG':60, 'PDDW1216CDG':60, 'PVDD1CDG':60, 'PVSS1CDG':60,
           'PVDD2CDG':60, 'PVSS2CDG':60, 'PVDD2POC':60,
           'PFILLER20':20, 'PFILLER10':10, 'PFILLER5':5,
           'PFILLER1':1, 'PFILLER05':0.5, 'PFILLER0005':0.005}

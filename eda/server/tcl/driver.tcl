@@ -23,6 +23,7 @@ proc eda_eval {name body} {
     if {[info exists ::eda_antenna_report]} {puts $fd "# Current antenna report: $::eda_antenna_report"}
     puts $fd $body
     close $fd
+    if {$step>=24} {eda_apply_slew_scope}
     uplevel #0 $body
 }
 proc eda_run {name} {
@@ -97,6 +98,7 @@ if {[catch {
     if {!$eda_headless} {win}
     source [file join $eda_work flow config repair.tcl]
     source [file join $eda_work flow tcl fanout.tcl]
+    source [file join $eda_work flow tcl slew_scope.tcl]
     set sram_objects [dbGet -e top.insts.cell.name RA1SHD_2048x32M8 -p2]
     if {[llength $sram_objects] != 1} {error "Expected exactly one native main SRAM macro"}
     set eda_sram [dbGet [lindex $sram_objects 0].name]

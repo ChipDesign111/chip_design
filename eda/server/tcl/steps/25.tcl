@@ -16,7 +16,7 @@ i_pad_E_vssio/VSSPST
 close $tie_supply_tmp
 
 setTieHiLoMode -cell {TIEHBWP7T TIELBWP7T} -maxFanout 1 -maxDistance 100
-addTieHiLo -cellPin {PDDW0204CDG:I PDDW0204CDG:DS PDDW0204CDG:OEN PDDW0204CDG:PE PDDW0204CDG:IE}
+addTieHiLo -cellPin {PDDW0204CDG:I PDDW0204CDG:DS PDDW0204CDG:OEN PDDW0204CDG:PE PDDW0204CDG:IE PDDW1216CDG:DS PDDW1216CDG:OEN PDDW1216CDG:PE PDDW1216CDG:IE}
 setTieHiLoMode -cell {TIEHBWP7T TIELBWP7T} -maxFanout 8 -maxDistance 50
 addTieHiLo -keepExisting true -excludePin ../my_soc_top/tie_supply_exclude_tmp.txt
 file delete ../my_soc_top/tie_supply_exclude_tmp.txt

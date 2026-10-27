@@ -3,6 +3,7 @@
     {
       "port": "clk_i",
       "pad": "clk",
+      "master": "PDDW0204CDG",
       "direction": "input",
       "side": "N",
       "offset_um": 300
@@ -10,6 +11,7 @@
     {
       "port": "rst_ni",
       "pad": "rst_n",
+      "master": "PDDW0204CDG",
       "direction": "input",
       "side": "N",
       "offset_um": 1400
@@ -17,6 +19,7 @@
     {
       "port": "tck_i",
       "pad": "tck",
+      "master": "PDDW0204CDG",
       "direction": "input",
       "side": "S",
       "offset_um": 250
@@ -24,6 +27,7 @@
     {
       "port": "tms_i",
       "pad": "tms",
+      "master": "PDDW0204CDG",
       "direction": "input",
       "side": "S",
       "offset_um": 450
@@ -31,6 +35,7 @@
     {
       "port": "td_i",
       "pad": "tdi",
+      "master": "PDDW0204CDG",
       "direction": "input",
       "side": "S",
       "offset_um": 1400
@@ -38,6 +43,7 @@
     {
       "port": "td_o",
       "pad": "tdo",
+      "master": "PDDW1216CDG",
       "direction": "output",
       "side": "S",
       "offset_um": 1600

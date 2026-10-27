@@ -100,6 +100,8 @@ cat configs/design.json
 
 optimizer_max_density=0.83用于普通Setup/DRV优化，hold_optimizer_max_density=0.85用于Hold修复；环境准备把两个值写入user_define.tcl，29/32步按阶段传给setOptMode -maxDensity，再恢复普通上限。原脚本75%会阻止Hold，而只把所有阶段一起提高到85%又会让Setup先用完修复空间，因此现在预留2个百分点。target_utilization仍为规划85%，实际逻辑密度须看工具报告。两个优化上限不改变核心边长、20ns、整颗3.8mm²或最低Hold余量0.10ns；修改后须新上传。
 
+deploy/server/config/io_plan.json说明六个信号PAD的单元、方位和位置：五个输入使用PDDW0204CDG，TDO输出使用驱动更强、同尺寸的PDDW1216CDG。generate.py生成07步并核对实例和类型；25步连接控制引脚的常量单元。slew_scope.tcl把当前物理引脚完整分为内部数据0.3ns、内部时钟0.5ns、外部PAD0.6ns，优化后、报告前刷新，覆盖计数在work/evidence/slew_scope。库中更严格的限制继续有效，32/33步仍要求实际和总电气违规为零。不能只设置全局0.3ns再给端口写0.6ns，因为工具会取更严格的限制。修改依据和未完成项见[质量跟进](../report/quality_followup.md)；这些脚本改动尚未产生新的完整通过结果。
+
 **第一次运行 check_env 前** 修改 configs/design.json。准备完成后 work 中的输入被固定，禁止修改来冒充续跑。更换参数请新建上传目录。1648+2×150=1948 μm 只是请求值；实际尺寸按工具网格对齐后的数据库和最终输出核对。
 
 ## 5．独立阶段一：环境检查

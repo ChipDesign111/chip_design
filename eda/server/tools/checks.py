@@ -32,6 +32,7 @@ def clear_step_outputs(work, step):
         candidates.extend((root / 'outputs/manual_final').glob('*'))
     if step == 32:
         candidates.extend((work / 'evidence/fanout_plans').glob('*.json'))
+    candidates.extend((work / 'evidence/slew_scope').glob('%02d_*.json' % step))
     candidates.extend((work / 'evidence/commands' / ('%02d' % step)).glob('*.tcl'))
     for p in candidates:
         if p.is_file():
@@ -180,7 +181,11 @@ def io_native(work):
         raise ValueError('IO exception requires fresh side continuity and four-net topology checks')
     config = json.loads((work / 'config/design.json').read_text())
     native = Path(config['pdk_root']) / 'tpd018nv_280a/TSMCHOME/digital/Back_End/gds/tpd018nv_280a/mt_2/6lm/tpd018nv.gds'
-    masters = {'PDDW0204CDG', 'PVDD1CDG', 'PVSS1CDG', 'PVDD2CDG', 'PVSS2CDG', 'PVDD2POC', 'PFILLER20', 'PFILLER10', 'PFILLER5', 'PFILLER1', 'PFILLER05', 'PFILLER0005', 'PCORNER'}
+    plan = json.loads((work / 'config/io_plan.json').read_text())
+    signal_masters = {signal['master'] for signal in plan['signals']}
+    if signal_masters != {'PDDW0204CDG', 'PDDW1216CDG'}:
+        raise ValueError('Unverified signal PAD GDS mapping')
+    masters = signal_masters | {'PVDD1CDG', 'PVSS1CDG', 'PVDD2CDG', 'PVSS2CDG', 'PVDD2POC', 'PFILLER20', 'PFILLER10', 'PFILLER5', 'PFILLER1', 'PFILLER05', 'PFILLER0005', 'PCORNER'}
     result = gds_audit(native, masters)
     if result['undefined_references'] or not masters.issubset(result['selected_native_m4_geometry']):
         raise ValueError('Incomplete native IO GDS')
@@ -380,6 +385,17 @@ def audit_step(work, step):
         checks['io_controls'] = helper(work, 'audit_io_ties.py')
     timing_dirs = {26: 'preCTS', 28: 'postCTS', 29: 'postCTS_holdFix_check', 32: 'postRoute_holdAuto_check', 33: 'postFiller'}
     if step in timing_dirs:
+        scope_reports = sorted((work / 'evidence/slew_scope').glob('%02d_*.json' % step))
+        if not scope_reports:
+            raise ValueError('Missing refreshed physical slew pin classes')
+        scope = json.loads(scope_reports[-1].read_text())
+        if (scope.get('all_leaf_pins', 0) != scope.get('data_pins', 0) + scope.get('clock_pins', 0) + 6
+                or scope.get('data_pins', 0) < 100000 or scope.get('clock_pins', 0) < 1
+                or scope.get('external_pad_pins') != 6 or scope.get('external_ports') != 6
+                or [scope.get(k) for k in ['data_limit_ns','clock_limit_ns','pad_limit_ns']] != [0.3,0.5,0.6]
+                or scope.get('library_override') is not False):
+            raise ValueError('Invalid physical slew coverage/limits')
+        checks['physical_slew_classes'] = dict(scope, report=str(scope_reports[-1]))
         cfg=json.loads((work/'config/design.json').read_text())
         minimum=cfg.get('min_hold_slack_ns',0.0) if step in [32,33] else 0.0
         checks['timing'] = timing(pnr / 'reports' / timing_dirs[step], step in [32, 33], minimum)

@@ -37,8 +37,11 @@ for side in 'NSWE':
         assert find(insts[inst][1][supply])==find(supply), (inst,insts[inst])
         powerpads.append({'instance':inst,'supply':supply})
 signals=[]
+plan=json.loads((root/'config/io_plan.json').read_text())
+expected_masters={signal['port']:signal['master'] for signal in plan['signals']}
 for port,pad,core in [('clk_i','clk','C'),('rst_ni','rst_n','C'),('tck_i','tck','C'),('tms_i','tms','C'),('td_i','tdi','C'),('td_o','tdo','I')]:
     inst='i_pad_'+pad
+    assert insts[inst][0]==expected_masters[port], (inst,insts[inst][0],expected_masters[port])
     pins=insts[inst][1]
     assert find(pins['PAD'])==find(port)
     assert find(pins[core])!=find(port)
