@@ -20,3 +20,5 @@ SDF后仿检查功能、绑定和实际动态时序。仿真器负IOPATH截零�
 当前修复选择：配置`insert_automatic_clock_gating=false`，关闭Genus自动将寄存器使能转换为额外时钟门控的优化，将这些使能保留为数据选择逻辑。RTL及原有显式时钟单元不改，正常时序/面积门槛不改，动态检查不豁免。这是重新映射硬件的选择，可能增加时钟动态功耗和数据选择逻辑面积，必须用新的完整34步与SDF重新验证；不能把旧5b60015的静态通过当成新版本的结果。定时检查40继续按正常条件跟进。
 
 该修复的首次部署5ff1b7a在读取综合选项时停止，尚未展开设计：Genus 19.17的`lp_clock_gating_infer_enable`是枚举，接受字符串`false`而拒绝数值`0`。配置桥接现已改为输出字面量true/false，并由原生Genus实际读回两个属性均为false、正常退出；不是综合/功能验证通过。这个工具接口修正使用新的源码和上传目录从头跑，旧失败输入保持冻结。最新运行身份见[下一轮部署](../eda/results/native_acceptance_20261027/next_implementation.json)。
+
+最新干净源码`cbf40f279d4ddde6c37d911882b954f78f27b712`已推送并独立部署至`/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_154930_cbf40f2`，环境退出0。正式综合日志已实际读回`insert=false infer=false`并继续处理RTL；当前仍在综合，没有新版面积、时序或后仿通过结论。5ff1b7a的选项解析失败版本及首轮不完整TT均已归入历史区，临时诊断构建清除，真实失败日志保留本地archives。服务器README与本地结果入口已更新。

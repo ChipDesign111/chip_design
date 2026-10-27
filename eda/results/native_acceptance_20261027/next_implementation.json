@@ -1,14 +1,21 @@
 {
-  "utc": "2026-10-27T07:45:52.335003+00:00",
-  "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_154419_5ff1b7a",
-  "source_commit": "5ff1b7a98c22d5184c1c19c9e088300e2249032c",
-  "archive_sha256": "6c02a145f9175a4d554225b3374e188bd727cc9bf634d7c280f91ada4cd7acc1",
-  "phase": "Genus option parse failed before elaboration; numeric enum replaced with literal false in next fresh version",
+  "utc": "2026-10-27T07:50:14.299263+00:00",
+  "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_154930_cbf40f2",
+  "source_commit": "cbf40f279d4ddde6c37d911882b954f78f27b712",
+  "archive_sha256": "b1d6e06cd1c76b6d81b8e6ab532b3ebfcf4c2edfd2e3b8f742fd8c492d22f4ec",
+  "phase": "Genus synthesis; automatic clock gating disabled; fresh full implementation",
   "environment_exit_code": 0,
-  "processes": [],
+  "processes": [
+    {
+      "pid": 2155815,
+      "command": "/opt/eda/Cadence/GENUS191/tools.lnx86/synth/bin/64bit/genus -abort_on_error -f /home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_154930_cbf40f2/work/syn/scripts/eda_synthesis.tcl -log eda_synthesis -overwrite ",
+      "cpu_seconds": 37.6,
+      "state": "R"
+    }
+  ],
   "source_manifest_verified": true,
   "new_accepted_result": false,
-  "new_failure_observed": true,
+  "new_failure_observed": false,
   "duplicate_job_started": false,
   "last_audited_step": 0,
   "insert_automatic_clock_gating": false,
@@ -33,6 +40,5 @@
   "previous_TT_local_results": "lab4/native_5b60015_postsim_tt_20261027",
   "no_old_pvt_min_or_max_started_after_TT_failure": true,
   "main_unchanged": "d40b217",
-  "all_development_tools_local_archives": true,
-  "exit_code": 1
+  "all_development_tools_local_archives": true
 }
