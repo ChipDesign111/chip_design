@@ -88,3 +88,5 @@ io_plan.json为每个信号明确原生PAD单元，TDO改用PDDW1216CDG，五个
 物理初始化及只读PVT分析改用-T，Genus保持其文档规定的-temperature。rc_temperatures.tcl在创建后和每次检查点恢复后，用get_rc_corner -T核对实际25/125/0/−40°C，再允许提取RC；不偷偷修改旧数据库温度来认可旧结果。每步审核纳入evidence/rc_temperatures.json。RC仍使用供应的typical技术表，温度电阻修正也不能冒称独立RC最小/最大角或SI签核。
 
 [原生检查证据](../eda/results/quality_baseline_20261027/io_scope_20261027/native_constraints_check.json)确认：旧温度覆盖未设置时，新增检查会拒绝；在独立内存实验中使用原生-T设置后，实际读回25/125/0/−40°C。生产用引脚分类与RC检查脚本的SHA均与服务器实际执行文件一致。原冻结输入SHA不变，未保存或复用诊断数据库。新完整实现必须重新验证真实RC温度下的面积、时序、物理规则及SDF。
+
+修正源码77cb2290bbda95776acd65fc2831050aee9c2010已推送并以干净源包部署至`/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_111302_77cb229`。[部署记录](../eda/results/quality_baseline_20261027/io_scope_20261027/deployment_77cb229.json)记录源包SHA、实际源码清单、配置及环境退出0。已启动全新Genus综合，尚无新版面积、最终时序或SDF结论。RTL目录全部91个文件与main逐文件SHA相同，其中83个为SystemVerilog源文件/头文件；仅EDA与正常文档更新。服务器本版本README随该干净源包生成，旧冻结输入与main保持。
