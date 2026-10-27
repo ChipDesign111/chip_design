@@ -1,0 +1,61 @@
+{
+  "observation_UTC": "2026-10-27T07:23:02.571921+00:00",
+  "current_phase": "Physical EDA accepted; TT SDF / noSDF control diagnosis",
+  "EDA_completed": true,
+  "SDF_completed": false,
+  "all_34_steps_same_input": true,
+  "whole_die_area_mm2": 3.7956390976,
+  "minimum_setup_wns_ns": 0.097,
+  "minimum_hold_wns_ns": 0.019,
+  "TNS_ns": 0,
+  "violating_paths": 0,
+  "logical_density_percent": 68.944,
+  "planned_utilization": 0.85,
+  "corners": {
+    "TT25": {
+      "setup_wns_ns": 4.213,
+      "hold_wns_ns": 0.092
+    },
+    "SS125": {
+      "setup_wns_ns": 0.097,
+      "hold_wns_ns": 0.199
+    },
+    "FF0": {
+      "setup_wns_ns": 5.857,
+      "hold_wns_ns": 0.027
+    },
+    "FFm40": {
+      "setup_wns_ns": 6.037,
+      "hold_wns_ns": 0.019
+    }
+  },
+  "rc_temperatures_C": [
+    25,
+    125,
+    0,
+    -40
+  ],
+  "native_electrical_violations": 0,
+  "default_DRC": 0,
+  "environment_exit_code": 0,
+  "flow_exit_code": 0,
+  "collect_exit_code": 0,
+  "pipeline_exit_code": 0,
+  "local_receipt": {
+    "archive_sha256": "254badfe17155da73f72668639031b6e4b08b2efe9096519b5c8dc5af8604b6a",
+    "files_verified": 904,
+    "input_manifest_sha256": "844f6579d3724e5f040d144dde5d38cb265bf8581a3ceb9b8d01641c412397d7",
+    "remote_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_132429_5b60015",
+    "all_34_steps_same_input": true,
+    "whole_die_area_mm2": 3.7956390976,
+    "max_whole_die_area_mm2": 3.8
+  },
+  "local_result": "lab4/native_5b60015_final_20261027",
+  "postsim_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_150432_postsim_vcs_tt_cea370e",
+  "first_SDF_functional_pass": true,
+  "first_SDF_timing_messages": 10,
+  "noSDF_control_pass": false,
+  "failure": "gate_zero CPU numeric self-check; investigating DMA status error",
+  "main_unchanged": "d40b217",
+  "source_work_frozen": true
+}

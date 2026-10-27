@@ -90,17 +90,19 @@ def main():
         os.link(inputs/'timing.sdf',run/'timing.sdf')
         executable=build/'simv'
         if mode=='gate_zero':
-            # A zero-delay netlist driving a native nonzero-setup SRAM is not
-            # a timing experiment. This explicit control alone disables checks.
+            # This independent functional control must also zero the native
+            # models' default delays; removing SDF alone leaves a mixture of
+            # ideal interconnect and intrinsic cell delays. SDF cases retain
+            # all annotated delays, checks and native notifiers.
             control=root/'build_zero';control.mkdir()
             zero=command.copy()
             if args.simulator=='vcs':
                 zero[zero.index('-o')+1]=str(control/'simv')
-                zero+=['+notimingcheck','+define+NO_SDF']
+                zero+=['+notimingcheck','+delay_mode_zero','+define+NO_SDF']
             else:
                 zero[zero.index('-xmlibdirname')+1]=str(control/'xcelium.d')
                 zero[zero.index('-sdfstats')+1]=str(control/'sdfstats.log')
-                zero+=['-notimingchecks','-define','NO_SDF']
+                zero+=['-notimingchecks','-delay_mode','zero','-define','NO_SDF']
             execute(zero,control,'compile.log');executable=control/'simv'
         if args.simulator=='vcs':
             execute([str(executable)]+flags,run,'simulation.log')

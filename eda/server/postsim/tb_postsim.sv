@@ -1,7 +1,11 @@
 `timescale 1ns/1ps
 module tb_postsim;
   reg clk=0, rst_n=0;
-  always #10 clk=~clk; // Same 20 ns system period as the physical implementation.
+  // Keep the board clock low while initial native-model states settle.
+  // Reset remains asserted. The first rising edge is at 50 ns; every later
+  // rising edge is 20 ns apart, matching physical STA and SDF. No checks are
+  // disabled during this startup interval or any SDF run.
+  initial begin #40; forever #10 clk=~clk; end
   // The board starts with its drivers disconnected while native IO tie and
   // pull controls settle. This changes stimulus, never the IO model/checks.
   reg pad_drive_en=0;
