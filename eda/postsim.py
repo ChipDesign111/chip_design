@@ -112,7 +112,7 @@ PY
             p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data)
     audit=json.loads((output/'audit.json').read_text());results=json.loads((output/'results.json').read_text())
     md='# SDF完整SoC后仿结果\n\n服务器：`'+upload+'`。本包'+str(len(manifest['files']))+'个文件已核验SHA。\n\n功能通过 '+str(sum(v['functional_pass'] for v in results.values()))+'/'+str(len(results))+'；回标error '+str(audit['annotation_errors'])+'，缺失实例 '+str(audit['missing_instances'])+'，缺失检查 '+str(audit['unmatched_timing_checks'])+'。\n\n工作窗口检查：'+str(audit['active_window_dynamic_timing_clean'])+'。原始复位事件及负IOPATH截零限制仍须查看，不等于全程无违规。\n\n- [完整审核](audit.json)\n- [全部功能结果](results.json)\n- [输入身份](input_manifest.json)\n- [回标原文](build/sdf.log)\n- [SDF运行](sdf_max/simulation.log)\n- [无SDF功能对照](gate_zero/simulation.log)\n\n大网表、SDF、授权模型和编译数据库仅留服务器。本轮不宣称独立签核。\n'
-    quality='绑定完整性：'+str(audit['binding_complete_for_instances_and_checks'])+'；负路径延时支持完整：'+str(audit.get('negative_path_delay_support_complete',False))+'。功能PASS不能覆盖这些限制。\n\n'
+    quality='正常后仿验收（功能、绑定、实际动态时序）：'+str(audit.get('normal_postsim_pass','旧审核未给出此字段'))+'。已定位工具/模型Warning保留说明，不要求所有Warning为零。\n\n绑定完整性：'+str(audit['binding_complete_for_instances_and_checks'])+'；负路径延时支持完整：'+str(audit.get('negative_path_delay_support_complete',False))+'。后者单独说明模型能力，不作为额外的零Warning门槛。\n\n'
     md=md.replace('# SDF完整SoC后仿结果\n\n','# SDF完整SoC后仿结果\n\n'+quality)
     if not (output/'build/sdf.log').is_file():
         md=md.replace('- [回标原文](build/sdf.log)','- 大型回标原文保留在本次服务器postsim/build/sdf.log；本包保留[编译回标摘要](build/compile.log)')

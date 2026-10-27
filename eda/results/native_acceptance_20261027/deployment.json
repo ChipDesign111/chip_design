@@ -1,0 +1,64 @@
+{
+  "source_commit": "5b60015ce7e418d8632dcaf13a84bdc9f0b845d2",
+  "source_manifest": {
+    "git_commit": "5b60015ce7e418d8632dcaf13a84bdc9f0b845d2",
+    "working_tree_dirty": false,
+    "branch": "xzx",
+    "file_count": 192,
+    "manifest_sha256": "72fca5bcfc4d643ce9d5f442283c1dae1cad670c80201134a1b521d1569bed48"
+  },
+  "archive_sha256": "4ea19f27d505090f36e4f7d2474e0207eb1244ec77ce36a9c24272213070f689",
+  "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_132429_5b60015",
+  "acceptance_profile": "native_library_zero_slack",
+  "minimum_setup_and_hold_wns_ns": 0,
+  "analysis_profile": "matched_TT_SS_FF0_FFm40_SI_off_native_low_RC",
+  "area_limit_mm2": 3.8,
+  "system_period_ns": 20,
+  "environment_exit_code": 0,
+  "current_phase": "Genus synthesis",
+  "observation_UTC": "2026-10-27T05:25:31.728707+00:00",
+  "RTL_directory_all_SHA_equal_to_main": true,
+  "EDA_completed": false,
+  "SDF_completed": false,
+  "retired_failed_uploads": [
+    {
+      "name": "20261027_013823_9a6f4eb",
+      "source_commit": "9a6f4eb9bea58615d9137cf87f0705fff425a87f",
+      "from": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_013823_9a6f4eb",
+      "to": "/home/s2400011041/Desktop/fullstack_chipdesign/history/retired_quality_20261027/20261027_013823_9a6f4eb",
+      "last_audited_step": 31,
+      "exit_code": 1,
+      "bytes_preserved": 834172365
+    },
+    {
+      "name": "20261027_040030_bcc483e",
+      "source_commit": "bcc483e94bdf8ae8836ffcbb05eebf673b9ffa2b",
+      "from": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e",
+      "to": "/home/s2400011041/Desktop/fullstack_chipdesign/history/retired_quality_20261027/20261027_040030_bcc483e",
+      "last_audited_step": 31,
+      "exit_code": 1,
+      "bytes_preserved": 1028931791
+    },
+    {
+      "name": "20261027_063343_c8da454",
+      "source_commit": "c8da4549d8506cd772beaa53ce5ee65c1ae41b94",
+      "from": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_063343_c8da454",
+      "to": "/home/s2400011041/Desktop/fullstack_chipdesign/history/retired_quality_20261027/20261027_063343_c8da454",
+      "last_audited_step": 29,
+      "exit_code": 1,
+      "bytes_preserved": 765076364
+    },
+    {
+      "name": "20261027_111302_77cb229",
+      "source_commit": "77cb2290bbda95776acd65fc2831050aee9c2010",
+      "from": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_111302_77cb229",
+      "to": "/home/s2400011041/Desktop/fullstack_chipdesign/history/retired_quality_20261027/20261027_111302_77cb229",
+      "last_audited_step": 31,
+      "exit_code": 1,
+      "bytes_preserved": 1322986436
+    }
+  ],
+  "retirement_evidence_sha256": "1fc86a092a976660bb2533a2a2382b898e560bf454cad3413ef01ef21f99348c",
+  "legacy_agent_conditions_retired": true,
+  "heartbeat_40_updated_to_normal_conditions": true
+}

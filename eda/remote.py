@@ -163,7 +163,7 @@ def verify_and_extract(directory):
         raise ValueError('Invalid whole Die geometry')
     whole_area=die[2]*die[3]/1e6
     if not isinstance(limit,(int,float)) or not math.isfinite(limit) or not 0<limit<=4.0 or whole_area>limit:
-        raise ValueError('Whole Die including PAD exceeds the 4.0 mm2 target')
+        raise ValueError('Invalid configured whole-Die limit or measured area exceeds it: limit=%s, area=%s mm2' % (limit,whole_area))
     audit=json.loads((core/'evidence/export_audit.json').read_text(encoding='utf-8'))
     if abs(audit['whole_die_area_mm2']-whole_area)>1e-9:
         raise ValueError('Export and floorplan whole Die area differ')
