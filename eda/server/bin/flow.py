@@ -153,7 +153,9 @@ def prepare(args):
         if n != 1:
             raise ValueError('Project configuration variable missing: ' + key)
     text+='\nset eda_enable_pvt %d\n'%int(config['analysis_profile'].startswith('matched_'))
-    text+='set eda_insert_clock_gating %d\n'%int(config['insert_automatic_clock_gating'])
+    # lp_clock_gating_infer_enable is an enum in Genus 19.17: it accepts
+    # literal true/false, unlike a Boolean attribute it rejects numeric 0/1.
+    text+='set eda_insert_clock_gating %s\n'%('true' if config['insert_automatic_clock_gating'] else 'false')
     user.write_text(text, encoding='utf-8')
     listed, includes, lines = [], [], ['+define+SYNTHESIS', '+define+CHIP_USE_RA1SHD']
     rtl = work / 'src/chip_design'
