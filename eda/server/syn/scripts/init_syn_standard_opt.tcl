@@ -66,11 +66,13 @@ set_db lp_default_probability 0.5
 # default toggle rate
 # only apply to nets at top level
 set_db lp_default_toggle_rate 0.2
-# insert clock-gating logic
-set_db lp_insert_clock_gating true
-
-# invoke advanced algorithm to identify additional clock-gating opportunities
-set_db lp_clock_gating_infer_enable true
+# Automatic ICG insertion can turn asynchronous-reset-dependent register
+# enables into timing-sensitive clock controls. Keep the original RTL enables
+# as data muxes in this profile. Existing RTL clock cells are not replaced.
+# The config explicitly records this implementation choice, not a timing waiver.
+set_db lp_insert_clock_gating $eda_insert_clock_gating
+set_db lp_clock_gating_infer_enable $eda_insert_clock_gating
+puts "EDA_AUTO_CLOCK_GATING insert=[get_db lp_insert_clock_gating] infer=[get_db lp_clock_gating_infer_enable]"
 
 # case sensitive, to get more precise result, use a smaller unit
 set_db lp_power_unit uW

@@ -241,7 +241,11 @@ def mapped_netlist_check(work):
     report = load_text(work / 'syn/my_soc_top/reports/area/area.rpt')
     if not all(name in report for name in ['i_npu_subsystem', 'i_dma']):
         raise ValueError('Expected NPU/DMA area hierarchy absent; inspect accidental pruning')
-    return {'native_main_srams': 1, 'mapped_leaf_instances': len(leaves), 'all_leaf_types_have_library_models': True, 'npu_dma_area_hierarchy_present': True, 'latch_area_um2': 0}
+    config=json.loads((work/'config/design.json').read_text())
+    automatic_gates=[path for path in leaves if 'RC_CG_HIER_INST' in path]
+    return {'native_main_srams': 1, 'mapped_leaf_instances': len(leaves), 'all_leaf_types_have_library_models': True, 'npu_dma_area_hierarchy_present': True, 'latch_area_um2': 0,
+            'automatic_clock_gating_requested':config.get('insert_automatic_clock_gating',True),
+            'mapped_automatic_clock_gate_instances':len(automatic_gates)}
 
 
 def physical_pins(work, path):

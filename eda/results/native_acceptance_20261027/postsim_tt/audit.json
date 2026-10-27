@@ -1,0 +1,363 @@
+{
+  "audit_tool_sha256": "619151a31792f72359524c7ae67c0909911bf10860e30e65db5f10d3c5f9da2e",
+  "simulator": "vcs",
+  "annotation_errors": 0,
+  "warning_categories": {
+    "SDFCOM_SWC": 2664,
+    "SDFCOM_UHICD": 1,
+    "SDFCOM_IWSBA": 1028,
+    "SDFCOM_NIOD": 9
+  },
+  "negative_timing_checks_enabled": true,
+  "native_NTC_RECREM_enabled": true,
+  "negative_iopath_clamped_by_simulator": 9,
+  "negative_paths_failed_to_adjust": 0,
+  "unmatched_paths_printed_lower_bound": 0,
+  "warning_counts_are_printed_messages_not_uncapped_totals": false,
+  "missing_instances": 0,
+  "unmatched_timing_checks": 0,
+  "cases": {
+    "sdf_firmware_1": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {
+        "final_reset": 4
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_axi2sram.RC_CG_HIER_INST11.RC_CGIC_INST",
+          "time_ns": 238891.285,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891285, negedge E:238891205, limits: (151,-66) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_bootram.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 238891.295,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891295, posedge E:238891193, limits: (168,-55) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_dm_axi2mem.RC_CG_HIER_INST229.RC_CGIC_INST",
+          "time_ns": 238891.296,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891296, posedge E:238891117, limits: (180,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.prefetch_buffer_i.prefetch_controller_i.RC_CG_HIER_INST225.RC_CGIC_INST",
+          "time_ns": 238891.353,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238891353, negedge E:238891289, limits: (152,-61) );"
+        }
+      ]
+    },
+    "sdf_firmware_10001": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10002": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10003": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10004": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10005": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10006": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10007": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10008": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10009": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10010": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_10011": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_3": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_5": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    },
+    "sdf_firmware_7": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {
+        "final_reset": 2
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_axi2boot.RC_CG_HIER_INST3.RC_CGIC_INST",
+          "time_ns": 238911.426,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238911426, negedge E:238911296, limits: (152,-64) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_dm_axi2mem.RC_CG_HIER_INST230.RC_CGIC_INST",
+          "time_ns": 238911.432,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:238911432, posedge E:238911262, limits: (180,-57) );"
+        }
+      ]
+    },
+    "sdf_max": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 3660,
+      "npu_cycles": 1035,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 640.0,
+      "active_end_ns": 238880.0,
+      "clock_core_edges_ns": [
+        50.62,
+        70.62,
+        90.62,
+        110.62
+      ],
+      "timing_counts": {},
+      "timing_violations": []
+    }
+  },
+  "binding_complete_for_instances_and_checks": true,
+  "negative_path_delay_support_complete": false,
+  "raw_annotation_warnings_retained": true,
+  "active_window_dynamic_timing_clean": true,
+  "normal_acceptance": {
+    "functional_pass": true,
+    "sdf_binding_complete": true,
+    "dynamic_timing_clean": false,
+    "warnings_are_reported_not_required_to_be_zero": true
+  },
+  "normal_postsim_pass": false,
+  "scope": "Full notifier/message checking in all SDF runs; reset events retained, not masked. Unsupported negative IOPATH clamps remain explicit; not complete signoff."
+}

@@ -70,6 +70,11 @@ def read_config(path):
         raise ValueError('Fixed core size is below profile minimum')
     if c['cpu_clock_gate'] != 'repository_passthrough':
         raise ValueError('Changing CPU clock gating requires a separate validated profile')
+    # Earlier frozen versions used Genus automatic gating. Preserve that
+    # interpretation when reading an old configuration without this option.
+    c.setdefault('insert_automatic_clock_gating', True)
+    if not isinstance(c['insert_automatic_clock_gating'], bool):
+        raise ValueError('insert_automatic_clock_gating must be a JSON boolean')
     if c['analysis_profile'] not in ['single_TT_SI_off_native_low_RC','matched_TT_SS_FF0_FFm40_SI_off_native_low_RC']:
         raise ValueError('Unknown library PVT profile')
     if not isinstance(c['max_repair_iterations'], int) or not 1 <= c['max_repair_iterations'] <= 10 or c['hold_target_ns'] not in [0,0.02]:
@@ -148,6 +153,7 @@ def prepare(args):
         if n != 1:
             raise ValueError('Project configuration variable missing: ' + key)
     text+='\nset eda_enable_pvt %d\n'%int(config['analysis_profile'].startswith('matched_'))
+    text+='set eda_insert_clock_gating %d\n'%int(config['insert_automatic_clock_gating'])
     user.write_text(text, encoding='utf-8')
     listed, includes, lines = [], [], ['+define+SYNTHESIS', '+define+CHIP_USE_RA1SHD']
     rtl = work / 'src/chip_design'

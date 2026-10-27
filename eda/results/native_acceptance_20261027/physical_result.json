@@ -1,6 +1,6 @@
 {
   "observation_UTC": "2026-10-27T07:23:02.571921+00:00",
-  "current_phase": "Physical EDA accepted; TT SDF / noSDF control diagnosis",
+  "current_phase": "Static EDA accepted; TT SDF rejected for six final-reset automatic ICG enable timing violations",
   "EDA_completed": true,
   "SDF_completed": false,
   "all_34_steps_same_input": true,
@@ -51,11 +51,14 @@
     "max_whole_die_area_mm2": 3.8
   },
   "local_result": "lab4/native_5b60015_final_20261027",
-  "postsim_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_150432_postsim_vcs_tt_cea370e",
+  "postsim_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_152548_postsim_vcs_tt_bba8c1c",
   "first_SDF_functional_pass": true,
   "first_SDF_timing_messages": 10,
-  "noSDF_control_pass": false,
-  "failure": "gate_zero CPU numeric self-check; investigating DMA status error",
+  "noSDF_control_pass": true,
+  "failure": "Final-reset automatic ICG enable setuphold violations, not SRAM timing",
   "main_unchanged": "d40b217",
-  "source_work_frozen": true
+  "source_work_frozen": true,
+  "postsim_accepted": false,
+  "final_reset_ICG_timing_messages": 6,
+  "all_17_functional_cases_pass": true
 }
