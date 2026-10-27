@@ -1,0 +1,20 @@
+{
+  "from": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_182523_4ea3f0c",
+  "to": "/home/s2400011041/Desktop/fullstack_chipdesign/history/retired_quality_20261027/20261027_182523_4ea3f0c",
+  "last_audited_step": 34,
+  "pipeline_exit_code": 1,
+  "reason": "Selected mux_dff strategy not implemented:7405 EDF remain; pre-init constraints missed newly created MMMC objects. Native source correction uses new version, no frozen input edits. No new SDF launched. Operator stop recorded after step34 checks; not complete three-stage delivery.",
+  "temporary_development_builds_removed": true,
+  "full_source_and_physical_history_preserved": true,
+  "source_commit": "4ea3f0c9a1864bec2d39cab1bd3e2e0fae7603f9",
+  "source_archive_sha256": "7bfc14d9d08e7805d14286040297d18fbdccf8c0415795df8fcf50e19829e73e",
+  "requested_mapping": "mux_dff",
+  "remaining_controlled_flip_flops": 7405,
+  "mapped_types": {
+    "EDFCNQD1BWP7T": 6324,
+    "EDFCNQD2BWP7T": 5,
+    "EDFQD1BWP7T": 1076
+  },
+  "postsim_not_started": true,
+  "correction": "Reapply the same mapping policy after init_design creates active MMMC library objects; verify actual mapped types after synthesis. No timing margins or exceptions added."
+}
