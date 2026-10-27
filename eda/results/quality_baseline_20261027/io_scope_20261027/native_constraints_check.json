@@ -1,0 +1,87 @@
+{
+  "scope": "Native constraints API/coverage diagnosis only; no full implementation or SDF acceptance",
+  "native_tool": "Innovus 21.16",
+  "helper_SHA256_verified_against_remote_executed_files": {
+    "slew_scope.tcl": "dcbd09bbcee9658d9520eed04023105540609422bcbb937638112d0b7daf7707",
+    "rc_temperatures.tcl": "aa536ba54b8741bf0ad326fed999fcbd82fdb944ae9ef953731cfb9caf4f0b55"
+  },
+  "frozen_input_SHA_unchanged": true,
+  "diagnostic_database_saved": false,
+  "preCTS_scope": {
+    "all_leaf_pins": 256223,
+    "data_pins": 256217,
+    "clock_pins": 0,
+    "external_pad_pins": 6,
+    "external_ports": 6,
+    "data_limit_ns": 0.3,
+    "clock_limit_ns": 0.5,
+    "pad_limit_ns": 0.6,
+    "library_override": false,
+    "conservative_pre_cts_clock_scope": true
+  },
+  "postRoute_scope": {
+    "all_leaf_pins": 261720,
+    "data_pins": 248103,
+    "clock_pins": 13611,
+    "external_pad_pins": 6,
+    "external_ports": 6,
+    "data_limit_ns": 0.3,
+    "clock_limit_ns": 0.5,
+    "pad_limit_ns": 0.6,
+    "library_override": false,
+    "conservative_pre_cts_clock_scope": false
+  },
+  "postRoute_timing_diagnostic": {
+    "Setup": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/production_scope_postroute_v3/reports/my_soc_top_postRoute.summary.gz",
+      "wns_ns": 0.014,
+      "tns_ns": 0.0,
+      "violating_paths": 0,
+      "drv": {
+        "max_cap": {
+          "real": 0,
+          "total": 0
+        },
+        "max_tran": {
+          "real": 681,
+          "total": 681
+        },
+        "max_fanout": {
+          "real": 0,
+          "total": 0
+        },
+        "max_length": {
+          "real": 0,
+          "total": 0
+        }
+      },
+      "electrical_drv_table_reported_here": true,
+      "minimum_wns_ns": 0.0,
+      "targets_met": false
+    },
+    "Hold": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/production_scope_postroute_v3/reports/my_soc_top_postRoute_hold.summary.gz",
+      "wns_ns": -0.829,
+      "tns_ns": -13.686,
+      "violating_paths": 138,
+      "drv": {},
+      "electrical_drv_table_reported_here": false,
+      "minimum_wns_ns": 0.1,
+      "targets_met": false
+    }
+  },
+  "RC_temperature": {
+    "old_override_unset_for_all_four_corners": true,
+    "old_native_restore_log_temperature_C": 25,
+    "old_incorrect_checkpoint_rejected_by_new_guard": true,
+    "native_update_T_and_get_T_readback_C": {
+      "tt_1p80v_25c": 25,
+      "ss_pvt": 125,
+      "ff0_pvt": 0,
+      "ffm40_pvt": -40
+    },
+    "note": "Only in-memory native API diagnosis. Frozen old inputs unchanged; no DB saved. Correct -T creation and restore must pass a new full flow. Genus Common UI retains -temperature."
+  },
+  "preCTS_probe_note": "The initial combined probe was stopped by native second-restore protection after preCTS coverage passed. PostRoute verification used a separate clean tool process, exit0. No restore protection bypass.",
+  "new_fullflow_completed": false
+}

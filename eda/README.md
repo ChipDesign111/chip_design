@@ -102,6 +102,10 @@ optimizer_max_density=0.83用于普通Setup/DRV优化，hold_optimizer_max_densi
 
 deploy/server/config/io_plan.json说明六个信号PAD的单元、方位和位置：五个输入使用PDDW0204CDG，TDO输出使用驱动更强、同尺寸的PDDW1216CDG。generate.py生成07步并核对实例和类型；25步连接控制引脚的常量单元。slew_scope.tcl把当前物理引脚完整分为内部数据0.3ns、内部时钟0.5ns、外部PAD0.6ns，优化后、报告前刷新，覆盖计数在work/evidence/slew_scope。库中更严格的限制继续有效，32/33步仍要求实际和总电气违规为零。不能只设置全局0.3ns再给端口写0.6ns，因为工具会取更严格的限制。修改依据和未完成项见[质量跟进](../report/quality_followup.md)；这些脚本改动尚未产生新的完整通过结果。
 
+32步采用原生Setup/Hold联合修复，后期允许85%密度，postroute_setup_target_ns=0.20用于额外争取200ps Setup余量，Hold目标0.12ns；它不改变20ns时钟或最终Setup非负、Hold至少0.10ns的门禁。早期普通优化仍83%。首个时序图建立前未标记的内部引脚按更严0.3ns暂管，时钟树后必须识别真实时钟引脚，否则停止。
+
+RC温度也必须看实际读回：rc_temperatures.tcl在初始化和恢复检查点后核对25/125/0/−40°C，结果保存work/evidence/rc_temperatures.json并纳入各步审核。Genus的-temperature与Innovus的-T语法不同；旧版物理RC角实际均25°C，不能用匹配的库温度代替RC生效证明。新版本仍仅使用供应的typical RC技术表，不能称独立RC最小/最大角或SI签核。
+
 **第一次运行 check_env 前** 修改 configs/design.json。准备完成后 work 中的输入被固定，禁止修改来冒充续跑。更换参数请新建上传目录。1648+2×150=1948 μm 只是请求值；实际尺寸按工具网格对齐后的数据库和最终输出核对。
 
 ## 5．独立阶段一：环境检查

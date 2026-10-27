@@ -78,8 +78,10 @@ proc eda_hold_margin_bad {directory} {
     return 0
 }
 if {[catch {
+    source [file join $eda_work flow tcl rc_temperatures.tcl]
     if {$eda_last == 0} {
         source [file join $eda_work pnr scripts init_pnr.tcl]
+        eda_check_rc_temperatures
     } else {
         source [file join $eda_work config user_define.tcl]
         source [file join $eda_work config global_define.tcl]
@@ -90,6 +92,7 @@ if {[catch {
         # .enc.dat. Source its loader; restoreDesign expects the data directory.
         source $checkpoint
         source [file join $eda_work pnr scripts init_pnr_standard.tcl]
+        eda_check_rc_temperatures
         if {$eda_last >= 30} {
             setExtractRCMode -engine postRoute -effortLevel low -tQuantusForPostRoute false
             extractRC
@@ -171,11 +174,11 @@ if {[catch {
                     if {[eda_fix_fanout $current_dir] > 0} {set current_dir ../my_soc_top/reports/postRoute_fanout_check}
                     set bad [eda_timing_bad $current_dir]
                     if {$bad == 0 && ![eda_hold_margin_bad $current_dir]} {break}
-                    if {[eda_timing_bad $current_dir Setup] > 0} {
-                        eda_eval 32_setup_opt {optDesign -postRoute -expandedViews -outDir ../my_soc_top/reports/postRoute_setupAuto}
-                    }
-                    eda_eval 32_hold_mode [list setOptMode -maxDensity $eda_hold_opt_max_density -fixHoldAllowSetupTnsDegrade false -holdTargetSlack $eda_hold_target]
-                    eda_eval 32_hold_opt {optDesign -postRoute -hold -expandedViews -outDir ../my_soc_top/reports/postRoute_holdAuto}
+                    # Joint native optimization coordinates short Hold paths
+                    # with Setup. Positive Setup target is repair reserve;
+                    # final independent Setup>=0/Hold>=0.10 gates stay fixed.
+                    eda_eval 32_hold_mode [list setOptMode -maxDensity $eda_hold_opt_max_density -fixHoldAllowSetupTnsDegrade false -holdTargetSlack $eda_hold_target -setupTargetSlack $eda_setup_target]
+                    eda_eval 32_joint_opt {optDesign -postRoute -setup -hold -expandedViews -outDir ../my_soc_top/reports/postRoute_jointAuto}
                     eda_run 32_check.tcl
                 }
                 # Independent final checks even if no optimization was needed.

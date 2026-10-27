@@ -25,7 +25,7 @@ def clear_step_outputs(work, step):
     candidates.extend(root / name for name in names.get(step, []))
     for prefix in {31: ['postRoute', 'postAntennaFix'], 32: ['postHoldAuto'], 33: ['postFiller']}.get(step, []):
         candidates.extend(root.glob('my_soc_top_' + prefix + '*.rpt'))
-    directories = {26: ['preCTS'], 28: ['postCTS'], 29: ['postCTS_holdFix', 'postCTS_holdFix_check'], 32: ['postRoute', 'postRoute_setupAuto', 'postRoute_holdAuto', 'postRoute_holdAuto_check', 'postRoute_fanout_check'], 33: ['postFiller']}
+    directories = {26: ['preCTS'], 28: ['postCTS'], 29: ['postCTS_holdFix', 'postCTS_holdFix_check'], 32: ['postRoute', 'postRoute_setupAuto', 'postRoute_holdAuto', 'postRoute_jointAuto', 'postRoute_holdAuto_check', 'postRoute_fanout_check'], 33: ['postFiller']}
     for name in directories.get(step, []):
         candidates.extend((root / 'reports' / name).glob('*.summary*'))
     if step == 34:
@@ -358,6 +358,14 @@ def export_audit(work):
 def audit_step(work, step):
     pnr = work / 'pnr/my_soc_top'
     checks = {}
+    temperatures = json.loads((work / 'evidence/rc_temperatures.json').read_text())
+    cfg = json.loads((work / 'config/design.json').read_text())
+    expected_temperatures = {'tt_1p80v_25c':25}
+    if cfg['analysis_profile'].startswith('matched_'):
+        expected_temperatures.update({'ss_pvt':125,'ff0_pvt':0,'ffm40_pvt':-40})
+    if temperatures != expected_temperatures:
+        raise ValueError('Actual restored RC corner temperatures mismatch')
+    checks['actual_rc_temperatures_C'] = dict(temperatures)
     if step == 1:
         if not (work / 'evidence/current_macro.txt').read_text().strip():
             raise ValueError('Native SRAM not resolved')
@@ -390,10 +398,11 @@ def audit_step(work, step):
             raise ValueError('Missing refreshed physical slew pin classes')
         scope = json.loads(scope_reports[-1].read_text())
         if (scope.get('all_leaf_pins', 0) != scope.get('data_pins', 0) + scope.get('clock_pins', 0) + 6
-                or scope.get('data_pins', 0) < 100000 or scope.get('clock_pins', 0) < 1
+                or scope.get('data_pins', 0) < 100000 or scope.get('clock_pins', 0) < (1 if step>=28 else 0)
                 or scope.get('external_pad_pins') != 6 or scope.get('external_ports') != 6
                 or [scope.get(k) for k in ['data_limit_ns','clock_limit_ns','pad_limit_ns']] != [0.3,0.5,0.6]
-                or scope.get('library_override') is not False):
+                or scope.get('library_override') is not False
+                or scope.get('conservative_pre_cts_clock_scope') != (scope.get('clock_pins')==0)):
             raise ValueError('Invalid physical slew coverage/limits')
         checks['physical_slew_classes'] = dict(scope, report=str(scope_reports[-1]))
         cfg=json.loads((work/'config/design.json').read_text())

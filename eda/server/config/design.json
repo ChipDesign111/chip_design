@@ -19,6 +19,7 @@
   ],
   "max_repair_iterations": 5,
   "hold_target_ns": 0.12,
+  "postroute_setup_target_ns": 0.20,
   "min_hold_slack_ns": 0.10,
   "cpu_clock_gate": "repository_passthrough",
   "analysis_profile": "matched_TT_SS_FF0_FFm40_SI_off_native_low_RC",

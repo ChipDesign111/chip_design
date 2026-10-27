@@ -20,9 +20,16 @@ proc eda_apply_slew_scope {} {
         foreach name [dbGet -e $net.instTerms.name] {lappend clock_names $name}
     }
     set clock_names [lsort -unique $clock_names]
-    set clock_pins [get_pins $clock_names]
-    if {[lsort -unique [get_object_name $clock_pins]] ne $clock_names} {
-        error "Clock pin lookup was not literal and complete"
+    if {[llength $clock_names]>0} {
+        set clock_pins [get_pins $clock_names]
+        if {[lsort -unique [get_object_name $clock_pins]] ne $clock_names} {
+            error "Clock pin lookup was not literal and complete"
+        }
+    } else {
+        # Before the first placement/timing graph, Innovus has not marked
+        # clock nets yet. Keep EVERY internal pin at the stricter 0.3ns.
+        # Never issue get_pins with an empty pattern (native tool error).
+        set clock_pins [remove_from_collection $all_pins $all_pins]
     }
     set clock_pins [remove_from_collection $clock_pins $pad_pins]
     set internal_pins [remove_from_collection $all_pins $pad_pins]
@@ -30,7 +37,7 @@ proc eda_apply_slew_scope {} {
     set nall [sizeof_collection $all_pins]
     set nd [sizeof_collection $data_pins]
     set nc [sizeof_collection $clock_pins]
-    if {$nc<1 || $nd<100000 || $nall!=$nd+$nc+6} {error "Incomplete or overlapping slew pin classes"}
+    if {($nc<1 && $step>=28) || $nd<100000 || $nall!=$nd+$nc+6} {error "Incomplete or overlapping slew pin classes"}
     set_interactive_constraint_modes [all_constraint_modes -active]
     # A tighter design-wide constraint would also constrain the external PAD.
     # All internal pins receive their stricter class explicitly below. Do not
@@ -40,12 +47,12 @@ proc eda_apply_slew_scope {} {
     set_max_transition $rm_max_pad_transition $ports
     set_max_transition $rm_max_pad_transition $pad_pins
     set_max_transition $rm_max_transition $data_pins
-    set_max_transition $rm_max_clock_transition $clock_pins
+    if {$nc>0} {set_max_transition $rm_max_clock_transition $clock_pins}
     set_interactive_constraint_modes {}
     set folder [file join $eda_work evidence slew_scope]
     file mkdir $folder
     set fd [open [file join $folder [format %02d_%03d.json $step $eda_slew_scope_index]] w]
-    puts $fd [format {{"all_leaf_pins":%d,"data_pins":%d,"clock_pins":%d,"external_pad_pins":6,"external_ports":6,"data_limit_ns":%.3f,"clock_limit_ns":%.3f,"pad_limit_ns":%.3f,"library_override":false}} $nall $nd $nc $rm_max_transition $rm_max_clock_transition $rm_max_pad_transition]
+    puts $fd [format {{"all_leaf_pins":%d,"data_pins":%d,"clock_pins":%d,"external_pad_pins":6,"external_ports":6,"data_limit_ns":%.3f,"clock_limit_ns":%.3f,"pad_limit_ns":%.3f,"library_override":false,"conservative_pre_cts_clock_scope":%s}} $nall $nd $nc $rm_max_transition $rm_max_clock_transition $rm_max_pad_transition [expr {$nc==0 ? "true" : "false"}]]
     close $fd
     puts "EDA_SLEW_SCOPE step=$step all=$nall data=$nd clock=$nc pad=6 ports=6 no_library_override"
 }

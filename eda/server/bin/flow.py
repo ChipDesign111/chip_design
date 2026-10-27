@@ -68,6 +68,10 @@ def read_config(path):
     if c['cpu_clock_gate'] != 'repository_passthrough':
         raise ValueError('Changing CPU clock gating requires a separate validated profile')
     c.setdefault('min_hold_slack_ns',0.0)
+    c.setdefault('postroute_setup_target_ns',0.20)
+    target = c['postroute_setup_target_ns']
+    if not isinstance(target,(int,float)) or not math.isfinite(target) or not 0 <= target <= 0.5:
+        raise ValueError('Post-route Setup optimization target must be finite in 0..0.5 ns')
     if c['analysis_profile'] not in ['single_TT_SI_off_native_low_RC','matched_TT_SS_FF0_FFm40_SI_off_native_low_RC']:
         raise ValueError('Unknown library PVT profile')
     if not isinstance(c['max_repair_iterations'], int) or not 1 <= c['max_repair_iterations'] <= 10 or not 0 <= c['min_hold_slack_ns'] <= c['hold_target_ns'] <= 0.2:
@@ -138,7 +142,7 @@ def prepare(args):
         shutil.copytree(str(work / 'flow' / name), str(work / name))
     (work / 'config/design.json').write_text(json.dumps(config, indent=2) + '\n', encoding='utf-8')
     shutil.copyfile(str(SERVER / 'config/io_plan.json'), str(work / 'config/io_plan.json'))
-    (work / 'flow/config/repair.tcl').write_text('set eda_repair_iterations %d\nset eda_hold_target %g\nset eda_min_hold_slack %g\n' % (config['max_repair_iterations'], config['hold_target_ns'], config['min_hold_slack_ns']), encoding='utf-8')
+    (work / 'flow/config/repair.tcl').write_text('set eda_repair_iterations %d\nset eda_hold_target %g\nset eda_min_hold_slack %g\nset eda_setup_target %g\n' % (config['max_repair_iterations'], config['hold_target_ns'], config['min_hold_slack_ns'], config['postroute_setup_target_ns']), encoding='utf-8')
     user = work / 'config/user_define.tcl'
     text = user.read_text(encoding='utf-8')
     for key, value in [('PROJECT_ROOT', tcl(work)), ('PDK_ROOT', tcl(pdk)), ('rm_clock_period', config['system_period_ns']), ('eda_opt_max_density', config['optimizer_max_density']), ('eda_hold_opt_max_density', config['hold_optimizer_max_density']), ('syn_cpus', config['cpus']), ('pnr_cpus', config['cpus'])]:

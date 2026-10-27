@@ -28,6 +28,10 @@ optimizer_max_density=0.83限制普通Setup/DRV优化，hold_optimizer_max_densi
 
 deploy/server/config/io_plan.json明确六个信号PAD的单元、方位和位置；五个输入使用PDDW0204CDG，TDO使用同尺寸、驱动更强的PDDW1216CDG。generate.py生成07步并核对类型，25步连接控制脚常量。slew_scope.tcl按当前物理数据库给内部数据0.3ns、内部时钟0.5ns、外部PAD0.6ns，优化后、报告前刷新全部引脚，计数保存在work/evidence/slew_scope。库中更严格的限制保留，最终实际和总电气违规均须为零。全局0.3ns会同时压住外部端口，单独补写端口0.6ns不能解决；不要自行省掉分类或最终审核。新脚本的实际完成状态以本上传版本结果为准。
 
+32步在后期85%预算下联合修复Setup/Hold，postroute_setup_target_ns=0.20要求优化器额外争取200ps Setup余量，Hold目标仍0.12ns。这是修复目标，最终独立验收仍为Setup非负、Hold至少0.10ns，时钟20ns不变。首个时序图建立前若无时钟网络标记，未知内部引脚暂按更严0.3ns处理；时钟树后必须识别真实时钟引脚，缺失则停止。
+
+rc_temperatures.tcl在创建及每次恢复数据库后，用Innovus原生get_rc_corner -T读回RC角25/125/0/−40°C，保存evidence/rc_temperatures.json；不一致便停止。Genus使用-temperature，Innovus使用-T，不能混用。旧版本曾只有库温度匹配、RC实际均25°C，是否包含此修正应看本版本源码和实际读回记录。
+
 **第一次运行 check_env 前** 修改 configs/design.json。准备完成后 work 中的输入被固定，禁止修改来冒充续跑。更换参数请新建上传目录。1648+2×150=1948 μm 只是请求值；实际尺寸按工具网格对齐后的数据库和最终输出核对。
 
 ## 2．独立阶段一：环境检查

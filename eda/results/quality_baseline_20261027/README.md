@@ -11,7 +11,7 @@ main已合并并推送d40b217。下面是对该版实际物理数据库的补充
 | FF，核心1.98V、IO3.6V、0°C | +5.190ns | −0.058ns |
 | FF，核心1.98V、IO3.6V、−40°C | +5.408ns | −0.066ns |
 
-[结果](pvt/results.json)、[库和源SHA](pvt/input_manifest.json)、[原始路径](pvt/ss_setup.log)、[全包](pvt/review.tar.gz)保留测量证据。标准单元、IO和SRAM额定电压/温度已匹配核对。RC使用供应的同一typical技术表随温度分析，尚非独立RC最小/最大角或SI签核。
+[结果](pvt/results.json)、[库和源SHA](pvt/input_manifest.json)、[原始路径](pvt/ss_setup.log)、[全包](pvt/review.tar.gz)保留测量证据。标准单元、IO和SRAM额定电压/温度已匹配核对。后续审核发现原Innovus脚本用了Genus的-temperature选项，旧物理数据库的RC角实际均为25°C；原始manifest中“at each temperature”是请求范围，不能作为生效证明。以上旧测量仅代表匹配的多库角、同一typical RC/25°C，不代表RC温度分析或独立RC最小/最大角/SI签核。新版改用Innovus原生-T并读回核验，必须重新实现后测量。
 
 聚合Setup TNS−46971.7ns、7155条违规路径；Hold TNS−3.458ns、165条违规路径。每库角单独列最差5条路径，未单独报告的每角TNS和违规条数在JSON中为null。聚合摘要与各库角最差WNS一致，原始输入SHA在分析后复核不变。
 

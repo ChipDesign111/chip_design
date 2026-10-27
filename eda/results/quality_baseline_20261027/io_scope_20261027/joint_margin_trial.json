@@ -1,0 +1,139 @@
+{
+  "diagnostic_only_no_accepted_result": true,
+  "ECO_saved": false,
+  "optimizer_max_density": 0.85,
+  "code": 0,
+  "original_input_sha": {
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/work/evidence/input_manifest.json": "2245dbd79e04f7790addbedd6231e79cff26d1fa415d43e4e7ccc61c49c8a48e",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/work/pnr/my_soc_top/backup/step32.enc": "4a13f3d67f154ecbfa0cde5c6e8b4e538646952481f502c339bdab95b64ed819"
+  },
+  "input_sha_unchanged": true,
+  "timing": {
+    "before": {
+      "Setup": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/joint_scoped_margin200_diag/before/my_soc_top_postRoute.summary.gz",
+        "wns_ns": 0.014,
+        "tns_ns": 0.0,
+        "violating_paths": 0,
+        "drv": {
+          "max_cap": {
+            "real": 0,
+            "total": 0
+          },
+          "max_tran": {
+            "real": 681,
+            "total": 694
+          },
+          "max_fanout": {
+            "real": 0,
+            "total": 0
+          },
+          "max_length": {
+            "real": 0,
+            "total": 0
+          }
+        },
+        "electrical_drv_table_reported_here": true,
+        "minimum_wns_ns": 0.0,
+        "targets_met": false
+      },
+      "Hold": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/joint_scoped_margin200_diag/before/my_soc_top_postRoute_hold.summary.gz",
+        "wns_ns": -0.829,
+        "tns_ns": -13.686,
+        "violating_paths": 138,
+        "drv": {},
+        "electrical_drv_table_reported_here": false,
+        "minimum_wns_ns": 0.1,
+        "targets_met": false
+      }
+    },
+    "scoped": {
+      "Setup": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/joint_scoped_margin200_diag/scoped/my_soc_top_postRoute.summary.gz",
+        "wns_ns": 0.014,
+        "tns_ns": 0.0,
+        "violating_paths": 0,
+        "drv": {
+          "max_cap": {
+            "real": 0,
+            "total": 0
+          },
+          "max_tran": {
+            "real": 681,
+            "total": 682
+          },
+          "max_fanout": {
+            "real": 0,
+            "total": 0
+          },
+          "max_length": {
+            "real": 0,
+            "total": 0
+          }
+        },
+        "electrical_drv_table_reported_here": true,
+        "minimum_wns_ns": 0.0,
+        "targets_met": false
+      },
+      "Hold": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/joint_scoped_margin200_diag/scoped/my_soc_top_postRoute_hold.summary.gz",
+        "wns_ns": -0.829,
+        "tns_ns": -13.686,
+        "violating_paths": 138,
+        "drv": {},
+        "electrical_drv_table_reported_here": false,
+        "minimum_wns_ns": 0.1,
+        "targets_met": false
+      }
+    },
+    "after": {
+      "Setup": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/joint_scoped_margin200_diag/after/my_soc_top_postRoute.summary.gz",
+        "wns_ns": -0.101,
+        "tns_ns": -0.19,
+        "violating_paths": 3,
+        "drv": {
+          "max_cap": {
+            "real": 0,
+            "total": 0
+          },
+          "max_tran": {
+            "real": 546,
+            "total": 547
+          },
+          "max_fanout": {
+            "real": 0,
+            "total": 0
+          },
+          "max_length": {
+            "real": 0,
+            "total": 0
+          }
+        },
+        "electrical_drv_table_reported_here": true,
+        "minimum_wns_ns": 0.0,
+        "targets_met": false
+      },
+      "Hold": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_040030_bcc483e/analysis/joint_scoped_margin200_diag/after/my_soc_top_postRoute_hold.summary.gz",
+        "wns_ns": 0.117,
+        "tns_ns": 0.0,
+        "violating_paths": 0,
+        "drv": {},
+        "electrical_drv_table_reported_here": false,
+        "minimum_wns_ns": 0.1,
+        "targets_met": true
+      }
+    }
+  },
+  "density_percent": 82.996,
+  "default_DRC_violations": 0,
+  "setup_optimization_target_ns": 0.2,
+  "hold_optimization_target_ns": 0.12,
+  "joint_pass_count": 2,
+  "clock_period_ns": 20,
+  "accepted_new_implementation": false,
+  "constraint_probe_not_adopted": "Clock -data_path .3 rule still reaches external TDO despite its .6 port setting. Production uses static complete internal pin classes, no override; refresh after optimization.",
+  "production_next_run": "Fresh synthesis/early83% budget and native TDO/physical classes, late joint85% repair. No diagnostic DB save/reuse."
+}

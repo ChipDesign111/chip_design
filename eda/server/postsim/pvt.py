@@ -35,7 +35,8 @@ def main():
             assert float(re.search(r'\bnom_temperature\s*:\s*([-\d.]+)',s).group(1))==temp,p
             records[str(p)]=sha(p)
         parts.append('create_library_set -name qa_lib_'+name+' -timing [list '+' '.join(q(p) for p in libs)+']')
-        parts.append('create_rc_corner -name qa_rc_'+name+' -temperature '+str(temp)+' -cap_table '+q(pdk/'tcb018gbwp7t_290a/TSMCHOME/digital/Back_End/lef/tcb018gbwp7t_270a/techfiles/captable/t018lo_1p6m_typical.captable'))
+        parts.append('create_rc_corner -name qa_rc_'+name+' -T '+str(temp)+' -cap_table '+q(pdk/'tcb018gbwp7t_290a/TSMCHOME/digital/Back_End/lef/tcb018gbwp7t_270a/techfiles/captable/t018lo_1p6m_typical.captable'))
+        parts.append('set qa_actual_T [get_rc_corner qa_rc_'+name+' -T]\nif {![string is double -strict $qa_actual_T] || abs($qa_actual_T-('+str(temp)+'))>0.000001} {error {Actual RC temperature mismatch: '+name+'}}\nputs "QA_RC_TEMPERATURE '+name+' $qa_actual_T"')
         parts.append('create_delay_corner -name qa_delay_'+name+' -library_set qa_lib_'+name+' -rc_corner qa_rc_'+name+' -si_enabled false')
         parts.append('create_analysis_view -name qa_'+name+' -constraint_mode func -delay_corner qa_delay_'+name)
     for p in [work/'evidence/input_manifest.json',work/'evidence/step_34.json',work/'pnr/my_soc_top/backup/step34.enc']:
