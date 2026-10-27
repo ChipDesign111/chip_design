@@ -1,0 +1,50 @@
+{
+  "observation_UTC": "2026-10-27T10:28:42.235533+00:00",
+  "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_182523_4ea3f0c",
+  "source_commit": "4ea3f0c9a1864bec2d39cab1bd3e2e0fae7603f9",
+  "archive_sha256": "7bfc14d9d08e7805d14286040297d18fbdccf8c0415795df8fcf50e19829e73e",
+  "phase": "Fresh Genus synthesis; ordinary DFF plus data mux register mapping",
+  "source_working_tree_dirty": false,
+  "source_manifest_verified": true,
+  "environment_exit_code": 0,
+  "processes": [
+    {
+      "pid": 2266936,
+      "command": "/opt/eda/Cadence/GENUS191/tools.lnx86/synth/bin/64bit/genus -abort_on_error -f /home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_182523_4ea3f0c/work/syn/scripts/eda_synthesis.tcl -log eda_synthesis -overwrite ",
+      "cpu_seconds": 69.6,
+      "state": "R"
+    }
+  ],
+  "last_audited_step": 0,
+  "new_accepted_result": false,
+  "new_failure_observed": false,
+  "functional_enable_mapping": "mux_dff",
+  "insert_automatic_clock_gating": false,
+  "Genus_mapping_applied": {
+    "mapping": "mux_dff",
+    "avoided_library_cells": 99,
+    "timing_exceptions_added": false
+  },
+  "system_period_ns": 20,
+  "whole_die_limit_mm2": 3.8,
+  "planned_utilization": 0.85,
+  "optimizer_max_density": 0.85,
+  "functional_RTL_all_91_files_equal_to_main": true,
+  "previous_cbf_static_EDA_accepted": true,
+  "previous_cbf_die_area_mm2": 3.7956390976,
+  "previous_cbf_setup_hold_ns": [
+    0.002,
+    0.0
+  ],
+  "previous_cbf_actual_density_percent": 72.005,
+  "previous_cbf_TT_postsim_accepted": false,
+  "previous_cbf_TT_functional_cases": 17,
+  "previous_cbf_final_reset_timing_messages": 30,
+  "previous_cbf_reset_offsets_ps": [
+    1650,
+    2000
+  ],
+  "previous_cbf_timing_objects": "26 E and4 SE checks, all i_mainmem payload registers; no SRAM macro violations",
+  "previous_cbf_TT_local_results": "lab4/native_cbf40f2_postsim_tt_20261027",
+  "main_unchanged": "d40b217"
+}
