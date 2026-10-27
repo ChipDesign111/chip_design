@@ -54,7 +54,8 @@ module tb_tiled_dma;
             end
             if(bvalid && bready) response<=0;
             if(dma_write && dut.ready[sink_addr[6]]) $fatal(1,"Overwrote a published tile");
-            if(dut.consumed && dut.core.product_sample!=dut.core.two) $fatal(1,"Tile released before all samples");
+            if(dut.consumed && dut.core.product_sample!=dut.core.batch_q-1'b1)
+                $fatal(1,"Tile released before all samples");
         end
     end
     task put(input integer byte_addr,input reg [31:0] value);
@@ -72,10 +73,15 @@ module tb_tiled_dma;
         end
     endtask
     task configure;
+        integer n,input_addr,output_addr,golden_addr,class_addr,batch;
         begin
+            batch=mem['h1f08/4];
             put('h20,mem['h1f0c/4]);put('h24,'h80001800);
-            put('h10,mem['h1f00/4]);put('h14,mem['h1f04/4]);put('h18,mem['h1f08/4]);
-            for(j=0;j<16;j=j+1) begin put('h40+j*4,mem['h1a00/4+j]);put('hc00+j*4,mem['h1a40/4+j]);end
+            put('h10,mem['h1f00/4]);put('h14,mem['h1f04/4]);put('h18,batch);
+            for(n=0;n<batch;n=n+1) begin
+                input_addr=n==0 ? 'h40 : n==1 ? 'hc00 : 'h1000+(n-2)*'h40;
+                for(j=0;j<16;j=j+1) put(input_addr+j*4,mem['h1a00/4+n*16+j]);
+            end
             for(j=0;j<32;j=j+1) put('h9c0+j*4,mem['h1900/4+j]);
             for(j=0;j<6;j=j+1) put('ha40+j*4,mem['h1980/4+j]);
         end
@@ -89,7 +95,7 @@ module tb_tiled_dma;
         end
     endtask
     string directory,filename;
-    integer count,which,j;
+    integer count,which,j,n,batch,input_addr,output_addr,golden_addr,class_addr;
     initial begin
         if(!$value$plusargs("DIR=%s",directory)) $fatal(1,"DIR required");
         if(!$value$plusargs("COUNT=%d",count)) count=24;
@@ -99,17 +105,19 @@ module tb_tiled_dma;
         for(which=0;which<count;which=which+1) begin
             filename=$sformatf("%s/case_%0d.hex",directory,which);$readmemh(filename,mem);
             configure();put(0,1);await_done();check(4,1);check('h30,64);
-            if(mem['h1f08/4]==2 && (dut.read_overlap==0 || dut.write_overlap==0))
+            batch=mem['h1f08/4];
+            if(batch>1 && (dut.read_overlap==0 || dut.write_overlap==0))
                 $fatal(1,"No real DMA read/write and MAC overlap");
-            for(j=0;j<8;j=j+1) check('ha80+j*4,mem['h1b00/4+j]);
-            for(j=0;j<6;j=j+1) check('hb00+j*4,mem['h1b20/4+j]);
-            check(8,mem['h1b38/4]);
-            if(mem['h1f08/4]==2) begin
-                for(j=0;j<8;j=j+1) check('hc40+j*4,mem['h1b40/4+j]);
-                for(j=0;j<6;j=j+1) check('hc80+j*4,mem['h1b60/4+j]);
-                check('hc98,mem['h1b78/4]);
+            for(n=0;n<batch;n=n+1) begin
+                output_addr=n==0 ? 'ha80 : n==1 ? 'hc40 : 'h1200+(n-2)*'h40;
+                golden_addr='h1c00+n*'h40;
+                input_addr=n==0 ? 'hb00 : n==1 ? 'hc80 : output_addr+'h20;
+                class_addr=n==0 ? 8 : n==1 ? 'hc98 : output_addr+'h38;
+                for(j=0;j<8;j=j+1) check(output_addr+j*4,mem[golden_addr/4+j]);
+                for(j=0;j<6;j=j+1) check(input_addr+j*4,mem[golden_addr/4+8+j]);
+                check(class_addr,mem[golden_addr/4+14]);
             end
-            check('h28,mem['h1f08/4]*32);check('h2c,mem['h1f08/4]*32);
+            check('h28,batch*32);check('h2c,batch*32);
             $display("CASE %0d PASS cycles=%0d read_overlap=%0d write_overlap=%0d",which,dut.cycles,dut.read_overlap,dut.write_overlap);
             put(0,2);
         end
@@ -125,7 +133,7 @@ module tb_tiled_dma;
         // Busy configuration and CPU tile writes are rejected, preserving results.
         $display("ERROR_TEST busy write");configure();put(0,1);repeat(12) @(negedge clk);put('h10,32'h12345678);put('h100,32'hffffffff);
         await_done();check(4,5);check('h10,mem['h1f00/4]);
-        for(j=0;j<6;j=j+1) check('hb00+j*4,mem['h1b20/4+j]);put(0,2);
+        for(j=0;j<6;j=j+1) check('hb00+j*4,mem['h1c20/4+j]);put(0,2);
         // Reset during an outstanding transfer discards all publication state.
         put(0,2);put(0,1);repeat(12) @(negedge clk);rst_n=0;repeat(3) @(negedge clk);rst_n=1;
         if(dut.ready!==0 || npu_busy!==0) $fatal(1,"Reset retained DMA/compute work");

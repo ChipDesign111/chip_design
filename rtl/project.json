@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "INT8_64MAC_6MAC_SRAM_TILE_DMA",
+  "status": "INT8_64MAC_6MAC_SRAM_TILE_DMA_BATCH8",
   "organization": "ChipDesign111",
   "repository": "chip_design",
   "network": {
@@ -25,7 +25,7 @@
     "requant_multipliers": 1,
     "weight_tile_buffers": 2,
     "weight_tile_bytes": 64,
-    "batch_max": 2,
+    "batch_max": 8,
     "fc1_mac_issue_cycles_per_sample": 32,
     "fc2_mac_issue_cycles_per_sample": 32,
     "weight_layout": "FC1[tile32][output32][lane2]; FC2[input32][output6+padding2]",
@@ -73,6 +73,11 @@
         "size_bytes": 64
       },
       {
+        "name": "input2_7",
+        "offset": 4096,
+        "size_bytes": 384
+      },
+      {
         "name": "hidden1",
         "offset": 3136,
         "size_bytes": 32
@@ -86,6 +91,11 @@
         "name": "class1",
         "offset": 3224,
         "size_bytes": 4
+      },
+      {
+        "name": "output2_7",
+        "offset": 4608,
+        "size_bytes": 384
       },
       {
         "name": "dma_registers",

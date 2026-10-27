@@ -11,28 +11,30 @@ def make_case(seed):
     r=random.Random(17000+seed)
     w1=[[r.randint(-128,127) for _ in range(64)] for _ in range(32)]
     w2=[[r.randint(-128,127) for _ in range(32)] for _ in range(6)]
-    xs=[[r.randint(-128,127) for _ in range(64)] for _ in range(2)]
     b1=[r.randint(-100000,100000) for _ in range(32)]
     b2=[r.randint(-100000,100000) for _ in range(6)]
-    mult=[1,65535,123,7][seed%4];shift=[0,31,14,7][seed%4];batch=1+seed%2
+    mult=[1,65535,123,7][seed%4];shift=[0,31,14,7][seed%4]
+    batch=8 if seed%6==0 else 1+seed%2
+    xs=[[r.randint(-128,127) for _ in range(64)] for _ in range(batch)]
     if seed%8==6:mult=0
     if seed%5==0:b1[0]=2**31-1;b2[0]=-2**31
     if seed>=10000:
         w1,w2=weights();q=parameters();b1=q['fc1']['bias_int32'];b2=q['fc2']['bias_int32']
-        fixture=json.loads((HERE/'har_uci24.json').read_text());i=(seed-10000)*2
-        xs=fixture['x_int8'][i:i+2];mult=q['hidden_requant']['mul'];shift=q['hidden_requant']['shift'];batch=2
+        fixture=json.loads((HERE/'har_uci24.json').read_text());i=(seed-10000)*8
+        xs=fixture['x_int8'][i:i+8];mult=q['hidden_requant']['mul'];shift=q['hidden_requant']['shift'];batch=8
     mem=[0]*2048
     def store(offset,values):mem[offset//4:offset//4+len(values)]=[x&0xffffffff for x in values]
     # Tile-major order: input pair, output neuron, lane.
     w1_address=0xffc if seed<10000 and seed%4==0 else 0x1000
     store(w1_address,pack([w1[o][2*t+k] for t in range(32) for o in range(32) for k in range(2)]))
     store(0x1800,pack([w2[o][t] if o<6 else 0 for t in range(32) for o in range(8)]))
-    store(0x1900,b1);store(0x1980,b2);store(0x1a00,pack(xs[0]));store(0x1a40,pack(xs[1]))
+    store(0x1900,b1);store(0x1980,b2)
+    for n,x in enumerate(xs):store(0x1a00+n*64,pack(x))
     for n,x in enumerate(xs):
         acc=[i32(b1[o]+sum(a*b for a,b in zip(x,w1[o]))) for o in range(32)]
         h=[min(127,(max(0,a)*mult+((1<<(shift-1)) if shift else 0))>>shift) for a in acc]
         y=[i32(b2[o]+sum(a*b for a,b in zip(h,w2[o]))) for o in range(6)]
-        store(0x1b00+n*64,pack(h)+y+[max(range(6),key=lambda o:y[o])])
+        store(0x1c00+n*64,pack(h)+y+[max(range(6),key=lambda o:y[o])])
     store(0x1f00,[mult,shift,batch,0x80000000+w1_address])
     return mem
 def execute(command,run,name,marker=None):
@@ -47,7 +49,7 @@ def main():
     run=HERE/'runs'/datetime.datetime.now().strftime('%Y%m%d_%H%M%S');run.mkdir(parents=True)
     source_sha={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for folder in ['rtl','test/int8'] for p in (ROOT/folder).rglob('*') if p.is_file() and 'runs' not in p.parts and '__pycache__' not in p.parts}
     (run/'source_manifest.json').write_text(json.dumps(source_sha,indent=2)+'\n')
-    seeds=list(range(args.count))+(list(range(10000,10012)) if args.trained else [])
+    seeds=list(range(args.count))+(list(range(10000,10003)) if args.trained else [])
     for index,seed in enumerate(seeds):(run/('case_%d.hex'%index)).write_text(''.join('%08x\n'%v for v in make_case(seed)))
     sources=['rtl/npu/har_weight_store.sv','rtl/npu/har_npu_core.sv','rtl/npu/simple_npu_top.sv','rtl/dma/har_dma.sv','test/int8/tb_tiled_dma.sv']
     execute(['iverilog','-g2012','-s','tb_tiled_dma','-o','test.vvp']+[ROOT/x for x in sources],run,'compile_unit')
