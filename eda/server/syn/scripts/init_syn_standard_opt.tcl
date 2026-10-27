@@ -159,6 +159,10 @@ elaborate $log_syn(design)
 
 # initialize the database for execution
 init_design -top $log_syn(design)
+# init_design materializes the active MMMC library-cell objects. The earlier
+# call configures the root/pre-init models; apply again so SS/FF objects do
+# not retain their default avoid=false. Verified with actual mapped DFFs.
+eda_apply_register_mapping_genus
 
 # report message for RTL elaborate
 report_messages > $log_syn(reports_path)/runtime/elaborate_message.rpt

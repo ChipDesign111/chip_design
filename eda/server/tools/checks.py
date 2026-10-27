@@ -244,6 +244,14 @@ def mapped_netlist_check(work):
     config=json.loads((work/'config/design.json').read_text())
     automatic_gates=[path for path in leaves if 'RC_CG_HIER_INST' in path]
     controlled_ffs=[path for path,master in leaves.items() if re.match(r'^(EDF|SDF|SEDF|GSDF|DFK|DFX)',master)]
+    if config.get('functional_enable_mapping')=='mux_dff' and controlled_ffs:
+        # Verify the selected implementation really happened. This is not a
+        # new timing margin or a restriction on the native zero-slack profile.
+        save(work/'evidence/register_mapping_mismatch.json',{
+            'requested_mapping':'mux_dff','remaining_controlled_flops':len(controlled_ffs),
+            'examples':controlled_ffs[:20],
+            'reason':'The selected library mapping did not take effect; do not continue physical implementation.'})
+        raise ValueError('mux_dff mapping not applied: %d controlled flip-flops remain'%len(controlled_ffs))
     return {'native_main_srams': 1, 'mapped_leaf_instances': len(leaves), 'all_leaf_types_have_library_models': True, 'npu_dma_area_hierarchy_present': True, 'latch_area_um2': 0,
             'automatic_clock_gating_requested':config.get('insert_automatic_clock_gating',True),
             'mapped_automatic_clock_gate_instances':len(automatic_gates),
