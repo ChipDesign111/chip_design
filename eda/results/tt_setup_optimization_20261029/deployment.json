@@ -1,0 +1,44 @@
+{
+  "observed_UTC": "2026-10-28T22:00:28.194874+00:00",
+  "physical_source_commit": "a3c2141163546c0193438fd7a0a5477c93f24610",
+  "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_055853_a3c2141",
+  "archive_sha256": "7d4400dabfb7b166d7bbdaf1e657a567ff59e2e44c41d41f6adbc2eeb1ca336a",
+  "source_manifest_sha256": "61b5b69bd1026deceebef92df66c2d1ed2af0780c69d4af0ea1d1befcf509e98",
+  "source_clean": true,
+  "environment_exit_code": 0,
+  "phase": "New Genus high-effort full-SoC synthesis running; actual full mapped cells, area and final timing pending",
+  "native_preflight": {
+    "negative_TT_combinational_master_count": 114,
+    "Genus_active_library_objects_avoided": 456,
+    "tiny_mapped_excluded_instances": 0,
+    "Innovus_physical_master_count": 114,
+    "setup_goal_requested_ns": 0.3,
+    "setup_goal_native_readback_ns": 0.2999,
+    "baseline_arc_waveform_reports": 16
+  },
+  "parameters": {
+    "combinational_cell_mapping": "tt_nonnegative_tables",
+    "implementation_effort": "high",
+    "setup_optimization_goal_ns": 0.3,
+    "normal_minimum_setup_hold_ns": 0,
+    "period_ns": 20,
+    "max_whole_die_mm2": 3.8
+  },
+  "functional_RTL_equal_to_main": true,
+  "ASIC_RTL_tree": "b41b96c3b8bb9d570dc288019764d71c6ab9c44c",
+  "local_main_reference": "d40b2172e0d7461f9efea5a28208da10a9b5db59",
+  "remote_main_observed": "99aa8631fa018bf1ca68ba4d598597a58becf44c",
+  "remote_main_changes_scope": "FPGA-only changes, identical ASIC RTL tree; not merged or modified by this optimization",
+  "new_result_accepted": false,
+  "same_source_new_SDF_not_yet_run": true,
+  "local_continuation": {
+    "pid": 73396,
+    "script": "archives/tt_setup_optimization_20261029/continue_optimization.py",
+    "record": "archives/tt_setup_optimization_20261029/continuation_a3c2141.json",
+    "active": true,
+    "tag": "a3c2141",
+    "stdout": "archives/tt_setup_optimization_20261029/continuation_a3c2141_stdout.log",
+    "stderr": "archives/tt_setup_optimization_20261029/continuation_a3c2141_stderr.log",
+    "scope": "Wait/fetch new physical; serial new TT/min/max and same-DB SRAM timing. Stop on real failure; after normal TT if clamps remain or SS not improved, stop fast/slow for next measured optimization. Do not duplicate while alive."
+  }
+}
