@@ -3,6 +3,7 @@ set script_dir [file normalize [file dirname [info script]]]
 set project_file [file join $script_dir final_project final_project.xpr]
 set top_file [file join $script_dir fpga_top.sv]
 set constraint_file [file join $script_dir fpga_top.xdc]
+set init_file [file join $script_dir firmware int8_selftest.hex]
 set fp_wrapper_file [file normalize [file join $script_dir .. rtl cpu_cv32e40p rtl cv32e40p_fp_wrapper.sv]]
 
 open_project $project_file
@@ -29,10 +30,12 @@ set_property top_file $top_file [get_filesets sources_1]
 set_property top_auto_set FALSE [get_filesets sources_1]
 update_compile_order -fileset sources_1
 
-# Use Vivado's balanced default strategy. Switch to a focused Area/Perf
-# strategy only if the utilization or timing reports identify a bottleneck.
-set_property strategy "Vivado Synthesis Defaults" [get_runs synth_1]
+# Synthesis is the LUT bottleneck for the A7-35T; keep implementation at the
+# balanced default and spend synthesis runtime on area recovery.
+set_property strategy Flow_AreaOptimized_high [get_runs synth_1]
 set_property -name {STEPS.SYNTH_DESIGN.ARGS.DIRECTIVE} \
-    -value Default -objects [get_runs synth_1]
+    -value AreaOptimized_high -objects [get_runs synth_1]
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} \
+    -value [list -generic [list SRAM_INIT_FILE=$init_file]] -objects [get_runs synth_1]
 
 close_project

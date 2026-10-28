@@ -28,6 +28,7 @@ Thumbs.db
 /vivado_*.backup.jou
 /vivado.log
 /vivado_*.backup.log
+/.Xil/
 /fpga/final_project/*.cache/
 /fpga/final_project/*.hw/
 /fpga/final_project/*.ip_user_files/
