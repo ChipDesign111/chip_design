@@ -29,7 +29,6 @@ module fpga_top #(
   clk_wiz_0 u_clk_wiz (
       .clk_in1 (fpga_clk_i),
       .clk_out1(clk_sys),
-      .reset   (1'b0),
       .locked  (clk_locked)
   );
 
