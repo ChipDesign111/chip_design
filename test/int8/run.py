@@ -14,14 +14,14 @@ def make_case(seed):
     b1=[r.randint(-100000,100000) for _ in range(32)]
     b2=[r.randint(-100000,100000) for _ in range(6)]
     mult=[1,65535,123,7][seed%4];shift=[0,31,14,7][seed%4]
-    batch=8 if seed%6==0 else 1+seed%2
+    batch=4 if seed%6==0 else 1+seed%2
     xs=[[r.randint(-128,127) for _ in range(64)] for _ in range(batch)]
     if seed%8==6:mult=0
     if seed%5==0:b1[0]=2**31-1;b2[0]=-2**31
     if seed>=10000:
         w1,w2=weights();q=parameters();b1=q['fc1']['bias_int32'];b2=q['fc2']['bias_int32']
-        fixture=json.loads((HERE/'har_uci24.json').read_text());i=(seed-10000)*8
-        xs=fixture['x_int8'][i:i+8];mult=q['hidden_requant']['mul'];shift=q['hidden_requant']['shift'];batch=8
+        fixture=json.loads((HERE/'har_uci24.json').read_text());i=(seed-10000)*4
+        xs=fixture['x_int8'][i:i+4];mult=q['hidden_requant']['mul'];shift=q['hidden_requant']['shift'];batch=4
     mem=[0]*2048
     def store(offset,values):mem[offset//4:offset//4+len(values)]=[x&0xffffffff for x in values]
     # Tile-major order: input pair, output neuron, lane.
@@ -52,7 +52,7 @@ def main():
     source_files.append(ROOT/'model/reference/tile_layout.py')
     source_sha={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in source_files}
     (run/'source_manifest.json').write_text(json.dumps(source_sha,indent=2)+'\n')
-    seeds=list(range(args.count))+(list(range(10000,10003)) if args.trained else [])
+    seeds=list(range(args.count))+(list(range(10000,10006)) if args.trained else [])
     for index,seed in enumerate(seeds):(run/('case_%d.hex'%index)).write_text(''.join('%08x\n'%v for v in make_case(seed)))
     sources=['rtl/npu/har_weight_store.sv','rtl/npu/har_npu_core.sv','rtl/npu/simple_npu_top.sv','rtl/dma/har_dma.sv','test/int8/tb_tiled_dma.sv']
     execute(['iverilog','-g2012','-s','tb_tiled_dma','-o','test.vvp']+[ROOT/x for x in sources],run,'compile_unit')

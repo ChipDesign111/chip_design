@@ -36,7 +36,7 @@ def main():
     run = HERE / "runs" / datetime.datetime.now().strftime("%Y%m%d_%H%M%S") / "perf"
     run.mkdir(parents=True)
     memory = make_case(args.seed)
-    batches = (1, 2, 8)
+    batches = (1, 2, 4)
     for batch in batches:
         case = run / f"batch{batch}"
         case.mkdir()

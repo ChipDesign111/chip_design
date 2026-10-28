@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "INT8_64MAC_6MAC_SRAM_TILE_DMA_BATCH8_ZERO_BUBBLE_W2_PACKED",
+  "status": "INT8_64MAC_6MAC_SRAM_TILE_DMA_BATCH4_ZERO_BUBBLE_W2_PACKED",
   "organization": "ChipDesign111",
   "repository": "chip_design",
   "network": {
@@ -25,7 +25,7 @@
     "requant_multipliers": 1,
     "weight_tile_buffers": 2,
     "weight_tile_bytes": 64,
-    "batch_max": 8,
+    "batch_max": 4,
     "fc1_mac_issue_cycles_per_sample": 32,
     "fc2_mac_issue_cycles_per_sample": 32,
     "weight_layout": "FC1[tile32][output32][lane2]; FC2[packet4][tile8][output6], 48 bytes per packet",
@@ -75,9 +75,9 @@
         "size_bytes": 64
       },
       {
-        "name": "input2_7",
+        "name": "input2_3",
         "offset": 4096,
-        "size_bytes": 384
+        "size_bytes": 128
       },
       {
         "name": "hidden1",
@@ -95,9 +95,9 @@
         "size_bytes": 4
       },
       {
-        "name": "output2_7",
+        "name": "output2_3",
         "offset": 4608,
-        "size_bytes": 384
+        "size_bytes": 128
       },
       {
         "name": "dma_registers",

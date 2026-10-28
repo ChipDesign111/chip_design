@@ -4,7 +4,7 @@ from run import make_case
 def build(run,seed=10000):
     mem=make_case(seed)
     batch=mem[0x1f08//4]
-    if not 1<=batch<=8:raise ValueError('Invalid batch size')
+    if not 1<=batch<=4:raise ValueError('Invalid batch size')
     a=Assembler()
     a.li(20,0x70000000)
     def put(offset,value):a.li(5,value);a.sw(5,20,offset)

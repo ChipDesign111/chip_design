@@ -23,7 +23,7 @@ module har_npu_core (
     output logic [31:0] read_overlap_count,write_overlap_count
 );
     localparam [2:0] IDLE=0,WAIT_TILE=1,ISSUE=2,QUANT=3,FINISH=4;
-    localparam int MAX_BATCH=8;
+    localparam int MAX_BATCH=4;
     logic [2:0] state;
     logic layer;
     logic [3:0] batch_q;
@@ -31,9 +31,9 @@ module har_npu_core (
     wire product_valid,product_first;
     wire [2:0] product_sample;
     logic signed [15:0] p1[0:31][0:1],p2[0:5];
-    logic signed [31:0] a1[0:7][0:31],a2[0:7][0:5];
-    logic [255:0] h[0:7];
-    logic [2:0] class_id_q[0:7];
+    logic signed [31:0] a1[0:MAX_BATCH-1][0:31],a2[0:MAX_BATCH-1][0:5];
+    logic [255:0] h[0:MAX_BATCH-1];
+    logic [2:0] class_id_q[0:MAX_BATCH-1];
     wire issue=state==ISSUE;
     wire last_sample_issue=issue && sample==batch_q[2:0]-1'b1;
     wire [511:0] x=input_features[sample*512+:512];
@@ -48,11 +48,19 @@ module har_npu_core (
 
     genvar gs,go;
     generate
-        for(gs=0;gs<MAX_BATCH;gs=gs+1) begin: output_views
-            assign hidden_all[gs*256+:256]=h[gs];
-            assign class_all[gs*3+:3]=class_id_q[gs];
-            for(go=0;go<6;go=go+1) begin: score_views
-                assign scores_all[gs*192+go*32+:32]=a2[gs][go];
+        for(gs=0;gs<8;gs=gs+1) begin: output_views
+            if(gs<MAX_BATCH) begin: active_output
+                assign hidden_all[gs*256+:256]=h[gs];
+                assign class_all[gs*3+:3]=class_id_q[gs];
+                for(go=0;go<6;go=go+1) begin: score_views
+                    assign scores_all[gs*192+go*32+:32]=a2[gs][go];
+                end
+            end else begin: zero_output
+                assign hidden_all[gs*256+:256]='0;
+                assign class_all[gs*3+:3]='0;
+                for(go=0;go<6;go=go+1) begin: score_views
+                    assign scores_all[gs*192+go*32+:32]='0;
+                end
             end
         end
     endgenerate
@@ -120,7 +128,6 @@ module har_npu_core (
             tile_index_o<=0;
             quant_sample<=0;
             class_id_q[0]<=0;class_id_q[1]<=0;class_id_q[2]<=0;class_id_q[3]<=0;
-            class_id_q[4]<=0;class_id_q[5]<=0;class_id_q[6]<=0;class_id_q[7]<=0;
             cycle_count<=0;
             overlap_count<=0;
             read_overlap_count<=0;
@@ -169,7 +176,6 @@ module har_npu_core (
                     fc1_cycles<=0;
                     fc2_cycles<=0;
                     class_id_q[0]<=0;class_id_q[1]<=0;class_id_q[2]<=0;class_id_q[3]<=0;
-                    class_id_q[4]<=0;class_id_q[5]<=0;class_id_q[6]<=0;class_id_q[7]<=0;
                     for(s=0;s<MAX_BATCH;s=s+1) h[s]<=0;
                 end else if(ack_done) done<=0;
                 WAIT_TILE:if(tile_valid_i) begin
@@ -207,8 +213,6 @@ module har_npu_core (
                 FINISH:begin
                     class_id_q[0]<=class_candidate[0];class_id_q[1]<=class_candidate[1];
                     class_id_q[2]<=class_candidate[2];class_id_q[3]<=class_candidate[3];
-                    class_id_q[4]<=class_candidate[4];class_id_q[5]<=class_candidate[5];
-                    class_id_q[6]<=class_candidate[6];class_id_q[7]<=class_candidate[7];
                     busy<=0;
                     done<=1;
                     state<=IDLE;

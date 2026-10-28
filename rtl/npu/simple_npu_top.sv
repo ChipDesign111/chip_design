@@ -12,7 +12,7 @@ module simple_npu_top (
 );
     localparam int INPUT2_BASE=1024;
     localparam int OUTPUT2_BASE=1152;
-    logic [511:0] x[0:7];
+    logic [511:0] x[0:3];
     logic [1023:0] b1;
     logic [191:0] b2;
     logic [15:0] mult;
@@ -34,9 +34,7 @@ module simple_npu_top (
     logic [15:0] received;
     logic [31:0] loads;
     integer input_rel,input_slot,input_word,out_rel,out_slot,out_word;
-    wire [4095:0] input_packed={
-        x[7],x[6],x[5],x[4],x[3],x[2],x[1],x[0]
-    };
+    wire [4095:0] input_packed={2048'd0,x[3],x[2],x[1],x[0]};
     wire write_req=ena && wea;
     wire cpu_write=write_req && !dma_write_i;
     wire [32:0] end1={1'b0,w1_base}+33'd2048,end2={1'b0,w2_base}+33'd256;
@@ -85,7 +83,7 @@ module simple_npu_top (
         .read_overlap_count(read_overlap),.write_overlap_count(write_overlap));
     always_ff @(posedge clka or negedge rst_ni) begin
         if(!rst_ni) begin
-            for(input_slot=0;input_slot<8;input_slot=input_slot+1) x[input_slot]<=0;
+            for(input_slot=0;input_slot<4;input_slot=input_slot+1) x[input_slot]<=0;
             b1<=0;b2<=0;mult<=1;shift<=0;batch_count<=1;
             w1_base<=0;w2_base<=0;error<=0;douta<=0;ready_w1<=0;ready_w2<=0;
             layer_q<=0;pending<=0;pending_w2<=0;loading_bank<=0;
@@ -123,7 +121,7 @@ module simple_npu_top (
                     0:if(dina[0]) begin if(!valid_bases) error<=1;end else if(dina[1]) error<=0;
                     4:if(dina[31:16]==0) mult<=dina[15:0];else error<=1;
                     5:if(dina<=31) shift<=dina[4:0];else error<=1;
-                    6:if(dina>=1 && dina<=8) batch_count<=dina[3:0];else error<=1;
+                    6:if(dina>=1 && dina<=4) batch_count<=dina[3:0];else error<=1;
                     8:w1_base<=dina;
                     9:w2_base<=dina;
                     default:begin
@@ -131,7 +129,7 @@ module simple_npu_top (
                         else if(addra>=624 && addra<656) b1[(addra-624)*32+:32]<=dina;
                         else if(addra>=656 && addra<662) b2[(addra-656)*32+:32]<=dina;
                         else if(addra>=768 && addra<784) x[1][(addra-768)*32+:32]<=dina;
-                        else if(addra>=INPUT2_BASE && addra<INPUT2_BASE+96) begin
+                        else if(addra>=INPUT2_BASE && addra<INPUT2_BASE+64) begin
                             input_rel=addra-INPUT2_BASE;
                             input_slot=2+(input_rel>>4);
                             input_word=input_rel & 15;

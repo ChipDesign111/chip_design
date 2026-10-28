@@ -6,14 +6,24 @@
 2. 将 FC2 每 bank 的 8 个逻辑 tile 打包为 48 B，并在 W1 尾部启动两个 W2 bank 的跨层预取。
 3. 在 AXI 地址通道增加寄存器边界，缩短 CPU/AXI/NPU 控制路径。
 
-基准固定使用 seed=10000 的训练模型和输入；batch=1/2/8 共用同一组权重及前缀输入。NPU 周期从 `START` 统计到 `DONE`，包含权重 DMA、MAC、requant 和等待时间。AXI ready/valid 采用 testbench 中同一个确定性伪随机背压序列，因此三个阶段的周期可直接比较。每次只运行一个 batch，避免前一测试的 AXI 状态影响结果。
+基准固定使用 seed=10000 的训练模型和输入。NPU 周期从 `START` 统计到 `DONE`，包含权重 DMA、MAC、requant 和等待时间。AXI ready/valid 采用 testbench 中同一个确定性伪随机背压序列，因此各阶段周期可直接比较。每次只运行一个 batch，避免前一测试的 AXI 状态影响结果。
 
-| 阶段 | batch=1 | batch=2 | batch=8 | 完整 SoC batch=8 |
+当前最大 batch=4 的固定基准：
+
+| 指标 | batch=1 | batch=2 | batch=4 |
+| --- | ---: | ---: | ---: |
+| NPU 单批周期 | 1401 | 1431 | 1560 |
+| 每样本摊销周期 | 1401 | 715.5 | 390.0 |
+| FC1 / FC2 发射周期 | 32 / 32 | 64 / 64 | 128 / 128 |
+
+当前完整 SoC 自检使用 batch=4，共 6403 拍。
+
+| 历史 batch=8 阶段 | batch=1 | batch=2 | batch=8 | 完整 SoC batch=8 |
 | --- | ---: | ---: | ---: | ---: |
 | 优化前 `d2aef34` | 1669 | 1723 | 2025 | 8777 |
 | 零气泡交接 `5a9a618` | 1668 | 1707 | 1969 | 8681 |
 | FC2 打包和 W2 预取 | 1401 | 1431 | 1808 | 8589 |
-| `CUT_SLV_AX` 控制切分 | 1401 | 1431 | 1808 | 10691 |
+| `CUT_SLV_AX` 控制切分（历史 batch=8） | 1401 | 1431 | 1808 | 10691 |
 
 ## 第一阶段：零气泡 tile 交接
 
@@ -52,14 +62,14 @@ FC2 原始权重为 32 个逻辑 tile，每个 tile 只有 6 B。原实现按 ti
 
 ## 第三阶段：AXI 控制路径切分
 
-`NO_LATENCY` 让 CPU、AXI crossbar、DMA 和 NPU 控制逻辑处于同一条组合路径，FPGA 最差路径达到 42 级逻辑。最终采用 `CUT_SLV_AX`，只切 slave 端的 AW/AR 地址通道：
+`NO_LATENCY` 让 CPU、AXI crossbar、DMA 和 NPU 控制逻辑处于同一条组合路径，旧 batch=2 FPGA 最差路径达到 42 级逻辑。最终采用 `CUT_SLV_AX`，只切 slave 端的 AW/AR 地址通道。历史 batch=8 配置中的代价为：
 
 ```text
 NPU batch=1/2/8：1401 / 1431 / 1808，保持不变
 完整 SoC batch=8：8589 -> 10691，增加 2102 拍
 ```
 
-这会增加 MMIO 和 AXI 地址事务的固定延迟，但不切 W/R 数据通道。作为对照，`CUT_ALL_PORTS` 会把完整 SoC 增至 17938 拍，因此没有采用。`CUT_SLV_AX` 是否足以满足 20 ns 需以重新综合、place 和 route 结果为准。
+这会增加 MMIO 和 AXI 地址事务的固定延迟，但不切 W/R 数据通道。作为对照，`CUT_ALL_PORTS` 会把历史 batch=8 完整 SoC 增至 17938 拍，因此没有采用。当前 batch=4 的 NPU 周期仍为 1401/1431/1560，完整 SoC 为 6403 拍。
 
 ## 验证
 
@@ -69,7 +79,7 @@ NPU batch=1/2/8：1401 / 1431 / 1808，保持不变
 python test/int8/run.py --count 32 --trained --soc
 ```
 
-共 35 个单元用例，覆盖 batch=1/2/8、24 条训练输入、量化边界值、DMA 错误、非法 bank 写、复位和服务完整 AXI SoC 自检。单元测试还断言：进入 FC2 前必须已经发起 W2 预取，且发布中的 bank 不得被 DMA 覆盖。
+共 38 个单元用例，覆盖 batch=1/2/4、24 条训练输入、量化边界值、DMA 错误、非法 bank 写、复位和服务完整 AXI SoC 自检。单元测试还断言：进入 FC2 前必须已经发起 W2 预取，且发布中的 bank 不得被 DMA 覆盖。
 
 固定单批周期可复现为：
 
@@ -77,4 +87,4 @@ python test/int8/run.py --count 32 --trained --soc
 python test/int8/perf.py
 ```
 
-上述数字是 RTL 功能/周期仿真，不是 batch=8 的物理签核。新增动态位选、比较和 ready 状态仍需重新综合、布局布线及 20 ns STA。
+上述数字是 RTL 功能/周期仿真，不是 batch=4 的物理签核。新增动态位选、crossbar 切片和 ready 状态仍需重新综合、布局布线及 20 ns STA。

@@ -124,6 +124,7 @@ module tb_tiled_dma;
                 for(j=0;j<6;j=j+1) check(input_addr+j*4,mem[golden_addr/4+8+j]);
                 check(class_addr,mem[golden_addr/4+14]);
             end
+            if(batch==4) check('h1280,0);
             check('h28,batch*32);check('h2c,batch*32);
             $display("CASE %0d PASS cycles=%0d fc1=%0d fc2=%0d read_overlap=%0d write_overlap=%0d",
                 which,dut.cycles,dut.fc1_cycles,dut.fc2_cycles,dut.read_overlap,dut.write_overlap);
@@ -141,6 +142,7 @@ module tb_tiled_dma;
         $display("ERROR_TEST W2 prefetch");configure();inject_w2_error=1;put(0,1);await_done();check(4,5);
         if(dut.next_w2==0) $fatal(1,"W2 failure was not observed in a W2 prefetch");
         inject_w2_error=0;put(0,2);
+        $display("ERROR_TEST batch above four");put('h18,5);check(4,4);put(0,2);configure();
         // Busy configuration and CPU tile writes are rejected, preserving results.
         $display("ERROR_TEST busy write");configure();put(0,1);repeat(12) @(negedge clk);put('h10,32'h12345678);put('h100,32'hffffffff);
         await_done();check(4,5);check('h10,mem['h1f00/4]);
