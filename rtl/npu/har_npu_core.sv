@@ -22,7 +22,7 @@ module har_npu_core (
     output logic [31:0] cycle_count,overlap_count,fc1_cycles,fc2_cycles,
     output logic [31:0] read_overlap_count,write_overlap_count
 );
-    localparam [2:0] IDLE=0,WAIT_TILE=1,ISSUE=2,QUANT=3,FINISH=4,TAIL=5;
+    localparam [2:0] IDLE=0,WAIT_TILE=1,ISSUE=2,QUANT=3,FINISH=4;
     localparam int MAX_BATCH=8;
     logic [2:0] state;
     logic layer;
@@ -31,9 +31,6 @@ module har_npu_core (
     wire product_valid,product_first;
     wire [2:0] product_sample;
     logic signed [15:0] p1[0:31][0:1],p2[0:5];
-    logic signed [15:0] p1_q[0:31][0:1],p2_q[0:5];
-    logic pipeline_valid_q,pipeline_first_q;
-    logic [2:0] pipeline_sample_q;
     logic signed [31:0] a1[0:7][0:31],a2[0:7][0:5];
     logic [255:0] h[0:7];
     logic [2:0] class_id_q[0:7];
@@ -101,7 +98,7 @@ module har_npu_core (
 
     integer o,s;
     genvar j;
-    // Register INT8 products in ISSUE and accumulate them in the next cycle.
+    // Combine INT8 multiplication and INT32 accumulation in one ISSUE cycle.
     generate
         for(j=0;j<32;j=j+1) begin: fc1_products
             assign p1[j][0]=$signed(x[tile_index_o*16+:8])*$signed(tile_data_i[j*16+:8]);
@@ -120,9 +117,6 @@ module har_npu_core (
             layer<=0;
             batch_q<=1;
             sample<=0;
-            pipeline_valid_q<=0;
-            pipeline_sample_q<=0;
-            pipeline_first_q<=0;
             tile_index_o<=0;
             quant_sample<=0;
             class_id_q[0]<=0;class_id_q[1]<=0;class_id_q[2]<=0;class_id_q[3]<=0;
@@ -144,33 +138,19 @@ module har_npu_core (
                 if(dma_read_i || dma_write_i) overlap_count<=overlap_count+1'b1;
                 if(dma_read_i) read_overlap_count<=read_overlap_count+1'b1;
                 if(dma_write_i) write_overlap_count<=write_overlap_count+1'b1;
-                if(!layer) fc1_cycles<=fc1_cycles+1'b1;
-                else fc2_cycles<=fc2_cycles+1'b1;
-            end
-            if(issue) begin
-                pipeline_valid_q<=1;
-                pipeline_sample_q<=sample;
-                pipeline_first_q<=product_first;
-                for(o=0;o<32;o=o+1) begin
-                    p1_q[o][0]<=p1[o][0];
-                    p1_q[o][1]<=p1[o][1];
-                end
-                for(o=0;o<6;o=o+1) p2_q[o]<=p2[o];
-            end else begin
-                pipeline_valid_q<=0;
-            end
-            if(pipeline_valid_q) begin
                 if(!layer) begin
+                    fc1_cycles<=fc1_cycles+1'b1;
                     for(o=0;o<32;o=o+1)
-                        a1[pipeline_sample_q][o] <=
-                            (pipeline_first_q ? $signed(bias1[o*32+:32]):a1[pipeline_sample_q][o])
-                            + {{16{p1_q[o][0][15]}},p1_q[o][0]}
-                            + {{16{p1_q[o][1][15]}},p1_q[o][1]};
+                        a1[product_sample][o] <=
+                            (product_first ? $signed(bias1[o*32+:32]):a1[product_sample][o])
+                            + {{16{p1[o][0][15]}},p1[o][0]}
+                            + {{16{p1[o][1][15]}},p1[o][1]};
                 end else begin
+                    fc2_cycles<=fc2_cycles+1'b1;
                     for(o=0;o<6;o=o+1)
-                        a2[pipeline_sample_q][o] <=
-                            (pipeline_first_q ? $signed(bias2[o*32+:32]):a2[pipeline_sample_q][o])
-                            + {{16{p2_q[o][15]}},p2_q[o]};
+                        a2[product_sample][o] <=
+                            (product_first ? $signed(bias2[o*32+:32]):a2[product_sample][o])
+                            + {{16{p2[o][15]}},p2[o]};
                 end
             end
             case(state)
@@ -180,7 +160,6 @@ module har_npu_core (
                     layer<=0;
                     batch_q<=batch_count;
                     sample<=0;
-                    pipeline_valid_q<=0;
                     tile_index_o<=0;
                     state<=WAIT_TILE;
                     cycle_count<=0;
@@ -198,19 +177,18 @@ module har_npu_core (
                     state<=ISSUE;
                 end
                 ISSUE:if(last_sample_issue) begin
-                    if(tile_index_o==31) begin
-                        if(!layer) begin
-                            quant_sample<=0;
-                            tile_index_o<=0;
-                        end
-                        state<=TAIL;
+                    if(tile_index_o==31 && !layer) begin
+                        quant_sample<=0;
+                        tile_index_o<=0;
+                        state<=QUANT;
+                    end else if(tile_index_o==31) begin
+                        state<=FINISH;
                     end else begin
                         tile_index_o<=tile_index_o+1'b1;
                         sample<=0;
                         state<=tile_next_valid_i ? ISSUE:WAIT_TILE;
                     end
                 end else sample<=sample+1'b1;
-                TAIL:state<=layer ? FINISH:QUANT;
                 QUANT:begin
                     h[quant_sample][tile_index_o*8+:8]<=quant(a1[quant_sample][tile_index_o]);
                     if(tile_index_o==31) begin

@@ -31,8 +31,7 @@
     "weight_layout": "FC1[tile32][output32][lane2]; FC2[packet4][tile8][output6], 48 bytes per packet",
     "tile_handoff": "last-sample consumed pulse, direct ISSUE when next bank is ready",
     "fc2_prefetch": "two 64-byte banks preloaded during final W1 tile and requant",
-    "mac_pipeline": "INT8 products registered after ISSUE; lane sum and INT32 accumulation in next cycle",
-    "product_pipeline_registers": 1120,
+    "mac_pipeline": "combinational INT8 multiplication into INT32 accumulator per ISSUE cycle",
     "axi_crossbar_latency": "NO_LATENCY, registered initiator/target adapters retained"
   },
   "mmio": {
