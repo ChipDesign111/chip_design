@@ -32,7 +32,7 @@
     "tile_handoff": "last-sample consumed pulse, direct ISSUE when next bank is ready",
     "fc2_prefetch": "two 64-byte banks preloaded during final W1 tile and requant",
     "mac_pipeline": "combinational INT8 multiplication into INT32 accumulator per ISSUE cycle",
-    "axi_crossbar_latency": "NO_LATENCY, registered initiator/target adapters retained"
+    "axi_crossbar_latency": "CUT_SLV_AX"
   },
   "mmio": {
     "base_address": 1879048192,

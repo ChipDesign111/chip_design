@@ -8,4 +8,4 @@ my_soc_top 顶层仍为 clk_i、rst_ni、tck_i、tms_i、td_i、td_o 六个端�
 
 NPU 的真实执行周期受 AXI 仲裁与背压影响，读取计数寄存器获得；每样本每层固定 32 个 MAC 发射周期。启动保护默认关闭 CPU 取指，完整镜像覆盖和密钥提交后放行，细节见 [SRAM](sram.md)。
 
-面积优化进一步将 AXI 交叉开关设为 NO_LATENCY，保留 CPU/DMA 发起端和目标桥接器的寄存状态，取消每个内部通道重复的 spill 寄存切片。逻辑接口与事务顺序不变；路径变长的代价由本轮 20 ns 时序验证。
+AXI 交叉开关使用 `CUT_SLV_AX`，在 slave 端 demux 的 AW/AR 地址通道增加 spill 寄存器。这样 CPU/DMA 出发的地址和控制路径被切开，同时不给 W/R 数据 beat 或 master mux 增加额外延迟。
