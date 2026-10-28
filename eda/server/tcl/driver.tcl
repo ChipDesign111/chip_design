@@ -157,6 +157,14 @@ if {[catch {
             32 {
                 eda_eval 32_extractRC {extractRC}
                 eda_run 32_initial.tcl
+                if {$eda_setup_optimization_goal > 0} {
+                    # User-requested margin optimization, not a new pass gate.
+                    # Native whole-design setup optimization preserves real
+                    # clock/SDC constraints; final checks still require >=0.
+                    eda_eval 32_setup_goal [list setOptMode -setupTargetSlack $eda_setup_optimization_goal -setupTargetSlackForReclaim $eda_setup_optimization_goal]
+                    eda_eval 32_native_margin {optDesign -postRoute -expandedViews -outDir ../my_soc_top/reports/postRoute_margin}
+                    eda_run 32_initial.tcl
+                }
                 for {set iteration 0} {$iteration < $eda_repair_iterations} {incr iteration} {
                     set current_dir [expr {$iteration == 0 ? "../my_soc_top/reports/postRoute" : "../my_soc_top/reports/postRoute_holdAuto_check"}]
                     if {[eda_timing_bad $current_dir] == 0} {break}

@@ -1,0 +1,228 @@
+{
+  "physical_source_commit": "4427c4bd1f7b4197c4b2b8a4645a8f9427b6bf36",
+  "documentation_commit": "15d547211657ba0f81a97ad9af49d03c212de70e",
+  "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261027_200222_4427c4b",
+  "TT_negative_IOPATH_arcs": [
+    {
+      "cell": "INVD1BWP7T",
+      "instance": "i_axi2boot/g14926",
+      "line": 204039,
+      "arc": "(IOPATH I ZN  (0.143:0.148:0.148) (0.021:-0.003:-0.003))",
+      "negative_values": [
+        -0.003,
+        -0.003
+      ]
+    },
+    {
+      "cell": "INR2D1BWP7T",
+      "instance": "i_axi_xbar/i_xbar/gen_slv_port_demux\\[3\\]\\.i_axi_err_slv/i_r_fifo/FE_RC_262_0",
+      "line": 347546,
+      "arc": "(IOPATH B1 ZN  (0.129:0.131:0.131) (-0.003:-0.004:-0.004))",
+      "negative_values": [
+        -0.003,
+        -0.004,
+        -0.004
+      ]
+    },
+    {
+      "cell": "INVD1BWP7T",
+      "instance": "i_cpu/core_i/cs_registers_i/g36996",
+      "line": 394280,
+      "arc": "(IOPATH I ZN  (0.135:0.137:0.137) (-0.023:-0.024:-0.024))",
+      "negative_values": [
+        -0.023,
+        -0.024,
+        -0.024
+      ]
+    },
+    {
+      "cell": "INVD1BWP7T",
+      "instance": "i_cpu/core_i/cs_registers_i/g36997",
+      "line": 394290,
+      "arc": "(IOPATH I ZN  (0.136:0.138:0.138) (-0.028:-0.029:-0.029))",
+      "negative_values": [
+        -0.028,
+        -0.029,
+        -0.029
+      ]
+    },
+    {
+      "cell": "INVD1BWP7T",
+      "instance": "i_cpu/core_i/cs_registers_i/g36998",
+      "line": 394300,
+      "arc": "(IOPATH I ZN  (0.134:0.137:0.137) (-0.029:-0.030:-0.030))",
+      "negative_values": [
+        -0.029,
+        -0.03,
+        -0.03
+      ]
+    },
+    {
+      "cell": "INVD1BWP7T",
+      "instance": "i_cpu/core_i/cs_registers_i/g37006",
+      "line": 394320,
+      "arc": "(IOPATH I ZN  (0.153:0.156:0.156) (0.022:-0.005:-0.005))",
+      "negative_values": [
+        -0.005,
+        -0.005
+      ]
+    },
+    {
+      "cell": "AOI21D0BWP7T",
+      "instance": "i_cpu/core_i/ex_stage_i/alu_i/g72557",
+      "line": 426259,
+      "arc": "(IOPATH A2 ZN  (0.268:0.271:0.271) (0.001:-0.001:-0.001))",
+      "negative_values": [
+        -0.001,
+        -0.001
+      ]
+    },
+    {
+      "cell": "MUX2ND0BWP7T",
+      "instance": "i_cpu/core_i/ex_stage_i/alu_i/g73272",
+      "line": 442389,
+      "arc": "(IOPATH I0 ZN  (0.218:0.222:0.222) (-0.023:-0.025:-0.025))",
+      "negative_values": [
+        -0.023,
+        -0.025,
+        -0.025
+      ]
+    },
+    {
+      "cell": "MUX2ND0BWP7T",
+      "instance": "i_cpu/core_i/ex_stage_i/alu_i/g73272",
+      "line": 442390,
+      "arc": "(COND I1==1'b1&&S==1'b0 (IOPATH I0 ZN  (0.217:0.222:0.222) (-0.023:-0.024:-0.024)))",
+      "negative_values": [
+        -0.023,
+        -0.024,
+        -0.024
+      ]
+    },
+    {
+      "cell": "MUX2ND0BWP7T",
+      "instance": "i_cpu/core_i/ex_stage_i/alu_i/g73272",
+      "line": 442391,
+      "arc": "(COND I1==1'b0&&S==1'b0 (IOPATH I0 ZN  (0.217:0.222:0.222) (-0.023:-0.024:-0.024)))",
+      "negative_values": [
+        -0.023,
+        -0.024,
+        -0.024
+      ]
+    },
+    {
+      "cell": "NR2D1BWP7T",
+      "instance": "i_dm_axi2mem/g19545",
+      "line": 799277,
+      "arc": "(IOPATH A1 ZN  (0.172:0.174:0.174) (-0.002:-0.002:-0.002))",
+      "negative_values": [
+        -0.002,
+        -0.002,
+        -0.002
+      ]
+    },
+    {
+      "cell": "INR2D1BWP7T",
+      "instance": "i_npu_subsystem/i_npu_core/core/g249329",
+      "line": 1095560,
+      "arc": "(IOPATH B1 ZN  (0.195:0.201:0.201) (0.000:-0.002:-0.002))",
+      "negative_values": [
+        -0.002,
+        -0.002
+      ]
+    },
+    {
+      "cell": "INR2D1BWP7T",
+      "instance": "i_npu_subsystem/i_npu_core/core/g249412",
+      "line": 1096143,
+      "arc": "(IOPATH B1 ZN  (0.193:0.202:0.202) (-0.006:-0.005:-0.005))",
+      "negative_values": [
+        -0.006,
+        -0.005,
+        -0.005
+      ]
+    },
+    {
+      "cell": "INR2D1BWP7T",
+      "instance": "i_npu_subsystem/i_npu_core/core/g249795",
+      "line": 1101761,
+      "arc": "(IOPATH B1 ZN  (0.149:0.151:0.151) (-0.003:-0.004:-0.004))",
+      "negative_values": [
+        -0.003,
+        -0.004,
+        -0.004
+      ]
+    },
+    {
+      "cell": "INR2D1BWP7T",
+      "instance": "i_npu_subsystem/i_npu_core/core/g249801",
+      "line": 1101827,
+      "arc": "(IOPATH B1 ZN  (0.162:0.164:0.164) (-0.011:-0.012:-0.012))",
+      "negative_values": [
+        -0.011,
+        -0.012,
+        -0.012
+      ]
+    },
+    {
+      "cell": "INR2D1BWP7T",
+      "instance": "i_npu_subsystem/i_npu_core/core/g249820",
+      "line": 1101915,
+      "arc": "(IOPATH B1 ZN  (0.184:0.186:0.186) (-0.001:-0.002:-0.002))",
+      "negative_values": [
+        -0.001,
+        -0.002,
+        -0.002
+      ]
+    },
+    {
+      "cell": "INR2D1BWP7T",
+      "instance": "i_npu_subsystem/i_npu_core/core/g249851",
+      "line": 1102025,
+      "arc": "(IOPATH B1 ZN  (0.185:0.186:0.186) (-0.001:-0.002:-0.002))",
+      "negative_values": [
+        -0.001,
+        -0.002,
+        -0.002
+      ]
+    },
+    {
+      "cell": "INR2D1BWP7T",
+      "instance": "i_npu_subsystem/i_npu_core/core/g249898",
+      "line": 1102377,
+      "arc": "(IOPATH B1 ZN  (0.176:0.178:0.178) (-0.010:-0.011:-0.011))",
+      "negative_values": [
+        -0.01,
+        -0.011,
+        -0.011
+      ]
+    }
+  ],
+  "TT_counts_by_master": {
+    "INVD1BWP7T": 5,
+    "INR2D1BWP7T": 8,
+    "AOI21D0BWP7T": 1,
+    "MUX2ND0BWP7T": 3,
+    "NR2D1BWP7T": 1
+  },
+  "TT_arc_count": 18,
+  "TT_unique_instances": 16,
+  "cross_corner_SDF_native_negative_arc_count": 472,
+  "FFm40_VCS_clamp_messages": 438,
+  "FFm40_VCS_ANIOD_messages": 34,
+  "whole_die_area_mm2": 3.7956390976,
+  "system_period_ns": 20,
+  "SS_setup_hold_ns": [
+    0.001,
+    0.289
+  ],
+  "SS_critical_path": {
+    "beginpoint": "i_cpu/core_i/id_stage_i/alu_operand_b_ex_o_reg[16]/Q",
+    "endpoint": "i_cpu/core_i/id_stage_i/mult_operand_c_ex_o_reg[27]/D",
+    "setup_ns": 0.001
+  },
+  "native_TT_path_reports_completed": 16,
+  "native_TT_path_report_scope": "Read-only original step34 database; report_timing through each unique negative-arc input pin with actual slew/load. Raw development reports local only.",
+  "native_library_contains_negative_delay_grid_values": true,
+  "new_implementation_accepted": false
+}

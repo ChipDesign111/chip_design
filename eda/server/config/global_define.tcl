@@ -79,6 +79,12 @@ foreach cell $cell_ext {
 foreach cell $cell_ext {
   set rm_clock_inv_cap_cell [concat INVD0${cell} INVD10${cell} INVD12${cell} INVD1${cell} INVD1P5${cell} INVD2${cell} INVD2P5${cell} INVD3${cell} INVD4${cell} INVD5${cell} INVD6${cell} INVD8${cell}]
 }
+if {[info exists eda_comb_mapping] && $eda_comb_mapping eq "tt_nonnegative_tables"} {
+    # The original INV family has negative TT table entries. Keep native
+    # clock-tree inversion available with the same Boolean function using
+    # the PDK's CKND clock-inverter family; never alter delay values.
+    set rm_clock_inv_cap_cell [list CKND0${cell_ext} CKND1${cell_ext} CKND2${cell_ext} CKND3${cell_ext} CKND4${cell_ext} CKND6${cell_ext} CKND8${cell_ext} CKND10${cell_ext} CKND12${cell_ext}]
+}
 
 #PREICG  - active high scan-enable
 set rm_clock_icg_cell [list CKLNQD1${cell_ext}  CKLNQD2${cell_ext}  CKLNQD4${cell_ext} CKLNQD6${cell_ext} CKLNQD8${cell_ext} \

@@ -36,6 +36,8 @@ rc_temperatures.tcl在创建及每次恢复数据库后，用Innovus原生get_rc
 
 Genus在`init_design`后重新应用库选择，覆盖初始化时建立的实际多库角对象；仅初始化前设置曾未达到预期。综合后的实际单元类型也要与所选mux_dff策略一致，否则先停止并报配置未生效，不继续后端。正常零负余量/面积/物理验收条件不变。
 
+2026-10-29的新一轮优化使用combinational_cell_mapping=tt_nonnegative_tables，从未修改的原生TT库派生组合单元选择，Genus和Innovus统一应用；CTS保留原生CKND反相器。implementation_effort=high提高优化力度，setup_optimization_goal_ns=0.3只是增加慢角余量的软目标，不是验收门槛。旧4427c4b的通过结果不能替代这个新实现。实际TT截零是否归零、面积和时序是否改善，须查本上传的新证据与后仿；不改SDF或关闭检查消除警告。
+
 验收使用native_library_zero_slack：保留四个匹配库角、系统20ns、含PAD整颗≤3.8mm²。最终Setup/Hold均要求WNS≥0、TNS=0、违规路径数=0，电气检查遵守原生Liberty及讲义原SDC；不增加设计级边沿限制。default DRC、真实信号/核心供电连通及天线须通过，IO抽象限制按同源原生几何证据记录。只在真实负余量时修复Hold：先0目标，仍有残项时按讲义尝试0.02ns优化目标；0.02ns不是验收门槛。普通优化密度上限统一0.85，不再分83%/85%预算。详见[验收条件](../docs/验收条件.md)。
 
 ## 2．独立阶段一：环境检查

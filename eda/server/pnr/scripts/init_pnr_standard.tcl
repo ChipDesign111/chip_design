@@ -88,8 +88,8 @@ setOptMode  -allEndPoints                       true \
             -powerEffort                        none \
             -reclaimArea                        default \
             -restruct                           true \
-            -setupTargetSlackForReclaim         0 \
-            -setupTargetSlack                   0 \
+            -setupTargetSlackForReclaim         ${eda_setup_optimization_goal} \
+            -setupTargetSlack                   ${eda_setup_optimization_goal} \
             -timeDesignNumPaths                 50 \
             -unfixClkInstForOpt                 true \
             -usefulSkew                         true \
@@ -98,6 +98,7 @@ setOptMode  -allEndPoints                       true \
             -usefulSkewPreCTS                   true \
             -verbose                            true
 puts "EDA_OPTIMIZER_MAX_DENSITY $eda_opt_max_density"
+puts "EDA_SETUP_OPTIMIZATION_GOAL $eda_setup_optimization_goal acceptance_minimum=0"
 
 # control certain aspects of how the software places cells, affect "place_design" "refinePlace"
 # place_design_floorplan_mode:                      used for prototyping and runs quickly to gauge the feasibility of the netlist, default: false
@@ -138,7 +139,7 @@ setPlaceMode    -place_design_floorplan_mode                    false \
                 -place_global_cong_effort                       auto \
                 -place_global_max_density                       -1 \
                 -place_global_place_io_pins                     false \
-                -place_global_timing_effort                     medium \
+                -place_global_timing_effort                     ${eda_implementation_effort} \
                 -place_global_fast_cts                          false
 
 # set global parameters for "skewClock" command

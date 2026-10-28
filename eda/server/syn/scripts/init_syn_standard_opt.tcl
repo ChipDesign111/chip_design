@@ -114,20 +114,21 @@ set_db tns_opto true
 # otherwise value of this attribute overrides the individual settings of syn_generic_effort, syn_map_effort, syn_opt_effort
 # possible value: none | low | medium | high | express
 # default: none
-set_db syn_global_effort medium
+set_db syn_global_effort $eda_implementation_effort
 
 # optimization effort for "syn_generic" command
 # possible value: medium / low / high / express / none
 # default: medium
-set_db syn_generic_effort medium
+set_db syn_generic_effort $eda_implementation_effort
 
 # optimization effort for "syn_map" command
 # possible value: medium / low / high / express / none
-set_db syn_map_effort medium
+set_db syn_map_effort $eda_implementation_effort
 
 # optimization effort for "syn_opt" command
 # possible value: medium / low / high / express / none /extreme
-set_db syn_opt_effort medium
+set_db syn_opt_effort $eda_implementation_effort
+puts "EDA_SYNTHESIS_EFFORT $eda_implementation_effort"
 
 # default effort ensures verifiability
 # use high effort casuses trade-off bwtween QoR and ease of formal verification

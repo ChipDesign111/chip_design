@@ -24,6 +24,7 @@ sys.path.insert(0, str(SERVER / 'tools'))
 from checks import audit_step, area_summary, load_text, mapped_netlist_check, clear_step_outputs, timing
 from generate import generate_steps
 from cleanup import clean_work, generated_path, remove_generated
+from combinational_mapping import prepare_mapping
 
 
 def write_json(path, value):
@@ -78,6 +79,16 @@ def read_config(path):
     c.setdefault('functional_enable_mapping','library_enable')
     if c['functional_enable_mapping'] not in ['library_enable','mux_dff']:
         raise ValueError('Unknown functional register-enable implementation')
+    c.setdefault('combinational_cell_mapping','native_unrestricted')
+    if c['combinational_cell_mapping'] not in ['native_unrestricted','tt_nonnegative_tables']:
+        raise ValueError('Unknown native combinational cell mapping')
+    c.setdefault('implementation_effort','medium')
+    if c['implementation_effort'] not in ['medium','high']:
+        raise ValueError('Implementation effort must be medium or high')
+    c.setdefault('setup_optimization_goal_ns',0.0)
+    goal=c['setup_optimization_goal_ns']
+    if not isinstance(goal,(int,float)) or not math.isfinite(goal) or not 0<=goal<c['system_period_ns']:
+        raise ValueError('Setup optimization goal must be finite, nonnegative and below the clock period')
     if c['analysis_profile'] not in ['single_TT_SI_off_native_low_RC','matched_TT_SS_FF0_FFm40_SI_off_native_low_RC']:
         raise ValueError('Unknown library PVT profile')
     if not isinstance(c['max_repair_iterations'], int) or not 1 <= c['max_repair_iterations'] <= 10 or c['hold_target_ns'] not in [0,0.02]:
@@ -160,6 +171,9 @@ def prepare(args):
     # literal true/false, unlike a Boolean attribute it rejects numeric 0/1.
     text+='set eda_insert_clock_gating %s\n'%('true' if config['insert_automatic_clock_gating'] else 'false')
     text+='set eda_enable_mapping %s\n'%config['functional_enable_mapping']
+    text+='set eda_comb_mapping %s\n'%config['combinational_cell_mapping']
+    text+='set eda_implementation_effort %s\n'%config['implementation_effort']
+    text+='set eda_setup_optimization_goal %g\n'%config['setup_optimization_goal_ns']
     user.write_text(text, encoding='utf-8')
     listed, includes, lines = [], [], ['+define+SYNTHESIS', '+define+CHIP_USE_RA1SHD']
     rtl = work / 'src/chip_design'
@@ -190,6 +204,12 @@ def prepare(args):
     provenance = root / 'source.json'
     if provenance.exists():
         shutil.copyfile(str(provenance), str(work / 'evidence/source.json'))
+    prepare_mapping(work,config)
+    write_json(work/'evidence/optimization_goal.json',{
+        'setup_optimization_goal_ns':config['setup_optimization_goal_ns'],
+        'implementation_effort':config['implementation_effort'],
+        'minimum_accepted_setup_hold_slack_ns':0.0,
+        'optimization_goal_is_not_an_acceptance_threshold':True})
     write_json(work / 'evidence/preparation.json', {'rtl_files': len(listed), 'include_dirs': includes, 'macro_source': str(macro), 'work': str(work), 'functional_retested_here': False, 'profile_changes': ['CHIP_USE_RA1SHD and SYNTHESIS', 'absolute source paths', 'no hidden path_adjust tightening', 'guard empty async net selection', 'original CPU clock passthrough']})
     write_json(work / 'evidence/input_manifest.json', fingerprint_inputs(work))
     print('Prepared NEW project: ' + str(work))

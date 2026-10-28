@@ -5,6 +5,56 @@
 # Ordinary DFFs, including native asynchronous-reset DFFs, remain available.
 set eda_controlled_ff_families {EDF* SDF* SEDF* GSDF* DFK* DFX*}
 
+proc eda_combination_names {} {
+    if {![info exists ::eda_comb_mapping] || $::eda_comb_mapping eq "native_unrestricted"} {return {}}
+    if {$::eda_comb_mapping ne "tt_nonnegative_tables"} {error "Unknown combinational library mapping"}
+    source [file join $::PROJECT_ROOT flow config combinational_mapping.tcl]
+    if {[llength $::eda_tt_negative_table_masters] == 0} {error "Native TT table mapping list is empty"}
+    return $::eda_tt_negative_table_masters
+}
+
+proc eda_combination_record {tool count} {
+    set mode native_unrestricted
+    if {[info exists ::eda_comb_mapping]} {set mode $::eda_comb_mapping}
+    set path [file join $::PROJECT_ROOT evidence combinational_mapping_${tool}.json]
+    set fd [open $path w]
+    puts $fd [format {{"mapping":"%s","tool":"%s","avoided_library_cells":%d,"timing_values_modified":false,"timing_exceptions_added":false}} $mode $tool $count]
+    close $fd
+    puts "EDA_COMBINATIONAL_MAPPING tool=$tool mode=$mode avoided=$count"
+}
+
+proc eda_apply_combinational_mapping_genus {} {
+    set cells {}
+    foreach name [eda_combination_names] {
+        set objects [get_db lib_cells */$name]
+        if {[llength $objects] == 0} {error "Native TT master missing from Genus: $name"}
+        set cells [concat $cells $objects]
+    }
+    set cells [lsort -unique $cells]
+    if {[llength $cells] > 0} {
+        set_db $cells .avoid true
+        foreach value [get_db $cells .avoid] {if {!$value} {error "Combinational mapping option not applied"}}
+    }
+    eda_combination_record genus [llength $cells]
+}
+
+proc eda_apply_combinational_mapping_innovus {} {
+    set cells {}
+    foreach name [eda_combination_names] {
+        set objects [dbGet -e head.libCells.name $name]
+        if {[llength $objects] == 0} {error "Native TT master missing from Innovus: $name"}
+        set cells [concat $cells $objects]
+    }
+    set cells [lsort -unique $cells]
+    foreach name $cells {setDontUse $name true}
+    foreach name $cells {
+        foreach value [dbGet [dbGet head.libCells.name $name -p].dontUse] {
+            if {!$value} {error "Innovus combinational mapping option not applied: $name"}
+        }
+    }
+    eda_combination_record innovus [llength $cells]
+}
+
 proc eda_register_mapping_record {tool count} {
     set path [file join $::PROJECT_ROOT evidence register_mapping_${tool}.json]
     file mkdir [file dirname $path]
@@ -15,6 +65,7 @@ proc eda_register_mapping_record {tool count} {
 }
 
 proc eda_apply_register_mapping_genus {} {
+    eda_apply_combinational_mapping_genus
     if {$::eda_enable_mapping ne "mux_dff"} {
         eda_register_mapping_record genus 0
         return
@@ -34,6 +85,7 @@ proc eda_apply_register_mapping_genus {} {
 }
 
 proc eda_apply_register_mapping_innovus {} {
+    eda_apply_combinational_mapping_innovus
     if {$::eda_enable_mapping ne "mux_dff"} {
         eda_register_mapping_record innovus 0
         return

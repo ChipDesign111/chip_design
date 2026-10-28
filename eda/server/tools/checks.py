@@ -244,6 +244,15 @@ def mapped_netlist_check(work):
     config=json.loads((work/'config/design.json').read_text())
     automatic_gates=[path for path in leaves if 'RC_CG_HIER_INST' in path]
     controlled_ffs=[path for path,master in leaves.items() if re.match(r'^(EDF|SDF|SEDF|GSDF|DFK|DFX)',master)]
+    combo_policy=work/'evidence/combinational_mapping_policy.json'
+    combo=json.loads(combo_policy.read_text()) if combo_policy.is_file() else {'mapping':'native_unrestricted'}
+    excluded=set(combo.get('excluded_native_masters',{}))
+    remaining_combo=[path for path,master in leaves.items() if master in excluded]
+    if config.get('combinational_cell_mapping')=='tt_nonnegative_tables' and remaining_combo:
+        save(work/'evidence/combinational_mapping_mismatch.json',{
+            'requested_mapping':'tt_nonnegative_tables','remaining_instances':len(remaining_combo),
+            'examples':remaining_combo[:20]})
+        raise ValueError('Selected native TT combinational mapping not applied: %d instances remain'%len(remaining_combo))
     if config.get('functional_enable_mapping')=='mux_dff' and controlled_ffs:
         # Verify the selected implementation really happened. This is not a
         # new timing margin or a restriction on the native zero-slack profile.
@@ -256,7 +265,9 @@ def mapped_netlist_check(work):
             'automatic_clock_gating_requested':config.get('insert_automatic_clock_gating',True),
             'mapped_automatic_clock_gate_instances':len(automatic_gates),
             'functional_enable_mapping':config.get('functional_enable_mapping','library_enable'),
-            'mapped_controlled_flip_flop_instances':len(controlled_ffs)}
+            'mapped_controlled_flip_flop_instances':len(controlled_ffs),
+            'combinational_cell_mapping':combo['mapping'],
+            'mapped_excluded_TT_combinational_instances':len(remaining_combo)}
 
 
 def physical_pins(work, path):
