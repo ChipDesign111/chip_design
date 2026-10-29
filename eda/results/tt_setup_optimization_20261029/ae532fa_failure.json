@@ -30,5 +30,6 @@
   "normal_acceptance_pass": false,
   "native_inspection_unmodified_unsaved": true,
   "private_native_inspection_sha256": "b46e03fc6b5d1b408b1735d90c33a8d51ad866c2edad6cefcd44c41b467bb31e",
-  "next_action": "Native temporary jumper-only routing trial from accepted pre-route checkpoint; full process must use a new clean source/upload if validated"
+  "next_action": "Native temporary jumper-only routing trial from accepted pre-route checkpoint; full process must use a new clean source/upload if validated",
+  "current_retired_path": "/home/s2400011041/Desktop/fullstack_chipdesign/history/retired_tt_setup_20261029/20261029_091711_ae532fa"
 }
