@@ -24,5 +24,19 @@
   "ASIC_RTL_tree": "b41b96c3b8bb9d570dc288019764d71c6ab9c44c",
   "new_result_accepted": false,
   "same_source_new_SDF_run": false,
-  "previous_failed_a3_retired_path": "/home/s2400011041/Desktop/fullstack_chipdesign/history/retired_tt_setup_20261029/20261029_055853_a3c2141"
+  "previous_failed_a3_retired_path": "/home/s2400011041/Desktop/fullstack_chipdesign/history/retired_tt_setup_20261029/20261029_055853_a3c2141",
+  "latest_progress": {
+    "observed_UTC": "2026-10-29T02:09:01.220198+00:00",
+    "phase": "Synthesis completed; Innovus placement optimization in progress, last independently audited step23",
+    "last_independently_audited_step": 23,
+    "synthesis_cell_count": 68603,
+    "synthesis_cell_area_um2": 2062766.56,
+    "native_SRAM_area_um2": 401443.591,
+    "actual_mapped_automatic_ICG": 0,
+    "actual_mapped_controlled_FF": 0,
+    "actual_mapped_excluded_TT_combinational": 0,
+    "whole_die_area_mm2": 3.7956390976,
+    "final_timing_and_physical_checks_pending": true,
+    "same_source_new_SDF_not_run": true
+  }
 }

@@ -32,7 +32,7 @@ TT原始SDF中有18条负IOPATH弧，涉及16个组合单元。INVD1有5条、IN
 
 [首轮部署身份](../eda/results/tt_setup_optimization_20261029/deployment.json)保留原始输入SHA；修复版的独立部署另行记录。基线4427c4b继续作为已完成结果保留。
 
-修复版ae532fa已干净提交并推送xzx，独立部署至`uploads/20261029_091711_ae532fa`，195项部署文件SHA全部匹配，环境退出0，正在从头进行完整SoC Genus综合。[本次部署身份](../eda/results/tt_setup_optimization_20261029/deployment_ae532fa.json)记录实际物理输入、压缩包及逐文件清单SHA。首轮失败目录完整归档到`history/retired_tt_setup_20261029`，不续跑其检查点。新结果未验收，TT负IOPATH是否归零仍待本次新SDF实测。
+修复版ae532fa已干净提交并推送xzx，独立部署至`uploads/20261029_091711_ae532fa`，195项部署文件SHA全部匹配，环境退出0，完整SoC综合已完成：68603个单元，单元面积2062766.560µm²（含SRAM401443.591µm²），实际自动ICG、受控触发器和被排除TT组合单元均为0。当前前23步已独立审核通过，正在24步布局优化；实测含PAD整颗Die为3.7956390976mm²。最终时序、电气、物理和新SDF尚未验收。[本次部署身份](../eda/results/tt_setup_optimization_20261029/deployment_ae532fa.json)记录实际物理输入、压缩包及逐文件清单SHA。首轮失败目录完整归档到`history/retired_tt_setup_20261029`，不续跑其检查点。新结果未验收，TT负IOPATH是否归零仍待本次新SDF实测。
 
 新物理正常通过后，对同一数据库串行运行TT、FF−40和SS125，每种16组SDF与1组独立零延时对照，保留全部检查和原复位相位；另核验SRAM真实半周期路径。最终对比TT截零条数、负值范围、SS Setup/Hold、面积及三组功能/动态结果。若原生工具或模型仍限制TT归零，列出实测对象和剩余影响，不把Warning降级或无损支持标记修改当成优化。
 
