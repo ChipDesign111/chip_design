@@ -1,0 +1,28 @@
+{
+  "observed_UTC": "2026-10-29T01:18:56.035735+00:00",
+  "physical_source_commit": "ae532fa8d10d03c0540a1142b128bc158c583d2c",
+  "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_091711_ae532fa",
+  "archive_sha256": "f90f708fa856ddf8fcf6b00cdc8ca9e796340287b30f201808b18f3491a84dba",
+  "source_manifest_sha256": "7fada737e26798b45a665633c58ae7124efcc4060e42ecd5a5f8be1b23ac2800",
+  "source_clean": true,
+  "deploy_files_verified": 195,
+  "deploy_mismatches": [],
+  "environment_exit_code": 0,
+  "phase": "Fresh full-SoC Genus synthesis running; new implementation/SDF not yet accepted",
+  "parameters": {
+    "combinational_cell_mapping": "tt_nonnegative_tables",
+    "implementation_effort": "high",
+    "setup_optimization_goal_ns": 0.3,
+    "antenna_fanout_reserve": 1,
+    "fanout_optimization_target": 15,
+    "final_lecture_fanout_limit": 16,
+    "normal_minimum_setup_hold_ns": 0,
+    "period_ns": 20,
+    "max_whole_die_mm2": 3.8
+  },
+  "functional_RTL_equal_to_main": true,
+  "ASIC_RTL_tree": "b41b96c3b8bb9d570dc288019764d71c6ab9c44c",
+  "new_result_accepted": false,
+  "same_source_new_SDF_run": false,
+  "previous_failed_a3_retired_path": "/home/s2400011041/Desktop/fullstack_chipdesign/history/retired_tt_setup_20261029/20261029_055853_a3c2141"
+}

@@ -32,5 +32,6 @@
     "tool_explanation": "Disabling fanout fix in postRoute stage.",
     "final_marker": "NATIVE_DRV_TRIAL_COMPLETE_NO_SAVED_DESIGN",
     "raw_log_sha256": "5a386561cc48ea7b87a5b38b257bb24d757eb8822a57425480c062ae5cee11ff"
-  }
+  },
+  "current_retired_path": "/home/s2400011041/Desktop/fullstack_chipdesign/history/retired_tt_setup_20261029/20261029_055853_a3c2141"
 }
