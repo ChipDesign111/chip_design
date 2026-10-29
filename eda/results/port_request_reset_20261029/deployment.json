@@ -1,0 +1,23 @@
+{
+  "observed_UTC": "2026-10-29T07:07:07.221993+00:00",
+  "physical_source_commit": "07af8464f4fbbd1c76b41a326f8b05fa745ad3b6",
+  "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_150649_07af846",
+  "archive_sha256": "ddd4fd9a5f331f127449e44d5b020b52097495297235eb8072a9d1238737c1be",
+  "source_manifest_sha256": "3922e0e44e2894847258fa1760cc109ee60673ad6f0fe47771d73cd6b73e5d3f",
+  "source_clean": true,
+  "verified_deploy_files": 197,
+  "deploy_mismatches": [],
+  "environment_exit_code": 0,
+  "phase": "Environment0; fresh full-SoC Genus running; new final physical/SDF pending",
+  "functional_RTL_equal_to_main": false,
+  "main_modified_or_merged": false,
+  "fix": "Common clock-qualified SRAM transaction reset for AXI bridge and command bank; captured command/payload drains once",
+  "normal_period_ns": 20,
+  "normal_max_whole_die_mm2": 3.8,
+  "prior_physical_source": "0d48a66",
+  "prior_TT_negative_IOPATH_clamps": 0,
+  "prior_SS125_setup_ns": 0.29,
+  "prior_TT_final_reset_Hold_events": 1,
+  "new_physical_or_SDF_accepted": false,
+  "actual_Genus_pid": 3116044
+}
