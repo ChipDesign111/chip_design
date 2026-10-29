@@ -62,3 +62,7 @@ flowchart LR
 [功能证据](functional_validation.json)给出本次RTL SHA和日志SHA。所有开发脚本、原始波形及临时构建仅留本地archives。需要继续：以新干净源码重新综合和完整34步，复核四角Setup/Hold、原生电气/物理、整颗面积以及真实半周期，然后串行新TT/FF−40/SS125三组各17例SDF。不能用旧0d48a66的GDS、SDF或通过报告证明本次RTL。
 
 main保持用户指定的历史合并点，后续修复只提交xzx；新RTL未完成物理/SDF前不自动合入main。独立Calibre、多RC/SI、IR/EM/ESD及形式等价等未执行项目仍分别列明，不冒称签核。
+
+## 本次独立部署
+
+新物理输入`07af8464f4fbbd1c76b41a326f8b05fa745ad3b6`已推送xzx并干净部署到`/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_150649_07af846`。源包SHA256 `ddd4fd9a5f331f127449e44d5b020b52097495297235eb8072a9d1238737c1be`；197个部署文件逐项SHA核验一致。环境阶段退出0，真实Genus已进入新完整SoC综合；新的四角最终报告和三组SDF尚待完成。[部署记录](../eda/results/port_request_reset_20261029/deployment.json)与功能验证分开记录。
