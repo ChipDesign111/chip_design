@@ -716,8 +716,8 @@
         <StratHandle Name="Flow_AreaOptimized_high" Flow="Vivado Synthesis 2019"/>
         <Step Id="synth_design">
           <Option Id="ControlSetOptThreshold">1</Option>
-          <Option Id="Directive">1</Option>
           <Option Id="MoreOptsStr"><![CDATA[-generic SRAM_INIT_FILE=D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/fpga/firmware/int8_selftest.hex]]></Option>
+          <Option Id="Directive">1</Option>
         </Step>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
