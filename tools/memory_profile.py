@@ -6,6 +6,7 @@ MEMORIES = ("portable-sram", "ra1shd")
 ADAPTER_SOURCES = (
     "rtl/memory/chip_sram_2048x32.sv",
     "rtl/memory/my_mainmem.sv",
+    "rtl/memory/sram_transaction_reset.sv",
 )
 
 

@@ -21,7 +21,10 @@ module axi2mem #(
     parameter int unsigned AXI_ID_WIDTH      = 10,
     parameter int unsigned AXI_ADDR_WIDTH    = 64,
     parameter int unsigned AXI_DATA_WIDTH    = 64,
-    parameter int unsigned AXI_USER_WIDTH    = 10
+    parameter int unsigned AXI_USER_WIDTH    = 10,
+    // SRAM integration supplies a shared, falling-edge-qualified reset.
+    // Retain the original behavior for all other instances by default.
+    parameter bit QUIET_ON_RESET             = 1'b0
 )(
     input logic                         clk_i,    // Clock
     input logic                         rst_ni,  // Asynchronous reset active low
@@ -265,6 +268,18 @@ module axi2mem #(
             end
 
         endcase
+        // A reset bridge must not advertise an AXI acceptance or issue a new
+        // memory request. This control uses the same qualified reset as the
+        // SRAM command bank; it never clears an already captured payload.
+        if (QUIET_ON_RESET && !rst_ni) begin
+            req_o          = 1'b0;
+            we_o           = 1'b0;
+            slave.aw_ready = 1'b0;
+            slave.ar_ready = 1'b0;
+            slave.w_ready  = 1'b0;
+            slave.r_valid  = 1'b0;
+            slave.b_valid  = 1'b0;
+        end
     end
 
     `ifndef SYNTHESIS

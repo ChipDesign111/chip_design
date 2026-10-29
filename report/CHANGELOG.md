@@ -1,5 +1,7 @@
 # 当前架构变更
 
+2026-10-30：从 `43f5e38` 移植共享 SRAM 事务复位边界到 `rtl-dev`，保留共享 64 MAC、batch=4 和 25 MHz `NO_LATENCY` 配置。SRAM AXI 桥与 `my_mainmem` 使用同一个下降沿限定复位，仅 SRAM 桥启用 `QUIET_ON_RESET`。功能回归通过，综合、实现和对应物理/SDF 证据待重跑。
+
 2026-10-30：将 FC1/FC2 改为共享 64 个 INT8 乘法器。FC1 保持 32 输出×2 lane；FC2 使用同一 bank 映射为 6 输出×8 输入行，物理权重包仍为 48 B，FC2 发射周期从 `batch×32` 降为 `batch×4`。固定基准 batch=1/2/4 NPU 为 1394/1410/1503 拍，完整 SoC batch=4 为 5101 拍。对应物理实现和 25 MHz 时序尚未重跑。
 
 2026-10-30：FPGA 选择 25 MHz 系统时钟，AXI crossbar 从 `CUT_SLV_AX` 恢复为 `NO_LATENCY`。功能与完整 SoC 回归通过，batch=4 完整 SoC 从 6403 拍降至 5193 拍。该时钟和时序结论仅适用于 FPGA，不改变 50 MHz ASIC 目标证据。

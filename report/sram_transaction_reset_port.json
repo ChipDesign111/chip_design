@@ -1,0 +1,42 @@
+{
+  "validated_at": "2026-10-30",
+  "branch": "rtl-dev",
+  "base_commit": "a5a1aa2",
+  "source_commit": "43f5e389d2a87bc004ec447c3fd8e562b426d22d",
+  "scope": "Targeted SRAM transaction-reset integration into the shared 64-MAC rtl-dev baseline.",
+  "integration": {
+    "shared_reset_output": true,
+    "axi2mem_quiet_on_reset": true,
+    "sram_bridge_and_mainmem_share_reset": true,
+    "clock_running_minimum_falling_edges": 2,
+    "accepted_payload_not_asynchronously_cleared": true
+  },
+  "results": {
+    "unit_cases": 38,
+    "trained_samples": 24,
+    "soc": true,
+    "passed": true
+  },
+  "full_soc_batch_4": {
+    "post_commit_cycles": 5101,
+    "dma_read_mac_overlap": 132,
+    "dma_write_mac_overlap": 132
+  },
+  "artifacts": {
+    "rtl/axi/axi2mem.sv": "3ef78c641f0be1d090dde77e48ae114f774a1747836cdf3f85a30e2fd6d64e0d",
+    "rtl/memory/my_mainmem.sv": "649ca8f38e5da58a7744228ea6893ef35c20ac0f6cbe16bd2ed35e44ecb913d4",
+    "rtl/memory/sram_transaction_reset.sv": "d3b9030e3c3e0612bb6fad4318df105582e90eac427100e41fdda02e3911ae1b",
+    "rtl/soc/my_soc_top.sv": "f30227d54dcfb8452cebae273552b620d4dd2f83e1a40fb50bd1b4673c44bcb2",
+    "rtl/filelist.f": "8f491e68ffe1e157b199f0fa84c204ff815ab30119692d6baff68c2715cfcfbd",
+    "tools/memory_profile.py": "f35866e83587271fb236879ebe5efc630e73709a40dda581c2406cde8d0aadc9",
+    "fpga/firmware/int8_selftest.hex": "b68eb2a64edb31744d4573e7c4c7ced5562be029a91c58b08a3af1d724cb96b7"
+  },
+  "excluded": [
+    "80-phase joint AXI/SRAM reset matrix",
+    "FPGA synthesis",
+    "FPGA place and route",
+    "ASIC physical implementation",
+    "SDF simulation",
+    "timing signoff"
+  ]
+}

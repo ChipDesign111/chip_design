@@ -372,6 +372,14 @@ module my_soc_top #(
   logic [31:0] sram_wdata;
   logic [3:0]  sram_be;
   logic [31:0] sram_rdata;
+  logic sram_transaction_reset_n;
+  // Do not distribute the asynchronously asserting SoC reset directly into
+  // the non-reset SRAM command D path. One shared boundary controls both ends;
+  // changing only my_mainmem would leave bridge acceptance inconsistent.
+  sram_transaction_reset i_sram_transaction_reset (
+      .clk_i(clk_i), .reset_request_ni(ndmreset_n),
+      .transaction_reset_no(sram_transaction_reset_n)
+  );
 
   logic        boot_req;
   logic        boot_we;
@@ -412,7 +420,7 @@ module my_soc_top #(
       .INIT_FILE(FPGA_INIT_FILE)
   ) i_mainmem (
       .clk_i  (clk_i),
-      .rst_ni (ndmreset_n),
+      .rst_ni (sram_transaction_reset_n),
       .req_i  (sram_req),
       .we_i   (sram_we),
       .be_i   (sram_be),
@@ -425,10 +433,11 @@ module my_soc_top #(
       .AXI_ID_WIDTH   (4),
       .AXI_ADDR_WIDTH (32),
       .AXI_DATA_WIDTH (32),
-      .AXI_USER_WIDTH (1)
+      .AXI_USER_WIDTH (1),
+      .QUIET_ON_RESET(1'b1)
   ) i_axi2sram (
       .clk_i  (clk_i),
-      .rst_ni (ndmreset_n),
+      .rst_ni (sram_transaction_reset_n),
       .slave  (master[IDX_SRAM]),
       .req_o  (sram_req),
       .we_o   (sram_we),
