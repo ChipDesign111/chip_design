@@ -1,13 +1,13 @@
 {
   "validated_at": "2026-10-30",
   "branch": "rtl-dev",
-  "base_commit": "f4332eab42f0a2958f1f4a1776f90554e944586b",
-  "scope": "Shared FC1/FC2 64-multiplier bank RTL functional and cycle regression. No synthesis, implementation or SDF validation was run.",
+  "base_commit": "74ad5cb",
+  "scope": "Shared FC1/FC2 32-multiplier bank RTL functional and cycle regression. No synthesis, implementation or SDF validation was run.",
   "architecture": {
-    "dot_product_multipliers": 64,
-    "fc1_mapping": "32 outputs x 2 input lanes",
-    "fc2_mapping": "6 outputs x 8 input rows",
-    "fc2_active_multipliers": 48,
+    "dot_product_multipliers": 32,
+    "fc1_mapping": "16 outputs x 2 input lanes per phase",
+    "fc2_mapping": "6 outputs x 4 input rows per phase",
+    "fc2_active_multipliers": 24,
     "fc1_physical_tiles": 32,
     "fc2_physical_packets": 4,
     "fc2_packet_bytes": 48,
@@ -21,40 +21,40 @@
   },
   "fixed_seed_10000": {
     "batch_1": {
-      "cycles": 1394,
-      "fc1_issue_cycles": 32,
-      "fc2_issue_cycles": 4,
-      "dma_read_mac_overlap": 20,
-      "dma_write_mac_overlap": 19
-    },
-    "batch_2": {
-      "cycles": 1410,
+      "cycles": 1395,
       "fc1_issue_cycles": 64,
       "fc2_issue_cycles": 8,
-      "dma_read_mac_overlap": 32,
-      "dma_write_mac_overlap": 35
+      "dma_read_mac_overlap": 38,
+      "dma_write_mac_overlap": 36
     },
-    "batch_4": {
-      "cycles": 1503,
-      "cycles_per_sample": 375.75,
+    "batch_2": {
+      "cycles": 1413,
       "fc1_issue_cycles": 128,
       "fc2_issue_cycles": 16,
-      "dma_read_mac_overlap": 79,
-      "dma_write_mac_overlap": 74
+      "dma_read_mac_overlap": 65,
+      "dma_write_mac_overlap": 63
+    },
+    "batch_4": {
+      "cycles": 1512,
+      "cycles_per_sample": 378.0,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 32,
+      "dma_read_mac_overlap": 146,
+      "dma_write_mac_overlap": 143
     }
   },
   "full_soc_batch_4": {
-    "post_commit_cycles": 5101,
-    "dma_read_mac_overlap": 132,
-    "dma_write_mac_overlap": 132
+    "post_commit_cycles": 5109,
+    "dma_read_mac_overlap": 270,
+    "dma_write_mac_overlap": 269
   },
   "artifacts": {
-    "fpga_firmware_sha256": "b68eb2a64edb31744d4573e7c4c7ced5562be029a91c58b08a3af1d724cb96b7",
-    "rtl/npu/har_npu_core.sv": "575f8c66bc56e5c54ad4aa8c1ddf978bf8c53099cd3e447e20865ee0834cab3d",
+    "fpga_firmware_sha256": "fa38f91311768cd73386f8e093370831383d9e0e1b8a4832a2f3f978a2bfe850",
+    "rtl/npu/har_npu_core.sv": "be23b4b71952b2e0631a50944e3528d6252d79d44ab778bd649fa7d91c290b77",
     "rtl/npu/har_weight_store.sv": "473106074ca66f795445cd3862104d7e57da364b6ab119996eb612934b7d2913",
     "rtl/npu/simple_npu_top.sv": "a2c35d04c11661eba29ced83115b8e7e9e3767c5e94c77ac226f4aab14eba260",
-    "test/int8/tb_tiled_dma.sv": "e0cf9b6369a7ca06037972327ad3eb726914c0ee8ae50c992ff25f0c9dee667d",
-    "test/int8/firmware.py": "a79de9f0f41e450c825178bf4f13fc017e2bd0e58c1639732153e625069ddcd0"
+    "test/int8/tb_tiled_dma.sv": "07324ecc30adcacdd1b12da189e978ffaac1358b255d38d3beb4ed769e681593",
+    "test/int8/firmware.py": "0ccaba19b9d17a7f6aa35d5c4fd8e8c6abff17e8f1665c5c86568e05bdbf1153"
   },
   "excluded": [
     "FPGA synthesis",

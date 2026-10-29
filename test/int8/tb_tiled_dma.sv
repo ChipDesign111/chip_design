@@ -129,7 +129,7 @@ module tb_tiled_dma;
                 check(class_addr,mem[golden_addr/4+14]);
             end
             if(batch==4) check('h1280,0);
-            check('h28,batch*32);check('h2c,batch*4);
+            check('h28,batch*64);check('h2c,batch*8);
             $display("CASE %0d PASS cycles=%0d fc1=%0d fc2=%0d read_overlap=%0d write_overlap=%0d",
                 which,dut.cycles,dut.fc1_cycles,dut.fc2_cycles,dut.read_overlap,dut.write_overlap);
             put(0,2);

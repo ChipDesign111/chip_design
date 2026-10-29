@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "INT8_SHARED_64MAC_SRAM_TILE_DMA_BATCH4_ZERO_BUBBLE_W2_PACKED",
+  "status": "INT8_SHARED_32MAC_SRAM_TILE_DMA_BATCH4_ZERO_BUBBLE_W2_PACKED",
   "organization": "ChipDesign111",
   "repository": "chip_design",
   "network": {
@@ -18,8 +18,8 @@
   },
   "architecture": {
     "fc1_input_lanes": 2,
-    "fc1_parallel_outputs": 32,
-    "fc2_input_lanes": 8,
+    "fc1_parallel_outputs": 16,
+    "fc2_input_lanes": 4,
     "fc2_parallel_outputs": 6,
     "dot_product_multipliers": 64,
     "shared_dot_product_bank": true,
@@ -27,10 +27,10 @@
     "weight_tile_buffers": 2,
     "weight_tile_bytes": 64,
     "batch_max": 4,
-    "fc1_mac_issue_cycles_per_sample": 32,
-    "fc2_mac_issue_cycles_per_sample": 4,
+    "fc1_mac_issue_cycles_per_sample": 64,
+    "fc2_mac_issue_cycles_per_sample": 8,
     "weight_layout": "FC1[tile32][output32][lane2]; FC2[packet4][row8][output6], 48 bytes per packet",
-    "shared_mac_mapping": "FC1: 32 outputs x 2 lanes; FC2: 6 outputs x 8 input rows",
+    "shared_mac_mapping": "FC1: 16 outputs x 2 lanes per phase; FC2: 6 outputs x 4 input rows per phase",
     "tile_handoff": "last-sample consumed pulse, direct ISSUE when next bank is ready",
     "fc2_prefetch": "two 64-byte banks preloaded during final W1 tile and requant",
     "mac_pipeline": "combinational INT8 multiplication into INT32 accumulator per ISSUE cycle",
