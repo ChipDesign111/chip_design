@@ -8,9 +8,9 @@
 
 上一轮已完成实测：含 PAD **3.9856 mm²**，系统 **20 ns**，最终 Setup/Hold **+0.042 / +0.021 ns**，34/34 及三个阶段通过。详见[本轮结果与逐步报告](eda/results/int8_20261023/README.md)；SDF 已导出，尚未执行回标后仿。
 
-本实现已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。完整 SoC 包含 CV32E40P、AXI、JTAG Debug、8 KiB 主 SRAM 和 64→32→6 NPU。第一层 2 输入×32 输出、第二层 1×6；两个 64B 权重 tile 缓冲由 DMA 从主 SRAM 按需填充。输入/权重/隐藏激活 INT8，偏置/累加/分数 INT32。当前目标是含 PAD 整颗 Die ≤3.8 mm²。
+本实现已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。完整 SoC 包含 CV32E40P、AXI、JTAG Debug、8 KiB 主 SRAM 和 64→32→6 NPU。第一层将共享 64 乘法器映射为 2 输入×32 输出，第二层映射为 8 输入×6 输出；两个 64B 权重 tile 缓冲由 DMA 从主 SRAM 按需填充。输入/权重/隐藏激活 INT8，偏置/累加/分数 INT32。当前目标是含 PAD 整颗 Die ≤3.8 mm²。
 
-`rtl-dev` 当前支持最多四样本寄存器批次，并完成 tile 零气泡交接、FC2 四组 48B 粗粒度权重包和 W1 尾部 W2 预取。FPGA 版本使用 25 MHz 系统时钟与 `NO_LATENCY` crossbar；固定基准下 batch=4 单批为 1567 拍，详见[性能对比](report/performance.md)。这些是 RTL 周期结果，25 MHz FPGA 时序和 batch=4 物理面积仍需对应签核。
+`rtl-dev` 当前支持最多四样本寄存器批次，并完成 tile 零气泡交接、FC2 四组 48B 粗粒度权重包、W1 尾部 W2 预取和 64 乘法器跨层复用。FPGA 版本使用 25 MHz 系统时钟与 `NO_LATENCY` crossbar；固定基准下 batch=4 单批为 1503 拍，详见[性能对比](report/performance.md)。这些是 RTL 周期结果，25 MHz FPGA 时序和 batch=4 物理面积仍需对应签核。
 
 从本机打包上传到服务器、三个独立阶段和结果回传，直接跟随 [EDA 操作指南](eda/README.md)。服务器从每个上传版本目录的 README.html 开始。结构、启动流程和寄存器见 [设计报告](report/README.md)。
 

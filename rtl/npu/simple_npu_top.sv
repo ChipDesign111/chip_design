@@ -1,5 +1,5 @@
 // MMIO configuration and autonomous SRAM weight prefetch.
-// Supports register-resident batches of up to eight samples without NPU SRAM.
+// Supports register-resident batches of up to four samples without NPU SRAM.
 module simple_npu_top (
     input logic clka,rst_ni,ena,wea,dma_write_i,
     input logic [11:0] addra,
@@ -12,6 +12,7 @@ module simple_npu_top (
 );
     localparam int INPUT2_BASE=1024;
     localparam int OUTPUT2_BASE=1152;
+    localparam int W2_GROUPS=4;
     logic [511:0] x[0:3];
     logic [1023:0] b1;
     logic [191:0] b2;
@@ -45,7 +46,7 @@ module simple_npu_top (
     wire tile_window=addra>=64 && addra<96;
     wire want_w1=next_w1<32;
     wire load_bank=want_w1 ? next_w1[0]:next_w2[0];
-    wire load_pending=want_w1 || next_w2<4;
+    wire load_pending=want_w1 || next_w2<W2_GROUPS;
     wire load_bank_free=!ready_w1[load_bank] && !ready_w2[load_bank];
     wire safe_tile_write=write_req && dma_write_i && tile_window && pending &&
         addra[4]==loading_bank && !ready_w1[loading_bank] && !ready_w2[loading_bank];
@@ -53,8 +54,10 @@ module simple_npu_top (
     wire load_failed=load_finished &&
         (dma_error_i || received!=(pending_w2 ? 16'h0fff:16'hffff));
     wire [4:0] next_tile_index=tile_index+1'b1;
-    wire compute_bank=layer ? tile_index[3]:tile_index[0];
-    wire next_bank=layer ? next_tile_index[3]:next_tile_index[0];
+    // FC1 selects one of 32 tiles and FC2 one of four packets. Both streams
+    // alternate between the two physical banks using the tile index low bit.
+    wire compute_bank=tile_index[0];
+    wire next_bank=next_tile_index[0];
     wire current_ready=layer ? ready_w2[compute_bank]:ready_w1[compute_bank];
     wire next_ready=layer ? ready_w2[next_bank]:ready_w1[next_bank];
     wire bank_published=|{ready_w1,ready_w2};
@@ -67,8 +70,7 @@ module simple_npu_top (
     assign auto_dest_o=32'h70000100+({31'd0,load_bank}<<6);
     assign auto_words_o=want_w1 ? 32'd16:32'd12;
     har_weight_store weights(.clk(clka),.we_i(safe_tile_write),.bank_i(addra[4]),
-        .word_i(addra[3:0]),.data_i(dina),.compute_bank_i(compute_bank),
-        .packed_i(layer),.tile_index_i(tile_index),.tile_o(tile_data));
+        .word_i(addra[3:0]),.data_i(dina),.compute_bank_i(compute_bank),.tile_o(tile_data));
     har_npu_core core(.clk(clka),.rst_ni(rst_ni),.start(start),
         .ack_done(cpu_write && addra==0 && dina[1]),.batch_count(batch_count),.abort_i(load_failed),
         .input_features(input_packed),.bias1(b1),.bias2(b2),
@@ -104,7 +106,7 @@ module simple_npu_top (
             if(safe_tile_write) received[addra[3:0]]<=1;
             if(consumed) begin
                 if(!layer) ready_w1[compute_bank]<=0;
-                else if(tile_index[2:0]==3'd7) ready_w2[compute_bank]<=0;
+                else ready_w2[compute_bank]<=0;
             end
             if(load_finished) begin
                 pending<=0;

@@ -111,7 +111,11 @@ module tb_tiled_dma;
         put(0,1);check(4,4);
         for(which=0;which<count;which=which+1) begin
             filename=$sformatf("%s/case_%0d.hex",directory,which);$readmemh(filename,mem);
-            configure();put(0,1);await_done();check(4,1);check('h30,64);
+            configure();put(0,1);await_done();check(4,1);
+            if(dut.loads!==64)
+                $fatal(1,"Expected 64 logical tiles, loads=%0d next_w1=%0d next_w2=%0d cycles=%0d",
+                    dut.loads,dut.next_w1,dut.next_w2,dut.cycles);
+            check('h30,64);
             batch=mem['h1f08/4];
             if(batch>1 && (dut.read_overlap==0 || dut.write_overlap==0))
                 $fatal(1,"No real DMA read/write and MAC overlap");
@@ -125,7 +129,7 @@ module tb_tiled_dma;
                 check(class_addr,mem[golden_addr/4+14]);
             end
             if(batch==4) check('h1280,0);
-            check('h28,batch*32);check('h2c,batch*32);
+            check('h28,batch*32);check('h2c,batch*4);
             $display("CASE %0d PASS cycles=%0d fc1=%0d fc2=%0d read_overlap=%0d write_overlap=%0d",
                 which,dut.cycles,dut.fc1_cycles,dut.fc2_cycles,dut.read_overlap,dut.write_overlap);
             put(0,2);
