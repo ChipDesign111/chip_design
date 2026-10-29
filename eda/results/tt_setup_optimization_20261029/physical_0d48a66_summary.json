@@ -1,0 +1,83 @@
+{
+  "physical_source_commit": "0d48a66258f3b56a2b216d64ae7914db0acc6c63",
+  "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_115755_0d48a66",
+  "whole_die_area_mm2": 3.7956390976,
+  "same_input_34_steps": true,
+  "verified_lightweight_files": 894,
+  "receipt": {
+    "archive_sha256": "dddbd4d81bd0d0b7a52c9e7ead1c174911fc992f3d640ee66a8b8c2e3d56ae2b",
+    "files_verified": 894,
+    "input_manifest_sha256": "d7e93d7040f35450655fc5efee94c18ce59988d23c37f24fcc5a459de8d6c7b1",
+    "remote_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_115755_0d48a66",
+    "all_34_steps_same_input": true,
+    "whole_die_area_mm2": 3.7956390976,
+    "max_whole_die_area_mm2": 3.8
+  },
+  "four_corner_slack_ns": {
+    "func_tt_io": {
+      "Setup": 4.138,
+      "Hold": 0.018
+    },
+    "func_ss_io": {
+      "Setup": 0.29,
+      "Hold": 0.07
+    },
+    "func_ff0_io": {
+      "Setup": 5.793,
+      "Hold": 0.008
+    },
+    "func_ffm40_io": {
+      "Setup": 5.965,
+      "Hold": 0.0
+    }
+  },
+  "final_timing": {
+    "Setup": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_115755_0d48a66/work/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute.summary.gz",
+      "wns_ns": 0.29,
+      "tns_ns": 0.0,
+      "violating_paths": 0,
+      "drv": {
+        "max_cap": {
+          "real": 0,
+          "total": 0
+        },
+        "max_tran": {
+          "real": 0,
+          "total": 0
+        },
+        "max_fanout": {
+          "real": 0,
+          "total": 0
+        },
+        "max_length": {
+          "real": 0,
+          "total": 0
+        }
+      },
+      "electrical_drv_table_reported_here": true,
+      "minimum_wns_ns": 0.0,
+      "targets_met": true,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute.summary.gz",
+      "report_sha256": "21e921ee314f5c369e8b2fd26906584704771e17e62fe0b86de1b2c1ee4e659a"
+    },
+    "Hold": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_115755_0d48a66/work/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute_hold.summary.gz",
+      "wns_ns": 0.0,
+      "tns_ns": 0.0,
+      "violating_paths": 0,
+      "drv": {},
+      "electrical_drv_table_reported_here": false,
+      "minimum_wns_ns": 0.0,
+      "targets_met": true,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute_hold.summary.gz",
+      "report_sha256": "bbc5a495ad06871cb79eaf46a91f36434005f78da8f9d309b784207f677219aa"
+    }
+  },
+  "final_DRC_antenna_and_core_PG_pass": true,
+  "TT_SDF_functional_cases": 17,
+  "TT_SDF_negative_IOPATH_clamps": 0,
+  "TT_final_reset_dynamic_timing_events": 1,
+  "TT_normal_postsim_pass": false,
+  "next_action": "Shared transaction reset RTL correction, new same-source EDA/SDF required; old physical success does not validate modified RTL"
+}

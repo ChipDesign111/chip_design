@@ -57,3 +57,9 @@ TT原始SDF中有18条负IOPATH弧，涉及16个组合单元。INVD1有5条、IN
 新物理正常通过后，对同一数据库串行运行TT、FF−40和SS125，每种16组SDF与1组独立零延时对照，保留全部检查和原复位相位；另核验SRAM真实半周期路径。最终对比TT截零条数、负值范围、SS Setup/Hold、面积及三组功能/动态结果。若原生工具或模型仍限制TT归零，列出实测对象和剩余影响，不把Warning降级或无损支持标记修改当成优化。
 
 正常验收条件见[验收条件](../eda/docs/验收条件.md)，打包上传和三个独立阶段见[操作指南](../eda/README.md)。开发探针、临时脚本和原始诊断日志只保存在本机archives；分支保存正式部署文件及正常结果分析。
+
+## 0d48a66正式结果与新的复位修正
+
+0d48a66完成同源34步和三个阶段0，894项轻量文件核验，整颗3.7956390976mm²。四角Setup/Hold分别为TT+4.138/+.018、SS125+.290/+.070、FF0+5.793/+.008、FF−40+5.965/+.000ns，TNS及违规路径0，最终电气/物理门禁通过。[物理摘要](../eda/results/tt_setup_optimization_20261029/physical_0d48a66_summary.json)记录本次身份。
+
+TT新SDF的17个功能场景均通过，截零0，回标缺失/error0；但1650ps最终复位场景的port_req_q_reg有1条D Hold事件，[真实审核](../eda/results/tt_setup_optimization_20261029/postsim_0d48a66_tt/audit.json)仍为normal_postsim_pass=false。因此没有继续该旧RTL的快/慢角。用户要求先对齐波形再修复，现已证明该事件来自内部异步复位的D传播，正在以[共享事务复位边界](port_request_reset_fix.md)修正RTL并重新全流程。新RTL已通过联合接口和完整SoC功能/复位回归，新的物理与SDF尚未完成。

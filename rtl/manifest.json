@@ -156,7 +156,10 @@
     {
       "source": "soc/rtl/axi/axi2mem.sv",
       "path": "rtl/axi/axi2mem.sv",
-      "sha256": "fff8e7e11c584755f4b0abf638880c51e77cea199a4fa40f15ac6ef2a803d39e"
+      "sha256": "3ef78c641f0be1d090dde77e48ae114f774a1747836cdf3f85a30e2fd6d64e0d",
+      "upstream_sha256": "fff8e7e11c584755f4b0abf638880c51e77cea199a4fa40f15ac6ef2a803d39e",
+      "previous_sha256": "fff8e7e11c584755f4b0abf638880c51e77cea199a4fa40f15ac6ef2a803d39e",
+      "project_override": "Optional QUIET_ON_RESET handshake/request quiescence for the shared SRAM transaction reset domain; default original behavior retained for other instances"
     },
     {
       "source": "soc/rtl/axi/axi_adapter.sv",
@@ -383,10 +386,10 @@
     {
       "source": "soc/rtl/my_soc_top.sv",
       "path": "rtl/soc/my_soc_top.sv",
-      "sha256": "6ff7907978ad2aaeaf058314a889d239df9377ca83d3b8fb22869e08bb5407a3",
-      "previous_sha256": "46970e8d4fd61c49c804ed89fdf920a4e1160ff01ecb555228fdd35d80768436",
+      "sha256": "5eca222d9a5b0b1809b6d8b07f0402fae934388b28a05488efb60c015018d89f",
+      "previous_sha256": "6ff7907978ad2aaeaf058314a889d239df9377ca83d3b8fb22869e08bb5407a3",
       "original_sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6",
-      "project_override": "INT8 tile DMA and guarded boot; crossbar internal spill stages removed, endpoint adapters retained",
+      "project_override": "INT8 tiled DMA, guarded boot and shared falling-edge SRAM transaction reset for both AXI bridge and command bank",
       "upstream_sha256": "174207c5682648222a6f280705666d272d1d44406df6193370c0e8efc7ed374e"
     }
   ],
@@ -396,6 +399,6 @@
       "rtl/soc/my_npu_subsystem.sv",
       "rtl/soc/my_soc_top.sv"
     ],
-    "unchanged": "Vendor CPU, AXI library, Debug and clock/reset library sources; integration overrides are listed per file"
+    "unchanged": "CPU, debug and upstream clock/reset library sources remain unchanged; AXI memory bridge and SoC integration overrides are documented per file"
   }
 }

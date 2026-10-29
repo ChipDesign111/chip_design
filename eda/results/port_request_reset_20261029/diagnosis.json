@@ -1,0 +1,37 @@
+{
+  "old_physical_source": "0d48a66258f3b56a2b216d64ae7914db0acc6c63",
+  "old_postsim_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_135526_postsim_vcs_tt_a6f2ba5",
+  "case": "sdf_firmware_10001",
+  "reset_offset_ps": 1650,
+  "all_original_inputs_SHA_unchanged": true,
+  "original_input_SHA256": {
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_135526_postsim_vcs_tt_a6f2ba5/postsim/inputs/tb_postsim.sv": "614b761a3fe6cce6db70eef445ff704a0b50dddf962bea4b0adcc6425b184832",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_135526_postsim_vcs_tt_a6f2ba5/postsim/inputs/netlist.v": "7d8db308535a93dfc6ad160cb5186d3d21727aa325ed63e57dbb778532bd1a18",
+    "/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v": "e1d4d2b7b789f9b7e5bfdc1b1597434b53d65699b68823c457dc78e146c636b3",
+    "/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Front_End/verilog/tpd018nv_260a/tpd018nv.v": "57d800247aa58b8113d89ec5584b646e7d620248eec08381cb024734e8cfa2c2",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_135526_postsim_vcs_tt_a6f2ba5/postsim/inputs/sram_period_adapter.v": "f348b8b1f9d5dc8b23714bde247371ce556ed8ac12c772f6f140527920e36b3d",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_135526_postsim_vcs_tt_a6f2ba5/postsim/inputs/timing.sdf": "7d717915375ecedaeadc08322ebba0f771832d249230c0d983ed2302d3d20a9c",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_135526_postsim_vcs_tt_a6f2ba5/configs/firmware_10001.hex": "09dd02bb0ccc5ce532c938465fa4cad5674c170a0195879393bc6d69d8eebdf7"
+  },
+  "monitor_is_passive": true,
+  "old_SDF_models_stimulus_checks_unchanged": true,
+  "events_ns": {
+    "external_reset_fall": 238881.65,
+    "global_ndmreset_fall": 238887.505,
+    "mainmem_internal_reset_fall": 238890.746,
+    "g98_reset_pin_fall": 238890.754,
+    "g98_output_fall": 238891.222,
+    "port_req_FF_CP_rise": 238891.547,
+    "port_req_FF_D_fall": 238891.552,
+    "port_req_Q_becomes_X": 238891.825,
+    "macro_CEN_becomes_X": 238891.902,
+    "mainmem_req_i_fall": 238894.916
+  },
+  "measured_hold_ps": 5,
+  "required_hold_ps": 21,
+  "deficit_ps": 16,
+  "cause_for_this_event": "Asynchronously asserting internal reset propagates through g98 CKAN2D1 and the request-D buffer path while req_i remains1; not an ordinary synchronous req_i transition",
+  "repair": "Shared falling-edge clock-qualified reset for axi2mem and my_mainmem plus explicit reset-time handshake quiescence; committed payload/request FF remain free of asynchronous clear",
+  "new_functional_evidence": "report/functional_validation.json shared_transaction_reset_validation",
+  "new_physical_and_SDF_validated": false
+}

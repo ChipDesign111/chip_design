@@ -1,6 +1,6 @@
 {
-  "validated_at": "2026-10-26T21:49:39.746321+08:00",
-  "scope": "RTL functional and reset-sweep evidence for the SRAM RTL merged into main. physical_validation records the original main single-TT baseline; current_implementation_validation records the later four-corner implementation of identical RTL.",
+  "validated_at": "2026-10-29T06:56:31.971273+00:00",
+  "scope": "Current RTL has a shared SRAM transaction-reset correction; new section records its RTL functional evidence only. Historical physical/SDF sections refer to their named old sources, not the modified RTL.",
   "results": {
     "unit_cases": 44,
     "trained_samples": 24,
@@ -383,7 +383,7 @@
       }
     ]
   },
-  "current_implementation_validation": {
+  "historical_4427_implementation_validation": {
     "physical_source_commit": "4427c4bd1f7b4197c4b2b8a4645a8f9427b6bf36",
     "RTL_equal_to_main": true,
     "period_ns": 20,
@@ -406,5 +406,276 @@
       "pvt-max": 0
     },
     "result": "eda/results/native_mux_dff_20261027/analysis.json"
+  },
+  "shared_transaction_reset_validation": {
+    "validated_at": "2026-10-29T06:56:31.971273+00:00",
+    "scope": "Shared falling-edge SRAM transaction reset RTL; functional/native SRAM checks, not new SDF or physical acceptance",
+    "RTL_source_sha256": {
+      "rtl/memory/sram_transaction_reset.sv": "d3b9030e3c3e0612bb6fad4318df105582e90eac427100e41fdda02e3911ae1b",
+      "rtl/memory/my_mainmem.sv": "649ca8f38e5da58a7744228ea6893ef35c20ac0f6cbe16bd2ed35e44ecb913d4",
+      "rtl/axi/axi2mem.sv": "3ef78c641f0be1d090dde77e48ae114f774a1747836cdf3f85a30e2fd6d64e0d",
+      "rtl/soc/my_soc_top.sv": "5eca222d9a5b0b1809b6d8b07f0402fae934388b28a05488efb60c015018d89f",
+      "rtl/filelist.f": "8f491e68ffe1e157b199f0fa84c204ff815ab30119692d6baff68c2715cfcfbd"
+    },
+    "joint_AXI_SRAM_reset": {
+      "models": [
+        "portable",
+        "authorized_native"
+      ],
+      "reset_phases_per_model": 80,
+      "offset_start_ns": 0.125,
+      "offset_step_ns": 0.25,
+      "reset_scenarios_per_model": 320,
+      "accepted_writes_per_model": 642,
+      "actual_writes_per_model": 642,
+      "native_SRAM_timing_checks_enabled": true,
+      "native_SRAM_timing_violations": 0,
+      "checks": [
+        "masked write committed exactly once",
+        "payload stable on raw reset assertion",
+        "read backpressure",
+        "read reset and retention",
+        "AW accepted without W reset",
+        "incomplete INCR burst preserves only accepted beats",
+        "stale valids rejected during common transaction reset",
+        "both bridge and command bank share same reset"
+      ]
+    },
+    "standalone_SRAM_reset": {
+      "phases_per_model": 80,
+      "read_write_reset_cases_per_model": 160,
+      "accepted_writes_per_model": 114,
+      "actual_writes_per_model": 114,
+      "native_timing_checks_enabled": true,
+      "timing_violations": 0
+    },
+    "random_trained_functional": {
+      "models": [
+        "portable",
+        "native"
+      ],
+      "random_batches_per_model": 32,
+      "training_inputs_per_model": 24,
+      "CPU_AXI_SoC_pass": true,
+      "scope": "Existing 10ns functional control; native model timing disabled there, not used as timing evidence"
+    },
+    "native_20ns_full_SoC_reset_matrix": {
+      "scope": "RTL full SoC 20ns, original SRAM timing checks ON; not SDF; only physical PAD diagnostic replaced by RTL clock",
+      "testbench_sha256": "614b761a3fe6cce6db70eef445ff704a0b50dddf962bea4b0adcc6425b184832",
+      "cases": [
+        {
+          "seed": 10000,
+          "reset_offset_ps": 2000,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "20c77b1337d039c2e4278dec1836067c6f08786aa8ae58d1ea447f961c8c484b"
+        },
+        {
+          "seed": 10001,
+          "reset_offset_ps": 250,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "e5c28bb117e8b63a9dfa76dce06ae3da8b614d1a407be346b06db260a152d259"
+        },
+        {
+          "seed": 10002,
+          "reset_offset_ps": 1650,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "a074254f05a3fa0ae7bcd0737b724f0e6820ea3d974a8c9909a2e905b8105f00"
+        },
+        {
+          "seed": 10003,
+          "reset_offset_ps": 3050,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "0fab687f718bddb264dabc97e09f980a9ee0ccc732f279bdd941887879e2a5c6"
+        },
+        {
+          "seed": 10004,
+          "reset_offset_ps": 4450,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "c914bc27061d42157d715d4745e5df7308d131be1e619095504f832aacf1331b"
+        },
+        {
+          "seed": 10005,
+          "reset_offset_ps": 5850,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "dd4acc16296db9e92f60b47da857021b915851f4251e6f4396e90ba48a4d18b7"
+        },
+        {
+          "seed": 10006,
+          "reset_offset_ps": 7250,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "e34d22ff8675fef6852c568355aea1e18525ba2c88ce4a36456299bdbefaeaca"
+        },
+        {
+          "seed": 10007,
+          "reset_offset_ps": 8650,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "e7ee43539fb945c5b22877fa953f229c3c9debcef3ef3f60d3ad3e268ea729cc"
+        },
+        {
+          "seed": 10008,
+          "reset_offset_ps": 10050,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "8dcf432989227463d22b68f72ee6c6c1815b0d869d467a3830a3e64857db7fb2"
+        },
+        {
+          "seed": 10009,
+          "reset_offset_ps": 11450,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "d5b05c67b3dd923355103c2a97d73264d24af9c04a6341ff7da37304a05cc6eb"
+        },
+        {
+          "seed": 10010,
+          "reset_offset_ps": 12850,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "ca501050aa4a0a533ee66811b154e54449801e0033a2f02597ce5ae1d9414182"
+        },
+        {
+          "seed": 10011,
+          "reset_offset_ps": 14250,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "65824a7c2b44fe93a9fc312873714a98117300ce51ff0b7cc0be2ff03e6e972a"
+        },
+        {
+          "seed": 1,
+          "reset_offset_ps": 15650,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "c9177780ce938b98d2a916c09a3e984163d11b8c7d34e89fbe1279ee1971bd61"
+        },
+        {
+          "seed": 3,
+          "reset_offset_ps": 17050,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "0638990eee6b453ab05fe335d4b8c9bc4279e3aaea0e78a29349938ab9b79aab"
+        },
+        {
+          "seed": 5,
+          "reset_offset_ps": 18450,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "0b0b20a99ca94b0e3bbe5e309b8f47a525a054a01c88ecb0b151c7ef9d6195a2"
+        },
+        {
+          "seed": 7,
+          "reset_offset_ps": 19850,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "b7193208f1ed704cb2a5a1bea0bcb8de2d31a75e473e207ccb451dc10123b8fa"
+        }
+      ]
+    },
+    "logs_sha256": {
+      "joint_portable/simulation.log": "492317daf8f6ba02f714610ea7b5cdc73df1185c72f5580200f0a13298f8e85e",
+      "joint_native/simulation.log": "98c1139a907672e25bad757ff4e35dd691cd3a339b6562934a77e84952430d30",
+      "portable_functional.log": "b11b2e75f952357ad091a8ff346adc5fc12db743ec7c7911735c4d4e52fade42",
+      "native_functional.log": "5c1ea794b4dec36bf1f3d1a2fc603ac0058503e2863026512471f14b352c7ca1",
+      "soc_reset_matrix/result.json": "2905e2a8fe353550d0f96ca8717d8486f90e0a5325b3f65a0f59cc17d728835b",
+      "memory_regression_stdout.log": "cb133582f1f50981c83f1b0f1d92afb92d15ddb1cee0ba0f4fd5088669481571",
+      "original_tt_pin_wave.json": "7490c159a4aad1b3fdc86cbd7e6cadca8e7bdadd03aff62038784c8b6267d65c"
+    },
+    "original_failed_TT_case_reproduced_with_passive_waveform": true,
+    "old_SDF_inputs_unchanged": true,
+    "new_EDA_and_SDF_status": "pending_new_source_complete_rerun",
+    "FPGA_source_list_resolves": true,
+    "FPGA_implementation_rerun": false,
+    "source_line_ending_normalization": {
+      "path": "rtl/memory/sram_transaction_reset.sv",
+      "before_SHA": "d3b9030e3c3e0612bb6fad4318df105582e90eac427100e41fdda02e3911ae1b",
+      "canonical_LF_SHA": "d3b9030e3c3e0612bb6fad4318df105582e90eac427100e41fdda02e3911ae1b",
+      "semantic_change": false
+    }
   }
 }

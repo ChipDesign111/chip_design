@@ -1,0 +1,31 @@
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version Q-2020.03-SP2-7_Full64; Runtime version Q-2020.03-SP2-7_Full64;  Oct 29 05:58 2026
+Doing SDF annotation ...... Done
+ANNOTATION_CALLED path=timing.sdf time_ns=0.000
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tdi
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tms
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tck
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_rst_n
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_clk
+PAD_DRIVE_ON time_ns=2.000 delay_ps=2000
+CLOCK_AT_CORE time_ns=50.630
+CLOCK_AT_CORE time_ns=70.630
+CLOCK_AT_CORE time_ns=90.630
+CLOCK_AT_CORE time_ns=110.630
+ACTIVE_START time_ns=640.000
+CPU_WAIT_START time_ns=165360.000
+FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000
+ACTIVE_END time_ns=238880.000
+RESET_ASSERT offset_ps=1650 time_ns=238881.650
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 6596: Timing violation in tb_postsim.dut.i_mainmem.port_req_q_reg
+    $setuphold( posedge CP &&& D_DEFCHK:238891547, negedge D:238891552, limits: (52,21) );
+
+POSTSIM_DONE time_ns=238960.000
+$finish called from file "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_135526_postsim_vcs_tt_a6f2ba5/postsim/inputs/tb_postsim.sv", line 136.
+$finish at simulation time            238960000
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 238960000 ps
+CPU Time:     20.240 seconds;       Data structure size:  30.7Mb
+Thu Oct 29 05:58:31 2026

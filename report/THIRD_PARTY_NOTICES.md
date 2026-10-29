@@ -12,3 +12,5 @@
 75 个保留外围文件在 rtl/manifest.json 记录原相对来源和字节 SHA。集成覆盖项明确记录 upstream_sha256 与当前 sha256，保留 vendor 文件原版权头。原课程 NPU、专用测试及导入脚本不再保留在当前源码。
 
 此仓库未新增覆盖所有原创文件/训练产物的统一授权声明，见 [LICENSES.md](LICENSES.md)。第三方条款不自动扩展到其他文件。数据来源：[UCI HAR](https://archive.ics.uci.edu/dataset/240/human+activity+recognition+using+smartphones)。
+
+2026-10-29的axi2mem集成覆盖新增默认关闭的QUIET_ON_RESET参数，仅SRAM实例启用共享事务复位期的握手关闭；其余实例保留原行为。原Solderpad版权头不变，上游与本项目SHA均在rtl/manifest.json记录。
