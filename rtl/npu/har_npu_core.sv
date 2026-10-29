@@ -165,23 +165,44 @@ module har_npu_core (
                 if(dma_write_i) write_overlap_count<=write_overlap_count+1'b1;
                 if(!layer) begin
                     fc1_cycles<=fc1_cycles+1'b1;
-                    for(o=0;o<16;o=o+1)
-                        a1[product_sample][(phase ? 16:0)+o] <=
-                            (tile_index_o==0 ?
-                                $signed(bias1[((phase ? 16:0)+o)*32+:32]):
-                                a1[product_sample][(phase ? 16:0)+o])
-                            + {{16{product[o*2][15]}},product[o*2]}
-                            + {{16{product[o*2+1][15]}},product[o*2+1]};
+                    if(!phase) begin
+                        for(o=0;o<16;o=o+1)
+                            a1[product_sample][o] <=
+                                (tile_index_o==0 ?
+                                    $signed(bias1[o*32+:32]):
+                                    a1[product_sample][o])
+                                + {{16{product[o*2][15]}},product[o*2]}
+                                + {{16{product[o*2+1][15]}},product[o*2+1]};
+                    end else begin
+                        for(o=0;o<16;o=o+1)
+                            a1[product_sample][16+o] <=
+                                (tile_index_o==0 ?
+                                    $signed(bias1[(16+o)*32+:32]):
+                                    a1[product_sample][16+o])
+                                + {{16{product[o*2][15]}},product[o*2]}
+                                + {{16{product[o*2+1][15]}},product[o*2+1]};
+                    end
                 end else begin
                     fc2_cycles<=fc2_cycles+1'b1;
-                    for(o=0;o<6;o=o+1)
-                        a2[product_sample][o] <=
-                            ((tile_index_o==0 && !phase) ?
-                                $signed(bias2[o*32+:32]):a2[product_sample][o])
-                            + {{16{product[o][15]}},product[o]}
-                            + {{16{product[6+o][15]}},product[6+o]}
-                            + {{16{product[12+o][15]}},product[12+o]}
-                            + {{16{product[18+o][15]}},product[18+o]};
+                    if(!phase) begin
+                        for(o=0;o<6;o=o+1)
+                            a2[product_sample][o] <=
+                                (tile_index_o==0 ?
+                                    $signed(bias2[o*32+:32]):
+                                    a2[product_sample][o])
+                                + {{16{product[o][15]}},product[o]}
+                                + {{16{product[6+o][15]}},product[6+o]}
+                                + {{16{product[12+o][15]}},product[12+o]}
+                                + {{16{product[18+o][15]}},product[18+o]};
+                    end else begin
+                        for(o=0;o<6;o=o+1)
+                            a2[product_sample][o] <=
+                                a2[product_sample][o]
+                                + {{16{product[o][15]}},product[o]}
+                                + {{16{product[6+o][15]}},product[6+o]}
+                                + {{16{product[12+o][15]}},product[12+o]}
+                                + {{16{product[18+o][15]}},product[18+o]};
+                    end
                 end
             end
             case(state)

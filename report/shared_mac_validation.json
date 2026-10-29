@@ -51,7 +51,7 @@
   },
   "artifacts": {
     "fpga_firmware_sha256": "fa38f91311768cd73386f8e093370831383d9e0e1b8a4832a2f3f978a2bfe850",
-    "rtl/npu/har_npu_core.sv": "be23b4b71952b2e0631a50944e3528d6252d79d44ab778bd649fa7d91c290b77",
+    "rtl/npu/har_npu_core.sv": "e765bde2f3293287cdc29c2fa887a3f92578e821421f4510d7bc9f2aca632f35",
     "rtl/npu/har_weight_store.sv": "473106074ca66f795445cd3862104d7e57da364b6ab119996eb612934b7d2913",
     "rtl/npu/simple_npu_top.sv": "a2c35d04c11661eba29ced83115b8e7e9e3767c5e94c77ac226f4aab14eba260",
     "test/int8/tb_tiled_dma.sv": "07324ecc30adcacdd1b12da189e978ffaac1358b255d38d3beb4ed769e681593",
