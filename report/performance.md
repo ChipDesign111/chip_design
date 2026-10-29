@@ -4,7 +4,7 @@
 
 1. 消除 tile 之间固定的 `DRAIN -> WAIT_TILE -> ISSUE` 气泡；
 2. 将 FC2 每 bank 的 8 个逻辑 tile 打包为 48 B，并在 W1 尾部启动两个 W2 bank 的跨层预取。
-3. 在 AXI 地址通道增加寄存器边界，缩短 CPU/AXI/NPU 控制路径。
+3. 对比 AXI 控制切片；最终选择 25 MHz + `NO_LATENCY`，不再增加控制切片。
 
 基准固定使用 seed=10000 的训练模型和输入。NPU 周期从 `START` 统计到 `DONE`，包含权重 DMA、MAC、requant 和等待时间。AXI ready/valid 采用 testbench 中同一个确定性伪随机背压序列，因此各阶段周期可直接比较。每次只运行一个 batch，避免前一测试的 AXI 状态影响结果。
 
@@ -16,7 +16,7 @@
 | 每样本摊销周期 | 1401 | 716.0 | 391.75 |
 | FC1 / FC2 发射周期 | 32 / 32 | 64 / 64 | 128 / 128 |
 
-当前完整 SoC 自检使用 batch=4，共 6403 拍。
+当前完整 SoC 自检使用 batch=4、`NO_LATENCY`，共 5193 拍。
 
 | 历史 batch=8 阶段 | batch=1 | batch=2 | batch=8 | 完整 SoC batch=8 |
 | --- | ---: | ---: | ---: | ---: |
@@ -32,7 +32,7 @@ batch=4 为 FPGA 容量进一步做了两项局部修改：
 4 个 Argmax 改为 1 个共享 Argmax，FINISH 依次处理样本
 ```
 
-batch=4 NPU 周期因此从 1560 增至 1567，完整 SoC 仍为 6403 拍。
+batch=4 NPU 周期因此从 1560 增至 1567；恢复 `NO_LATENCY` 后完整 SoC 为 5193 拍。
 
 ## 第一阶段：零气泡 tile 交接
 
@@ -69,16 +69,16 @@ FC2 原始权重为 32 个逻辑 tile，每个 tile 只有 6 B。原实现按 ti
 
 `fc1_cycles` 和 `fc2_cycles` 仍分别为 `32×batch`；性能收益来自减少 DMA 事务、等待周期和 tile 交接气泡，不来自改变 MAC 数量或算术调度。
 
-## 第三阶段：AXI 控制路径切分
+## 第三阶段：控制切片评估与降频决策
 
-`NO_LATENCY` 让 CPU、AXI crossbar、DMA 和 NPU 控制逻辑处于同一条组合路径，旧 batch=2 FPGA 最差路径达到 42 级逻辑。最终采用 `CUT_SLV_AX`，只切 slave 端的 AW/AR 地址通道。历史 batch=8 配置中的代价为：
+`NO_LATENCY` 让 CPU、AXI crossbar、DMA 和 NPU 控制逻辑处于同一条组合路径，旧 50 MHz batch=2 FPGA 最差路径达到 42 级逻辑。曾评估 `CUT_SLV_AX`，历史 batch=8 配置中的代价为：
 
 ```text
 NPU batch=1/2/8：1401 / 1431 / 1808，保持不变
 完整 SoC batch=8：8589 -> 10691，增加 2102 拍
 ```
 
-这会增加 MMIO 和 AXI 地址事务的固定延迟，但不切 W/R 数据通道。作为对照，`CUT_ALL_PORTS` 会把历史 batch=8 完整 SoC 增至 17938 拍，因此没有采用。当前 batch=4 的 NPU 周期为 1401/1432/1567，完整 SoC 为 6403 拍。
+这会增加 MMIO 和 AXI 地址事务的固定延迟。`CUT_ALL_PORTS` 会把历史 batch=8 完整 SoC 增至 17938 拍。最终改用板上已验证的 25 MHz 系统时钟，AXI 恢复 `NO_LATENCY`；当前 batch=4 的 NPU 周期为 1401/1432/1567，完整 SoC 为 5193 拍。
 
 ## 验证
 

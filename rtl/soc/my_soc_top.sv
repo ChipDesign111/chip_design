@@ -49,10 +49,9 @@ module my_soc_top #(
       MaxMstTrans:        1,
       MaxSlvTrans:        1,
       FallThrough:        1'b0,
-      // Cut AW/AR at each slave port. The failing path ends in the demux
-      // address/control cone; avoid adding a second cut on the master side or
-      // stalling every W/R data beat.
-      LatencyMode:        axi_pkg::CUT_SLV_AX,
+      // The FPGA build runs at 25 MHz. Keep the smaller no-latency crossbar;
+      // registered adapters and target bridges provide transaction boundaries.
+      LatencyMode:        axi_pkg::NO_LATENCY,
       AxiIdWidthSlvPorts: 2,
       AxiIdUsedSlvPorts:  2,
       UniqueIds:          1'b0,

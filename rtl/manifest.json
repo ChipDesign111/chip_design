@@ -383,10 +383,10 @@
     {
       "source": "soc/rtl/my_soc_top.sv",
       "path": "rtl/soc/my_soc_top.sv",
-      "sha256": "d66f242960f08697ecf0a3b30d09eb34cb90e00b7fbc3c980bd24f1165c5a1af",
-      "previous_sha256": "6ff7907978ad2aaeaf058314a889d239df9377ca83d3b8fb22869e08bb5407a3",
+      "sha256": "8ed2e0d617619bf44fbc93f471fc2be3eda4de457a17ed8036e360b1ec686ac6",
+      "previous_sha256": "d66f242960f08697ecf0a3b30d09eb34cb90e00b7fbc3c980bd24f1165c5a1af",
       "original_sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6",
-      "project_override": "INT8 tile DMA and guarded boot; slave AW/AR crossbar cuts retain CPU/AXI/NPU control boundaries",
+      "project_override": "INT8 tile DMA and guarded boot; FPGA uses 25 MHz with no-latency crossbar",
       "upstream_sha256": "174207c5682648222a6f280705666d272d1d44406df6193370c0e8efc7ed374e"
     }
   ],
