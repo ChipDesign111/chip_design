@@ -85,6 +85,9 @@ def read_config(path):
     c.setdefault('implementation_effort','medium')
     if c['implementation_effort'] not in ['medium','high']:
         raise ValueError('Implementation effort must be medium or high')
+    c.setdefault('antenna_fanout_reserve',0)
+    if type(c['antenna_fanout_reserve']) is not int or c['antenna_fanout_reserve'] not in [0,1]:
+        raise ValueError('Antenna fanout optimization reserve must be zero or one physical sink')
     c.setdefault('setup_optimization_goal_ns',0.0)
     goal=c['setup_optimization_goal_ns']
     if not isinstance(goal,(int,float)) or not math.isfinite(goal) or not 0<=goal<c['system_period_ns']:
@@ -174,6 +177,7 @@ def prepare(args):
     text+='set eda_comb_mapping %s\n'%config['combinational_cell_mapping']
     text+='set eda_implementation_effort %s\n'%config['implementation_effort']
     text+='set eda_setup_optimization_goal %g\n'%config['setup_optimization_goal_ns']
+    text+='set eda_antenna_fanout_reserve %d\n'%config['antenna_fanout_reserve']
     user.write_text(text, encoding='utf-8')
     listed, includes, lines = [], [], ['+define+SYNTHESIS', '+define+CHIP_USE_RA1SHD']
     rtl = work / 'src/chip_design'
@@ -208,6 +212,8 @@ def prepare(args):
     write_json(work/'evidence/optimization_goal.json',{
         'setup_optimization_goal_ns':config['setup_optimization_goal_ns'],
         'implementation_effort':config['implementation_effort'],
+        'antenna_fanout_reserve':config['antenna_fanout_reserve'],
+        'fanout_reserve_is_optimization_only':True,
         'minimum_accepted_setup_hold_slack_ns':0.0,
         'optimization_goal_is_not_an_acceptance_threshold':True})
     write_json(work / 'evidence/preparation.json', {'rtl_files': len(listed), 'include_dirs': includes, 'macro_source': str(macro), 'work': str(work), 'functional_retested_here': False, 'profile_changes': ['CHIP_USE_RA1SHD and SYNTHESIS', 'absolute source paths', 'no hidden path_adjust tightening', 'guard empty async net selection', 'original CPU clock passthrough']})

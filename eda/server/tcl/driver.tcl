@@ -87,6 +87,7 @@ if {[catch {
     eda_apply_register_mapping_innovus
     if {!$eda_headless} {win}
     source [file join $eda_work flow config repair.tcl]
+    source [file join $eda_work flow tcl native_optimization.tcl]
     set sram_objects [dbGet -e top.insts.cell.name RA1SHD_2048x32M8 -p2]
     if {[llength $sram_objects] != 1} {error "Expected exactly one native main SRAM macro"}
     set eda_sram [dbGet [lindex $sram_objects 0].name]
@@ -122,15 +123,26 @@ if {[catch {
             }
             27 {eda_run 27.tcl; eda_run 27_verify.tcl}
             29 {
-                if {[eda_timing_bad ../my_soc_top/reports/postCTS Hold] > 0} {
-                    eda_eval 29_hold_mode {setOptMode -fixHoldAllowSetupTnsDegrade false -holdTargetSlack 0}
-                    eda_run 29_fix.tcl
+                if {$eda_antenna_fanout_reserve > 0} {
+                    # Route antenna repair may add a physical sink after logical
+                    # fanout optimization is no longer available in Innovus.
+                    eda_eval 29_fanout_reserve {eda_native_opt optDesign -postCTS -drv -expandedViews -outDir ../my_soc_top/reports/postCTS_fanoutReserve}
                 }
                 eda_run 29_check.tcl
-                # Native whole-design optimization handles real pre-route DRVs.
-                if {[eda_timing_bad ../my_soc_top/reports/postCTS_holdFix_check Setup] > 0} {
-                    eda_eval 29_native_drv {optDesign -postCTS -expandedViews -outDir ../my_soc_top/reports/postCTS_nativeOpt}
-                    eda_run 29_check.tcl
+                # Recheck actual timing after native electrical optimization.
+                # Setup recovery can alter Hold; repair genuine residuals only.
+                for {set iteration 0} {$iteration < $eda_repair_iterations} {incr iteration} {
+                    set current_dir ../my_soc_top/reports/postCTS_holdFix_check
+                    if {[eda_timing_bad $current_dir] == 0} {break}
+                    if {[eda_timing_bad $current_dir Setup] > 0} {
+                        eda_eval 29_native_drv {eda_native_opt optDesign -postCTS -expandedViews -outDir ../my_soc_top/reports/postCTS_nativeOpt}
+                        eda_run 29_check.tcl
+                    }
+                    if {[eda_timing_bad $current_dir Hold] > 0} {
+                        eda_eval 29_hold_mode {setOptMode -fixHoldAllowSetupTnsDegrade false -holdTargetSlack 0}
+                        eda_run 29_fix.tcl
+                        eda_run 29_check.tcl
+                    }
                 }
             }
             31 {
@@ -162,14 +174,14 @@ if {[catch {
                     # Native whole-design setup optimization preserves real
                     # clock/SDC constraints; final checks still require >=0.
                     eda_eval 32_setup_goal [list setOptMode -setupTargetSlack $eda_setup_optimization_goal -setupTargetSlackForReclaim $eda_setup_optimization_goal]
-                    eda_eval 32_native_margin {optDesign -postRoute -expandedViews -outDir ../my_soc_top/reports/postRoute_margin}
+                    eda_eval 32_native_margin {eda_native_opt optDesign -postRoute -expandedViews -outDir ../my_soc_top/reports/postRoute_margin}
                     eda_run 32_initial.tcl
                 }
                 for {set iteration 0} {$iteration < $eda_repair_iterations} {incr iteration} {
                     set current_dir [expr {$iteration == 0 ? "../my_soc_top/reports/postRoute" : "../my_soc_top/reports/postRoute_holdAuto_check"}]
                     if {[eda_timing_bad $current_dir] == 0} {break}
                     if {[eda_timing_bad $current_dir Setup] > 0} {
-                        eda_eval 32_native_setup_drv {optDesign -postRoute -expandedViews -outDir ../my_soc_top/reports/postRoute_setupAuto}
+                        eda_eval 32_native_setup_drv {eda_native_opt optDesign -postRoute -expandedViews -outDir ../my_soc_top/reports/postRoute_setupAuto}
                         eda_run 32_check.tcl
                         set current_dir ../my_soc_top/reports/postRoute_holdAuto_check
                     }
@@ -179,7 +191,7 @@ if {[catch {
                         # is always WNS>=0, TNS=0 and zero violating paths.
                         set goal [expr {$iteration==0 ? 0 : $eda_hold_target}]
                         eda_eval 32_hold_mode [list setOptMode -fixHoldAllowSetupTnsDegrade false -holdTargetSlack $goal]
-                        eda_eval 32_native_hold {optDesign -postRoute -hold -expandedViews -outDir ../my_soc_top/reports/postRoute_holdAuto}
+                        eda_eval 32_native_hold {eda_native_opt optDesign -postRoute -hold -expandedViews -outDir ../my_soc_top/reports/postRoute_holdAuto}
                     }
                     eda_run 32_check.tcl
                 }

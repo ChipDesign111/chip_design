@@ -1,5 +1,5 @@
 saveDesign ../my_soc_top/backup/my_soc_top_preCTS.enc
-ccopt_design
+eda_native_opt ccopt_design
 saveDesign ../my_soc_top/backup/my_soc_top_postCTS_raw.enc
 set_interactive_constraint_modes [all_constraint_modes -active]
 set_global timing_io_use_clock_network_latency always

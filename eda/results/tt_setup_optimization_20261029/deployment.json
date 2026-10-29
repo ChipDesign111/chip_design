@@ -32,13 +32,19 @@
   "new_result_accepted": false,
   "same_source_new_SDF_not_yet_run": true,
   "local_continuation": {
-    "pid": 73396,
     "script": "archives/tt_setup_optimization_20261029/continue_optimization.py",
     "record": "archives/tt_setup_optimization_20261029/continuation_a3c2141.json",
-    "active": true,
+    "active": false,
     "tag": "a3c2141",
     "stdout": "archives/tt_setup_optimization_20261029/continuation_a3c2141_stdout.log",
     "stderr": "archives/tt_setup_optimization_20261029/continuation_a3c2141_stderr.log",
-    "scope": "Wait/fetch new physical; serial new TT/min/max and same-DB SRAM timing. Stop on real failure; after normal TT if clamps remain or SS not improved, stop fast/slow for next measured optimization. Do not duplicate while alive."
+    "scope": "Wait/fetch new physical; serial new TT/min/max and same-DB SRAM timing. Stop on real failure; after normal TT if clamps remain or SS not improved, stop fast/slow for next measured optimization. Do not duplicate while alive.",
+    "previous_pid": 73396
+  },
+  "latest_status": {
+    "phase": "Stopped at genuine step32 electrical failure; last independently accepted step31",
+    "EDA_exit_code": 1,
+    "same_source_new_SDF_run": false,
+    "native_postRoute_fanout_repair_not_supported": true
   }
 }

@@ -25,7 +25,7 @@ def clear_step_outputs(work, step):
     candidates.extend(root / name for name in names.get(step, []))
     for prefix in {31: ['postRoute', 'postAntennaFix'], 32: ['postHoldAuto'], 33: ['postFiller']}.get(step, []):
         candidates.extend(root.glob('my_soc_top_' + prefix + '*.rpt'))
-    directories = {26: ['preCTS'], 28: ['postCTS'], 29: ['postCTS_holdFix', 'postCTS_holdFix_check', 'postCTS_nativeOpt'], 32: ['postRoute', 'postRoute_setupAuto', 'postRoute_holdAuto', 'postRoute_holdAuto_check'], 33: ['postFiller']}
+    directories = {26: ['preCTS'], 28: ['postCTS'], 29: ['postCTS_holdFix', 'postCTS_holdFix_check', 'postCTS_nativeOpt', 'postCTS_fanoutReserve'], 32: ['postRoute', 'postRoute_margin', 'postRoute_setupAuto', 'postRoute_holdAuto', 'postRoute_holdAuto_check'], 33: ['postFiller']}
     for name in directories.get(step, []):
         candidates.extend((root / 'reports' / name).glob('*.summary*'))
     if step == 34:
