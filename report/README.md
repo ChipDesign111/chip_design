@@ -1,5 +1,7 @@
 # 当前设计说明
 
+2026-10-29按用户要求，main已纳入xzx 07af846的共享SRAM事务复位RTL及必要源清单。AXI桥与主存入口同时采用下降沿采样复位，已接受访问完整完成一次。新功能/复位回归通过，但本次RTL的完整四角物理与TT/快/慢SDF仍在xzx独立流程运行；下方旧版通过结果不能证明这次新RTL已完成物理验证。见[本次原因、修改与验证状态](port_request_reset_fix.md)。
+
 当前 xzx 的 SRAM 复位修正版已完成独立EDA与SDF：含PAD **3.795639mm²**，20ns下Setup/Hold **+0.371/+0.019ns**，16组SDF所有阶段动态时序违规0条，半周期路径检查通过。见[修正内容](reset_fix.md)、[新版物理结果](../eda/results/sram_reset_20261027/README.md)和[后仿与main对比](../eda/results/sram_reset_20261027/postsim/README.md)。17条负IOPATH与时间0 PAD模型消息保留为限制。以下为旧版 e15483c 的历史数字。
 
 2026-10-26 后仿补充：16组完整SoC MAXIMUM SDF及无SDF对照通过功能自检，回标error/缺失实例/缺失检查均0，工作窗口动态违规0；复位事件及19条负IOPATH截零限制仍保留。详见[与现有main结果对比](../eda/results/postsim_ntc_20261026/README.md)。下方“未后仿”描述对应原物理交付时点。
