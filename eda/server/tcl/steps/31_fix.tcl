@@ -1,3 +1,6 @@
+if {$eda_antenna_repair_strategy eq "native_jumpers_first"} {
+    eda_native_antenna_repair ../my_soc_top/reports/antenna_native_31
+} else {
 # Read the CURRENT independent antenna report; no historical net list is used.
 set ant_fd [open ../my_soc_top/my_soc_top_postRoute_antenna.rpt r]
 set ant_text [read $ant_fd]
@@ -22,6 +25,8 @@ if {$ant_count > 0} {
     foreach ant_net $antenna_nets {selectNet $ant_net}
     detailRoute -select
     deselectAll
+}
+
 }
 verifyProcessAntenna -report ../my_soc_top/my_soc_top_postAntennaFix_antenna.rpt
 verify_drc -check_only default -limit 100000 -report ../my_soc_top/my_soc_top_postAntennaFix_drc.rpt

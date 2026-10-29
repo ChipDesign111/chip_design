@@ -85,6 +85,9 @@ def read_config(path):
     c.setdefault('implementation_effort','medium')
     if c['implementation_effort'] not in ['medium','high']:
         raise ValueError('Implementation effort must be medium or high')
+    c.setdefault('antenna_repair_strategy','native_jumpers_and_diodes')
+    if c['antenna_repair_strategy'] not in ['native_jumpers_and_diodes','native_jumpers_first']:
+        raise ValueError('Unknown native antenna repair strategy')
     c.setdefault('antenna_fanout_reserve',0)
     if type(c['antenna_fanout_reserve']) is not int or c['antenna_fanout_reserve'] not in [0,1]:
         raise ValueError('Antenna fanout optimization reserve must be zero or one physical sink')
@@ -178,6 +181,7 @@ def prepare(args):
     text+='set eda_implementation_effort %s\n'%config['implementation_effort']
     text+='set eda_setup_optimization_goal %g\n'%config['setup_optimization_goal_ns']
     text+='set eda_antenna_fanout_reserve %d\n'%config['antenna_fanout_reserve']
+    text+='set eda_antenna_repair_strategy %s\n'%config['antenna_repair_strategy']
     user.write_text(text, encoding='utf-8')
     listed, includes, lines = [], [], ['+define+SYNTHESIS', '+define+CHIP_USE_RA1SHD']
     rtl = work / 'src/chip_design'
@@ -213,6 +217,7 @@ def prepare(args):
         'setup_optimization_goal_ns':config['setup_optimization_goal_ns'],
         'implementation_effort':config['implementation_effort'],
         'antenna_fanout_reserve':config['antenna_fanout_reserve'],
+        'antenna_repair_strategy':config['antenna_repair_strategy'],
         'fanout_reserve_is_optimization_only':True,
         'minimum_accepted_setup_hold_slack_ns':0.0,
         'optimization_goal_is_not_an_acceptance_threshold':True})

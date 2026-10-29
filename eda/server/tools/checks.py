@@ -28,6 +28,10 @@ def clear_step_outputs(work, step):
     directories = {26: ['preCTS'], 28: ['postCTS'], 29: ['postCTS_holdFix', 'postCTS_holdFix_check', 'postCTS_nativeOpt', 'postCTS_fanoutReserve'], 32: ['postRoute', 'postRoute_margin', 'postRoute_setupAuto', 'postRoute_holdAuto', 'postRoute_holdAuto_check'], 33: ['postFiller']}
     for name in directories.get(step, []):
         candidates.extend((root / 'reports' / name).glob('*.summary*'))
+    if step == 31:
+        candidates.extend((root / 'reports').glob('antenna_native_31*.rpt'))
+    if step == 32:
+        candidates.extend((work / 'evidence/antenna_repairs').glob('32_*.rpt'))
     if step == 34:
         candidates.extend((root / 'outputs/manual_final').glob('*'))
     candidates.extend((work / 'evidence/commands' / ('%02d' % step)).glob('*.tcl'))

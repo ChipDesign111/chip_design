@@ -27,8 +27,8 @@
   "previous_failed_a3_retired_path": "/home/s2400011041/Desktop/fullstack_chipdesign/history/retired_tt_setup_20261029/20261029_055853_a3c2141",
   "latest_progress": {
     "observed_UTC": "2026-10-29T02:09:01.220198+00:00",
-    "phase": "Synthesis completed; Innovus placement optimization in progress, last independently audited step23",
-    "last_independently_audited_step": 23,
+    "phase": "Stopped at step32 genuine max_fanout17>16; last independently audited31",
+    "last_independently_audited_step": 31,
     "synthesis_cell_count": 68603,
     "synthesis_cell_area_um2": 2062766.56,
     "native_SRAM_area_um2": 401443.591,
@@ -37,6 +37,11 @@
     "actual_mapped_excluded_TT_combinational": 0,
     "whole_die_area_mm2": 3.7956390976,
     "final_timing_and_physical_checks_pending": true,
-    "same_source_new_SDF_not_run": true
+    "same_source_new_SDF_not_run": true,
+    "EDA_exit_code": 1,
+    "pipeline_exit_code": 1,
+    "candidate_setup_ns": 0.3,
+    "candidate_hold_ns": 0,
+    "antenna_diodes_on_violating_net": 2
   }
 }

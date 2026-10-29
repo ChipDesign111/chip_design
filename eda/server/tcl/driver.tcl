@@ -34,7 +34,7 @@ proc eda_run {name} {
     set body [string map [list i_mainmem/i_mainmem $eda_sram] $body]
     eda_eval $name $body
 }
-proc eda_timing_bad {directory {mode all}} {
+proc eda_timing_bad {directory {mode all} {include_fanout 1}} {
     set files [glob -nocomplain [file join $directory *.summary] [file join $directory *.summary.gz]]
     if {[llength $files] == 0} {error "Missing timing summary: $directory"}
     set bad 0
@@ -45,7 +45,8 @@ proc eda_timing_bad {directory {mode all}} {
         if {![regexp {Violating Paths:\|\s*([0-9]+)} $data -> count]} {error "Unrecognized timing summary: $p"}
         incr bad $count
         foreach row [split $data "\n"] {
-            if {[regexp {\|\s*max_\w+\s*\|\s*([0-9]+)\s*\([0-9]+\)\s*\|[^|]*\|\s*([0-9]+)\s*\([0-9]+\)} $row -> real total]} {
+            if {[regexp {\|\s*(max_\w+)\s*\|\s*([0-9]+)\s*\([0-9]+\)\s*\|[^|]*\|\s*([0-9]+)\s*\([0-9]+\)} $row -> rule real total]} {
+                if {!$include_fanout && $rule eq "max_fanout"} {continue}
                 incr bad $real
                 incr bad $total
             }
@@ -87,6 +88,8 @@ if {[catch {
     eda_apply_register_mapping_innovus
     if {!$eda_headless} {win}
     source [file join $eda_work flow config repair.tcl]
+    source [file join $eda_work flow tcl antenna_strategy.tcl]
+    eda_apply_antenna_strategy
     source [file join $eda_work flow tcl native_optimization.tcl]
     set sram_objects [dbGet -e top.insts.cell.name RA1SHD_2048x32M8 -p2]
     if {[llength $sram_objects] != 1} {error "Expected exactly one native main SRAM macro"}
@@ -180,6 +183,10 @@ if {[catch {
                 for {set iteration 0} {$iteration < $eda_repair_iterations} {incr iteration} {
                     set current_dir [expr {$iteration == 0 ? "../my_soc_top/reports/postRoute" : "../my_soc_top/reports/postRoute_holdAuto_check"}]
                     if {[eda_timing_bad $current_dir] == 0} {break}
+                    if {[eda_timing_bad $current_dir all 0] == 0} {
+                        puts "EDA_POSTROUTE_FANOUT_ONLY: native postRoute fanout repair is unavailable; preserve final16 check and stop redundant setup retries"
+                        break
+                    }
                     if {[eda_timing_bad $current_dir Setup] > 0} {
                         eda_eval 32_native_setup_drv {eda_native_opt optDesign -postRoute -expandedViews -outDir ../my_soc_top/reports/postRoute_setupAuto}
                         eda_run 32_check.tcl
