@@ -45,6 +45,7 @@
   },
   "full_soc_batch_4": {
     "post_commit_cycles": 5109,
+    "npu_cycles": 908,
     "dma_read_mac_overlap": 270,
     "dma_write_mac_overlap": 269
   },
