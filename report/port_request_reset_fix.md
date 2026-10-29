@@ -61,7 +61,7 @@ flowchart LR
 
 [功能证据](functional_validation.json)给出本次RTL SHA和日志SHA。所有开发脚本、原始波形及临时构建仅留本地archives。需要继续：以新干净源码重新综合和完整34步，复核四角Setup/Hold、原生电气/物理、整颗面积以及真实半周期，然后串行新TT/FF−40/SS125三组各17例SDF。不能用旧0d48a66的GDS、SDF或通过报告证明本次RTL。
 
-main保持用户指定的历史合并点，后续修复只提交xzx；新RTL未完成物理/SDF前不自动合入main。独立Calibre、多RC/SI、IR/EM/ESD及形式等价等未执行项目仍分别列明，不冒称签核。
+2026-10-29用户明确要求将本页RTL并入main，已推送main `43f5e389d2a87bc004ec447c3fd8e562b426d22d`，与xzx的RTL树完全一致；必要源清单及功能证据一并纳入，原main FPGA配置更新保留。本次新RTL物理/SDF仍未完成验收，后续其他优化仍留xzx，不自动再次合入main。[主线集成记录](../eda/results/port_request_reset_20261029/main_integration.json)保留授权范围与核验。独立Calibre、多RC/SI、IR/EM/ESD及形式等价等未执行项目仍分别列明，不冒称签核。
 
 ## 本次独立部署
 

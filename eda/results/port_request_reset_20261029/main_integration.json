@@ -1,0 +1,15 @@
+{
+  "UTC": "2026-10-29T07:34:32.165901+00:00",
+  "authorization": "Human explicitly requested merging RTL into main",
+  "main_commit": "43f5e389d2a87bc004ec447c3fd8e562b426d22d",
+  "previous_remote_main": "99aa8631fa018bf1ca68ba4d598597a58becf44c",
+  "RTL_source_commit": "07af8464f4fbbd1c76b41a326f8b05fa745ad3b6",
+  "RTL_tree": "28c3d277c0d993331c025414f713a32318e57c15",
+  "main_and_xzx_RTL_identical": true,
+  "preserved_existing_main_FPGA_configuration": true,
+  "native_build_source_lists_updated": true,
+  "repository_policy_and_75_SHA_checks_pass": true,
+  "new_full_physical_or_SDF_accepted": false,
+  "new_full_validation_continues_on_xzx": true,
+  "subsequent_changes_auto_merge_to_main": false
+}
