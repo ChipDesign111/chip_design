@@ -10,7 +10,7 @@
 
 本实现已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。完整 SoC 包含 CV32E40P、AXI、JTAG Debug、8 KiB 主 SRAM 和 64→32→6 NPU。第一层 2 输入×32 输出、第二层 1×6；两个 64B 权重 tile 缓冲由 DMA 从主 SRAM 按需填充。输入/权重/隐藏激活 INT8，偏置/累加/分数 INT32。当前目标是含 PAD 整颗 Die ≤3.8 mm²。
 
-`rtl-dev` 当前支持最多四样本寄存器批次，并完成 tile 零气泡交接、FC2 四组 48B 粗粒度权重包、W1 尾部 W2 预取和 AXI 地址控制切片。固定基准下 batch=4 单批为 1560 拍，完整 SoC 自检为 6403 拍，详见[性能对比](report/performance.md)。这些是 RTL 周期结果，batch=4 的物理面积和 20ns 时序尚未签核。
+`rtl-dev` 当前支持最多四样本寄存器批次，并完成 tile 零气泡交接、FC2 四组 48B 粗粒度权重包、W1 尾部 W2 预取和 AXI 地址控制切片。固定基准下 batch=4 单批为 1567 拍，完整 SoC 自检为 6403 拍，详见[性能对比](report/performance.md)。这些是 RTL 周期结果，batch=4 的物理面积和 20ns 时序尚未签核。
 
 从本机打包上传到服务器、三个独立阶段和结果回传，直接跟随 [EDA 操作指南](eda/README.md)。服务器从每个上传版本目录的 README.html 开始。结构、启动流程和寄存器见 [设计报告](report/README.md)。
 

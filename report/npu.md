@@ -4,8 +4,8 @@ har_npu_core 第一层有 32 组、每组 2 个有符号 8×8 乘法器；第二
 
 batch=4 的输入、FC1/FC2 累加器、hidden、scores 和 class 都保存在寄存器阵列中，没有新增 NPU 内部 SRAM。相较 batch=2，FC1 累加器从 2×32×32 bit 增至 4×32×32 bit。样本 4..7 的 MMIO 槽不再分配寄存器，输出固定为零，输入写返回错误。
 
-第一层总和经 ReLU（负数变零），乘 MULT 并按 SHIFT 舍入，再饱和到 0..127。一个共享 32×16 重定标乘法器依次完成 32 个隐藏结果。第二层保持有符号分数，Argmax 平局取最小下标。算术定义见 [数值契约](../model/numerics.md)。
+第一层总和经 ReLU（负数变零），乘 MULT 并按 SHIFT 舍入，再饱和到 0..127。一个共享 32×16 重定标乘法器依次完成 32 个隐藏结果。第二层保持有符号分数；FINISH 阶段使用一个共享 Argmax 依次处理各样本，平局取最小下标。算术定义见 [数值契约](../model/numerics.md)。
 
-har_weight_store 仅保存两个 64B 缓冲。FC1 每 bank 是一个 64 B 权重 tile；FC2 每 bank 连续保存 8 个逻辑 tile 的 48 B 有效权重，计算侧组合选择当前 6 B。simple_npu_top 分别跟踪 W1/W2 bank 的完整字掩码和成功响应，才将缓冲发布给计算。FC2 的两个 bank 可在 W1 尾部和 requant 期间提前装入。写入任一已发布 bank 被拒绝；CPU 在计算或 DMA 忙时修改配置会置错误。重新开始和复位撤销旧有效标志。数据数组无复位，控制有效位保证不消费未初始化数据。
+har_weight_store 仅保存两个 64B 缓冲。FC1 每 bank 是一个 64 B 权重 tile；FC2 每 bank 连续保存 8 个逻辑 tile 的 48 B 有效权重，计算侧组合选择当前 6 B。缓冲显式要求映射为寄存器，避免 Vivado 将 1024 位存储推断为占用 LUT 站点的 distributed RAM。simple_npu_top 分别跟踪 W1/W2 bank 的完整字掩码和成功响应，才将缓冲发布给计算。FC2 的两个 bank 可在 W1 尾部和 requant 期间提前装入。写入任一已发布 bank 被拒绝；CPU 在计算或 DMA 忙时修改配置会置错误。重新开始和复位撤销旧有效标志。数据数组无复位，控制有效位保证不消费未初始化数据。
 
 当前功能回归使用 [run.py](../test/int8/run.py)；随机数据和训练模型均逐值核对隐藏层、六个分数和类别。固定基准的逐步性能见 [performance.md](performance.md)。测试输出在本地忽略目录，不把旧版 39/59 周期或 38-bank 综合结论套到本实现。

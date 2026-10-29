@@ -10,7 +10,7 @@ module har_weight_store (
     input logic [4:0] tile_index_i,
     output wire [511:0] tile_o
 );
-    logic [511:0] tiles[0:1];
+    (* ram_style = "registers" *) logic [511:0] tiles[0:1];
     always_ff @(posedge clk) if(we_i) tiles[bank_i][word_i*32+:32]<=data_i;
     genvar j;
     generate for(j=0;j<6;j=j+1) begin: tile_bytes

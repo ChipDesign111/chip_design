@@ -1,5 +1,7 @@
 # 当前架构变更
 
+2026-10-29：batch=4 综合仍超出少量 LUT。权重 bank 显式映射为寄存器以释放 distributed RAM 占用的 LUT 站点；各样本 Argmax 合并为一个共享单元，在 FINISH 中依次完成。batch=4 NPU 增加 7 拍，完整 SoC 保持 6403 拍。
+
 2026-10-29：为控制 A7-35T LUT 占用，最大 batch 从 8 降为 4。样本 4..7 的输入、累加器、hidden、scores 和 class 寄存器被移除，保留的 MMIO 槽输出为零；随机与训练回归调整为 batch=1/2/4，FPGA 自检镜像同步重生成。
 
 2026-10-29：撤销乘加流水；AXI 交叉开关从 `NO_LATENCY` 改为 `CUT_SLV_AX`，在 slave 端 demux 的 AW/AR 地址通道增加寄存器边界，以切断导致 FPGA 42 级逻辑的跨模块控制路径，同时避免 W/R 数据通道和 master mux 增加额外延迟。

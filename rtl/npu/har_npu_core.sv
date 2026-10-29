@@ -27,7 +27,7 @@ module har_npu_core (
     logic [2:0] state;
     logic layer;
     logic [3:0] batch_q;
-    logic [2:0] sample,quant_sample;
+    logic [2:0] sample,quant_sample,finish_sample;
     wire product_valid,product_first;
     wire [2:0] product_sample;
     logic signed [15:0] p1[0:31][0:1],p2[0:5];
@@ -93,16 +93,14 @@ module har_npu_core (
         end
     endfunction
 
-    wire [191:0] class_scores[0:7];
-    wire [2:0] class_candidate[0:7];
-    generate
-        for(gs=0;gs<MAX_BATCH;gs=gs+1) begin: class_calc
-            for(go=0;go<6;go=go+1) begin: score_pack
-                assign class_scores[gs][go*32+:32]=a2[gs][go];
-            end
-            assign class_candidate[gs]=argmax(class_scores[gs]);
-        end
-    endgenerate
+    logic [191:0] finish_scores;
+    integer finish_o;
+    always_comb begin
+        finish_scores='0;
+        for(finish_o=0;finish_o<6;finish_o=finish_o+1)
+            finish_scores[finish_o*32+:32]=a2[finish_sample][finish_o];
+    end
+    wire [2:0] finish_class=argmax(finish_scores);
 
     integer o,s;
     genvar j;
@@ -125,6 +123,7 @@ module har_npu_core (
             layer<=0;
             batch_q<=1;
             sample<=0;
+            finish_sample<=0;
             tile_index_o<=0;
             quant_sample<=0;
             class_id_q[0]<=0;class_id_q[1]<=0;class_id_q[2]<=0;class_id_q[3]<=0;
@@ -167,6 +166,7 @@ module har_npu_core (
                     layer<=0;
                     batch_q<=batch_count;
                     sample<=0;
+                    finish_sample<=0;
                     tile_index_o<=0;
                     state<=WAIT_TILE;
                     cycle_count<=0;
@@ -188,6 +188,7 @@ module har_npu_core (
                         tile_index_o<=0;
                         state<=QUANT;
                     end else if(tile_index_o==31) begin
+                        finish_sample<=0;
                         state<=FINISH;
                     end else begin
                         tile_index_o<=tile_index_o+1'b1;
@@ -211,11 +212,14 @@ module har_npu_core (
                     end
                 end
                 FINISH:begin
-                    class_id_q[0]<=class_candidate[0];class_id_q[1]<=class_candidate[1];
-                    class_id_q[2]<=class_candidate[2];class_id_q[3]<=class_candidate[3];
-                    busy<=0;
-                    done<=1;
-                    state<=IDLE;
+                    class_id_q[finish_sample]<=finish_class;
+                    if(finish_sample==batch_q[1:0]-1'b1) begin
+                        busy<=0;
+                        done<=1;
+                        state<=IDLE;
+                    end else begin
+                        finish_sample<=finish_sample+1'b1;
+                    end
                 end
                 default:state<=IDLE;
             endcase
