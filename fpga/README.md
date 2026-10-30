@@ -49,3 +49,12 @@ soc-commit-image
 
 更换镜像前必须复位 SoC，使 `loaded_words` 回到零。该流程仅适用于无预装载
 bitstream；预装载 bitstream 的 `PREINITIALIZED=1`，CPU 不等待 JTAG 装载。
+
+系统复位不会清空 `my_mainmem` 的 8 KiB 数据阵列。复位只撤销
+`bootram.loaded_words`、`boot_ready`、CPU 和 SoC 控制状态；SRAM 中原有数据
+会保留。因此不能把复位后读到的内容作为“全零”证据，也不能只重写实际使用区。
+`soc-load-bin` 会重写完整的 2048 字，包括保留区和全零字，不依赖 SRAM 的旧内容。
+
+重新配置 FPGA 是另一种行为：预装载 bitstream 会把 `INIT_FILE` 内容重新装入
+BRAM；无预装载 bitstream 不指定初始化内容。即使 FPGA 配置后 BRAM 通常呈现
+确定的初始值，T07 流程也不依赖该值，始终要求通过 JTAG 完整装载后提交。
