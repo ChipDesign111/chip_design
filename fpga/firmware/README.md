@@ -65,7 +65,7 @@ python fpga/firmware/generate_images.py
 ## 板上使用
 
 预装载 bitstream 在 FPGA 配置时只装入 `FPGA_INIT_FILE` 指定的一个镜像。
-要切换不同文件，应使用 `SRAM_INIT_FILE=""` 的无预装载 bitstream，并按
+要切换不同文件，应使用空 `SRAM_INIT_FILE` 的无预装载 bitstream，并按
 [../README.md](../README.md) 的 JTAG 流程加载。
 
 每次切换镜像前复位 SoC。复位只清除 Boot 装载计数，不清空 SRAM；加载器

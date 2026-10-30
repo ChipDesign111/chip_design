@@ -19,10 +19,21 @@ info body open_hw_target
 
 ## 通过 JTAG 更换固件镜像
 
-T07 及后续多镜像板级测试使用 `SRAM_INIT_FILE=""` 的无预装载 bitstream。
+T07 及后续多镜像板级测试使用空的 `SRAM_INIT_FILE` 生成无预装载 bitstream。
 该 bitstream 上电后 CPU 不取指，调试模块通过 JTAG 保持可访问。每次复位后，
 按地址顺序向 `0x80000000` 写入完整的 2048 个 32 位字，再向
 `0x0001003C` 写入 `0xB007C0DE` 释放 CPU。
+
+在 Vivado GUI 的 `synth_2 → Synthesis Settings → Options → More Options`
+中必须写成不带引号的：
+
+```text
+-generic SRAM_INIT_FILE=
+```
+
+不要再写 `-generic SRAM_INIT_FILE=""`。Vivado 2019.1 会把两个引号当成参数
+内容，使 `FPGA_INIT_FILE` 非空、`bootram.PREINITIALIZED=1`，最终仍生成
+自动启动的预装载 bitstream。
 
 先将 2048 个十六进制字转换成小端二进制：
 
