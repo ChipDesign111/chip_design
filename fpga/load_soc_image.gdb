@@ -67,3 +67,26 @@ end
 document soc-commit-image
 Commit a fully loaded image with 0xb007c0de and wait for boot_ready.
 end
+
+define soc-check-final
+  monitor halt
+  maintenance flush register-cache
+  info registers pc
+  monitor reg pc
+  x/3i $pc
+  x/1wx 0x80001fe0
+end
+
+document soc-check-final
+Halt the CPU, refresh GDB's register cache, and inspect the final PC and PASS flag.
+end
+
+define soc-resume-and-check-final
+  monitor resume
+  shell sleep 1
+  soc-check-final
+end
+
+document soc-resume-and-check-final
+Resume a committed image, wait one second, halt, and inspect the final CPU state.
+end

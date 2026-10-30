@@ -192,10 +192,19 @@ boot_status=0x00002800 loaded_words=2048 ready=1
 OpenOCD 为装载镜像会将 CPU 保持在 debug halt。提交后恢复运行：
 
 ```gdb
-monitor resume
-shell sleep 1
-monitor halt
+soc-resume-and-check-final
 ```
+
+该命令等价于依次执行 `monitor resume`、等待 1 秒、`monitor halt` 和最终状态
+检查。也可以先让 CPU 运行，稍后单独执行：
+
+```gdb
+soc-check-final
+```
+
+不要依赖把多行普通命令直接粘贴到交互式 GDB。`monitor halt` 会改变目标状态，
+终端前端可能清除后续尚未处理的粘贴行；使用单个 user command 或 `.gdb`
+脚本才能保证整组命令执行。
 
 `monitor resume` 是给 OpenOCD 的命令，GDB 不一定同步更新自己的寄存器缓存。
 因此 halt 后必须刷新寄存器，不能直接使用恢复前的 `$pc`：
