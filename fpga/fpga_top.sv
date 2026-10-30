@@ -6,7 +6,7 @@ module fpga_top #(
     // Absolute by default because Vivado resolves $readmemh relative paths
     // against its launch directory. Override this parameter if the tree moves.
     parameter SRAM_INIT_FILE =
-        "fpga/firmware/int8_selftest.hex"
+        ""
 ) (
     input  logic fpga_clk_i,
     input  logic rst_ni,
