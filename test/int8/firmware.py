@@ -8,7 +8,8 @@ def build(run,seed=10000):
     a=Assembler()
     a.li(20,0x70000000)
     def put(offset,value):a.li(5,value);a.sw(5,20,offset)
-    put(0x20,0x80001000);put(0x24,0x80001800)
+    w1_base=mem[0x1f0c//4]
+    put(0x20,w1_base);put(0x24,0x80001800)
     put(0x10,mem[0x1f00//4]);put(0x14,mem[0x1f04//4]);put(0x18,batch)
     def copy(name,src,dst,count):
         a.li(5,src);a.li(6,dst);a.li(7,count);a.label(name)
