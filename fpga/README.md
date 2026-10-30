@@ -189,6 +189,9 @@ soc-commit-image
 boot_status=0x00002800 loaded_words=2048 ready=1
 ```
 
+重复执行 `soc-commit-image` 是安全的；若 `ready` 已经为 1，命令只报告
+`image is already committed`，不会再次写提交码。
+
 OpenOCD 为装载镜像会将 CPU 保持在 debug halt。提交后恢复运行：
 
 ```gdb
