@@ -151,7 +151,7 @@ module my_soc_top #(
       .debug_havereset_o   (),
       .debug_running_o     (),
       .debug_halted_o      (),
-      .fetch_enable_i      (boot_ready),
+      .fetch_enable_i      (boot_ready | debug_req_irq),
       .core_sleep_o        ()
   );
 
