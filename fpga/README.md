@@ -16,3 +16,36 @@ A7-35T；缓存目标 `21051218003` 也会被替换。显式打开其他有效�
 ```tcl
 info body open_hw_target
 ```
+
+## 通过 JTAG 更换固件镜像
+
+T07 及后续多镜像板级测试使用 `SRAM_INIT_FILE=""` 的无预装载 bitstream。
+该 bitstream 上电后 CPU 不取指，调试模块通过 JTAG 保持可访问。每次复位后，
+按地址顺序向 `0x80000000` 写入完整的 2048 个 32 位字，再向
+`0x0001003C` 写入 `0xB007C0DE` 释放 CPU。
+
+先将 2048 个十六进制字转换成小端二进制：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File fpga/prepare_jtag_image.ps1 `
+    -InputHex fpga/firmware/int8_selftest.hex `
+    -OutputBin fpga/firmware/int8_selftest.bin
+```
+
+在 GDB 中加载项目提供的命令：
+
+```gdb
+source D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/fpga/load_soc_image.gdb
+soc-boot-status
+soc-load-bin D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/fpga/firmware/int8_selftest.bin
+soc-boot-status
+soc-commit-image
+```
+
+`prepare_jtag_image.ps1` 要求输入恰好 2048 个十六进制 32 位字，并检查输出
+文件为 8 KiB。`soc-load-bin` 按地址顺序装入镜像，并检查 Boot 控制器计数达到
+2048、`boot_ready` 仍为零。`soc-commit-image`
+只在上述条件满足时写启动密钥，并等待 `boot_ready=1`。
+
+更换镜像前必须复位 SoC，使 `loaded_words` 回到零。该流程仅适用于无预装载
+bitstream；预装载 bitstream 的 `PREINITIALIZED=1`，CPU 不等待 JTAG 装载。
