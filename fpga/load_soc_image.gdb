@@ -21,7 +21,7 @@ define soc-load-bin
     error "reset the SoC before loading a new image"
   end
 
-  restore "$arg0" binary 0x80000000
+  restore $arg0 binary 0x80000000
 
   set $soc_after = *(unsigned int *)0x0001003c
   set $soc_words = $soc_after & 0xfff
