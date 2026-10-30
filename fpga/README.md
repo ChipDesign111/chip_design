@@ -193,28 +193,54 @@ OpenOCD 为装载镜像会将 CPU 保持在 debug halt。提交后恢复运行�
 
 ```gdb
 monitor resume
-shell sleep 0.1
+shell sleep 1
 monitor halt
 ```
 
-`monitor halt` 用于得到稳定的调试现场。固件结束后 CPU 实际仍在执行
-`j 0x80000470` 自循环，不会进入 debug halt。
+`monitor resume` 是给 OpenOCD 的命令，GDB 不一定同步更新自己的寄存器缓存。
+因此 halt 后必须刷新寄存器，不能直接使用恢复前的 `$pc`：
 
-检查结果：
+```gdb
+maintenance flush register-cache
+info registers pc
+x/3i $pc
+monitor reg pc
+```
+
+`flushregs` 仍可使用，但已经是
+`maintenance flush register-cache` 的弃用别名。
+
+固件结束后 CPU 实际仍在执行 `j 0x80000470` 自循环，不会自己进入 debug
+halt。`monitor halt` 用于得到稳定的调试现场。预期最终 PC 为：
+
+```text
+pc = 0x80000470
+
+=> 0x80000470: j 0x80000470
+   0x80000474: unimp
+   0x80000476: unimp
+```
+
+`monitor reg pc` 从 OpenOCD 侧再次读取 PC，可用于排除 GDB 缓存不一致。
+若刷新后仍显示 `0x10000`，说明 CPU 仍停在 Boot 跳板起点，不应视为本次
+固件执行完成。
+
+CPU 运行期间，GDB 默认的 abstract memory access 可能失败，例如：
+
+```text
+Cannot access memory at address 0x80001fe0
+```
+
+这不是内存损坏。执行 `monitor halt` 后再读取：
 
 ```gdb
 x/1wx 0x80001FE0
-x/3i $pc
 ```
 
 预期：
 
 ```text
 0x80001fe0: 0xc0dec0de
-
-=> 0x80000470: j 0x80000470
-   0x80000474: unimp
-   0x80000476: unimp
 ```
 
 ## 6. Boot 状态
