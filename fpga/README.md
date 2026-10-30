@@ -42,6 +42,17 @@ soc-boot-status
 soc-commit-image
 ```
 
+如果 GDB 运行在 WSL 中，应将 Windows `D:` 路径改为 WSL 挂载路径：
+
+```gdb
+source /mnt/d/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/fpga/load_soc_image.gdb
+soc-load-bin /mnt/d/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/fpga/firmware/int8_selftest.bin
+```
+
+可在普通 WSL shell 中使用
+`wslpath -u 'D:\LiChade\PKU\major\AdvanceChip\chip_design\chip_design\fpga'`
+确认实际挂载位置。
+
 `prepare_jtag_image.ps1` 要求输入恰好 2048 个十六进制 32 位字，并检查输出
 文件为 8 KiB。`soc-load-bin` 按地址顺序装入镜像，并检查 Boot 控制器计数达到
 2048、`boot_ready` 仍为零。`soc-commit-image`
