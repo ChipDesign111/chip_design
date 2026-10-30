@@ -3,6 +3,8 @@
 本目录提供 A7-35T 板级构建、JTAG 目标选择、镜像转换和 GDB 装载流程。
 FPGA 系统时钟为 20 MHz，器件为 `xc7a35tcsg324-1`。
 
+完整的板上功能、时序、资源、补充回归和测试边界见 [板级测试报告](TEST_REPORT.md)。
+
 ## 1. 两种 bitstream
 
 不要把“CPU 运行后读取 SRAM”和“无预装载后用 JTAG 写入 SRAM”混在一起。

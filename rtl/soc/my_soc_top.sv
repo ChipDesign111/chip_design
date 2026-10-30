@@ -49,7 +49,7 @@ module my_soc_top #(
       MaxMstTrans:        1,
       MaxSlvTrans:        1,
       FallThrough:        1'b0,
-      // The FPGA build runs at 25 MHz. Keep the smaller no-latency crossbar;
+      // The FPGA build runs at 20 MHz. Keep the smaller no-latency crossbar;
       // registered adapters and target bridges provide transaction boundaries.
       LatencyMode:        axi_pkg::NO_LATENCY,
       AxiIdWidthSlvPorts: 2,

@@ -10,7 +10,7 @@
 
 本实现已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。完整 SoC 包含 CV32E40P、AXI、JTAG Debug、8 KiB 主 SRAM 和 64→32→6 NPU。共享 32 乘法器在第一层分两个 16 输出×2 输入相位，在第二层分两个 4 输入行×6 输出相位；两个 64B 权重 tile 缓冲由 DMA 从主 SRAM 按需填充。输入/权重/隐藏激活 INT8，偏置/累加/分数 INT32。当前目标是含 PAD 整颗 Die ≤3.8 mm²。
 
-`rtl-dev` 当前支持最多四样本寄存器批次，并完成 tile 零气泡交接、FC2 四组 48B 粗粒度权重包、W1 尾部 W2 预取和 32 乘法器跨层复用。FPGA 版本使用 25 MHz 系统时钟与 `NO_LATENCY` crossbar；固定基准下 batch=4 单批为 1512 拍，详见[性能对比](report/performance.md)。这些是 RTL 周期结果，25 MHz FPGA 时序和 batch=4 物理面积仍需对应签核。
+`rtl-dev` 当前支持最多四样本寄存器批次，并完成 tile 零气泡交接、FC2 四组 48B 粗粒度权重包、W1 尾部 W2 预取和 32 乘法器跨层复用。FPGA 版本使用 20 MHz 系统时钟与 `NO_LATENCY` crossbar；固定基准下 batch=4 单批为 1512 拍，详见[性能对比](report/performance.md)和[FPGA 测试报告](fpga/TEST_REPORT.md)。这些是 RTL 周期结果；当前 20 MHz bitstream 已通过实现时序，batch=4 的 ASIC 物理面积仍需独立签核。
 
 从本机打包上传到服务器、三个独立阶段和结果回传，直接跟随 [EDA 操作指南](eda/README.md)。服务器从每个上传版本目录的 README.html 开始。结构、启动流程和寄存器见 [设计报告](report/README.md)。
 
@@ -21,7 +21,7 @@
 | [model](model/README.md) | 保留的训练模型、量化参数和整数参考 |
 | [test](test/README.md) | 当前 INT8/DMA/启动保护功能回归 |
 | [report](report/README.md) | 架构、MMIO、DMA、性能、SRAM 和验证范围 |
-| [fpga](fpga/README.md) | main 更新带来的 Vivado 工程，已更换当前固件；本轮验收在 ASIC 服务器 |
+| [fpga](fpga/README.md) / [板级测试报告](fpga/TEST_REPORT.md) | Vivado 工程、多镜像 JTAG 装载流程和当前 A7-35T 板上验证结果 |
 | [tools](tools/README.md) | 正常工程入口、权重导出和本地依赖管理 |
 
 ```bash

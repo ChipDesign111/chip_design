@@ -1,6 +1,6 @@
 # 开发与验证
 
-基于 main d40b217 的 rtl-dev 是当前 batch=4 寄存器驻留实现，并包含零气泡 tile 交接、FC2 八 tile 打包和 W2 跨层预取。FPGA 使用 25 MHz 系统时钟和 `NO_LATENCY` crossbar。旧 xzx 实现、旧 RTL/测试和旧 EDA 证据保存在本地 archives。
+基于 main d40b217 的 rtl-dev 是当前 batch=4 寄存器驻留实现，并包含零气泡 tile 交接、FC2 八 tile 打包和 W2 跨层预取。FPGA 使用 20 MHz 系统时钟和 `NO_LATENCY` crossbar。旧 xzx 实现、旧 RTL/测试和旧 EDA 证据保存在本地 archives。
 
 ```bash
 python tools/project.py doctor

@@ -8,4 +8,4 @@ my_soc_top 顶层仍为 clk_i、rst_ni、tck_i、tms_i、td_i、td_o 六个端�
 
 NPU 的真实执行周期受 AXI 仲裁与背压影响，读取计数寄存器获得；每样本每层固定 32 个 MAC 发射周期。启动保护默认关闭 CPU 取指，完整镜像覆盖和密钥提交后放行，细节见 [SRAM](sram.md)。
 
-FPGA 版本使用 25 MHz 系统时钟，因此 AXI 交叉开关采用 `NO_LATENCY`，不增加内部地址通道寄存器；CPU/DMA 发起端和目标桥接器的寄存边界仍保留。该选择不适用于恢复 50 MHz 目标。
+FPGA 版本使用 20 MHz 系统时钟，因此 AXI 交叉开关采用 `NO_LATENCY`，不增加内部地址通道寄存器；CPU/DMA 发起端和目标桥接器的寄存边界仍保留。该选择不适用于恢复 50 MHz ASIC 目标。

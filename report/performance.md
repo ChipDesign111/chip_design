@@ -6,7 +6,7 @@
 2. 将 FC2 每 bank 的 8 个逻辑 tile 打包为 48 B，并在 W1 尾部启动两个 W2 bank 的跨层预取。
 3. 复用乘法器完成 FC2 的 `6 输出×8 输入行` 计算。
 4. 将共享 bank 从 64 个乘法器减为 32 个，同时保持 64 B bank 大小。
-5. 对比 AXI 控制切片；最终选择 25 MHz + `NO_LATENCY`，不再增加控制切片。
+5. 对比 AXI 控制切片；当前 FPGA 选择 20 MHz + `NO_LATENCY`，不再增加控制切片。
 
 基准固定使用 seed=10000 的训练模型和输入。NPU 周期从 `START` 统计到 `DONE`，包含权重 DMA、MAC、requant 和等待时间。AXI ready/valid 采用 testbench 中同一个确定性伪随机背压序列，因此各阶段周期可直接比较。每次只运行一个 batch，避免前一测试的 AXI 状态影响结果。
 
@@ -127,7 +127,7 @@ NPU batch=1/2/8：1401 / 1431 / 1808，保持不变
 完整 SoC batch=8：8589 -> 10691，增加 2102 拍
 ```
 
-这会增加 MMIO 和 AXI 地址事务的固定延迟。`CUT_ALL_PORTS` 会把历史 batch=8 完整 SoC 增至 17938 拍。最终改用 25 MHz 系统时钟，AXI 使用 `NO_LATENCY`；32-MAC 后当前 batch=4 的 NPU 周期为 1512 拍，完整 SoC 为 5109 拍。
+这会增加 MMIO 和 AXI 地址事务的固定延迟。`CUT_ALL_PORTS` 会把历史 batch=8 完整 SoC 增至 17938 拍。当前 FPGA 使用 20 MHz 系统时钟，AXI 保持 `NO_LATENCY`；32-MAC 后当前 batch=4 的 NPU 周期为 1512 拍，完整 SoC 为 5109 拍。
 
 ## 验证
 
