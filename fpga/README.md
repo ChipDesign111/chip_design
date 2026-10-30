@@ -7,3 +7,12 @@
 `vivado_init.tcl` 会加载 `connect_fpga.tcl`，注册 `har_connect_fpga` 和
 `har_program_fpga` 两个 Tcl 命令。前者动态选择真正包含 `xc7a35t` 的在线目标，
 避免复用上次会话缓存的序列号；后者接受 bitstream 路径并完成烧录。
+
+初始化脚本还会预加载并包装 Hardware Manager 的 `open_hw_target`。GUI 的
+`Auto Connect` 发起无参数 `open_hw_target` 时，动态发现将自动选择当前的
+A7-35T；缓存目标 `21051218003` 也会被替换。显式打开其他有效目标时仍原样
+透传。启动后可用下面的命令确认钩子已启用：
+
+```tcl
+info body open_hw_target
+```

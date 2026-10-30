@@ -1,3 +1,13 @@
+# Open the original Labtools command. The public open_hw_target command is
+# wrapped below, so internal helper code must call this to avoid recursion.
+proc har_open_current_target {} {
+    if {[llength [info commands ::har_open_hw_target_raw]] != 0} {
+        return [::har_open_hw_target_raw]
+    }
+
+    return [::open_hw_target]
+}
+
 # Discover the currently connected A7-35T instead of reusing a cached
 # hardware-target serial number from a previous Vivado session.
 proc har_connect_fpga {} {
@@ -21,8 +31,9 @@ proc har_connect_fpga {} {
         }
 
         # A stale target may open successfully but expose no devices.
-        if {[catch {open_hw_target} error]} {
+        if {[catch {har_open_current_target} error]} {
             puts "Cannot open target $target: $error"
+            continue
         }
 
         if {[catch {get_hw_devices} devices]} {
@@ -59,3 +70,37 @@ proc har_program_fpga {bitfile} {
     refresh_hw_device -update_hw_probes false $device
     puts "Programmed $device with $bitfile"
 }
+
+# Hardware Manager otherwise reuses the target selected in the previous
+# session. Auto Connect calls open_hw_target with no arguments, so replacing
+# that call with dynamic discovery prevents Vivado from retrying the stale
+# 21051218003 target before the user can select 1234-tulA manually.
+proc har_install_open_hw_target_hook {} {
+    if {[llength [info commands ::har_open_hw_target_raw]] != 0} {
+        return 1
+    }
+
+    if {[llength [info commands ::open_hw_target]] == 0} {
+        catch {auto_load open_hw_target}
+    }
+
+    if {[llength [info commands ::open_hw_target]] == 0} {
+        return 0
+    }
+
+    rename ::open_hw_target ::har_open_hw_target_raw
+
+    proc ::open_hw_target {args} {
+        if {[llength $args] == 0 ||
+            [string match "*21051218003*" $args]} {
+            har_connect_fpga
+            return
+        }
+
+        return [::har_open_hw_target_raw {*}$args]
+    }
+
+    return 1
+}
+
+har_install_open_hw_target_hook
