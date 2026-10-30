@@ -9,6 +9,15 @@ document soc-boot-status
 Print the boot controller's loaded-word count and ready bit.
 end
 
+define soc-full-cycles
+  set $soc_cycles = *(unsigned int *)0x00010038
+  printf "soc_cycles=%u (0x%08x)\n", $soc_cycles, $soc_cycles
+end
+
+document soc-full-cycles
+Print the hardware cycle count latched when firmware last wrote PASS or FAIL.
+end
+
 define soc-load-bin
   if $argc != 1
     printf "usage: soc-load-bin <image.bin>\n"

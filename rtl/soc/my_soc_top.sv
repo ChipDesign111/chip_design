@@ -389,6 +389,7 @@ module my_soc_top #(
 
   bootram #(.PREINITIALIZED(FPGA_INIT_FILE!="")) i_bootram (
       .sram_write_i(sram_req && sram_we),.sram_addr_i(sram_addr),.sram_be_i(sram_be),
+      .sram_wdata_i(sram_wdata),
       .ready_o(boot_ready),
       .clk_i (clk_i),
       .rst_ni(ndmreset_n),

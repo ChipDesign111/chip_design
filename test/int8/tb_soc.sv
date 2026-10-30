@@ -65,7 +65,11 @@ module tb_soc;
         end
         if(magic!==32'hc0dec0de) $fatal(1,"SoC timeout, PC=%h",dut.instr_addr);
         if(read_overlap==0 || write_overlap==0) $fatal(1,"Full AXI SoC did not overlap DMA and MAC");
-        $display("INT8_SOC PASS cycles=%0d DMA_read_MAC_overlap=%0d DMA_write_MAC_overlap=%0d",cycles,read_overlap,write_overlap);
+        if(dut.i_bootram.soc_cycles_final<=cycles ||
+           ^dut.i_bootram.soc_cycles_final===1'bx)
+            $fatal(1,"Invalid hardware SoC cycle count: %0d",dut.i_bootram.soc_cycles_final);
+        $display("INT8_SOC PASS cycles=%0d hw_soc_cycles=%0d DMA_read_MAC_overlap=%0d DMA_write_MAC_overlap=%0d",
+                 cycles,dut.i_bootram.soc_cycles_final,read_overlap,write_overlap);
         // Asynchronous reassertion must revoke execution immediately.
         #2;rst_n=0;#1;
         if(dut.ndmreset_n || dut.boot_ready) $fatal(1,"Reset assertion failed");

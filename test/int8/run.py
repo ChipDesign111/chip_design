@@ -58,6 +58,7 @@ def main():
     execute(['iverilog','-g2012','-s','tb_tiled_dma','-o','test.vvp']+[ROOT/x for x in sources],run,'compile_unit')
     output=execute(['vvp','test.vvp','+DIR='+run.as_posix(),'+COUNT='+str(len(seeds))],run,'unit','INT8_TILED_DMA PASS')
     print('\n'.join(x for x in output.splitlines() if 'CASE' in x)[-3000:])
+    soc_timing=None
     if args.soc:
         from firmware import build
         build(run)
@@ -70,8 +71,14 @@ def main():
             fl=['+define+CHIP_USE_RA1SHD',args.vendor_model.resolve().as_posix()]+fl
         fl.append((HERE/'tb_soc.sv').as_posix());(run/'soc.f').write_text('\n'.join(fl)+'\n')
         commands=['onerror {quit -code 1}','onbreak {resume}','vlib work','vmap work work','vlog -sv -f soc.f','vsim -suppress 12110 -novopt -onfinish stop '+('+notimingchecks ' if args.vendor_model else '')+'work.tb_soc','run -all','set status [examine -radix hex /tb_soc/magic]','if {![string equal -nocase $status c0dec0de]} {quit -code 3}','quit -code 0']
-        (run/'soc.do').write_text('\n'.join(commands)+'\n');execute([args.vsim,'-c','-do','do soc.do'],run,'soc','INT8_SOC PASS')
+        (run/'soc.do').write_text('\n'.join(commands)+'\n')
+        soc_output=execute([args.vsim,'-c','-do','do soc.do'],run,'soc','INT8_SOC PASS')
+        soc_match=re.search(r'INT8_SOC PASS cycles=(\d+) hw_soc_cycles=(\d+)',soc_output)
+        if not soc_match:raise RuntimeError('Missing full SoC timing line')
+        observed_cycles=int(soc_match.group(1));hardware_soc_cycles=int(soc_match.group(2))
+        if hardware_soc_cycles<=observed_cycles:raise RuntimeError('Invalid hardware SoC cycle count')
+        soc_timing={'observed_cycles':observed_cycles,'hardware_soc_cycles':hardware_soc_cycles}
     if any(hashlib.sha256((ROOT/name).read_bytes()).hexdigest()!=value for name,value in source_sha.items()):raise RuntimeError('Source changed during functional run')
-    (run/'result.json').write_text(json.dumps({'unit_cases':len(seeds),'trained_samples':24 if args.trained else 0,'soc':args.soc,'vendor_model_sha256':hashlib.sha256(args.vendor_model.read_bytes()).hexdigest() if args.vendor_model else None,'passed':True},indent=2)+'\n')
+    (run/'result.json').write_text(json.dumps({'unit_cases':len(seeds),'trained_samples':24 if args.trained else 0,'soc':args.soc,'soc_timing':soc_timing,'vendor_model_sha256':hashlib.sha256(args.vendor_model.read_bytes()).hexdigest() if args.vendor_model else None,'passed':True},indent=2)+'\n')
     print('Results: '+str(run))
 if __name__=='__main__':main()
