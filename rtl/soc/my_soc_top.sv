@@ -110,6 +110,7 @@ module my_soc_top #(
   logic           debug_resp_ready;
   dm::dmi_resp_t  debug_resp;
   logic           debug_req_irq;
+  logic           debug_halted;
   localparam logic [31:0] DM_HALT_ADDR      = dm::HaltAddress[31:0];
   localparam logic [31:0] DM_EXCEPTION_ADDR = dm::ExceptionAddress[31:0];
 
@@ -150,7 +151,7 @@ module my_soc_top #(
       .debug_req_i         (debug_req_irq),
       .debug_havereset_o   (),
       .debug_running_o     (),
-      .debug_halted_o      (),
+      .debug_halted_o      (debug_halted),
       .fetch_enable_i      (boot_ready | debug_req_irq),
       .core_sleep_o        ()
   );
@@ -388,11 +389,10 @@ module my_soc_top #(
   logic [31:0] boot_rdata;
   logic        firmware_fetch_start;
 
-  // Start after the first real CPU fetch following boot readiness. Normal
-  // boot begins at BOOT_BASE, but debug resume may legally continue from a
-  // saved DPC instead. While halted there is no fetch, so JTAG latency remains
-  // outside the measured execution window.
-  assign firmware_fetch_start = instr_req;
+  // Start after the first CPU fetch made outside debug mode. Normal boot
+  // begins at BOOT_BASE, but debug resume may continue from a saved DPC.
+  // Ignoring fetch activity while debug_halted excludes JTAG wait time.
+  assign firmware_fetch_start = instr_req && !debug_halted;
 
   bootram #(.PREINITIALIZED(FPGA_INIT_FILE!="")) i_bootram (
       .sram_write_i(sram_req && sram_we),.sram_addr_i(sram_addr),.sram_be_i(sram_be),

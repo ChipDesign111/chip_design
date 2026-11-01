@@ -369,7 +369,7 @@
       "sha256": "daab5315b0c94e66ce1de229075a56c129708d8dbc5916a63587d02df8427ba0",
       "previous_sha256": "3cb8aeed53c8d1bf6ace4c5d3629a1879c8179e078af16bea53b88cf52b2f21d",
       "upstream_sha256": "4aa5f14dbb92a7ac9855f3019486a51a42ba210242a58b653b3e59049c2d82bf",
-      "project_override": "INT8 autonomous tile DMA integration; guarded boot commit, synchronized reset release and full SoC cycles from first boot fetch to PASS/FAIL"
+      "project_override": "INT8 autonomous tile DMA integration; guarded boot commit, synchronized reset release and full SoC cycles from first non-debug CPU fetch to PASS/FAIL"
     },
     {
       "source": "soc/rtl/mem/bootrom.sv",
@@ -387,8 +387,8 @@
     {
       "source": "soc/rtl/my_soc_top.sv",
       "path": "rtl/soc/my_soc_top.sv",
-      "sha256": "a12458ac28fe74513497119b5c7b241ff4baa1c6e3c8c2bd2ed84e60cdac87ba",
-      "previous_sha256": "08737020db8fc2f1a7b996d90b202b1615c76cc7df22f285f122ca4edab3b9c6",
+      "sha256": "05b9da838e5325b5ef9274bc733df192e20eafc87f6e6f0b59153ea5d5c379e7",
+      "previous_sha256": "a12458ac28fe74513497119b5c7b241ff4baa1c6e3c8c2bd2ed84e60cdac87ba",
       "original_sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6",
       "project_override": "INT8 tiled DMA, guarded boot, shared 32 MAC, 20 MHz no-latency crossbar and shared falling-edge SRAM transaction reset",
       "upstream_sha256": "174207c5682648222a6f280705666d272d1d44406df6193370c0e8efc7ed374e"

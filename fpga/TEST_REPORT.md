@@ -330,7 +330,7 @@ LUT 仍是主要容量瓶颈，仅余 1,477 个逻辑 LUT。后续增加 batch �
 | T05 | M1/K1/K3 状态 | 完成 | M1 常亮；持续读取后 K1 点亮；K3 常亮 |
 | T06 | 其余训练 UCI 四样本批次 | 完成 | UCI 00–05 共 24 条固定输入全部逐值 PASS |
 | T07 | 无预装载镜像的 JTAG 启动流程 | 完成 | 部分/乱序/错误密钥均未启动，完整镜像与正确密钥正常 PASS |
-| T08 | 完整 SoC 板上周期插桩 | RTL/仿真完成 | 首次 CPU 取指口径硬件计数为 5104；待新 bitstream 板上读取 |
+| T08 | 完整 SoC 板上周期插桩 | RTL/仿真完成 | 首次非 debug CPU 取指口径硬件计数为 5104；待新 bitstream 板上读取 |
 | T09 | 20 MHz 时钟说明和报告索引 | 完成 | 当前配置、源码注释、工程元数据和导航均与 XCI/routed timing 一致 |
 
 ### 8.1 T04 整字和字节读写结果
@@ -433,7 +433,7 @@ T07 已完成。该测试证明 bootram 会同时检查完整字数、写入顺�
 bootram 新增硬件 SoC 周期计数器：
 
 - 系统复位或重新加载时清零；
-- `boot_ready` 置高后，CPU 第一次发出指令取指时开始；
+- `boot_ready` 置高且 CPU 离开内部 debug halt 后，第一次发出指令取指时开始；
 - 镜像装载、启动提交、debug halt 和 JTAG resume 等待均不计入；
 - 检测到固件向 `0x80001FE0` 写入 PASS 或 FAIL 时冻结；
 - 通过 Boot 地址 `0x00010038` 读取。
@@ -447,6 +447,12 @@ JTAG 操作延迟，第一版 RTL 改为首次 Boot 取指触发。
 仍读到 0，说明 OpenOCD 调试恢复可能沿保存的 DPC 直接进入固件，没有再次经过
 Boot 跳板。当前 RTL 已放宽为 `boot_ready` 后第一次任意 CPU 取指；debug halt
 期间没有取指，因此排除等待时间的目标不变。
+
+再下一版取消地址限定后，板上在 PASS、最终 PC 正确时读到 `0x069777BC`
+（110,589,884），对应 20 MHz 下约 5.53 秒，说明 debug mode 内仍会产生
+`instr_req` 脉冲并提前启动计数器。当前 RTL 已接入 CV32E40P 的
+`debug_halted_o`，只在 `!debug_halted` 后接受首次取指；这版尚待新 bitstream
+验证。
 
 当前 canonical 镜像完整 SoC 仿真结果：
 
@@ -485,7 +491,7 @@ T09 以实际构建产物为准统一当前配置说明：
 4. **T04 的内部单字节时序证据仍有范围限制。** GDB 层整字读写、恢复零和字节 lane 0/1 写通过；lane 2/3 及直接单字节 AXI `WSTRB` 尚未单独归档。
 5. **FPGA 后端不是 ASIC 原生 SRAM。** 板上使用 BRAM 后端，不能替代 `RA1SHD_2048x32M8` 的时序、功耗和版图验证。
 6. **未进行 25/50 MHz、PVT、长期老化或完整 I/O 时序签核。** 本报告只支持当前 20 MHz bitstream。
-7. **完整 SoC 板上周期尚待新 bitstream 验证。** RTL 已改为 boot_ready 后首次 CPU 取指触发，仿真得到 5104 拍；当前板上 bitstream 仍使用过窄的 Boot 地址限定。
+7. **完整 SoC 板上周期尚待新 bitstream 验证。** RTL 已改为 boot_ready 后首次非 debug CPU 取指触发，仿真得到 5104 拍；当前板上 bitstream 尚未包含 debug_halted 门控。
 
 ## 10. 后续补充测试清单
 
@@ -498,5 +504,5 @@ T09 以实际构建产物为准统一当前配置说明：
 | T05 | 读取并记录 M1/K1/K3 | M1 locked，K1 随 TCK 活动，K3 PASS 后常亮 | 完成 |
 | T06 | 其余训练 UCI 四样本批次板上运行 | hidden、scores、class 全部匹配 | 完成 |
 | T07 | 无预装载镜像的 JTAG 启动流程 | 错误密钥/部分镜像不启动，正确密钥启动 | 完成 |
-| T08 | 板上完整 SoC 周期插桩 | 可读取 boot_ready 后首次 CPU 取指至 PASS 的完整周期 | RTL/仿真完成，板级读取待新 bitstream |
+| T08 | 板上完整 SoC 周期插桩 | 可读取 boot_ready 后首次非 debug CPU 取指至 PASS 的完整周期 | RTL/仿真完成，板级读取待新 bitstream |
 | T09 | 更新 20 MHz 时钟说明和报告索引 | 文档与 XCI/routed timing 一致 | 完成 |

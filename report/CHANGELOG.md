@@ -1,5 +1,7 @@
 # 当前架构变更
 
+2026-11-01：取消 Boot 地址限定后的板上版本仍将 debug mode 内部取指计入，读到 `0x069777BC`；RTL 接入 CV32E40P `debug_halted_o`，只在 `boot_ready` 后首次非 debug CPU 取指时启动。38 个单元用例和完整 SoC 通过，硬件口径仍为 5104 拍，板上读取待新 bitstream。
+
 2026-11-01：板上 Boot 地址限定版本在 PASS 和最终 PC 正确时仍读到 0，确认 OpenOCD 可能从保存的 DPC 直接恢复而不再次取指 Boot 跳板。RTL 改为 `boot_ready` 后第一次任意 CPU 取指触发；38 个单元用例和完整 SoC 再次通过，硬件周期仍为 5104 拍，板上读取待新 bitstream。
 
 2026-11-01：完整 SoC 周期计数改为在 `boot_ready` 后首次从 `0x00010000` 取指时启动，排除镜像装载、commit、debug halt 和 JTAG resume 延迟。新增 Boot 周期起点单测；38 个单元用例和完整 SoC 通过，testbench 观测 5109 拍，新硬件口径为 5104 拍，板上读取待新 bitstream。
