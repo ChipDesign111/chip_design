@@ -386,10 +386,17 @@ module my_soc_top #(
   logic [31:0] boot_addr;
   logic [31:0] boot_wdata;
   logic [31:0] boot_rdata;
+  logic        firmware_fetch_start;
+
+  // Start the full-SoC counter only when the CPU first fetches the immutable
+  // boot trampoline. A committed image can remain in debug halt indefinitely
+  // without adding JTAG resume latency to the measured execution window.
+  assign firmware_fetch_start = instr_req && instr_addr == BOOT_BASE;
 
   bootram #(.PREINITIALIZED(FPGA_INIT_FILE!="")) i_bootram (
       .sram_write_i(sram_req && sram_we),.sram_addr_i(sram_addr),.sram_be_i(sram_be),
       .sram_wdata_i(sram_wdata),
+      .firmware_fetch_i(firmware_fetch_start),
       .ready_o(boot_ready),
       .clk_i (clk_i),
       .rst_ni(ndmreset_n),

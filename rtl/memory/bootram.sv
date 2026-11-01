@@ -11,6 +11,7 @@ module bootram #(
     input logic [31:0] sram_addr_i,
     input logic [3:0] sram_be_i,
     input logic [31:0] sram_wdata_i,
+    input logic firmware_fetch_i,
     output logic ready_o,
     output logic [31:0] data_o
 );
@@ -22,7 +23,7 @@ module bootram #(
     logic soc_cycles_captured;
     wire commit=req_i && wen_i && addr_i==15 && data_i==32'hb007c0de;
     wire reload=req_i && wen_i && addr_i==15 && data_i==0;
-    wire cycle_start=(commit && loaded_words==2048) || PREINITIALIZED;
+    wire cycle_start=ready_o && firmware_fetch_i;
     wire test_status_write=sram_write_i && sram_be_i==4'hf &&
         sram_addr_i==32'h80001fe0 &&
         (sram_wdata_i==32'hc0dec0de || sram_wdata_i==32'hdeadbeef);

@@ -54,6 +54,9 @@ def main():
     (run/'source_manifest.json').write_text(json.dumps(source_sha,indent=2)+'\n')
     seeds=list(range(args.count))+(list(range(10000,10006)) if args.trained else [])
     for index,seed in enumerate(seeds):(run/('case_%d.hex'%index)).write_text(''.join('%08x\n'%v for v in make_case(seed)))
+    boot_sources=['rtl/memory/bootram.sv','test/int8/tb_boot_cycles.sv']
+    execute(['iverilog','-g2012','-s','tb_boot_cycles','-o','boot_cycles.vvp']+[ROOT/x for x in boot_sources],run,'compile_boot_cycles')
+    execute(['vvp','boot_cycles.vvp'],run,'boot_cycles','BOOT_CYCLES PASS')
     sources=['rtl/npu/har_weight_store.sv','rtl/npu/har_npu_core.sv','rtl/npu/simple_npu_top.sv','rtl/dma/har_dma.sv','test/int8/tb_tiled_dma.sv']
     execute(['iverilog','-g2012','-s','tb_tiled_dma','-o','test.vvp']+[ROOT/x for x in sources],run,'compile_unit')
     output=execute(['vvp','test.vvp','+DIR='+run.as_posix(),'+COUNT='+str(len(seeds))],run,'unit','INT8_TILED_DMA PASS')
@@ -76,7 +79,7 @@ def main():
         soc_match=re.search(r'INT8_SOC PASS cycles=(\d+) hw_soc_cycles=(\d+)',soc_output)
         if not soc_match:raise RuntimeError('Missing full SoC timing line')
         observed_cycles=int(soc_match.group(1));hardware_soc_cycles=int(soc_match.group(2))
-        if hardware_soc_cycles<=observed_cycles:raise RuntimeError('Invalid hardware SoC cycle count')
+        if hardware_soc_cycles<=0 or hardware_soc_cycles>observed_cycles:raise RuntimeError('Invalid hardware SoC cycle count')
         soc_timing={'observed_cycles':observed_cycles,'hardware_soc_cycles':hardware_soc_cycles}
     if any(hashlib.sha256((ROOT/name).read_bytes()).hexdigest()!=value for name,value in source_sha.items()):raise RuntimeError('Source changed during functional run')
     (run/'result.json').write_text(json.dumps({'unit_cases':len(seeds),'trained_samples':24 if args.trained else 0,'soc':args.soc,'soc_timing':soc_timing,'vendor_model_sha256':hashlib.sha256(args.vendor_model.read_bytes()).hexdigest() if args.vendor_model else None,'passed':True},indent=2)+'\n')
