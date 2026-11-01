@@ -387,8 +387,8 @@
     {
       "source": "soc/rtl/my_soc_top.sv",
       "path": "rtl/soc/my_soc_top.sv",
-      "sha256": "08737020db8fc2f1a7b996d90b202b1615c76cc7df22f285f122ca4edab3b9c6",
-      "previous_sha256": "935001f460a930de03ee0e50bed5019785ff0249b1eccc339fd2f8b76394ce0d",
+      "sha256": "a12458ac28fe74513497119b5c7b241ff4baa1c6e3c8c2bd2ed84e60cdac87ba",
+      "previous_sha256": "08737020db8fc2f1a7b996d90b202b1615c76cc7df22f285f122ca4edab3b9c6",
       "original_sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6",
       "project_override": "INT8 tiled DMA, guarded boot, shared 32 MAC, 20 MHz no-latency crossbar and shared falling-edge SRAM transaction reset",
       "upstream_sha256": "174207c5682648222a6f280705666d272d1d44406df6193370c0e8efc7ed374e"

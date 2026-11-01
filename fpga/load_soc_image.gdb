@@ -15,7 +15,7 @@ define soc-full-cycles
 end
 
 document soc-full-cycles
-Print the hardware cycle count from the first boot fetch after ready to PASS or FAIL.
+Print the hardware cycle count from the first CPU fetch after boot ready to PASS or FAIL.
 end
 
 define soc-load-bin

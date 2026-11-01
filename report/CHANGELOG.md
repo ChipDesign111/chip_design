@@ -1,5 +1,7 @@
 # 当前架构变更
 
+2026-11-01：板上 Boot 地址限定版本在 PASS 和最终 PC 正确时仍读到 0，确认 OpenOCD 可能从保存的 DPC 直接恢复而不再次取指 Boot 跳板。RTL 改为 `boot_ready` 后第一次任意 CPU 取指触发；38 个单元用例和完整 SoC 再次通过，硬件周期仍为 5104 拍，板上读取待新 bitstream。
+
 2026-11-01：完整 SoC 周期计数改为在 `boot_ready` 后首次从 `0x00010000` 取指时启动，排除镜像装载、commit、debug halt 和 JTAG resume 延迟。新增 Boot 周期起点单测；38 个单元用例和完整 SoC 通过，testbench 观测 5109 拍，新硬件口径为 5104 拍，板上读取待新 bitstream。
 
 2026-10-31：完成 T09，将当前 FPGA 文档、RTL 工程元数据和源码注释统一为 20 MHz，并在根目录及 FPGA 入口补充板级测试报告索引。历史 25/50 MHz 条目保留，用于区分旧配置与当前 XCI/routed timing 证据。
