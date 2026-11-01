@@ -1,5 +1,7 @@
 # 当前架构变更
 
+2026-11-01：最终无预装载 `impl_2` 在 20 MHz 通过 routed timing，WNS/WHS 为 +0.368/+0.017 ns，LUT 19,459。T08 板上完成：PASS、最终 PC 正确、Boot word14 为 `0x000013F1`（5105 拍）；bitstream SHA-256 为 `e4247f4a...24c917b6`。
+
 2026-11-01：T08 周期计数器改为在 `soc_cycles` 上原地冻结，删除冗余的 32-bit `soc_cycles_final` 及其加法/回读选择逻辑。Boot 起点单测、38 个单元用例和完整 SoC 通过，硬件口径保持 5104 拍；资源与时序需重新综合实现。
 
 2026-11-01：取消 Boot 地址限定后的板上版本仍将 debug mode 内部取指计入，读到 `0x069777BC`；RTL 接入 CV32E40P `debug_halted_o`，只在 `boot_ready` 后首次非 debug CPU 取指时启动。38 个单元用例和完整 SoC 通过，硬件口径仍为 5104 拍，板上读取待新 bitstream。

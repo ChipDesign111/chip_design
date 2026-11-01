@@ -3,7 +3,7 @@
 | 项目 | 内容 |
 |---|---|
 | 报告日期 | 2026-11-01 |
-| 测试状态 | **PASS（主功能及 T01/T02/T03/T04/T05/T06/T07 补充回归完成，T09 文档同步完成；T08 RTL/仿真完成，板级读取待新 bitstream）** |
+| 测试状态 | **PASS（主功能、T01–T09、完整 SoC 周期插桩和最终 20 MHz 实现均完成）** |
 | Git 分支 | `rtl-dev` |
 | RTL 逻辑基线 | `fce9d9b`（batch=4、共享 32-MAC） |
 | FPGA 器件 | Xilinx Artix-7 `xc7a35tcsg324-1` |
@@ -14,7 +14,9 @@
 
 ## 1. 测试结论
 
-当前 bitstream 已在 A7-35T FPGA 上完成一次端到端功能自检。CPU 从上电预装载的 8 KiB 镜像启动，通过 MMIO 配置 batch=4、驱动 DMA 搬运权重、执行共享 32-MAC 的两层 INT8 推理，并逐值比较 hidden、scores 和 class。
+当前 bitstream 已在 A7-35T FPGA 上完成一次端到端功能自检。我通过 JTAG
+装载 8 KiB 镜像并提交启动，CPU 通过 MMIO 配置 batch=4、驱动 DMA 搬运权重、
+执行共享 32-MAC 的两层 INT8 推理，并逐值比较 hidden、scores 和 class。
 
 本次 GDB/JTAG 观测结果如下：
 
@@ -27,25 +29,30 @@
 - 逻辑权重 tile 加载数为 64；
 - NPU 总周期为 908；
 - DMA 读/MAC、写/MAC 重叠分别为 270、269 拍；
+- 首次非 debug CPU 取指至 PASS 的硬件 SoC 周期为 5105；
 - SRAM 计数器副本与 NPU MMIO 实时值逐项一致。
 
-上述结果证明当前 bitstream 在 20 MHz、当前板卡和当前训练输入的 batch=4 路径上完成了完整数字功能验证。补充回归中，我完成了连续复位、重复配置、20 至 30 分钟运行、SRAM 整字/字节访问、M1/K1/K3 状态检查、全部 24 条固定 UCI 输入和无预装载镜像 JTAG 启动及其保护路径。该结果仍不等同于完整数据集准确率、50 MHz、ASIC 原生 SRAM 或 PVT 条件验证，具体边界见第 9 节。
+上述结果证明当前 bitstream 在 20 MHz、当前板卡和当前训练输入的 batch=4
+路径上完成了完整数字功能验证。补充回归中，我完成了连续复位、重复配置、
+20 至 30 分钟运行、SRAM 整字/字节访问、M1/K1/K3 状态检查、全部 24 条固定
+UCI 输入、无预装载镜像 JTAG 启动及其保护路径，以及完整 SoC 周期读取。该
+结果仍不等同于完整数据集准确率、50 MHz、ASIC 原生 SRAM 或 PVT 条件验证，
+具体边界见第 9 节。
 
 ## 2. 被测对象与构建产物
 
 ### 2.1 构建状态
 
-被测逻辑对应 `rtl-dev` 上的 batch=4、共享 32 乘法器、FC2 四组 48 B 权重包和 W2 预取实现。FPGA bitstream 由 Vivado 于 2026-10-30 04:37:26 生成。
+被测逻辑对应 `rtl-dev` 上的 batch=4、共享 32 乘法器、FC2 四组 48 B 权重包、
+W2 预取和完整 SoC 周期计数实现。最终无预装载 bitstream 由 Vivado 于
+2026-11-01 16:00:51 生成，实现策略为
+`Performance_ExplorePostRoutePhysOpt`。
 
 RTL 逻辑基线为 `fce9d9b perf(npu): remove dynamic phase accumulator indexing`。其后的提交包含 20 MHz Clocking Wizard 配置固化和 JTAG 动态目标脚本，不改变 NPU 计算架构。
 
-报告生成时工作区存在一项未提交修改：
-
-```text
-M fpga/fpga_top.sv
-```
-
-该修改仅把 `SRAM_INIT_FILE` 从相对路径改为当前机器的绝对路径，用于解决 Vivado 从不同启动目录展开时无法定位 `int8_selftest.hex` 的问题，不改变综合后的 SoC 逻辑。报告未修改或回退该工作区内容。
+`SRAM_INIT_FILE` 为空，bitstream 不预装载固件；每次测试通过 JTAG 写入完整
+8 KiB 镜像并提交启动。旧的 `impl_1/fpga_top.bit` 保留为 T08 之前的历史产物，
+不再作为本报告的被测 bitstream。
 
 实际 Clocking Wizard 配置和 routed timing 均对应 20 MHz。T09 已将当前配置的文档、工程元数据和源码注释统一为 20 MHz；`CHANGELOG.md` 中早期 25/50 MHz 条目属于历史记录，不改写。
 
@@ -53,7 +60,7 @@ M fpga/fpga_top.sv
 
 | 产物 | 路径 | 大小 | SHA-256 |
 |---|---|---:|---|
-| Bitstream | `fpga/final_project/final_project.runs/impl_1/fpga_top.bit` | 2,192,116 B | `340d6d45e8c89d0b09e92162f8b14560ee8cd903302a3a064a0a4d9fcbad658d` |
+| Bitstream | `fpga/final_project/final_project.runs/impl_2/fpga_top.bit` | 2,192,116 B | `e4247f4ae84d01a8a6a1ad556d2d4ae79444c49d14d454f099828f1e24c917b6` |
 | 固件镜像 | `fpga/firmware/int8_selftest.hex` | 20,480 B | `fa38f91311768cd73386f8e093370831383d9e0e1b8a4832a2f3f978a2bfe850` |
 
 固件配置见 [firmware_dma.json](firmware/firmware_dma.json)：
@@ -72,12 +79,14 @@ transport     = DMA
 ## 3. 测试步骤
 
 1. 通过 JTAG 将 `fpga_top.bit` 配置到 A7-35T。
-2. 释放复位，等待固件完成镜像自检和 NPU 推理。
-3. 通过 GDB 读取 `0x80001FE0` 的 PASS/FAIL 标志。
-4. 读取当前 PC 和后续指令，确认 CPU 是否已进入固件 halt 循环。
-5. 读取 NPU 状态、batch 配置、FC1/FC2 发射周期和 tile 加载计数。
-6. 分别读取 NPU MMIO 与固件保存到 SRAM 的周期、重叠计数器并进行交叉核对。
-7. 核对当前 bitstream 的 SHA-256、Clocking Wizard 频率、routed timing、资源利用率和 DRC 结果。
+2. 将 CPU 保持在 debug halt，通过 GDB 完整装载 8 KiB 镜像并写入启动提交码。
+3. 恢复 CPU，等待固件完成镜像自检和 NPU 推理，K3 指示最终 PASS。
+4. 再次 halt，通过 GDB 读取 `0x80001FE0` 的 PASS/FAIL 标志。
+5. 读取当前 PC 和后续指令，确认 CPU 已进入固件 halt 循环。
+6. 读取 NPU 状态、batch 配置、FC1/FC2 发射周期和 tile 加载计数。
+7. 分别读取 NPU MMIO 与固件保存到 SRAM 的周期、重叠计数器并进行交叉核对。
+8. 读取 Boot word14 `0x00010038`，确认完整 SoC 周期在 PASS 时冻结。
+9. 核对当前 bitstream 的 SHA-256、Clocking Wizard 频率、routed timing、资源利用率和 DRC 结果。
 
 ## 4. 测试结果摘要
 
@@ -94,6 +103,7 @@ transport     = DMA
 | F09 | DMA/MAC 总重叠 | 非零且 SRAM/MMIO 一致 | 两处均为 `0x0000010E` = 270 | PASS |
 | F10 | DMA 读/MAC 重叠 | 非零且 SRAM/MMIO 一致 | 两处均为 `0x0000010E` = 270 | PASS |
 | F11 | DMA 写/MAC 重叠 | 非零且 SRAM/MMIO 一致 | 两处均为 `0x0000010D` = 269 | PASS |
+| F12 | 完整 SoC 硬件周期 | 首次非 debug CPU 取指至 PASS 可读取 | `0x000013F1` = 5105 | PASS |
 
 ## 5. 结果分析
 
@@ -201,7 +211,7 @@ SRAM 不是周期计数的来源。计数的源头是 `har_npu_core.cycle_count`
 | FC2 发射周期 | 32 | 32 | 一致 |
 | 逻辑 tile 加载数 | 64 | 64 | 一致 |
 | commit 后完整 SoC 观测窗口 | 未记录 | 5,109 | 无板上对应项 |
-| boot_ready 后首次 CPU 取指至 PASS 硬件周期 | 待新 bitstream | 5,104 | 板上目标值 |
+| boot_ready 后首次非 debug CPU 取指至 PASS | 5,105 | 5,104 | 板上多 1 拍 |
 
 归档的 RTL 仿真 JSON 明确保存 NPU 周期以及 DMA 读、写两个重叠子计数；总重叠并集没有单独字段。因此板上总重叠 270 只作为本次实测记录，读 270、写 269 与仿真逐项一致。
 
@@ -209,10 +219,14 @@ SRAM 不是周期计数的来源。计数的源头是 `har_npu_core.cycle_count`
 
 - 908 是 NPU `busy` 区间内的完整 NPU 周期；
 - 5,109 是从启动许可提交到 CPU 写出 PASS 的完整 SoC 周期，包含 CPU 启动、配置、轮询和最终结果比较；
-- 5,104 是从 CPU 第一次从 Boot 跳板取指到写出 PASS 的硬件 SoC 周期；
+- 5,104 是 RTL 仿真中从 CPU 第一次取指到写出 PASS 的硬件 SoC 周期；
+- 5,105 是板上无预装载 JTAG 流程中从首次非 debug 取指到写出 PASS 的周期；
 - 当前固件只保存 NPU 周期和重叠计数，完整 SoC 周期由 Boot word14 单独提供。
 
-因此不能用 `5,104 - 908` 推算 CPU 独立执行时间。CPU 轮询可与 NPU 活动重叠，差值只表示整个 SoC 执行窗口中 NPU 未计为 busy 的墙钟拍数。
+板上比 RTL 仿真多 1 拍，是因为 debug resume 后首次非 debug 取指比普通
+复位启动多包含一个调试退出取指。因此不能用 `5,105 - 908` 推算 CPU 独立
+执行时间。CPU 轮询可与 NPU 活动重叠，差值只表示整个 SoC 执行窗口中 NPU
+未计为 busy 的墙钟拍数。
 
 ## 6. 原始 GDB 观测记录
 
@@ -275,10 +289,10 @@ SRAM 不是周期计数的来源。计数的源头是 `har_npu_core.cycle_count`
 |---|---:|
 | 系统时钟频率 | 20 MHz |
 | 系统时钟周期 | 50.000 ns |
-| Setup WNS | +0.470 ns |
+| Setup WNS | +0.368 ns |
 | Setup TNS | 0.000 ns |
 | Setup 失败端点 | 0 |
-| Hold WHS | +0.054 ns |
+| Hold WHS | +0.017 ns |
 | Hold THS | 0.000 ns |
 | Hold 失败端点 | 0 |
 | 周期检查失败端点 | 0 |
@@ -287,24 +301,25 @@ Vivado routed timing summary 结论为 `All user specified timing constraints ar
 
 ### 7.2 资源占用
 
-来源：`fpga/final_project/final_project.runs/impl_1/fpga_top_utilization_placed.rpt`。
+来源：`fpga/final_project/final_project.runs/impl_2/fpga_top_utilization_placed.rpt`。
 
 | 资源 | 使用量 | 可用量 | 利用率 |
 |---|---:|---:|---:|
-| Slice LUT | 19,323 | 20,800 | 92.90% |
-| LUT as Logic | 19,299 | 20,800 | 92.78% |
+| Slice LUT | 19,459 | 20,800 | 93.55% |
+| LUT as Logic | 19,435 | 20,800 | 93.44% |
 | LUT as Distributed RAM | 24 | 9,600 | 0.25% |
-| Slice Register | 14,998 | 41,600 | 36.05% |
+| Slice Register | 15,046 | 41,600 | 36.17% |
 | DSP48E1 | 40 | 90 | 44.44% |
 | Block RAM Tile | 2 | 50 | 4.00% |
 | BUFGCTRL | 3 | 32 | 9.38% |
 
-LUT 仍是主要容量瓶颈，仅余 1,477 个逻辑 LUT。后续增加 batch 深度、调试核或其他 SoC 功能前必须重新检查容量，不能仅根据寄存器或 DSP 余量判断可扩展性。
+LUT 仍是主要容量瓶颈，仅余 1,341 个 LUT。后续增加 batch 深度、调试核或
+其他 SoC 功能前必须重新检查容量，不能仅根据寄存器或 DSP 余量判断可扩展性。
 
 ### 7.3 DRC、布线和 bitstream 生成
 
 - routed DRC 为 0 Errors、157 Warnings；
-- 可布线网络 33,543 条，全部完成布线，0 条布线错误；
+- 可布线网络 33,789 条，全部完成布线，0 条布线错误；
 - routed timing 无失败端点；
 - `Bitgen Completed Successfully`；
 - `write_bitstream completed successfully`。
@@ -330,7 +345,7 @@ LUT 仍是主要容量瓶颈，仅余 1,477 个逻辑 LUT。后续增加 batch �
 | T05 | M1/K1/K3 状态 | 完成 | M1 常亮；持续读取后 K1 点亮；K3 常亮 |
 | T06 | 其余训练 UCI 四样本批次 | 完成 | UCI 00–05 共 24 条固定输入全部逐值 PASS |
 | T07 | 无预装载镜像的 JTAG 启动流程 | 完成 | 部分/乱序/错误密钥均未启动，完整镜像与正确密钥正常 PASS |
-| T08 | 完整 SoC 板上周期插桩 | RTL/仿真完成 | 首次非 debug CPU 取指口径硬件计数为 5104；待新 bitstream 板上读取 |
+| T08 | 完整 SoC 板上周期插桩 | 完成 | 板上读到 `0x000013F1` = 5105；PASS 后冻结 |
 | T09 | 20 MHz 时钟说明和报告索引 | 完成 | 当前配置、源码注释、工程元数据和导航均与 XCI/routed timing 一致 |
 
 ### 8.1 T04 整字和字节读写结果
@@ -455,8 +470,8 @@ Boot 跳板。当前 RTL 已放宽为 `boot_ready` 后第一次任意 CPU 取指
 再下一版取消地址限定后，板上在 PASS、最终 PC 正确时读到 `0x069777BC`
 （110,589,884），对应 20 MHz 下约 5.53 秒，说明 debug mode 内仍会产生
 `instr_req` 脉冲并提前启动计数器。当前 RTL 已接入 CV32E40P 的
-`debug_halted_o`，只在 `!debug_halted` 后接受首次取指；这版尚待新 bitstream
-验证。
+`debug_halted_o`，只在 `!debug_halted` 后接受首次取指。最终 bitstream 在板上
+得到 PASS，PC 位于固件自循环，Boot word14 读数为 `0x000013F1`。
 
 当前 canonical 镜像完整 SoC 仿真结果：
 
@@ -466,12 +481,29 @@ bootram 硬件周期     5104
 ```
 
 相差 5 拍是因为 testbench 从 SBI 提交完成后开始观测，而硬件计数器还要等到
-CPU 第一次取指。板上 T08 应读取硬件口径 `5104`
-（`0x000013F0`），且该值不应随 commit 后 debug halt 的时长改变。
+CPU 第一次取指。RTL 硬件口径为 `5104`（`0x000013F0`）。
 
-RTL、首次取指单测和完整 SoC 仿真已完成；当前已生成 bitstream 使用旧的
-commit-trigger 口径，T08 板级完成仍需重新综合、实现新的 bitstream 并读取
-`0x00010038`。
+最终无预装载 JTAG 板上结果为 `5105`（`0x000013F1`）。比 RTL 仿真多 1 拍，
+来自 debug resume 后首次非 debug 取指的入口差异；计数与 PASS 状态一致，
+且不再随 commit 后 debug halt 时长增长。
+
+```text
+(gdb) x/3i $pc
+=> 0x80000470:  j       0x80000470
+   0x80000474:  unimp
+   0x80000476:  unimp
+(gdb) x/1wx 0x80001FE0
+0x80001fe0:     0xc0dec0de
+(gdb) x/1wx 0x00010038
+0x10038:        0x000013f1
+(gdb) soc-full-cycles
+soc_cycles=5105 (0x000013f1)
+```
+
+T08 已完成。对应 bitstream 为
+`impl_2/fpga_top.bit`，SHA-256
+`e4247f4ae84d01a8a6a1ad556d2d4ae79444c49d14d454f099828f1e24c917b6`，
+20 MHz routed WNS 为 `+0.368 ns`。
 
 ### 8.6 T09 时钟说明同步
 
@@ -495,8 +527,6 @@ T09 以实际构建产物为准统一当前配置说明：
 4. **T04 的内部单字节时序证据仍有范围限制。** GDB 层整字读写、恢复零和字节 lane 0/1 写通过；lane 2/3 及直接单字节 AXI `WSTRB` 尚未单独归档。
 5. **FPGA 后端不是 ASIC 原生 SRAM。** 板上使用 BRAM 后端，不能替代 `RA1SHD_2048x32M8` 的时序、功耗和版图验证。
 6. **未进行 25/50 MHz、PVT、长期老化或完整 I/O 时序签核。** 本报告只支持当前 20 MHz bitstream。
-7. **完整 SoC 板上周期尚待新 bitstream 验证。** RTL 已改为 boot_ready 后首次非 debug CPU 取指触发，仿真得到 5104 拍；当前板上 bitstream 尚未包含 debug_halted 门控。
-8. **最新资源优化后的时序证据尚待重跑。** 已删除冗余的 32-bit 最终周期副本；当前报告的 LUT/WNS 仍对应优化前的实现。
 
 ## 10. 后续补充测试清单
 
@@ -509,5 +539,5 @@ T09 以实际构建产物为准统一当前配置说明：
 | T05 | 读取并记录 M1/K1/K3 | M1 locked，K1 随 TCK 活动，K3 PASS 后常亮 | 完成 |
 | T06 | 其余训练 UCI 四样本批次板上运行 | hidden、scores、class 全部匹配 | 完成 |
 | T07 | 无预装载镜像的 JTAG 启动流程 | 错误密钥/部分镜像不启动，正确密钥启动 | 完成 |
-| T08 | 板上完整 SoC 周期插桩 | 可读取 boot_ready 后首次非 debug CPU 取指至 PASS 的完整周期 | RTL/仿真完成，板级读取待新 bitstream |
+| T08 | 板上完整 SoC 周期插桩 | 可读取 boot_ready 后首次非 debug CPU 取指至 PASS 的完整周期 | 完成，板上读数为 5105 |
 | T09 | 更新 20 MHz 时钟说明和报告索引 | 文档与 XCI/routed timing 一致 | 完成 |
