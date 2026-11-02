@@ -33,7 +33,8 @@
     "shared_mac_mapping": "FC1: 16 outputs x 2 lanes per phase; FC2: 6 outputs x 4 input rows per phase",
     "tile_handoff": "last-sample consumed pulse, direct ISSUE when next bank is ready",
     "fc2_prefetch": "two 64-byte banks preloaded during final W1 tile and requant",
-    "mac_pipeline": "combinational INT8 multiplication into INT32 accumulator per ISSUE cycle",
+    "mac_pipeline": "registered INT8 products; lane sum and INT32 accumulation in the following cycle",
+    "product_pipeline_registers": 512,
     "axi_crossbar_latency": "NO_LATENCY",
     "fpga_clock_hz": 20000000
   },
