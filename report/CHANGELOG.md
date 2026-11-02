@@ -1,5 +1,7 @@
 # 当前架构变更
 
+2026-11-03：根据 Placement 路径报告纠正时序修改方向。最差路径实际为 `quant_sample_reg → a1[sample][output] 动态选择 → requant_multiplier → h_reg`，不是 MAC 乘加路径。撤销增加 512 bit 乘积寄存器的 MAC 流水，改为 sample/8 输出组选择、8 选 1、32×16 乘法饱和三级重定标流水；每拍仍处理一个输出，FC1 末尾增加两拍排空。功能和周期回归待重新执行。
+
 2026-11-03：为 20 ns ASIC 时序加入共享 32-MAC 乘积流水。ISSUE 周期寄存 512 bit 乘积，下一周期完成 lane 求和和 INT32 累加，层末各增加一个排空周期；下一组乘积仍可逐拍发射。38/38 单元用例、训练模型、Boot 起点、冷启动 Debug 和完整 SoC ModelSim 全部通过。batch=4 NPU 从 1512 增至 1515 拍，完整 SoC testbench/硬件周期从 5109/5104 增至 5121/5116 拍；DMA 读/写重叠变为 268/267。综合、物理实现和 SDF 仍需重跑。
 
 2026-11-01：最终无预装载 `impl_2` 在 20 MHz 通过 routed timing，WNS/WHS 为 +0.368/+0.017 ns，LUT 19,459。T08 板上完成：PASS、最终 PC 正确、Boot word14 为 `0x000013F1`（5105 拍）；bitstream SHA-256 为 `e4247f4a...24c917b6`。

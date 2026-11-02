@@ -1,5 +1,5 @@
-// INT8 64->32->6 with up to four register-resident samples and a registered
-// multiply-to-accumulate stage.
+// INT8 64->32->6 with up to four register-resident samples and a pipelined
+// requantization path.
 // Each weight tile is reused for every sample and both compute phases before
 // it is released.
 module har_npu_core (
@@ -24,7 +24,7 @@ module har_npu_core (
     output logic [31:0] cycle_count,overlap_count,fc1_cycles,fc2_cycles,
     output logic [31:0] read_overlap_count,write_overlap_count
 );
-    localparam [2:0] IDLE=0,WAIT_TILE=1,ISSUE=2,TAIL=3,QUANT=4,FINISH=5;
+    localparam [2:0] IDLE=0,WAIT_TILE=1,ISSUE=2,QDRAIN=3,QUANT=4,FINISH=5;
     localparam int MAX_BATCH=4;
     localparam int FC1_TILES=32;
     localparam int FC2_GROUPS=4;
@@ -38,12 +38,13 @@ module har_npu_core (
     // FC1 uses 16 outputs by 2 lanes per phase. FC2 uses 4 input rows by
     // 6 outputs per phase. Both phases reuse the same 32-multiplier bank.
     logic signed [15:0] product[0:31];
-    logic signed [15:0] product_q[0:31];
-    logic product_valid_q,product_layer_q,product_phase_q,product_first_q;
-    logic [2:0] product_batch_sample_q;
     logic signed [31:0] a1[0:MAX_BATCH-1][0:31],a2[0:MAX_BATCH-1][0:5];
     logic [255:0] h[0:MAX_BATCH-1];
     logic [2:0] class_id_q[0:MAX_BATCH-1];
+    logic signed [31:0] quant_group_q[0:7],quant_value_q;
+    logic quant_group_valid_q,quant_value_valid_q,quant_drain_q;
+    logic [2:0] quant_group_sample_q,quant_value_sample_q;
+    logic [4:0] quant_group_index_q,quant_value_index_q;
     wire issue=state==ISSUE;
     wire last_sample_issue=issue && sample==batch_q[2:0]-1'b1;
     wire last_phase_issue=last_sample_issue && phase;
@@ -113,7 +114,7 @@ module har_npu_core (
     end
     wire [2:0] finish_class=argmax(finish_scores);
 
-    integer o,s,po;
+    integer o,s;
     genvar j,k;
     // FC1 phase selects one set of 16 output accumulators. FC2 phase selects
     // four six-byte rows; its last eight multiplier lanes are idle.
@@ -146,11 +147,13 @@ module har_npu_core (
             batch_q<=1;
             sample<=0;
             phase<=0;
-            product_valid_q<=0;
-            product_layer_q<=0;
-            product_phase_q<=0;
-            product_first_q<=0;
-            product_batch_sample_q<=0;
+            quant_group_valid_q<=0;
+            quant_value_valid_q<=0;
+            quant_drain_q<=0;
+            quant_group_sample_q<=0;
+            quant_value_sample_q<=0;
+            quant_group_index_q<=0;
+            quant_value_index_q<=0;
             finish_sample<=0;
             tile_index_o<=0;
             quant_sample<=0;
@@ -166,65 +169,69 @@ module har_npu_core (
                 for(o=0;o<32;o=o+1) a1[s][o]<=0;
                 for(o=0;o<6;o=o+1) a2[s][o]<=0;
             end
-            for(o=0;o<32;o=o+1) product_q[o]<=0;
         end else begin
             if(busy) cycle_count<=cycle_count+1'b1;
             if(product_valid) begin
                 if(dma_read_i || dma_write_i) overlap_count<=overlap_count+1'b1;
                 if(dma_read_i) read_overlap_count<=read_overlap_count+1'b1;
                 if(dma_write_i) write_overlap_count<=write_overlap_count+1'b1;
-                if(!layer) fc1_cycles<=fc1_cycles+1'b1;
-                else fc2_cycles<=fc2_cycles+1'b1;
-            end
-            product_valid_q<=product_valid;
-            if(product_valid) begin
-                product_layer_q<=layer;
-                product_phase_q<=phase;
-                product_first_q<=tile_index_o==0;
-                product_batch_sample_q<=product_sample;
-                for(po=0;po<32;po=po+1) product_q[po]<=product[po];
-            end
-            if(product_valid_q) begin
-                if(!product_layer_q) begin
-                    if(!product_phase_q) begin
+                if(!layer) begin
+                    fc1_cycles<=fc1_cycles+1'b1;
+                    if(!phase) begin
                         for(o=0;o<16;o=o+1)
-                            a1[product_batch_sample_q][o] <=
-                                (product_first_q ?
+                            a1[product_sample][o] <=
+                                (tile_index_o==0 ?
                                     $signed(bias1[o*32+:32]):
-                                    a1[product_batch_sample_q][o])
-                                + {{16{product_q[o*2][15]}},product_q[o*2]}
-                                + {{16{product_q[o*2+1][15]}},product_q[o*2+1]};
+                                    a1[product_sample][o])
+                                + {{16{product[o*2][15]}},product[o*2]}
+                                + {{16{product[o*2+1][15]}},product[o*2+1]};
                     end else begin
                         for(o=0;o<16;o=o+1)
-                            a1[product_batch_sample_q][16+o] <=
-                                (product_first_q ?
+                            a1[product_sample][16+o] <=
+                                (tile_index_o==0 ?
                                     $signed(bias1[(16+o)*32+:32]):
-                                    a1[product_batch_sample_q][16+o])
-                                + {{16{product_q[o*2][15]}},product_q[o*2]}
-                                + {{16{product_q[o*2+1][15]}},product_q[o*2+1]};
+                                    a1[product_sample][16+o])
+                                + {{16{product[o*2][15]}},product[o*2]}
+                                + {{16{product[o*2+1][15]}},product[o*2+1]};
                     end
                 end else begin
-                    if(!product_phase_q) begin
+                    fc2_cycles<=fc2_cycles+1'b1;
+                    if(!phase) begin
                         for(o=0;o<6;o=o+1)
-                            a2[product_batch_sample_q][o] <=
-                                (product_first_q ?
+                            a2[product_sample][o] <=
+                                (tile_index_o==0 ?
                                     $signed(bias2[o*32+:32]):
-                                    a2[product_batch_sample_q][o])
-                                + {{16{product_q[o][15]}},product_q[o]}
-                                + {{16{product_q[6+o][15]}},product_q[6+o]}
-                                + {{16{product_q[12+o][15]}},product_q[12+o]}
-                                + {{16{product_q[18+o][15]}},product_q[18+o]};
+                                    a2[product_sample][o])
+                                + {{16{product[o][15]}},product[o]}
+                                + {{16{product[6+o][15]}},product[6+o]}
+                                + {{16{product[12+o][15]}},product[12+o]}
+                                + {{16{product[18+o][15]}},product[18+o]};
                     end else begin
                         for(o=0;o<6;o=o+1)
-                            a2[product_batch_sample_q][o] <=
-                                a2[product_batch_sample_q][o]
-                                + {{16{product_q[o][15]}},product_q[o]}
-                                + {{16{product_q[6+o][15]}},product_q[6+o]}
-                                + {{16{product_q[12+o][15]}},product_q[12+o]}
-                                + {{16{product_q[18+o][15]}},product_q[18+o]};
+                            a2[product_sample][o] <=
+                                a2[product_sample][o]
+                                + {{16{product[o][15]}},product[o]}
+                                + {{16{product[6+o][15]}},product[6+o]}
+                                + {{16{product[12+o][15]}},product[12+o]}
+                                + {{16{product[18+o][15]}},product[18+o]};
                     end
                 end
             end
+            quant_group_valid_q<=state==QUANT;
+            if(state==QUANT) begin
+                quant_group_sample_q<=quant_sample;
+                quant_group_index_q<=tile_index_o;
+                for(o=0;o<8;o=o+1)
+                    quant_group_q[o]<=a1[quant_sample][tile_index_o[4:3]*8+o];
+            end
+            quant_value_valid_q<=quant_group_valid_q;
+            if(quant_group_valid_q) begin
+                quant_value_q<=quant_group_q[quant_group_index_q[2:0]];
+                quant_value_sample_q<=quant_group_sample_q;
+                quant_value_index_q<=quant_group_index_q;
+            end
+            if(quant_value_valid_q)
+                h[quant_value_sample_q][quant_value_index_q*8+:8]<=quant(quant_value_q);
             case(state)
                 IDLE:if(start) begin
                     busy<=1;
@@ -233,7 +240,9 @@ module har_npu_core (
                     batch_q<=batch_count;
                     sample<=0;
                     phase<=0;
-                    product_valid_q<=0;
+                    quant_group_valid_q<=0;
+                    quant_value_valid_q<=0;
+                    quant_drain_q<=0;
                     finish_sample<=0;
                     tile_index_o<=0;
                     state<=WAIT_TILE;
@@ -256,9 +265,12 @@ module har_npu_core (
                         phase<=1;
                         sample<=0;
                     end else if(tile_index_o==FC1_TILES-1 && !layer) begin
-                        state<=TAIL;
+                        quant_sample<=0;
+                        tile_index_o<=0;
+                        state<=QUANT;
                     end else if(layer && tile_index_o==FC2_GROUPS-1) begin
-                        state<=TAIL;
+                        finish_sample<=0;
+                        state<=FINISH;
                     end else begin
                         phase<=0;
                         tile_index_o<=tile_index_o+1'b1;
@@ -266,30 +278,28 @@ module har_npu_core (
                         state<=tile_next_valid_i ? ISSUE:WAIT_TILE;
                     end
                 end else sample<=sample+1'b1;
-                TAIL:begin
-                    if(layer) begin
-                        finish_sample<=0;
-                        state<=FINISH;
-                    end else begin
-                        quant_sample<=0;
-                        tile_index_o<=0;
-                        state<=QUANT;
-                    end
-                end
                 QUANT:begin
-                    h[quant_sample][tile_index_o*8+:8]<=quant(a1[quant_sample][tile_index_o]);
                     if(tile_index_o==31) begin
                         if(quant_sample!=batch_q[2:0]-1'b1) begin
                             quant_sample<=quant_sample+1'b1;
                             tile_index_o<=0;
                         end else begin
-                            layer<=1;
-                            tile_index_o<=0;
-                            phase<=0;
-                            state<=WAIT_TILE;
+                            quant_drain_q<=0;
+                            state<=QDRAIN;
                         end
                     end else begin
                         tile_index_o<=tile_index_o+1'b1;
+                    end
+                end
+                QDRAIN:begin
+                    if(quant_drain_q) begin
+                        quant_drain_q<=0;
+                        layer<=1;
+                        tile_index_o<=0;
+                        phase<=0;
+                        state<=WAIT_TILE;
+                    end else begin
+                        quant_drain_q<=1;
                     end
                 end
                 FINISH:begin
@@ -308,7 +318,9 @@ module har_npu_core (
                 state<=IDLE;
                 busy<=0;
                 done<=1;
-                product_valid_q<=0;
+                quant_group_valid_q<=0;
+                quant_value_valid_q<=0;
+                quant_drain_q<=0;
             end
         end
     end

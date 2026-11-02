@@ -2,6 +2,8 @@
   "validated_at": "2026-11-03",
   "branch": "rtl-dev",
   "base_commit": "3bb949a",
+  "current_status": "pending_requant_pipeline_regression",
+  "notice": "The passing results below validate the superseded MAC product-pipeline RTL. The current working tree uses a three-stage FC1 requant pipeline and must be retested.",
   "scope": "Shared FC1/FC2 32-multiplier bank with one registered product stage: RTL functional, full-SoC ModelSim and cycle regression. No synthesis, implementation or SDF validation was run.",
   "architecture": {
     "dot_product_multipliers": 32,
