@@ -49,9 +49,9 @@ module my_soc_top #(
       MaxMstTrans:        1,
       MaxSlvTrans:        1,
       FallThrough:        1'b0,
-      // The FPGA build runs at 20 MHz. Keep the smaller no-latency crossbar;
-      // registered adapters and target bridges provide transaction boundaries.
-      LatencyMode:        axi_pkg::NO_LATENCY,
+      // Register AW/AR at each slave port. This cuts the CPU-to-NPU MMIO
+      // address/control path without adding latency to W/R data beats.
+      LatencyMode:        axi_pkg::CUT_SLV_AX,
       AxiIdWidthSlvPorts: 2,
       AxiIdUsedSlvPorts:  2,
       UniqueIds:          1'b0,

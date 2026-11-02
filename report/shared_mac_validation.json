@@ -2,7 +2,8 @@
   "validated_at": "2026-11-03",
   "branch": "rtl-dev",
   "base_commit": "9f17470",
-  "current_status": "passed_requant_pipeline_regression",
+  "current_status": "pending_axi_boundary_regression",
+  "notice": "Current RTL changes the AXI crossbar from NO_LATENCY to CUT_SLV_AX after this validation. Functional and full-SoC cycle results below apply to commit 9f17470 and must be rerun.",
   "scope": "Shared FC1/FC2 32-multiplier bank with a three-stage requantization pipeline: RTL functional, full-SoC ModelSim and cycle regression. No synthesis, implementation or SDF validation was run.",
   "architecture": {
     "dot_product_multipliers": 32,

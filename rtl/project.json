@@ -36,7 +36,7 @@
     "mac_pipeline": "combinational INT8 multiplication into INT32 accumulator per ISSUE cycle",
     "requant_pipeline": "sample/group select; 8:1 output select; 32x16 multiply, shift and saturation",
     "requant_pipeline_data_registers": 288,
-    "axi_crossbar_latency": "NO_LATENCY",
+    "axi_crossbar_latency": "CUT_SLV_AX",
     "fpga_clock_hz": 20000000
   },
   "mmio": {
