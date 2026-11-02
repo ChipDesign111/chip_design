@@ -1,16 +1,17 @@
 # NPU 调度优化性能
 
-本节比较五项独立优化：
+本节比较六项独立优化：
 
 1. 消除 tile 之间固定的 `DRAIN -> WAIT_TILE -> ISSUE` 气泡；
 2. 将 FC2 每 bank 的 8 个逻辑 tile 打包为 48 B，并在 W1 尾部启动两个 W2 bank 的跨层预取。
 3. 复用乘法器完成 FC2 的 `6 输出×8 输入行` 计算。
 4. 将共享 bank 从 64 个乘法器减为 32 个，同时保持 64 B bank 大小。
 5. 对比 AXI 控制切片；当前 FPGA 选择 20 MHz + `NO_LATENCY`，不再增加控制切片。
+6. 将 32 个 INT8 乘积寄存一拍，再在下一拍完成 lane 求和和 INT32 累加。
 
 基准固定使用 seed=10000 的训练模型和输入。NPU 周期从 `START` 统计到 `DONE`，包含权重 DMA、MAC、requant 和等待时间。AXI ready/valid 采用 testbench 中同一个确定性伪随机背压序列，因此各阶段周期可直接比较。每次只运行一个 batch，避免前一测试的 AXI 状态影响结果。
 
-当前最大 batch=4 的固定基准：
+乘积流水之前的共享 32-MAC 固定基准：
 
 | 指标 | batch=1 | batch=2 | batch=4 |
 | --- | ---: | ---: | ---: |
@@ -18,7 +19,7 @@
 | 每样本摊销周期 | 1395 | 706.5 | 378.0 |
 | FC1 / FC2 发射周期 | 64 / 8 | 128 / 16 | 256 / 32 |
 
-当前完整 SoC 自检使用 batch=4、`NO_LATENCY`，共 5109 拍。
+当前带乘积流水的 batch=4 固定用例为 1515 拍，比无流水基线增加 3 拍。完整 SoC ModelSim 自检观测 5121 拍，硬件周期计数为 5116 拍，DMA 读/写与 MAC 重叠分别为 268/267 拍。
 
 | 历史 batch=8 阶段 | batch=1 | batch=2 | batch=8 | 完整 SoC batch=8 |
 | --- | ---: | ---: | ---: | ---: |
@@ -127,7 +128,26 @@ NPU batch=1/2/8：1401 / 1431 / 1808，保持不变
 完整 SoC batch=8：8589 -> 10691，增加 2102 拍
 ```
 
-这会增加 MMIO 和 AXI 地址事务的固定延迟。`CUT_ALL_PORTS` 会把历史 batch=8 完整 SoC 增至 17938 拍。当前 FPGA 使用 20 MHz 系统时钟，AXI 保持 `NO_LATENCY`；32-MAC 后当前 batch=4 的 NPU 周期为 1512 拍，完整 SoC 为 5109 拍。
+这会增加 MMIO 和 AXI 地址事务的固定延迟。`CUT_ALL_PORTS` 会把历史 batch=8 完整 SoC 增至 17938 拍。当前 FPGA 使用 20 MHz 系统时钟，AXI 保持 `NO_LATENCY`；加入乘积流水后，batch=4 的 NPU 周期为 1515 拍，完整 SoC 观测周期为 5121 拍。
+
+## 第六阶段：共享 32-MAC 乘积流水
+
+20 ns ASIC 布局阶段显示，NPU 乘法、lane 求和和 INT32 累加位于同一组合路径。RTL 在 ISSUE 周期寄存全部 32 个 INT8 乘积，下一周期使用寄存值完成 lane 求和、bias 选择和累加器写回。
+
+该流水保留每周期发射一组乘积的能力；前一乘积组累加时，下一组可以继续发射。FC1 和 FC2 末尾各增加一个 `TAIL` 排空周期，因此 deterministic batch=4 用例从 1512 增至 1515 拍。
+
+| 指标 | 流水前 | 流水后 | 变化 |
+| --- | ---: | ---: | ---: |
+| 乘积流水寄存器 | 0 bit | 512 bit | +512 bit |
+| batch=4 NPU 周期 | 1512 | 1515 | +3 |
+| FC1 ISSUE 周期 | 256 | 256 | 0 |
+| FC2 ISSUE 周期 | 32 | 32 | 0 |
+| 完整 SoC testbench 周期 | 5109 | 5121 | +12 |
+| 硬件 SoC 周期 | 5104 | 5116 | +12 |
+| DMA 读/MAC 重叠 | 270 | 268 | -2 |
+| DMA 写/MAC 重叠 | 269 | 267 | -2 |
+
+本次完整回归为 38/38 单元用例、训练模型逐值对照、Boot 周期起点、冷启动 Debug 定向测试和完整 SoC ModelSim 自检全部通过。ModelSim 编译和 `vopt` 的既有警告分别为 615/35 条，运行错误为 0。
 
 ## 验证
 
@@ -147,4 +167,4 @@ python test/int8/perf.py
 
 本次共享 MAC 的源码和运行数据见 [shared_mac_validation.json](shared_mac_validation.json)。该记录只包含 RTL 功能与周期结果；按用户要求，综合和实现由后续独立执行。
 
-上述数字是 RTL 功能/周期仿真，不是 batch=4 的物理签核。新增动态位选、crossbar 切片和 ready 状态仍需重新综合、布局布线及 20 ns STA。
+上述数字是 RTL 功能/周期仿真，不是 batch=4 的物理签核。乘积流水后的面积、布局、时序和 SDF 仍需重新综合、实现和签核。

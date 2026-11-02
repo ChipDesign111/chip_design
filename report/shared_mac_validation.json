@@ -1,8 +1,8 @@
 {
-  "validated_at": "2026-10-30",
+  "validated_at": "2026-11-03",
   "branch": "rtl-dev",
-  "base_commit": "74ad5cb",
-  "scope": "Shared FC1/FC2 32-multiplier bank RTL functional and cycle regression. No synthesis, implementation or SDF validation was run.",
+  "base_commit": "3bb949a",
+  "scope": "Shared FC1/FC2 32-multiplier bank with one registered product stage: RTL functional, full-SoC ModelSim and cycle regression. No synthesis, implementation or SDF validation was run.",
   "architecture": {
     "dot_product_multipliers": 32,
     "fc1_mapping": "16 outputs x 2 input lanes per phase",
@@ -11,58 +11,64 @@
     "fc1_physical_tiles": 32,
     "fc2_physical_packets": 4,
     "fc2_packet_bytes": 48,
-    "logical_tile_load_count": 64
+    "logical_tile_load_count": 64,
+    "product_pipeline_bits": 512,
+    "pipeline_drain_cycles_per_layer": 1
   },
   "results": {
     "unit_cases": 38,
     "trained_samples": 24,
     "soc": true,
-    "passed": true
+    "passed": true,
+    "boot_cycle_start": {
+      "pre_fetch": 0,
+      "captured": 23,
+      "frozen": 23
+    },
+    "debug_cold": {
+      "halt_cycles": 44,
+      "boot_ready": 0,
+      "pc": "0x0000082c",
+      "dm_halted": 1
+    },
+    "modelsim_compile_warnings": 615,
+    "modelsim_vopt_warnings": 35,
+    "modelsim_runtime_errors": 0
   },
   "fixed_seed_10000": {
-    "batch_1": {
-      "cycles": 1395,
-      "fc1_issue_cycles": 64,
-      "fc2_issue_cycles": 8,
-      "dma_read_mac_overlap": 38,
-      "dma_write_mac_overlap": 36
-    },
-    "batch_2": {
-      "cycles": 1413,
-      "fc1_issue_cycles": 128,
-      "fc2_issue_cycles": 16,
-      "dma_read_mac_overlap": 65,
-      "dma_write_mac_overlap": 63
-    },
     "batch_4": {
-      "cycles": 1512,
-      "cycles_per_sample": 378.0,
+      "cycles": 1515,
+      "cycles_per_sample": 378.75,
       "fc1_issue_cycles": 256,
-      "fc2_issue_cycles": 32,
-      "dma_read_mac_overlap": 146,
-      "dma_write_mac_overlap": 143
+      "fc2_issue_cycles": 32
     }
   },
   "full_soc_batch_4": {
-    "post_commit_cycles": 5109,
-    "npu_cycles": 908,
-    "dma_read_mac_overlap": 270,
-    "dma_write_mac_overlap": 269
+    "testbench_cycles": 5121,
+    "hardware_soc_cycles": 5116,
+    "dma_read_mac_overlap": 268,
+    "dma_write_mac_overlap": 267
+  },
+  "pre_pipeline_reference": {
+    "fixed_seed_batch_1_cycles": 1395,
+    "fixed_seed_batch_2_cycles": 1413,
+    "fixed_seed_batch_4_cycles": 1512,
+    "full_soc_testbench_cycles": 5109,
+    "full_soc_hardware_cycles": 5104
   },
   "artifacts": {
-    "fpga_firmware_sha256": "fa38f91311768cd73386f8e093370831383d9e0e1b8a4832a2f3f978a2bfe850",
-    "rtl/npu/har_npu_core.sv": "e765bde2f3293287cdc29c2fa887a3f92578e821421f4510d7bc9f2aca632f35",
+    "rtl/npu/har_npu_core.sv": "30f79d26c53853505d9f756532e605b3bc9ff5a8d5125489995a1a982ec6819f",
     "rtl/npu/har_weight_store.sv": "473106074ca66f795445cd3862104d7e57da364b6ab119996eb612934b7d2913",
     "rtl/npu/simple_npu_top.sv": "a2c35d04c11661eba29ced83115b8e7e9e3767c5e94c77ac226f4aab14eba260",
     "test/int8/tb_tiled_dma.sv": "07324ecc30adcacdd1b12da189e978ffaac1358b255d38d3beb4ed769e681593",
-    "test/int8/firmware.py": "0ccaba19b9d17a7f6aa35d5c4fd8e8c6abff17e8f1665c5c86568e05bdbf1153"
+    "test/int8/firmware.py": "8de1694dc6d2f73d0b6d70c2dad136c4ad3df103dfada20e98603abf2401209b"
   },
   "excluded": [
     "FPGA synthesis",
     "FPGA place and route",
     "ASIC physical implementation",
     "SDF simulation",
-    "25 MHz timing signoff",
+    "20 ns ASIC timing signoff",
     "board validation"
   ]
 }
