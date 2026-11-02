@@ -21,7 +21,7 @@
     "fc1_parallel_outputs": 16,
     "fc2_input_lanes": 4,
     "fc2_parallel_outputs": 6,
-    "dot_product_multipliers": 64,
+    "dot_product_multipliers": 32,
     "shared_dot_product_bank": true,
     "requant_multipliers": 1,
     "weight_tile_buffers": 2,
@@ -130,7 +130,7 @@
     "post_commit_margin_clocks": 5
   },
   "physical_target": {
-    "whole_die_with_pad_mm2_max": 4.0,
+    "whole_die_with_pad_mm2_max": 3.8,
     "period_ns": 20
   }
 }
