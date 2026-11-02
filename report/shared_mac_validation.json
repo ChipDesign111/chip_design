@@ -1,10 +1,9 @@
 {
   "validated_at": "2026-11-03",
   "branch": "rtl-dev",
-  "base_commit": "9f17470",
-  "current_status": "pending_axi_boundary_regression",
-  "notice": "Current RTL changes the AXI crossbar from NO_LATENCY to CUT_SLV_AX after this validation. Functional and full-SoC cycle results below apply to commit 9f17470 and must be rerun.",
-  "scope": "Shared FC1/FC2 32-multiplier bank with a three-stage requantization pipeline: RTL functional, full-SoC ModelSim and cycle regression. No synthesis, implementation or SDF validation was run.",
+  "base_commit": "12e8840",
+  "current_status": "passed_axi_boundary_regression",
+  "scope": "Shared FC1/FC2 32-multiplier bank with a three-stage requantization pipeline and CUT_SLV_AX crossbar address boundaries: RTL functional and full-SoC ModelSim regression. No synthesis, implementation or SDF validation was run.",
   "architecture": {
     "dot_product_multipliers": 32,
     "fc1_mapping": "16 outputs x 2 input lanes per phase",
@@ -17,7 +16,8 @@
     "mac_pipeline": "combinational INT8 multiplication into INT32 accumulator per ISSUE cycle",
     "requant_pipeline": "sample/group select; 8:1 output select; 32x16 multiply, shift and saturation",
     "requant_pipeline_data_registers": 288,
-    "requant_drain_cycles": 2
+    "requant_drain_cycles": 2,
+    "axi_crossbar_latency": "CUT_SLV_AX"
   },
   "results": {
     "unit_cases": 38,
@@ -37,7 +37,7 @@
     },
     "modelsim_runtime_errors": 0
   },
-  "fixed_seed_10000": {
+  "pre_axi_boundary_reference": {
     "batch_1": {
       "cycles": 1395,
       "cycles_per_sample": 1395.0,
@@ -58,10 +58,9 @@
     }
   },
   "full_soc_batch_4": {
-    "testbench_cycles": 5121,
-    "hardware_soc_cycles": 5116,
-    "dma_read_mac_overlap": 269,
-    "dma_write_mac_overlap": 268
+    "reported_total_cycles": 6337,
+    "pre_axi_boundary_testbench_cycles": 5121,
+    "increase_vs_pre_axi_boundary": 1216
   },
   "pre_requant_pipeline_reference": {
     "fixed_seed_batch_1_cycles": 1395,
@@ -71,6 +70,7 @@
     "full_soc_hardware_cycles": 5104
   },
   "artifacts": {
+    "rtl/soc/my_soc_top.sv": "4a50d83d85b7ae7c4abd29bd45b5e0d1bcddcd57105f509e66184da6e7476bdd",
     "rtl/npu/har_npu_core.sv": "b25b7e81d9d9adbc0fae8f8d4fbb9bf514eea0ac54c2f234b94a33e21d401939",
     "rtl/npu/har_weight_store.sv": "473106074ca66f795445cd3862104d7e57da364b6ab119996eb612934b7d2913",
     "rtl/npu/simple_npu_top.sv": "a2c35d04c11661eba29ced83115b8e7e9e3767c5e94c77ac226f4aab14eba260",

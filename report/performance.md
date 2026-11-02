@@ -11,7 +11,7 @@
 
 基准固定使用 seed=10000 的训练模型和输入。NPU 周期从 `START` 统计到 `DONE`，包含权重 DMA、MAC、requant 和等待时间。AXI ready/valid 采用 testbench 中同一个确定性伪随机背压序列，因此各阶段周期可直接比较。每次只运行一个 batch，避免前一测试的 AXI 状态影响结果。
 
-当前三级重定标流水的共享 32-MAC 固定基准：
+AXI 地址通道切分前的三级重定标流水固定基准：
 
 | 指标 | batch=1 | batch=2 | batch=4 |
 | --- | ---: | ---: | ---: |
@@ -19,7 +19,7 @@
 | 每样本摊销周期 | 1395.0 | 707.5 | 378.5 |
 | FC1 / FC2 发射周期 | 64 / 8 | 128 / 16 | 256 / 32 |
 
-当前完整 SoC 使用 batch=4、`NO_LATENCY`，ModelSim 观测 5121 拍，硬件周期为 5116 拍，DMA 读/写与 MAC 重叠分别为 269/268 拍。相对无重定标流水的 batch=1/2/4 周期 1395/1413/1512，新流水使 batch=1 保持不变，batch=2 和 batch=4 各增加 2 拍，主要来自 FC1 末尾的两个排空周期。
+该基线的完整 SoC 使用 `NO_LATENCY`，ModelSim 观测 5121 拍，硬件周期为 5116 拍，DMA 读/写与 MAC 重叠分别为 269/268 拍。相对无重定标流水的 batch=1/2/4 周期 1395/1413/1512，重定标流水使 batch=1 保持不变，batch=2 和 batch=4 各增加 2 拍，主要来自 FC1 末尾的两个排空周期。
 
 | 历史 batch=8 阶段 | batch=1 | batch=2 | batch=8 | 完整 SoC batch=8 |
 | --- | ---: | ---: | ---: | ---: |
@@ -128,7 +128,7 @@ NPU batch=1/2/8：1401 / 1431 / 1808，保持不变
 完整 SoC batch=8：8589 -> 10691，增加 2102 拍
 ```
 
-这会增加 MMIO 和 AXI 地址事务的固定延迟。`CUT_ALL_PORTS` 会把历史 batch=8 完整 SoC 增至 17938 拍。三级重定标流水后的新综合中，剩余最差路径转移到 CPU IF/ID → AXI Crossbar AR → AXI2NPU → NPU 地址/读数据选择，slack 仅 `+0.8 ps`，因此当前 ASIC RTL 改为 `CUT_SLV_AX`。该变化后的功能和完整周期仍需重新回归；若继续使用 FPGA bitstream，也必须重新综合验证。
+这会增加 MMIO 和 AXI 地址事务的固定延迟。`CUT_ALL_PORTS` 会把历史 batch=8 完整 SoC 增至 17938 拍。三级重定标流水后的新综合中，剩余最差路径转移到 CPU IF/ID → AXI Crossbar AR → AXI2NPU → NPU 地址/读数据选择，slack 仅 `+0.8 ps`，因此当前 ASIC RTL 改为 `CUT_SLV_AX`。功能与 ModelSim 回归通过；完整 SoC 总周期从 AXI 切分前的 5121 拍增至 6337 拍，增加 1216 拍。若继续使用 FPGA bitstream，也必须重新综合验证。
 
 ## 第六阶段：重定标三级流水
 
@@ -154,7 +154,7 @@ quant_sample_reg[0]/Q
 
 吞吐仍为每拍一个隐藏输出，FC1 末尾增加两个排空周期。
 
-| 指标 | 无重定标流水基线 | 三级重定标流水 | 变化 |
+| 指标 | 无重定标流水基线 | 三级重定标流水（AXI 切分前） | 变化 |
 | --- | ---: | ---: | ---: |
 | batch=1 NPU 周期 | 1395 | 1395 | 0 |
 | batch=2 NPU 周期 | 1413 | 1415 | +2 |
