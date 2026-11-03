@@ -1,6 +1,6 @@
 // INT8 64->32->6 with up to four register-resident samples and a pipelined
 // requantization path.
-// Each weight tile is reused for every sample and both compute phases before
+// Each weight tile is reused for every sample and all compute phases before
 // it is released.
 module har_npu_core (
     input logic clk,rst_ni,start,ack_done,
@@ -28,29 +28,38 @@ module har_npu_core (
     localparam int MAX_BATCH=4;
     localparam int FC1_TILES=32;
     localparam int FC2_GROUPS=4;
+    localparam int FC1_PHASES=2;
+    localparam int FC2_PHASES=4;
     logic [2:0] state;
     logic layer;
-    logic phase;
+    logic [1:0] phase;
     logic [3:0] batch_q;
     logic [2:0] sample,quant_sample,finish_sample;
     wire product_valid;
     wire [2:0] product_sample;
-    // FC1 uses 16 outputs by 2 lanes per phase. FC2 uses 4 input rows by
-    // 6 outputs per phase. Both phases reuse the same 32-multiplier bank.
+    // FC1 uses 16 outputs by 2 lanes per phase. FC2 uses 2 input rows by
+    // 6 outputs per phase. All phases reuse the same 32-multiplier bank.
     logic signed [15:0] product[0:31];
     logic signed [31:0] a1[0:MAX_BATCH-1][0:31],a2[0:MAX_BATCH-1][0:5];
     logic [255:0] h[0:MAX_BATCH-1];
     logic [2:0] class_id_q[0:MAX_BATCH-1];
+    logic signed [31:0] finish_best_q;
+    logic [2:0] finish_compare_index,finish_class_q;
     logic signed [31:0] quant_group_q[0:7],quant_value_q;
     logic quant_group_valid_q,quant_value_valid_q,quant_drain_q;
     logic [2:0] quant_group_sample_q,quant_value_sample_q;
     logic [4:0] quant_group_index_q,quant_value_index_q;
     wire issue=state==ISSUE;
     wire last_sample_issue=issue && sample==batch_q[2:0]-1'b1;
-    wire last_phase_issue=last_sample_issue && phase;
+    wire final_tile_phase=layer ? phase==FC2_PHASES-1 : phase==FC1_PHASES-1;
+    wire last_phase_issue=last_sample_issue && final_tile_phase;
     wire [511:0] x=input_features[sample*512+:512];
     wire [255:0] hs=h[sample];
     wire [1:0] fc2_group=tile_index_o[1:0];
+    wire signed [31:0] finish_score=a2[finish_sample][finish_compare_index];
+    wire finish_take=finish_score>finish_best_q;
+    wire signed [31:0] finish_best_next=finish_take ? finish_score : finish_best_q;
+    wire [2:0] finish_class_next=finish_take ? finish_compare_index : finish_class_q;
     assign layer_o=layer;
     // Release the current bank on its final use, then either hand off to an
     // already-ready bank without a bubble or wait only for a real prefetch.
@@ -91,48 +100,25 @@ module har_npu_core (
         end
     endfunction
 
-    function automatic [2:0] argmax(input logic [191:0] v);
-        logic signed [31:0] best;
-        integer j;
-        begin
-            best=$signed(v[31:0]);
-            argmax=0;
-            for(j=1;j<6;j=j+1)
-                if($signed(v[j*32+:32])>best) begin
-                    best=$signed(v[j*32+:32]);
-                    argmax=3'(j);
-                end
-        end
-    endfunction
-
-    logic [191:0] finish_scores;
-    integer finish_o;
-    always_comb begin
-        finish_scores='0;
-        for(finish_o=0;finish_o<6;finish_o=finish_o+1)
-            finish_scores[finish_o*32+:32]=a2[finish_sample][finish_o];
-    end
-    wire [2:0] finish_class=argmax(finish_scores);
-
     integer o,s;
     genvar j,k;
     // FC1 phase selects one set of 16 output accumulators. FC2 phase selects
-    // four six-byte rows; its last eight multiplier lanes are idle.
+    // two packed six-byte rows; only its first twelve product lanes are active.
     generate
         for(j=0;j<16;j=j+1) begin: shared_products
             for(k=0;k<2;k=k+1) begin: lanes
                 localparam int P=j*2+k;
                 localparam int W2_ROW=P/6;
-                if(P<24) begin: fc2_active
+                if(P<12) begin: fc2_active
                     assign product[P]=layer ?
-                        $signed(hs[(fc2_group*8+(phase ? 4:0)+W2_ROW)*8+:8])*
-                            $signed(tile_data_i[(phase ? 24:0)*8+P*8+:8]) :
+                        $signed(hs[(fc2_group*8+phase*2+W2_ROW)*8+:8])*
+                            $signed(tile_data_i[(phase*12+P)*8+:8]) :
                         $signed(x[tile_index_o*16+k*8+:8])*
-                            $signed(tile_data_i[((phase ? 16:0)+j)*16+k*8+:8]);
+                            $signed(tile_data_i[(phase[0]*16+j)*16+k*8+:8]);
                 end else begin: fc2_idle
                     assign product[P]=layer ? 16'sd0 :
                         $signed(x[tile_index_o*16+k*8+:8])*
-                        $signed(tile_data_i[((phase ? 16:0)+j)*16+k*8+:8]);
+                        $signed(tile_data_i[(phase[0]*16+j)*16+k*8+:8]);
                 end
             end
         end
@@ -155,6 +141,9 @@ module har_npu_core (
             quant_group_index_q<=0;
             quant_value_index_q<=0;
             finish_sample<=0;
+            finish_compare_index<=1;
+            finish_class_q<=0;
+            finish_best_q<=0;
             tile_index_o<=0;
             quant_sample<=0;
             class_id_q[0]<=0;class_id_q[1]<=0;class_id_q[2]<=0;class_id_q[3]<=0;
@@ -177,7 +166,7 @@ module har_npu_core (
                 if(dma_write_i) write_overlap_count<=write_overlap_count+1'b1;
                 if(!layer) begin
                     fc1_cycles<=fc1_cycles+1'b1;
-                    if(!phase) begin
+                    if(phase==0) begin
                         for(o=0;o<16;o=o+1)
                             a1[product_sample][o] <=
                                 (tile_index_o==0 ?
@@ -196,25 +185,13 @@ module har_npu_core (
                     end
                 end else begin
                     fc2_cycles<=fc2_cycles+1'b1;
-                    if(!phase) begin
-                        for(o=0;o<6;o=o+1)
-                            a2[product_sample][o] <=
-                                (tile_index_o==0 ?
-                                    $signed(bias2[o*32+:32]):
-                                    a2[product_sample][o])
-                                + {{16{product[o][15]}},product[o]}
-                                + {{16{product[6+o][15]}},product[6+o]}
-                                + {{16{product[12+o][15]}},product[12+o]}
-                                + {{16{product[18+o][15]}},product[18+o]};
-                    end else begin
-                        for(o=0;o<6;o=o+1)
-                            a2[product_sample][o] <=
-                                a2[product_sample][o]
-                                + {{16{product[o][15]}},product[o]}
-                                + {{16{product[6+o][15]}},product[6+o]}
-                                + {{16{product[12+o][15]}},product[12+o]}
-                                + {{16{product[18+o][15]}},product[18+o]};
-                    end
+                    for(o=0;o<6;o=o+1)
+                        a2[product_sample][o] <=
+                            (tile_index_o==0 && phase==0 ?
+                                $signed(bias2[o*32+:32]):
+                                a2[product_sample][o])
+                            + {{16{product[o][15]}},product[o]}
+                            + {{16{product[6+o][15]}},product[6+o]};
                 end
             end
             quant_group_valid_q<=state==QUANT;
@@ -244,6 +221,9 @@ module har_npu_core (
                     quant_value_valid_q<=0;
                     quant_drain_q<=0;
                     finish_sample<=0;
+                    finish_compare_index<=1;
+                    finish_class_q<=0;
+                    finish_best_q<=0;
                     tile_index_o<=0;
                     state<=WAIT_TILE;
                     cycle_count<=0;
@@ -261,8 +241,8 @@ module har_npu_core (
                     state<=ISSUE;
                 end
                 ISSUE:if(last_sample_issue) begin
-                    if(!phase) begin
-                        phase<=1;
+                    if(!final_tile_phase) begin
+                        phase<=phase+1'b1;
                         sample<=0;
                     end else if(tile_index_o==FC1_TILES-1 && !layer) begin
                         quant_sample<=0;
@@ -270,6 +250,9 @@ module har_npu_core (
                         state<=QUANT;
                     end else if(layer && tile_index_o==FC2_GROUPS-1) begin
                         finish_sample<=0;
+                        finish_compare_index<=1;
+                        finish_class_q<=0;
+                        finish_best_q<=a2[0][0];
                         state<=FINISH;
                     end else begin
                         phase<=0;
@@ -303,13 +286,22 @@ module har_npu_core (
                     end
                 end
                 FINISH:begin
-                    class_id_q[finish_sample]<=finish_class;
-                    if(finish_sample==batch_q[1:0]-1'b1) begin
-                        busy<=0;
-                        done<=1;
-                        state<=IDLE;
+                    if(finish_compare_index==5) begin
+                        class_id_q[finish_sample]<=finish_take ? 3'd5 : finish_class_q;
+                        if(finish_sample==batch_q[2:0]-1'b1) begin
+                            busy<=0;
+                            done<=1;
+                            state<=IDLE;
+                        end else begin
+                            finish_sample<=finish_sample+1'b1;
+                            finish_compare_index<=1;
+                            finish_class_q<=0;
+                            finish_best_q<=a2[finish_sample+1'b1][0];
+                        end
                     end else begin
-                        finish_sample<=finish_sample+1'b1;
+                        finish_best_q<=finish_best_next;
+                        finish_class_q<=finish_class_next;
+                        finish_compare_index<=finish_compare_index+1'b1;
                     end
                 end
                 default:state<=IDLE;
