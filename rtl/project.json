@@ -19,7 +19,7 @@
   "architecture": {
     "fc1_input_lanes": 2,
     "fc1_parallel_outputs": 16,
-    "fc2_input_lanes": 4,
+    "fc2_input_lanes": 2,
     "fc2_parallel_outputs": 6,
     "dot_product_multipliers": 32,
     "shared_dot_product_bank": true,
