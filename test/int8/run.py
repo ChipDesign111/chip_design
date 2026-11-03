@@ -6,7 +6,7 @@ HERE=Path(__file__).resolve().parent
 sys.path.insert(0,str(ROOT))
 from model.reference.tile_layout import weights,parameters
 def pack(v):return [sum((x&255)<<(8*j) for j,x in enumerate(v[i:i+4])) for i in range(0,len(v),4)]
-def i32(v):return ((v+2**31)%2**32)-2**31
+def i22(v):return ((v+2**21)%2**22)-2**21
 def make_case(seed):
     r=random.Random(17000+seed)
     w1=[[r.randint(-128,127) for _ in range(64)] for _ in range(32)]
@@ -17,7 +17,9 @@ def make_case(seed):
     batch=4 if seed%6==0 else 1+seed%2
     xs=[[r.randint(-128,127) for _ in range(64)] for _ in range(batch)]
     if seed%8==6:mult=0
-    if seed%5==0:b1[0]=2**31-1;b2[0]=-2**31
+    if seed%5==0:
+        b1[0]=2**21-1;b1[1]=-2**21
+        b2[0]=-2**21;b2[1]=2**21-1
     if seed>=10000:
         w1,w2=weights();q=parameters();b1=q['fc1']['bias_int32'];b2=q['fc2']['bias_int32']
         fixture=json.loads((HERE/'har_uci24.json').read_text());i=(seed-10000)*4
@@ -32,9 +34,17 @@ def make_case(seed):
     store(0x1900,b1);store(0x1980,b2)
     for n,x in enumerate(xs):store(0x1a00+n*64,pack(x))
     for n,x in enumerate(xs):
-        acc=[i32(b1[o]+sum(a*b for a,b in zip(x,w1[o]))) for o in range(32)]
+        acc=[]
+        for o in range(32):
+            value=b1[o]
+            for a,b in zip(x,w1[o]):value=i22(value+a*b)
+            acc.append(value)
         h=[min(127,(max(0,a)*mult+((1<<(shift-1)) if shift else 0))>>shift) for a in acc]
-        y=[i32(b2[o]+sum(a*b for a,b in zip(h,w2[o]))) for o in range(6)]
+        y=[]
+        for o in range(6):
+            value=b2[o]
+            for a,b in zip(h,w2[o]):value=i22(value+a*b)
+            y.append(value)
         store(0x1c00+n*64,pack(h)+y+[max(range(6),key=lambda o:y[o])])
     store(0x1f00,[mult,shift,batch,0x80000000+w1_address])
     return mem
@@ -82,6 +92,6 @@ def main():
         if hardware_soc_cycles<=0 or hardware_soc_cycles>observed_cycles:raise RuntimeError('Invalid hardware SoC cycle count')
         soc_timing={'observed_cycles':observed_cycles,'hardware_soc_cycles':hardware_soc_cycles}
     if any(hashlib.sha256((ROOT/name).read_bytes()).hexdigest()!=value for name,value in source_sha.items()):raise RuntimeError('Source changed during functional run')
-    (run/'result.json').write_text(json.dumps({'unit_cases':len(seeds),'trained_samples':24 if args.trained else 0,'soc':args.soc,'soc_timing':soc_timing,'vendor_model_sha256':hashlib.sha256(args.vendor_model.read_bytes()).hexdigest() if args.vendor_model else None,'passed':True},indent=2)+'\n')
+    (run/'result.json').write_text(json.dumps({'unit_cases':len(seeds),'trained_samples':24 if args.trained else 0,'accumulator_bits':22,'soc':args.soc,'soc_timing':soc_timing,'vendor_model_sha256':hashlib.sha256(args.vendor_model.read_bytes()).hexdigest() if args.vendor_model else None,'passed':True},indent=2)+'\n')
     print('Results: '+str(run))
 if __name__=='__main__':main()

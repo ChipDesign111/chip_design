@@ -1,6 +1,6 @@
 # NPU 调度优化性能
 
-本节比较七项独立优化：
+本节比较八项独立优化：
 
 1. 消除 tile 之间固定的 `DRAIN -> WAIT_TILE -> ISSUE` 气泡；
 2. 将 FC2 每 bank 的 8 个逻辑 tile 打包为 48 B，并在 W1 尾部启动两个 W2 bank 的跨层预取。
@@ -9,6 +9,7 @@
 5. 在 AXI slave 的 AW/AR 地址通道增加控制寄存器边界。
 6. 将 FC1 后的动态 sample/output 选择和 32×16 重定标乘法拆成三级流水。
 7. 将 FC2 从每拍 4 输入行降为 2 输入行，并用单个比较器逐拍完成 Argmax。
+8. 将内部累加、Argmax 和重定标输入从 signed 32 位收窄为 signed 22 位。
 
 基准固定使用 seed=10000 的训练模型和输入。NPU 周期从 `START` 统计到 `DONE`，包含权重 DMA、MAC、requant 和等待时间。AXI ready/valid 采用 testbench 中同一个确定性伪随机背压序列，因此各阶段周期可直接比较。每次只运行一个 batch，避免前一测试的 AXI 状态影响结果。
 
@@ -212,9 +213,15 @@ FINISH 同时删除单周期六路 Argmax，改为一个共享的 32 位有符�
 
 该版本每条 FC2 累加器路径每拍只归约两个乘积，Argmax 也从六路组合比较树变为五次顺序比较。代价是 batch=1/2/4 的 NPU 周期分别增加 6/16/27 拍，batch=4 每样本仅增加 6.75 拍。能否真正缩短 placement/preCTS 路径仍需新的综合和物理实现确认。
 
+## 第八阶段：INT22 内部累加
+
+最新 RTL 将 FC1/FC2 累加器、Argmax 比较器和重定标流水寄存器从 signed 32 位收窄为 signed 22 位。外部 bias 与 score MMIO 仍是 32 位字：bias 只解释低 22 位符号数，score 由 INT22 结果符号扩展。重定标乘法从 32×16 缩为 22×16，中间积从 48 位缩为 38 位。
+
+22 位覆盖任意 INT8 输入和权重的通用 FC1 范围，并覆盖当前训练 bias 下的完整可达上界。随机回归已改为 INT22 补码回绕，边界 bias 使用 `-2^21` 和 `2^21-1`。周期、综合面积和时序收益尚待用户本地功能回归及新一轮 EDA 验证，不能在此阶段引用上一版结果。
+
 ## 验证
 
-最新 `2931fe0` RTL 在用户本地通过：
+INT22 之前的 `2931fe0` RTL 曾在用户本地通过：
 
 ```bash
 python test/int8/run.py --count 32 --trained --soc
@@ -228,6 +235,6 @@ python test/int8/run.py --count 32 --trained --soc
 python test/int8/perf.py
 ```
 
-本次共享 MAC 的源码和运行数据见 [shared_mac_validation.json](shared_mac_validation.json)。该记录只包含 RTL 功能与周期结果；综合和实现由后续独立执行。
+该历史记录见 [shared_mac_validation.json](shared_mac_validation.json)。它只对应 32 位累加版本，不能作为当前 INT22 RTL 的功能或周期证据。
 
-上述基线数字是 RTL 功能/周期仿真，不是 batch=4 的物理签核。串行 FC2 和顺序 Argmax 后的面积、布局、时序和 SDF 仍需重新综合、实现和签核。
+上述基线数字是 RTL 功能/周期仿真，不是 batch=4 的物理签核。INT22 版本的功能回归、面积、布局、时序和 SDF 仍需重新执行。

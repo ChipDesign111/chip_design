@@ -1,5 +1,5 @@
-// INT8 64->32->6 with up to four register-resident samples and a pipelined
-// requantization path.
+// INT8 64->32->6 with up to four register-resident samples, INT22 internal
+// accumulation, and a pipelined requantization path.
 // Each weight tile is reused for every sample and all compute phases before
 // it is released.
 module har_npu_core (
@@ -30,6 +30,7 @@ module har_npu_core (
     localparam int FC2_GROUPS=4;
     localparam int FC1_PHASES=2;
     localparam int FC2_PHASES=4;
+    localparam int ACC_WIDTH=22;
     logic [2:0] state;
     logic layer;
     logic [1:0] phase;
@@ -40,12 +41,12 @@ module har_npu_core (
     // FC1 uses 16 outputs by 2 lanes per phase. FC2 uses 2 input rows by
     // 6 outputs per phase. All phases reuse the same 32-multiplier bank.
     logic signed [15:0] product[0:31];
-    logic signed [31:0] a1[0:MAX_BATCH-1][0:31],a2[0:MAX_BATCH-1][0:5];
+    logic signed [ACC_WIDTH-1:0] a1[0:MAX_BATCH-1][0:31],a2[0:MAX_BATCH-1][0:5];
     logic [255:0] h[0:MAX_BATCH-1];
     logic [2:0] class_id_q[0:MAX_BATCH-1];
-    logic signed [31:0] finish_best_q;
+    logic signed [ACC_WIDTH-1:0] finish_best_q;
     logic [2:0] finish_compare_index,finish_class_q;
-    logic signed [31:0] quant_group_q[0:7],quant_value_q;
+    logic signed [ACC_WIDTH-1:0] quant_group_q[0:7],quant_value_q;
     logic quant_group_valid_q,quant_value_valid_q,quant_drain_q;
     logic [2:0] quant_group_sample_q,quant_value_sample_q;
     logic [4:0] quant_group_index_q,quant_value_index_q;
@@ -56,9 +57,9 @@ module har_npu_core (
     wire [511:0] x=input_features[sample*512+:512];
     wire [255:0] hs=h[sample];
     wire [1:0] fc2_group=tile_index_o[1:0];
-    wire signed [31:0] finish_score=a2[finish_sample][finish_compare_index];
+    wire signed [ACC_WIDTH-1:0] finish_score=a2[finish_sample][finish_compare_index];
     wire finish_take=finish_score>finish_best_q;
-    wire signed [31:0] finish_best_next=finish_take ? finish_score : finish_best_q;
+    wire signed [ACC_WIDTH-1:0] finish_best_next=finish_take ? finish_score : finish_best_q;
     wire [2:0] finish_class_next=finish_take ? finish_compare_index : finish_class_q;
     assign layer_o=layer;
     // Release the current bank on its final use, then either hand off to an
@@ -74,7 +75,8 @@ module har_npu_core (
                 assign hidden_all[gs*256+:256]=h[gs];
                 assign class_all[gs*3+:3]=class_id_q[gs];
                 for(go=0;go<6;go=go+1) begin: score_views
-                    assign scores_all[gs*192+go*32+:32]=a2[gs][go];
+                    assign scores_all[gs*192+go*32+:32]=
+                        {{(32-ACC_WIDTH){a2[gs][go][ACC_WIDTH-1]}},a2[gs][go]};
                 end
             end else begin: zero_output
                 assign hidden_all[gs*256+:256]='0;
@@ -86,15 +88,25 @@ module har_npu_core (
         end
     endgenerate
 
-    // One shared requantizer; INT8 operands, INT32 accumulators/bias/scores.
-    function automatic [7:0] quant(input logic signed [31:0] v);
-        logic [47:0] scaled;
+    // Bias fields remain 32-bit MMIO words, but only their signed 22-bit
+    // accumulation value participates in the datapath.
+    function automatic logic signed [ACC_WIDTH-1:0] extend_product(
+        input logic signed [15:0] value);
+        extend_product={{ (ACC_WIDTH-16){value[15]}},value};
+    endfunction
+
+    // One shared requantizer; 22-bit positive accumulator times UINT16.
+    function automatic [7:0] quant(input logic signed [ACC_WIDTH-1:0] v);
+        logic [37:0] scaled;
+        logic [37:0] unsigned_v;
         begin
             scaled=0;
+            unsigned_v=0;
             if(v>0) begin
-                scaled=$unsigned(v)*requant_mult;
+                unsigned_v={{ (38-ACC_WIDTH){1'b0}},$unsigned(v)};
+                scaled=unsigned_v*{{ (38-16){1'b0}},requant_mult};
                 if(requant_shift!=0)
-                    scaled=(scaled+(48'd1<<(requant_shift-1)))>>requant_shift;
+                    scaled=(scaled+(38'd1<<(requant_shift-1)))>>requant_shift;
             end
             quant=scaled>127 ? 8'd127:scaled[7:0];
         end
@@ -170,28 +182,28 @@ module har_npu_core (
                         for(o=0;o<16;o=o+1)
                             a1[product_sample][o] <=
                                 (tile_index_o==0 ?
-                                    $signed(bias1[o*32+:32]):
+                                    $signed(bias1[o*32+:ACC_WIDTH]):
                                     a1[product_sample][o])
-                                + {{16{product[o*2][15]}},product[o*2]}
-                                + {{16{product[o*2+1][15]}},product[o*2+1]};
+                                + extend_product(product[o*2])
+                                + extend_product(product[o*2+1]);
                     end else begin
                         for(o=0;o<16;o=o+1)
                             a1[product_sample][16+o] <=
                                 (tile_index_o==0 ?
-                                    $signed(bias1[(16+o)*32+:32]):
+                                    $signed(bias1[(16+o)*32+:ACC_WIDTH]):
                                     a1[product_sample][16+o])
-                                + {{16{product[o*2][15]}},product[o*2]}
-                                + {{16{product[o*2+1][15]}},product[o*2+1]};
+                                + extend_product(product[o*2])
+                                + extend_product(product[o*2+1]);
                     end
                 end else begin
                     fc2_cycles<=fc2_cycles+1'b1;
                     for(o=0;o<6;o=o+1)
                         a2[product_sample][o] <=
                             (tile_index_o==0 && phase==0 ?
-                                $signed(bias2[o*32+:32]):
+                                $signed(bias2[o*32+:ACC_WIDTH]):
                                 a2[product_sample][o])
-                            + {{16{product[o][15]}},product[o]}
-                            + {{16{product[6+o][15]}},product[6+o]};
+                            + extend_product(product[o])
+                            + extend_product(product[6+o]);
                 end
             end
             quant_group_valid_q<=state==QUANT;

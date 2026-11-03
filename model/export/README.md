@@ -19,6 +19,6 @@ z = W2_int8 * W2_scale @ h + b2_float
 class = argmax(z)
 ```
 
-整数前向见 [quant_params.json](quant_params.json)：INT32 累加，ReLU 后用 `(acc * 1064 + 524288) >> 20` 压回 0–127，再做第二层。该整数路径在测试集上的准确率是 84.97%。平局时取最小下标。
+整数前向见 [quant_params.json](quant_params.json)：INT22 补码累加，ReLU 后用 `(acc * 1064 + 524288) >> 20` 压回 0–127，再做第二层。当前固定模型的全部输出都落在 INT22 范围内，因此与历史 INT32 逐值结果相同；测试集整数路径准确率仍为 84.97%。平局时取最小下标。
 
 当前用 tools/export_tiles.py 转换为 DMA 的 tile 顺序；test/int8/run.py --trained 对固定 24 条输入逐值核对。参见 [开发说明](../../report/development.md)。原参数文件保持不变。

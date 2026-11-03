@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "INT8_SHARED_32MAC_SRAM_TILE_DMA_BATCH4_ZERO_BUBBLE_W2_PACKED",
+  "status": "INT8_SHARED_32MAC_SRAM_TILE_DMA_BATCH4_ZERO_BUBBLE_W2_PACKED_ACC22",
   "organization": "ChipDesign111",
   "repository": "chip_design",
   "network": {
@@ -12,9 +12,10 @@
     "input_bits": 8,
     "weight_bits": 8,
     "bias_bits": 32,
-    "accumulator_bits": 32,
+    "accumulator_bits": 22,
     "hidden_bits": 8,
-    "score_bits": 32
+    "score_bits": 32,
+    "score_storage_bits": 22
   },
   "architecture": {
     "fc1_input_lanes": 2,
@@ -33,10 +34,10 @@
     "shared_mac_mapping": "FC1: 16 outputs x 2 lanes per phase; FC2: 6 outputs x 2 input rows per phase",
     "tile_handoff": "last-sample consumed pulse, direct ISSUE when next bank is ready",
     "fc2_prefetch": "two 64-byte banks preloaded during final W1 tile and requant",
-    "mac_pipeline": "combinational INT8 multiplication into INT32 accumulator per ISSUE cycle",
-    "requant_pipeline": "sample/group select; 8:1 output select; 32x16 multiply, shift and saturation",
-    "finish_pipeline": "one shared signed 32-bit comparison per cycle; five comparisons per sample",
-    "requant_pipeline_data_registers": 288,
+    "mac_pipeline": "combinational INT8 multiplication into INT22 accumulator per ISSUE cycle",
+    "requant_pipeline": "sample/group select; 8:1 output select; 22x16 multiply, shift and saturation",
+    "finish_pipeline": "one shared signed 22-bit comparison per cycle; five comparisons per sample; 32-bit sign-extended score output",
+    "requant_pipeline_data_registers": 198,
     "axi_crossbar_latency": "CUT_SLV_AX",
     "fpga_clock_hz": 20000000
   },

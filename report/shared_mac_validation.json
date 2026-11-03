@@ -2,8 +2,8 @@
   "validated_at": "2026-11-03",
   "branch": "rtl-dev",
   "base_commit": "2931fe08012b3e5b06b7f2885ed71b81634a2d3c",
-  "current_status": "passed_serial_fc2_and_argmax_regression",
-  "scope": "Shared FC1/FC2 32-multiplier bank with two FC2 input rows per phase, a three-stage requantization pipeline, sequential Argmax and CUT_SLV_AX crossbar address boundaries: RTL functional and full-SoC ModelSim regression. No synthesis, implementation or SDF validation was run.",
+  "current_status": "historical_passed_before_int22_change",
+  "scope": "Historical 32-bit-accumulator validation for the shared FC1/FC2 multiplier bank with two FC2 input rows per phase, a three-stage requantization pipeline, sequential Argmax and CUT_SLV_AX crossbar address boundaries. The current INT22 RTL requires a fresh functional and physical regression.",
   "architecture": {
     "dot_product_multipliers": 32,
     "fc1_mapping": "16 outputs x 2 input lanes per phase",

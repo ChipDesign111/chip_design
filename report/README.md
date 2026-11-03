@@ -2,9 +2,9 @@
 
 2026-10-29：为满足 A7-35T 容量，NPU 最大 batch 调整为 4 个样本共享一个权重 tile，输入、累加器和输出全部驻留寄存器，没有新增 NPU 内部 SRAM。32 组随机单/双/四样本和 6 组训练模型四样本批次逐值通过，完整 CPU SoC batch=4 自检通过。
 
-同日完成调度优化：移除 tile 间固定交接气泡；FC2 改为每 8 行、每行 6 输出打包为 48 B，并在 W1 尾部跨层预取 W2。共享 MAC bank 最终收为 32 个乘法器，FC1 分两个 16 输出相位。当前 RTL 进一步把 FC2 改为每拍 2 输入行、共四个相位，并把 FINISH 分类改为每拍比较一个候选；最新本地回归通过，batch=1/2/4 NPU 为 1401/1431/1541 拍，完整 SoC 为 6369 拍，综合和物理结果仍待重跑。
+同日完成调度优化：移除 tile 间固定交接气泡；FC2 改为每 8 行、每行 6 输出打包为 48 B，并在 W1 尾部跨层预取 W2。共享 MAC bank 最终收为 32 个乘法器，FC1 分两个 16 输出相位。上一版把 FC2 改为每拍 2 输入行，并把 FINISH 分类改为每拍比较一个候选；该版本地回归通过，batch=1/2/4 NPU 为 1401/1431/1541 拍，完整 SoC 为 6369 拍。当前 RTL 再把内部累加器收窄为 INT22，随机测试与参考模型已同步，新的本地回归和物理结果仍待重跑。
 
-本页下方面积、时序和 SDF 数字属于 batch=2 的历史物理结果。batch=4 将 FC1 累加器从 2×32×32 bit 增至 4×32×32 bit，改变了网表、面积和时序，旧 PPA 不能用于当前 RTL；必须重新综合、布局布线和签发对应证据。
+本页下方面积、时序和 SDF 数字属于 batch=2 的历史物理结果。batch=4 与 INT22 累加改变了网表、面积和时序，旧 PPA 不能用于当前 RTL；必须重新综合、布局布线和签发对应证据。
 
 当前 xzx 的 SRAM 复位修正版已完成独立EDA与SDF：含PAD **3.795639mm²**，20ns下Setup/Hold **+0.371/+0.019ns**，16组SDF所有阶段动态时序违规0条，半周期路径检查通过。见[修正内容](reset_fix.md)、[新版物理结果](../eda/results/sram_reset_20261027/README.md)和[后仿与main对比](../eda/results/sram_reset_20261027/postsim/README.md)。17条负IOPATH与时间0 PAD模型消息保留为限制。以下为旧版 e15483c 的历史数字。
 
@@ -16,6 +16,6 @@
 
 从 [架构](architecture.md) 理解信号与数据通路，再看 [NPU](npu.md)、[MMIO](mmio.md)、[DMA](dma.md)、[性能对比](performance.md) 和 [SRAM/启动](sram.md)。[开发与验证](development.md) 说明复现功能测试的方法；物理实现从 [EDA 操作指南](../eda/README.md) 开始。
 
-当前功能证据使用 `python test/int8/run.py --count 32 --trained --soc`。随机批次同时覆盖 batch=1、2、4；训练数据按 6 个四样本批次覆盖 24 条 UCI 固定输入。完整 SoC 通过 batch=4 CPU/MMIO 自检，并保持真实 DMA 读写与 MAC 重叠。
+功能回归使用 `python test/int8/run.py --count 32 --trained --soc`。当前 INT22 版本的随机参考已覆盖 22 位补码边界和回绕；训练数据按 6 个四样本批次覆盖 24 条 UCI 固定输入。新版完整 SoC 结果需重新由用户本地确认。
 
 功能仿真不是物理签核；实际 EDA 状态及最终面积以本次上传的 evidence 和最终视图为准，不能引用旧 xzx/rtl 结果。

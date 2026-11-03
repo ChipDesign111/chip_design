@@ -106,6 +106,8 @@ module tb_tiled_dma;
     initial begin
         if(!$value$plusargs("DIR=%s",directory)) $fatal(1,"DIR required");
         if(!$value$plusargs("COUNT=%d",count)) count=24;
+        if($bits(dut.core.a1[0][0])!=22 || $bits(dut.core.a2[0][0])!=22)
+            $fatal(1,"Expected INT22 accumulators");
         #1;rst_n=0;repeat(3) @(negedge clk);rst_n=1;
         // Invalid SRAM pointer cannot start an inference.
         put(0,1);check(4,4);
@@ -155,6 +157,6 @@ module tb_tiled_dma;
         put(0,2);put(0,1);repeat(12) @(negedge clk);rst_n=0;repeat(3) @(negedge clk);rst_n=1;
         if(dut.bank_published!==0 || npu_busy!==0) $fatal(1,"Reset retained DMA/compute work");
         configure();put(0,1);await_done();check(4,1);
-        $display("INT8_TILED_DMA PASS cases=%0d",count);$finish;
+        $display("INT8_TILED_DMA PASS cases=%0d accumulator_bits=%0d",count,$bits(dut.core.a1[0][0]));$finish;
     end
 endmodule

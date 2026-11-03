@@ -1,4 +1,10 @@
-"""Exact current INT8 integer contract, independent of RTL implementation."""
+"""Exact current INT8/INT22 integer contract, independent of RTL implementation."""
+ACCUMULATOR_BITS = 22
+
+def wrap_accumulator(value):
+    extrema = 1 << (ACCUMULATOR_BITS - 1)
+    return ((value + extrema) % (1 << ACCUMULATOR_BITS)) - extrema
+
 def infer(x, w1, w2, b1, b2, multiplier=1, shift=0):
     if not 0 <= multiplier <= 65535 or not 0 <= shift <= 31:
         raise ValueError('Invalid requantization configuration')
@@ -8,23 +14,19 @@ def infer(x, w1, w2, b1, b2, multiplier=1, shift=0):
         raise ValueError('Invalid second-layer shape')
     if any(not -128 <= value <= 127 for value in x + sum(w1, []) + sum(w2, [])):
         raise ValueError('INT8 operand out of range')
-    def checked(value):
-        if not -(1 << 31) <= value < (1 << 31):
-            return ((value+(1<<31))%(1<<32))-(1<<31)
-        return value
     hidden = []
     for row, bias in zip(w1, b1):
-        acc = checked(bias)
+        acc = wrap_accumulator(bias)
         for weight, value in zip(row, x):
-            acc = checked(acc + weight * value)
+            acc = wrap_accumulator(acc + weight * value)
         scaled = max(acc, 0) * multiplier
         rounded = (scaled + (1 << (shift-1))) >> shift if shift else scaled
         hidden.append(min(127, rounded))
     scores = []
     for row, bias in zip(w2, b2):
-        acc = checked(bias)
+        acc = wrap_accumulator(bias)
         for weight, value in zip(row, hidden):
-            acc = checked(acc + weight * value)
+            acc = wrap_accumulator(acc + weight * value)
         scores.append(acc)
     category = max(range(6), key=lambda index: scores[index])
     return hidden, scores, category
