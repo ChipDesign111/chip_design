@@ -1,0 +1,88 @@
+{
+  "validated_at": "2026-11-03",
+  "branch": "rtl-dev",
+  "rtl_commit": "9970d6f648140de7b1878fc183229d04773a95e0",
+  "eda_upload": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261103_int22_9970d6f",
+  "deployment_archive_sha256": "02d77c6c5e2abbe52a200afefd13f98a83b91d6a70ae18bf401400485143676c",
+  "input_manifest_sha256": "c8a503ab45c443bc28539376cda568e4d61273d34969b6f3956a7cf6883cce38",
+  "status": "thirty_four_step_eda_passed_final_views_exported",
+  "scope": "Same-input INT22 RTL synthesis, placement, CTS, routing, filler, final connectivity checks and structural export. Functional ModelSim regression and SDF backannotation are not recorded in this EDA workspace.",
+  "synthesis": {
+    "cell_count": 65636,
+    "cell_area_um2": 2062446.061,
+    "memory_area_um2": 401443.591,
+    "npu_subsystem_cell_area_um2": 896960.915,
+    "npu_core_cell_area_um2": 563211.488,
+    "npu_weight_store_cell_area_um2": 68448.531,
+    "npu_flop_area_um2": 465399.962,
+    "npu_combinational_area_um2": 406450.061,
+    "latch_area_um2": 0.0
+  },
+  "comparison_vs_serial_fc2_int32": {
+    "rtl_commit": "9970d6f",
+    "reference_input_manifest_sha256": "494dbb46e4963d164c8ca58ba09cb1094af2694b722c3caa03f480dee35cede8",
+    "soc_cell_area_delta_um2": -145287.117,
+    "soc_cell_area_delta_percent": -6.581,
+    "cell_count_delta": -5405,
+    "npu_subsystem_area_delta_um2": -145363.949,
+    "npu_subsystem_area_delta_percent": -13.946,
+    "npu_core_area_delta_um2": -145741.523,
+    "npu_core_area_delta_percent": -20.557,
+    "npu_flop_area_delta_um2": -77639.833,
+    "npu_flop_area_delta_percent": -14.297
+  },
+  "physical": {
+    "last_completed_step": 34,
+    "unexpected_tool_errors": false,
+    "setup_wns_ns": 0.032,
+    "setup_tns_ns": 0.0,
+    "setup_violating_paths": 0,
+    "hold_wns_ns": 0.019,
+    "hold_tns_ns": 0.0,
+    "hold_violating_paths": 0,
+    "real_max_cap_violations": 0,
+    "real_max_transition_violations": 0,
+    "real_max_fanout_violations": 0,
+    "real_max_length_violations": 0,
+    "post_filler_logic_density_percent": 73.094,
+    "whole_die_area_mm2": 3.7956390976,
+    "max_whole_die_area_mm2": 3.8,
+    "unplaced_instances": 0,
+    "full_core_pg_zero_problems": true,
+    "default_drc_zero_reported_violations": true,
+    "signal_connectivity_unresolved_problems": 0,
+    "classified_io_abstract_nets": [
+      "VDDPST",
+      "VSSPST"
+    ],
+    "antenna_violating_nets": 0,
+    "critical_path": {
+      "beginpoint": "i_cpu/core_i/id_stage_i/alu_operator_ex_o_reg[4]/Q",
+      "endpoint": "i_cpu/core_i/id_stage_i/alu_operand_b_ex_o_reg[1]/D",
+      "required_ns": 21.354,
+      "arrival_ns": 21.322,
+      "slack_ns": 0.032
+    }
+  },
+  "exports": {
+    "def": true,
+    "gds": true,
+    "lef": true,
+    "sdc": true,
+    "sdf": true,
+    "spef": true,
+    "hierarchical_netlist": true,
+    "flat_lvs_netlist": true,
+    "sdf_non_top_instances_matched": 62799,
+    "spef_networks": 68312,
+    "gds_structures": 614,
+    "gds_undefined_references": 0,
+    "review_archive_sha256": "400936ff83a9ee713f115f276afe1a4bb9ba5fefe9d071d68a74b04e7217c412"
+  },
+  "excluded": [
+    "functional ModelSim regression in this EDA workspace",
+    "SDF backannotation simulation",
+    "independent foundry DRC and LVS",
+    "IR/EM/ESD signoff"
+  ]
+}
