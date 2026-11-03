@@ -2,7 +2,7 @@
 
 2026-11-03：三级重定标流水后的综合表明 QUANT 路径已退出最差路径列表；剩余关键路径为 CPU IF/ID → AXI Crossbar AR 通道 → AXI2NPU → NPU 地址和读数据选择，slack 仅 +0.8 ps。AXI crossbar 从 `NO_LATENCY` 改为 `CUT_SLV_AX`，只寄存 slave 端 AW/AR 地址通道。功能和 ModelSim 回归通过，完整 SoC 总周期从 5121 增至 6337 拍；综合、实现和 SDF 仍需重跑。
 
-2026-11-03：根据 preCTS 路径把 FC2 从每拍 4 输入行改为每拍 2 输入行，并将单周期六路 Argmax 改为共享 32 位比较器的逐拍扫描。修改目标是在保留 batch=1/2/4 接口的同时缩短 `tile_index → FC2 动态选择 → 乘法累加` 路径并降低比较树面积。RTL 功能、性能、综合和物理验证待独立重跑。
+2026-11-03：根据 preCTS 路径把 FC2 从每拍 4 输入行改为每拍 2 输入行，并将单周期六路 Argmax 改为共享 32 位比较器的逐拍扫描。修改目标是在保留 batch=1/2/4 接口的同时缩短 `tile_index → FC2 动态选择 → 乘法累加` 路径并降低比较树面积。用户本地 38/38 单元用例、训练模型和完整 SoC 回归通过；batch=1/2/4 NPU 为 1401/1431/1541 拍，完整 SoC 为 6369 拍。综合和物理验证待独立重跑。
 
 2026-11-03：根据 Placement 路径报告纠正时序修改方向。最差路径实际为 `quant_sample_reg → a1[sample][output] 动态选择 → requant_multiplier → h_reg`，不是 MAC 乘加路径。撤销增加 512 bit 乘积寄存器的 MAC 流水，改为 sample/8 输出组选择、8 选 1、32×16 乘法饱和三级重定标流水；每拍仍处理一个输出，FC1 末尾增加两拍排空。38/38 单元用例、训练模型、Boot 起点、冷启动 Debug 和完整 SoC ModelSim 全部通过；batch=1/2/4 NPU 为 1395/1415/1514 拍，完整 SoC testbench/硬件周期为 5121/5116 拍，DMA 读/写重叠为 269/268。综合、物理实现和 SDF 仍需重跑。
 

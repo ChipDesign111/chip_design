@@ -1,6 +1,6 @@
 # NPU 调度优化性能
 
-本节比较六项独立优化：
+本节比较七项独立优化：
 
 1. 消除 tile 之间固定的 `DRAIN -> WAIT_TILE -> ISSUE` 气泡；
 2. 将 FC2 每 bank 的 8 个逻辑 tile 打包为 48 B，并在 W1 尾部启动两个 W2 bank 的跨层预取。
@@ -8,6 +8,7 @@
 4. 将共享 bank 从 64 个乘法器减为 32 个，同时保持 64 B bank 大小。
 5. 在 AXI slave 的 AW/AR 地址通道增加控制寄存器边界。
 6. 将 FC1 后的动态 sample/output 选择和 32×16 重定标乘法拆成三级流水。
+7. 将 FC2 从每拍 4 输入行降为 2 输入行，并用单个比较器逐拍完成 Argmax。
 
 基准固定使用 seed=10000 的训练模型和输入。NPU 周期从 `START` 统计到 `DONE`，包含权重 DMA、MAC、requant 和等待时间。AXI ready/valid 采用 testbench 中同一个确定性伪随机背压序列，因此各阶段周期可直接比较。每次只运行一个 batch，避免前一测试的 AXI 状态影响结果。
 
@@ -144,7 +145,7 @@ quant_sample_reg[0]/Q
 
 该路径 Required `19.467 ns`、Arrival `33.371 ns`、Slack `-13.904 ns`。其中动态 sample/output MUX 约占 20.1 ns，requant 乘法器组合阵列约占 10.2 ns。此前尝试在 MAC 后插入 512 bit 乘积流水，没有切中该路径，反而增加面积，因此已撤销。
 
-当前 RTL 改为：
+当时 RTL 改为：
 
 ```text
 第一级：选择 sample 和一个 8 输出组，寄存 8×32 bit
@@ -168,15 +169,58 @@ quant_sample_reg[0]/Q
 
 本次完整回归为 38/38 单元用例、训练模型逐值对照、Boot 周期起点、冷启动 Debug 定向测试和完整 SoC ModelSim 自检全部通过。
 
+## 第七阶段：FC2 串行归约与顺序 Argmax
+
+上一轮 placement/preCTS 的第一条路径仍在 FC2：
+
+```text
+tile_index
+→ FC2 输入/权重动态选择
+→ INT8 乘法器
+→ CSA 累加树
+→ a2
+```
+
+为缩短这条路径，FC2 仍使用每个 48 B 物理包，但不再一拍处理 4 个输入行，而是拆成四个相位：
+
+```text
+FC2：6 output × 2 input rows，共四个相位
+每相位有效乘积：12
+每样本 FC2 ISSUE 周期：16
+```
+
+FINISH 同时删除单周期六路 Argmax，改为一个共享的 32 位有符号比较器和 best/class 寄存器。每个样本先装入类别 0，再逐拍比较类别 1..5；平局仍保留较小类别号。
+
+| 指标 | 三级重定标流水 | 串行 FC2 + 顺序 Argmax | 变化 |
+| --- | ---: | ---: | ---: |
+| batch=1 NPU 周期 | 1395 | 1401 | +6 |
+| batch=2 NPU 周期 | 1415 | 1431 | +16 |
+| batch=4 NPU 周期 | 1514 | 1541 | +27 |
+| batch=1 每样本周期 | 1395.0 | 1401.0 | +6.0 |
+| batch=2 每样本周期 | 707.5 | 715.5 | +8.0 |
+| batch=4 每样本周期 | 378.5 | 385.25 | +6.75 |
+| FC2 ISSUE batch=1/2/4 | 8 / 16 / 32 | 16 / 32 / 64 | 翻倍 |
+| 完整 SoC 总周期 | 6337 | 6369 | +32 |
+
+最新完整 SoC 总周期为 6369 拍。固定基准下 DMA 与 MAC 的重叠为：
+
+| batch | 读重叠 | 写重叠 |
+| --- | ---: | ---: |
+| 1 | 39 | 38 |
+| 2 | 70 | 66 |
+| 4 | 152 | 151 |
+
+该版本每条 FC2 累加器路径每拍只归约两个乘积，Argmax 也从六路组合比较树变为五次顺序比较。代价是 batch=1/2/4 的 NPU 周期分别增加 6/16/27 拍，batch=4 每样本仅增加 6.75 拍。能否真正缩短 placement/preCTS 路径仍需新的综合和物理实现确认。
+
 ## 验证
 
-最终配置通过：
+最新 `2931fe0` RTL 在用户本地通过：
 
 ```bash
 python test/int8/run.py --count 32 --trained --soc
 ```
 
-共 38 个单元用例，覆盖 batch=1/2/4、24 条训练输入、量化边界值、DMA 错误、非法 bank 写、复位和服务完整 AXI SoC 自检。单元测试还断言：FC1/FC2 的发射周期分别符合 `batch×64` 和 `batch×8`，成功一批仍加载 64 个逻辑 tile；进入 FC2 前必须已经发起 W2 预取，且发布中的 bank 不得被 DMA 覆盖。
+共 38 个单元用例，覆盖 batch=1/2/4、24 条训练输入、量化边界值、DMA 错误、非法 bank 写、复位和服务完整 AXI SoC 自检。单元测试还断言：FC1/FC2 的发射周期分别符合 `batch×64` 和 `batch×16`，成功一批仍加载 64 个逻辑 tile；进入 FC2 前必须已经发起 W2 预取，且发布中的 bank 不得被 DMA 覆盖。
 
 固定单批周期可复现为：
 
@@ -184,6 +228,6 @@ python test/int8/run.py --count 32 --trained --soc
 python test/int8/perf.py
 ```
 
-本次共享 MAC 的源码和运行数据见 [shared_mac_validation.json](shared_mac_validation.json)。该记录只包含 RTL 功能与周期结果；按用户要求，综合和实现由后续独立执行。
+本次共享 MAC 的源码和运行数据见 [shared_mac_validation.json](shared_mac_validation.json)。该记录只包含 RTL 功能与周期结果；综合和实现由后续独立执行。
 
-上述基线数字是 RTL 功能/周期仿真，不是 batch=4 的物理签核。重定标流水后的面积、布局、时序和 SDF 仍需重新综合、实现和签核。
+上述基线数字是 RTL 功能/周期仿真，不是 batch=4 的物理签核。串行 FC2 和顺序 Argmax 后的面积、布局、时序和 SDF 仍需重新综合、实现和签核。
