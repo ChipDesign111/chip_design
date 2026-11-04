@@ -231,7 +231,7 @@ FINISH 同时删除单周期六路 Argmax，改为一个共享的 32 位有符�
 
 最终 post-filler 逻辑密度为 73.094%，含 PAD Die 为 3.795639 mm²。20 ns 下 Setup/Hold WNS 为 **+0.032/+0.019 ns**，TNS 与违规路径均为 0；最终关键路径已转移到 CPU ALU，不再位于 NPU 加法树。完整记录见 [int22_validation.json](int22_validation.json)。
 
-同源最终网表的 MAXIMUM SDF 后仿完成：11/11 用例功能通过，SDF annotation error、缺失实例和未匹配 timing check 均为 0；所有工作窗口和最终复位阶段动态时序事件为 0。每个 SDF 用例仍有 108 条初始复位事件，另有 10 条负 IOPATH 被仿真器截零，均作为已知限制保留。SRAM 输入/输出 Setup/Hold 四类各报告的 20 条路径全部 MET，最差 slack 分别为 6.222/10.061/2.685/11.524 ns。
+同源最终网表的 MAXIMUM SDF 后仿完成：11/11 用例功能通过，SDF annotation error、缺失实例和未匹配 timing check 均为 0；所有工作窗口和最终复位阶段动态时序事件为 0。每个 SDF 用例仍有 108 条初始复位事件，另有 10 条负 IOPATH 被仿真器截零，均作为已知限制保留。SRAM 输入/输出 Setup/Hold 四类各报告的 20 条路径全部 MET，最差 slack 分别为 6.222/10.061/2.685/11.524 ns。完整报告见 [INT22 EDA 结果](../eda/results/int22_20261104/README.md)。
 
 ## 验证
 

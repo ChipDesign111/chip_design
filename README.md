@@ -1,6 +1,6 @@
 # INT8 HAR 全芯片实现
 
-当前 xzx 的 SRAM 复位修正版已完成 RTL 回归、独立34步EDA及16组SDF+1组无SDF对照：含PAD **3.795639mm²**、20ns下Setup/Hold **+0.371/+0.019ns**，所有SDF阶段动态时序违规 **0条**，专门半周期路径检查通过。详见[新版完整结果](eda/results/sram_reset_20261027/README.md)和[后仿与main对比](eda/results/sram_reset_20261027/postsim/README.md)。17条负IOPATH和时间0 PAD模型消息保留为限制。以下为旧版 e15483c 的历史结果。
+当前 INT22 累加版 `9970d6f` 已完成独立34步 EDA 和最终网表 SDF 后仿：含PAD **3.795639mm²**，20ns下Setup/Hold **+0.032/+0.019ns**，TNS与违规路径均为0；10组MAXIMUM SDF加1组无SDF对照 **11/11功能通过**，回标error/缺失实例/缺失检查均为0，工作窗口与最终复位阶段动态时序违规为0。详见[完整结果](eda/results/int22_20261104/README.md)和[SDF后仿](eda/results/int22_20261104/postsim/README.md)。每个SDF用例的108条初始复位事件及10条负IOPATH截零限制保留。
 
 2026-10-26 后仿补充：16组完整SoC MAXIMUM SDF及无SDF对照通过功能自检，回标error/缺失实例/缺失检查均0，工作窗口动态违规0；复位事件及19条负IOPATH截零限制仍保留。详见[与现有main结果对比](eda/results/postsim_ntc_20261026/README.md)。下方“未后仿”描述对应原物理交付时点。
 
@@ -8,9 +8,9 @@
 
 上一轮已完成实测：含 PAD **3.9856 mm²**，系统 **20 ns**，最终 Setup/Hold **+0.042 / +0.021 ns**，34/34 及三个阶段通过。详见[本轮结果与逐步报告](eda/results/int8_20261023/README.md)；SDF 已导出，尚未执行回标后仿。
 
-本实现已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。完整 SoC 包含 CV32E40P、AXI、JTAG Debug、8 KiB 主 SRAM 和 64→32→6 NPU。共享 32 乘法器在第一层分两个 16 输出×2 输入相位，在第二层分两个 4 输入行×6 输出相位；两个 64B 权重 tile 缓冲由 DMA 从主 SRAM 按需填充。输入/权重/隐藏激活 INT8，偏置/累加/分数 INT32。当前目标是含 PAD 整颗 Die ≤3.8 mm²。
+本实现已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。完整 SoC 包含 CV32E40P、AXI、JTAG Debug、8 KiB 主 SRAM 和 64→32→6 NPU。共享 32 乘法器在第一层分两个 16 输出×2 输入相位，在第二层分四个 6 输出×2 输入行相位；两个 64B 权重 tile 缓冲由 DMA 从主 SRAM 按需填充。输入/权重/隐藏激活 INT8，内部累加为 INT22，MMIO 分数仍是32位符号扩展值。当前目标是含 PAD 整颗 Die ≤3.8 mm²。
 
-`rtl-dev` 当前支持最多四样本寄存器批次，并完成 tile 零气泡交接、FC2 四组 48B 粗粒度权重包、W1 尾部 W2 预取和 32 乘法器跨层复用。FPGA 版本使用 20 MHz 系统时钟与 `NO_LATENCY` crossbar；固定基准下 batch=4 单批为 1512 拍，详见[性能对比](report/performance.md)和[FPGA 测试报告](fpga/TEST_REPORT.md)。这些是 RTL 周期结果；当前 20 MHz bitstream 已通过实现时序，batch=4 的 ASIC 物理面积仍需独立签核。
+`rtl-dev` 当前支持最多四样本寄存器批次，并完成 tile 零气泡交接、FC2 四组 48B 粗粒度权重包、W1 尾部 W2 预取、32 乘法器跨层复用和 INT22 内部累加。ASIC INT22 版已完成20ns物理实现及SDF后仿；FPGA bitstream 仍需按当前 `CUT_SLV_AX` 和 INT22 配置重新综合验证。性能历史和时序变化见[性能对比](report/performance.md)及[FPGA 测试报告](fpga/TEST_REPORT.md)。
 
 从本机打包上传到服务器、三个独立阶段和结果回传，直接跟随 [EDA 操作指南](eda/README.md)。服务器从每个上传版本目录的 README.html 开始。结构、启动流程和寄存器见 [设计报告](report/README.md)。
 

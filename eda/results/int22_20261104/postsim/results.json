@@ -1,0 +1,134 @@
+{
+  "sdf_max": {
+    "functional_pass": true,
+    "values": [
+      6370,
+      975,
+      279,
+      278,
+      278
+    ],
+    "timing_violation_messages": 108,
+    "reset_offset_ps": 2000
+  },
+  "gate_zero": {
+    "functional_pass": true,
+    "values": [
+      6369,
+      975,
+      279,
+      278,
+      278
+    ],
+    "timing_violation_messages": 0,
+    "reset_offset_ps": 2000
+  },
+  "sdf_firmware_1": {
+    "functional_pass": true,
+    "values": [
+      4258,
+      880,
+      140,
+      140,
+      139
+    ],
+    "timing_violation_messages": 108,
+    "reset_offset_ps": 250
+  },
+  "sdf_firmware_10001": {
+    "functional_pass": true,
+    "values": [
+      6370,
+      975,
+      279,
+      278,
+      278
+    ],
+    "timing_violation_messages": 108,
+    "reset_offset_ps": 1650
+  },
+  "sdf_firmware_10002": {
+    "functional_pass": true,
+    "values": [
+      6370,
+      975,
+      279,
+      278,
+      278
+    ],
+    "timing_violation_messages": 108,
+    "reset_offset_ps": 3050
+  },
+  "sdf_firmware_10003": {
+    "functional_pass": true,
+    "values": [
+      6370,
+      975,
+      279,
+      278,
+      278
+    ],
+    "timing_violation_messages": 108,
+    "reset_offset_ps": 4450
+  },
+  "sdf_firmware_10004": {
+    "functional_pass": true,
+    "values": [
+      6370,
+      975,
+      279,
+      278,
+      278
+    ],
+    "timing_violation_messages": 108,
+    "reset_offset_ps": 5850
+  },
+  "sdf_firmware_10005": {
+    "functional_pass": true,
+    "values": [
+      6370,
+      975,
+      279,
+      278,
+      278
+    ],
+    "timing_violation_messages": 108,
+    "reset_offset_ps": 7250
+  },
+  "sdf_firmware_3": {
+    "functional_pass": true,
+    "values": [
+      4258,
+      880,
+      140,
+      140,
+      139
+    ],
+    "timing_violation_messages": 108,
+    "reset_offset_ps": 8650
+  },
+  "sdf_firmware_5": {
+    "functional_pass": true,
+    "values": [
+      4258,
+      880,
+      140,
+      140,
+      139
+    ],
+    "timing_violation_messages": 108,
+    "reset_offset_ps": 10050
+  },
+  "sdf_firmware_7": {
+    "functional_pass": true,
+    "values": [
+      4258,
+      880,
+      140,
+      140,
+      139
+    ],
+    "timing_violation_messages": 108,
+    "reset_offset_ps": 11450
+  }
+}
