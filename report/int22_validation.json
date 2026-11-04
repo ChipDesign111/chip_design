@@ -1,12 +1,12 @@
 {
-  "validated_at": "2026-11-03",
+  "validated_at": "2026-11-04",
   "branch": "rtl-dev",
   "rtl_commit": "9970d6f648140de7b1878fc183229d04773a95e0",
   "eda_upload": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261103_int22_9970d6f",
   "deployment_archive_sha256": "02d77c6c5e2abbe52a200afefd13f98a83b91d6a70ae18bf401400485143676c",
   "input_manifest_sha256": "c8a503ab45c443bc28539376cda568e4d61273d34969b6f3956a7cf6883cce38",
-  "status": "thirty_four_step_eda_passed_final_views_exported",
-  "scope": "Same-input INT22 RTL synthesis, placement, CTS, routing, filler, final connectivity checks and structural export. Functional ModelSim regression and SDF backannotation are not recorded in this EDA workspace.",
+  "status": "thirty_four_step_eda_and_sdf_postsim_passed_with_recorded_limits",
+  "scope": "Same-input INT22 RTL synthesis, placement, CTS, routing, filler, final connectivity checks, structural export, full-SoC MAXIMUM SDF post-simulation and read-only SRAM half-cycle STA. Initial-reset timing events and simulator-clamped negative IOPATH values are retained as explicit limitations.",
   "synthesis": {
     "cell_count": 65636,
     "cell_area_um2": 2062446.061,
@@ -64,6 +64,68 @@
       "slack_ns": 0.032
     }
   },
+  "postsim": {
+    "postsim_commit": "5edf6cd",
+    "upload": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261104_191006_postsim_5edf6cd",
+    "sdf_sha256": "f97cd4aeed976e458c7e01f04369503ad7f3c6815f0886e4388d785200e171eb",
+    "review_archive_sha256": "54117accf66d58f285c5cecdc864a00d89a15edc4e297c42957e0ffccba14973",
+    "review_file_count": 56,
+    "simulation_cases": 11,
+    "sdf_cases": 10,
+    "no_sdf_control_cases": 1,
+    "functional_pass_cases": 11,
+    "annotation_errors": 0,
+    "missing_instances": 0,
+    "unmatched_timing_checks": 0,
+    "binding_complete_for_instances_and_checks": true,
+    "active_window_dynamic_timing_clean": true,
+    "final_reset_timing_events": 0,
+    "initial_reset_timing_events_per_sdf_case": 108,
+    "negative_iopath_clamped_by_simulator": 10,
+    "sdf_warning_categories": {
+      "SDFCOM_UHICD": 1,
+      "SDFCOM_IWSBA": 1463,
+      "SDFCOM_SWC": 3476,
+      "SDFCOM_ANIOD": 1,
+      "SDFCOM_NIOD": 10
+    },
+    "representative_cycles": {
+      "batch_4_trained": {
+        "cpu_cycles": 6370,
+        "npu_cycles": 975,
+        "dma_mac_overlap": 279,
+        "read_overlap": 278,
+        "write_overlap": 278
+      },
+      "batch_2_random": {
+        "cpu_cycles": 4258,
+        "npu_cycles": 880,
+        "dma_mac_overlap": 140,
+        "read_overlap": 140,
+        "write_overlap": 139
+      }
+    },
+    "sram_half_cycle_sta": {
+      "input_setup_worst_slack_ns": 6.222,
+      "input_hold_worst_slack_ns": 10.061,
+      "output_setup_worst_slack_ns": 2.685,
+      "output_hold_worst_slack_ns": 11.524,
+      "reported_paths_per_check": 20,
+      "all_reported_paths_met": true,
+      "read_only_no_eco": true
+    },
+    "reset_offsets_ps": [
+      250,
+      1650,
+      3050,
+      4450,
+      5850,
+      7250,
+      8650,
+      10050,
+      11450
+    ]
+  },
   "exports": {
     "def": true,
     "gds": true,
@@ -80,8 +142,7 @@
     "review_archive_sha256": "400936ff83a9ee713f115f276afe1a4bb9ba5fefe9d071d68a74b04e7217c412"
   },
   "excluded": [
-    "functional ModelSim regression in this EDA workspace",
-    "SDF backannotation simulation",
+    "formal RTL-to-netlist and netlist-to-netlist equivalence",
     "independent foundry DRC and LVS",
     "IR/EM/ESD signoff"
   ]
