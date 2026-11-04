@@ -15,7 +15,7 @@
 
 ## 产物
 
-- 完整原始测试报告：[TEST_REPORT_20261101.txt](evidence/TEST_REPORT_20261101.txt)
+- 完整测试报告：[TEST_REPORT.md](TEST_REPORT.md)
 - 旧固件与 JTAG 二进制：[firmware](firmware/)
 - 机器可读版本信息：[VERSION.json](VERSION.json)
 

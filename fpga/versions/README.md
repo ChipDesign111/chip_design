@@ -24,6 +24,6 @@ YYYYMMDD_rtl-<rtl-commit>_<status>
 | 版本 | RTL 基线 | 板级状态 | 摘要 |
 |---|---|---|---|
 | [20261101_rtl-fce9d9b_board-pass](20261101_rtl-fce9d9b_board-pass/README.md) | `fce9d9b` | PASS | 上一版 20 MHz、32-MAC、INT32 累加器板上测试；旧 bitstream 原件缺失，但报告、哈希和固件快照保留 |
-| [20261104_rtl-1c265c0_int22](20261104_rtl-1c265c0_int22/README.md) | `9970d6f` 逻辑，`1c265c0` 测试快照 | 板测待执行 | 当前 INT22、`CUT_SLV_AX`、串行 FC2/Argmax 版本；20 MHz 构建和 RTL 回归通过 |
+| [20261104_rtl-1c265c0_int22](20261104_rtl-1c265c0_int22/README.md) | `9970d6f` 逻辑，`1c265c0` 测试快照 | PASS | 当前 INT22、`CUT_SLV_AX`、串行 FC2/Argmax 版本；20 MHz 构建、RTL 回归和 A7-35T 板测通过 |
 
 当前活动版本记录在 [ACTIVE_VERSION](ACTIVE_VERSION) 中。

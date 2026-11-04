@@ -1,8 +1,8 @@
 # 2026-11-04：当前 INT22 RTL
 
 本版本对应当前 `rtl-dev` INT22 RTL 和最新的无预装 JTAG 流程。Vivado 已在
-20 MHz 下完成综合、实现、布线和 bitstream 生成；RTL 与 SoC 回归通过，板级
-测试尚待执行。
+20 MHz 下完成综合、实现、布线和 bitstream 生成；RTL、SoC 回归和 A7-35T
+板级自检均已通过。
 
 | 项目 | 当前结果 |
 |---|---|
@@ -17,7 +17,7 @@
 | DSP48E1 | 40 |
 | Block RAM Tile | 2 |
 | 布线与 routed DRC | 全布通，0 errors |
-| 板级状态 | 待执行 |
+| 板级状态 | PASS |
 
 ## 可交付产物
 
@@ -27,6 +27,7 @@
   - SHA-256：`b639ab3ca002e73de3f79bd945d1760ec7111f05dfdb9c27efd7b05796303486`
 - 38 个镜像清单：[image_manifest.json](firmware/image_manifest.json)
 - 机器可读版本信息：[VERSION.json](VERSION.json)
+- 完整测试报告：[TEST_REPORT.md](TEST_REPORT.md)
 
 `logs/synth_runme.log` 明确记录：
 
@@ -51,21 +52,9 @@ FC2 为 `batch*8`，而当前 RTL 输出 `batch*16`；同时 INT22 bias 和整�
 3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b
 ```
 
-## RTL 回归
+## 验证结果
 
-当前快照已完成以下本地验证：
-
-- 38/38 单元用例通过。
-- 24 条训练输入通过。
-- 完整 SoC 通过。
-- RTL 观测窗口 `6369` 拍，硬件计数器 `6364` 拍。
-- NPU `975` 拍，FC1/FC2 发射周期 `256/64`。
-- DMA 读/写与 MAC 重叠均为 `278` 拍。
-
-测试证据见 [soc.log](evidence/soc.log) 和 [result.json](evidence/result.json)。
-
-## 板上待测
-
-按上一版无预装 JTAG 流程，预计硬件 SoC 周期为 `6365`；实际值必须以本次
-板上读取为准。板测通过后，应把本目录状态从 `board_pending` 更新为
-`board_pass`，并记录原始 GDB、NPU MMIO 和 LED 观测结果。
+当前快照完成 38/38 单元用例、24 条训练输入、完整 SoC 回归和 A7-35T
+板级自检，同时通过 LED、连续复位、重复重配置和长时间运行回归。板上
+NPU 为 975 拍，FC1/FC2 为 256/64 拍，完整 SoC 为 6368 拍。完整证据、
+前仿/后仿对比和测试边界见 [TEST_REPORT.md](TEST_REPORT.md)。

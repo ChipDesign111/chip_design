@@ -6,7 +6,7 @@ FPGA 系统时钟为 20 MHz，器件为 `xc7a35tcsg324-1`。
 FPGA bitstream、固件和测试证据按不可覆盖版本归档，入口见
 [版本目录](versions/README.md)。当前活动版本为
 [20261104_rtl-1c265c0_int22](versions/20261104_rtl-1c265c0_int22/README.md)；
-当前板级测试尚待执行。上一版的完整 PASS 报告保存在
+当前板级测试已 PASS。上一版的完整 PASS 报告保存在
 [20261101_rtl-fce9d9b_board-pass](versions/20261101_rtl-fce9d9b_board-pass/README.md)。
 当前状态和验收边界见 [FPGA 测试状态](TEST_REPORT.md)。
 
@@ -293,9 +293,8 @@ testbench 观测窗口周期    6369
 ```
 
 两者相差 5 拍，因为 testbench 从 SBI 提交完成后开始观测，而硬件计数器还要
-等到 CPU 第一次非 debug 取指。按上一版无预装载 JTAG 流程的 debug-resume
-口径，板端预计为 `6365`；旧版的 `5105` 只属于历史版本，不能再用于当前
-bitstream。最终数值以本次板上读取为准。
+等到 CPU 第一次非 debug 取指。当前无预装载 JTAG 流程的板端实测为 `6368`
+（`0x000018E0`）；旧版的 `5105` 只属于历史版本，不能再用于当前 bitstream。
 
 ### 启动提交码（“密钥”）
 

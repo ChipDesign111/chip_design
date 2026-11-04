@@ -1,0 +1,81 @@
+(gdb) soc-boot-status
+boot_status=0x00000000 loaded_words=0 ready=0
+(gdb) soc-load-bin firmware/int8_selftest.bin
+Restoring binary file firmware/int8_selftest.bin into memory (0x80000000 to 0x80002000)
+image ready: status=0x00000800 loaded_words=2048 ready=0
+use soc-commit-image to write the boot key
+(gdb) soc-commit-image
+image committed: status=0x00002800 loaded_words=2048 ready=1
+(gdb) monitor resume
+(gdb) monitor halt
+riscv.cpu halted due to debug-request.
+(gdb) maintenance flush register-cache
+Register cache flushed.
+(gdb) x/3i $pc
+=> 0x80000470:  j       0x80000470
+   0x80000474:  unimp
+   0x80000476:  unimp
+(gdb) x/1wx 0x80001FF0
+0x80001ff0:     0x00000000
+(gdb) x/1xw 0x80001FE0
+0x80001fe0:     0xc0dec0de
+(gdb) x/1xw 0x70000004
+0x70000004:     0x00000001
+(gdb) x/1xw 0x70000018
+0x70000018:     0x00000004
+(gdb) x/1xw 0x70000028
+0x70000028:     0x00000100
+(gdb) x/1xw 0x7000002C
+0x7000002c:     0x00000040
+(gdb) x/1xw 0x70000030
+0x70000030:     0x00000040
+(gdb) x/1xw 0x7000000C
+0x7000000c:     0x000003cf
+(gdb) x/1xw 0x80001FC0
+0x80001fc0:     0x000003cf
+(gdb) x/1xw 0x7000001C
+0x7000001c:     0x00000117
+(gdb) x/1xw 0x80001FC4
+0x80001fc4:     0x00000117
+(gdb) x/1xw 0x70000034
+0x70000034:     0x00000116
+(gdb) x/1xw 0x80001FC8
+0x80001fc8:     0x00000116
+(gdb) x/1xw 0x70000038
+0x70000038:     0x00000116
+(gdb) x/1xw 0x80001FCC
+0x80001fcc:     0x00000116
+(gdb) x/1xw 0x00010038
+0x10038:        0x000018e0
+(gdb) soc-full-cycles
+soc_cycles=6368 (0x000018e0)
+(gdb) x/1wx 0x80001FF0
+0x80001ff0:     0x00000000
+(gdb) x/1bx 0x80001FF0
+0x80001ff0:     0x00
+(gdb) set {int}0x80001FF0 = 0x12345678
+(gdb) x/1wx 0x80001FF0
+0x80001ff0:     0x12345678
+(gdb) x/1bx 0x80001FF0
+0x80001ff0:     0x78
+(gdb) x/2bx 0x80001FF0
+0x80001ff0:     0x78    0x56
+(gdb) x/3bx 0x80001FF0
+0x80001ff0:     0x78    0x56    0x34
+(gdb) x/4bx 0x80001FF0
+0x80001ff0:     0x78    0x56    0x34    0x12
+(gdb) set {int}0x80001FF0 = 0
+(gdb) set {unsigned char}0x80001FF0 = 0xaa
+(gdb) x/1wx 0x80001FF0
+0x80001ff0:     0x000000aa
+(gdb) set {unsigned char}0x80001FF1 = 0xbb
+(gdb) x/1wx 0x80001FF0
+0x80001ff0:     0x0000bbaa
+(gdb) x/1wx 0x80001FF0
+0x80001ff0:     0x00000000
+(gdb) set {unsigned char}0x80001FF0 = 0xaa
+(gdb) set {unsigned char}0x80001FF1 = 0xbb
+(gdb) set {unsigned char}0x80001FF2 = 0xcc
+(gdb) set {unsigned char}0x80001FF3 = 0xdd
+(gdb) x/1wx 0x80001FF0
+0x80001ff0:     0xddccbbaa

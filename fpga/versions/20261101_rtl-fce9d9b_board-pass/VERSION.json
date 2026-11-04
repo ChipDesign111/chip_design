@@ -2,6 +2,7 @@
   "schema_version": 1,
   "version_id": "20261101_rtl-fce9d9b_board-pass",
   "status": "historical_board_pass",
+  "test_report": "TEST_REPORT.md",
   "test_date": "2026-11-01",
   "branch": "rtl-dev",
   "rtl_logic_baseline": "fce9d9bb6334e28eff8858aec76c2aa84377a165",
@@ -30,7 +31,7 @@
     "dma_read_mac_overlap_cycles": 270,
     "dma_write_mac_overlap_cycles": 269,
     "soc_hardware_cycles": 5105,
-    "evidence": "evidence/TEST_REPORT_20261101.txt"
+    "evidence": "TEST_REPORT.md"
   },
   "compatibility": {
     "compatible_with_current_rtl": false,

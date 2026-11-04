@@ -166,7 +166,7 @@ NPU busy 总周期 = 908
 每样本摊销 NPU 周期 = 908 / 4 = 227
 ```
 
-908 是完整 SoC 中的 NPU `cycle_count`，包含权重 DMA、MAC、requant、tile 交接和等待。它不同于 NPU 专用测试台 [perf.py](../test/int8/perf.py) 在更强确定性 AXI 背压下得到的 batch=4 周期 1512；两者使用同一个内部计数器，但系统流量环境不同，不能混用。
+908 是完整 SoC 中的 NPU `cycle_count`，包含权重 DMA、MAC、requant、tile 交接和等待。它不同于 NPU 专用测试台 [perf.py](../../../test/int8/perf.py) 在更强确定性 AXI 背压下得到的 batch=4 周期 1512；两者使用同一个内部计数器，但系统流量环境不同，不能混用。
 
 ### 5.4 tile 加载数仍为 64 的原因
 
@@ -199,7 +199,7 @@ SRAM 不是周期计数的来源。计数的源头是 `har_npu_core.cycle_count`
 
 ### 5.6 FPGA 与完整 SoC RTL 仿真对照
 
-当前共享 32-MAC 的完整 SoC RTL 记录位于 [shared_mac_validation.json](../report/shared_mac_validation.json) 和 [sram_transaction_reset_port.json](../report/sram_transaction_reset_port.json)。
+当前共享 32-MAC 的完整 SoC RTL 记录位于 [shared_mac_validation.json](../../../report/shared_mac_validation.json) 和 [sram_transaction_reset_port.json](../../../report/sram_transaction_reset_port.json)。
 
 | 指标 | FPGA/GDB 实测 | RTL 完整 SoC 仿真 | 对照结果 |
 |---|---:|---:|---|
@@ -334,13 +334,16 @@ LUT 仍是主要容量瓶颈，仅余 1,341 个 LUT。后续增加 batch 深度�
 
 ## 8. 补充板上测试记录
 
-以下结果由我在本次板上测试中确认。我已经记录 T04 的命令和输出以及 M1、K1、K3 的板上现象；T01、T02、T03 的原始复位次数和配置日志尚未归档到仓库。因此这些项目只在当前测试证据范围内记录为完成，不扩展为其他温度、电压或板卡条件。T09 是文档一致性检查，不涉及新增板上激励。
+以下结果由我在本次板上测试中确认，T01–T09 测试项均已完成。我已经记录
+T04 的命令和输出以及 M1、K1、K3 的板上现象；T01、T02、T03 的原始复位
+次数和配置日志未随本报告归档。这些项目只在当前测试证据范围内记录为完成，
+不扩展为其他温度、电压或板卡条件。T09 是文档一致性检查，不涉及新增板上激励。
 
 | 编号 | 测试项 | 结果 | 证据说明 |
 |---|---|---|---|
-| T01 | 连续复位 10 次 | 完成 | 我确认每次重新运行后的自检流程完成；原始 GDB 日志待归档 |
-| T02 | 重复配置 bitstream 3 至 5 次 | 完成 | 我确认重复配置流程完成；各次配置日志待归档 |
-| T03 | 20 至 30 分钟重复运行 | 完成 | 我确认运行期间无新增失败；连续运行日志待归档 |
+| T01 | 连续复位 10 次 | 完成 | 每次重新运行后的自检流程完成；原始 GDB 日志未随本报告归档 |
+| T02 | 重复配置 bitstream 3 至 5 次 | 完成 | 重复配置流程完成；各次配置日志未随本报告归档 |
+| T03 | 20 至 30 分钟重复运行 | 完成 | 运行期间无新增失败；连续运行日志未随本报告归档 |
 | T04 | `0x80001FF0` 整字与字节访问 | 完成 | 整字读写、恢复零、字节写和逐字节读均通过 |
 | T05 | M1/K1/K3 状态 | 完成 | M1 常亮；持续读取后 K1 点亮；K3 常亮 |
 | T06 | 其余训练 UCI 四样本批次 | 完成 | UCI 00–05 共 24 条固定输入全部逐值 PASS |

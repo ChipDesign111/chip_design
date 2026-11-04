@@ -1,6 +1,8 @@
 # 当前架构变更
 
-2026-11-04：FPGA 产物改为不可覆盖的版本归档。上一版 20 MHz 板上 PASS 版本及其旧固件冻结在 `fpga/versions/20261101_rtl-fce9d9b_board-pass`；当前 INT22 RTL 的无预装 bitstream、时序/资源报告、38 个新镜像和 RTL 回归证据冻结在 `fpga/versions/20261104_rtl-1c265c0_int22`。当前构建在 20 MHz 下 WNS/WHS 为 `+0.407/+0.034 ns`，LUT `17,625/20,800`，板级测试仍待执行。同步修复镜像生成器保留旧 canonical 的问题，并刷新活动 JTAG 固件。
+2026-11-04：当前 INT22 FPGA bitstream 在 A7-35T 完成无预装 JTAG 板级自检、LED 状态、连续复位、重复重配置和长时间运行回归。CANONICAL 固件得到 `0xC0DEC0DE`，最终 PC 为 `0x80000470`；NPU 为 975 拍，FC1/FC2 发射周期为 256/64，权重 tile 加载 64 次，DMA/MAC 总重叠 279 拍、读/写重叠均 278 拍。无预装 JTAG SoC 硬件周期实测 6368 拍，与 RTL 硬件口径 6364、testbench 观测 6369 的差异按启动和观测边界记录。SRAM byte 0–3 写入得到 `0xDDCCBBAA`。原始 GDB 和分版本 `TEST_REPORT.md` 已归档。
+
+2026-11-04：FPGA 产物改为不可覆盖的版本归档。上一版 20 MHz 板上 PASS 版本及其旧固件冻结在 `fpga/versions/20261101_rtl-fce9d9b_board-pass`；当前 INT22 RTL 的无预装 bitstream、时序/资源报告、38 个新镜像和 RTL 回归证据冻结在 `fpga/versions/20261104_rtl-1c265c0_int22`。当前构建在 20 MHz 下 WNS/WHS 为 `+0.407/+0.034 ns`，LUT `17,625/20,800`，该版本随后完成 A7-35T 板级自检。同步修复镜像生成器保留旧 canonical 的问题，并刷新活动 JTAG 固件。
 
 2026-11-04：修复后仿固件用例范围并完成最终 SDF 后仿。后仿原先错误请求训练 seed `10000..10011`，但当前 `har_uci24.json` 只包含 24 条输入，只能组成 `10000..10005` 六组四样本；从 seed `10006` 起输入为空却仍按 batch=4 运行，导致 CPU 自检失败。后仿现改为六组训练加四组随机，并在样本不足时拒绝生成固件。最终网表的 10 个 MAXIMUM SDF 用例和 1 个无 SDF 对照全部功能通过；回标 error、缺失实例、未匹配检查均为 0，工作窗口和最终复位阶段动态时序事件为 0。初始复位 108 事件/用例及 10 条负 IOPATH 截零作为限制保留。
 
