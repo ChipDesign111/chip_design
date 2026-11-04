@@ -4,10 +4,11 @@
   "code_bytes": 1140,
   "image_used_bytes": 7952,
   "sram_bytes": 8192,
-  "sha256": "fa38f91311768cd73386f8e093370831383d9e0e1b8a4832a2f3f978a2bfe850",
+  "rtl_version": "20261104_rtl-1c265c0_int22",
+  "sha256": "3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b",
   "comparison": "Every hidden, score and predicted class against integer gold, not against the true activity label",
   "transport": "dma",
   "parameter_words": 38,
   "input_words": 64,
-  "measured": "post-commit CPU self-check includes configuration, four-sample inference, shared 32-MAC FC1/FC2 phases and identical result checks"
+  "measured": "post-commit CPU self-check includes configuration, four-sample inference, shared 32-MAC FC1/FC2 phases, INT22 boundaries and identical result checks"
 }

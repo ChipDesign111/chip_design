@@ -10,7 +10,7 @@
 
 本实现已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。完整 SoC 包含 CV32E40P、AXI、JTAG Debug、8 KiB 主 SRAM 和 64→32→6 NPU。共享 32 乘法器在第一层分两个 16 输出×2 输入相位，在第二层分四个 6 输出×2 输入行相位；两个 64B 权重 tile 缓冲由 DMA 从主 SRAM 按需填充。输入/权重/隐藏激活 INT8，内部累加为 INT22，MMIO 分数仍是32位符号扩展值。当前目标是含 PAD 整颗 Die ≤3.8 mm²。
 
-`rtl-dev` 当前支持最多四样本寄存器批次，并完成 tile 零气泡交接、FC2 四组 48B 粗粒度权重包、W1 尾部 W2 预取、32 乘法器跨层复用和 INT22 内部累加。ASIC INT22 版已完成20ns物理实现及SDF后仿；FPGA bitstream 仍需按当前 `CUT_SLV_AX` 和 INT22 配置重新综合验证。性能历史和时序变化见[性能对比](report/performance.md)及[FPGA 测试报告](fpga/TEST_REPORT.md)。
+`rtl-dev` 当前支持最多四样本寄存器批次，并完成 tile 零气泡交接、FC2 四组 48B 粗粒度权重包、W1 尾部 W2 预取、32 乘法器跨层复用和 INT22 内部累加。ASIC INT22 版已完成20ns物理实现及SDF后仿；当前 FPGA 已按 `CUT_SLV_AX` 和 INT22 配置重新综合，20 MHz 时序通过，板级测试待执行。FPGA 产物按版本归档，索引见 [FPGA 版本目录](fpga/versions/README.md)，当前状态见 [FPGA 测试报告](fpga/TEST_REPORT.md)。
 
 从本机打包上传到服务器、三个独立阶段和结果回传，直接跟随 [EDA 操作指南](eda/README.md)。服务器从每个上传版本目录的 README.html 开始。结构、启动流程和寄存器见 [设计报告](report/README.md)。
 

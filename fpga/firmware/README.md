@@ -21,17 +21,19 @@ UCI 00–05 各包含 4 条连续输入，共覆盖固定模型的 24 条输入�
 与 `test/int8/run.py` 的默认回归 seed 0–31 一一对应，覆盖 batch=1/2/4、
 不同 requant 参数、MULT=0、bias 极值以及 W1 基址 `0x80000FFC`/`0x80001000`。
 
-`int8_selftest.hex` 保留原来的 CRLF 字节格式和 SHA-256：
+当前 `int8_selftest.hex` 与 UCI 00 使用相同的 LF 文本格式，大小为
+18,432 B，SHA-256 为：
 
 ```text
-fa38f91311768cd73386f8e093370831383d9e0e1b8a4832a2f3f978a2bfe850
+3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b
 ```
 
-`int8_uci_00_batch4.hex` 与其 2048 个字内容相同，但使用 LF 换行，因此二者
-文件 SHA 不同。后续新镜像均使用 LF 换行和 18,432 B 文本大小；canonical
-保持 20,480 B，以避免改变已测试 bitstream 的固件身份。
+`int8_uci_00_batch4.hex` 与 canonical 文件逐字节相同。上一版 20,480 B、
+CRLF 格式的 canonical 镜像已随旧 FPGA 版本冻结，不再作为当前输入。
 
 `image_manifest.json` 是权威清单，记录每个文件的 seed、batch 和 SHA-256。
+当前完整版本快照见
+[20261104_rtl-1c265c0_int22](../versions/20261104_rtl-1c265c0_int22/README.md)。
 
 ## 测试内容
 
@@ -60,7 +62,8 @@ python fpga/firmware/generate_images.py
 - 文件名中的 batch 与输入数据一致；
 - UCI 00 与既有 canonical 镜像的 2048 个字完全一致。
 
-脚本不会覆盖已存在的 `int8_selftest.hex`；若它缺失，则用 UCI 00 创建。
+脚本会用最新的 UCI 00 刷新 `int8_selftest.hex`。旧镜像保存在带日期的
+`fpga/versions/` 目录中，不再通过保留活动 canonical 文件来保存历史身份。
 
 ## 板上使用
 

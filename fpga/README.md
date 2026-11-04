@@ -3,7 +3,12 @@
 本目录提供 A7-35T 板级构建、JTAG 目标选择、镜像转换和 GDB 装载流程。
 FPGA 系统时钟为 20 MHz，器件为 `xc7a35tcsg324-1`。
 
-完整的板上功能、时序、资源、补充回归和测试边界见 [板级测试报告](TEST_REPORT.md)。
+FPGA bitstream、固件和测试证据按不可覆盖版本归档，入口见
+[版本目录](versions/README.md)。当前活动版本为
+[20261104_rtl-1c265c0_int22](versions/20261104_rtl-1c265c0_int22/README.md)；
+当前板级测试尚待执行。上一版的完整 PASS 报告保存在
+[20261101_rtl-fce9d9b_board-pass](versions/20261101_rtl-fce9d9b_board-pass/README.md)。
+当前状态和验收边界见 [FPGA 测试状态](TEST_REPORT.md)。
 
 ## 1. 两种 bitstream
 
@@ -283,14 +288,14 @@ soc-full-cycles
 当前 canonical 镜像的完整 SoC 仿真结果为：
 
 ```text
-硬件 SoC 周期             5104
-testbench 观测窗口周期    5109
+硬件 SoC 周期             6364
+testbench 观测窗口周期    6369
 ```
 
 两者相差 5 拍，因为 testbench 从 SBI 提交完成后开始观测，而硬件计数器还要
-等到 CPU 第一次非 debug 取指。A7-35T 无预装载 JTAG 流程板上实测为
-`5105`（`0x000013F1`）；比 RTL 仿真多 1 拍，来自 debug resume 的首次取指
-入口差异。该值不应随 commit 后 CPU 在 debug halt 停留多久而变化。
+等到 CPU 第一次非 debug 取指。按上一版无预装载 JTAG 流程的 debug-resume
+口径，板端预计为 `6365`；旧版的 `5105` 只属于历史版本，不能再用于当前
+bitstream。最终数值以本次板上读取为准。
 
 ### 启动提交码（“密钥”）
 

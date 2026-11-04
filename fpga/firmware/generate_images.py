@@ -76,13 +76,16 @@ def main():
 
     canonical = output_dir / "int8_selftest.hex"
     uci_zero = output_dir / "int8_uci_00_batch4.hex"
+    # The canonical image is the active firmware input, so it must follow the
+    # current RTL even when an older self-test image already exists.
     if canonical.exists():
         if canonical.read_text(encoding="ascii").splitlines() != uci_zero.read_text(
             encoding="ascii"
         ).splitlines():
-            raise RuntimeError("int8_selftest.hex does not match UCI group 00")
-    else:
-        canonical.write_bytes(uci_zero.read_bytes())
+            print("Refreshing int8_selftest.hex from current UCI group 00")
+        else:
+            print("int8_selftest.hex already matches current UCI group 00")
+    canonical.write_bytes(uci_zero.read_bytes())
 
     manifest = {
         "format": "2048 x 32-bit hexadecimal words, one word per line",

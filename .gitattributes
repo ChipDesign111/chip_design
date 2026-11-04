@@ -12,6 +12,7 @@
 *.json text eol=lf
 *.yml text eol=lf
 *.hex binary
+*.bit binary
 *.png binary
 *.pdf binary
 *.npz binary
