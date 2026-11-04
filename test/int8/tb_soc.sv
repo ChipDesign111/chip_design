@@ -80,8 +80,12 @@ module tb_soc;
            dut.i_bootram.soc_cycles>=cycles ||
            ^dut.i_bootram.soc_cycles===1'bx)
             $fatal(1,"Invalid hardware SoC cycle count: %0d",dut.i_bootram.soc_cycles);
-        $display("INT8_SOC PASS cycles=%0d hw_soc_cycles=%0d DMA_read_MAC_overlap=%0d DMA_write_MAC_overlap=%0d",
-                 cycles,dut.i_bootram.soc_cycles,read_overlap,write_overlap);
+        $display("INT8_SOC PASS cycles=%0d hw_soc_cycles=%0d npu_cycles=%0d fc1_issue_cycles=%0d fc2_issue_cycles=%0d DMA_read_MAC_overlap=%0d DMA_write_MAC_overlap=%0d",
+                 cycles,dut.i_bootram.soc_cycles,
+                 dut.i_npu_subsystem.i_npu_core.core.cycle_count,
+                 dut.i_npu_subsystem.i_npu_core.core.fc1_cycles,
+                 dut.i_npu_subsystem.i_npu_core.core.fc2_cycles,
+                 read_overlap,write_overlap);
         // Asynchronous reassertion must revoke execution immediately.
         #2;rst_n=0;#1;
         if(dut.ndmreset_n || dut.boot_ready) $fatal(1,"Reset assertion failed");
