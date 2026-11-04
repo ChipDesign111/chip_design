@@ -1,5 +1,7 @@
 # 当前架构变更
 
+2026-11-04：修复后仿固件用例范围。后仿原先错误请求训练 seed `10000..10011`，但当前 `har_uci24.json` 只包含 24 条输入，只能组成 `10000..10005` 六组四样本；从 seed `10006` 起输入为空却仍按 batch=4 运行，导致 CPU 自检失败。后仿现改为六组训练加四组随机，并在样本不足时拒绝生成固件。
+
 2026-11-03：内部 FC1/FC2 累加、Argmax 比较和重定标输入从 signed 32 位收窄为 signed 22 位。32 位 MMIO bias 仅解释低 22 位符号数，32 位 score 窗口由 INT22 内部值符号扩展；重定标乘法改为 22×16，中间积收窄为 38 位。随机测试改用 INT22 补码回绕，边界 bias 改为 `-2^21` 与 `2^21-1`。同源 34 步 EDA 完成：全 SoC Cell Area 2.062446 mm²，NPU 0.896961 mm²，含 PAD Die 3.795639 mm²；20 ns 下 Setup/Hold WNS 为 +0.032/+0.019 ns，关键路径转移到 CPU ALU。SDF 后仿和独立 foundry DRC/LVS 仍待执行。
 
 2026-11-03：三级重定标流水后的综合表明 QUANT 路径已退出最差路径列表；剩余关键路径为 CPU IF/ID → AXI Crossbar AR 通道 → AXI2NPU → NPU 地址和读数据选择，slack 仅 +0.8 ps。AXI crossbar 从 `NO_LATENCY` 改为 `CUT_SLV_AX`，只寄存 slave 端 AW/AR 地址通道。功能和 ModelSim 回归通过，完整 SoC 总周期从 5121 增至 6337 拍；综合、实现和 SDF 仍需重跑。

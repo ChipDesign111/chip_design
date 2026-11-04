@@ -23,7 +23,9 @@ def make_case(seed):
     if seed>=10000:
         w1,w2=weights();q=parameters();b1=q['fc1']['bias_int32'];b2=q['fc2']['bias_int32']
         fixture=json.loads((HERE/'har_uci24.json').read_text());i=(seed-10000)*4
-        xs=fixture['x_int8'][i:i+4];mult=q['hidden_requant']['mul'];shift=q['hidden_requant']['shift'];batch=4
+        xs=fixture['x_int8'][i:i+4]
+        if len(xs)!=4:raise ValueError('Trained seed %d has no complete four-sample fixture' % seed)
+        mult=q['hidden_requant']['mul'];shift=q['hidden_requant']['shift'];batch=4
     mem=[0]*2048
     def store(offset,values):mem[offset//4:offset//4+len(values)]=[x&0xffffffff for x in values]
     # Tile-major order: input pair, output neuron, lane.

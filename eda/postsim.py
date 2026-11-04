@@ -33,7 +33,7 @@ def main():
         sys.path.insert(0,str(ROOT/'test/int8'))
         from firmware import build
         firmware=DIST/('postsim_firmware_'+datetime.now().strftime('%Y%m%d_%H%M%S'));firmware.mkdir(parents=True)
-        for seed in [10000]+list(range(10001,10012))+[1,3,5,7]:
+        for seed in list(range(10000,10006))+[1,3,5,7]:
             p=firmware/str(seed);p.mkdir();build(p,seed)
             name='firmware.hex' if seed==10000 else 'firmware_%d.hex'%seed
             (firmware/name).write_bytes((p/'firmware.hex').read_bytes())
