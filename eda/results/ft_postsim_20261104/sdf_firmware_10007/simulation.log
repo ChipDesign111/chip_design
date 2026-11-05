@@ -1,0 +1,70 @@
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version Q-2020.03-SP2-7_Full64; Runtime version Q-2020.03-SP2-7_Full64;  Nov  4 09:53 2026
+Doing SDF annotation ...... Done
+ANNOTATION_CALLED path=timing.sdf time_ns=0.000
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tdi
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tms
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tck
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_rst_n
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_clk
+CLOCK_AT_CORE time_ns=10.630
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4126: Timing violation in tb_postsim.dut.i_axi2npu.RC_CG_HIER_INST4.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11355, negedge E:11277, limits: (145,-61) );
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4056: Timing violation in tb_postsim.dut.i_dm_axi2mem.RC_CG_HIER_INST229.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11355, negedge E:11286, limits: (152,-62) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4056: Timing violation in tb_postsim.dut.i_axi2boot.RC_CG_HIER_INST3.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11385, negedge E:11285, limits: (150,-61) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4056: Timing violation in tb_postsim.dut.i_axi2boot.RC_CG_HIER_INST2.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11394, negedge E:11252, limits: (152,-60) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4056: Timing violation in tb_postsim.dut.i_bootram.RC_CG_HIER_INST147.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11428, negedge E:11312, limits: (150,-63) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 6596: Timing violation in tb_postsim.dut.i_mainmem.\port_wdata_q_reg[18] 
+    $setuphold( posedge CP &&& D_DEFCHK:11582, negedge D:11567, limits: (85,-3) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 6596: Timing violation in tb_postsim.dut.i_mainmem.\port_wdata_q_reg[30] 
+    $setuphold( posedge CP &&& D_DEFCHK:11587, negedge D:11581, limits: (30,45) );
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 6596: Timing violation in tb_postsim.dut.i_mainmem.\port_wdata_q_reg[29] 
+    $setuphold( posedge CP &&& D_DEFCHK:11587, negedge D:11584, limits: (30,45) );
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 6596: Timing violation in tb_postsim.dut.i_mainmem.\port_wdata_q_reg[28] 
+    $setuphold( posedge CP &&& D_DEFCHK:11587, negedge D:11580, limits: (30,45) );
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 6596: Timing violation in tb_postsim.dut.i_mainmem.\port_wdata_q_reg[26] 
+    $setuphold( posedge CP &&& D_DEFCHK:11587, negedge D:11575, limits: (29,46) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 6596: Timing violation in tb_postsim.dut.i_mainmem.\port_wdata_q_reg[27] 
+    $setuphold( posedge CP &&& D_DEFCHK:11586, negedge D:11603, limits: (35,40) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 18509: Timing violation in tb_postsim.dut.i_axi2sram.\ax_req_q_reg[addr][3] 
+    $setuphold( posedge CP &&& SE_DEFCHK:11839, negedge SE:11708, limits: (172,-79) );
+
+CLOCK_AT_CORE time_ns=30.630
+CLOCK_AT_CORE time_ns=50.630
+CLOCK_AT_CORE time_ns=70.630
+ACTIVE_START time_ns=600.000
+CPU_WAIT_START time_ns=124240.000
+FUNCTIONAL_PASS cycles=3651 npu_cycles=1037 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=197580.000
+ACTIVE_END time_ns=197580.000
+RESET_ASSERT offset_ps=10050 time_ns=197590.050
+POSTSIM_DONE time_ns=197660.000
+$finish called from file "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_175010_postsim_2714f61/postsim/inputs/tb_postsim.sv", line 116.
+$finish at simulation time            197660000
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 197660000 ps
+CPU Time:      8.530 seconds;       Data structure size:  27.1Mb
+Wed Nov  4 09:53:58 2026

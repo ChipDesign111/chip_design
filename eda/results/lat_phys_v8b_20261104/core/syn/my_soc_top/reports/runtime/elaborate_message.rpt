@@ -1,0 +1,86 @@
+  =================
+   Message Summary
+  =================
+--------------------------------------------------------------------------------
+|     Id      |  Sev   |Count |                 Message Text                   |
+--------------------------------------------------------------------------------
+| CDFG-472    |Warning |    3 |Unreachable statements for case item.           |
+| CDFG-479    |Info    |   12 |Constant relational expression.                 |
+|             |        |      |A relational expression can evaluate to a       |
+|             |        |      | constant when a variable is compared to a      |
+|             |        |      | value which is outside the bounds of the       |
+|             |        |      | variable.                                      |
+| CDFG-500    |Info    |   20 |Unused module input port.                       |
+|             |        |      |In port definition within the module, the input |
+|             |        |      | port is not used in any assignment statements  |
+|             |        |      | or conditional expressions for decision        |
+|             |        |      | statements.                                    |
+| CDFG-508    |Warning |   20 |Removing unused register.                       |
+|             |        |      |Genus removes the flip-flop or latch inferred   |
+|             |        |      | for an unused signal or variable. To preserve  |
+|             |        |      | the flip-flop or latch, set the                |
+|             |        |      | hdl_preserve_unused_registers attribute to     |
+|             |        |      | true or use a pragma in the RTL.               |
+| CDFG-818    |Warning |    1 |Using default parameter value for module        |
+|             |        |      | elaboration.                                   |
+| CDFG-893    |Info    |    6 |Optimized the MUX created for array read /      |
+|             |        |      | write or variable shifter.                     |
+| ELAB-1      |Info    |    1 |Elaborating Design.                             |
+| ELAB-2      |Info    |   20 |Elaborating Subdesign.                          |
+| ELAB-3      |Info    |    1 |Done Elaborating Design.                        |
+| ELABUTL-124 |Warning |    3 |Unconnected instance input port detected.       |
+|             |        |      |Run check_design to check 'Undriven Port(s)     |
+|             |        |      | /Pin(s)                                        |
+|             |        |      | ' section for all unconnected instance input   |
+|             |        |      | ports. It is better to double confirm with     |
+|             |        |      | designer these unconnected instance input port |
+|             |        |      | are expected. During syn_gen the unconnected   |
+|             |        |      | instance input ports are controlled by         |
+|             |        |      | attribute 'hdl_unconnected_value', the default |
+|             |        |      | value is 0.                                    |
+| ELABUTL-132 |Info    |   20 |Unused instance port.                           |
+|             |        |      |Please check the reported scenario of           |
+|             |        |      | unconnected instance port to ensure that it    |
+|             |        |      | matches the design intent.                     |
+| LBR-9       |Warning |   20 |Library cell has no output pins defined.        |
+|             |        |      |Add the missing output pin(s)                   |
+|             |        |      | , then reload the library. Else the library    |
+|             |        |      | cell will be marked as timing model i.e.       |
+|             |        |      | unusable. Timing_model means that the cell     |
+|             |        |      | does not have any defined function. If there   |
+|             |        |      | is no output pin, Genus will mark library cell |
+|             |        |      | as unusable i.e. the attribute 'usable' will   |
+|             |        |      | be marked to 'false' on the libcell.           |
+|             |        |      | Therefore, the cell is not used for mapping    |
+|             |        |      | and it will not be picked up from the library  |
+|             |        |      | for synthesis. If you query the attribute      |
+|             |        |      | 'unusable_reason' on the libcell; result will  |
+|             |        |      | be: 'Library cell has no output pins.'Note:    |
+|             |        |      | The message LBR-9 is only for the logical pins |
+|             |        |      | and not for the power_ground pins. Genus will  |
+|             |        |      | depend upon the output function defined in the |
+|             |        |      | pin group (output pin)                         |
+|             |        |      | of the cell, to use it for mapping. The pg_pin |
+|             |        |      | will not have any function defined.            |
+| LBR-40      |Info    |    2 |An unsupported construct was detected in this   |
+|             |        |      | library.                                       |
+|             |        |      |Check to see if this construct is really needed |
+|             |        |      | for synthesis. Many liberty constructs are not |
+|             |        |      | actually required.                             |
+| LBR-41      |Info    |   20 |An output library pin lacks a function          |
+|             |        |      | attribute.                                     |
+|             |        |      |If the remainder of this library cell's         |
+|             |        |      | semantic checks are successful, it will be     |
+|             |        |      | considered as a timing-model                   |
+|             |        |      | (because one of its outputs does not have a va |
+|             |        |      | lid function.                                  |
+| LBR-109     |Info    |    1 |Set default library domain.                     |
+| LBR-412     |Info    |    2 |Created nominal operating condition.            |
+|             |        |      |The nominal operating condition is represented, |
+|             |        |      | either by the nominal PVT values specified in  |
+|             |        |      | the library source                             |
+|             |        |      | (via nom_process,nom_voltage and nom_temperatu |
+|             |        |      | re respectively)                               |
+|             |        |      | , or by the default PVT values (1.0,1.0,1.0).  |
+| PHYS-107    |Warning |   20 |Macro already defined before.                   |
+--------------------------------------------------------------------------------

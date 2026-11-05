@@ -1,0 +1,93 @@
+{
+  "step": 29,
+  "commands_completed": true,
+  "input_manifest_sha256": "5c1094e919b289100a89ee271806eef7e9a8b1381cde9af239d81a3ad89f2932",
+  "automatic_checks": {
+    "placement": {
+      "report": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/my_soc_top_postHoldFix_place.rpt",
+      "unplaced": 0,
+      "expected_io_bond_covers": [
+        "i_pad_E_poc",
+        "i_pad_E_vdd_1",
+        "i_pad_E_vdd_2",
+        "i_pad_E_vddio",
+        "i_pad_E_vss_1",
+        "i_pad_E_vss_2",
+        "i_pad_E_vssio",
+        "i_pad_N_poc",
+        "i_pad_N_vdd_1",
+        "i_pad_N_vdd_2",
+        "i_pad_N_vddio",
+        "i_pad_N_vss_1",
+        "i_pad_N_vss_2",
+        "i_pad_N_vssio",
+        "i_pad_S_poc",
+        "i_pad_S_vdd_1",
+        "i_pad_S_vdd_2",
+        "i_pad_S_vddio",
+        "i_pad_S_vss_1",
+        "i_pad_S_vss_2",
+        "i_pad_S_vssio",
+        "i_pad_W_poc",
+        "i_pad_W_vdd_1",
+        "i_pad_W_vdd_2",
+        "i_pad_W_vddio",
+        "i_pad_W_vss_1",
+        "i_pad_W_vss_2",
+        "i_pad_W_vssio",
+        "i_pad_clk",
+        "i_pad_rst_n",
+        "i_pad_tck",
+        "i_pad_tdi",
+        "i_pad_tdo",
+        "i_pad_tms"
+      ],
+      "no_other_listed_placement_violations": true,
+      "archived_report": "evidence/stage_reports/29/pnr/my_soc_top/my_soc_top_postHoldFix_place.rpt",
+      "report_sha256": "0e6640b2dc6b53a69015c49b7038f9b0d5f8634121e89d6daf8579f40664d8ea"
+    },
+    "timing": {
+      "Setup": {
+        "report": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/reports/postCTS_holdFix_check/my_soc_top_postCTS.summary.gz",
+        "wns_ns": 0.011,
+        "tns_ns": 0.0,
+        "violating_paths": 0,
+        "drv": {
+          "max_cap": {
+            "real": 0,
+            "total": 0
+          },
+          "max_tran": {
+            "real": 0,
+            "total": 0
+          },
+          "max_fanout": {
+            "real": 0,
+            "total": 0
+          },
+          "max_length": {
+            "real": 0,
+            "total": 0
+          }
+        },
+        "electrical_drv_table_reported_here": true,
+        "targets_met": true,
+        "archived_report": "evidence/stage_reports/29/pnr/my_soc_top/reports/postCTS_holdFix_check/my_soc_top_postCTS.summary.gz",
+        "report_sha256": "989cee3aef160ee7a09b8b553354fa8a35b2cafc6215bfbece1668cbe173faf6"
+      },
+      "Hold": {
+        "report": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/reports/postCTS_holdFix_check/my_soc_top_postCTS_hold.summary.gz",
+        "wns_ns": 0.0,
+        "tns_ns": 0.0,
+        "violating_paths": 0,
+        "drv": {},
+        "electrical_drv_table_reported_here": false,
+        "targets_met": true,
+        "archived_report": "evidence/stage_reports/29/pnr/my_soc_top/reports/postCTS_holdFix_check/my_soc_top_postCTS_hold.summary.gz",
+        "report_sha256": "40bd5db468b943fa7ec4377e4c6339fe4b80228fd7e389d2bbdfe09a98a19bc5"
+      }
+    },
+    "timing_scope": "Pre-route diagnostic: residuals are recorded; only post-route steps32/33 require all timing/electrical targets met."
+  },
+  "scope": "Only the listed automatic checks are asserted. Tcl guards also check object counts, IO geometry and halo. Not complete signoff."
+}

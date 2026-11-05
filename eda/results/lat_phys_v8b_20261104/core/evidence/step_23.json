@@ -1,0 +1,22 @@
+{
+  "step": 23,
+  "commands_completed": true,
+  "input_manifest_sha256": "5c1094e919b289100a89ee271806eef7e9a8b1381cde9af239d81a3ad89f2932",
+  "automatic_checks": {
+    "tap": {
+      "report": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/my_soc_top_welltap.rpt",
+      "zero_reported_violations": true,
+      "scope": "tap",
+      "archived_report": "evidence/stage_reports/23/pnr/my_soc_top/my_soc_top_welltap.rpt",
+      "report_sha256": "be0aabf1b9a50ccadd76fb298c74266a64f793fdeec8f8fd7e8cfa0bee32f871"
+    },
+    "special_drc": {
+      "report": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/my_soc_top_postPhysCells_pg_drc.rpt",
+      "zero_reported_violations": true,
+      "scope": "drc",
+      "archived_report": "evidence/stage_reports/23/pnr/my_soc_top/my_soc_top_postPhysCells_pg_drc.rpt",
+      "report_sha256": "f0e5003c735eea3b503456155d4a54d141e7f5271d49724d15b702a6ff591bba"
+    }
+  },
+  "scope": "Only the listed automatic checks are asserted. Tcl guards also check object counts, IO geometry and halo. Not complete signoff."
+}

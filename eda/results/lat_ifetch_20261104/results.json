@@ -1,0 +1,89 @@
+{
+  "date": "2026-11-04",
+  "level": "RTL, behavioural SRAM, 10 ns clock; verified on the synthesised netlist with SDF at 20 ns",
+  "physical": {
+    "upload": "20261105_104248_2714f61",
+    "flow": "Genus 19.1 + Innovus 21.16, all 34 steps completed",
+    "die_area_mm2": 3.7956390976,
+    "die_area_limit_mm2": 3.8,
+    "setup_wns_ns": 0.445,
+    "setup_tns_ns": 0.0,
+    "setup_violating_paths": 0,
+    "hold_wns_ns": 0.019,
+    "hold_tns_ns": 0.0,
+    "hold_violating_paths": 0,
+    "default_drc_zero": true,
+    "full_core_pg_zero": true,
+    "antenna_violating_nets": 0,
+    "other_placement_violations": false
+  },
+  "changes": [
+    "rtl/axi/axi_adapter.sv: unchanged - a single-beat read finishing in the cycle of r.last was tried and fully reverted, because the SRAM macro output (which sources r.data here) is only valid at the falling edge of the system clock, so the consumer saw the previous transaction's data",
+    "rtl/soc/my_ifetch.sv (new): LINE_WORDS-word line buffer with INCR-burst refill, one-line-ahead prefetch, SLOTS-way LRU",
+    "rtl/soc/my_soc_top.sv: i_axi_adapter_instr replaced by my_ifetch (LINE_WORDS=8, SLOTS=4)",
+    "rtl/filelist.f: my_ifetch.sv added"
+  ],
+  "rationale": "the instruction port issued one single-beat AXI transaction per instruction; each cost two cycles and transactions could not overlap. An ideal-fetch probe (gnt same cycle, data next cycle, fetch port held idle at the xbar) showed a 2107-cycle floor against 3650 measured, i.e. 1543 cycles were pure fetch overhead",
+  "probe": {
+    "ideal_fetch_cycles": 2107,
+    "ideal_npu_cycles": 1035,
+    "measured_cpu_cycles_before": 3650
+  },
+  "postsim": {
+    "upload": "20261105_123403_postsim_2714f61",
+    "cases": 17,
+    "functional_pass": 17,
+    "cases_list": "sdf_max, gate_zero (+notimingcheck +define+NO_SDF), 15x sdf_firmware_<seed> reset-phase sweep (RESET_OFFSET_PS 250..19850 step 1400)",
+    "values_cycles_npu_dmamacs_read_write": [2338, 1038, 93, 62, 93],
+    "sdf_annotation": {"errors": 0, "missing_instances": 0, "missing_checks": 0, "working_window_ok": true},
+    "timing_violation_messages": "15 clock-gating enable setupholds (RC_CGIC_INST), 0 in the no-SDF control; same class as the previous round (12)",
+    "previous_round_sdf_max_cycles": 3651,
+    "delta_vs_previous_round_percent": -36.0,
+    "artifacts": "eda/results/lat_ifetch_20261104/postsim/"
+  },
+  "profile": {
+    "tool": "eda/experiments/lat_rtl_20261104/tb_fp.sv",
+    "final": "fills=25 (miss=2 pf=23), stall=10 on the fetch path",
+    "final_cpu_cycles": 2337,
+    "final_total_cycles": 8536,
+    "note": "fetch counters are unaffected by the reverted data-path bypass; the absolute cycle counts quoted for the intermediate configurations below were measured while that bypass was still present and are therefore about 138 cycles low"
+  },
+  "variants_note": "all cpu_cycles/end_to_end_cycles below were measured while the reverted single-beat-read bypass was still present, so they sit ~138 cycles below the current equivalent; the ranking between configurations is unaffected",
+  "variants": [
+    {"config": "LINE_WORDS=4, SLOTS=8", "cpu_cycles": 2662, "end_to_end_cycles": 8875, "fills": 159, "miss": 77, "prefetch": 82, "stall": 568},
+    {"config": "LINE_WORDS=4, SLOTS=8 + word-by-word publish", "cpu_cycles": 2448, "end_to_end_cycles": 8647, "fills": 122, "miss": 53, "prefetch": 69, "stall": 278},
+    {"config": "LINE_WORDS=8, SLOTS=3 + word-by-word publish", "cpu_cycles": 2217, "end_to_end_cycles": 8416, "fills": 27, "miss": 3, "prefetch": 24, "stall": 24},
+    {"config": "LINE_WORDS=8, SLOTS=4 + word-by-word publish", "cpu_cycles": 2199, "end_to_end_cycles": 8398, "fills": 25, "miss": 2, "prefetch": 23, "stall": 10, "chosen": true},
+    {"config": "LINE_WORDS=8, SLOTS=8 + word-by-word publish", "cpu_cycles": 2199, "end_to_end_cycles": 8398, "fills": 25, "miss": 2, "prefetch": 23, "stall": 10},
+    {"config": "LINE_WORDS=2-slot (current+next only)", "cpu_cycles": 3496, "note": "rejected: a backward branch returns to the line just evicted"}
+  ],
+  "seeds_rechecked": [10000, 10001, 10007],
+  "seeds_result": "all PASS, identical cycles (control flow is data independent)",
+  "ladder": [
+    {"version": "pre-FallThrough baseline", "cpu_cycles": 3659, "end_to_end_cycles": 11895},
+    {"version": "FallThrough (previous round)", "cpu_cycles": 3650, "end_to_end_cycles": 9832},
+    {"version": "line buffer 4x8 (measured with the bypass still present)", "cpu_cycles": 2663, "end_to_end_cycles": 8875},
+    {"version": "word-by-word publish + 8x4 (measured with the bypass still present)", "cpu_cycles": 2199, "end_to_end_cycles": 8398},
+    {"version": "same, bypass reverted (final)", "cpu_cycles": 2337, "end_to_end_cycles": 8536}
+  ],
+  "delta_vs_round_start": {
+    "cpu_cycles": -1322,
+    "cpu_percent": -36.1,
+    "end_to_end_cycles": -3359,
+    "end_to_end_percent": -28.2,
+    "against_previous_round_fallthrough": {"cpu_percent": -36.0, "end_to_end_percent": -13.2}
+  },
+  "unchanged": {
+    "load_cycles": 6182,
+    "load_reason": "testbench protocol floor: drive, check gnt, drop, check r_valid = three falling edges per word; tb_ld.sv shows the RTL write response is already one cycle after the request",
+    "dma_mac_overlap_read_write": [62, 93],
+    "npu_cycles": 1038,
+    "npu_cycles_note": "1037 in the previous round's post-sim, 1038 now; the ideal-fetch probe floor was 1035. The NPU itself was not touched"
+  },
+  "rejected_changes": [
+    "axi_adapter single-beat read returns valid_o/rdata_o in the r.last cycle instead of COMPLETE_READ: -138 RTL cycles but wrong at gate level. Read data here comes from the SRAM macro Q output, which my_mainmem only makes valid on the falling edge of the system clock (sram_clk = ~clk_i, request registered on posedge). The consumer therefore observed valid_o while rdata_o still held the previous transaction: back-to-back reads of [11111111, 22222222, 33333333, 44444444] returned [xxxx, 11111111, 22222222, 33333333]. Post-sim symptom: the firmware stats block appeared shifted by one word ([0xc0dec0de, 1038, 93, 62] instead of [1038, 93, 62, 93]) and gate_zero took the bne-on-NPU-status fail path. Fully reverted",
+    "cv32e40p_prefetch_buffer FIFO_DEPTH 2 -> 4: 2996 vs 2988 cycles, no gain",
+    "fully pipelined one-transaction-per-cycle fetch: axi_xbar is configured MaxSlvTrans=1; bursts are the supported way to raise SRAM throughput",
+    "4-bank NPU weight store to halve DMA per-tile overhead: would change the loads/fc1_cycles counters that the firmware self-check requires to equal 64"
+  ]
+}

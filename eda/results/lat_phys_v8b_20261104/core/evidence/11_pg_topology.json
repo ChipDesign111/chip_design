@@ -1,0 +1,310 @@
+{
+  "signals": [
+    {
+      "port": "clk_i",
+      "pad": "i_pad_clk",
+      "core_net": "n_1",
+      "original_endpoints": [
+        [
+          "i_axi2boot",
+          "clk_i"
+        ],
+        [
+          "i_axi2npu",
+          "clk_i"
+        ],
+        [
+          "i_axi2sram",
+          "clk_i"
+        ],
+        [
+          "i_axi_adapter_data",
+          "clk_i"
+        ],
+        [
+          "i_axi_adapter_dm",
+          "clk_i"
+        ],
+        [
+          "i_axi_xbar",
+          "clk_i"
+        ],
+        [
+          "i_bootram",
+          "clk_i"
+        ],
+        [
+          "i_cpu",
+          "clk_i"
+        ],
+        [
+          "i_dm_axi2mem",
+          "clk_i"
+        ],
+        [
+          "i_dm_top",
+          "clk_i"
+        ],
+        [
+          "i_dma",
+          "clk_i"
+        ],
+        [
+          "i_dmi_jtag",
+          "clk_i"
+        ],
+        [
+          "i_ifetch",
+          "clk_i"
+        ],
+        [
+          "i_mainmem",
+          "clk_i"
+        ],
+        [
+          "i_npu_subsystem",
+          "clk_i"
+        ],
+        [
+          "i_rstgen_main",
+          "clk_i"
+        ],
+        [
+          "i_rstgen_por",
+          "clk_i"
+        ],
+        [
+          "i_sram_transaction_reset",
+          "clk_i"
+        ]
+      ],
+      "all_original_endpoints_preserved": true,
+      "external_pad_only": true,
+      "controls": {
+        "OEN": "1'b1",
+        "IE": "1'b1",
+        "PE": "1'b0",
+        "DS": "1'b0",
+        "I": "1'b0"
+      }
+    },
+    {
+      "port": "rst_ni",
+      "pad": "i_pad_rst_n",
+      "core_net": "n_2",
+      "original_endpoints": [
+        [
+          "i_dmi_jtag",
+          "trst_ni"
+        ],
+        [
+          "i_rstgen_por",
+          "rst_ni"
+        ]
+      ],
+      "all_original_endpoints_preserved": true,
+      "external_pad_only": true,
+      "controls": {
+        "OEN": "1'b1",
+        "IE": "1'b1",
+        "PE": "1'b0",
+        "DS": "1'b0",
+        "I": "1'b0"
+      }
+    },
+    {
+      "port": "tck_i",
+      "pad": "i_pad_tck",
+      "core_net": "n_4",
+      "original_endpoints": [
+        [
+          "i_dmi_jtag",
+          "tck_i"
+        ]
+      ],
+      "all_original_endpoints_preserved": true,
+      "external_pad_only": true,
+      "controls": {
+        "OEN": "1'b1",
+        "IE": "1'b1",
+        "PE": "1'b0",
+        "DS": "1'b0",
+        "I": "1'b0"
+      }
+    },
+    {
+      "port": "tms_i",
+      "pad": "i_pad_tms",
+      "core_net": "n_5",
+      "original_endpoints": [
+        [
+          "i_dmi_jtag",
+          "tms_i"
+        ]
+      ],
+      "all_original_endpoints_preserved": true,
+      "external_pad_only": true,
+      "controls": {
+        "OEN": "1'b1",
+        "IE": "1'b1",
+        "PE": "1'b0",
+        "DS": "1'b0",
+        "I": "1'b0"
+      }
+    },
+    {
+      "port": "td_i",
+      "pad": "i_pad_tdi",
+      "core_net": "n_6",
+      "original_endpoints": [
+        [
+          "i_dmi_jtag",
+          "td_i"
+        ]
+      ],
+      "all_original_endpoints_preserved": true,
+      "external_pad_only": true,
+      "controls": {
+        "OEN": "1'b1",
+        "IE": "1'b1",
+        "PE": "1'b0",
+        "DS": "1'b0",
+        "I": "1'b0"
+      }
+    },
+    {
+      "port": "td_o",
+      "pad": "i_pad_tdo",
+      "core_net": "n_8",
+      "original_endpoints": [
+        [
+          "i_dmi_jtag",
+          "td_o"
+        ]
+      ],
+      "all_original_endpoints_preserved": true,
+      "external_pad_only": true,
+      "controls": {
+        "OEN": "1'b0",
+        "IE": "1'b0",
+        "PE": "1'b0",
+        "DS": "1'b0"
+      }
+    }
+  ],
+  "power_pads": [
+    {
+      "instance": "i_pad_N_vss_1",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_N_vss_2",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_N_vssio",
+      "supply": "VSSPST"
+    },
+    {
+      "instance": "i_pad_N_vdd_1",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_N_vdd_2",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_N_vddio",
+      "supply": "VDDPST"
+    },
+    {
+      "instance": "i_pad_N_poc",
+      "supply": "VDDPST"
+    },
+    {
+      "instance": "i_pad_S_vss_1",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_S_vss_2",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_S_vssio",
+      "supply": "VSSPST"
+    },
+    {
+      "instance": "i_pad_S_vdd_1",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_S_vdd_2",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_S_vddio",
+      "supply": "VDDPST"
+    },
+    {
+      "instance": "i_pad_S_poc",
+      "supply": "VDDPST"
+    },
+    {
+      "instance": "i_pad_W_vss_1",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_W_vss_2",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_W_vssio",
+      "supply": "VSSPST"
+    },
+    {
+      "instance": "i_pad_W_vdd_1",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_W_vdd_2",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_W_vddio",
+      "supply": "VDDPST"
+    },
+    {
+      "instance": "i_pad_W_poc",
+      "supply": "VDDPST"
+    },
+    {
+      "instance": "i_pad_E_vss_1",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_E_vss_2",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_E_vssio",
+      "supply": "VSSPST"
+    },
+    {
+      "instance": "i_pad_E_vdd_1",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_E_vdd_2",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_E_vddio",
+      "supply": "VDDPST"
+    },
+    {
+      "instance": "i_pad_E_poc",
+      "supply": "VDDPST"
+    }
+  ],
+  "four_nets_independent": true
+}

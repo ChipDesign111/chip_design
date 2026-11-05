@@ -1,0 +1,82 @@
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version Q-2020.03-SP2-7_Full64; Runtime version Q-2020.03-SP2-7_Full64;  Nov  5 04:36 2026
+Doing SDF annotation ...... Done
+ANNOTATION_CALLED path=timing.sdf time_ns=0.000
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tdi
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tms
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tck
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_rst_n
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_clk
+CLOCK_AT_CORE time_ns=10.630
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4056: Timing violation in tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4196: Timing violation in tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4056: Timing violation in tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 18507: Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg
+    $setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 18511: Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\mem_reg[20][23] 
+    $setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 18511: Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\mem_reg[20][31] 
+    $setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 18511: Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\mem_reg[21][23] 
+    $setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 18511: Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\mem_reg[17][21] 
+    $setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 18511: Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\mem_reg[17][23] 
+    $setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 18511: Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\mem_reg[17][31] 
+    $setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 18511: Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\mem_reg[22][23] 
+    $setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 18511: Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\mem_reg[22][31] 
+    $setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 18511: Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\mem_reg[22][21] 
+    $setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 18511: Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\mem_reg[18][23] 
+    $setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 18511: Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\mem_reg[18][21] 
+    $setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );
+
+CLOCK_AT_CORE time_ns=30.630
+CLOCK_AT_CORE time_ns=50.630
+CLOCK_AT_CORE time_ns=70.630
+ACTIVE_START time_ns=600.000
+CPU_WAIT_START time_ns=124240.000
+FUNCTIONAL_PASS cycles=2338 npu_cycles=1038 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=171240.000
+ACTIVE_END time_ns=171240.000
+RESET_ASSERT offset_ps=250 time_ns=171240.250
+POSTSIM_DONE time_ns=171320.000
+$finish called from file "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261105_123403_postsim_2714f61/postsim/inputs/tb_postsim.sv", line 116.
+$finish at simulation time            171320000
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 171320000 ps
+CPU Time:      8.430 seconds;       Data structure size:  28.5Mb
+Thu Nov  5 04:36:33 2026

@@ -422,6 +422,13 @@ module axi_adapter #(
           // this is the last read
           if (axi_resp_i.r.last) begin
             id_d    = axi_resp_i.r.id;
+            // valid_o/rdata_o are only allowed to appear in COMPLETE_READ,
+            // i.e. in the cycle after the R handshake. Returning them in the
+            // R cycle itself was tried and reverted: the memory system here
+            // sources the read data from the SRAM macro output, which is
+            // only valid half a cycle after the handshake edge, so the
+            // consumer could observe valid_o while rdata_o still held the
+            // previous transaction's data.
             state_d = COMPLETE_READ;
           end
 

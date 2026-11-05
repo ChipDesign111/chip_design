@@ -1,0 +1,23 @@
+[
+  "vcs",
+  "-full64",
+  "-sverilog",
+  "-j4",
+  "-negdelay",
+  "+neg_tchk",
+  "+define+NTC+RECREM",
+  "+sdfverbose",
+  "-timescale=1ns/1ps",
+  "-top",
+  "tb_postsim",
+  "-o",
+  "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_175010_postsim_2714f61/postsim/build/simv",
+  "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_175010_postsim_2714f61/postsim/inputs/tb_postsim.sv",
+  "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_175010_postsim_2714f61/postsim/inputs/netlist.v",
+  "-v",
+  "/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v",
+  "-v",
+  "/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Front_End/verilog/tpd018nv_260a/tpd018nv.v",
+  "-v",
+  "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_175010_postsim_2714f61/postsim/inputs/sram_period_adapter.v"
+]

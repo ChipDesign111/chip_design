@@ -1,0 +1,11 @@
+  =================
+   Message Summary
+  =================
+--------------------------------------------------------------------------------
+|   Id    |Sev  |Count |                     Message Text                      |
+--------------------------------------------------------------------------------
+| ST-112  |Info |    7 |A super-threading server has been shut down normally.  |
+|         |     |      |A super-threaded optimization is complete and a CPU    |
+|         |     |      | server was successfully shut down.                    |
+| SYNTH-2 |Info |    1 |Done synthesizing.                                     |
+--------------------------------------------------------------------------------

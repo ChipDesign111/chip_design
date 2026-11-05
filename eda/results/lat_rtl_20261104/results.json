@@ -1,0 +1,95 @@
+{
+  "date": "2026-11-04",
+  "level": "RTL, behavioural SRAM, 10 ns clock",
+  "change": "rtl/soc/my_soc_top.sv AXI_XBAR_CFG.FallThrough 1'b0 -> 1'b1",
+  "rationale": "axi_mux routes the W channel from a switch-decision FIFO; with FallThrough=0 W trails AW by one cycle, so every single-beat SBA write costs 3 cycles instead of 2 (plus one testbench/driver cycle)",
+  "serial_loader": {
+    "protocol": "one transaction at a time, wait for r_valid (same as DM SBA and post-sim write_word)",
+    "baseline": {
+      "active_start_ns": 300.0,
+      "load_done_ns": 82660.0,
+      "load_cycles": 8236,
+      "cycles_per_word": 4.01,
+      "functional_pass_ns": 119250.0,
+      "end_to_end_cycles": 11895,
+      "cpu_cycles": 3659,
+      "overlap": [62, 93]
+    },
+    "fallthrough": {
+      "active_start_ns": 300.0,
+      "load_done_ns": 62120.0,
+      "load_cycles": 6182,
+      "cycles_per_word": 3.01,
+      "functional_pass_ns": 98620.0,
+      "end_to_end_cycles": 9832,
+      "cpu_cycles": 3650,
+      "overlap": [62, 93]
+    }
+  },
+  "streamed_loader": {
+    "baseline": {
+      "load_cycles": 6190,
+      "end_to_end_cycles": 9849,
+      "cpu_cycles": 3659
+    },
+    "fallthrough": {
+      "load_cycles": 4136,
+      "cycles_per_word": 2.01,
+      "end_to_end_cycles": 7786,
+      "cpu_cycles": 3650
+    }
+  },
+  "delta": {
+    "load_cycles": -2054,
+    "load_percent": -24.9,
+    "end_to_end_cycles": -2063,
+    "end_to_end_percent": -17.3
+  },
+  "rejected_change": {
+    "file": "eda/experiments/lat_rtl_20261104/axi2mem.sv",
+    "idea": "accept the next single-beat write in the SEND_B cycle",
+    "result": "no cycle change in either loader; DM adapter never presents AW/W while in WAIT_B_VALID"
+  },
+  "physical": {
+    "eda_upload": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_164956_2714f61",
+    "postsim_upload": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_175010_postsim_2714f61",
+    "baseline_setup_wns_ns": 0.473,
+    "setup_wns_ns": 0.257,
+    "baseline_hold_wns_ns": 0.017,
+    "hold_wns_ns": 0.02,
+    "violating_paths": 0,
+    "drc_violations": 0,
+    "antenna_violations": 0,
+    "cell_area_um2": 1896368.205,
+    "whole_die_area_mm2": 3.7956390976
+  },
+  "postsim": {
+    "cases": 17,
+    "functional_pass": 17,
+    "sdf_max": {
+      "active_start_ns": 600.0,
+      "cpu_wait_start_ns": 124240.0,
+      "load_cycles": 6182,
+      "functional_pass_ns": 197580.0,
+      "end_to_end_cycles": 9849,
+      "postsim_done_ns": 197660.0,
+      "cpu_cycles": 3651,
+      "npu_cycles": 1037,
+      "overlap": [93, 62, 93]
+    },
+    "baseline": {
+      "cpu_wait_start_ns": 165320.0,
+      "load_cycles": 8236,
+      "functional_pass_ns": 238840.0,
+      "end_to_end_cycles": 11912,
+      "cpu_cycles": 3660,
+      "npu_cycles": 1035
+    },
+    "delta_end_to_end_cycles": -2063,
+    "delta_end_to_end_percent": -17.3,
+    "active_window_dynamic_timing_clean": true,
+    "initial_reset_setuphold_messages": 12,
+    "final_reset_setuphold_messages": "0 in 15 cases, 1 and 4 in two cases",
+    "negative_iopath_clamps": 8
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "input_manifest_sha256": "5c1094e919b289100a89ee271806eef7e9a8b1381cde9af239d81a3ad89f2932",
+  "summary_directory": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/reports/postRoute",
+  "reported_counts": {
+    "real": 1,
+    "total": 1
+  },
+  "targets": [
+    {
+      "net": "i_npu_subsystem/i_npu_core/core/FE_OFN3003_n_1574",
+      "driver": "i_npu_subsystem/i_npu_core/core/FE_OFC2706_n_1574/Z",
+      "maximum_load": 16.0,
+      "actual_load": 17.0,
+      "master_pin": "BUFFD1BWP7T/Z"
+    }
+  ],
+  "fanout_report_sha256": "da8323e5aebf78a0d0e4f385fe0c31fc672c76088f07420229e2d5ad61d9c1a4",
+  "scope": "Report-derived ECO targets, not a pass assertion; native timing/DRV/antenna/DRC checks follow"
+}

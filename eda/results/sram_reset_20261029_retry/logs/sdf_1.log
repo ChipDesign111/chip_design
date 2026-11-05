@@ -1,0 +1,50 @@
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version Q-2020.03-SP2-7_Full64; Runtime version Q-2020.03-SP2-7_Full64;  Oct 29 14:44 2026
+Doing SDF annotation ...... Done
+ANNOTATION_CALLED path=timing.sdf time_ns=0.000
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tdi
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tms
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_tck
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_rst_n
+ERROR :                    0 ++BUS CONFLICT++ : tb_postsim.dut.i_pad_clk
+CLOCK_AT_CORE time_ns=10.630
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4056: Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.RC_CG_HIER_INST218.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11236, negedge E:11149, limits: (163,-65) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4056: Timing violation in tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST153.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11290, negedge E:11170, limits: (156,-61) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4056: Timing violation in tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST268.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11359, negedge E:11277, limits: (154,-65) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4056: Timing violation in tb_postsim.dut.i_cpu.core_i.ex_stage_i.alu_i.alu_div_i.RC_CG_HIER_INST165.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11380, negedge E:11313, limits: (155,-64) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4056: Timing violation in tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST266.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11470, negedge E:11397, limits: (147,-63) );
+
+
+"/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v", 4056: Timing violation in tb_postsim.dut.i_axi_xbar.i_xbar.\gen_slv_port_demux[0].i_axi_demux .\gen_demux.gen_ar_id_counter.i_ar_id_counter .RC_CG_HIER_INST43.RC_CGIC_INST
+    $setuphold( posedge CP &&& E_DEFCHK:11627, negedge E:11550, limits: (164,-68) );
+
+CLOCK_AT_CORE time_ns=30.630
+CLOCK_AT_CORE time_ns=50.630
+CLOCK_AT_CORE time_ns=70.630
+ACTIVE_START time_ns=600.000
+CPU_WAIT_START time_ns=165320.000
+FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238840.000
+ACTIVE_END time_ns=238840.000
+RESET_ASSERT offset_ps=15650 time_ns=238855.650
+POSTSIM_DONE time_ns=238920.000
+$finish called from file "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261029_171412_postsim_2714f61/postsim/inputs/tb_postsim.sv", line 116.
+$finish at simulation time            238920000
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 238920000 ps
+CPU Time:      9.480 seconds;       Data structure size:  27.1Mb
+Thu Oct 29 14:44:36 2026

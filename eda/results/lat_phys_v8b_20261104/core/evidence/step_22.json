@@ -1,0 +1,17 @@
+{
+  "step": 22,
+  "commands_completed": true,
+  "input_manifest_sha256": "5c1094e919b289100a89ee271806eef7e9a8b1381cde9af239d81a3ad89f2932",
+  "automatic_checks": {
+    "io_native_geometry": {
+      "native_rails_and_corner_turns_checked": true,
+      "actual_perimeter_continuity_checked_at_step": 12,
+      "io_abstract_no_routing_nets": [
+        "VDDPST",
+        "VSSPST"
+      ],
+      "scope": "Native rail geometry + actual placement; not merged-chip LVS/IR/EM/ESD"
+    }
+  },
+  "scope": "Only the listed automatic checks are asserted. Tcl guards also check object counts, IO geometry and halo. Not complete signoff."
+}

@@ -1,0 +1,31 @@
+## streamed sdf_max
+ACTIVE_START time_ns=600.000
+LOAD_PARTIAL_ACK resp=35 time_ns=3020.000
+LOAD_ISSUE_DONE resp=2051 time_ns=124060.000
+LOAD_RESP_DONE resp=2052 time_ns=124080.000
+CPU_WAIT_START time_ns=124400.000
+FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=197920.000
+ACTIVE_END time_ns=197920.000
+RESET_ASSERT offset_ps=2000 time_ns=197922.000
+POSTSIM_DONE time_ns=198000.000
+
+## timing sites
+      1 Timing violation in tb_postsim.dut.i_axi2sram.\ax_req_q_reg[addr][2]
+      1 Timing violation in tb_postsim.dut.i_axi2sram.\ax_req_q_reg[addr][3]
+      1 Timing violation in tb_postsim.dut.i_axi2sram.\ax_req_q_reg[addr][6]
+      1 Timing violation in tb_postsim.dut.i_axi2sram.\ax_req_q_reg[addr][7]
+      1 Timing violation in tb_postsim.dut.i_axi_xbar.i_xbar.\gen_slv_port_demux[0].i_axi_demux
+      1 Timing violation in tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST153.RC_CGIC_INST
+      1 Timing violation in tb_postsim.dut.i_cpu.core_i.ex_stage_i.alu_i.alu_div_i.RC_CG_HIER_INST165.RC_CGIC_INST
+      1 Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.controller_i.RC_CG_HIER_INST186.RC_CGIC_INST
+      1 Timing violation in tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.RC_CG_HIER_INST218.RC_CGIC_INST
+      1 Timing violation in tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST266.RC_CGIC_INST
+      1 Timing violation in tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST268.RC_CGIC_INST
+
+## gate_zero
+ACTIVE_START time_ns=600.000
+LOAD_PARTIAL_ACK resp=35 time_ns=3020.000
+LOAD_ISSUE_DONE resp=2051 time_ns=124060.000
+LOAD_RESP_DONE resp=2052 time_ns=124080.000
+CPU_WAIT_START time_ns=124400.000
+CPU numeric self-check failed

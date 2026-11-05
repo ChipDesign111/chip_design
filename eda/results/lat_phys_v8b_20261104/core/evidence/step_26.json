@@ -1,0 +1,50 @@
+{
+  "step": 26,
+  "commands_completed": true,
+  "input_manifest_sha256": "5c1094e919b289100a89ee271806eef7e9a8b1381cde9af239d81a3ad89f2932",
+  "automatic_checks": {
+    "timing": {
+      "Setup": {
+        "report": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/reports/preCTS/my_soc_top_preCTS.summary.gz",
+        "wns_ns": 0.001,
+        "tns_ns": 0.0,
+        "violating_paths": 0,
+        "drv": {
+          "max_cap": {
+            "real": 0,
+            "total": 20
+          },
+          "max_tran": {
+            "real": 0,
+            "total": 0
+          },
+          "max_fanout": {
+            "real": 0,
+            "total": 166
+          },
+          "max_length": {
+            "real": 0,
+            "total": 0
+          }
+        },
+        "electrical_drv_table_reported_here": true,
+        "targets_met": false,
+        "archived_report": "evidence/stage_reports/26/pnr/my_soc_top/reports/preCTS/my_soc_top_preCTS.summary.gz",
+        "report_sha256": "353f24a63dc8fa6f93b9533553a339756bf1e915999210fd48ff1a4990142604"
+      },
+      "Hold": {
+        "report": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/reports/preCTS/my_soc_top_preCTS_hold.summary.gz",
+        "wns_ns": -0.014,
+        "tns_ns": -0.163,
+        "violating_paths": 21,
+        "drv": {},
+        "electrical_drv_table_reported_here": false,
+        "targets_met": false,
+        "archived_report": "evidence/stage_reports/26/pnr/my_soc_top/reports/preCTS/my_soc_top_preCTS_hold.summary.gz",
+        "report_sha256": "718944a5fe0a40eaba09ed9601b6ec743923d50dcfe881ada7d208b9b005ea40"
+      }
+    },
+    "timing_scope": "Pre-route diagnostic: residuals are recorded; only post-route steps32/33 require all timing/electrical targets met."
+  },
+  "scope": "Only the listed automatic checks are asserted. Tcl guards also check object counts, IO geometry and halo. Not complete signoff."
+}

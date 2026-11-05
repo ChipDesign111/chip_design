@@ -1,0 +1,124 @@
+{
+  "step": 33,
+  "commands_completed": true,
+  "input_manifest_sha256": "5c1094e919b289100a89ee271806eef7e9a8b1381cde9af239d81a3ad89f2932",
+  "automatic_checks": {
+    "placement": {
+      "report": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/my_soc_top_postFiller_place.rpt",
+      "unplaced": 0,
+      "expected_io_bond_covers": [
+        "i_pad_E_poc",
+        "i_pad_E_vdd_1",
+        "i_pad_E_vdd_2",
+        "i_pad_E_vddio",
+        "i_pad_E_vss_1",
+        "i_pad_E_vss_2",
+        "i_pad_E_vssio",
+        "i_pad_N_poc",
+        "i_pad_N_vdd_1",
+        "i_pad_N_vdd_2",
+        "i_pad_N_vddio",
+        "i_pad_N_vss_1",
+        "i_pad_N_vss_2",
+        "i_pad_N_vssio",
+        "i_pad_S_poc",
+        "i_pad_S_vdd_1",
+        "i_pad_S_vdd_2",
+        "i_pad_S_vddio",
+        "i_pad_S_vss_1",
+        "i_pad_S_vss_2",
+        "i_pad_S_vssio",
+        "i_pad_W_poc",
+        "i_pad_W_vdd_1",
+        "i_pad_W_vdd_2",
+        "i_pad_W_vddio",
+        "i_pad_W_vss_1",
+        "i_pad_W_vss_2",
+        "i_pad_W_vssio",
+        "i_pad_clk",
+        "i_pad_rst_n",
+        "i_pad_tck",
+        "i_pad_tdi",
+        "i_pad_tdo",
+        "i_pad_tms"
+      ],
+      "no_other_listed_placement_violations": true,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_place.rpt",
+      "report_sha256": "893848e0ce332f080c0b3483c7aa2161dc9c29b65bbd1f7a1ba5d6cf15ad7867"
+    },
+    "timing": {
+      "Setup": {
+        "report": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute.summary.gz",
+        "wns_ns": 0.226,
+        "tns_ns": 0.0,
+        "violating_paths": 0,
+        "drv": {
+          "max_cap": {
+            "real": 0,
+            "total": 0
+          },
+          "max_tran": {
+            "real": 0,
+            "total": 0
+          },
+          "max_fanout": {
+            "real": 0,
+            "total": 0
+          },
+          "max_length": {
+            "real": 0,
+            "total": 0
+          }
+        },
+        "electrical_drv_table_reported_here": true,
+        "targets_met": true,
+        "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute.summary.gz",
+        "report_sha256": "2b78f129d8bd53be1994f442d931995e3a286c9403b934e1f1373ebba518aa04"
+      },
+      "Hold": {
+        "report": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute_hold.summary.gz",
+        "wns_ns": 0.02,
+        "tns_ns": 0.0,
+        "violating_paths": 0,
+        "drv": {},
+        "electrical_drv_table_reported_here": false,
+        "targets_met": true,
+        "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute_hold.summary.gz",
+        "report_sha256": "d9c81806c325975cb1394a5a73ee25e0dd9864d2e227283b8afdf5c23d484b35"
+      }
+    },
+    "default_drc": {
+      "report": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/my_soc_top_postFiller_drc.rpt",
+      "zero_reported_violations": true,
+      "scope": "drc",
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_drc.rpt",
+      "report_sha256": "8dbf92b2cb3436f988945787edaa2bbb76e56e64f011ba65201564d592856251"
+    },
+    "signal_connectivity": {
+      "report": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/my_soc_top_postFiller_signal.rpt",
+      "unresolved_signal_problems": 0,
+      "classified_io_abstract_nets": [
+        "VDDPST",
+        "VSSPST"
+      ],
+      "same_input_native_geometry_proof_step": 22,
+      "not_independent_LVS": true,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_signal.rpt",
+      "report_sha256": "1ca2d2ed5b6f0bbfaf872f25c1aae242fa5a069c890168a713d7146c7ca58ecc"
+    },
+    "full_core_pg": {
+      "report": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/my_soc_top_postFiller_pg.rpt",
+      "zero_reported_violations": true,
+      "scope": "connectivity",
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_pg.rpt",
+      "report_sha256": "df17971bfa4ebfcdcd21ee193d4f33e77b5d92006c0a17f607fa7277b23e5ce7"
+    },
+    "antenna": {
+      "report": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/my_soc_top_postFiller_antenna.rpt",
+      "violating_nets": 0,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_antenna.rpt",
+      "report_sha256": "91db3106e6e02784218d0a9e7330d7f03a0e41e29f269379803c996dfccbcf3c"
+    }
+  },
+  "scope": "Only the listed automatic checks are asserted. Tcl guards also check object counts, IO geometry and halo. Not complete signoff."
+}

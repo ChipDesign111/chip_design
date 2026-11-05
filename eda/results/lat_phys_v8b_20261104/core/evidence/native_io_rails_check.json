@@ -1,0 +1,338 @@
+{
+  "native_gds": "/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Back_End/gds/tpd018nv_280a/mt_2/6lm/tpd018nv.gds",
+  "gds_m4_conductor_layer": 31,
+  "gds_m4_pin_label_layer": 43,
+  "straight_master_count": 12,
+  "rail_cross_sections": [
+    {
+      "master": "PDDW0204CDG",
+      "net": "VSSPST",
+      "local_y_um": 20.95,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PDDW0204CDG",
+      "net": "VDDPST",
+      "local_y_um": 63.92,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PDDW0204CDG",
+      "net": "VSS",
+      "local_y_um": 90.435,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PVDD1CDG",
+      "net": "VSSPST",
+      "local_y_um": 20.95,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PVDD1CDG",
+      "net": "VDDPST",
+      "local_y_um": 63.92,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PVDD1CDG",
+      "net": "VSS",
+      "local_y_um": 90.435,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PVSS1CDG",
+      "net": "VSSPST",
+      "local_y_um": 20.95,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PVSS1CDG",
+      "net": "VDDPST",
+      "local_y_um": 63.92,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PVSS1CDG",
+      "net": "VSS",
+      "local_y_um": 90.435,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PVDD2CDG",
+      "net": "VSSPST",
+      "local_y_um": 20.95,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PVDD2CDG",
+      "net": "VDDPST",
+      "local_y_um": 63.92,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PVDD2CDG",
+      "net": "VSS",
+      "local_y_um": 90.435,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PVSS2CDG",
+      "net": "VSSPST",
+      "local_y_um": 20.95,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PVSS2CDG",
+      "net": "VDDPST",
+      "local_y_um": 63.92,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PVSS2CDG",
+      "net": "VSS",
+      "local_y_um": 90.435,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PVDD2POC",
+      "net": "VSSPST",
+      "local_y_um": 20.95,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PVDD2POC",
+      "net": "VDDPST",
+      "local_y_um": 63.92,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PVDD2POC",
+      "net": "VSS",
+      "local_y_um": 90.435,
+      "continuous_x_um": [
+        0,
+        60
+      ]
+    },
+    {
+      "master": "PFILLER20",
+      "net": "VSSPST",
+      "local_y_um": 20.95,
+      "continuous_x_um": [
+        0,
+        20
+      ]
+    },
+    {
+      "master": "PFILLER20",
+      "net": "VDDPST",
+      "local_y_um": 63.92,
+      "continuous_x_um": [
+        0,
+        20
+      ]
+    },
+    {
+      "master": "PFILLER20",
+      "net": "VSS",
+      "local_y_um": 90.435,
+      "continuous_x_um": [
+        0,
+        20
+      ]
+    },
+    {
+      "master": "PFILLER10",
+      "net": "VSSPST",
+      "local_y_um": 20.95,
+      "continuous_x_um": [
+        0,
+        10
+      ]
+    },
+    {
+      "master": "PFILLER10",
+      "net": "VDDPST",
+      "local_y_um": 63.92,
+      "continuous_x_um": [
+        0,
+        10
+      ]
+    },
+    {
+      "master": "PFILLER10",
+      "net": "VSS",
+      "local_y_um": 90.435,
+      "continuous_x_um": [
+        0,
+        10
+      ]
+    },
+    {
+      "master": "PFILLER5",
+      "net": "VSSPST",
+      "local_y_um": 20.95,
+      "continuous_x_um": [
+        0,
+        5
+      ]
+    },
+    {
+      "master": "PFILLER5",
+      "net": "VDDPST",
+      "local_y_um": 63.92,
+      "continuous_x_um": [
+        0,
+        5
+      ]
+    },
+    {
+      "master": "PFILLER5",
+      "net": "VSS",
+      "local_y_um": 90.435,
+      "continuous_x_um": [
+        0,
+        5
+      ]
+    },
+    {
+      "master": "PFILLER1",
+      "net": "VSSPST",
+      "local_y_um": 20.95,
+      "continuous_x_um": [
+        0,
+        1
+      ]
+    },
+    {
+      "master": "PFILLER1",
+      "net": "VDDPST",
+      "local_y_um": 63.92,
+      "continuous_x_um": [
+        0,
+        1
+      ]
+    },
+    {
+      "master": "PFILLER1",
+      "net": "VSS",
+      "local_y_um": 90.435,
+      "continuous_x_um": [
+        0,
+        1
+      ]
+    },
+    {
+      "master": "PFILLER05",
+      "net": "VSSPST",
+      "local_y_um": 20.95,
+      "continuous_x_um": [
+        0,
+        0.5
+      ]
+    },
+    {
+      "master": "PFILLER05",
+      "net": "VDDPST",
+      "local_y_um": 63.92,
+      "continuous_x_um": [
+        0,
+        0.5
+      ]
+    },
+    {
+      "master": "PFILLER05",
+      "net": "VSS",
+      "local_y_um": 90.435,
+      "continuous_x_um": [
+        0,
+        0.5
+      ]
+    },
+    {
+      "master": "PFILLER0005",
+      "net": "VSSPST",
+      "local_y_um": 20.95,
+      "continuous_x_um": [
+        0,
+        0.005
+      ]
+    },
+    {
+      "master": "PFILLER0005",
+      "net": "VDDPST",
+      "local_y_um": 63.92,
+      "continuous_x_um": [
+        0,
+        0.005
+      ]
+    },
+    {
+      "master": "PFILLER0005",
+      "net": "VSS",
+      "local_y_um": 90.435,
+      "continuous_x_um": [
+        0,
+        0.005
+      ]
+    }
+  ],
+  "PCORNER_turns_connected_for": [
+    "VSSPST",
+    "VDDPST",
+    "VSS"
+  ],
+  "scope": "Native per-master rail cross-sections and corner turns. Combine with actual placement continuity/orientations; not independent merged-chip LVS/IR/EM/ESD."
+}

@@ -1,0 +1,104 @@
+Units
+----------------------------------------
+LIBRARY                tcb018gbwp7ttc
+Time_unit              :1000ps
+Capacitive_load_unit   :1000.0fF
+Resistance_unit        :1kohm
+Voltage_unit           :1V
+Current_unit           :1mA
+Power_unit             :uW 
+
+LIBRARY                sramsp_tsmc_cl018hv
+Time_unit              :1000ps
+Capacitive_load_unit   :1000.0fF
+Resistance_unit        :1kohm
+Voltage_unit           :1V
+Current_unit           :1mA
+Power_unit             :uW 
+
+LIBRARY                physical_cells
+Time_unit              :0ps
+Capacitive_load_unit   :0.0fF
+Resistance_unit        :
+Voltage_unit           :
+Current_unit           :
+Power_unit             :uW 
+
+Units
+----------------------------------------
+LIBRARY                tcb018gbwp7ttc
+Time_unit              :1000ps
+Capacitive_load_unit   :1000.0fF
+Resistance_unit        :1kohm
+Voltage_unit           :1V
+Current_unit           :1mA
+Power_unit             :uW 
+
+LIBRARY                sramsp_tsmc_cl018hv
+Time_unit              :1000ps
+Capacitive_load_unit   :1000.0fF
+Resistance_unit        :1kohm
+Voltage_unit           :1V
+Current_unit           :1mA
+Power_unit             :uW 
+
+LIBRARY                physical_cells
+Time_unit              :0ps
+Capacitive_load_unit   :0.0fF
+Resistance_unit        :
+Voltage_unit           :
+Current_unit           :
+Power_unit             :uW 
+
+Units
+----------------------------------------
+LIBRARY                tcb018gbwp7ttc
+Time_unit              :1000ps
+Capacitive_load_unit   :1000.0fF
+Resistance_unit        :1kohm
+Voltage_unit           :1V
+Current_unit           :1mA
+Power_unit             :uW 
+
+LIBRARY                sramsp_tsmc_cl018hv
+Time_unit              :1000ps
+Capacitive_load_unit   :1000.0fF
+Resistance_unit        :1kohm
+Voltage_unit           :1V
+Current_unit           :1mA
+Power_unit             :uW 
+
+LIBRARY                physical_cells
+Time_unit              :0ps
+Capacitive_load_unit   :0.0fF
+Resistance_unit        :
+Voltage_unit           :
+Current_unit           :
+Power_unit             :uW 
+
+Units
+----------------------------------------
+LIBRARY                tcb018gbwp7ttc
+Time_unit              :1000ps
+Capacitive_load_unit   :1000.0fF
+Resistance_unit        :1kohm
+Voltage_unit           :1V
+Current_unit           :1mA
+Power_unit             :uW 
+
+LIBRARY                sramsp_tsmc_cl018hv
+Time_unit              :1000ps
+Capacitive_load_unit   :1000.0fF
+Resistance_unit        :1kohm
+Voltage_unit           :1V
+Current_unit           :1mA
+Power_unit             :uW 
+
+LIBRARY                physical_cells
+Time_unit              :0ps
+Capacitive_load_unit   :0.0fF
+Resistance_unit        :
+Voltage_unit           :
+Current_unit           :
+Power_unit             :uW 
+

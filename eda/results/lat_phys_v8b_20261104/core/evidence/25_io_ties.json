@@ -1,0 +1,199 @@
+{
+  "netlist": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/my_soc_top/my_soc_top_postTie.v",
+  "four_supplies_independent": true,
+  "no_top_tie_output_on_supply": true,
+  "all_12_ordinary_io_supply_pins_preserved": true,
+  "power_pads": [
+    {
+      "instance": "i_pad_N_vss_1",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_N_vss_2",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_N_vssio",
+      "supply": "VSSPST"
+    },
+    {
+      "instance": "i_pad_N_vdd_1",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_N_vdd_2",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_N_vddio",
+      "supply": "VDDPST"
+    },
+    {
+      "instance": "i_pad_N_poc",
+      "supply": "VDDPST"
+    },
+    {
+      "instance": "i_pad_S_vss_1",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_S_vss_2",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_S_vssio",
+      "supply": "VSSPST"
+    },
+    {
+      "instance": "i_pad_S_vdd_1",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_S_vdd_2",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_S_vddio",
+      "supply": "VDDPST"
+    },
+    {
+      "instance": "i_pad_S_poc",
+      "supply": "VDDPST"
+    },
+    {
+      "instance": "i_pad_W_vss_1",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_W_vss_2",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_W_vssio",
+      "supply": "VSSPST"
+    },
+    {
+      "instance": "i_pad_W_vdd_1",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_W_vdd_2",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_W_vddio",
+      "supply": "VDDPST"
+    },
+    {
+      "instance": "i_pad_W_poc",
+      "supply": "VDDPST"
+    },
+    {
+      "instance": "i_pad_E_vss_1",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_E_vss_2",
+      "supply": "VSS"
+    },
+    {
+      "instance": "i_pad_E_vssio",
+      "supply": "VSSPST"
+    },
+    {
+      "instance": "i_pad_E_vdd_1",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_E_vdd_2",
+      "supply": "VDD"
+    },
+    {
+      "instance": "i_pad_E_vddio",
+      "supply": "VDDPST"
+    },
+    {
+      "instance": "i_pad_E_poc",
+      "supply": "VDDPST"
+    }
+  ],
+  "signals": [
+    {
+      "port": "clk_i",
+      "pad": "i_pad_clk",
+      "core_net": "n_1",
+      "controls": {
+        "OEN": 1,
+        "IE": 1,
+        "PE": 0,
+        "DS": 0,
+        "I": 0
+      },
+      "external_port_only_connects_to_pad": true
+    },
+    {
+      "port": "rst_ni",
+      "pad": "i_pad_rst_n",
+      "core_net": "n_2",
+      "controls": {
+        "OEN": 1,
+        "IE": 1,
+        "PE": 0,
+        "DS": 0,
+        "I": 0
+      },
+      "external_port_only_connects_to_pad": true
+    },
+    {
+      "port": "tck_i",
+      "pad": "i_pad_tck",
+      "core_net": "n_4",
+      "controls": {
+        "OEN": 1,
+        "IE": 1,
+        "PE": 0,
+        "DS": 0,
+        "I": 0
+      },
+      "external_port_only_connects_to_pad": true
+    },
+    {
+      "port": "tms_i",
+      "pad": "i_pad_tms",
+      "core_net": "n_5",
+      "controls": {
+        "OEN": 1,
+        "IE": 1,
+        "PE": 0,
+        "DS": 0,
+        "I": 0
+      },
+      "external_port_only_connects_to_pad": true
+    },
+    {
+      "port": "td_i",
+      "pad": "i_pad_tdi",
+      "core_net": "n_6",
+      "controls": {
+        "OEN": 1,
+        "IE": 1,
+        "PE": 0,
+        "DS": 0,
+        "I": 0
+      },
+      "external_port_only_connects_to_pad": true
+    },
+    {
+      "port": "td_o",
+      "pad": "i_pad_tdo",
+      "core_net": "n_8",
+      "controls": {
+        "OEN": 0,
+        "IE": 0,
+        "PE": 0,
+        "DS": 0
+      },
+      "external_port_only_connects_to_pad": true
+    }
+  ]
+}

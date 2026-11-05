@@ -1,0 +1,14 @@
+{
+  "pid": 826549,
+  "host": "tc-01a0e839f97e",
+  "command": [
+    "innovus",
+    "-batch",
+    "-files",
+    "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261104_230714_2714f61/work/pnr/generated/driver.tcl",
+    "-log",
+    "eda_01_to_34"
+  ],
+  "completed": true,
+  "exit_code": 0
+}

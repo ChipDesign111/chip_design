@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-04",
+  "physical_source": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261029_43f5e38_sram_reset",
+  "postsim_root": "/home/s2400012831/Desktop/fullstack_chipdesign/uploads/20261029_171412_postsim_2714f61/postsim/lat_stream_20261104",
+  "change": "Testbench streams image writes without waiting for each response; RTL, SDF and timing-check settings unchanged",
+  "seeds": ["10000"],
+  "baseline": {
+    "active_start_ns": 600.0,
+    "cpu_wait_start_ns": 165320.0,
+    "load_cycles": 8236,
+    "cycles_per_word": 4.0,
+    "functional_pass_ns": 238840.0,
+    "end_to_end_cycles": 11942,
+    "cpu_cycles": 3660,
+    "npu_cycles": 1035,
+    "overlap": [93, 62, 93],
+    "timing_messages": 11
+  },
+  "streamed": {
+    "active_start_ns": 600.0,
+    "load_partial_ack_ns": 3020.0,
+    "load_issue_done_ns": 124060.0,
+    "load_resp_done_ns": 124080.0,
+    "cpu_wait_start_ns": 124400.0,
+    "load_cycles": 6190,
+    "cycles_per_word": 3.0,
+    "functional_pass_ns": 197920.0,
+    "end_to_end_cycles": 9896,
+    "cpu_cycles": 3660,
+    "npu_cycles": 1035,
+    "overlap": [93, 62, 93],
+    "timing_messages": 11,
+    "timing_sites_identical_to_baseline": true,
+    "postsim_done": true,
+    "gate_zero": {"cpu_wait_start_ns": 124400.0, "result": "known NPU loading_bank race, CPU self-check fails"}
+  },
+  "delta": {
+    "load_cycles": -2046,
+    "end_to_end_cycles": -2046,
+    "end_to_end_percent": -17.1
+  },
+  "remaining_limit": "axi2mem single-transaction FSM plus registered my_mainmem port; 3 cycles/word is the testbench floor"
+}

@@ -1,0 +1,15 @@
+  =================
+   Message Summary
+  =================
+--------------------------------------------------------------------------------
+|   Id    |Sev  |Count |                     Message Text                      |
+--------------------------------------------------------------------------------
+| POPT-96 |Info |    1 |One or more cost groups were automatically created for |
+|         |     |      | clock gate enable paths.                              |
+|         |     |      |This feature can be disabled by setting the attribute  |
+|         |     |      | lp_clock_gating_auto_cost_grouping false.             |
+| ST-112  |Info |    7 |A super-threading server has been shut down normally.  |
+|         |     |      |A super-threaded optimization is complete and a CPU    |
+|         |     |      | server was successfully shut down.                    |
+| SYNTH-5 |Info |    1 |Done mapping.                                          |
+--------------------------------------------------------------------------------

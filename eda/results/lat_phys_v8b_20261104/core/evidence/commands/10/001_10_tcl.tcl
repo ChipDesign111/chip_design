@@ -1,0 +1,37 @@
+# Actual sourced body; main SRAM resolved to i_mainmem/i_sram/i_macro
+addInst -physical -cell PAD60LU_OBV -inst i_bond_clk -loc {300.000000 1875.080000} -ori R180 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_rst_n -loc {1400.000000 1875.080000} -ori R180 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_tck -loc {250.000000 0.000000} -ori R0 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_tms -loc {450.000000 0.000000} -ori R0 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_tdi -loc {1400.000000 0.000000} -ori R0 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_tdo -loc {1600.000000 0.000000} -ori R0 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_N_vss_1 -loc {600.000000 1875.080000} -ori R180 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_N_vss_2 -loc {700.000000 1875.080000} -ori R180 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_N_vssio -loc {800.000000 1875.080000} -ori R180 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_N_vdd_1 -loc {900.000000 1875.080000} -ori R180 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_N_vdd_2 -loc {1000.000000 1875.080000} -ori R180 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_N_vddio -loc {1100.000000 1875.080000} -ori R180 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_N_poc -loc {1200.000000 1875.080000} -ori R180 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_S_vss_1 -loc {600.000000 0.000000} -ori R0 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_S_vss_2 -loc {700.000000 0.000000} -ori R0 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_S_vssio -loc {800.000000 0.000000} -ori R0 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_S_vdd_1 -loc {900.000000 0.000000} -ori R0 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_S_vdd_2 -loc {1000.000000 0.000000} -ori R0 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_S_vddio -loc {1100.000000 0.000000} -ori R0 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_S_poc -loc {1200.000000 0.000000} -ori R0 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_W_vss_1 -loc {0.000000 600.000000} -ori R270 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_W_vss_2 -loc {0.000000 700.000000} -ori R270 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_W_vssio -loc {0.000000 800.000000} -ori R270 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_W_vdd_1 -loc {0.000000 900.000000} -ori R270 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_W_vdd_2 -loc {0.000000 1000.000000} -ori R270 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_W_vddio -loc {0.000000 1100.000000} -ori R270 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_W_poc -loc {0.000000 1200.000000} -ori R270 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_E_vss_1 -loc {1875.080000 600.000000} -ori R90 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_E_vss_2 -loc {1875.080000 700.000000} -ori R90 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_E_vssio -loc {1875.080000 800.000000} -ori R90 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_E_vdd_1 -loc {1875.080000 900.000000} -ori R90 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_E_vdd_2 -loc {1875.080000 1000.000000} -ori R90 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_E_vddio -loc {1875.080000 1100.000000} -ori R90 -place_status fixed -dontSnapToPlacementGrid
+addInst -physical -cell PAD60LU_OBV -inst i_bond_E_poc -loc {1875.080000 1200.000000} -ori R90 -place_status fixed -dontSnapToPlacementGrid
+if {[llength [dbGet -e top.insts.cell.name PAD60LU_OBV -p2]] != 34} {error "Bond PAD count mismatch"}
+

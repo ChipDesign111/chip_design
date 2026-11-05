@@ -1,0 +1,1912 @@
+{
+  "annotation_errors": 0,
+  "warning_categories": {
+    "SDFCOM_SWC": 2484,
+    "SDFCOM_UHICD": 1,
+    "SDFCOM_IWSBA": 1087,
+    "SDFCOM_NIOD": 13
+  },
+  "negative_timing_checks_enabled": true,
+  "native_NTC_RECREM_enabled": true,
+  "negative_iopath_clamped_by_simulator": 13,
+  "missing_instances": 0,
+  "unmatched_timing_checks": 0,
+  "cases": {
+    "sdf_firmware_1": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        }
+      ]
+    },
+    "sdf_firmware_10001": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15,
+        "final_reset": 5
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_ifetch.RC_CG_HIER_INST279.RC_CGIC_INST",
+          "time_ns": 171251.325,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:171251325, posedge E:171251177, limits: (179,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_ifetch.RC_CG_HIER_INST318.RC_CGIC_INST",
+          "time_ns": 171251.545,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:171251545, posedge E:171251402, limits: (158,-42) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_ifetch.\\fstate_q_reg[0]",
+          "time_ns": 171251.605,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:171251605, posedge E:171251396, limits: (215,-100) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.\\pc_id_o_reg[9]",
+          "time_ns": 171251.772,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:171251726, negedge D:171251772, limits: (-18,77) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.\\instr_rdata_id_o_reg[3]",
+          "time_ns": 171251.827,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:171251751, negedge D:171251827, limits: (-12,83) );"
+        }
+      ]
+    },
+    "sdf_firmware_10002": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        }
+      ]
+    },
+    "sdf_firmware_10003": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        }
+      ]
+    },
+    "sdf_firmware_10004": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        }
+      ]
+    },
+    "sdf_firmware_10005": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        }
+      ]
+    },
+    "sdf_firmware_10006": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        }
+      ]
+    },
+    "sdf_firmware_10007": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        }
+      ]
+    },
+    "sdf_firmware_10008": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        }
+      ]
+    },
+    "sdf_firmware_10009": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        }
+      ]
+    },
+    "sdf_firmware_10010": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        }
+      ]
+    },
+    "sdf_firmware_10011": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        }
+      ]
+    },
+    "sdf_firmware_3": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15,
+        "final_reset": 1
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_mainmem.\\port_addr_q_reg[3]",
+          "time_ns": 171271.892,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:171271892, negedge D:171271856, limits: (56,19) );"
+        }
+      ]
+    },
+    "sdf_firmware_5": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        }
+      ]
+    },
+    "sdf_firmware_7": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15,
+        "final_reset": 13
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi2sram.RC_CG_HIER_INST9.RC_CGIC_INST",
+          "time_ns": 171271.528,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:171271528, posedge E:171271419, limits: (180,-64) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi2sram.\\ax_req_q_reg[len][0]",
+          "time_ns": 171271.909,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& SE_DEFCHK:171271909, posedge SE:171271625, limits: (372,-166) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi2sram.\\ax_req_q_reg[addr][3]",
+          "time_ns": 171271.912,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& SE_DEFCHK:171271912, posedge SE:171271630, limits: (372,-166) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi2sram.\\ax_req_q_reg[addr][4]",
+          "time_ns": 171271.911,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& SE_DEFCHK:171271911, posedge SE:171271629, limits: (372,-166) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi2sram.\\ax_req_q_reg[addr][2]",
+          "time_ns": 171271.912,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& SE_DEFCHK:171271912, posedge SE:171271631, limits: (372,-166) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi2sram.\\ax_req_q_reg[len][4]",
+          "time_ns": 171271.924,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& SE_DEFCHK:171271924, posedge SE:171271623, limits: (372,-166) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi2sram.\\ax_req_q_reg[len][1]",
+          "time_ns": 171271.925,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& SE_DEFCHK:171271925, posedge SE:171271624, limits: (372,-166) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi2sram.\\ax_req_q_reg[len][3]",
+          "time_ns": 171271.925,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& SE_DEFCHK:171271925, posedge SE:171271624, limits: (372,-166) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi2sram.\\ax_req_q_reg[addr][16]",
+          "time_ns": 171271.914,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& SE_DEFCHK:171271914, posedge SE:171271634, limits: (372,-166) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi2sram.\\ax_req_q_reg[addr][18]",
+          "time_ns": 171271.914,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& SE_DEFCHK:171271914, posedge SE:171271634, limits: (372,-166) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi2sram.\\ax_req_q_reg[addr][14]",
+          "time_ns": 171271.966,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& SE_DEFCHK:171271966, posedge SE:171271634, limits: (373,-169) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi2sram.\\ax_req_q_reg[addr][15]",
+          "time_ns": 171271.966,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& SE_DEFCHK:171271966, posedge SE:171271634, limits: (373,-169) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_axi2sram.\\ax_req_q_reg[addr][17]",
+          "time_ns": 171271.966,
+          "phase": "final_reset",
+          "check": "$setuphold( posedge CP &&& SE_DEFCHK:171271966, posedge SE:171271634, limits: (373,-169) );"
+        }
+      ]
+    },
+    "sdf_max": {
+      "functional_pass": true,
+      "observed_cpu_cycles": 2338,
+      "npu_cycles": 1038,
+      "dma_mac_overlap": 93,
+      "read_overlap": 62,
+      "write_overlap": 93,
+      "active_start_ns": 600.0,
+      "active_end_ns": 171240.0,
+      "clock_core_edges_ns": [
+        10.63,
+        30.63,
+        50.63,
+        70.63
+      ],
+      "timing_counts": {
+        "initial_reset": 15
+      },
+      "timing_violations": [
+        {
+          "instance": "tb_postsim.dut.i_dma.i_engine.RC_CG_HIER_INST264.RC_CGIC_INST",
+          "time_ns": 11.277,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11277, negedge E:11207, limits: (149,-61) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.if_stage_i.RC_CG_HIER_INST215.RC_CGIC_INST",
+          "time_ns": 11.279,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11279, negedge E:11208, limits: (126,-57) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.cs_registers_i.RC_CG_HIER_INST145.RC_CGIC_INST",
+          "time_ns": 11.283,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& E_DEFCHK:11283, negedge E:11154, limits: (147,-59) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.csr_access_ex_o_reg",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& D_DEFCHK:11685, negedge D:11602, limits: (102,-46) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][23]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[20][31]",
+          "time_ns": 11.676,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11676, negedge SI:11369, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[21][23]",
+          "time_ns": 11.68,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11680, negedge SI:11353, limits: (382,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][21]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11390, limits: (379,-247) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][23]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11353, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[17][31]",
+          "time_ns": 11.684,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11684, negedge SI:11365, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][23]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11355, limits: (382,-249) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][31]",
+          "time_ns": 11.686,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11686, negedge SI:11368, limits: (375,-243) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[22][21]",
+          "time_ns": 11.685,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11685, negedge SI:11391, limits: (379,-246) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][23]",
+          "time_ns": 11.703,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11703, negedge SI:11354, limits: (383,-250) );"
+        },
+        {
+          "instance": "tb_postsim.dut.i_cpu.core_i.id_stage_i.register_file_i.\\mem_reg[18][21]",
+          "time_ns": 11.705,
+          "phase": "initial_reset",
+          "check": "$setuphold( posedge CP &&& SI_DEFCHK:11705, negedge SI:11389, limits: (380,-247) );"
+        }
+      ]
+    }
+  },
+  "binding_complete_for_instances_and_checks": true,
+  "active_window_dynamic_timing_clean": true,
+  "scope": "Full notifier/message checking in all SDF runs; reset events retained, not masked. Unsupported negative IOPATH clamps remain explicit; not complete signoff."
+}

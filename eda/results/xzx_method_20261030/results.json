@@ -1,0 +1,257 @@
+{
+  "sdf_max": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 5
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 2000
+  },
+  "sdf_firmware_1": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 2
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 250
+  },
+  "sdf_firmware_10001": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 8
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 1650
+  },
+  "sdf_firmware_10002": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 0
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 3050
+  },
+  "sdf_firmware_10003": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 0
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 4450
+  },
+  "sdf_firmware_10004": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 0
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 5850
+  },
+  "sdf_firmware_10005": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 0
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 7250
+  },
+  "sdf_firmware_10006": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 0
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 8650
+  },
+  "sdf_firmware_10007": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 0
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 10050
+  },
+  "sdf_firmware_10008": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 0
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 11450
+  },
+  "sdf_firmware_10009": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 0
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 12850
+  },
+  "sdf_firmware_10010": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 0
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 14250
+  },
+  "sdf_firmware_10011": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 0
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 15650
+  },
+  "sdf_firmware_3": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 0
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 17050
+  },
+  "sdf_firmware_5": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 0
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 18450
+  },
+  "sdf_firmware_7": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 0
+    },
+    "bus_conflicts": 5,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3660 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 19850
+  },
+  "gate_zero": {
+    "exit_code": 0,
+    "functional_pass": true,
+    "done": true,
+    "timing": {
+      "initial": 0,
+      "active": 0,
+      "after_reset": 0
+    },
+    "bus_conflicts": 0,
+    "pass_lines": [
+      "FUNCTIONAL_PASS cycles=3659 npu_cycles=1035 dma_mac_overlap=93 read_overlap=62 write_overlap=93 time_ns=238880.000"
+    ],
+    "reset_offset_ps": 2000
+  }
+}
