@@ -50,6 +50,21 @@ def make_case(seed):
         store(0x1c00+n*64,pack(h)+y+[max(range(6),key=lambda o:y[o])])
     store(0x1f00,[mult,shift,batch,0x80000000+w1_address])
     return mem
+def make_argmax_final_phase_case(weight,class0_bias,class1_bias):
+    """Class 0 changes only on the final FC2 phase of a one-sample batch."""
+    mem=[0]*2048
+    # Zero W1/input and B1=1 produce 32 hidden values of 1 with mult=1,shift=0.
+    mem[0x1900//4:0x1900//4+32]=[1]*32
+    mem[0x1980//4:0x1980//4+6]=[class0_bias,class1_bias,0,0,0,0]
+    for row in (30,31):
+        offset=0x1800+row*6
+        mem[offset//4]|=(weight&255)<<((offset%4)*8)
+    scores=[class0_bias+2*weight,class1_bias,0,0,0,0]
+    golden=pack([1]*32)+scores+[max(range(6),key=lambda o:scores[o])]
+    mem[0x1c00//4:0x1c00//4+len(golden)]=golden
+    mem[0x1f00//4:0x1f00//4+4]=[1,0,1,0x80001000]
+    return [value&0xffffffff for value in mem]
+
 def execute(command,run,name,marker=None):
     result=subprocess.run([str(x) for x in command],cwd=run,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=300)
     (run/(name+'.log')).write_text(result.stdout,encoding='utf-8')
@@ -65,13 +80,18 @@ def main():
     source_sha={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in source_files}
     (run/'source_manifest.json').write_text(json.dumps(source_sha,indent=2)+'\n')
     seeds=list(range(args.count))+(list(range(10000,10006)) if args.trained else [])
-    for index,seed in enumerate(seeds):(run/('case_%d.hex'%index)).write_text(''.join('%08x\n'%v for v in make_case(seed)))
+    cases=[make_case(seed) for seed in seeds]
+    # Final products make class 0 win, lose, or tie class 1. Ties keep class 0.
+    directed_cases=[('argmax_final_rises',1,0,1),('argmax_final_falls',-1,2,1),
+                    ('argmax_final_ties',1,0,2)]
+    cases.extend(make_argmax_final_phase_case(*values) for _,*values in directed_cases)
+    for index,memory in enumerate(cases):(run/('case_%d.hex'%index)).write_text(''.join('%08x\n'%v for v in memory))
     boot_sources=['rtl/memory/bootram.sv','test/int8/tb_boot_cycles.sv']
     execute(['iverilog','-g2012','-s','tb_boot_cycles','-o','boot_cycles.vvp']+[ROOT/x for x in boot_sources],run,'compile_boot_cycles')
     execute(['vvp','boot_cycles.vvp'],run,'boot_cycles','BOOT_CYCLES PASS')
     sources=['rtl/npu/har_weight_store.sv','rtl/npu/har_npu_core.sv','rtl/npu/simple_npu_top.sv','rtl/dma/har_dma.sv','test/int8/tb_tiled_dma.sv']
     execute(['iverilog','-g2012','-s','tb_tiled_dma','-o','test.vvp']+[ROOT/x for x in sources],run,'compile_unit')
-    output=execute(['vvp','test.vvp','+DIR='+run.as_posix(),'+COUNT='+str(len(seeds))],run,'unit','INT8_TILED_DMA PASS')
+    output=execute(['vvp','test.vvp','+DIR='+run.as_posix(),'+COUNT='+str(len(cases))],run,'unit','INT8_TILED_DMA PASS')
     print('\n'.join(x for x in output.splitlines() if 'CASE' in x)[-3000:])
     soc_timing=None
     if args.soc:
@@ -94,6 +114,6 @@ def main():
         if hardware_soc_cycles<=0 or hardware_soc_cycles>observed_cycles:raise RuntimeError('Invalid hardware SoC cycle count')
         soc_timing={'observed_cycles':observed_cycles,'hardware_soc_cycles':hardware_soc_cycles}
     if any(hashlib.sha256((ROOT/name).read_bytes()).hexdigest()!=value for name,value in source_sha.items()):raise RuntimeError('Source changed during functional run')
-    (run/'result.json').write_text(json.dumps({'unit_cases':len(seeds),'trained_samples':24 if args.trained else 0,'accumulator_bits':22,'soc':args.soc,'soc_timing':soc_timing,'vendor_model_sha256':hashlib.sha256(args.vendor_model.read_bytes()).hexdigest() if args.vendor_model else None,'passed':True},indent=2)+'\n')
+    (run/'result.json').write_text(json.dumps({'unit_cases':len(cases),'directed_cases':[case[0] for case in directed_cases],'trained_samples':24 if args.trained else 0,'accumulator_bits':22,'soc':args.soc,'soc_timing':soc_timing,'vendor_model_sha256':hashlib.sha256(args.vendor_model.read_bytes()).hexdigest() if args.vendor_model else None,'passed':True},indent=2)+'\n')
     print('Results: '+str(run))
 if __name__=='__main__':main()

@@ -58,8 +58,12 @@ module har_npu_core (
     wire [255:0] hs=h[sample];
     wire [1:0] fc2_group=tile_index_o[1:0];
     wire signed [ACC_WIDTH-1:0] finish_score=a2[finish_sample][finish_compare_index];
-    wire finish_take=finish_score>finish_best_q;
-    wire signed [ACC_WIDTH-1:0] finish_best_next=finish_take ? finish_score : finish_best_q;
+    // The last FC2 ISSUE may still update class 0 on the edge entering FINISH
+    // (batch=1). Seed the first comparison from the committed accumulator.
+    wire signed [ACC_WIDTH-1:0] finish_best_current=
+        finish_compare_index==1 ? a2[finish_sample][0] : finish_best_q;
+    wire finish_take=finish_score>finish_best_current;
+    wire signed [ACC_WIDTH-1:0] finish_best_next=finish_take ? finish_score : finish_best_current;
     wire [2:0] finish_class_next=finish_take ? finish_compare_index : finish_class_q;
     assign layer_o=layer;
     // Release the current bank on its final use, then either hand off to an
