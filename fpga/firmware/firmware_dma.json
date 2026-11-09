@@ -1,14 +1,19 @@
 {
   "samples": 4,
   "batches": 1,
-  "code_bytes": 1140,
+  "code_bytes": 1388,
   "image_used_bytes": 7952,
   "sram_bytes": 8192,
-  "rtl_version": "20261104_rtl-1c265c0_int22",
-  "sha256": "3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b",
+  "rtl_version": "f5e3a7c",
+  "firmware_version": "20261109_scheduled4",
+  "firmware_mode": "scheduled4",
+  "board_retested": false,
+  "last_board_tested_snapshot": "20261104_rtl-1c265c0_int22",
+  "sha256": "d9b9eea1e5f104290fd8566ffa961a577680a0a1c272757281633b3404d4982d",
+  "binary_sha256": "728b03bc0591fc373753622fc7db063de0fa25cc331d184482cc3a2e2e2aabab",
   "comparison": "Every hidden, score and predicted class against integer gold, not against the true activity label",
   "transport": "dma",
   "parameter_words": 38,
   "input_words": 64,
-  "measured": "post-commit CPU self-check includes configuration, four-sample inference, shared 32-MAC FC1/FC2 phases, INT22 boundaries and identical result checks"
+  "measured": "RTL CPU simulation with scheduled4 firmware includes configuration, four-sample inference, shared 32-MAC FC1/FC2 phases, INT22 boundaries and identical result checks; no renewed FPGA board test"
 }

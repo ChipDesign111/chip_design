@@ -11,7 +11,7 @@ ROOT = HERE.parents[1]
 TEST_DIR = ROOT / "test" / "int8"
 sys.path.insert(0, str(TEST_DIR))
 
-from firmware import build  # noqa: E402
+from firmware import DEFAULT_MODE, build  # noqa: E402
 from run import make_case  # noqa: E402
 
 
@@ -26,6 +26,7 @@ def single_image(output_dir, seed, name, kind):
         generated = Path(temporary)
         build(generated, seed)
         text = (generated / "firmware.hex").read_text(encoding="ascii")
+        metadata = json.loads((generated / "firmware_meta.json").read_text())
 
     lines = text.splitlines()
     if len(lines) != 2048 or any(len(line) != 8 for line in lines):
@@ -39,6 +40,8 @@ def single_image(output_dir, seed, name, kind):
         "kind": kind,
         "seed": seed,
         "batch": batch,
+        "firmware_mode": metadata["mode"],
+        "code_bytes": metadata["code_bytes"],
         "sha256": digest,
     }
 
@@ -89,12 +92,39 @@ def main():
 
     manifest = {
         "format": "2048 x 32-bit hexadecimal words, one word per line",
+        "generator": {
+            "entrypoint": "fpga/firmware/generate_images.py",
+            "firmware_mode": DEFAULT_MODE,
+            "source_sha256": {
+                name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
+                for name in (
+                    "fpga/firmware/generate_images.py",
+                    "test/int8/firmware.py",
+                    "test/int8/assembler.py",
+                    "test/int8/run.py",
+                    "test/int8/har_uci24.json",
+                    "model/reference/tile_layout.py",
+                    "model/export/weights_int8.npz",
+                    "model/export/quant_params.json",
+                )
+            },
+        },
         "canonical": "int8_selftest.hex",
         "canonical_alias": "int8_uci_00_batch4.hex",
+        "canonical_firmware_mode": uci_images[0]["firmware_mode"],
+        "canonical_code_bytes": uci_images[0]["code_bytes"],
         "canonical_sha256": hashlib.sha256(canonical.read_bytes()).hexdigest(),
         "count": len(images),
         "images": images,
     }
+    partial_fixture = output_dir / "int8_partial_4k.bin"
+    if partial_fixture.exists():
+        manifest["retained_fixtures"] = [{
+            "file": partial_fixture.name,
+            "bytes": partial_fixture.stat().st_size,
+            "sha256": hashlib.sha256(partial_fixture.read_bytes()).hexdigest(),
+            "status": "historical partial image; not regenerated or validated with current firmware",
+        }]
     (output_dir / "image_manifest.json").write_text(
         json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
     )

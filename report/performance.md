@@ -1,5 +1,89 @@
 # SoC 与 NPU 优化报告
 
+## 2026-11-09 第三轮：CPU 固件指令与拍数优化
+
+本轮保持 `f5e3a7c` 的 CPU、NPU、缓存和总线 RTL 不变，优化 CPU 实际执行的 RV32I 程序。默认固件现为 **scheduled4：紧凑常量加载、四字循环展开、独立加载提前调度**。38 组相同任务的完整 SoC 自检总计 **99698→82977 拍，减少 16.77%**；6 组训练数据每组都是 **3462→2810 拍，减少 18.83%**。这次是软件指令序列优化，没有新增 CPU 指令、MAC 或 bank，也没有新增硬件面积。
+
+### 改了什么
+
+原搬运循环每传一个 32 位字执行六条指令：读、写、更新两个地址、更新计数、循环跳转。现在一轮搬四个字，只更新一次地址和计数，四个字的循环主体由 24 条降至 12 条。六字偏置、六字分数和单字分类结果分别处理尾部，不越界访问。常数能用一条 `addi` 或 `lui` 表达时不再固定生成两条指令；地址标签修补仍保留两条，避免覆盖后续指令。
+
+同一组内先读四个互不依赖的数据，再逐个写入或比较，给加载返回留出时间。所有隐藏层、六类分数、分类结果、FC1/FC2 计数和权重 tile 计数检查保留。CPU 仍执行完整的加载、NPU 启动、等待、逐字结果校验和统计写回。
+
+这就是本轮“优化 CPU 指令”的含义：改变既有指令的数量和顺序。当前核支持 RV32IMC，但固件仍只用 RV32I；`COREV_PULP=0`，硬件循环及 PULP 扩展未启用，不能直接插入这些扩展指令。RVC 压缩指令尚未采用。
+
+### 同一硬件、同一任务对照
+
+所有模式使用原始 `tb_soc.sv`、同一个 Xcelium 编译快照和 10 ns 功能仿真时钟。每个 seed 的权重、输入、参数和 golden 数据逐字节相同，只有程序区不同。数据比较覆盖部分边界用例从 `0xffc` 开始的首个权重字，代码上限也按实际首权重地址检查。
+
+| 训练 seed 10000，batch 4 | 程序字节数 | 完整自检拍数 |
+| --- | ---: | ---: |
+| 原始指令序列 baseline | 1140 | 3462 |
+| 仅精简常量 compact | 1024 | 3446 |
+| 两字展开 unroll2 | 1088 | 3111 |
+| 四字展开 unroll4 | 1388 | 2904 |
+| 八字展开 unroll8 | 1660 | 2833 |
+| **四字展开并调度 scheduled4** | **1388** | **2810** |
+
+| 用例 | baseline | scheduled4 | 减少 |
+| --- | ---: | ---: | ---: |
+| seed 0，batch 4 | 3471 | 2901 | 16.42% |
+| seed 1，batch 2 | 2432 | 2043 | 15.995% |
+| seed 2，batch 1 | 1919 | 1634 | 14.85% |
+| 训练 seed 10000，batch 4 | 3462 | 2810 | 18.83% |
+| 32 随机 + 6 训练任务合计 | 99698 | 82977 | 16.77% |
+
+38 组逐例减少 14.03%～18.83%。八字展开合计 83100 拍，与所选方案非常接近；其 32 组随机任务合计还少 15 拍，但六组训练任务各多 23 拍。所选四字方案最大程序 1392 B，小于八字方案的 1664 B，均在现有 4 KiB 程序区内。选择兼顾了拍数和代码空间，不代表它对任意未来程序都最优。[六模式筛选](firmware_optimization_20261109/sweep/results.json)、[38 组扩展对照](firmware_optimization_20261109/extended/results.json)。
+
+### 加速发生在哪里
+
+只读监测器旁挂原 testbench，观察真实的首条固件取指、NPU START/DONE、成功结果写回。12 个监测用例的全部七项功能结果都与原 testbench 相同；START→DONE 的间隔也逐例等于 NPU 硬件计数器。
+
+| 训练 seed 10000 的阶段或事件 | baseline | scheduled4 | 变化 |
+| --- | ---: | ---: | ---: |
+| 首条取指→NPU START：配置与搬运 | 1437 拍 | 1087 拍 | 少 350 拍 |
+| NPU START→DONE | 944 拍 | 940 拍 | 少 4 拍 |
+| DONE→成功写回：轮询收尾、全部校验及统计 | 1075 拍 | 777 拍 | 少 298 拍 |
+| **首条取指→NPU DONE，含搬运、不含结果读回** | **2381 拍** | **2027 拍** | **少 14.87%** |
+| 架构 minstret 指令计数事件 | 1367 | 809 | 少 40.82% |
+| load-use 相关事件 | 224 | 77 | 减少加载依赖 |
+| CPU load / store 事件 | 287 / 113 | 287 / 113 | 相同 |
+| FC1 / FC2 MAC 发射周期 | 256 / 64 | 256 / 64 | 相同 |
+
+因此，完整自检少 18.83% 不能表述为 NPU 计算快了 18.83%。真正到 NPU 结果产生的路径少 14.87%，主要来自 CPU 配置与搬运；NPU 自身只少四拍，反映同一总线上访问时序的变化，算术工作量没有减少。
+
+`minstret_events` 来自 CV32E40P 既有架构事件，不是取指请求数；核心在合法 ID 发射处实现该事件并提供 CSR 退休计数语义。计数窗口截至成功字写入 SRAM，并非程序无限 halt 循环。load-use 数是相关事件次数，不能直接当作全部停顿拍数，也不能与其他事件相加作为总周期。被动监测的首 fetch→成功写回窗口比原 testbench 固定少六拍，各表保持自己的计时边界。[原始监测证据](firmware_optimization_20261109/profile/results.json)。
+
+八字展开的指令事件只有 725，比 scheduled4 的 809 更少，但 load-use 事件为 227，最终仍多 23 拍。反过来，scheduled4 的取指等待事件从 baseline 的 10 增至 105，体现代码展开给 128 B 指令缓存带来的成本。因此选择依据实际拍数，而不是只数指令。
+
+### 验证、交付与限制
+
+- 六模式×四个 seed 的 24 次筛选、三模式×38 个 seed 的 114 次扩展，全部在真实 CPU 执行下通过完整 SoC RTL 自检；各模式的 FC1/FC2 发射周期相同。
+- 12 次只读性能监测通过，原功能结果不变。额外 SRAM 写循环及代码别名修改两个兼容程序也通过，分别为 3844 和 3063 拍；它们不是普通 HAR 延迟。
+- 故意翻转最后一个样本的隐藏层尾字、分数尾字、分类 golden，三次都由真实 CPU 走失败路径，原 testbench 报 `CPU numerical self-check failed`，证明这些校验没有被优化掉。[负例](firmware_optimization_20261109/faults/results.json)。
+- 228 份生成镜像的数据区一致，38 份 baseline 的 HEX 和汇编与修改前逐字节一致。选定默认后，38 份默认程序又与已测 scheduled4 镜像一致；常量、地址修补及分支边界检查通过。[生成器检查](firmware_optimization_20261109/generator_validation.json)。
+- 活动 FPGA 固件镜像同步使用所选程序，并保留模式、代码大小与哈希。历史冻结目录和板测记录保留；本轮没有重新板测。
+
+复现时先加载 Xcelium 环境，再运行以下入口；输出目录必须是新目录：
+
+```bash
+python3 test/int8/run_firmware_bench.py --out test/int8/runs/fw_sweep_new
+python3 test/int8/run_firmware_profile.py --bench test/int8/runs/fw_sweep_new \
+  --out test/int8/runs/fw_profile_new --mode baseline --mode scheduled4 --mode unroll8
+python3 test/int8/run_firmware_faults.py --benchmark test/int8/runs/fw_sweep_new \
+  --mode scheduled4 --seed 10000 --out test/int8/runs/fw_faults_new
+python3 fpga/firmware/generate_images.py
+python3 tools/project.py check
+```
+
+本轮没有修改硬件，未重跑综合、PNR 或 SDF 后仿。上轮所选 RTL 的综合单元面积仍可作为该硬件的参考：2.148261 mm²（含 SRAM），计划含 IO 裸片 1.948×1.948 mm；这不是新的物理实现结果，也没有新增流片签核结论。10 ns 功能时钟不能证明物理上可跑 100 MHz。
+
+下一轮若继续减少软件拍数，优先实测 RVC 压缩编码、热循环对齐和轮询调度，关注代码增大造成的取指压力。若要缩短 NPU 自身的约 940 拍，则需另行分析 DMA/计算重叠；单纯精简 CPU 指令不会减少相同网络的 MAC 运算量。
+
+[本轮证据总索引](firmware_optimization_20261109/summary.json)。
+
+---
+
 ## 2026-11-09 第二轮：缓存一致性、DMA 响应和面积优化
 
 上一版 `49911b2` 已推送到 GitHub `rtl-dev`。本轮在独立 `codex/rtl-dev-opt-20261109` 分支实验，保持 32 个共享乘法器、两组 64 B 权重 bank、128 B 指令缓存以及 `CUT_SLV_AX`。标准 HAR 自检的改进为 **1.37%～2.49%**；额外 SRAM 写入负载的改进为 **41.96%**，二者对应不同工作负载。

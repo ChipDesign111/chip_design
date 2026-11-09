@@ -1,8 +1,24 @@
 {
   "format": "2048 x 32-bit hexadecimal words, one word per line",
+  "generator": {
+    "entrypoint": "fpga/firmware/generate_images.py",
+    "firmware_mode": "scheduled4",
+    "source_sha256": {
+      "fpga/firmware/generate_images.py": "0339c5d83023085b8e3e075fccf95df91d9a6c9d4c282418cc18c6d49f5b0a03",
+      "test/int8/firmware.py": "4ccabd34cd57530016e599664a4651ef488740e9f5b22ca3f09d7a47a77a5db8",
+      "test/int8/assembler.py": "dd37a5885d98927fe27d42f663475b439b2b3f918b5d23ff33b8a5d304f2cf38",
+      "test/int8/run.py": "c1f4ca32f2fbc8ee1b62e1c7d09a1a34d2d47f8d9479a33731958d0e787d48e0",
+      "test/int8/har_uci24.json": "91169e2887c23c7de44da2eceae906271f7f4ac67c529e530bf2f48d94b10ef9",
+      "model/reference/tile_layout.py": "db0da1b855abeadb47400d05c1c0633805d141d72e5bd418bd726707b98e3e10",
+      "model/export/weights_int8.npz": "aca576691d0fb45f382eb4ef3dfd7fc6009143c242d2535643040c542ddbbc47",
+      "model/export/quant_params.json": "e204583be3b842b62a0eabed03f1ca32aec3f0cd11b587f609209dbaf07e0b3a"
+    }
+  },
   "canonical": "int8_selftest.hex",
   "canonical_alias": "int8_uci_00_batch4.hex",
-  "canonical_sha256": "3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b",
+  "canonical_firmware_mode": "scheduled4",
+  "canonical_code_bytes": 1388,
+  "canonical_sha256": "d9b9eea1e5f104290fd8566ffa961a577680a0a1c272757281633b3404d4982d",
   "count": 38,
   "images": [
     {
@@ -10,266 +26,350 @@
       "kind": "random",
       "seed": 0,
       "batch": 4,
-      "sha256": "2d222a0e9a79787a87d6dd16a7d347602094d79bc5b40ecff0364c2f75baebdf"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 1392,
+      "sha256": "6b808b079071b9fd98f030be182ba43dd3a17b7242c649073f6122256526a722"
     },
     {
       "file": "int8_random_01_batch2.hex",
       "kind": "random",
       "seed": 1,
       "batch": 2,
-      "sha256": "f77bb26b59a52c7a005f4c81f645c4c6afd774e2deae32c1397c5f886e2a6db4"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 860,
+      "sha256": "be97d942ad16417365e3015a4c83e978b314bda645ba67b74efe268de44780f5"
     },
     {
       "file": "int8_random_02_batch1.hex",
       "kind": "random",
       "seed": 2,
       "batch": 1,
-      "sha256": "3591413364059858bea0aba6b93df842277655f7316820c1310e2a52726fbb54"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 588,
+      "sha256": "756245d005bd51481c076628d12dc71eeb9805094971eccb9b505aecc0f8980e"
     },
     {
       "file": "int8_random_03_batch2.hex",
       "kind": "random",
       "seed": 3,
       "batch": 2,
-      "sha256": "2a0ae56234e79e73a26f691eab156e6d3ad03087ba50ce0b0c684e44590e008c"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 856,
+      "sha256": "7e729217139fa98b2f1cb4878bc6cf92ba1d1aa4dbe3c97426e2bb6c450297c5"
     },
     {
       "file": "int8_random_04_batch1.hex",
       "kind": "random",
       "seed": 4,
       "batch": 1,
-      "sha256": "29f63f1f2939bcdcf5891c4089a6741819fd0899b6ff55707f83792570628282"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 592,
+      "sha256": "bb180d4c502d76c84af8795410181d562320b14e55ad0bf47f8006d371c3e7d9"
     },
     {
       "file": "int8_random_05_batch2.hex",
       "kind": "random",
       "seed": 5,
       "batch": 2,
-      "sha256": "7c5919abff5c37d78dc50f3180419148d05f8bab669904a829261f0ac5e78d0e"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 860,
+      "sha256": "7acb7ec4e92827392bb99d3c665eacef7b8706614ff6c3afa92fb6d99047dec9"
     },
     {
       "file": "int8_random_06_batch4.hex",
       "kind": "random",
       "seed": 6,
       "batch": 4,
-      "sha256": "2121e25e6c6ea03fafde8ad9fdc39c0c8b760a69cb5e486958d124b82a114dc8"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 1388,
+      "sha256": "7d6f022610a45ad47ce27b77ce0cab8db76b05d02a990afab53a4ba39d413ef8"
     },
     {
       "file": "int8_random_07_batch2.hex",
       "kind": "random",
       "seed": 7,
       "batch": 2,
-      "sha256": "6d306732ec9d3585d30ce97d9a26ed095a55d59212e4533c6c714b578a7599a4"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 856,
+      "sha256": "fd6f191bac5d46c6ed7dcdaa13eb478d9960cdfb04b84189f1071b40c0f56d6a"
     },
     {
       "file": "int8_random_08_batch1.hex",
       "kind": "random",
       "seed": 8,
       "batch": 1,
-      "sha256": "b0e9472c81fce899b5a262e2e3c546b8aa0a75dd1431ecd54111b6150acc30ba"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 592,
+      "sha256": "4c9b7c44374d7f502f6c52f282497dbec270c9c7059183c2245dc2e75e9f3a3a"
     },
     {
       "file": "int8_random_09_batch2.hex",
       "kind": "random",
       "seed": 9,
       "batch": 2,
-      "sha256": "003cfc6a55c7b6978936ea3533bf37b4476e733d3bb24169d599f735d4883d0b"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 860,
+      "sha256": "c2f5e9548d658eeabb31c55a30b7c828911382ce4ad99903ad7653234a5f6c31"
     },
     {
       "file": "int8_random_10_batch1.hex",
       "kind": "random",
       "seed": 10,
       "batch": 1,
-      "sha256": "b747b95a84f42c15ba8a5d0b568a185d82ada1513fc1ecd703f256bcaa36ae5f"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 588,
+      "sha256": "379aa6d071021c0d5b01dc456d17c1b59c7de9bbff12879eddf5f4c6785451ac"
     },
     {
       "file": "int8_random_11_batch2.hex",
       "kind": "random",
       "seed": 11,
       "batch": 2,
-      "sha256": "cda16e030be60bc4c478cd9e71ce6ebd8b764b4b84526997202329287b3dbcb2"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 856,
+      "sha256": "ea24d9b5ea9a7634d4105af890536fb9cfb2c118f2bb09729bb1d63ca36ba8e7"
     },
     {
       "file": "int8_random_12_batch4.hex",
       "kind": "random",
       "seed": 12,
       "batch": 4,
-      "sha256": "b9b4f782ba967ac01404d10282e3f75d7f7ab3e1d6ee148909a074c5bd12dd2c"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 1392,
+      "sha256": "8a22e75255f7bb6137c03a80a073ad66f940dc22c1214e70ff57d4721d6033c8"
     },
     {
       "file": "int8_random_13_batch2.hex",
       "kind": "random",
       "seed": 13,
       "batch": 2,
-      "sha256": "50e9079e97b816554f46bc88643bfca425a252cdb8b846348c94280ab1401bf6"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 860,
+      "sha256": "611699dd641dc1d2fe41d5876ac6aa3119273ccf2ba6fb6348610225f8d98a06"
     },
     {
       "file": "int8_random_14_batch1.hex",
       "kind": "random",
       "seed": 14,
       "batch": 1,
-      "sha256": "75171442e3674dd3f963ca84bdb7ff89b39f7e6dd8ec60c3bd1f15008ffa387c"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 588,
+      "sha256": "3a1cb2aee7091c8ec5dc9d6b022661f50eea814ea919b727c96c87ec006d0ded"
     },
     {
       "file": "int8_random_15_batch2.hex",
       "kind": "random",
       "seed": 15,
       "batch": 2,
-      "sha256": "0752d9caa9a3afc3d751d23beb068c9dea7c88c9b2d521375d220a8339d2f2ef"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 856,
+      "sha256": "fed5717a46285c5d7449c6589612d3a2df04250b9b9113e59c81dff8e708a82f"
     },
     {
       "file": "int8_random_16_batch1.hex",
       "kind": "random",
       "seed": 16,
       "batch": 1,
-      "sha256": "91f1c975f2647d9f9abdad4b100d190e7968343fd5222de8382de2dac6670f1d"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 592,
+      "sha256": "56f6c2038b26e099eb3b4a0d856b2a9d6f65023713ac5a1b3f8f1052e7cbbb88"
     },
     {
       "file": "int8_random_17_batch2.hex",
       "kind": "random",
       "seed": 17,
       "batch": 2,
-      "sha256": "8827c6d16b8597e62f8e5b9b03ff932ea1b9430dc665da0fd1652b0a2f441a81"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 860,
+      "sha256": "a7a1ec0bb52d9c2dd718fbfd62db969b775452dcd7dc1ea99d3ae6f5d05e232c"
     },
     {
       "file": "int8_random_18_batch4.hex",
       "kind": "random",
       "seed": 18,
       "batch": 4,
-      "sha256": "a1a9dd99b60e90b314985fdae7c03109836a02473c655d5e92d77a25c46bf240"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 1388,
+      "sha256": "6c19b7440ae4997f66ee019cca159c53a6f8c53311df765387ad399483610a85"
     },
     {
       "file": "int8_random_19_batch2.hex",
       "kind": "random",
       "seed": 19,
       "batch": 2,
-      "sha256": "b4e9df8a3119b76facd8aee6ac6fb57099b4ee5f39b98388d4582029159c644a"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 856,
+      "sha256": "ebca257bdcf63d728b4e795fce565051dde4c8ec5887b25334743850c2f85979"
     },
     {
       "file": "int8_random_20_batch1.hex",
       "kind": "random",
       "seed": 20,
       "batch": 1,
-      "sha256": "720cb32eb24b6aa2e07fe8cd09d0f9707718136a2ea707ec4872fe75d5827735"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 592,
+      "sha256": "6b87008fbc753915a8a5862792284b2ff32c02952fab6c44457d95f5db75c9fd"
     },
     {
       "file": "int8_random_21_batch2.hex",
       "kind": "random",
       "seed": 21,
       "batch": 2,
-      "sha256": "7e0b1033a8d9acdd80074571d9fb9af81679ca4269bf380c27abcf45a10f2cc6"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 860,
+      "sha256": "1a65280ad9594f9cb4b5f07808dbe50fcb54c5b7b76de724b8f3a45667896cd7"
     },
     {
       "file": "int8_random_22_batch1.hex",
       "kind": "random",
       "seed": 22,
       "batch": 1,
-      "sha256": "61106f92036f48d04631a048554aa725961fa17f96e88fc68c38f6994a85a858"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 588,
+      "sha256": "5adfe9ce5b2bd4d0111550c1aa24c78e27d832706d9980a892560ad28dbe1400"
     },
     {
       "file": "int8_random_23_batch2.hex",
       "kind": "random",
       "seed": 23,
       "batch": 2,
-      "sha256": "38b039e001c6d837d48356dd655bb87c443199bdaaced80bbeb880440744eb29"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 856,
+      "sha256": "c061f054a6a5ce232ed2ea2407b0371d8970182d7f025c109cde05eb2e0eddf8"
     },
     {
       "file": "int8_random_24_batch4.hex",
       "kind": "random",
       "seed": 24,
       "batch": 4,
-      "sha256": "33c91591b3ee3d9e191dd7126a5d7f6bd74d10d64ba4848df6a6c696b2379a4e"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 1392,
+      "sha256": "2c536be3cb86c2675636148928164ced41edc53e3451cf5022d8a7df8b500a4a"
     },
     {
       "file": "int8_random_25_batch2.hex",
       "kind": "random",
       "seed": 25,
       "batch": 2,
-      "sha256": "0dff05f914f1e96e718eb6a3e4f3a1a874197386b69102f75f9e40f73a5306b4"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 860,
+      "sha256": "174e6cc3f06ed954582a19e330a125f4574d3eb02eca608b40d9cf7f2cba43ae"
     },
     {
       "file": "int8_random_26_batch1.hex",
       "kind": "random",
       "seed": 26,
       "batch": 1,
-      "sha256": "bb081e940a751b24c86d446a8bcd30c93a5eab58ed0b9afbd735f1c74c6b1f25"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 588,
+      "sha256": "fff610917f6aa70cfb197b016ada837507cf3d162a6c98a31bb3778c1de017d7"
     },
     {
       "file": "int8_random_27_batch2.hex",
       "kind": "random",
       "seed": 27,
       "batch": 2,
-      "sha256": "0566c0c61372ebf1e385756c79c45e47cf03096fbb3620e1c57425ccd9815ac1"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 856,
+      "sha256": "ad8ef03c4df70fa550dec3f9f8b7f223d7fa78cae5dac51292a79006cbdba438"
     },
     {
       "file": "int8_random_28_batch1.hex",
       "kind": "random",
       "seed": 28,
       "batch": 1,
-      "sha256": "b5dca33a0bfbb41e08be24f964bd13b0788fcd68dfcf80d0aef3f6b9d3c9cff3"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 592,
+      "sha256": "484a4b2c1ce665abab6dbdf425144f2cfa4f79451b29c0d78fab2035edca8a47"
     },
     {
       "file": "int8_random_29_batch2.hex",
       "kind": "random",
       "seed": 29,
       "batch": 2,
-      "sha256": "c91036b9b2dc375bed6f388cb6ff5b623540713f1a947aba87e43c3f28ef5c1d"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 860,
+      "sha256": "72f9cacf38940cf853117dc630abfdead24622ddba28421fd99450836273b6e7"
     },
     {
       "file": "int8_random_30_batch4.hex",
       "kind": "random",
       "seed": 30,
       "batch": 4,
-      "sha256": "24f6ccc6a13e205de54164b2df8c3f92323fa7b7764d18299f21ce2db7798a43"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 1388,
+      "sha256": "52f5a8446d89471e3241af28b09fe1d163a85dbc7945f9916ab4824861baf140"
     },
     {
       "file": "int8_random_31_batch2.hex",
       "kind": "random",
       "seed": 31,
       "batch": 2,
-      "sha256": "c64aa520fad956cf723677fed7161150c729ebe7e03f33860fa94ee2fc790328"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 856,
+      "sha256": "78c875d0ea57e853ae793659f65c6ab785ae31afe074816dc117744c2f280ba6"
     },
     {
       "file": "int8_uci_00_batch4.hex",
       "kind": "uci",
       "seed": 10000,
       "batch": 4,
-      "sha256": "3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 1388,
+      "sha256": "d9b9eea1e5f104290fd8566ffa961a577680a0a1c272757281633b3404d4982d"
     },
     {
       "file": "int8_uci_01_batch4.hex",
       "kind": "uci",
       "seed": 10001,
       "batch": 4,
-      "sha256": "e1752ec47cb7f19d91576e23c4ff6ccc3f05b091dd25a43e2691e520683e0728"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 1388,
+      "sha256": "ecc1f75c172004fc89295e753313249d06d1b3593fbf5b86dfb269b6b175c8b1"
     },
     {
       "file": "int8_uci_02_batch4.hex",
       "kind": "uci",
       "seed": 10002,
       "batch": 4,
-      "sha256": "9883f47c1ad353f9e79c5776cbb9b36879a563eb6439cf8c553e1d9ba66ff4a9"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 1388,
+      "sha256": "abda80b51f5525de488681a65187f330e6219b57eafc6068321f6aa091e7dada"
     },
     {
       "file": "int8_uci_03_batch4.hex",
       "kind": "uci",
       "seed": 10003,
       "batch": 4,
-      "sha256": "0c7bdc321ead36fcf5cde0335724fb4bbb9e8ed64c888d4f9ffadd2b8736e59e"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 1388,
+      "sha256": "9e02badbb11ba666d0f729bae111dcb17c8c10a82088ba09a961001d131f8c0e"
     },
     {
       "file": "int8_uci_04_batch4.hex",
       "kind": "uci",
       "seed": 10004,
       "batch": 4,
-      "sha256": "899dabc8591b6669173adb1b1ff00411706979ca050189cc5bd7ef04eb06afda"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 1388,
+      "sha256": "dc6f40be1ef64767b014b65483d7a431fd7d1e82e6036f124dcd4484ef0d83d1"
     },
     {
       "file": "int8_uci_05_batch4.hex",
       "kind": "uci",
       "seed": 10005,
       "batch": 4,
-      "sha256": "8fc0f81e2714f4a951e8f2bfeab441f14bc6805206c57ca61e4023286603fcee"
+      "firmware_mode": "scheduled4",
+      "code_bytes": 1388,
+      "sha256": "d18219831aa77983c447c705a75e79f78021ef5e3a140dc4841894ac0f4ab434"
+    }
+  ],
+  "retained_fixtures": [
+    {
+      "file": "int8_partial_4k.bin",
+      "bytes": 4096,
+      "sha256": "8468bd66ee42ab23507aa5f2968d2ea09243c9b9feed3fa8a62a3a87f5a89aee",
+      "status": "historical partial image; not regenerated or validated with current firmware"
     }
   ]
 }
