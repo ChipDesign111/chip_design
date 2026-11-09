@@ -23,7 +23,9 @@
 2. **提高权重传输和跨样本复用效率。** 固定 seed 10000 的 NPU+DMA 独立背压测试中，batch 1/2/4 分别为 1401/1431/1541 拍，摊到每样本为 1401/715.5/385.25 拍，三者均搬运 2240 B 权重、发起 36 个 DMA 命令。监测到 WAIT_TILE 为 1282/1195/1071 拍；这些数属于独立 testbench，不与上述 SoC 的约 976 拍混用。见 [性能结果](ifetch_20261109/perf_result.json) 和 [状态计数](ifetch_20261109/perf_profile.json)。当前证据优先支持减少传输等待；该测试未观察到读 FIFO 满造成停顿，因此不能据此声称增加 FIFO 或 MAC 就能加速。
 3. **有条件评估 AXI FallThrough。** 独立实验保留 `CUT_SLV_AX`，仅改 `FallThrough=1`，训练用例为 3405 拍，比集成版再少 105 拍。它改变组合路径，本次主实现仍取 0；采用前需重新检查物理时序。
 
-上述优化方向未扩大 MAC 阵列。已有 FPGA bitstream、旧 DEF/GDS 和 SDF 不属于当前源码；本次物理结论需以新增综合及后续布局布线报告为准。
+**新综合结果。** 当前 HDL 和 filelist 的冻结副本已完成 Genus 19.17 工艺映射与优化：全 SoC 单元面积 2.152504 mm²（包含 0.401444 mm² 主 SRAM 宏），取指模块 0.091344 mm²、CPU 0.369224 mm²、NPU 子系统 0.898708 mm²、DMA 0.037995 mm²。20 ns、TT、理想时钟和现有 SDC 下，最差 setup 余量 +0.3398 ns，TNS 和违规路径均为 0；未解析引用、未驱动、多驱动、latch 均为 0。面积预算检查通过，计划裸片 1.948×1.948 mm、3.794704 mm²，但尚无本版放置/布线后的实际结果。详见 [综合摘要](ifetch_20261109/synthesis/summary.json)、[原始面积](ifetch_20261109/synthesis/syn/my_soc_top/reports/area/area.rpt)、[原始时序](ifetch_20261109/synthesis/syn/my_soc_top/reports/timing/func_tt_1p80v_25c_timing.rpt)。
+
+综合最差路径现为下降沿 SRAM 事务复位寄存器，经 AXI 返回/仲裁逻辑，到 NPU 读返回寄存器的半周期路径；后续时序优化应检查这条路径的高扇出和组合深度。现有 SDC 对部分外部输入采用零 slew、对 td_o 采用零外部负载，因此这里不是板级 IO 签核。上述优化没有扩大 MAC 阵列；本次未重跑 PNR、SDF 后仿或 FPGA 板测，历史 bitstream、DEF/GDS 和 SDF 不属于当前源码。
 
 ---
 

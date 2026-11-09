@@ -94,7 +94,8 @@
     "npu_cases": 41,
     "ifetch_checks": 56,
     "matched_full_soc_cases": 4,
-    "debug_cold": "PASS"
+    "debug_cold": "PASS",
+    "genus_synthesis": "PASS"
   },
   "limits": [
     "SoC cycles include CPU golden checks; not pure inference latency",
@@ -134,6 +135,33 @@
     "soc_runner/seed_0/console.log": "438a4f5f8eaa42ed8813af6bbda8805af38c0b564725819c980a77f1b8929212",
     "soc_runner/seed_1/console.log": "8fdfcbe44dfd065f1444e8b246af3834adc85b9faff6c96f2f2f688c5c7db4f9",
     "soc_runner/seed_10000/console.log": "b858d939b5f759e4a6e86e6518f6eb717f201237b4fffd7017adfbb5b831753f",
-    "soc_runner/seed_2/console.log": "67117f064395b67d79538d4816550401c211af4f2efbfde0002cb4c1079c7c83"
+    "soc_runner/seed_2/console.log": "67117f064395b67d79538d4816550401c211af4f2efbfde0002cb4c1079c7c83",
+    "synthesis/evidence/check_opt_summary.rpt": "61ae273ee5d10438516b63816f7761f4db1db2b39405958e5cdc4fc88680867d",
+    "synthesis/evidence/doctor.json": "f7fa5561ed29652c56c3038c0f7ba417768aa3095ad5a3870c3aa97b64d16c7e",
+    "synthesis/evidence/floorplan_plan.json": "9c2c41f61bae521eec03a45baca3c2eba1d7218121bfa7831096e9c0d3f94a89",
+    "synthesis/evidence/genus_completion_tail.log": "b092b6900af9243dd76e2f5f4715619b2252d5ce16d5b21e3b7d460b6de9f3a1",
+    "synthesis/evidence/input_manifest.json": "0055802314ba3e5b54bab07e55feafc2620042037775985b7e2d84ad4fb4a8e1",
+    "synthesis/evidence/output_proof.json": "11bef9c2127a30491459942ce7362784246c82d98af7fe722ee6182b03f393e8",
+    "synthesis/evidence/preparation.json": "9e79964599374109fca9dd0a8e33c5946fcfe89de1694e974d2568a3fb458974",
+    "synthesis/evidence/source.json": "c212813705e6c3d4edf86514bd3f936b3488dde37efd7343006d73f3a4673c19",
+    "synthesis/evidence/synthesis.json": "069d20bcab1dddb321ed2c0f9b7827204b9cd1adc006b4ef87047eb14ec0ae26",
+    "synthesis/evidence/synthesis_status.json": "ede58ee716170bbc1ebd95acf58824e98a14a0be124e04283690b2c344f89047",
+    "synthesis/evidence/tool_process.json": "851d4fcfe4effa723f91f5cbbc7a05a2fd0819e62245503be5293c2f9b1320cb",
+    "synthesis/summary.json": "af2c71a05ee28da25fe5041bddda63d0cf0e462e6b4b7cafa93e7ca69f289c07",
+    "synthesis/syn/my_soc_top/reports/area/area.rpt": "17e00d08c4caa60228702d0094e295d23c08254d27f8013c742ed145bded0250",
+    "synthesis/syn/my_soc_top/reports/others/clocks.rpt": "689a599cd76f2f586f508af9e6c82af049be61c5364f864cfa532e7be72e5070",
+    "synthesis/syn/my_soc_top/reports/others/design_rules.rpt": "85690385f172a2194fd6ac9f378122d26391d00f1ea5853c1fac156c4af59404",
+    "synthesis/syn/my_soc_top/reports/others/qor.rpt": "6aa6f6c6c830ccb8b2425a446ecee49e2dcf5cec12acd9b65ac2cc60327932c3",
+    "synthesis/syn/my_soc_top/reports/runtime/syn_opt_message.rpt": "9650e858d393d6987a6ac83883f795adaa4003d7520dca0d7143b936bfa08b2c",
+    "synthesis/syn/my_soc_top/reports/time_intent/func_tt_1p80v_25c_timing_intent_elab.rpt": "b1aea84023f81a2f8c5382470be75b2e09ec7e85a11f63c87505e47d5e81dea6",
+    "synthesis/syn/my_soc_top/reports/timing/func_tt_1p80v_25c_timing.rpt": "b217b66bf42ed9dc97c80a88496bc978ca6d55a79aa5d5fa9972c56283e708ad"
+  },
+  "synthesis": {
+    "cell_area_mm2": 2.1525041409999996,
+    "ifetch_cell_area_mm2": 0.091344467,
+    "period_ns": 20,
+    "setup_wns_ns": 0.3398,
+    "planned_die_mm2": 3.794704,
+    "physical_validation": "not run"
   }
 }

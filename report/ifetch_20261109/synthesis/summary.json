@@ -1,0 +1,90 @@
+{
+  "remote_work": "/home/s2400012713/chip-sync-integrated-syn-20261109/work",
+  "package_sha256": "ea00980f7b85e16d45db0e2816a5654f620e6a8f03370ddd21fd17338203b5c0",
+  "package_files": 190,
+  "rtl_module_files": 86,
+  "local_diff_from_package": [
+    "rtl/README.md"
+  ],
+  "system_period_ns": 20.0,
+  "max_die_area_mm2": 3.8,
+  "status": "PASS",
+  "scope": "Fresh Genus synthesis and planning only, not PNR/SDF/signoff",
+  "all_current_hdl_and_filelist_match_snapshot": true,
+  "all_packaged_rtl_match_frozen_synthesis_inputs": true,
+  "packaged_rtl_files_checked": 93,
+  "downloaded_report_hashes_verified": true,
+  "synthesis": {
+    "cell_count": 68935,
+    "cell_area_um2": 2152504.141,
+    "net_area_um2": 754416.75,
+    "latch_area_um2": 0.0,
+    "memory_area_um2": 401443.591,
+    "report": "/home/s2400012713/chip-sync-integrated-syn-20261109/work/syn/my_soc_top/reports/area/area.rpt",
+    "mapped_design": {
+      "native_main_srams": 1,
+      "mapped_leaf_instances": 68935,
+      "all_leaf_types_have_library_models": true,
+      "npu_dma_area_hierarchy_present": true,
+      "latch_area_um2": 0
+    }
+  },
+  "floorplan_planning": {
+    "cell_count": 68935,
+    "cell_area_um2": 2152504.141,
+    "net_area_um2": 754416.75,
+    "latch_area_um2": 0.0,
+    "memory_area_um2": 401443.591,
+    "report": "/home/s2400012713/chip-sync-integrated-syn-20261109/work/syn/my_soc_top/reports/area/area.rpt",
+    "planning_pass": true,
+    "required_core_area_um2": 2530697.966338235,
+    "planned_whole_die_area_mm2": 3.794704,
+    "max_whole_die_area_mm2": 3.8,
+    "standard_cell_area_estimate_um2": 1751060.5502499999,
+    "reserved_macro_halo_um2": 470626.73075000005,
+    "target_utilization": 0.85,
+    "core_size_um": 1648,
+    "planning_only_not_timing_or_IR_proof": true
+  },
+  "hierarchy": {
+    "my_soc_top": {
+      "cell_count": 68935,
+      "cell_area_um2": 2152504.141,
+      "net_area_um2": 754416.75
+    },
+    "i_cpu": {
+      "cell_count": 16140,
+      "cell_area_um2": 369223.859,
+      "net_area_um2": 189590.007
+    },
+    "i_dma": {
+      "cell_count": 1390,
+      "cell_area_um2": 37994.522,
+      "net_area_um2": 12788.777
+    },
+    "i_ifetch": {
+      "cell_count": 3197,
+      "cell_area_um2": 91344.467,
+      "net_area_um2": 28359.364
+    },
+    "i_npu_subsystem": {
+      "cell_count": 33340,
+      "cell_area_um2": 898708.294,
+      "net_area_um2": 361587.313
+    }
+  },
+  "setup_wns_ps": 339.8,
+  "setup_wns_ns": 0.3398,
+  "setup_tns_ps": 0,
+  "setup_violating_paths": 0,
+  "critical_start": "i_sram_transaction_reset/reset_qualified_n_reg/CPN",
+  "critical_endpoint": "i_npu_subsystem/i_npu_core/douta_reg[1]/D",
+  "critical_path_context": "Falling launch at 10000 ps to rising capture at 20000 ps; ideal clocks and 520 ps setup uncertainty; detailed report rounds slack to 340 ps.",
+  "tool_exit_code": 0,
+  "error_or_fatal_lines": [],
+  "limitations": [
+    "Synthesis TT estimation with ideal clocks; no CTS/routing/SDF simulation executed in this validation.",
+    "Existing SDC assumes zero input slew for rst/td/tms and zero td_o load; not board IO signoff.",
+    "Planning confirms geometric budget only; no placed or routed die has been measured."
+  ]
+}

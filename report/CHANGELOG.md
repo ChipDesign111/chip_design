@@ -1,5 +1,7 @@
 # 当前架构变更
 
+2026-11-09：本次集成源码的新 Genus 综合正常完成，单元面积含 SRAM 为 2.152504 mm²，取指模块 0.091344 mm²；20 ns 下 setup 余量 +0.3398 ns、TNS 0。裸片 3.794704 mm² 的空间规划检查通过，本次未执行 PNR/SDF/板测。源文件哈希、原始报告和限制见 [综合摘要](ifetch_20261109/synthesis/summary.json)。
+
 2026-11-09：以 rtl-dev `1eb6462` 为基线移入 `5da2148` 的 4×8-word CPU 取指缓存，保留 `CUT_SLV_AX` 与 `FallThrough=0`。修复精确非缓存地址、写入后旧指令一致性和异常 AXI 填充处理；单样本 Argmax 改用最终提交的第 0 类分数。41 组 NPU/DMA 用例、56 项取指协议检查、4 组同固件完整 SoC 和冷启动 Debug 通过，训练固件自检 6369→3510 拍。通用 filelist 与活动 Vivado 工程均已加入新模块。详细性能、证据和后续优化方向见 [性能报告](performance.md)；历史 PNR、SDF 和板测结果不代表当前源码。
 
 2026-11-04：当前 INT22 FPGA bitstream 在 A7-35T 完成无预装 JTAG 板级自检、LED 状态、连续复位、重复重配置和长时间运行回归。CANONICAL 固件得到 `0xC0DEC0DE`，最终 PC 为 `0x80000470`；NPU 为 975 拍，FC1/FC2 发射周期为 256/64，权重 tile 加载 64 次，DMA/MAC 总重叠 279 拍、读/写重叠均 278 拍。无预装 JTAG SoC 硬件周期实测 6368 拍，与 RTL 硬件口径 6364、testbench 观测 6369 的差异按启动和观测边界记录。SRAM byte 0–3 写入得到 `0xDDCCBBAA`。原始 GDB 和分版本 `TEST_REPORT.md` 已归档。

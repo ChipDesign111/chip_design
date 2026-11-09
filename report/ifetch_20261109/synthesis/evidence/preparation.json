@@ -1,0 +1,17 @@
+{
+  "rtl_files": 78,
+  "include_dirs": [
+    "rtl/include",
+    "rtl"
+  ],
+  "macro_source": "/lec/lab4/soc_cv32e40p_template_pnr-stu/src/macro/RA1SHD_2048x32M8",
+  "work": "/home/s2400012713/chip-sync-integrated-syn-20261109/work",
+  "functional_retested_here": false,
+  "profile_changes": [
+    "CHIP_USE_RA1SHD and SYNTHESIS",
+    "absolute source paths",
+    "no hidden path_adjust tightening",
+    "guard empty async net selection",
+    "original CPU clock passthrough"
+  ]
+}
