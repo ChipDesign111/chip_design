@@ -1,0 +1,17 @@
+xrun(64): 21.09-s013: (c) Copyright 1995-2022 Cadence Design Systems, Inc.
+TOOL:	xrun(64)	21.09-s013: Started on Nov 09, 2026 at 14:34:58 UTC
+xrun
+	-64bit
+	-R
+	-xmlibdirname /home/s2400012713/chip-loopopt-20261109/suite/test/int8/runs/alternatives_profile/build/xcelium.d
+	-l /home/s2400012713/chip-loopopt-20261109/suite/test/int8/runs/alternatives_profile/poll8/seed_2/xrun.log
+Loading snapshot worklib.tb_soc_profile:sv .................... Done
+xmsim: *W,DSEM2009: This SystemVerilog design is simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
+xcelium> source /opt/eda/Cadence/XCELIUM2109/tools/xcelium/files/xmsimrc
+xcelium> run
+INT8_PROFILE elapsed_cycles=1638 setup_cycles=566 npu_cycles=805 post_npu_cycles=267 minstret_events=697 load_events=129 store_events=65 branch_events=71 jump_events=2 load_use_events=11 imiss_cycles=22 compressed_events=0 config_writes=59 post_npu_reads=23 setup_minstret=186 npu_minstret=406 post_minstret=105 setup_load_use=1 npu_load_use=0 post_load_use=10 setup_imiss=10 npu_imiss=0 post_imiss=12
+INT8_SOC PASS cycles=1644 hw_soc_cycles=1639 npu_cycles=805 fc1_issue_cycles=64 fc2_issue_cycles=16 DMA_read_MAC_overlap=69 DMA_write_MAC_overlap=68
+Simulation complete via $finish(1) at time 119643 NS + 0
+/home/s2400012713/chip-loopopt-20261109/suite/test/int8/tb_soc.sv:92         $finish;
+xcelium> exit
+TOOL:	xrun(64)	21.09-s013: Exiting on Nov 09, 2026 at 14:34:59 UTC  (total: 00:00:01)

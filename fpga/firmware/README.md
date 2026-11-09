@@ -4,9 +4,10 @@
 RV32I 自检程序、权重、偏置、输入、整数 golden 和 PASS/FAIL 回写逻辑，
 每行一个 8 位十六进制 32 位字。
 
-2026-11-09 的活动镜像使用 `scheduled4` RV32I 固件：四字循环展开并调度独立
-load/store，保留所有逐项结果和计数检查。38 个 seed 已在固定 RTL 的真实 CPU
-仿真中验证；本次没有重新生成 FPGA bitstream，也没有重新上板测试。既有板测
+2026-11-09 的活动镜像使用 `reuse8` RV32I 固件：八字循环展开并调度独立
+load/store，复用已知地址指针，保留所有逐项结果和计数检查。38 个 seed 已在
+固定 RTL 的真实 CPU 仿真中验证，活动镜像与实测镜像逐字一致；本次没有重新
+生成 FPGA bitstream，也没有重新上板测试。既有板测
 结论仅对应 `fpga/versions/20261104_rtl-1c265c0_int22/` 的冻结版本。
 
 ## 镜像集合
@@ -30,7 +31,7 @@ UCI 00–05 各包含 4 条连续输入，共覆盖固定模型的 24 条输入�
 18,432 B，SHA-256 为：
 
 ```text
-d9b9eea1e5f104290fd8566ffa961a577680a0a1c272757281633b3404d4982d
+770876652242b4248f390845388a71c9146384bde80b18a4d674d1e8510a15d3
 ```
 
 `int8_uci_00_batch4.hex` 与 canonical 文件逐字节相同。上一版 20,480 B、
@@ -38,8 +39,8 @@ CRLF 格式的 canonical 镜像已随旧 FPGA 版本冻结，不再作为当前�
 
 `image_manifest.json` 是权威清单，记录每个文件的 seed、batch、固件模式、代码
 字节数和 SHA-256，以及生成器、汇编器、模型数据等来源文件的 SHA-256。
-当前 canonical 的代码为 1388 B，8 KiB 小端 `int8_selftest.bin` 已同步；其
-SHA-256 为 `728b03bc0591fc373753622fc7db063de0fa25cc331d184482cc3a2e2e2aabab`。
+当前 canonical 的代码为 1520 B，8 KiB 小端 `int8_selftest.bin` 已同步；其
+SHA-256 为 `3138265a94b452151a0191066246716fd4591542ef30c5a65c2146a95fa747ce`。
 已有对应 hex 的 8 个活动 bin 均由 `../prepare_jtag_image.ps1` 转换。
 `int8_partial_4k.bin` 保留为历史 fixture，不属于本轮生成或验证的镜像。
 最近板测完整版本快照见

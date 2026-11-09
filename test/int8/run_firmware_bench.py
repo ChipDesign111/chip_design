@@ -37,6 +37,8 @@ def main():
                         help="Repeatable; default 0,1,2,10000")
     parser.add_argument("--mode", action="append", choices=firmware.MODES,
                         help="Repeatable; default all firmware modes")
+    parser.add_argument("--baseline-mode", choices=firmware.MODES, default="baseline",
+                        help="Mode used for matched cycle reductions; select the preceding release")
     parser.add_argument("--reuse-build", type=Path,
                         help="Previous output root; reuse its identical original tb_soc elaboration")
     parser.add_argument("--xrun", default="xrun")
@@ -59,6 +61,7 @@ def main():
                  "full observed cycles include CPU setup, polling and golden checks",
         "source_sha256": rtl_hashes, "generator_sha256": program_hashes,
         "seeds": seeds, "modes": modes, "cases": [],
+        "baseline_mode": args.baseline_mode,
         "same_input_data": True,
     }
 
@@ -128,7 +131,7 @@ def main():
             save()
         if rtl_hashes != source_hashes() or program_hashes != generator_hashes():
             raise RuntimeError("RTL, testbench or firmware generator changed during experiment")
-        baseline = {case["seed"]: case for case in report["cases"] if case["mode"] == "baseline"}
+        baseline = {case["seed"]: case for case in report["cases"] if case["mode"] == args.baseline_mode}
         for case in report["cases"]:
             if case["seed"] in baseline:
                 before = baseline[case["seed"]]["observed_cycles"]

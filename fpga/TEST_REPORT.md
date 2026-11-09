@@ -4,7 +4,7 @@ FPGA 测试证据按不可覆盖版本归档，入口见
 [fpga/versions](versions/README.md)。最近完成板测的冻结版本为
 [20261104_rtl-1c265c0_int22](versions/20261104_rtl-1c265c0_int22/README.md)。
 
-2026-11-09 活动固件已更新为 `scheduled4`，完成固定 RTL 的 CPU 仿真验证。
+2026-11-09 活动固件已更新为 `reuse8`，完成固定 RTL 的 CPU 仿真验证。
 本次没有重新生成 FPGA bitstream 或重新板测；下列板级结果仅对应冻结版本。
 
 ## 最近板测冻结版本（20261104）

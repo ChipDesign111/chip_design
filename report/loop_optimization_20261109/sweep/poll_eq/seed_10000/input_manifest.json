@@ -1,0 +1,14 @@
+{
+  "seed": 10000,
+  "mode": "poll_eq",
+  "batch": 4,
+  "code_bytes": 1388,
+  "instruction_words": 347,
+  "input_data_start_offset": 4096,
+  "input_data_sha256": "b619756fb1184b0933941b769ceb6c0b8aeaecd203d50981077f0fef9bb165ee",
+  "files_sha256": {
+    "firmware.hex": "9d78607f7345c3ea3093d392a92c6f40705bb0a894621b5a45ca4f6c4fd020b9",
+    "firmware.S": "a4a4e3dd0509118af2078c911d7e6a2e7c85cb4d6b637830f1cc8def0f77498d",
+    "firmware_meta.json": "ab5ebe46027915d5262ebb4d10dcbea700aaf2fe3ce046ab521d19db6c2cf8d2"
+  }
+}

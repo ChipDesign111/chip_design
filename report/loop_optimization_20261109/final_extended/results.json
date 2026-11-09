@@ -1,0 +1,4418 @@
+{
+  "status": "PASS",
+  "clock_period_ns": 10,
+  "scope": "Original tb_soc, actual CV32E40P firmware, behavioural SRAM; full observed cycles include CPU setup, polling and golden checks",
+  "source_sha256": {
+    "rtl/README.md": "6dfd2f3677200365dd96f99718010f2627b7955de896d3a2a66a2589e3a70642",
+    "rtl/axi/addr_decode.sv": "84e2b6d49c834b21f13b12d94919efd9a7d541b191a0651d2cca97435a5ca85a",
+    "rtl/axi/axi2mem.sv": "3ef78c641f0be1d090dde77e48ae114f774a1747836cdf3f85a30e2fd6d64e0d",
+    "rtl/axi/axi_adapter.sv": "e50bf7d69b52544a7c5d032f6f41817fd58aa4fb21c60dc999a89de738092c9a",
+    "rtl/axi/axi_atop_filter.sv": "328ce02dcbdca8917393b2f399b856be3c4e06f561cb1347368210c9aae3f9e3",
+    "rtl/axi/axi_demux.sv": "75ff0775043bea786d54781358558579e701042b2e687339fe53eb696de6e020",
+    "rtl/axi/axi_err_slv.sv": "15365a63f8a7b66bb61fce39b03ad5401845f244b5acd06d7140daab2c7906a4",
+    "rtl/axi/axi_id_prepend.sv": "37472cac2adfea0f0127f395ad2df8de9d0643122234113a5965dbfd82566bd7",
+    "rtl/axi/axi_intf.sv": "c610a66a6c58f0f53dc4a44c2932ff034cf5855ca3fdfd2e3621b0aa30e7fb43",
+    "rtl/axi/axi_mux.sv": "71b6b0187138fe1a659154f939678a92b1b36c3db7a5b74f7b64329beb107e97",
+    "rtl/axi/axi_pkg.sv": "76b3797792ee5b95ab5937f3d457b48852e5c427de48298dafbdde43d0916ac2",
+    "rtl/axi/axi_xbar.sv": "fe402e3efc15236b4ba66409777c0f7e959373344bd04ebbcba8bbf2582f0b16",
+    "rtl/clk_rst/cluster_clk_cells.sv": "0bf54e372850c1af22264711d311d943718dc4c8d918e47cc98e9a8d07461d44",
+    "rtl/clk_rst/cv32e40p_fpga_clock_gate.sv": "34cca41fb001e179819e899ad1cfe0e251193233b34e25da172db0bbbc55604e",
+    "rtl/clk_rst/pulp_clk_cells.sv": "717fc6e7ec754807440f346d9b8bb930da302fffd294550e30ceae78009f4e87",
+    "rtl/clk_rst/rstgen.sv": "83d9f70bab3b514062a7a79a581919afd5de466167dfcd08733c773f36ba094a",
+    "rtl/clk_rst/rstgen_bypass.sv": "51322d03a0479f16a4acb66cccee48003e2e224c02a7d3188cbaea9b2f8b2756",
+    "rtl/clk_rst/tc_clk.sv": "7eb340f76c76d18f4ac3b6d1d61433c7372118d24f57f83a6ceae82cdbf51c2d",
+    "rtl/common_cells/cdc_2phase.sv": "3720278ce00b5591a1a63fe5515528dd4223a35070303e58cf2e48bd0b56c8c1",
+    "rtl/common_cells/cf_math_pkg.sv": "afc32fcae21f6cbb834c5ee602a1aaee1b518fc436a86d4fe1b97942473d35c8",
+    "rtl/common_cells/counter.sv": "b7a9b5fc11ce4def51133f27ec0470a18ae7c8c6b1161f21c948ae848b693f58",
+    "rtl/common_cells/delta_counter.sv": "698851a015f2b093d5688faa02ae60f0b3ed4324a7584846a99726e1c93732f7",
+    "rtl/common_cells/fifo_v2.sv": "cff163332b28e84904955e88691f973a47f90a4209b3f0ae0d2afe94f6a49921",
+    "rtl/common_cells/fifo_v3.sv": "08cc968a5b26b5a68ad2c548755e6b3b0d07a7ad75a3f11e92bc1bab71eeb7c6",
+    "rtl/common_cells/lzc.sv": "c47046cab67cd9e9ff46f9b2a4c055f301eabd0f135d76d96639eb41c9fa3609",
+    "rtl/common_cells/rr_arb_tree.sv": "c7361280318a605131345932ab3325bc53f8fc76e67c5579b991b96a5b4ffeed",
+    "rtl/common_cells/spill_register.sv": "97bf85128f538c54c749896b8eee5fcfe4b27c16845d2a17990979a63b09f2ec",
+    "rtl/common_cells/spill_register_flushable.sv": "f25965444dd82ef32a8a5eaaf6bcc5f05d1ab577b42ee4157dffb38aff5ccfe9",
+    "rtl/common_cells/stream_register.sv": "b4292350fdfaf9471b736dbd610d4cb0a450ed757e9f13431e4b195c53834b1c",
+    "rtl/cpu_cv32e40p/include/cv32e40p_apu_core_pkg.sv": "33d7c06b0fef3ae2c8814b040abe3cdaa23065cf12643de20e8275f44f97abe1",
+    "rtl/cpu_cv32e40p/include/cv32e40p_fpu_pkg.sv": "ae738f408ba2ade41bfcf0488c8f611a2c39b26915191890dac907b8a7a518e5",
+    "rtl/cpu_cv32e40p/include/cv32e40p_pkg.sv": "3fee39d262ef44bff6ee00b591fe08830e5e35cdd1b9e5eb9eb06da6f6525805",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_aligner.sv": "c78cd8c09fee10e45536dc5b8d1fb17c3a130e2270168279fcaa43a19580e4f3",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_alu.sv": "6eca8d4c2e299adcc498417220478360cc22898ba9037cdad6a1b81e80373c7b",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_alu_div.sv": "11035bcbb28447fa5a3e40d5cad4f257e763f75e49664ce8098ab6247a9a57cb",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_apu_disp.sv": "27931c8004e4d266c6ea02c9d5c19968c67d7e6ab86e57da4088531b13c8c48f",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_compressed_decoder.sv": "db90df2f8737aff29d73b3d242dd33aeb6750ae69ae7eb8e118b531180945d7f",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_controller.sv": "858b172963e17529de0b40a5be6ddfdadfc60bdca967819e4fc558b0ed6d7b87",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_core.sv": "6a78a0d77d32e6795f63e5149f77b98320ce504c67c44a2e359c9aea70989224",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv": "e2cec8f3d273748783275c60b1ec89101336608638d7e7783b03dd6b9dbb0345",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_decoder.sv": "6e12f673e05380e34a35c38d8ee8b6878935d96b6f2dfda72c67f8a6e92a6e4e",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_ex_stage.sv": "1510df315721b370c2d86b1c1d134a3ff6beefba2d072de7a4a611e3ecffb753",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_ff_one.sv": "6b646e6aa931f8ab56b85ee27549a422450b456270a54d68a4130329823226b6",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_fifo.sv": "d910cbd0751f38d349e8975de22b43d0a2937f9e905b0d9b82894fd83c53fe8a",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_fp_wrapper.sv": "1579104bf82f2e18a13029a7e299d867415a660ccff24c20ca3bb4ee4e315e9d",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_hwloop_regs.sv": "c2a0787c07bcd6c198b6338c4c6ee372b4bce96ec4a4def467ff0ae03da4e43a",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv": "98b246d9ada45a7073d217d5c3bbc86941ee76bb00e7e0edda61d3bbec83728e",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_if_stage.sv": "e2d1cc9bc433a093938f2d4e4268c611f9a9bf199101e85114d417ff04597626",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_int_controller.sv": "24df51d9cb33f5c8760a8cfbc7931aafc94c2ab0523c7df55b2635e7778af16f",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_load_store_unit.sv": "857962513fc5bd3eb3d6b28c55fdfb15ef53f8ce8a59173a7d583efb8caee66f",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_mult.sv": "6a0cf2f15c69886ad5497222aa203f6f5b1fdd004b32a4ab87b36a0960ba2254",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv": "2b0a58e5c2f758dbe5f6e8f786c547da5508ce466007517434e2f7d817b758ed",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_popcnt.sv": "7a2dbeded21929832b40fc8d068b35b7281c75a63c426feed207127d4da08e4e",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_prefetch_buffer.sv": "a2fcbe6b783659ebecaf25d105f30c68af9b68c2850b833af64a2cec3ec29262",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_prefetch_controller.sv": "66e6078ea3b3acd3ceea4b974c0488d25e02324935532de1f2d39cdc34c875a0",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_register_file_ff.sv": "cd04d46afbf778ff3f1573bdd390784e5461a09b33fd670fa126ae7d3c433e89",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_sleep_unit.sv": "1cf012a83b54472931ad9944e7774e311222641a0aa026229c19467f90bf5448",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_top.sv": "2467f6b3c2745e687edad1a0c88ab5267b4ba8642c91e1fc0f282cf4223e5dc3",
+    "rtl/debug/debug_rom.sv": "fa60eaab03518e8e145a3f0a626bc7945e79265e8322ce874a6c8f6996f0e10b",
+    "rtl/debug/dm_csrs.sv": "0538bf1d829187699085de361d20ab79d04a459b06060a8f04709105f61818dc",
+    "rtl/debug/dm_mem.sv": "fa416bea75e91c7e1b2ea3302c46d04574ecb0ff4b0e37b451b6afd873dc4bc5",
+    "rtl/debug/dm_pkg.sv": "c46075cb09de0e773c91da62d02497673945b7a3e5de176363e5b5e118f82eea",
+    "rtl/debug/dm_sba.sv": "e7e30ce0f0e6f652dcf59e586933cada245018b80f2529da476b4272e86e4380",
+    "rtl/debug/dm_top.sv": "5fa2656a11759ff10fd016ed885761c9c379627b9a1b83ddee6e03a35ee9e23f",
+    "rtl/debug/dmi_cdc.sv": "ad8a13c8314b9a3c28228db2844466c9d750460d6afa8f6299a7229d80f8dd47",
+    "rtl/debug/dmi_jtag.sv": "807cf3fb86fe7060cdb1fa21dfbc843220b09a4d694d23ad4bc1cdd3e7118264",
+    "rtl/debug/dmi_jtag_tap.sv": "50d1b4d325694f4e898d5b2f2e7b26a7e631a5abdd1cd283500c900b079275ab",
+    "rtl/dma/README.md": "690748462e992aa2965053a989d11a70d15c37ed297697b23681f2f7aefea47a",
+    "rtl/dma/har_dma.sv": "6aaa673d985b4c431ed7f65cb12ff7794bf6af48fbced4f399f3b5dbd45da2cb",
+    "rtl/dma/har_dma_axi.sv": "a1feba50769690c3fd1016c93931ddc1411d447a7ff1cc3b6ebcd82f64d7814d",
+    "rtl/filelist.f": "585ecd828be977bb22ea7b0c3aa01d996c0fec54176201db6cc1281f58cf5ff6",
+    "rtl/include/axi/assign.svh": "fda021db4c1c67e0345bcf8feb5a501d77e759ce56cef31e6293bdce89ec6a84",
+    "rtl/include/axi/typedef.svh": "c2ef2098fea077e07100b9b9c40f2ac5453e7e01af407e236a810b43aeb8b2ef",
+    "rtl/include/common_cells/assertions.svh": "d44ed5ffbbfb69c65f5b398428c6b5b5a1103883b925040cbc7bece257d13b1a",
+    "rtl/include/common_cells/registers.svh": "a4e19da894564fd30a4dec4ca8466d181592c9202be2bf124fc4caa82b432d25",
+    "rtl/include/my_soc_pkg.sv": "1366702d96b1ea493246dd813261956309bd14bccdb627121662de2b014ea83b",
+    "rtl/manifest.json": "2320acfe68f6c43593312197d9942ae1c3bad969cfa5f95a02c4bee2c5593819",
+    "rtl/memory/README.md": "68df5dd4a97229f4cea84c6803d74cad3de65bb68fe0f01ea34220d36ca1652b",
+    "rtl/memory/bootram.sv": "3a7930a2052e39d94d58042b27725eb60a16541463cfc92792dc0bb9727e714b",
+    "rtl/memory/bootrom.sv": "24f7966a9f6bd58e6cf28e9803b0bf1c66bb84feb5aef6306c472caba7be3710",
+    "rtl/memory/chip_sram_2048x32.sv": "8e2d5241c81dfb3fbeb0f64a7b042c8e553561f2ea6a42ee7c5f2331f32f22de",
+    "rtl/memory/my_mainmem.sv": "649ca8f38e5da58a7744228ea6893ef35c20ac0f6cbe16bd2ed35e44ecb913d4",
+    "rtl/memory/ra1shd_blackbox.sv": "bc8f3dbb1f1e7bc13338f986431a731aec51e457f8f1c93ca4eb90a0a2782874",
+    "rtl/memory/sram_transaction_reset.sv": "d3b9030e3c3e0612bb6fad4318df105582e90eac427100e41fdda02e3911ae1b",
+    "rtl/npu/README.md": "65551889e531f4ec9c651aa91756e96f11980ad689bae375534b13f56a470eff",
+    "rtl/npu/har_npu_core.sv": "2b5892ba861036b7b8133498816228c0f9ab5cfc0eb912d9395b76c1996e8f17",
+    "rtl/npu/har_weight_store.sv": "473106074ca66f795445cd3862104d7e57da364b6ab119996eb612934b7d2913",
+    "rtl/npu/simple_npu_top.sv": "a2c35d04c11661eba29ced83115b8e7e9e3767c5e94c77ac226f4aab14eba260",
+    "rtl/project.json": "150bfcd7583317fd77bec449a6ca2969d7f1d50eb57a185b81155dcc2291f6d9",
+    "rtl/soc/README.md": "f42df65df147d5c21bf5ab0cf3fe4a962da7ee361c4d2b1d8f338481676351d4",
+    "rtl/soc/my_ifetch.sv": "3d8d8ba907e5ad8a4b27e1e8d4b4abf9958a9a32c49056ed81150eeedfed1ea0",
+    "rtl/soc/my_npu_subsystem.sv": "85f4fe6b1bf0a093224eb16524ffc5e950e921e9e9a9d21ea73787fddc1cfe21",
+    "rtl/soc/my_soc_top.sv": "8f67ff81452ea80d4314c1c8d67b88bc72091e03e8f345b9aa2b2c2780483dd8",
+    "test/int8/tb_soc.sv": "ee13edc38b47fccc064e2f9d8125a07ba7beeb0dfa054099b2e5c8b68e4dbdb0",
+    "test/int8/tb_debug_cold.sv": "4f7e671e9b9fb871d153876ae4d2c07e2c343fdec57f1d673fba92fa2cc6d881"
+  },
+  "generator_sha256": {
+    "test/int8/assembler.py": "dd37a5885d98927fe27d42f663475b439b2b3f918b5d23ff33b8a5d304f2cf38",
+    "test/int8/firmware.py": "8f0171ad89e9ff422ae6c80ed3eb559c7808d07daa20cd4f20869eb53758c01c",
+    "test/int8/run.py": "c1f4ca32f2fbc8ee1b62e1c7d09a1a34d2d47f8d9479a33731958d0e787d48e0",
+    "test/int8/run_soc_xcelium.py": "f4b77c5d4a1f744875da2457b8d89b8e0eb0fcb15120bb5eb49c17b7935a1fc9",
+    "test/int8/run_firmware_bench.py": "a329baee0dd2404d3dc1ea6cedd30259659ccd7b6ce577fbb52c76bfb0907626"
+  },
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    10000,
+    10001,
+    10002,
+    10003,
+    10004,
+    10005
+  ],
+  "modes": [
+    "scheduled4",
+    "scheduled8",
+    "reuse8",
+    "reuse8_eq"
+  ],
+  "cases": [
+    {
+      "seed": 0,
+      "mode": "scheduled4",
+      "batch": 4,
+      "code_bytes": 1392,
+      "instruction_words": 348,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "be2fc2fbc8b9a36beb62a47acafca2bde131c509626d29d97502b58ca3c23c08",
+      "files_sha256": {
+        "firmware.hex": "6b808b079071b9fd98f030be182ba43dd3a17b7242c649073f6122256526a722",
+        "firmware.S": "ed4622ac7299c63c0b5d3cf91cb6d8a6feb0f653cb03363b4e12888554bdc127",
+        "firmware_meta.json": "b6bfe7f5e1f2fbd682d2b39902d387e80b4202d76eafc80fd2637ff4db1dfaf3"
+      },
+      "observed_cycles": 2901,
+      "hardware_soc_cycles": 2896,
+      "npu_cycles": 946,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 5.28,
+      "log_sha256": {
+        "console.log": "f87591be916b5c30de33ac81e16e7c5c61614086e492825632f11115cfa21649",
+        "xrun.log": "187d0a95456f51570dbb679b2300c70124b965ee082b64cee823fec21d2bd324"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 0,
+      "mode": "scheduled8",
+      "batch": 4,
+      "code_bytes": 1664,
+      "instruction_words": 416,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "be2fc2fbc8b9a36beb62a47acafca2bde131c509626d29d97502b58ca3c23c08",
+      "files_sha256": {
+        "firmware.hex": "1b75dd29b889daccacfd02f65e54f9d9fc95a7b94478d36dcd81f280dc7e33e4",
+        "firmware.S": "340d448c50a35c39e12da25b55dc78357d6f20d4af37690e735ea2641c808c1d",
+        "firmware_meta.json": "f7e451726140f29830469efa2c40d180e846fede2d9056e28172696c480c3306"
+      },
+      "observed_cycles": 2752,
+      "hardware_soc_cycles": 2747,
+      "npu_cycles": 946,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "0cdcffd2abd9182b37d31f5a2820cace32505d87345ede58ed4b31decd813c60",
+        "xrun.log": "c3baf4de02ed4c81d56f7d93da9bff09171b423cb9611c1f4ec2be64b2417edc"
+      },
+      "cycles_saved_vs_baseline": 149,
+      "cycle_reduction_percent": 5.1362
+    },
+    {
+      "seed": 0,
+      "mode": "reuse8",
+      "batch": 4,
+      "code_bytes": 1524,
+      "instruction_words": 381,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "be2fc2fbc8b9a36beb62a47acafca2bde131c509626d29d97502b58ca3c23c08",
+      "files_sha256": {
+        "firmware.hex": "a723b2c890d0b76eae9e1f5b975d2a2c34f0ec0b9cab9cc90d8f1d04b07809fb",
+        "firmware.S": "e84828bfc8c2e9b5ebaacd3d1a3af93f791ec33b9f2f7e4086910d31119c3c0f",
+        "firmware_meta.json": "ce641a78ae80ba7c13db0564b84bab0fa06cae7d6e7214a5434a26c6feeac0bc"
+      },
+      "observed_cycles": 2737,
+      "hardware_soc_cycles": 2732,
+      "npu_cycles": 954,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "fbf35e3a248cd4e64d77ec3d54a31642194d1f3033fe4aa53304139b36a09ade",
+        "xrun.log": "0973b4023fa2ae8b0fa6c0fef68d8c0646b7b37918e9b85a75b57680d481c6be"
+      },
+      "cycles_saved_vs_baseline": 164,
+      "cycle_reduction_percent": 5.6532
+    },
+    {
+      "seed": 0,
+      "mode": "reuse8_eq",
+      "batch": 4,
+      "code_bytes": 1524,
+      "instruction_words": 381,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "be2fc2fbc8b9a36beb62a47acafca2bde131c509626d29d97502b58ca3c23c08",
+      "files_sha256": {
+        "firmware.hex": "596a36a2d661f7081cf8d3d9e2e5f410f307b8734e8c1d23bb78dab55ac3dd17",
+        "firmware.S": "0ac500080f6063b6764a760f3062dcf2c3c53a077fa100eb6ac3df6d3c994687",
+        "firmware_meta.json": "bd9d9b3a719508c2ac2d7197a3c0619ab492a0a78c93781b1aacc1d58cfe4415"
+      },
+      "observed_cycles": 2736,
+      "hardware_soc_cycles": 2731,
+      "npu_cycles": 951,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "10dfc8d8a42c2b444c81c3362f49f4acbdf90c5a43c547aa893b379dd2c9cc98",
+        "xrun.log": "14ff698b4254b53ce78819c30e23e8a5a0f7330658c5211238a2465b5892a582"
+      },
+      "cycles_saved_vs_baseline": 165,
+      "cycle_reduction_percent": 5.6877
+    },
+    {
+      "seed": 1,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 860,
+      "instruction_words": 215,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "0b60dff9f0c7165ada985c995e95b2e01821dc4cc7661ee232fa596373b26834",
+      "files_sha256": {
+        "firmware.hex": "be97d942ad16417365e3015a4c83e978b314bda645ba67b74efe268de44780f5",
+        "firmware.S": "fd47fae54401aff8ef858d9ab250c6c95661f48c77645366cc414f853a9127f2",
+        "firmware_meta.json": "96a533118effe7900a89e25163a97ebba92788f225c5e5df945948ac26a190da"
+      },
+      "observed_cycles": 2043,
+      "hardware_soc_cycles": 2038,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.524,
+      "log_sha256": {
+        "console.log": "419942574b40131eed8f739be2df0fd35318232c6400b0bcdf298caa5af2fd06",
+        "xrun.log": "ae2c26c36afa491affc8109ee12db1f6d2f775496b4170dd7cbc94ea4db95c88"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 1,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1012,
+      "instruction_words": 253,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "0b60dff9f0c7165ada985c995e95b2e01821dc4cc7661ee232fa596373b26834",
+      "files_sha256": {
+        "firmware.hex": "3529ec614184ad4b38eb7d740f6ac4c1ffc83d261018b07eefe44ea9be3a3acd",
+        "firmware.S": "0d8fcf3eb8380b98386ebd621be3d200bece9cc61aa356ebca39697c58cccd58",
+        "firmware_meta.json": "85fd001aa0505ff55b726020cd831ead565af8b121a2b93ddc06b780c0198372"
+      },
+      "observed_cycles": 1989,
+      "hardware_soc_cycles": 1984,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "c3136885807cba1e4dfdfa8ef82d8bfc23878d2154efa65e473a2e6705cbac0d",
+        "xrun.log": "2cb15f84006f112ab601dc49e031f66fa5d3e1a7ecfa468005233aa49e457280"
+      },
+      "cycles_saved_vs_baseline": 54,
+      "cycle_reduction_percent": 2.6432
+    },
+    {
+      "seed": 1,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "0b60dff9f0c7165ada985c995e95b2e01821dc4cc7661ee232fa596373b26834",
+      "files_sha256": {
+        "firmware.hex": "3bbb0185548181e3bc1fbf73b5a06de2d6e0e499888f58e7d8cd320a3f81b3e4",
+        "firmware.S": "85a33244f206ff531f2194ce59f2d8a2a4192602f081a400a0c22ec09b46df16",
+        "firmware_meta.json": "3b6834ec5551a1f75796e7b98222b3295aad64860aafcda283f9f22961778b05"
+      },
+      "observed_cycles": 1977,
+      "hardware_soc_cycles": 1972,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "3a0607ca4f7c8b901c16a219cd7043eea9a5b3a56ba3e87b9d7fae438a029d03",
+        "xrun.log": "6e54390597f222a8514b5cdc41e3e75b92522ac23d21a8b82e3d5d4d1bbf6afb"
+      },
+      "cycles_saved_vs_baseline": 66,
+      "cycle_reduction_percent": 3.2305
+    },
+    {
+      "seed": 1,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "0b60dff9f0c7165ada985c995e95b2e01821dc4cc7661ee232fa596373b26834",
+      "files_sha256": {
+        "firmware.hex": "820c737ea6795fb4533178090c31f78f5e73820047dc6e52e15824fa7a8fee0e",
+        "firmware.S": "686b3fdb93ce9aed65423a4d491b98df4f00c0cc7770bdf6758c942e071da5ea",
+        "firmware_meta.json": "3a9475e84769b625a4d0c84c970a3223cb78f611f4b06d34b243e62dc63a26e5"
+      },
+      "observed_cycles": 1973,
+      "hardware_soc_cycles": 1968,
+      "npu_cycles": 845,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "57771cdc627ba012238f22c7e2cffe40e5cb08609e338ab3c7154a451c363bd6",
+        "xrun.log": "fdca5d1cf9cb65d6bd7b1199b7f11531c097a2ffed3a1d794310d1aa6368aca8"
+      },
+      "cycles_saved_vs_baseline": 70,
+      "cycle_reduction_percent": 3.4263
+    },
+    {
+      "seed": 2,
+      "mode": "scheduled4",
+      "batch": 1,
+      "code_bytes": 588,
+      "instruction_words": 147,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "dc15a83da593d1631ffe2ab3f1aa028e1c03d780933d436ba3049cbf645764b6",
+      "files_sha256": {
+        "firmware.hex": "756245d005bd51481c076628d12dc71eeb9805094971eccb9b505aecc0f8980e",
+        "firmware.S": "e9dbe66ab2423b5db2c055ad4d3419f4ffd7e64ea19e48a14357536911925c1f",
+        "firmware_meta.json": "f4f7562de6e71a6d81fa02dc5b02c6ff9f46084cc6843f405c5cbb6a02326050"
+      },
+      "observed_cycles": 1634,
+      "hardware_soc_cycles": 1629,
+      "npu_cycles": 801,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "b49a07dbd66685063a04f6e29d1aa34859f63424f1cd521bb3eafe2a5c6bd6ef",
+        "xrun.log": "3f4d07c2b73e58093634c9a07df703d40ba8c8bc08f7cb8f18e7e3283ca4a5c3"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 2,
+      "mode": "scheduled8",
+      "batch": 1,
+      "code_bytes": 680,
+      "instruction_words": 170,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "dc15a83da593d1631ffe2ab3f1aa028e1c03d780933d436ba3049cbf645764b6",
+      "files_sha256": {
+        "firmware.hex": "f9942ce6d38a62f7adff7e7a0497f6fd078966a9b57597c5be7faba926351b5a",
+        "firmware.S": "61ceef976ee40941583f230a4fdd07b77448a308ff7c4fb04b30f2a9eaa5ebec",
+        "firmware_meta.json": "abc56b90765785a60619eb18141ef724c5a91327aa3d7ccb6bccf1895e0b907f"
+      },
+      "observed_cycles": 1597,
+      "hardware_soc_cycles": 1592,
+      "npu_cycles": 801,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "345f404ee4103cb3345f53d269e5035b72d9da55dd7d9004c2f9a3066eec3a6b",
+        "xrun.log": "d52ab3f5f9e0c188788498cac41f58f1e0f31064a2a3a3ac3039a3b0ca29370e"
+      },
+      "cycles_saved_vs_baseline": 37,
+      "cycle_reduction_percent": 2.2644
+    },
+    {
+      "seed": 2,
+      "mode": "reuse8",
+      "batch": 1,
+      "code_bytes": 640,
+      "instruction_words": 160,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "dc15a83da593d1631ffe2ab3f1aa028e1c03d780933d436ba3049cbf645764b6",
+      "files_sha256": {
+        "firmware.hex": "1a99ea212d990b193250e345bf8e1a099059d1f6ebbcd6f6b77b83e31cdfa18e",
+        "firmware.S": "66f646bf6c435517d9f5985d386f8cb50e8f41abc194cbf99dbf6593b818c093",
+        "firmware_meta.json": "ff883340bf4588282085d06917cfc21aec3911a9a4f8adaba69e6bb781cac407"
+      },
+      "observed_cycles": 1600,
+      "hardware_soc_cycles": 1595,
+      "npu_cycles": 799,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "054b65aba14c434171c727c62511ca6f8e0e56e074f2a73e8dd6fa5c87972af2",
+        "xrun.log": "5665597e6851ed28625d97d57d6fa08c8d53b8972d871bd3baada6bc6cf6d222"
+      },
+      "cycles_saved_vs_baseline": 34,
+      "cycle_reduction_percent": 2.0808
+    },
+    {
+      "seed": 2,
+      "mode": "reuse8_eq",
+      "batch": 1,
+      "code_bytes": 640,
+      "instruction_words": 160,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "dc15a83da593d1631ffe2ab3f1aa028e1c03d780933d436ba3049cbf645764b6",
+      "files_sha256": {
+        "firmware.hex": "41815a2ed1f3a00e5e56fe95ce2bc414f42315f5e204a7aed722877f0587efa8",
+        "firmware.S": "fc1adeea5b0e6822ad8abbfc4c5377450df0bd3dfa2d01d53dec1cfae6c02b86",
+        "firmware_meta.json": "0bdd141a155f940da8d3310c806f7b08f9d498e9ab6ec32d66b7367ad0aca2a6"
+      },
+      "observed_cycles": 1597,
+      "hardware_soc_cycles": 1592,
+      "npu_cycles": 798,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "15c8863a46e9600293a27e7bc4d3767846ea0258056a57fa673078c3ade8b710",
+        "xrun.log": "08f566c408eb83fb5654b779bf38e1f21c7954754382aaa416969917026ea90a"
+      },
+      "cycles_saved_vs_baseline": 37,
+      "cycle_reduction_percent": 2.2644
+    },
+    {
+      "seed": 3,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 856,
+      "instruction_words": 214,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "72767077c0f8031a05ad2fb72e6b727fed91f231f6bbe49facdfc01331011c34",
+      "files_sha256": {
+        "firmware.hex": "7e729217139fa98b2f1cb4878bc6cf92ba1d1aa4dbe3c97426e2bb6c450297c5",
+        "firmware.S": "0fbd162f3713e05806c5d901a2d4f5326c8070fe0093af97e2259d60cf2870a3",
+        "firmware_meta.json": "1f029a0276068ba443196ef0a257e5d50e9d7eda2556f21497c67671895a6ad1"
+      },
+      "observed_cycles": 2025,
+      "hardware_soc_cycles": 2020,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "46560dcdaeedc1b108574c647b1d3216e636cd6f89e612f13d50271ce4e61bde",
+        "xrun.log": "f83222c993a4eff1d6a746ce4918c0ce96075ed7cd91b872ca5080c2d0854c5c"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 3,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1008,
+      "instruction_words": 252,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "72767077c0f8031a05ad2fb72e6b727fed91f231f6bbe49facdfc01331011c34",
+      "files_sha256": {
+        "firmware.hex": "d41af16d74ec4b7fedf135e14fe995bd4b1d636accee96000b464c8144b8ce1d",
+        "firmware.S": "a5e11ad3186a14de76410028ce69f9f5264bc0a4e8ee42782ebfd3d068d648b0",
+        "firmware_meta.json": "485ad3ec3934a319532c47c0f1196771842a022fa75723d34ba5befaf8a10ae9"
+      },
+      "observed_cycles": 1984,
+      "hardware_soc_cycles": 1979,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "07f62de3bfadf0675bb3f63a28432c55c4363d1bfbdd27ffebe0030808cf5281",
+        "xrun.log": "c00e3c45adaa6b044953280fce3b9b8c7b0333744ac447fdcdb43878c6e5f823"
+      },
+      "cycles_saved_vs_baseline": 41,
+      "cycle_reduction_percent": 2.0247
+    },
+    {
+      "seed": 3,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "72767077c0f8031a05ad2fb72e6b727fed91f231f6bbe49facdfc01331011c34",
+      "files_sha256": {
+        "firmware.hex": "cb181829f7aaffa311d52181d4491c1ee10685e28a710de36d70dc24f2c17ada",
+        "firmware.S": "024b833924d413abb6cf7cbb456b381293da0f0fdaa589d8b460a45dc214574b",
+        "firmware_meta.json": "7113af00c8d595fe8c51d38d2720301f877db42fbf88b53559ab5432a5f0cc91"
+      },
+      "observed_cycles": 1958,
+      "hardware_soc_cycles": 1953,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "373dc850c850f8e3053f3a27142752bfbf8a7c8231ff9cfcf94cbdcb0e03b847",
+        "xrun.log": "137717776afa875434145b3f0caf3c6ecb3bc9e169c069ad2856f0e6274bdd59"
+      },
+      "cycles_saved_vs_baseline": 67,
+      "cycle_reduction_percent": 3.3086
+    },
+    {
+      "seed": 3,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "72767077c0f8031a05ad2fb72e6b727fed91f231f6bbe49facdfc01331011c34",
+      "files_sha256": {
+        "firmware.hex": "647f82c96b8575a8fd928baeac5c1d78419825de8c4196682c922245898a023e",
+        "firmware.S": "ec3acbcb408a1d04584fc6eb165519e6158fdb341beeef566549b5fb5dc97894",
+        "firmware_meta.json": "ed18723733c8b2ce14fe24bbbb67f46e86138d339e154f5b5114a8ec4a78bce3"
+      },
+      "observed_cycles": 1954,
+      "hardware_soc_cycles": 1949,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "913dc9d7e6ae3dbe7a844be7d12a53431e6b9b7c9a1e6e2508c63bd602f68a24",
+        "xrun.log": "0ddb84ebf3b2856438c8232ca385eb5193bfc4a458002a978cdb8a675131d41c"
+      },
+      "cycles_saved_vs_baseline": 71,
+      "cycle_reduction_percent": 3.5062
+    },
+    {
+      "seed": 4,
+      "mode": "scheduled4",
+      "batch": 1,
+      "code_bytes": 592,
+      "instruction_words": 148,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "10bc93db121fd9931dc84303ff134b29f098753de18ff9cc9b7be061afba825c",
+      "files_sha256": {
+        "firmware.hex": "bb180d4c502d76c84af8795410181d562320b14e55ad0bf47f8006d371c3e7d9",
+        "firmware.S": "8222188695a3fbaad595fa19ea08a96bd7811e346bb38aa833f5b897eead8b3e",
+        "firmware_meta.json": "e910df6237afba9be8827effa9bfdb00cdfe59f02c90ea54517ae89080cad7c6"
+      },
+      "observed_cycles": 1654,
+      "hardware_soc_cycles": 1649,
+      "npu_cycles": 802,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "15e68e2c500fce5e74afdb5e286cb6fbb94508d8eeb07595d712092dfb708790",
+        "xrun.log": "1adb3bbb822d5d9c233085f60b1fd6255643db1ccf5fc6b15575828f2447eeda"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 4,
+      "mode": "scheduled8",
+      "batch": 1,
+      "code_bytes": 684,
+      "instruction_words": 171,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "10bc93db121fd9931dc84303ff134b29f098753de18ff9cc9b7be061afba825c",
+      "files_sha256": {
+        "firmware.hex": "459bfb6c872f967872581c78a39b794dffa6337f321462cc35269dbe7ff9778c",
+        "firmware.S": "65c9f997564b54089b54d8e9cd4d6e971b2ca5c1765f6f994c7cdc8e30258408",
+        "firmware_meta.json": "d8da0783e5c13c7c1167251093b5665319e588045a98eccf0387b88052eeadc2"
+      },
+      "observed_cycles": 1617,
+      "hardware_soc_cycles": 1612,
+      "npu_cycles": 805,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "a8dc1ac9a6e9aa7151e59cd350e8c3e5e7cb8ccfce84ad8b4a26002746c1ac65",
+        "xrun.log": "8c397920c4aaa428a6d6f669c9d8ab702c4ed5d92e950bba7268cb740247375b"
+      },
+      "cycles_saved_vs_baseline": 37,
+      "cycle_reduction_percent": 2.237
+    },
+    {
+      "seed": 4,
+      "mode": "reuse8",
+      "batch": 1,
+      "code_bytes": 644,
+      "instruction_words": 161,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "10bc93db121fd9931dc84303ff134b29f098753de18ff9cc9b7be061afba825c",
+      "files_sha256": {
+        "firmware.hex": "b1fd622929c1644c402c1c9b2ed2bb765c2114795822c0a681ed4910455512de",
+        "firmware.S": "1110825c6a06c89e55e9b09b4f52350a2ddd86d0e3542a3d610b05ae3092795e",
+        "firmware_meta.json": "fa18d0df24af7959b8200d145b930e95f7ad9189c6122898190ba8a355e6212d"
+      },
+      "observed_cycles": 1606,
+      "hardware_soc_cycles": 1601,
+      "npu_cycles": 803,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "8672f9b53901a2b8d4f9a429b3af4fff9cd471c8597c3647fce71af74297b3ea",
+        "xrun.log": "9acc5cdbee35877c686bda748edf536ab3baad1e28a30b1e30344f6c959b78f3"
+      },
+      "cycles_saved_vs_baseline": 48,
+      "cycle_reduction_percent": 2.9021
+    },
+    {
+      "seed": 4,
+      "mode": "reuse8_eq",
+      "batch": 1,
+      "code_bytes": 644,
+      "instruction_words": 161,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "10bc93db121fd9931dc84303ff134b29f098753de18ff9cc9b7be061afba825c",
+      "files_sha256": {
+        "firmware.hex": "b1d1cff09c9616102d49e65c0af94ea9e4e299a42bf07187297210c4df31480f",
+        "firmware.S": "56bd1e15bfffe3c29b99c5dc765c1b83211c0afb8ec26b093c29f46e87c3d8a2",
+        "firmware_meta.json": "8cc7ae208e1abe390b23b003ed6fe8e5d437dfda74b14ebbf12348dfc9fd50f4"
+      },
+      "observed_cycles": 1603,
+      "hardware_soc_cycles": 1598,
+      "npu_cycles": 802,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "7e8ae178a9ddcac1b8e016795fdabf41b36a6ef64c70497433672a6e74e1f951",
+        "xrun.log": "66f14c37386f35c4b446af6f6039e1409a27a2ba24eb3e8511f26a72b4e59907"
+      },
+      "cycles_saved_vs_baseline": 51,
+      "cycle_reduction_percent": 3.0834
+    },
+    {
+      "seed": 5,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 860,
+      "instruction_words": 215,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "5e4fb5ced4d1d1d0a4f8d2c589c5684cc7e4021b208213f36e075a9fb34bb643",
+      "files_sha256": {
+        "firmware.hex": "7acb7ec4e92827392bb99d3c665eacef7b8706614ff6c3afa92fb6d99047dec9",
+        "firmware.S": "fd47fae54401aff8ef858d9ab250c6c95661f48c77645366cc414f853a9127f2",
+        "firmware_meta.json": "6705661eef5c5568c087161928d305a62bb94c8e5df01f594f21330fc64a71d0"
+      },
+      "observed_cycles": 2043,
+      "hardware_soc_cycles": 2038,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "02694a1e60c3e863facf09e4ff9b22f2522566273b0a465d1591271b0732e844",
+        "xrun.log": "f276f26679fe540272f210d18d3a858e80b0dd9fecb8d2b11ad7bc58704aad1b"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 5,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1012,
+      "instruction_words": 253,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "5e4fb5ced4d1d1d0a4f8d2c589c5684cc7e4021b208213f36e075a9fb34bb643",
+      "files_sha256": {
+        "firmware.hex": "f652eeea4840772c70ee65334a2b70ed7f6852649e388612c18ab7105a4543bd",
+        "firmware.S": "0d8fcf3eb8380b98386ebd621be3d200bece9cc61aa356ebca39697c58cccd58",
+        "firmware_meta.json": "da7fb0e3a12046e245ae87b78e70553b9e5b2cafe1a8d0acf7830dcd6e12d396"
+      },
+      "observed_cycles": 1989,
+      "hardware_soc_cycles": 1984,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "b5569334724ee23e96f769417ac446fa03b3fbd8b39432f0705010d0f30e941f",
+        "xrun.log": "5bfafb7fe4e90139252303f2f8677ffe0b2d5dc4bbc88738c8493e44e212c2f0"
+      },
+      "cycles_saved_vs_baseline": 54,
+      "cycle_reduction_percent": 2.6432
+    },
+    {
+      "seed": 5,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "5e4fb5ced4d1d1d0a4f8d2c589c5684cc7e4021b208213f36e075a9fb34bb643",
+      "files_sha256": {
+        "firmware.hex": "cf6bf11a1facfaabd55f18d7247ff5281ce8bc40f8e51f4a5b456882c9190037",
+        "firmware.S": "85a33244f206ff531f2194ce59f2d8a2a4192602f081a400a0c22ec09b46df16",
+        "firmware_meta.json": "20d3d16822a0132e1c9af6a686011b7cc991b616ea84ebcbb0c2f65af975bb58"
+      },
+      "observed_cycles": 1977,
+      "hardware_soc_cycles": 1972,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "f8f7e2d614a6677fc3f3592efdb4c5f674ce9bec4b4f7a32ac462e4b6ad4ad58",
+        "xrun.log": "c81b04e49200a4eac682640ecaadfa2843166c2a4e1c0f40ced6dc94260a2414"
+      },
+      "cycles_saved_vs_baseline": 66,
+      "cycle_reduction_percent": 3.2305
+    },
+    {
+      "seed": 5,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "5e4fb5ced4d1d1d0a4f8d2c589c5684cc7e4021b208213f36e075a9fb34bb643",
+      "files_sha256": {
+        "firmware.hex": "04d587b2f4b22cffb8132e6bdb41bb456fd27b0b1cfc3e42102d4af93cf9f66d",
+        "firmware.S": "686b3fdb93ce9aed65423a4d491b98df4f00c0cc7770bdf6758c942e071da5ea",
+        "firmware_meta.json": "f342f7a077fd6d16ba5954a4c1199192b81bd522214ddd462bed528d64b0148f"
+      },
+      "observed_cycles": 1973,
+      "hardware_soc_cycles": 1968,
+      "npu_cycles": 845,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "eb437316786ea428d38d805bb9a87432271954b759336970a9bb68a66c4e1569",
+        "xrun.log": "96c1987e6d4d1fa809c2fa18bf74c38fadd95759c1c07158422660c648b2fb47"
+      },
+      "cycles_saved_vs_baseline": 70,
+      "cycle_reduction_percent": 3.4263
+    },
+    {
+      "seed": 6,
+      "mode": "scheduled4",
+      "batch": 4,
+      "code_bytes": 1388,
+      "instruction_words": 347,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "a09e36b1e2e48e99b883c2eeb5df74aeec7db1a5ecdd75a9054eec935b1060f8",
+      "files_sha256": {
+        "firmware.hex": "7d6f022610a45ad47ce27b77ce0cab8db76b05d02a990afab53a4ba39d413ef8",
+        "firmware.S": "9141c6d26ab799041cd259b71f6acb7e137e49d6433f84cc79073c4213621238",
+        "firmware_meta.json": "ccd9bb0387f8a4e326f3451522aeb240c96864fee61dd5d68dc0cd197aecbb80"
+      },
+      "observed_cycles": 2810,
+      "hardware_soc_cycles": 2805,
+      "npu_cycles": 940,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "e45f297bfea9e5e482da30b21a74300b7d89f1eb801264b7f923c961323845ce",
+        "xrun.log": "e1191eeb9abd96b8d1a2d5674d4707aa6ec4a7c78c9b94bdcf96236d75bd480f"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 6,
+      "mode": "scheduled8",
+      "batch": 4,
+      "code_bytes": 1660,
+      "instruction_words": 415,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "a09e36b1e2e48e99b883c2eeb5df74aeec7db1a5ecdd75a9054eec935b1060f8",
+      "files_sha256": {
+        "firmware.hex": "62a860354de676c55c2d72803da6ab76f38fb202b27db22917d518d67232c588",
+        "firmware.S": "f221c2d06c7081237ecb9444baac3bbe9a105234e3687e6f42d42506c37e7d2a",
+        "firmware_meta.json": "3ab1d718fdcbef6417a3d4f84e4a190ffb81a4a3269679078aa04429d17ca27a"
+      },
+      "observed_cycles": 2723,
+      "hardware_soc_cycles": 2718,
+      "npu_cycles": 942,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "bee2fac54e826b3f1f0ab4d27d62ff46ad347a185b9ba33d2afc390229ef4d92",
+        "xrun.log": "824451951617bf114ef66e217a6cea5ac51620b461dda6b3daebd806f6e7de39"
+      },
+      "cycles_saved_vs_baseline": 87,
+      "cycle_reduction_percent": 3.0961
+    },
+    {
+      "seed": 6,
+      "mode": "reuse8",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "a09e36b1e2e48e99b883c2eeb5df74aeec7db1a5ecdd75a9054eec935b1060f8",
+      "files_sha256": {
+        "firmware.hex": "cc150e5c0c1ade23a5c6e0b64e0a544abff9b4afafc8f81a2e8a02f55e16c79f",
+        "firmware.S": "ce9f8ccd7be5758c88fe5357fe58815e24f33f156cdc5b39d7a4a2f60ba96b2f",
+        "firmware_meta.json": "85bee237a63e805508eca6dc39a8a1b0e8705b7709fcb5dc47a93a37e78d2990"
+      },
+      "observed_cycles": 2692,
+      "hardware_soc_cycles": 2687,
+      "npu_cycles": 944,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "9290367fc4a423bacecdff54d6397a57ff33c1b2344f92f3663878a86cf7dc22",
+        "xrun.log": "fc81c6517049675e7ff7c40ca50ffb75927026f0132a03d8bd0700b2a67628d1"
+      },
+      "cycles_saved_vs_baseline": 118,
+      "cycle_reduction_percent": 4.1993
+    },
+    {
+      "seed": 6,
+      "mode": "reuse8_eq",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "a09e36b1e2e48e99b883c2eeb5df74aeec7db1a5ecdd75a9054eec935b1060f8",
+      "files_sha256": {
+        "firmware.hex": "25af01180ee062034afb8087e708aef6cdc7e9bdddfc1943294c9030a2001cd9",
+        "firmware.S": "9ba8649e7788ed37718cd424f3329378b68b765b1b6799130e498d3f37bf235d",
+        "firmware_meta.json": "34953c9997c7b46690d5388704eddd6b7e62289e58848cc207b1fe76b063110e"
+      },
+      "observed_cycles": 2699,
+      "hardware_soc_cycles": 2694,
+      "npu_cycles": 949,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "a9968dfd87d425066971be0658f0caceae2d4a74a147fee7105f74b0fce5acba",
+        "xrun.log": "227297ed03ecdd77a05e8db18d9206445323cacdfd2061f16eed8b908b5e9721"
+      },
+      "cycles_saved_vs_baseline": 111,
+      "cycle_reduction_percent": 3.9502
+    },
+    {
+      "seed": 7,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 856,
+      "instruction_words": 214,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "ff8d4b85ea988fa55316872a037cd41aa7cc2cd626921b2824a4fabf79ce2670",
+      "files_sha256": {
+        "firmware.hex": "fd6f191bac5d46c6ed7dcdaa13eb478d9960cdfb04b84189f1071b40c0f56d6a",
+        "firmware.S": "0fbd162f3713e05806c5d901a2d4f5326c8070fe0093af97e2259d60cf2870a3",
+        "firmware_meta.json": "b9baeaa9c8cd8735ded900b0c495f15ad3b072364793fe3d998f1cf3edd2692e"
+      },
+      "observed_cycles": 2025,
+      "hardware_soc_cycles": 2020,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "f9964e9d0de9dc28fee3b6ea491efecdeb821920a97ae98ea2ab4034b6007a91",
+        "xrun.log": "90e200357299b8108da5c11aab72155d8b2fe666ced6481795e6506d3cd47aa8"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 7,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1008,
+      "instruction_words": 252,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "ff8d4b85ea988fa55316872a037cd41aa7cc2cd626921b2824a4fabf79ce2670",
+      "files_sha256": {
+        "firmware.hex": "a0c8930ccac95d204049f0b673c749b661673ed31469ace89fea42a7975288c6",
+        "firmware.S": "a5e11ad3186a14de76410028ce69f9f5264bc0a4e8ee42782ebfd3d068d648b0",
+        "firmware_meta.json": "0c30786d80e56f412844058b5b0bb0baec85c5df11bc4bb0438f1496bd8a717b"
+      },
+      "observed_cycles": 1984,
+      "hardware_soc_cycles": 1979,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "c0c832c7dff6565ecdf76f6ce47a170623145b2a8b876656f945d813cfd35ed3",
+        "xrun.log": "42f772a3cacd446e46149a36ee24b1dd1e149d28272d59b80fd10f9d7b702c74"
+      },
+      "cycles_saved_vs_baseline": 41,
+      "cycle_reduction_percent": 2.0247
+    },
+    {
+      "seed": 7,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "ff8d4b85ea988fa55316872a037cd41aa7cc2cd626921b2824a4fabf79ce2670",
+      "files_sha256": {
+        "firmware.hex": "f705a70643adfb7966fa748f2be7508faa90706c8339e9523908b8315fea1dfe",
+        "firmware.S": "024b833924d413abb6cf7cbb456b381293da0f0fdaa589d8b460a45dc214574b",
+        "firmware_meta.json": "7f0964e49c97a1f2ae509001d00c677036fe91fa2f2fe9d3cdfba5e23ef4daaf"
+      },
+      "observed_cycles": 1958,
+      "hardware_soc_cycles": 1953,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "39bef13616e4806c0180e66133ee39d98b35c13c00490e9eeb6d0a4e4f67a830",
+        "xrun.log": "df047ec79cd9fb46b5ee5b85aab3035a6edce8832dc01014c15176c34af0d06d"
+      },
+      "cycles_saved_vs_baseline": 67,
+      "cycle_reduction_percent": 3.3086
+    },
+    {
+      "seed": 7,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "ff8d4b85ea988fa55316872a037cd41aa7cc2cd626921b2824a4fabf79ce2670",
+      "files_sha256": {
+        "firmware.hex": "db636c23da3284eb3af3368e9b5f24ecc9b0a1f1f0d04f785c6800af1801b81c",
+        "firmware.S": "ec3acbcb408a1d04584fc6eb165519e6158fdb341beeef566549b5fb5dc97894",
+        "firmware_meta.json": "c65ba2c742f049d3acc472bb940a4fea7a6e5eedee043ba018f33945c89f3857"
+      },
+      "observed_cycles": 1954,
+      "hardware_soc_cycles": 1949,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "24635054d2ddadd4c1dee9a7b1e060414eeabdb34c10ef0e7bb16a0ba2ba831d",
+        "xrun.log": "3bb18a50c26cadc2f7e28b258bc2fce51b75f058d5117de17a1e72224bd0166f"
+      },
+      "cycles_saved_vs_baseline": 71,
+      "cycle_reduction_percent": 3.5062
+    },
+    {
+      "seed": 8,
+      "mode": "scheduled4",
+      "batch": 1,
+      "code_bytes": 592,
+      "instruction_words": 148,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "bff3d31749ab4d9085256214a8dac477527d1aca8c2db5b9397120820763c8a0",
+      "files_sha256": {
+        "firmware.hex": "4c9b7c44374d7f502f6c52f282497dbec270c9c7059183c2245dc2e75e9f3a3a",
+        "firmware.S": "8222188695a3fbaad595fa19ea08a96bd7811e346bb38aa833f5b897eead8b3e",
+        "firmware_meta.json": "08a8c04cb06cb53833b0eed712ae275f0653471b6366bc48741d75f9d7c93304"
+      },
+      "observed_cycles": 1654,
+      "hardware_soc_cycles": 1649,
+      "npu_cycles": 802,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "95fa6e2d5fb2cef1ff773d4a658365098e847dfb41dabf69390e2b965074a402",
+        "xrun.log": "2daa9666956e223929dbc8caa7f04d88faaeb7f46bd8a53701cb11363924f2c1"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 8,
+      "mode": "scheduled8",
+      "batch": 1,
+      "code_bytes": 684,
+      "instruction_words": 171,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "bff3d31749ab4d9085256214a8dac477527d1aca8c2db5b9397120820763c8a0",
+      "files_sha256": {
+        "firmware.hex": "ea6262f6eb095fcde8be30be22735c3d419e916d233d7721eb88a49440b0a0a8",
+        "firmware.S": "65c9f997564b54089b54d8e9cd4d6e971b2ca5c1765f6f994c7cdc8e30258408",
+        "firmware_meta.json": "542f80fcc717a12e75f18752e5d56e944bafa41ffce8e32185b029ad112c3a58"
+      },
+      "observed_cycles": 1617,
+      "hardware_soc_cycles": 1612,
+      "npu_cycles": 805,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "e3abacde406b2d1e8e9e231fb1b9d16087553287e748a2ee4b02840ba45b227e",
+        "xrun.log": "c3cff35128bd49bea1d8326ce69e91fefcbaa9058821adebeae4463353b4a661"
+      },
+      "cycles_saved_vs_baseline": 37,
+      "cycle_reduction_percent": 2.237
+    },
+    {
+      "seed": 8,
+      "mode": "reuse8",
+      "batch": 1,
+      "code_bytes": 644,
+      "instruction_words": 161,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "bff3d31749ab4d9085256214a8dac477527d1aca8c2db5b9397120820763c8a0",
+      "files_sha256": {
+        "firmware.hex": "864c949463cb144bcdc2ba16235a7d04575a87ac537baf920267fa4254d16a8b",
+        "firmware.S": "1110825c6a06c89e55e9b09b4f52350a2ddd86d0e3542a3d610b05ae3092795e",
+        "firmware_meta.json": "5e13f6d299cf874142fb4accfd3012f27ceef6793271c1c06c13f7d295a357e4"
+      },
+      "observed_cycles": 1606,
+      "hardware_soc_cycles": 1601,
+      "npu_cycles": 803,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "a9d98a49abbdd8bac92065714d18a2e570218d31137c2cccde89f3147f96d8f6",
+        "xrun.log": "5a9c65ca1910408aa91ed4d06bcd1e7cd8251c43ace0057b4a66dac278da1973"
+      },
+      "cycles_saved_vs_baseline": 48,
+      "cycle_reduction_percent": 2.9021
+    },
+    {
+      "seed": 8,
+      "mode": "reuse8_eq",
+      "batch": 1,
+      "code_bytes": 644,
+      "instruction_words": 161,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "bff3d31749ab4d9085256214a8dac477527d1aca8c2db5b9397120820763c8a0",
+      "files_sha256": {
+        "firmware.hex": "881ecdb27d6dc937cd5ce68ff821377970c8f1e9904608430e7e08535f627491",
+        "firmware.S": "56bd1e15bfffe3c29b99c5dc765c1b83211c0afb8ec26b093c29f46e87c3d8a2",
+        "firmware_meta.json": "5a2c48c1b4280ccc86355ab7457db2685c3a25edfa11d4c8c222f6d02ff68347"
+      },
+      "observed_cycles": 1603,
+      "hardware_soc_cycles": 1598,
+      "npu_cycles": 802,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.826,
+      "log_sha256": {
+        "console.log": "94023019761efe2df9fa1740e7084502e8b0e71de85c47d9c4efa641dbd9e90c",
+        "xrun.log": "342f6e050b20b5391e0b908eb709c668623b87c77bb95ca788aeeed3eedc0dc5"
+      },
+      "cycles_saved_vs_baseline": 51,
+      "cycle_reduction_percent": 3.0834
+    },
+    {
+      "seed": 9,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 860,
+      "instruction_words": 215,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "7e707faf38a71da37925c2bccb22965396091589828f3f63b730530fa75f1f36",
+      "files_sha256": {
+        "firmware.hex": "c2f5e9548d658eeabb31c55a30b7c828911382ce4ad99903ad7653234a5f6c31",
+        "firmware.S": "fd47fae54401aff8ef858d9ab250c6c95661f48c77645366cc414f853a9127f2",
+        "firmware_meta.json": "d914de301bb1fce54a3f0d54162e5598f9419025b80c80dfa5cdab9fa4a886b0"
+      },
+      "observed_cycles": 2043,
+      "hardware_soc_cycles": 2038,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.935,
+      "log_sha256": {
+        "console.log": "057a4dda130d9f80528acd19dad6f264dc9c7167c4a36358b6b79a78b338c52b",
+        "xrun.log": "96ad31e2f1e50808e658e5c548e56075566aa456be4bd4394c851c9e420fb0c2"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 9,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1012,
+      "instruction_words": 253,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "7e707faf38a71da37925c2bccb22965396091589828f3f63b730530fa75f1f36",
+      "files_sha256": {
+        "firmware.hex": "b5af942c646eb7db980a4fc693c657954beae0957b5d586a09876ca8c24426b0",
+        "firmware.S": "0d8fcf3eb8380b98386ebd621be3d200bece9cc61aa356ebca39697c58cccd58",
+        "firmware_meta.json": "d5c32f53f3ef5c126e7b055acfec28a3bf160f1102b2f9adc477726e2eb8cd07"
+      },
+      "observed_cycles": 1989,
+      "hardware_soc_cycles": 1984,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.674,
+      "log_sha256": {
+        "console.log": "d6e250e1ec833bf0d000f6f1aa958530e3aa160d891bd537669c3971159f22bd",
+        "xrun.log": "365cf8ae662179e51fc0f6b592bcfb95873c9c6255be27ed2814beabb6031d31"
+      },
+      "cycles_saved_vs_baseline": 54,
+      "cycle_reduction_percent": 2.6432
+    },
+    {
+      "seed": 9,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "7e707faf38a71da37925c2bccb22965396091589828f3f63b730530fa75f1f36",
+      "files_sha256": {
+        "firmware.hex": "d2a70da6f8084d1ede127d090ad32bc5e1fb7e9657496d83c69e8ac259a5cd6e",
+        "firmware.S": "85a33244f206ff531f2194ce59f2d8a2a4192602f081a400a0c22ec09b46df16",
+        "firmware_meta.json": "9df8240db99673bbe6fb32d3e67068755dbb4fc32e7698661bcaddc4b4f9a618"
+      },
+      "observed_cycles": 1977,
+      "hardware_soc_cycles": 1972,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "933a8b4e20c7829ac6d5d2a7381065f913f62787d8434f538eb18b61cbdd7a5c",
+        "xrun.log": "00c9bf0131afdee725de77258388a02e9fd2d64cd68eb80083acdecef758fda0"
+      },
+      "cycles_saved_vs_baseline": 66,
+      "cycle_reduction_percent": 3.2305
+    },
+    {
+      "seed": 9,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "7e707faf38a71da37925c2bccb22965396091589828f3f63b730530fa75f1f36",
+      "files_sha256": {
+        "firmware.hex": "eaf0049e49402a6f5c5cf27a5a0b000869737f7e701e768edb9fb21dcc72497e",
+        "firmware.S": "686b3fdb93ce9aed65423a4d491b98df4f00c0cc7770bdf6758c942e071da5ea",
+        "firmware_meta.json": "f49257cfcc078e0164fdfbd41d407f0fee38b3faea4adea3b754e8a146e96809"
+      },
+      "observed_cycles": 1973,
+      "hardware_soc_cycles": 1968,
+      "npu_cycles": 845,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "27e6e286750f7ac5c78691ce6116976440a1ee9ba57a7e44dc458e2b82cf334c",
+        "xrun.log": "b8248180259f6b5ea10791b252eaf31252b257a480b0c8b958bb2fb4da0267eb"
+      },
+      "cycles_saved_vs_baseline": 70,
+      "cycle_reduction_percent": 3.4263
+    },
+    {
+      "seed": 10,
+      "mode": "scheduled4",
+      "batch": 1,
+      "code_bytes": 588,
+      "instruction_words": 147,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "ca4ae89b2d2896b2f59eac9131033be8728bfc85c8a442113a026dd9f79cd663",
+      "files_sha256": {
+        "firmware.hex": "379aa6d071021c0d5b01dc456d17c1b59c7de9bbff12879eddf5f4c6785451ac",
+        "firmware.S": "e9dbe66ab2423b5db2c055ad4d3419f4ffd7e64ea19e48a14357536911925c1f",
+        "firmware_meta.json": "9c935adfb3e9692cb3feed186f56695cfd009843ffd681db6b6730398d47f3eb"
+      },
+      "observed_cycles": 1634,
+      "hardware_soc_cycles": 1629,
+      "npu_cycles": 801,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "0ebfaf33df34e52efde0fda00c87ecbe80c420a2b837ca6398dae9958112d9c5",
+        "xrun.log": "127e763413b98dbe39945f2bf90a0165cb81f0989c3cfd1b55c3a94bbaea496f"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 10,
+      "mode": "scheduled8",
+      "batch": 1,
+      "code_bytes": 680,
+      "instruction_words": 170,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "ca4ae89b2d2896b2f59eac9131033be8728bfc85c8a442113a026dd9f79cd663",
+      "files_sha256": {
+        "firmware.hex": "63057230c43e161688ccf16eb73b03caa6ccf2af6c03f05da23e66d4ae9f9a34",
+        "firmware.S": "61ceef976ee40941583f230a4fdd07b77448a308ff7c4fb04b30f2a9eaa5ebec",
+        "firmware_meta.json": "27d91cd2f4ed428671f05773b099025c5ae67cbe318bc16cbeeead6a397177e9"
+      },
+      "observed_cycles": 1597,
+      "hardware_soc_cycles": 1592,
+      "npu_cycles": 801,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "2a59d374489ca95889a63e101654453d6af2ce22f9f536fed88408e07549e130",
+        "xrun.log": "0e192fbec699927189c0e5a8904b80df0fde36cee15b630a968287d8a21633d4"
+      },
+      "cycles_saved_vs_baseline": 37,
+      "cycle_reduction_percent": 2.2644
+    },
+    {
+      "seed": 10,
+      "mode": "reuse8",
+      "batch": 1,
+      "code_bytes": 640,
+      "instruction_words": 160,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "ca4ae89b2d2896b2f59eac9131033be8728bfc85c8a442113a026dd9f79cd663",
+      "files_sha256": {
+        "firmware.hex": "f5a0ea6349dd3e130c6843764cd018ddc18bd1daed2a4f52fc11535ed4e709ee",
+        "firmware.S": "66f646bf6c435517d9f5985d386f8cb50e8f41abc194cbf99dbf6593b818c093",
+        "firmware_meta.json": "dc00dc2d32897313517fb17a3a2d06a1f5a28cc2406b075baa04ad2b2ac3dbcb"
+      },
+      "observed_cycles": 1600,
+      "hardware_soc_cycles": 1595,
+      "npu_cycles": 799,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.573,
+      "log_sha256": {
+        "console.log": "c66a01e4c8adb636b9ca86c296e67c7af72c6910033fbf5571fa7515f744908b",
+        "xrun.log": "3e97bc0d24dcc4cc7de21ca2717d5288391d9bbcd0c66164b9ee210ed33f33c5"
+      },
+      "cycles_saved_vs_baseline": 34,
+      "cycle_reduction_percent": 2.0808
+    },
+    {
+      "seed": 10,
+      "mode": "reuse8_eq",
+      "batch": 1,
+      "code_bytes": 640,
+      "instruction_words": 160,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "ca4ae89b2d2896b2f59eac9131033be8728bfc85c8a442113a026dd9f79cd663",
+      "files_sha256": {
+        "firmware.hex": "0fe9afb63184214e40a6c76b12c4362c4eb32c61c5b45e07d19b4e7fe09c292e",
+        "firmware.S": "fc1adeea5b0e6822ad8abbfc4c5377450df0bd3dfa2d01d53dec1cfae6c02b86",
+        "firmware_meta.json": "9a6af3e847c42318abd0c15545cc4fc6ecaa50f6b317cc668066f119b6b45e68"
+      },
+      "observed_cycles": 1597,
+      "hardware_soc_cycles": 1592,
+      "npu_cycles": 798,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "968aaec8295fbdd7939f6b765ad8a0f3ba26253b71e43741b84fc00b5b212245",
+        "xrun.log": "8f4e44fb3cb18b54cbfebbac1bf2986a812ee78fcaea4ee7a11b0c200500b962"
+      },
+      "cycles_saved_vs_baseline": 37,
+      "cycle_reduction_percent": 2.2644
+    },
+    {
+      "seed": 11,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 856,
+      "instruction_words": 214,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "e2bea0c017bdedfd976634ed8f3068cabd89ec539aaaa1b4f0112b888c4eee7a",
+      "files_sha256": {
+        "firmware.hex": "ea24d9b5ea9a7634d4105af890536fb9cfb2c118f2bb09729bb1d63ca36ba8e7",
+        "firmware.S": "0fbd162f3713e05806c5d901a2d4f5326c8070fe0093af97e2259d60cf2870a3",
+        "firmware_meta.json": "c76d27edb1971d934c7072af8ab88695db235e99c8531f5980714f92aaa11511"
+      },
+      "observed_cycles": 2025,
+      "hardware_soc_cycles": 2020,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "b9c399db385dacb59ca3b681616d262f51b94c9ba008667832993b2e3fa60e9f",
+        "xrun.log": "06ad97df5ca30df2b5caf3ba003803962caf5bf263c89d7b74382287c142fbc7"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 11,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1008,
+      "instruction_words": 252,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "e2bea0c017bdedfd976634ed8f3068cabd89ec539aaaa1b4f0112b888c4eee7a",
+      "files_sha256": {
+        "firmware.hex": "971232b8f1094631950d7cdcaba0572a74ca35ff1e80163749340e4d9ab4e032",
+        "firmware.S": "a5e11ad3186a14de76410028ce69f9f5264bc0a4e8ee42782ebfd3d068d648b0",
+        "firmware_meta.json": "a8120d6051296faf2057c6390a53d6a4b1c9ff8b6b38d1fa8de2e25db6fa419d"
+      },
+      "observed_cycles": 1984,
+      "hardware_soc_cycles": 1979,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "a4a5de19ba8eeca4e080de4e433ae8dd49c176d0b9126f98756a1437150b8e98",
+        "xrun.log": "e113a6b5091d8b1a154bb9ab7677a5c58207372d7e921a4e45a796f01abe34df"
+      },
+      "cycles_saved_vs_baseline": 41,
+      "cycle_reduction_percent": 2.0247
+    },
+    {
+      "seed": 11,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "e2bea0c017bdedfd976634ed8f3068cabd89ec539aaaa1b4f0112b888c4eee7a",
+      "files_sha256": {
+        "firmware.hex": "80d646c942d6254d5b546e8ebe6957d6f283f7543d3710b1664a62e3b9ad90c2",
+        "firmware.S": "024b833924d413abb6cf7cbb456b381293da0f0fdaa589d8b460a45dc214574b",
+        "firmware_meta.json": "6fcc1975b7de0c1021387c6877dae9962f30e28ebed53b6ef7dda91de104a763"
+      },
+      "observed_cycles": 1958,
+      "hardware_soc_cycles": 1953,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "5555c492128c61ab12bddc592adf52a45068d70caf1a16fbf67e556a11a81a6d",
+        "xrun.log": "ae4569ab164ea11b52948cac6e282643c450a6284a28a7fc7fbcf9183a91d448"
+      },
+      "cycles_saved_vs_baseline": 67,
+      "cycle_reduction_percent": 3.3086
+    },
+    {
+      "seed": 11,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "e2bea0c017bdedfd976634ed8f3068cabd89ec539aaaa1b4f0112b888c4eee7a",
+      "files_sha256": {
+        "firmware.hex": "184eeba26205c020a15fde505f25147e4476ac9a63cd50e84c02d38e0fc764fb",
+        "firmware.S": "ec3acbcb408a1d04584fc6eb165519e6158fdb341beeef566549b5fb5dc97894",
+        "firmware_meta.json": "28cb9bec3f8269e36a4513d3f23598dadfe69245950e4ab8b3bce5be7f27cc0f"
+      },
+      "observed_cycles": 1954,
+      "hardware_soc_cycles": 1949,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "b177de85097649ad90fe729d3cb5aa953a6fc4ad07333a042bfa4246cc0a0536",
+        "xrun.log": "a6d926122182807e72d3625031d220f8b9b29a11a9f0304c0911a700800478f6"
+      },
+      "cycles_saved_vs_baseline": 71,
+      "cycle_reduction_percent": 3.5062
+    },
+    {
+      "seed": 12,
+      "mode": "scheduled4",
+      "batch": 4,
+      "code_bytes": 1392,
+      "instruction_words": 348,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "0ff9c2c55083fcefa4bad5bb4a826dbf1353cb2f790ce18a598dc33f7be2584f",
+      "files_sha256": {
+        "firmware.hex": "8a22e75255f7bb6137c03a80a073ad66f940dc22c1214e70ff57d4721d6033c8",
+        "firmware.S": "ed4622ac7299c63c0b5d3cf91cb6d8a6feb0f653cb03363b4e12888554bdc127",
+        "firmware_meta.json": "141903688e73bd1d3cfcf440c4a61726d6f31db8df2b5a1bcbeccf1b932a869c"
+      },
+      "observed_cycles": 2901,
+      "hardware_soc_cycles": 2896,
+      "npu_cycles": 946,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "04e5c7d8f3179b45cf8706413d342531f0a15144e10df59b6b4811ad0efeb69b",
+        "xrun.log": "137de7a43aac15baad7fc6b72ecf286bb4f4834b7c78e689e44bc7345aef95e2"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 12,
+      "mode": "scheduled8",
+      "batch": 4,
+      "code_bytes": 1664,
+      "instruction_words": 416,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "0ff9c2c55083fcefa4bad5bb4a826dbf1353cb2f790ce18a598dc33f7be2584f",
+      "files_sha256": {
+        "firmware.hex": "fc043352c5b5697d43888624ecffa0be5646950ca540f3fc1a930ec9fad91904",
+        "firmware.S": "340d448c50a35c39e12da25b55dc78357d6f20d4af37690e735ea2641c808c1d",
+        "firmware_meta.json": "71ff35732d69ba07673eb4606b965f344fc19769aa3fe9d87551e3a3e99c79f4"
+      },
+      "observed_cycles": 2752,
+      "hardware_soc_cycles": 2747,
+      "npu_cycles": 946,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "3e083b625603100e94d7103b6da6b7dfabb516ace1a5a910a11e01f89eee6c42",
+        "xrun.log": "5b4340a422a3f46c4827c0f4f68bcf20babd26e04922a7e1e627c2a0aa495c23"
+      },
+      "cycles_saved_vs_baseline": 149,
+      "cycle_reduction_percent": 5.1362
+    },
+    {
+      "seed": 12,
+      "mode": "reuse8",
+      "batch": 4,
+      "code_bytes": 1524,
+      "instruction_words": 381,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "0ff9c2c55083fcefa4bad5bb4a826dbf1353cb2f790ce18a598dc33f7be2584f",
+      "files_sha256": {
+        "firmware.hex": "4759763b7e359cadeed1cf592011644702ef5e91532afc8af418c50da8e2dd94",
+        "firmware.S": "e84828bfc8c2e9b5ebaacd3d1a3af93f791ec33b9f2f7e4086910d31119c3c0f",
+        "firmware_meta.json": "a612f94d040fcf35fd2955610f5e93cf929e3523e2d5423d028741e0ec683822"
+      },
+      "observed_cycles": 2737,
+      "hardware_soc_cycles": 2732,
+      "npu_cycles": 954,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "7e7c66900351c72970b81ec4246a9048f9ba12d50aac94342ed8b967650b03c1",
+        "xrun.log": "c5f723a4781e4a6e8c1922afed2e98f92e3ba69e08187d92bc1d760474311eaf"
+      },
+      "cycles_saved_vs_baseline": 164,
+      "cycle_reduction_percent": 5.6532
+    },
+    {
+      "seed": 12,
+      "mode": "reuse8_eq",
+      "batch": 4,
+      "code_bytes": 1524,
+      "instruction_words": 381,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "0ff9c2c55083fcefa4bad5bb4a826dbf1353cb2f790ce18a598dc33f7be2584f",
+      "files_sha256": {
+        "firmware.hex": "a5bf3799f7efef7164d32a2314f17198b28bc3694ddd03c4fd9db6fe067d6277",
+        "firmware.S": "0ac500080f6063b6764a760f3062dcf2c3c53a077fa100eb6ac3df6d3c994687",
+        "firmware_meta.json": "3cd1f66408d82443ca754415a28fcba00bd4ed1546335d75bab59772b895d6b3"
+      },
+      "observed_cycles": 2736,
+      "hardware_soc_cycles": 2731,
+      "npu_cycles": 951,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "9268e37e5e595d4dfbcc74a084b80d9e717fd983681c2ea589dbf1212ed2a65e",
+        "xrun.log": "f46d61dcee049916a561d63c27dba5ff93c48a6c540ffd66ad65c70364b9ae62"
+      },
+      "cycles_saved_vs_baseline": 165,
+      "cycle_reduction_percent": 5.6877
+    },
+    {
+      "seed": 13,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 860,
+      "instruction_words": 215,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "9e05cf3060be696ac1a6516741340651af5fc8d4f5cc7f09d34cff553fdd5d3a",
+      "files_sha256": {
+        "firmware.hex": "611699dd641dc1d2fe41d5876ac6aa3119273ccf2ba6fb6348610225f8d98a06",
+        "firmware.S": "fd47fae54401aff8ef858d9ab250c6c95661f48c77645366cc414f853a9127f2",
+        "firmware_meta.json": "a159fcbdff7d51bd3120cc290f723d8cfcfa9f46f88ec319bc1c5e73103f9594"
+      },
+      "observed_cycles": 2043,
+      "hardware_soc_cycles": 2038,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "203c4cf35b0d7fa0e36cf6287204d91fbf3ef17e08b157ceccc41811d5d7af18",
+        "xrun.log": "745f8329013ce82fac8f78b1d7e1c13e44eb55983ab18a10a94ee8cef4d15697"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 13,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1012,
+      "instruction_words": 253,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "9e05cf3060be696ac1a6516741340651af5fc8d4f5cc7f09d34cff553fdd5d3a",
+      "files_sha256": {
+        "firmware.hex": "574453e4baa0dbc1cdcb0be3faff26ec0ed7e793eaee1ebf251e20949c2c1f63",
+        "firmware.S": "0d8fcf3eb8380b98386ebd621be3d200bece9cc61aa356ebca39697c58cccd58",
+        "firmware_meta.json": "c5032f7cb5e7f7f8c0958223f5fa601bb3656ee1d849e04eab5c34029d877a26"
+      },
+      "observed_cycles": 1989,
+      "hardware_soc_cycles": 1984,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.522,
+      "log_sha256": {
+        "console.log": "e7a3fea1f7eb7ede71ca2ae8c7e5518c0ec7c266f45ca21722d2d316b7bfbd8c",
+        "xrun.log": "e093861917656ca241a46b2163525a3e8806318ada63bc249e82aad6a70ba90d"
+      },
+      "cycles_saved_vs_baseline": 54,
+      "cycle_reduction_percent": 2.6432
+    },
+    {
+      "seed": 13,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "9e05cf3060be696ac1a6516741340651af5fc8d4f5cc7f09d34cff553fdd5d3a",
+      "files_sha256": {
+        "firmware.hex": "b72e97d92253038373ed83d6633997e5d6cffda85104061d87857b0e4b65bfa7",
+        "firmware.S": "85a33244f206ff531f2194ce59f2d8a2a4192602f081a400a0c22ec09b46df16",
+        "firmware_meta.json": "822b09f611ef8a0bfdf4f8f5f06278cc77fe9d0e25c35862c404a1f787a254ea"
+      },
+      "observed_cycles": 1977,
+      "hardware_soc_cycles": 1972,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "24b9964d36c1c0b8fab9d5d4198bcb5354b4d0cf5e68b4ef740001d574c4e294",
+        "xrun.log": "0f88655d014a0835d29e1b0cfa91eebec27d84eb01a2259120631e900bbd9237"
+      },
+      "cycles_saved_vs_baseline": 66,
+      "cycle_reduction_percent": 3.2305
+    },
+    {
+      "seed": 13,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "9e05cf3060be696ac1a6516741340651af5fc8d4f5cc7f09d34cff553fdd5d3a",
+      "files_sha256": {
+        "firmware.hex": "a2dd2e802a2c8df2a784a3c21140efa4593eddf56d5a9aa3da4a8d887e2f24de",
+        "firmware.S": "686b3fdb93ce9aed65423a4d491b98df4f00c0cc7770bdf6758c942e071da5ea",
+        "firmware_meta.json": "863e210592f6777ad4961d8172196346d7b1379398f3ae0b50c4843b609d4c0a"
+      },
+      "observed_cycles": 1973,
+      "hardware_soc_cycles": 1968,
+      "npu_cycles": 845,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "2a700dc5a02d7a0c2c3c27d0f122124329535fbec5a045ec0bd49093274ab753",
+        "xrun.log": "e96d0c94555042a781b7360154ed04d48a71899f4fac8db90d0fde4af39f121b"
+      },
+      "cycles_saved_vs_baseline": 70,
+      "cycle_reduction_percent": 3.4263
+    },
+    {
+      "seed": 14,
+      "mode": "scheduled4",
+      "batch": 1,
+      "code_bytes": 588,
+      "instruction_words": 147,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "5bd346df9f7d3c7f520c0be6492fe78e651616892882e8fa038f600dbe1ecfd4",
+      "files_sha256": {
+        "firmware.hex": "3a1cb2aee7091c8ec5dc9d6b022661f50eea814ea919b727c96c87ec006d0ded",
+        "firmware.S": "6f8b0882e13dc594b830e1bf25ec5ba447122a582c7367cf8bce37b3541648eb",
+        "firmware_meta.json": "b96d937ef868203f027d7129f28a95f3c3bd46f957d78778e180527888b2afb1"
+      },
+      "observed_cycles": 1634,
+      "hardware_soc_cycles": 1629,
+      "npu_cycles": 801,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.671,
+      "log_sha256": {
+        "console.log": "7c45ff5b657792256cca2a4c69d3dab7c679cf07907128e725d301bb47b1c106",
+        "xrun.log": "a2d29cb80cf6dfe39e88f821226b9068ff206e6351708c15c6dea415042d8e27"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 14,
+      "mode": "scheduled8",
+      "batch": 1,
+      "code_bytes": 680,
+      "instruction_words": 170,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "5bd346df9f7d3c7f520c0be6492fe78e651616892882e8fa038f600dbe1ecfd4",
+      "files_sha256": {
+        "firmware.hex": "c19dd58f5fe9a77fc8ba5bf543ae3a1d07a898034086cb8c82808f2a31df07a5",
+        "firmware.S": "e588d7988d945a44c68e4fb5e0971df2feac265662ac3f5c203eccef341b8ce6",
+        "firmware_meta.json": "f0a6927ec8cef94538eddde3a9f045c0ecc8ab46d0b33ca9dbeb0a3f1adb479d"
+      },
+      "observed_cycles": 1597,
+      "hardware_soc_cycles": 1592,
+      "npu_cycles": 801,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "cee9e8ab614e6b7f540e801ad1e2cc31cd4072f003e991c21c971e99d59e9aa1",
+        "xrun.log": "6e9fb06ed57c98f46479195c69cab033b5d50637b22e07fc8d071d06256f29b4"
+      },
+      "cycles_saved_vs_baseline": 37,
+      "cycle_reduction_percent": 2.2644
+    },
+    {
+      "seed": 14,
+      "mode": "reuse8",
+      "batch": 1,
+      "code_bytes": 640,
+      "instruction_words": 160,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "5bd346df9f7d3c7f520c0be6492fe78e651616892882e8fa038f600dbe1ecfd4",
+      "files_sha256": {
+        "firmware.hex": "b9269491cb48143392effe489c4da2fd560f58a57be549b8af042f7c0108df79",
+        "firmware.S": "3a752594b8daa72d736aec00802121c0e707b8d2d1b5b39b50df98ffa37e94a9",
+        "firmware_meta.json": "6664cf13fa3129b0f804c605aa9548a2738ac279cf47d6f188e4d86e46c8b6fd"
+      },
+      "observed_cycles": 1600,
+      "hardware_soc_cycles": 1595,
+      "npu_cycles": 799,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "3cee9d87d44b147bb5bb4d0ab2987c8ed31dd85601e2078e9a7ea9ac2e4cfbe0",
+        "xrun.log": "354f88280f3d91491b47f360501352adbced04bfc798cc38b7f2c2850303d0ce"
+      },
+      "cycles_saved_vs_baseline": 34,
+      "cycle_reduction_percent": 2.0808
+    },
+    {
+      "seed": 14,
+      "mode": "reuse8_eq",
+      "batch": 1,
+      "code_bytes": 640,
+      "instruction_words": 160,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "5bd346df9f7d3c7f520c0be6492fe78e651616892882e8fa038f600dbe1ecfd4",
+      "files_sha256": {
+        "firmware.hex": "2559f8fb08907c9b11ab789e9b5485e2d74a59d61fa3ee523982d6e170dd3035",
+        "firmware.S": "8a093fcd721581e5f2c5b9d277de038b3cdfca079340b5cdee1a8e3cff7a06d0",
+        "firmware_meta.json": "133c5972d0cf7911f179ecc31a176ecee8065b3e36f9eeecb8f378991a983fa1"
+      },
+      "observed_cycles": 1597,
+      "hardware_soc_cycles": 1592,
+      "npu_cycles": 798,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "a7f61a7442c0d49c5a1ff89745ca30bcc53b6997c8f610a865ff1c1e9f50390f",
+        "xrun.log": "502f278048189c37c87eb1391bb80013b70f04c032ed7c32c5f14150ee38655c"
+      },
+      "cycles_saved_vs_baseline": 37,
+      "cycle_reduction_percent": 2.2644
+    },
+    {
+      "seed": 15,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 856,
+      "instruction_words": 214,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "1bc0e3585b23bbe1561a670dda38a63425a475fd955d4d40655b378352fc5279",
+      "files_sha256": {
+        "firmware.hex": "fed5717a46285c5d7449c6589612d3a2df04250b9b9113e59c81dff8e708a82f",
+        "firmware.S": "0fbd162f3713e05806c5d901a2d4f5326c8070fe0093af97e2259d60cf2870a3",
+        "firmware_meta.json": "6ea3180990d25143937e5d5f364e71c36c5868646ad0db4129ce78aca3a38972"
+      },
+      "observed_cycles": 2025,
+      "hardware_soc_cycles": 2020,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "e20f4a3ecef4d64d9a86163fa60dac495b6e30b1f90ea43c4c97343d540120e6",
+        "xrun.log": "ed2ab7f8ac0eb6271eeac49a4f72ae1ef6ebd2b919c76dd2e2d3f35f90f277bc"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 15,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1008,
+      "instruction_words": 252,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "1bc0e3585b23bbe1561a670dda38a63425a475fd955d4d40655b378352fc5279",
+      "files_sha256": {
+        "firmware.hex": "57fb2edf2f6a7149d0579cf5495aab626e140c5d6f7b4ef4dea8affdb85ca4e0",
+        "firmware.S": "a5e11ad3186a14de76410028ce69f9f5264bc0a4e8ee42782ebfd3d068d648b0",
+        "firmware_meta.json": "443d706c1ba902649ffc4c58a7c11f8e6362e155b1bb531500f805ae6459a996"
+      },
+      "observed_cycles": 1984,
+      "hardware_soc_cycles": 1979,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "be47557cde6fc32e945cad212119614818f11f55a304c473378207e1b22c5a34",
+        "xrun.log": "ffd53af9263e10009d5b795f6a0ace939da0339e20a4ba7120910b19f3522f66"
+      },
+      "cycles_saved_vs_baseline": 41,
+      "cycle_reduction_percent": 2.0247
+    },
+    {
+      "seed": 15,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "1bc0e3585b23bbe1561a670dda38a63425a475fd955d4d40655b378352fc5279",
+      "files_sha256": {
+        "firmware.hex": "a4e2616c0fe60f57863ef2a24cd245996dc9ae727e3c4d58198ce5fee0140830",
+        "firmware.S": "024b833924d413abb6cf7cbb456b381293da0f0fdaa589d8b460a45dc214574b",
+        "firmware_meta.json": "32e74278302ee22eab41c45ac2d807c395c13af9f81acc0e15a98ce2480c2a48"
+      },
+      "observed_cycles": 1958,
+      "hardware_soc_cycles": 1953,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "2f0bc287dfd2ae5fd0b696f8a77300c0c9852fc03f4f8e32280cf3108a1cf380",
+        "xrun.log": "a7a0529adaed63c84118ef3635b1ab7f875a0482ae8c37b502dec6802eef1bff"
+      },
+      "cycles_saved_vs_baseline": 67,
+      "cycle_reduction_percent": 3.3086
+    },
+    {
+      "seed": 15,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "1bc0e3585b23bbe1561a670dda38a63425a475fd955d4d40655b378352fc5279",
+      "files_sha256": {
+        "firmware.hex": "29870f8d94899779a4639818c8d75a671a4ee1491a178b3049a7ca5caa16f3ab",
+        "firmware.S": "ec3acbcb408a1d04584fc6eb165519e6158fdb341beeef566549b5fb5dc97894",
+        "firmware_meta.json": "e5d99b886b90692cc789137e4fea0b68335a4ff065d278ff1f8193a0e15d7d64"
+      },
+      "observed_cycles": 1954,
+      "hardware_soc_cycles": 1949,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "e8b1cc220a22cc7eb9dba24c0ae458bae413edabff346be83c00afee545cc1ba",
+        "xrun.log": "88b059d936d2ecb2c00df875887b28f11b31df64ede5ba9d2c2b06cd6cf9bd54"
+      },
+      "cycles_saved_vs_baseline": 71,
+      "cycle_reduction_percent": 3.5062
+    },
+    {
+      "seed": 16,
+      "mode": "scheduled4",
+      "batch": 1,
+      "code_bytes": 592,
+      "instruction_words": 148,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "862341c9607ba41de04df51cfbee0f2f8054e70047ebfb58e7b551099ef2670a",
+      "files_sha256": {
+        "firmware.hex": "56f6c2038b26e099eb3b4a0d856b2a9d6f65023713ac5a1b3f8f1052e7cbbb88",
+        "firmware.S": "8222188695a3fbaad595fa19ea08a96bd7811e346bb38aa833f5b897eead8b3e",
+        "firmware_meta.json": "a38bc88120e597f57cf3f111b491024a6402db7d69d775ae9f75bb4ed33f864c"
+      },
+      "observed_cycles": 1654,
+      "hardware_soc_cycles": 1649,
+      "npu_cycles": 802,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "696930fc21ba9cb1312035567828092e5c63e50306ea414d788f6f52137653c3",
+        "xrun.log": "07fb89c94b582b472a7ac06d72a8e3fe47756cef3579d480ba4cd539381fc0a7"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 16,
+      "mode": "scheduled8",
+      "batch": 1,
+      "code_bytes": 684,
+      "instruction_words": 171,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "862341c9607ba41de04df51cfbee0f2f8054e70047ebfb58e7b551099ef2670a",
+      "files_sha256": {
+        "firmware.hex": "c07fd301df31c2ba309c6898e58cd16b6fd81f616824aaaef2906eafdde1cf5f",
+        "firmware.S": "65c9f997564b54089b54d8e9cd4d6e971b2ca5c1765f6f994c7cdc8e30258408",
+        "firmware_meta.json": "eeab1744837742a2815e07e334ace4b447578d706dd6001731fd92455cb68aa4"
+      },
+      "observed_cycles": 1617,
+      "hardware_soc_cycles": 1612,
+      "npu_cycles": 805,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "bab1016277e46a3f9150fd9305eceb4c4714e46576520bf2daa6617e38b60afb",
+        "xrun.log": "6091f5a990565d80582dd65b432fbd4e62ef71d3e458c4e8900eaf76e66e9cf2"
+      },
+      "cycles_saved_vs_baseline": 37,
+      "cycle_reduction_percent": 2.237
+    },
+    {
+      "seed": 16,
+      "mode": "reuse8",
+      "batch": 1,
+      "code_bytes": 644,
+      "instruction_words": 161,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "862341c9607ba41de04df51cfbee0f2f8054e70047ebfb58e7b551099ef2670a",
+      "files_sha256": {
+        "firmware.hex": "e2e7c7d2676e1032940d7a5420f8230a343feb652f1c2f9426dc6c3c7b0b70a1",
+        "firmware.S": "1110825c6a06c89e55e9b09b4f52350a2ddd86d0e3542a3d610b05ae3092795e",
+        "firmware_meta.json": "54da04647a102c3f2cb6a853821955df447943eb54fe476b96ef0ad6f16804af"
+      },
+      "observed_cycles": 1606,
+      "hardware_soc_cycles": 1601,
+      "npu_cycles": 803,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "d05eda6c4643770ccaec0b5b7ccc6b6242f1255ce299cfde5f5dbe1c6a9da89a",
+        "xrun.log": "16bebb2e1142f1dbe657a46438e831b1694a50e97139377aea2f8d9eee7723ac"
+      },
+      "cycles_saved_vs_baseline": 48,
+      "cycle_reduction_percent": 2.9021
+    },
+    {
+      "seed": 16,
+      "mode": "reuse8_eq",
+      "batch": 1,
+      "code_bytes": 644,
+      "instruction_words": 161,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "862341c9607ba41de04df51cfbee0f2f8054e70047ebfb58e7b551099ef2670a",
+      "files_sha256": {
+        "firmware.hex": "c830ec6e2cb6aa2df45a8bdba81998e6abbc9f4b4fac7504d94f35a097a79118",
+        "firmware.S": "56bd1e15bfffe3c29b99c5dc765c1b83211c0afb8ec26b093c29f46e87c3d8a2",
+        "firmware_meta.json": "510054afea115c1963d14307a9ea64f6a51a82a3ec1338ccee162c21b9136b18"
+      },
+      "observed_cycles": 1603,
+      "hardware_soc_cycles": 1598,
+      "npu_cycles": 802,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.47,
+      "log_sha256": {
+        "console.log": "7ff8e1d86e4bc98dcf0e8fbffca831f03c4a12c586a5c9c290d8ac85ff08338e",
+        "xrun.log": "45f88f94344ba4dddc37a9054c06356041ca239d0b761c2ad60cea70a05375c3"
+      },
+      "cycles_saved_vs_baseline": 51,
+      "cycle_reduction_percent": 3.0834
+    },
+    {
+      "seed": 17,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 860,
+      "instruction_words": 215,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "f06ac9da5988e344d1924138d8ae8d6bda5469d68253cc1c4943ffb23ec13292",
+      "files_sha256": {
+        "firmware.hex": "a7a1ec0bb52d9c2dd718fbfd62db969b775452dcd7dc1ea99d3ae6f5d05e232c",
+        "firmware.S": "fd47fae54401aff8ef858d9ab250c6c95661f48c77645366cc414f853a9127f2",
+        "firmware_meta.json": "c88d59568ebd5775053ac8d323e7c55b409d8571ef791f4fec40cfb2f4004b81"
+      },
+      "observed_cycles": 2043,
+      "hardware_soc_cycles": 2038,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "0635c25eb0bdd09e9d73c4a6a5c44215e45f650bfce6eec72fb5d98643b55d41",
+        "xrun.log": "4977744a5133009f9723f013c7a09a6a2da9137055d2de20fe12f7ddc802fc59"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 17,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1012,
+      "instruction_words": 253,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "f06ac9da5988e344d1924138d8ae8d6bda5469d68253cc1c4943ffb23ec13292",
+      "files_sha256": {
+        "firmware.hex": "eb0afba60dd0d48d44e105ef460bcf8122315c931e5620eb0d3255dc09ee7425",
+        "firmware.S": "0d8fcf3eb8380b98386ebd621be3d200bece9cc61aa356ebca39697c58cccd58",
+        "firmware_meta.json": "6207b1ef35c37f391a341a7759c6878a1a547cf1d599a7dc9de6a2bad2c18720"
+      },
+      "observed_cycles": 1989,
+      "hardware_soc_cycles": 1984,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "d1c7e223bb42693555258deafc47605662df25ff14994bd08f71cc7a7995f52a",
+        "xrun.log": "925ed409918702d53639a403006aba5be934cd30d5eade271ea559af44514bb9"
+      },
+      "cycles_saved_vs_baseline": 54,
+      "cycle_reduction_percent": 2.6432
+    },
+    {
+      "seed": 17,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "f06ac9da5988e344d1924138d8ae8d6bda5469d68253cc1c4943ffb23ec13292",
+      "files_sha256": {
+        "firmware.hex": "1cb18c3bf3c51055df00f6150199b8f92736e7a1aa88ba14eb29e7f02748662f",
+        "firmware.S": "85a33244f206ff531f2194ce59f2d8a2a4192602f081a400a0c22ec09b46df16",
+        "firmware_meta.json": "4a9a2678a0d474c545be6e286500054dc22193bf80ba685286bbec6ff1e6c900"
+      },
+      "observed_cycles": 1977,
+      "hardware_soc_cycles": 1972,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "0770a7cb2b4f326c8077abef5b4599c8f56dd8283e72e41d9645168a600c667a",
+        "xrun.log": "e4e388293a65dd4ba17d3d7fe208e6efc1abcb1dfafa317d294e6f7ce3e75f34"
+      },
+      "cycles_saved_vs_baseline": 66,
+      "cycle_reduction_percent": 3.2305
+    },
+    {
+      "seed": 17,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "f06ac9da5988e344d1924138d8ae8d6bda5469d68253cc1c4943ffb23ec13292",
+      "files_sha256": {
+        "firmware.hex": "fb76c0b37587bd90ead78bd3246083f42f24d55814b3b5f240615a733c4c6524",
+        "firmware.S": "686b3fdb93ce9aed65423a4d491b98df4f00c0cc7770bdf6758c942e071da5ea",
+        "firmware_meta.json": "53b824eb5290947180ffb7164bdc882e4379c1fb3d65745a3512c6702de8fed6"
+      },
+      "observed_cycles": 1973,
+      "hardware_soc_cycles": 1968,
+      "npu_cycles": 845,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "846e50162ff2df6af460e873ead46160c9707aea6e6f5e8b3d20c8148d9d6b30",
+        "xrun.log": "a2982e20d46b57f726bc6f5a47950330b9b4f9f1f4d3d2b431511ac344fe546e"
+      },
+      "cycles_saved_vs_baseline": 70,
+      "cycle_reduction_percent": 3.4263
+    },
+    {
+      "seed": 18,
+      "mode": "scheduled4",
+      "batch": 4,
+      "code_bytes": 1388,
+      "instruction_words": 347,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "bb4457932ca45054342546b6844bf4904a5a5dcd1e0b75eeeb8b86ab43f1b481",
+      "files_sha256": {
+        "firmware.hex": "6c19b7440ae4997f66ee019cca159c53a6f8c53311df765387ad399483610a85",
+        "firmware.S": "61df33880c2dec5d369b4973f118cbc765dc74b5ac36fb3847f6ddb74361fbd7",
+        "firmware_meta.json": "052be436190b99c96b4c79dcbbf546d36b7065e08643081ebe5ecdef8a5be5b7"
+      },
+      "observed_cycles": 2810,
+      "hardware_soc_cycles": 2805,
+      "npu_cycles": 940,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.621,
+      "log_sha256": {
+        "console.log": "68aaee166cba2d6e1c8b6ceb23a52f1d36fc1c49b654741d5d3a302da62f7a7a",
+        "xrun.log": "d1ca605f689399c8368d0677bf75419ee1ed68879dc9d38621ec76d22e422387"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 18,
+      "mode": "scheduled8",
+      "batch": 4,
+      "code_bytes": 1660,
+      "instruction_words": 415,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "bb4457932ca45054342546b6844bf4904a5a5dcd1e0b75eeeb8b86ab43f1b481",
+      "files_sha256": {
+        "firmware.hex": "f4fe761cfde7fbd2621a22d6e5ac2872e5e90ff499f6c3eb2fdc835d9906ab60",
+        "firmware.S": "d50e4452e0600f4f399a97770152eeb86a4a079c6be7ff3d6b3934d5d42a829b",
+        "firmware_meta.json": "b699e93921c2bf2ebb42c93eccc1a3586efadd972a3afed7eeb4218bed8063c5"
+      },
+      "observed_cycles": 2723,
+      "hardware_soc_cycles": 2718,
+      "npu_cycles": 942,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "1863ddb136c056d2b275118857fded8f086a4a2d26cc6eff6b0fac224f291169",
+        "xrun.log": "06235996cc855012690797295124461352b2cea6973b13091a6352d4bc6059f0"
+      },
+      "cycles_saved_vs_baseline": 87,
+      "cycle_reduction_percent": 3.0961
+    },
+    {
+      "seed": 18,
+      "mode": "reuse8",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "bb4457932ca45054342546b6844bf4904a5a5dcd1e0b75eeeb8b86ab43f1b481",
+      "files_sha256": {
+        "firmware.hex": "fea0c15c93a0034bacff7961e17e4badffbdc40514753e57369d8a89f5cd9320",
+        "firmware.S": "91d57b640c613d3367917f23016ff908099c29fa92e6a534aa87177bdf5d6c33",
+        "firmware_meta.json": "41daed255dd7462288d038920ec303da05cdde848003c45c52bebe92c9fd13ff"
+      },
+      "observed_cycles": 2692,
+      "hardware_soc_cycles": 2687,
+      "npu_cycles": 944,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "13c752503513efb1d4ce7026fecaefa4942d9814f4346dae07f2e712ea07cb1f",
+        "xrun.log": "4c188f1849560ecd864442f27f3f504c28c6f5770b5b3a81895787a568128b3c"
+      },
+      "cycles_saved_vs_baseline": 118,
+      "cycle_reduction_percent": 4.1993
+    },
+    {
+      "seed": 18,
+      "mode": "reuse8_eq",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "bb4457932ca45054342546b6844bf4904a5a5dcd1e0b75eeeb8b86ab43f1b481",
+      "files_sha256": {
+        "firmware.hex": "6406b58f1f24b06c254d8dc9402560f349614914c22734ba208087939c1a52c9",
+        "firmware.S": "e0eb89080d7932597d0f6b04ea41b321acf6826451e3ea330b83685b13f7c0e3",
+        "firmware_meta.json": "20d9a0711edbb39f1d5d71744dcee89d99e34423650e9ce57f128c10a95af4f5"
+      },
+      "observed_cycles": 2699,
+      "hardware_soc_cycles": 2694,
+      "npu_cycles": 949,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "e983334399a2deb0f2a0402632c2fe8e7cb184ebdd590d97cc9f080a6e0908eb",
+        "xrun.log": "27e7a046d2757342ceef37aa7e3b2de5883600551265653a0ec1ebd3b401fe2e"
+      },
+      "cycles_saved_vs_baseline": 111,
+      "cycle_reduction_percent": 3.9502
+    },
+    {
+      "seed": 19,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 856,
+      "instruction_words": 214,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "d34d1b4cffbd2e79baa510c820d4a372ee559568bd84bd57bf4d0ed2a94e9a15",
+      "files_sha256": {
+        "firmware.hex": "ebca257bdcf63d728b4e795fce565051dde4c8ec5887b25334743850c2f85979",
+        "firmware.S": "0fbd162f3713e05806c5d901a2d4f5326c8070fe0093af97e2259d60cf2870a3",
+        "firmware_meta.json": "1e772a713f2edb9f01c04fddc2f94b8a435ef469b3205f69108926d52e966614"
+      },
+      "observed_cycles": 2025,
+      "hardware_soc_cycles": 2020,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "7e5a03d5c79ad4d5acc8e0fd1636a158354494307c24da9a46d4b63d3d82b186",
+        "xrun.log": "1da158cc4ed6a4477b9b7bbaf1bf40163b8a15e0dbc03e838a66bf0010756c41"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 19,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1008,
+      "instruction_words": 252,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "d34d1b4cffbd2e79baa510c820d4a372ee559568bd84bd57bf4d0ed2a94e9a15",
+      "files_sha256": {
+        "firmware.hex": "da143a8b29a3d1c8122901773e394f8113b71db29ce51dbf0f810193435bc357",
+        "firmware.S": "a5e11ad3186a14de76410028ce69f9f5264bc0a4e8ee42782ebfd3d068d648b0",
+        "firmware_meta.json": "e9d63a2ab4037d7cb85a7df4aab5b7ef0740d6135c00731b53dc4eac31951644"
+      },
+      "observed_cycles": 1984,
+      "hardware_soc_cycles": 1979,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.528,
+      "log_sha256": {
+        "console.log": "630a52f2a97660482d38982aff538666032e4b459a6c08a1ef88d681b2f0cb23",
+        "xrun.log": "19e24f4050d407349bcbab83dd55a3eca389da58674d5efd75ff86611ba4c570"
+      },
+      "cycles_saved_vs_baseline": 41,
+      "cycle_reduction_percent": 2.0247
+    },
+    {
+      "seed": 19,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "d34d1b4cffbd2e79baa510c820d4a372ee559568bd84bd57bf4d0ed2a94e9a15",
+      "files_sha256": {
+        "firmware.hex": "dcc7fe78871d25903dc6c8c18086646fbbededa89e2f605834eaa8bddb7834a3",
+        "firmware.S": "024b833924d413abb6cf7cbb456b381293da0f0fdaa589d8b460a45dc214574b",
+        "firmware_meta.json": "5b18a04c4de6dfdccb4973d4cf1a23af93c147fc7ee1bb10be4e3242d38a4c25"
+      },
+      "observed_cycles": 1958,
+      "hardware_soc_cycles": 1953,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.922,
+      "log_sha256": {
+        "console.log": "1b443b39e830af977f75701e793eac092a33c9fd6a980cbb3c3308ab04a05065",
+        "xrun.log": "f75f29ac4395a07e34b92b172d9fe0057c39dc608b47ab54bc7542bccc358f42"
+      },
+      "cycles_saved_vs_baseline": 67,
+      "cycle_reduction_percent": 3.3086
+    },
+    {
+      "seed": 19,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "d34d1b4cffbd2e79baa510c820d4a372ee559568bd84bd57bf4d0ed2a94e9a15",
+      "files_sha256": {
+        "firmware.hex": "9bbd4b927c1bd8641cb6d5f9467d0e23f65959cd4918ad3e7a0d9f431d3dae7f",
+        "firmware.S": "ec3acbcb408a1d04584fc6eb165519e6158fdb341beeef566549b5fb5dc97894",
+        "firmware_meta.json": "4c4eaffbb0e290048896ec7373af38cacdb9ec43eae2447776b4cd86c21c81db"
+      },
+      "observed_cycles": 1954,
+      "hardware_soc_cycles": 1949,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "5200a69515c9ffc8f8456aac795d578b8f18ed097b59604a3cc3cb2203caca3a",
+        "xrun.log": "a0d8ec53613c3da2c1c92e583534f0b19c43fe17fbdbe31f23fafca577f3a2ff"
+      },
+      "cycles_saved_vs_baseline": 71,
+      "cycle_reduction_percent": 3.5062
+    },
+    {
+      "seed": 20,
+      "mode": "scheduled4",
+      "batch": 1,
+      "code_bytes": 592,
+      "instruction_words": 148,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "0cb68ebbc545eeb12082ea49bc12e4ac6053d2f2369f1d18c108517ca7093b3d",
+      "files_sha256": {
+        "firmware.hex": "6b87008fbc753915a8a5862792284b2ff32c02952fab6c44457d95f5db75c9fd",
+        "firmware.S": "8222188695a3fbaad595fa19ea08a96bd7811e346bb38aa833f5b897eead8b3e",
+        "firmware_meta.json": "d123a446afa4c90803402f9ee70e95023313fc370ad0d3d76ba6463256a75959"
+      },
+      "observed_cycles": 1654,
+      "hardware_soc_cycles": 1649,
+      "npu_cycles": 802,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.47,
+      "log_sha256": {
+        "console.log": "66b938208f6f69d8ed85f7c4bae1f40291125d5272eb0a4167dd52d9a36fb9cd",
+        "xrun.log": "f000bd5c7e8aa90bfa1ed13430d754b9da369a9a80aa54805ccd3dca87f6a6a7"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 20,
+      "mode": "scheduled8",
+      "batch": 1,
+      "code_bytes": 684,
+      "instruction_words": 171,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "0cb68ebbc545eeb12082ea49bc12e4ac6053d2f2369f1d18c108517ca7093b3d",
+      "files_sha256": {
+        "firmware.hex": "862b2916f6f83b64208985a22c65779b112cff34d9266f22087bf958b6fe8668",
+        "firmware.S": "65c9f997564b54089b54d8e9cd4d6e971b2ca5c1765f6f994c7cdc8e30258408",
+        "firmware_meta.json": "19db6165597431c0dbdf799d2911d3d2e0a2f284544624612b2f7dd7e2449324"
+      },
+      "observed_cycles": 1617,
+      "hardware_soc_cycles": 1612,
+      "npu_cycles": 805,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "6faa3a12a4e4da53f1a1059af4cc9311679db943f6b63856f434f4ae73495071",
+        "xrun.log": "c99fb047f689a076eb3cfc1e039464905aa21b8a76607c07f96f0ad49737bc27"
+      },
+      "cycles_saved_vs_baseline": 37,
+      "cycle_reduction_percent": 2.237
+    },
+    {
+      "seed": 20,
+      "mode": "reuse8",
+      "batch": 1,
+      "code_bytes": 644,
+      "instruction_words": 161,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "0cb68ebbc545eeb12082ea49bc12e4ac6053d2f2369f1d18c108517ca7093b3d",
+      "files_sha256": {
+        "firmware.hex": "a1e7be45546b80e9b71997dac0d909b41f48bbf962673b02bcc8466c98371be6",
+        "firmware.S": "1110825c6a06c89e55e9b09b4f52350a2ddd86d0e3542a3d610b05ae3092795e",
+        "firmware_meta.json": "f9d687247f0c5192e64d3fa267f53a775160fa61578aa5cc739e1abf1ef01799"
+      },
+      "observed_cycles": 1606,
+      "hardware_soc_cycles": 1601,
+      "npu_cycles": 803,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "b3d905030970445c2b7cbe990f51134b66009b15cb2c1614d086bb4e8e9e7469",
+        "xrun.log": "685bdc63e0b5178a37087c412e1b18525b45f54f20dfc15284e5566a95797303"
+      },
+      "cycles_saved_vs_baseline": 48,
+      "cycle_reduction_percent": 2.9021
+    },
+    {
+      "seed": 20,
+      "mode": "reuse8_eq",
+      "batch": 1,
+      "code_bytes": 644,
+      "instruction_words": 161,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "0cb68ebbc545eeb12082ea49bc12e4ac6053d2f2369f1d18c108517ca7093b3d",
+      "files_sha256": {
+        "firmware.hex": "1da71cef721c451e16714502269a1ed68f4963029f74f76d1009505b40e95b79",
+        "firmware.S": "56bd1e15bfffe3c29b99c5dc765c1b83211c0afb8ec26b093c29f46e87c3d8a2",
+        "firmware_meta.json": "73937794872685f3283733ab25bf9623b9022d11fd84e9686ef555cdc794a396"
+      },
+      "observed_cycles": 1603,
+      "hardware_soc_cycles": 1598,
+      "npu_cycles": 802,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "05dfa50aa914cfc611aef8d160a2be57342bbba0089148d12293884453d7632d",
+        "xrun.log": "948db9c5301a7ed1a15b1affec92852bd5387a798a23d02ec7c7584924392112"
+      },
+      "cycles_saved_vs_baseline": 51,
+      "cycle_reduction_percent": 3.0834
+    },
+    {
+      "seed": 21,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 860,
+      "instruction_words": 215,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "1cf4f5a30294318f0d536c5fdaea0f5f274b764398220c50c500bcb1408d7aba",
+      "files_sha256": {
+        "firmware.hex": "1a65280ad9594f9cb4b5f07808dbe50fcb54c5b7b76de724b8f3a45667896cd7",
+        "firmware.S": "fd47fae54401aff8ef858d9ab250c6c95661f48c77645366cc414f853a9127f2",
+        "firmware_meta.json": "2e4e63ee4d066ffbf7f79c6c46a155865c0bbff47a4c2f02ae38b46e790330ee"
+      },
+      "observed_cycles": 2043,
+      "hardware_soc_cycles": 2038,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "a4013ecdfd41ee813ce98b74cb40d11ca5b78119e4d8cd8069d9aa24ca0cd6c0",
+        "xrun.log": "1c811a5c9f3503a22371bf5227f38b6c23835320d5f57120c1a02a909501efe3"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 21,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1012,
+      "instruction_words": 253,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "1cf4f5a30294318f0d536c5fdaea0f5f274b764398220c50c500bcb1408d7aba",
+      "files_sha256": {
+        "firmware.hex": "be3596fec9fb3246404f2de54ad9e2ec58898c2a1ba4cef5d12dca246f1a5b27",
+        "firmware.S": "0d8fcf3eb8380b98386ebd621be3d200bece9cc61aa356ebca39697c58cccd58",
+        "firmware_meta.json": "fa18e13bf1a8cc9bba859e6a6867ac0ee9003a9fc878dd484d4ba74cd2ba11fb"
+      },
+      "observed_cycles": 1989,
+      "hardware_soc_cycles": 1984,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "d8d45a7aee55d2c614447f451a9d75b7f5ebd99a3d26f1aeced9cdc57a7bab2f",
+        "xrun.log": "d8db59cfd2fa4d8b42ed396ff419d924ae3bfafb7869f44073d9f36e253ae4e0"
+      },
+      "cycles_saved_vs_baseline": 54,
+      "cycle_reduction_percent": 2.6432
+    },
+    {
+      "seed": 21,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "1cf4f5a30294318f0d536c5fdaea0f5f274b764398220c50c500bcb1408d7aba",
+      "files_sha256": {
+        "firmware.hex": "1e94c3f8a83a1e15241b3f249b778d56e4150084472e149eb48fdb6739911b20",
+        "firmware.S": "85a33244f206ff531f2194ce59f2d8a2a4192602f081a400a0c22ec09b46df16",
+        "firmware_meta.json": "782d7fdb90ecd7ce9a433c380b29957922e9a1fb1994a2ddf52d89773b18e27a"
+      },
+      "observed_cycles": 1977,
+      "hardware_soc_cycles": 1972,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "2c8394a45fd5ceefba95c6f267e0754b21c5047882b7b3710ca599fb422ed660",
+        "xrun.log": "c7fa5217f27641b5ef944a1c9abc4f501b037629e99f04692e0406835e723673"
+      },
+      "cycles_saved_vs_baseline": 66,
+      "cycle_reduction_percent": 3.2305
+    },
+    {
+      "seed": 21,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "1cf4f5a30294318f0d536c5fdaea0f5f274b764398220c50c500bcb1408d7aba",
+      "files_sha256": {
+        "firmware.hex": "37532c6e1e40459b0c88cdd0e802a1168bb25ff47ed5aeecbb38945caa2a62e6",
+        "firmware.S": "686b3fdb93ce9aed65423a4d491b98df4f00c0cc7770bdf6758c942e071da5ea",
+        "firmware_meta.json": "1a7170b5a46497b6d6b4376a0654ca8f3904c581c17793530e5f99b2251cc68b"
+      },
+      "observed_cycles": 1973,
+      "hardware_soc_cycles": 1968,
+      "npu_cycles": 845,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "b1956e74858fe5f9ac1d3788958f8d968bfcb189484066d4b5b1d794c9cc34c6",
+        "xrun.log": "a58b2eb86085f15430f4fbd0705d3bb7ef536cbec492bd9e0d71bba5d32650e9"
+      },
+      "cycles_saved_vs_baseline": 70,
+      "cycle_reduction_percent": 3.4263
+    },
+    {
+      "seed": 22,
+      "mode": "scheduled4",
+      "batch": 1,
+      "code_bytes": 588,
+      "instruction_words": 147,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "5cf15043f66269f9dfcfad1c0dd1a1580e1f1057eb78f5d6a4175b94aaf8d4d6",
+      "files_sha256": {
+        "firmware.hex": "5adfe9ce5b2bd4d0111550c1aa24c78e27d832706d9980a892560ad28dbe1400",
+        "firmware.S": "6f8b0882e13dc594b830e1bf25ec5ba447122a582c7367cf8bce37b3541648eb",
+        "firmware_meta.json": "3cac0b890baea8aa7d32331e78256ab33cf4e0d69fbdd08a554eb6cb03d7fb17"
+      },
+      "observed_cycles": 1634,
+      "hardware_soc_cycles": 1629,
+      "npu_cycles": 801,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "92c67bc634538b7868778fe8bf951dac640e03324bb0f0e0e2e79af103963eb4",
+        "xrun.log": "bcca928bd342af3c57faf12b519fa3642ea9edda5d33ccf1f4117687f2ea4e65"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 22,
+      "mode": "scheduled8",
+      "batch": 1,
+      "code_bytes": 680,
+      "instruction_words": 170,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "5cf15043f66269f9dfcfad1c0dd1a1580e1f1057eb78f5d6a4175b94aaf8d4d6",
+      "files_sha256": {
+        "firmware.hex": "8bc11f89a9a7947e9cf3ad42d516ef377c9dd73b5399437c7fef6e4430b8cb1d",
+        "firmware.S": "e588d7988d945a44c68e4fb5e0971df2feac265662ac3f5c203eccef341b8ce6",
+        "firmware_meta.json": "d3e55bf4fd0bd36b21ebce5c9398fb8f89ccb7a5f1394202ec6b79c2b86ccff8"
+      },
+      "observed_cycles": 1597,
+      "hardware_soc_cycles": 1592,
+      "npu_cycles": 801,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "4fa8c2d2e2506055bd0295016b2683434a49af54e42e319498340c7a07cb00c0",
+        "xrun.log": "dbef71b1b944eaac888cd2cf97dcf43f76b41ec66eaabc1ba5b516c1b1d02137"
+      },
+      "cycles_saved_vs_baseline": 37,
+      "cycle_reduction_percent": 2.2644
+    },
+    {
+      "seed": 22,
+      "mode": "reuse8",
+      "batch": 1,
+      "code_bytes": 640,
+      "instruction_words": 160,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "5cf15043f66269f9dfcfad1c0dd1a1580e1f1057eb78f5d6a4175b94aaf8d4d6",
+      "files_sha256": {
+        "firmware.hex": "d8e7e83471c145613df55820ecce2f9e91788116ff35d634f0877d1bce758370",
+        "firmware.S": "3a752594b8daa72d736aec00802121c0e707b8d2d1b5b39b50df98ffa37e94a9",
+        "firmware_meta.json": "719f1b6f3329faaeff83639070080d577a4d12f35fe44563ffc6369f1f307b70"
+      },
+      "observed_cycles": 1600,
+      "hardware_soc_cycles": 1595,
+      "npu_cycles": 799,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "ba194b2d3aaea235e39150fe8ddd5c4b7bf85ae56713aef370c62e9f38d90486",
+        "xrun.log": "e8c7ed27e363cb9192532ba4131282944f2174587a4bcd43214aef8a4ec7d6ae"
+      },
+      "cycles_saved_vs_baseline": 34,
+      "cycle_reduction_percent": 2.0808
+    },
+    {
+      "seed": 22,
+      "mode": "reuse8_eq",
+      "batch": 1,
+      "code_bytes": 640,
+      "instruction_words": 160,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "5cf15043f66269f9dfcfad1c0dd1a1580e1f1057eb78f5d6a4175b94aaf8d4d6",
+      "files_sha256": {
+        "firmware.hex": "bb2fb671f440c48633ef7dfd0f346b5759465686a5a0bff5d90199242f46007e",
+        "firmware.S": "8a093fcd721581e5f2c5b9d277de038b3cdfca079340b5cdee1a8e3cff7a06d0",
+        "firmware_meta.json": "639d6a1a9b00fdb97f4fe37a85238609aa826d6f3e2362182326b9663eb9de1f"
+      },
+      "observed_cycles": 1597,
+      "hardware_soc_cycles": 1592,
+      "npu_cycles": 798,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "3b9300c909d6715a0b4a2d32fbcb0a46d379fd81b1b2e795a14a2255042ea84c",
+        "xrun.log": "c70fc6828f0127cf12067f84f1d5822cb07b6f921b7f25a3ea07f868b20a544f"
+      },
+      "cycles_saved_vs_baseline": 37,
+      "cycle_reduction_percent": 2.2644
+    },
+    {
+      "seed": 23,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 856,
+      "instruction_words": 214,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "91aefca1e74768ecc2a4a78838bbede1c6932985688fb2bf5a387fed3ed292ac",
+      "files_sha256": {
+        "firmware.hex": "c061f054a6a5ce232ed2ea2407b0371d8970182d7f025c109cde05eb2e0eddf8",
+        "firmware.S": "0fbd162f3713e05806c5d901a2d4f5326c8070fe0093af97e2259d60cf2870a3",
+        "firmware_meta.json": "463148323aec5426918dc3d951213a2573fded6a5567181dc34c0a6c7de0c229"
+      },
+      "observed_cycles": 2025,
+      "hardware_soc_cycles": 2020,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "ee326817cc9fb1c7f689ba9be28f6bd9e036c1cb75ba5047aadeaca985897e12",
+        "xrun.log": "b79123eea674797d115a80517b5f47eb7c142511b2de68ecc84dee11ff20e979"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 23,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1008,
+      "instruction_words": 252,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "91aefca1e74768ecc2a4a78838bbede1c6932985688fb2bf5a387fed3ed292ac",
+      "files_sha256": {
+        "firmware.hex": "59aa01c759bb2be5995f917aee72d3d637e585ede1433f8b23373dbb5ce3e81d",
+        "firmware.S": "a5e11ad3186a14de76410028ce69f9f5264bc0a4e8ee42782ebfd3d068d648b0",
+        "firmware_meta.json": "71dc443443b6f4fe3894a2551de649d86e7de91343001710a20f6dad939b6765"
+      },
+      "observed_cycles": 1984,
+      "hardware_soc_cycles": 1979,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "285494923cdc46c0c118af2b26bf7e1fa8fbe32345adbf768c08da1b76843932",
+        "xrun.log": "2b49a453a3bb77f390de5246d896846c099ea4cbf82500ac82ce693eedcea6cc"
+      },
+      "cycles_saved_vs_baseline": 41,
+      "cycle_reduction_percent": 2.0247
+    },
+    {
+      "seed": 23,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "91aefca1e74768ecc2a4a78838bbede1c6932985688fb2bf5a387fed3ed292ac",
+      "files_sha256": {
+        "firmware.hex": "13c273541aa2f96e975b47bb5340e74f0682c877a2515eab832af851b72fa2e2",
+        "firmware.S": "024b833924d413abb6cf7cbb456b381293da0f0fdaa589d8b460a45dc214574b",
+        "firmware_meta.json": "b967ebdc70271d36250757530184ac848b9410f710b5f356354a30011a2b016a"
+      },
+      "observed_cycles": 1958,
+      "hardware_soc_cycles": 1953,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "5e01612f74c6978813174ac79be92c798a3c53115aa0e9aa84ed521de4f83094",
+        "xrun.log": "4dc3372208753577606c1d4cf12a758c6bb974cefce9700077afe89f48ecd463"
+      },
+      "cycles_saved_vs_baseline": 67,
+      "cycle_reduction_percent": 3.3086
+    },
+    {
+      "seed": 23,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "91aefca1e74768ecc2a4a78838bbede1c6932985688fb2bf5a387fed3ed292ac",
+      "files_sha256": {
+        "firmware.hex": "e2da6def1647c1fb6481eb482b8c50bb4ab0add6acce564dcd5ef5dbe1ebbff6",
+        "firmware.S": "ec3acbcb408a1d04584fc6eb165519e6158fdb341beeef566549b5fb5dc97894",
+        "firmware_meta.json": "b5189a98c85d2d8104683b50c4c96de086dce9f3668b6790a35beb2a9aa02592"
+      },
+      "observed_cycles": 1954,
+      "hardware_soc_cycles": 1949,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "68f78be8512c82e0295bcde8b89f024510c8fc965c48977f0599e6b0fd557867",
+        "xrun.log": "bc4a004786538d07991053482f0587f86a34f0d5a7944ee8a691b12bce2690fa"
+      },
+      "cycles_saved_vs_baseline": 71,
+      "cycle_reduction_percent": 3.5062
+    },
+    {
+      "seed": 24,
+      "mode": "scheduled4",
+      "batch": 4,
+      "code_bytes": 1392,
+      "instruction_words": 348,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "e028d7854f2a6c6e6d364640daa636fcc27af1315186df6149c014f5eaa3957b",
+      "files_sha256": {
+        "firmware.hex": "2c536be3cb86c2675636148928164ced41edc53e3451cf5022d8a7df8b500a4a",
+        "firmware.S": "ed4622ac7299c63c0b5d3cf91cb6d8a6feb0f653cb03363b4e12888554bdc127",
+        "firmware_meta.json": "bac5126e40cc9865d566b263fd81c1ae508e11700d202e0b0e8c88b60a1211ea"
+      },
+      "observed_cycles": 2901,
+      "hardware_soc_cycles": 2896,
+      "npu_cycles": 946,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "443848deaa579e0c976209c66b7f20eb0284896ca1d254abf390e2381354bf54",
+        "xrun.log": "ba2082ff5cb6a9694bb0da6db9f410b622d05d090cf1787840beab2d100104c6"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 24,
+      "mode": "scheduled8",
+      "batch": 4,
+      "code_bytes": 1664,
+      "instruction_words": 416,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "e028d7854f2a6c6e6d364640daa636fcc27af1315186df6149c014f5eaa3957b",
+      "files_sha256": {
+        "firmware.hex": "344fb1d480c37efbcaa213499ec9d3a9c7ccceb717410c689ab5da96c7ccf534",
+        "firmware.S": "340d448c50a35c39e12da25b55dc78357d6f20d4af37690e735ea2641c808c1d",
+        "firmware_meta.json": "c0c836a7896b65be03856e7e990d75b8ffa4bc6ebe8dc86d0976afe49011e71a"
+      },
+      "observed_cycles": 2752,
+      "hardware_soc_cycles": 2747,
+      "npu_cycles": 946,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "89fdb431455b454e8e9f78a3b887bc24e7892febc95b906ecdbcdc49f67c8bb1",
+        "xrun.log": "a3cb807fe932e1fba75d3c9412e6075332f2c76c153d231dc7ff98e0fdb6a52b"
+      },
+      "cycles_saved_vs_baseline": 149,
+      "cycle_reduction_percent": 5.1362
+    },
+    {
+      "seed": 24,
+      "mode": "reuse8",
+      "batch": 4,
+      "code_bytes": 1524,
+      "instruction_words": 381,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "e028d7854f2a6c6e6d364640daa636fcc27af1315186df6149c014f5eaa3957b",
+      "files_sha256": {
+        "firmware.hex": "54e9fd67e498820b5f95f30e46f6d44810a7dbf09233191a6802804786ef633e",
+        "firmware.S": "e84828bfc8c2e9b5ebaacd3d1a3af93f791ec33b9f2f7e4086910d31119c3c0f",
+        "firmware_meta.json": "60e0ec9b32a83097cf1e47a0c1df507120fe416c224fc332e844b70fa2cef57d"
+      },
+      "observed_cycles": 2737,
+      "hardware_soc_cycles": 2732,
+      "npu_cycles": 954,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "fa32db0116e0d6bba393318e4ed55e3806c7d1a6c68d56c828701bcd9056de02",
+        "xrun.log": "1cf186a15d308b51fb160f9f797fb0209ff70f8f2532a3bd7a138a4c2b3b9f32"
+      },
+      "cycles_saved_vs_baseline": 164,
+      "cycle_reduction_percent": 5.6532
+    },
+    {
+      "seed": 24,
+      "mode": "reuse8_eq",
+      "batch": 4,
+      "code_bytes": 1524,
+      "instruction_words": 381,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "e028d7854f2a6c6e6d364640daa636fcc27af1315186df6149c014f5eaa3957b",
+      "files_sha256": {
+        "firmware.hex": "ce661c3ef09ec42c1533eab2eea50d302b06f0f5cc9e779c12bc2a88ba1bef1e",
+        "firmware.S": "0ac500080f6063b6764a760f3062dcf2c3c53a077fa100eb6ac3df6d3c994687",
+        "firmware_meta.json": "a324e40197e42b9d5af6c0f12deb233381a8fb2d8233cd9d1303ef6640bebd6e"
+      },
+      "observed_cycles": 2736,
+      "hardware_soc_cycles": 2731,
+      "npu_cycles": 951,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "18c80f8504b902abd57d07ae900c4d9cb5d15a3ceb00a585089546264827c71b",
+        "xrun.log": "a44fc3e7931a0d29735faed249acf4d981fae39eaf2c18f0b68131fab56a6531"
+      },
+      "cycles_saved_vs_baseline": 165,
+      "cycle_reduction_percent": 5.6877
+    },
+    {
+      "seed": 25,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 860,
+      "instruction_words": 215,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "12aa577f20d7d9b2dc1d30c729b77800f934e13b3f42ba05d647af99b3818104",
+      "files_sha256": {
+        "firmware.hex": "174e6cc3f06ed954582a19e330a125f4574d3eb02eca608b40d9cf7f2cba43ae",
+        "firmware.S": "fd47fae54401aff8ef858d9ab250c6c95661f48c77645366cc414f853a9127f2",
+        "firmware_meta.json": "db66127a0c6ca6462f0bca6412c86a5ba91747f5b61040d0d49ada69344aa641"
+      },
+      "observed_cycles": 2043,
+      "hardware_soc_cycles": 2038,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "f6705a24c4216edf10d508579408f2f0d78451a3ffe8597e1a414f6d09576a4c",
+        "xrun.log": "36c76dd98ecde402555694cc2cc56ee9ecb34ee42d905049bd4914538262f9c8"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 25,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1012,
+      "instruction_words": 253,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "12aa577f20d7d9b2dc1d30c729b77800f934e13b3f42ba05d647af99b3818104",
+      "files_sha256": {
+        "firmware.hex": "44a59109f6b9775b04d39f80ffe7091641887d99fd9b39d337146ab9867e4179",
+        "firmware.S": "0d8fcf3eb8380b98386ebd621be3d200bece9cc61aa356ebca39697c58cccd58",
+        "firmware_meta.json": "9ef5a3829e4cd72ac2454e7e20737a2e5e35314224560364295fd63caf5d4886"
+      },
+      "observed_cycles": 1989,
+      "hardware_soc_cycles": 1984,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "1f20309037fa544400dbc4dab63fe8c1bba880661d526ade6d4c015be9b3dddd",
+        "xrun.log": "7d9374be079f1b804fdbe12c96f8ee3253817634d24679eb980596231b6fb4a6"
+      },
+      "cycles_saved_vs_baseline": 54,
+      "cycle_reduction_percent": 2.6432
+    },
+    {
+      "seed": 25,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "12aa577f20d7d9b2dc1d30c729b77800f934e13b3f42ba05d647af99b3818104",
+      "files_sha256": {
+        "firmware.hex": "e00b71f7b03434b69bc820aef8489521cfffec89a91e700b55d56b8fbc02f214",
+        "firmware.S": "85a33244f206ff531f2194ce59f2d8a2a4192602f081a400a0c22ec09b46df16",
+        "firmware_meta.json": "8971ecc665047a75e112b2a6be5088b385aa0aebcac2bee0eca342670e09c20d"
+      },
+      "observed_cycles": 1977,
+      "hardware_soc_cycles": 1972,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "5b49061d3fb715f2acab4febad2fa770041508a7e557b9e9d43c46fbae68da6c",
+        "xrun.log": "dd5506d4645c01c6be94b5e43103bf11c4f0501056361173538180318e9418e4"
+      },
+      "cycles_saved_vs_baseline": 66,
+      "cycle_reduction_percent": 3.2305
+    },
+    {
+      "seed": 25,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "12aa577f20d7d9b2dc1d30c729b77800f934e13b3f42ba05d647af99b3818104",
+      "files_sha256": {
+        "firmware.hex": "d1ddbe924b8f6588d765912a94b2e2e87b78e17b5510fab9ea6b81bb8de026ae",
+        "firmware.S": "686b3fdb93ce9aed65423a4d491b98df4f00c0cc7770bdf6758c942e071da5ea",
+        "firmware_meta.json": "528bb31d8dcd9ffdce21526e4eb2cf3d06a39e94cdb9a026cf1eafa9895484cd"
+      },
+      "observed_cycles": 1973,
+      "hardware_soc_cycles": 1968,
+      "npu_cycles": 845,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "0507a78f78716df7c0b7bf5412adc2c3ebac2f430785bf4e0bc1bfad1662afb5",
+        "xrun.log": "7e1e5e8251a688f0769c41838258839f6a3ffc1d8a3800e788e3f864ef0e6c2c"
+      },
+      "cycles_saved_vs_baseline": 70,
+      "cycle_reduction_percent": 3.4263
+    },
+    {
+      "seed": 26,
+      "mode": "scheduled4",
+      "batch": 1,
+      "code_bytes": 588,
+      "instruction_words": 147,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "582a9323ab4c50209c8968314f82fd63d7ffde82bd7d20d93d2f30daf2c8c540",
+      "files_sha256": {
+        "firmware.hex": "fff610917f6aa70cfb197b016ada837507cf3d162a6c98a31bb3778c1de017d7",
+        "firmware.S": "e9dbe66ab2423b5db2c055ad4d3419f4ffd7e64ea19e48a14357536911925c1f",
+        "firmware_meta.json": "55645cb337a85770ff62e2a038ef96226300ed265cadb6ca50c780b9fa644f59"
+      },
+      "observed_cycles": 1634,
+      "hardware_soc_cycles": 1629,
+      "npu_cycles": 801,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "59cbda40a2da418c6a3b92e775c4818308685450096489559680a29a65daaaef",
+        "xrun.log": "74d28928c24953224e873126e5318b7a1073be9076aa7ad2c0045e262b509a35"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 26,
+      "mode": "scheduled8",
+      "batch": 1,
+      "code_bytes": 680,
+      "instruction_words": 170,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "582a9323ab4c50209c8968314f82fd63d7ffde82bd7d20d93d2f30daf2c8c540",
+      "files_sha256": {
+        "firmware.hex": "7c336c84b56d939f2e122951d40e55c6d97b85da6f4075579c2eb6d7f401dd17",
+        "firmware.S": "61ceef976ee40941583f230a4fdd07b77448a308ff7c4fb04b30f2a9eaa5ebec",
+        "firmware_meta.json": "2b3a7a5cfb8b003c75fdce75dfe55398c1d000d0d2dc5e00ee3bee48babe7d34"
+      },
+      "observed_cycles": 1597,
+      "hardware_soc_cycles": 1592,
+      "npu_cycles": 801,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "e53d6b1e63bc1f4c44cf82fa094cb46108e8fcd8077bda80e7c03c92aeb984c1",
+        "xrun.log": "6216fc4ffcb2c3d5970529b936a5057150c492de9f3bd060e92ab3ce3fc05eb6"
+      },
+      "cycles_saved_vs_baseline": 37,
+      "cycle_reduction_percent": 2.2644
+    },
+    {
+      "seed": 26,
+      "mode": "reuse8",
+      "batch": 1,
+      "code_bytes": 640,
+      "instruction_words": 160,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "582a9323ab4c50209c8968314f82fd63d7ffde82bd7d20d93d2f30daf2c8c540",
+      "files_sha256": {
+        "firmware.hex": "4cec00b5e2c9de9066b136dcb5fc21d62d3f08f965211032b39ec5fa3715c500",
+        "firmware.S": "66f646bf6c435517d9f5985d386f8cb50e8f41abc194cbf99dbf6593b818c093",
+        "firmware_meta.json": "8508bef37059434153a463100c200135674d7e8b8449ffe267239ac84809e53e"
+      },
+      "observed_cycles": 1600,
+      "hardware_soc_cycles": 1595,
+      "npu_cycles": 799,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "467acd75c292ad3edade7350eaa51608b744c172bb2b33d38e5bd95eea89d895",
+        "xrun.log": "15272c636b2ad2ce44b1e3ccbfd5b9d2051376e0dfe764145cc0d849ac1a2cc3"
+      },
+      "cycles_saved_vs_baseline": 34,
+      "cycle_reduction_percent": 2.0808
+    },
+    {
+      "seed": 26,
+      "mode": "reuse8_eq",
+      "batch": 1,
+      "code_bytes": 640,
+      "instruction_words": 160,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "582a9323ab4c50209c8968314f82fd63d7ffde82bd7d20d93d2f30daf2c8c540",
+      "files_sha256": {
+        "firmware.hex": "8ea76a9967816372818765cfbe5e9b09a30837e3f67d93722c1e4ac44ad9b93f",
+        "firmware.S": "fc1adeea5b0e6822ad8abbfc4c5377450df0bd3dfa2d01d53dec1cfae6c02b86",
+        "firmware_meta.json": "144f7c953ab2fddf0c06747eaf046323154046160b5a12773d265a94a9034112"
+      },
+      "observed_cycles": 1597,
+      "hardware_soc_cycles": 1592,
+      "npu_cycles": 798,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "588836851410ec5bbaa0077ef3b28597cdf39340d192901b5357e615a445a2ee",
+        "xrun.log": "95f0301f5f6e0f0bca2479ffb2773b93fbf17a24c76fa73817d599e3697b92df"
+      },
+      "cycles_saved_vs_baseline": 37,
+      "cycle_reduction_percent": 2.2644
+    },
+    {
+      "seed": 27,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 856,
+      "instruction_words": 214,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "3a2202b9b220ee6bb3c5562e0f8e2e93be6522ab184d67b61707da543bfd577f",
+      "files_sha256": {
+        "firmware.hex": "ad8ef03c4df70fa550dec3f9f8b7f223d7fa78cae5dac51292a79006cbdba438",
+        "firmware.S": "0fbd162f3713e05806c5d901a2d4f5326c8070fe0093af97e2259d60cf2870a3",
+        "firmware_meta.json": "0c742e6beb69c1221437c92841c6da44d67b4ce5ba91f8c619dc12ff2f29b003"
+      },
+      "observed_cycles": 2025,
+      "hardware_soc_cycles": 2020,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "04707be65fb9514f006c3d074cbe25cd87a38d36e2ac934b8082088dd6156598",
+        "xrun.log": "b45d7d205524774e40527b46bb09d00a8f5f245672fa91dfb638a228174e536b"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 27,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1008,
+      "instruction_words": 252,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "3a2202b9b220ee6bb3c5562e0f8e2e93be6522ab184d67b61707da543bfd577f",
+      "files_sha256": {
+        "firmware.hex": "44286ad28580fc87226923de2255e76f6a24388992aab2d043062d372fefaa77",
+        "firmware.S": "a5e11ad3186a14de76410028ce69f9f5264bc0a4e8ee42782ebfd3d068d648b0",
+        "firmware_meta.json": "022d6d6eaec6ccabb7fffb96f16363aff5d46162dfa0f1952f7174d35bf770d5"
+      },
+      "observed_cycles": 1984,
+      "hardware_soc_cycles": 1979,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "7bf3b140709c081ace276cb07a585cb736e7398784a0ddbb617a288e22617eb7",
+        "xrun.log": "f2c29fa6302901d24ab16abc82be33c5aa8a27900ee867518b4649568a646f28"
+      },
+      "cycles_saved_vs_baseline": 41,
+      "cycle_reduction_percent": 2.0247
+    },
+    {
+      "seed": 27,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "3a2202b9b220ee6bb3c5562e0f8e2e93be6522ab184d67b61707da543bfd577f",
+      "files_sha256": {
+        "firmware.hex": "9c4bad3136690f4fdc9f412cf1c0585747ddbd06c90edc6446e587b4e571844e",
+        "firmware.S": "024b833924d413abb6cf7cbb456b381293da0f0fdaa589d8b460a45dc214574b",
+        "firmware_meta.json": "1dee7810779571baf64b96e9a4815d1eef12c9cd7a141347dd217d60570e36f1"
+      },
+      "observed_cycles": 1958,
+      "hardware_soc_cycles": 1953,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "630bd50056fb0e617d0fd9cac1a215199c22b54e04edf3c384ec9393a90d2796",
+        "xrun.log": "dabe35fa5329ba790263965ec2f5483953daef656711e511cc7f15511e22de34"
+      },
+      "cycles_saved_vs_baseline": 67,
+      "cycle_reduction_percent": 3.3086
+    },
+    {
+      "seed": 27,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "3a2202b9b220ee6bb3c5562e0f8e2e93be6522ab184d67b61707da543bfd577f",
+      "files_sha256": {
+        "firmware.hex": "f7c16166799a51f0d960f0cf55e4e53fb9c5efa6a2abe54308bf5fcc1c8a8384",
+        "firmware.S": "ec3acbcb408a1d04584fc6eb165519e6158fdb341beeef566549b5fb5dc97894",
+        "firmware_meta.json": "41592c1fc4999ca791336bb2630ce6a14f0e5d9200ba9152f0a8d40bf61a0e61"
+      },
+      "observed_cycles": 1954,
+      "hardware_soc_cycles": 1949,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "01a142afb17e701c5148b307c8abf0e74d8b90eca0d2bace7812b5fb845656ca",
+        "xrun.log": "09346a0be519a2c3ae9d405dbf232467b04519a77d5634d93c4dfc14fb99abe8"
+      },
+      "cycles_saved_vs_baseline": 71,
+      "cycle_reduction_percent": 3.5062
+    },
+    {
+      "seed": 28,
+      "mode": "scheduled4",
+      "batch": 1,
+      "code_bytes": 592,
+      "instruction_words": 148,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "0ab49dc9e42664b61f5f845c5c54f2f965b9c8dc093c59dc74936b13ef177c9e",
+      "files_sha256": {
+        "firmware.hex": "484a4b2c1ce665abab6dbdf425144f2cfa4f79451b29c0d78fab2035edca8a47",
+        "firmware.S": "8222188695a3fbaad595fa19ea08a96bd7811e346bb38aa833f5b897eead8b3e",
+        "firmware_meta.json": "6d1ffb91e7a48aad36809d9290bb5e9b4de2ad4b0a7a55c594d76f031c369114"
+      },
+      "observed_cycles": 1654,
+      "hardware_soc_cycles": 1649,
+      "npu_cycles": 802,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.471,
+      "log_sha256": {
+        "console.log": "dc09cfc749f5de699c66232ee3549fcf5f7b9ea1f6adaa8e61310872df1a489a",
+        "xrun.log": "2691abfca862e723fb8043383cf1bdb85715ad71b461ae8fba20f7f86965e77c"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 28,
+      "mode": "scheduled8",
+      "batch": 1,
+      "code_bytes": 684,
+      "instruction_words": 171,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "0ab49dc9e42664b61f5f845c5c54f2f965b9c8dc093c59dc74936b13ef177c9e",
+      "files_sha256": {
+        "firmware.hex": "97db54dddd031a06f210252b324c826e43bd1877d8142c226f21776b4a9ae863",
+        "firmware.S": "65c9f997564b54089b54d8e9cd4d6e971b2ca5c1765f6f994c7cdc8e30258408",
+        "firmware_meta.json": "8df607c5a29c5467f6b56762553cedb200459fd7e93d3672883e9154620eabd0"
+      },
+      "observed_cycles": 1617,
+      "hardware_soc_cycles": 1612,
+      "npu_cycles": 805,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "0d9744f8fa1ae086734d15c449f07f743591e02bdbe7a3d6a711604db26eac6a",
+        "xrun.log": "e5f979276c0c257b0e2f7cdb6d2cdf9dd7816caa2312c0fb7c5b266ff0b1d44d"
+      },
+      "cycles_saved_vs_baseline": 37,
+      "cycle_reduction_percent": 2.237
+    },
+    {
+      "seed": 28,
+      "mode": "reuse8",
+      "batch": 1,
+      "code_bytes": 644,
+      "instruction_words": 161,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "0ab49dc9e42664b61f5f845c5c54f2f965b9c8dc093c59dc74936b13ef177c9e",
+      "files_sha256": {
+        "firmware.hex": "ffe0afc00d38e5fa33f4fd1f1033d437799388c0155ac9ca913240ead861720a",
+        "firmware.S": "1110825c6a06c89e55e9b09b4f52350a2ddd86d0e3542a3d610b05ae3092795e",
+        "firmware_meta.json": "70f989bf68d242069837da3ac5582b1ec36f2eb01990eb016261f942b3b14313"
+      },
+      "observed_cycles": 1606,
+      "hardware_soc_cycles": 1601,
+      "npu_cycles": 803,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "100cfc36992da8590acb02210fb3f79568b0529586d34b15be345c800ab27036",
+        "xrun.log": "a6610c34404580d4dfa16c1152bdaffac15bc76cf366ef978e9fd01426723415"
+      },
+      "cycles_saved_vs_baseline": 48,
+      "cycle_reduction_percent": 2.9021
+    },
+    {
+      "seed": 28,
+      "mode": "reuse8_eq",
+      "batch": 1,
+      "code_bytes": 644,
+      "instruction_words": 161,
+      "input_data_start_offset": 4092,
+      "input_data_sha256": "0ab49dc9e42664b61f5f845c5c54f2f965b9c8dc093c59dc74936b13ef177c9e",
+      "files_sha256": {
+        "firmware.hex": "fcc691395e7e50982126bd61e2b233d641252ce7551107df83c1fde2943bfffa",
+        "firmware.S": "56bd1e15bfffe3c29b99c5dc765c1b83211c0afb8ec26b093c29f46e87c3d8a2",
+        "firmware_meta.json": "df052414e547d27ebba9e12d3bb69bd56b6c458674d15add592eee0fc2b9b997"
+      },
+      "observed_cycles": 1603,
+      "hardware_soc_cycles": 1598,
+      "npu_cycles": 802,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "dma_read_overlap": 69,
+      "dma_write_overlap": 68,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "6f8d88b7c516992305788ba17c139c702656719f96f9e148712f9d360c92d87a",
+        "xrun.log": "c1001fff34121c5e3b3740d0a23ac1619f82c0e133a8b517f6c43d045a0c2cbf"
+      },
+      "cycles_saved_vs_baseline": 51,
+      "cycle_reduction_percent": 3.0834
+    },
+    {
+      "seed": 29,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 860,
+      "instruction_words": 215,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "ca12674bf7432bc4fb88063fb807dad989f71083b10ac4fb2ee21649eb195a17",
+      "files_sha256": {
+        "firmware.hex": "72f9cacf38940cf853117dc630abfdead24622ddba28421fd99450836273b6e7",
+        "firmware.S": "fd47fae54401aff8ef858d9ab250c6c95661f48c77645366cc414f853a9127f2",
+        "firmware_meta.json": "dacd61300b14c624db8a8662d5699e85ee4c408855777d423b38ba113577bade"
+      },
+      "observed_cycles": 2043,
+      "hardware_soc_cycles": 2038,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "0a9f912af76be2e54137d66ff7d66cf573349859df62b62f7cf4534acaa2eee8",
+        "xrun.log": "92a2ed57dcdb4e2c39b2435222af64fc1eefcec25252b485ee97429989feaf4d"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 29,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1012,
+      "instruction_words": 253,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "ca12674bf7432bc4fb88063fb807dad989f71083b10ac4fb2ee21649eb195a17",
+      "files_sha256": {
+        "firmware.hex": "53da0c6c30db6b9dd21f72035e0f2fe0009bf8543f705cd582564757cc8524f3",
+        "firmware.S": "0d8fcf3eb8380b98386ebd621be3d200bece9cc61aa356ebca39697c58cccd58",
+        "firmware_meta.json": "6d685e76d0310b30b22cf522e522ebcfb3f94d12c88e9bdbacb7c6a11f71a73a"
+      },
+      "observed_cycles": 1989,
+      "hardware_soc_cycles": 1984,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "20760888facc5f44e77e2e049c5a742d7222f7aa5403cb5c75fdc6906bde35bb",
+        "xrun.log": "6d7c8e87fac7432b8e46590235b842e58386132d6828123e4f624806a23cfb8a"
+      },
+      "cycles_saved_vs_baseline": 54,
+      "cycle_reduction_percent": 2.6432
+    },
+    {
+      "seed": 29,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "ca12674bf7432bc4fb88063fb807dad989f71083b10ac4fb2ee21649eb195a17",
+      "files_sha256": {
+        "firmware.hex": "aae768ce52768ec88f6c87336e87f300044dfa1fdc6088314be45cb85d2978ea",
+        "firmware.S": "85a33244f206ff531f2194ce59f2d8a2a4192602f081a400a0c22ec09b46df16",
+        "firmware_meta.json": "5e0161ebe0367ee1f7ff77dfe6fa226be6c9694dace9dba16a0988c929a686e9"
+      },
+      "observed_cycles": 1977,
+      "hardware_soc_cycles": 1972,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "34eb9aa86f3b7669b342db175b7b94fbe31e4ead792b20ba2fd65b02f6818bd6",
+        "xrun.log": "10242721e47b7c579de937f2b0ce4ccf8974926110d09161c3880f99101d29a2"
+      },
+      "cycles_saved_vs_baseline": 66,
+      "cycle_reduction_percent": 3.2305
+    },
+    {
+      "seed": 29,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 944,
+      "instruction_words": 236,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "ca12674bf7432bc4fb88063fb807dad989f71083b10ac4fb2ee21649eb195a17",
+      "files_sha256": {
+        "firmware.hex": "368b3f1560e2fcd41ed7dafe6567ec38aef5a8a3a6f5fd3a41a8ec520e6ec8a8",
+        "firmware.S": "686b3fdb93ce9aed65423a4d491b98df4f00c0cc7770bdf6758c942e071da5ea",
+        "firmware_meta.json": "38716c2980376287dec6a8beb8ac4163f11877dbbf0648547f29dfe4045bff0d"
+      },
+      "observed_cycles": 1973,
+      "hardware_soc_cycles": 1968,
+      "npu_cycles": 845,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "44c15d876fa9790fa69a9b3534aa5dc2e839bfc832daa8b6112eb81f3aec521c",
+        "xrun.log": "0e38a569daf6571a03c2df165ab2978e7dee16ea572766584bcaf4658f7275d9"
+      },
+      "cycles_saved_vs_baseline": 70,
+      "cycle_reduction_percent": 3.4263
+    },
+    {
+      "seed": 30,
+      "mode": "scheduled4",
+      "batch": 4,
+      "code_bytes": 1388,
+      "instruction_words": 347,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "158131ab05c67918a265a5d0e6398bc8e654c1aaef8f48911449077f3c5f1314",
+      "files_sha256": {
+        "firmware.hex": "52f5a8446d89471e3241af28b09fe1d163a85dbc7945f9916ab4824861baf140",
+        "firmware.S": "9141c6d26ab799041cd259b71f6acb7e137e49d6433f84cc79073c4213621238",
+        "firmware_meta.json": "3dbbecadb3552bc0a3212cbc11f2e22e176fe50e027950e5f87bcdc956f78cc4"
+      },
+      "observed_cycles": 2810,
+      "hardware_soc_cycles": 2805,
+      "npu_cycles": 940,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "35f76fae77a510eea6099d2fa4fb23619fb6a00b0b8da40cd738360f7a1949fc",
+        "xrun.log": "6cabca6ee8728cb18cbd4d3d58ce4fcec397cc21b002b76c49e99440eb01d6e2"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 30,
+      "mode": "scheduled8",
+      "batch": 4,
+      "code_bytes": 1660,
+      "instruction_words": 415,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "158131ab05c67918a265a5d0e6398bc8e654c1aaef8f48911449077f3c5f1314",
+      "files_sha256": {
+        "firmware.hex": "81bf72a58c6a56ae3af484acc0f908dd312a490339f004613a33201d91fe221a",
+        "firmware.S": "f221c2d06c7081237ecb9444baac3bbe9a105234e3687e6f42d42506c37e7d2a",
+        "firmware_meta.json": "b4a0cbf37307049a6c49a697de28cf0d0e047e309d8432d91970b40aae8341dc"
+      },
+      "observed_cycles": 2723,
+      "hardware_soc_cycles": 2718,
+      "npu_cycles": 942,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "b033455ad017c937ef570439b63741d27644a2e5a0b2dee5c88787e70939dd02",
+        "xrun.log": "36ae93db4b637834659cf6531aa5d064bf38837d2534f63936809d12c61e8393"
+      },
+      "cycles_saved_vs_baseline": 87,
+      "cycle_reduction_percent": 3.0961
+    },
+    {
+      "seed": 30,
+      "mode": "reuse8",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "158131ab05c67918a265a5d0e6398bc8e654c1aaef8f48911449077f3c5f1314",
+      "files_sha256": {
+        "firmware.hex": "8ed5e2e1d8f2e256780aea56c75adea266517489ec21c33fc30e904500d2140a",
+        "firmware.S": "ce9f8ccd7be5758c88fe5357fe58815e24f33f156cdc5b39d7a4a2f60ba96b2f",
+        "firmware_meta.json": "945606df0eea1867a2ddfe165de26e559357ec5a8f478b57b4c3d867645090b8"
+      },
+      "observed_cycles": 2692,
+      "hardware_soc_cycles": 2687,
+      "npu_cycles": 944,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "53d281542e33a9d050402445483649c2038220d17cd387a581996661f29d57a5",
+        "xrun.log": "e928764d2dd65a7705d0b2266206602c504dfe7faa3e2b7050f99c2e1fd4b783"
+      },
+      "cycles_saved_vs_baseline": 118,
+      "cycle_reduction_percent": 4.1993
+    },
+    {
+      "seed": 30,
+      "mode": "reuse8_eq",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "158131ab05c67918a265a5d0e6398bc8e654c1aaef8f48911449077f3c5f1314",
+      "files_sha256": {
+        "firmware.hex": "be338435372065fcbe1f1f8263426268d8079c07e9b9fcd35abeda0afd24abbc",
+        "firmware.S": "9ba8649e7788ed37718cd424f3329378b68b765b1b6799130e498d3f37bf235d",
+        "firmware_meta.json": "e726a8fb79815e882b7f90621596ce7d8a4f8ee705ca963726cff367e79b6e1d"
+      },
+      "observed_cycles": 2699,
+      "hardware_soc_cycles": 2694,
+      "npu_cycles": 949,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "fd41f3cb7741fe14251d274c4a42080babd1e8fe57bfdad443dd67a580d6ca0e",
+        "xrun.log": "96c05939386630db53c650b8d7f5fae4c96a43bed4ea6cd2f8046467718c46b6"
+      },
+      "cycles_saved_vs_baseline": 111,
+      "cycle_reduction_percent": 3.9502
+    },
+    {
+      "seed": 31,
+      "mode": "scheduled4",
+      "batch": 2,
+      "code_bytes": 856,
+      "instruction_words": 214,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "425300b1dbf3aa6ecaed3fa50b06230c9fb988d315c91431a33ddb5497b37f3b",
+      "files_sha256": {
+        "firmware.hex": "78c875d0ea57e853ae793659f65c6ab785ae31afe074816dc117744c2f280ba6",
+        "firmware.S": "0fbd162f3713e05806c5d901a2d4f5326c8070fe0093af97e2259d60cf2870a3",
+        "firmware_meta.json": "de9d048d7ed2ef1f32d8309efda5f9fe0f7136c6dd5e91aa48aef59e68d43d29"
+      },
+      "observed_cycles": 2025,
+      "hardware_soc_cycles": 2020,
+      "npu_cycles": 844,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "efd0215f7370b3d7f71e1da7a5166d2b44471d8472bbdd11066b6e99c7460161",
+        "xrun.log": "1dab74ac5da511b01f3e5cdc7a2f8fb2f2e042833bd3431ba1a289293abe1a06"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 31,
+      "mode": "scheduled8",
+      "batch": 2,
+      "code_bytes": 1008,
+      "instruction_words": 252,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "425300b1dbf3aa6ecaed3fa50b06230c9fb988d315c91431a33ddb5497b37f3b",
+      "files_sha256": {
+        "firmware.hex": "699ad39ab6947c171653fcf2399741770ea6b501c8b66ed3bc7120e15fb8ddba",
+        "firmware.S": "a5e11ad3186a14de76410028ce69f9f5264bc0a4e8ee42782ebfd3d068d648b0",
+        "firmware_meta.json": "c85a7aca93b34c43a7748229f17949487c71ab43ccdfb15f9b78c3f4c56c5094"
+      },
+      "observed_cycles": 1984,
+      "hardware_soc_cycles": 1979,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "2150d5e58402ed8b9f2b75b1bd976e33e5f80b9a87f1a85a3c000992f792588f",
+        "xrun.log": "9d055893b06fb478a67fcd36b82d1a64f37b803975a8233e4fb94dfb8f62b184"
+      },
+      "cycles_saved_vs_baseline": 41,
+      "cycle_reduction_percent": 2.0247
+    },
+    {
+      "seed": 31,
+      "mode": "reuse8",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "425300b1dbf3aa6ecaed3fa50b06230c9fb988d315c91431a33ddb5497b37f3b",
+      "files_sha256": {
+        "firmware.hex": "f1852326564947274643e700abc61b5d0ea28bef10f72e509e00aee69656ea9e",
+        "firmware.S": "024b833924d413abb6cf7cbb456b381293da0f0fdaa589d8b460a45dc214574b",
+        "firmware_meta.json": "f9b0c71a6e3f15446ed4ab01f2cead774654612060dd94505e2cdc4641dd528f"
+      },
+      "observed_cycles": 1958,
+      "hardware_soc_cycles": 1953,
+      "npu_cycles": 847,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "f0fa5a70abf769c596ac8d80ec25ee94f7f69d603695c95775f9687315078524",
+        "xrun.log": "08d7f9e6fc5b70ed749430df2cfb8abf28fd08839bfb2b47343f83a070657cb0"
+      },
+      "cycles_saved_vs_baseline": 67,
+      "cycle_reduction_percent": 3.3086
+    },
+    {
+      "seed": 31,
+      "mode": "reuse8_eq",
+      "batch": 2,
+      "code_bytes": 940,
+      "instruction_words": 235,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "425300b1dbf3aa6ecaed3fa50b06230c9fb988d315c91431a33ddb5497b37f3b",
+      "files_sha256": {
+        "firmware.hex": "20fcfbaf7ddf5154ff5850fcf1c0980252f0535c91539652927fd608f2e17819",
+        "firmware.S": "ec3acbcb408a1d04584fc6eb165519e6158fdb341beeef566549b5fb5dc97894",
+        "firmware_meta.json": "5b2967832f9505f3e293a068cbbb7605e400f2cc3e91dd42b9e181d905a028cf"
+      },
+      "observed_cycles": 1954,
+      "hardware_soc_cycles": 1949,
+      "npu_cycles": 846,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "dma_read_overlap": 141,
+      "dma_write_overlap": 140,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "779d7b9cbfbbc819012aabd5968432de10545e24e8614c20c95e9fcbd99ef454",
+        "xrun.log": "57cd015a53289e0231c51d2af9b11efb7407fff317bbcc4693237b34bf5c8c60"
+      },
+      "cycles_saved_vs_baseline": 71,
+      "cycle_reduction_percent": 3.5062
+    },
+    {
+      "seed": 10000,
+      "mode": "scheduled4",
+      "batch": 4,
+      "code_bytes": 1388,
+      "instruction_words": 347,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "b619756fb1184b0933941b769ceb6c0b8aeaecd203d50981077f0fef9bb165ee",
+      "files_sha256": {
+        "firmware.hex": "d9b9eea1e5f104290fd8566ffa961a577680a0a1c272757281633b3404d4982d",
+        "firmware.S": "cb655982873c79aa2517a79efc12344a4791d99628e7dfdf71f0f2f17164bbd1",
+        "firmware_meta.json": "0c51a2aa51b6d73a8bf94eed6b666a975e0fc9fb79d0889033911cc508c379d3"
+      },
+      "observed_cycles": 2810,
+      "hardware_soc_cycles": 2805,
+      "npu_cycles": 940,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.631,
+      "log_sha256": {
+        "console.log": "ded4ee13f0f3c8c4c4a29743c7f0651d3384059cd46517e3d74aaa9e89f07607",
+        "xrun.log": "41dca3cf9c84164106ea169272eef0c31230dacab595d1d65ddbe7db0a937297"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 10000,
+      "mode": "scheduled8",
+      "batch": 4,
+      "code_bytes": 1660,
+      "instruction_words": 415,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "b619756fb1184b0933941b769ceb6c0b8aeaecd203d50981077f0fef9bb165ee",
+      "files_sha256": {
+        "firmware.hex": "42ab8df6d7370918f2840462a7aaf183198a09ba6a8814d40e4ab806516cf38a",
+        "firmware.S": "5d022d97d9d3f64c9f0ba6b4825320d9831387a5a43c15dda60021ee62471bd5",
+        "firmware_meta.json": "b51b014ee98235f711f29e4ca17e272bc1e5f9bd79bb66aa02c7f88aac2f06dd"
+      },
+      "observed_cycles": 2723,
+      "hardware_soc_cycles": 2718,
+      "npu_cycles": 942,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 4.534,
+      "log_sha256": {
+        "console.log": "10a73da56195bc57fcd675611617cf7035b97280ea40a59c56535b3fcbf689e6",
+        "xrun.log": "557fa544252fd9d659836521459587602e5c8cbce3b509b3937bdf6d908bc66f"
+      },
+      "cycles_saved_vs_baseline": 87,
+      "cycle_reduction_percent": 3.0961
+    },
+    {
+      "seed": 10000,
+      "mode": "reuse8",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "b619756fb1184b0933941b769ceb6c0b8aeaecd203d50981077f0fef9bb165ee",
+      "files_sha256": {
+        "firmware.hex": "770876652242b4248f390845388a71c9146384bde80b18a4d674d1e8510a15d3",
+        "firmware.S": "0271ade619dfdbb1174e0c9d49769638d6bd374b642be1904fafb4d90db8f96d",
+        "firmware_meta.json": "845b60ee3e27e8a453e2993a33bf5d9dd2e6f53dcd2fbe5545f42236254af424"
+      },
+      "observed_cycles": 2692,
+      "hardware_soc_cycles": 2687,
+      "npu_cycles": 944,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "825bb41ede1d68ff3b679b88200215c51d232f752882e9b2a5889076ee4210a3",
+        "xrun.log": "f9561ef9db2bd02f7dd0076ad8ae6d3e67d0be4ff2e7fc161e7fdce7785cacf3"
+      },
+      "cycles_saved_vs_baseline": 118,
+      "cycle_reduction_percent": 4.1993
+    },
+    {
+      "seed": 10000,
+      "mode": "reuse8_eq",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "b619756fb1184b0933941b769ceb6c0b8aeaecd203d50981077f0fef9bb165ee",
+      "files_sha256": {
+        "firmware.hex": "c5511a740af7efd08d09c36def8b6bbd99e58c2284a1d10867ec332f874270e4",
+        "firmware.S": "1d0e51251cdd1f996f0e8a1ee24c3bc365f530c561dd1c49efbc30cdd31b793b",
+        "firmware_meta.json": "af3dd8913e726193f48143a18e3d7dd823fb7d73612af395ddb6e4d02cb9b616"
+      },
+      "observed_cycles": 2699,
+      "hardware_soc_cycles": 2694,
+      "npu_cycles": 949,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "7693bd1c4238e34c2dde00d223df78e99d22a8ecc4f8296b54c3f48eccd0e75c",
+        "xrun.log": "e85d9ca02fa4d7ad2da3e4bc2dd524db9477a8b7272d0ccb56517031bad2fea5"
+      },
+      "cycles_saved_vs_baseline": 111,
+      "cycle_reduction_percent": 3.9502
+    },
+    {
+      "seed": 10001,
+      "mode": "scheduled4",
+      "batch": 4,
+      "code_bytes": 1388,
+      "instruction_words": 347,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "411f8adccd557b3a34d265820f3e51092f5f15e373fce3209d1c49fe6a37efa3",
+      "files_sha256": {
+        "firmware.hex": "ecc1f75c172004fc89295e753313249d06d1b3593fbf5b86dfb269b6b175c8b1",
+        "firmware.S": "cb655982873c79aa2517a79efc12344a4791d99628e7dfdf71f0f2f17164bbd1",
+        "firmware_meta.json": "e6cec71a7968060f5b2c04a0936e083b893aa2bbadee51da0ba8da9c19cab5cf"
+      },
+      "observed_cycles": 2810,
+      "hardware_soc_cycles": 2805,
+      "npu_cycles": 940,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "07720d82c8b6aefae0e1bc52c50663d80cec65921ec5e8c5c43671ab646197b8",
+        "xrun.log": "b5d0afc18d77036fe7c9c51016032f74769929c06dafd73f61cb4104441984cf"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 10001,
+      "mode": "scheduled8",
+      "batch": 4,
+      "code_bytes": 1660,
+      "instruction_words": 415,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "411f8adccd557b3a34d265820f3e51092f5f15e373fce3209d1c49fe6a37efa3",
+      "files_sha256": {
+        "firmware.hex": "43361908b32a1d79b1f6e5012cee2ed306d6f635def314d9f97350a449739a5e",
+        "firmware.S": "5d022d97d9d3f64c9f0ba6b4825320d9831387a5a43c15dda60021ee62471bd5",
+        "firmware_meta.json": "986c02a46703faca55e4ff1353606d331724986c04894918f7ef4a2eda26cac3"
+      },
+      "observed_cycles": 2723,
+      "hardware_soc_cycles": 2718,
+      "npu_cycles": 942,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "4a8edcbe53a6baf5afda9cc5884279780f45e784806ee3c674fd091d8f72e4c4",
+        "xrun.log": "2f9435d47e3cd69a7ac4f62ed750b46fa29878bc587dc4e3acde0ad1169ef035"
+      },
+      "cycles_saved_vs_baseline": 87,
+      "cycle_reduction_percent": 3.0961
+    },
+    {
+      "seed": 10001,
+      "mode": "reuse8",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "411f8adccd557b3a34d265820f3e51092f5f15e373fce3209d1c49fe6a37efa3",
+      "files_sha256": {
+        "firmware.hex": "a6c307d075ff6a22a2aef07e03ba7c53426d7a7a590da9ee7548691e9385cc2c",
+        "firmware.S": "0271ade619dfdbb1174e0c9d49769638d6bd374b642be1904fafb4d90db8f96d",
+        "firmware_meta.json": "18c6116669192d32f43bb41e79705e123debd29d1a86420aab1a7de31feb5f39"
+      },
+      "observed_cycles": 2692,
+      "hardware_soc_cycles": 2687,
+      "npu_cycles": 944,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "1a7a82e9b47c93f20d8a33c3838fb9eba5ae7a18351e7d701f342bc48a4b58fb",
+        "xrun.log": "5298911167b076b6c01965d2556323e00f3896cf5f1decca61cd986b2285becb"
+      },
+      "cycles_saved_vs_baseline": 118,
+      "cycle_reduction_percent": 4.1993
+    },
+    {
+      "seed": 10001,
+      "mode": "reuse8_eq",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "411f8adccd557b3a34d265820f3e51092f5f15e373fce3209d1c49fe6a37efa3",
+      "files_sha256": {
+        "firmware.hex": "1e78945dac178006f209d251e5458a7964a7425150e2c6b304a2c8fe6707ebcf",
+        "firmware.S": "1d0e51251cdd1f996f0e8a1ee24c3bc365f530c561dd1c49efbc30cdd31b793b",
+        "firmware_meta.json": "d3a43b6f8df9cb6534b1ebb8b00e90120e130dced4fd56cae0688cb1979a6c4d"
+      },
+      "observed_cycles": 2699,
+      "hardware_soc_cycles": 2694,
+      "npu_cycles": 949,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "239dedd5e003d59466262c7712c486feeb9fb0958c91bba5a85783a3e47d38ca",
+        "xrun.log": "853fb4e14f9c3101011f8db1ad71b3788ef469d6c69f073d9aa122552fd57398"
+      },
+      "cycles_saved_vs_baseline": 111,
+      "cycle_reduction_percent": 3.9502
+    },
+    {
+      "seed": 10002,
+      "mode": "scheduled4",
+      "batch": 4,
+      "code_bytes": 1388,
+      "instruction_words": 347,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "bfac0e0750b53529d720e1de1740848333c2fac127a6d0d05f9c8c15f493048e",
+      "files_sha256": {
+        "firmware.hex": "abda80b51f5525de488681a65187f330e6219b57eafc6068321f6aa091e7dada",
+        "firmware.S": "cb655982873c79aa2517a79efc12344a4791d99628e7dfdf71f0f2f17164bbd1",
+        "firmware_meta.json": "2a6945561fb9ba4131f48bd76ea7c6587dc5efe580b1bfebd3e6f5cfb3f2af29"
+      },
+      "observed_cycles": 2810,
+      "hardware_soc_cycles": 2805,
+      "npu_cycles": 940,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.52,
+      "log_sha256": {
+        "console.log": "61e50b4adf3fe2106d138f320221400f06514cf0dff852b85c9028dc52a76507",
+        "xrun.log": "75b36e00799ddef6040e066beb1997f0d15eed0d755c70de525f26e1e55d37ea"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 10002,
+      "mode": "scheduled8",
+      "batch": 4,
+      "code_bytes": 1660,
+      "instruction_words": 415,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "bfac0e0750b53529d720e1de1740848333c2fac127a6d0d05f9c8c15f493048e",
+      "files_sha256": {
+        "firmware.hex": "2f8db58f83581eb1df2d4a01f70745c834c0cae2eafacef12f489fbfa4356358",
+        "firmware.S": "5d022d97d9d3f64c9f0ba6b4825320d9831387a5a43c15dda60021ee62471bd5",
+        "firmware_meta.json": "458460fc63be346c46e9ac964ca940187642fd0942575e86e4d99267b76f70b2"
+      },
+      "observed_cycles": 2723,
+      "hardware_soc_cycles": 2718,
+      "npu_cycles": 942,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "5b16dd84d9541174d464fc0e551c832f70cdfc1c4d149f4fb9b61c1c4f3854aa",
+        "xrun.log": "ee1aa5abf58133745d71569eeded897e224a21ffcc15f9a89e6fcb454f1d4bda"
+      },
+      "cycles_saved_vs_baseline": 87,
+      "cycle_reduction_percent": 3.0961
+    },
+    {
+      "seed": 10002,
+      "mode": "reuse8",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "bfac0e0750b53529d720e1de1740848333c2fac127a6d0d05f9c8c15f493048e",
+      "files_sha256": {
+        "firmware.hex": "7b6041886a0eb40350fe3f528b5ffd79e76d6dfd56a532e6b47109909db699ef",
+        "firmware.S": "0271ade619dfdbb1174e0c9d49769638d6bd374b642be1904fafb4d90db8f96d",
+        "firmware_meta.json": "502a2077697f5a09c73160309e1898bca707e617eea68c9ad0b73febe52c704a"
+      },
+      "observed_cycles": 2692,
+      "hardware_soc_cycles": 2687,
+      "npu_cycles": 944,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "fadefbd9902960e32c79ed8f844ab4fa401854caf5f5564a39dc071e1a616eae",
+        "xrun.log": "c0b5c324356e7d2cbd8f1f7c530792159fb8251d5db152dfd4479756a396dd89"
+      },
+      "cycles_saved_vs_baseline": 118,
+      "cycle_reduction_percent": 4.1993
+    },
+    {
+      "seed": 10002,
+      "mode": "reuse8_eq",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "bfac0e0750b53529d720e1de1740848333c2fac127a6d0d05f9c8c15f493048e",
+      "files_sha256": {
+        "firmware.hex": "7b649182d922c5b1b98f47530d0c58f74da4f5e037eb91bbef512c83fd506e8e",
+        "firmware.S": "1d0e51251cdd1f996f0e8a1ee24c3bc365f530c561dd1c49efbc30cdd31b793b",
+        "firmware_meta.json": "4576e68b9dc91220fb16bf4603e6eb8bc7cbe211d25fe98addf7cd6fb06f6bb4"
+      },
+      "observed_cycles": 2699,
+      "hardware_soc_cycles": 2694,
+      "npu_cycles": 949,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "a8dc8afbd76e5ca6e8dd68f1306e4ae2b8330d25531f4a5a64435ebe9d3bc9c8",
+        "xrun.log": "2afcef6dddaa7e998365851a5713c9f703b499d842ca59968760ddec293bb6d8"
+      },
+      "cycles_saved_vs_baseline": 111,
+      "cycle_reduction_percent": 3.9502
+    },
+    {
+      "seed": 10003,
+      "mode": "scheduled4",
+      "batch": 4,
+      "code_bytes": 1388,
+      "instruction_words": 347,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "35defb491cca977fd24828e91c6f5bf0b33421079d94c90e28d6602cd68aaea2",
+      "files_sha256": {
+        "firmware.hex": "9e02badbb11ba666d0f729bae111dcb17c8c10a82088ba09a961001d131f8c0e",
+        "firmware.S": "cb655982873c79aa2517a79efc12344a4791d99628e7dfdf71f0f2f17164bbd1",
+        "firmware_meta.json": "cc4787c93579bafe1712b03295a19cd10e7e527c4782e328e0465b355ef4207f"
+      },
+      "observed_cycles": 2810,
+      "hardware_soc_cycles": 2805,
+      "npu_cycles": 940,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "696f4d441560119e95097395bc5b7bc850b230fbd6e3cc7056f0340903e88de4",
+        "xrun.log": "e7abb867350a79023c0d187002ae6792e5290eda1e19b26bc93a134e6098d131"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 10003,
+      "mode": "scheduled8",
+      "batch": 4,
+      "code_bytes": 1660,
+      "instruction_words": 415,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "35defb491cca977fd24828e91c6f5bf0b33421079d94c90e28d6602cd68aaea2",
+      "files_sha256": {
+        "firmware.hex": "d4669c70bac5607372847a2acbe8f7c0b0b968dae5eb874ce4b1cdd4688be680",
+        "firmware.S": "5d022d97d9d3f64c9f0ba6b4825320d9831387a5a43c15dda60021ee62471bd5",
+        "firmware_meta.json": "32938e7930d70b1080c5a3ae4ed1230de09f82416d8c4dc8c3eaa56de2126ca5"
+      },
+      "observed_cycles": 2723,
+      "hardware_soc_cycles": 2718,
+      "npu_cycles": 942,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "77c6d5fbd440b6072aaa7e9262e6c810e28195b4cb7173f500af835114e45e89",
+        "xrun.log": "905869c2b663fc60115716de3f3d568fabb9d6e4ef0d5ddadbdec83de0dd2fba"
+      },
+      "cycles_saved_vs_baseline": 87,
+      "cycle_reduction_percent": 3.0961
+    },
+    {
+      "seed": 10003,
+      "mode": "reuse8",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "35defb491cca977fd24828e91c6f5bf0b33421079d94c90e28d6602cd68aaea2",
+      "files_sha256": {
+        "firmware.hex": "7b017325ee2096031f92bd8df8d8a8f92b616ec20e09859f84f2277f3185a3a7",
+        "firmware.S": "0271ade619dfdbb1174e0c9d49769638d6bd374b642be1904fafb4d90db8f96d",
+        "firmware_meta.json": "0aa762c0337dd29dc3d974e0eb8427a0b0b2bdaad12d9984fb78a74d5b4af324"
+      },
+      "observed_cycles": 2692,
+      "hardware_soc_cycles": 2687,
+      "npu_cycles": 944,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "20d5286516e524505cf7ebcac9a756888cd05a4a66191addd0e7d0e1a3cd7041",
+        "xrun.log": "91d18e49cd4932989489a0ddab84f6b7c3146736779a3950bde1e0786b2eeeea"
+      },
+      "cycles_saved_vs_baseline": 118,
+      "cycle_reduction_percent": 4.1993
+    },
+    {
+      "seed": 10003,
+      "mode": "reuse8_eq",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "35defb491cca977fd24828e91c6f5bf0b33421079d94c90e28d6602cd68aaea2",
+      "files_sha256": {
+        "firmware.hex": "48e63524b1e35f0788ef7f298e8a62e8aea07ceacad065a2f9f43b9716c45c48",
+        "firmware.S": "1d0e51251cdd1f996f0e8a1ee24c3bc365f530c561dd1c49efbc30cdd31b793b",
+        "firmware_meta.json": "cdf98d1ee9ee28c381598cbe32499b6860a986430243b44f4d5a1eccf98bc501"
+      },
+      "observed_cycles": 2699,
+      "hardware_soc_cycles": 2694,
+      "npu_cycles": 949,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.622,
+      "log_sha256": {
+        "console.log": "3f828b16fa1b91fc3f1dc99a0d6d009a81c015038a39716eeac89dd4e4957056",
+        "xrun.log": "40e56787151ae17051b0e7bb643b9f14159eea283c5e62373dbcba1cbbb705ab"
+      },
+      "cycles_saved_vs_baseline": 111,
+      "cycle_reduction_percent": 3.9502
+    },
+    {
+      "seed": 10004,
+      "mode": "scheduled4",
+      "batch": 4,
+      "code_bytes": 1388,
+      "instruction_words": 347,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "cf2d98e2042a81919aa201ae007f1bb058563d4448312d7a9c3280a77ee12670",
+      "files_sha256": {
+        "firmware.hex": "dc6f40be1ef64767b014b65483d7a431fd7d1e82e6036f124dcd4484ef0d83d1",
+        "firmware.S": "cb655982873c79aa2517a79efc12344a4791d99628e7dfdf71f0f2f17164bbd1",
+        "firmware_meta.json": "eeee43bd83e4d08cfb39386780e7a348fd2523b4ad21ebbf50eed2f6c553f617"
+      },
+      "observed_cycles": 2810,
+      "hardware_soc_cycles": 2805,
+      "npu_cycles": 940,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "b69041d4fa21d2d7d4b669636a0ffa8950df73636faa6d95d02c8bc7015d9787",
+        "xrun.log": "53de316adfb0bc2bc82ec3036d7f5d3c0e516f74395d3b22dcaf353d3b939b2a"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 10004,
+      "mode": "scheduled8",
+      "batch": 4,
+      "code_bytes": 1660,
+      "instruction_words": 415,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "cf2d98e2042a81919aa201ae007f1bb058563d4448312d7a9c3280a77ee12670",
+      "files_sha256": {
+        "firmware.hex": "f5bb6824361cde8c2ffd15aa0fcf2033cc16e2f5ae5625ff82c2d7d3f13115ef",
+        "firmware.S": "5d022d97d9d3f64c9f0ba6b4825320d9831387a5a43c15dda60021ee62471bd5",
+        "firmware_meta.json": "cda3f9da67c025fe85193765c623f33ecd38d399a2614173cd681b82fdc05818"
+      },
+      "observed_cycles": 2723,
+      "hardware_soc_cycles": 2718,
+      "npu_cycles": 942,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "f42bbd405b6fbced4b0c47be01cbf58df20f33d94945acb04ab2b37004cce1ba",
+        "xrun.log": "69048c7375d7d691a36db0f55916299812b51a91803f9a5529f3a440b379e740"
+      },
+      "cycles_saved_vs_baseline": 87,
+      "cycle_reduction_percent": 3.0961
+    },
+    {
+      "seed": 10004,
+      "mode": "reuse8",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "cf2d98e2042a81919aa201ae007f1bb058563d4448312d7a9c3280a77ee12670",
+      "files_sha256": {
+        "firmware.hex": "97482cca2819e913619d65a9ec1b3bb917a494464e23a2474cac42fe69b7f329",
+        "firmware.S": "0271ade619dfdbb1174e0c9d49769638d6bd374b642be1904fafb4d90db8f96d",
+        "firmware_meta.json": "8e6be7ce40e90dffaa1237193017a98fd424f985e3d74abc33a44477d0a98d68"
+      },
+      "observed_cycles": 2692,
+      "hardware_soc_cycles": 2687,
+      "npu_cycles": 944,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "a6cf8b4f6f3cc3b0c0b5e0c5670c252fcb2892994b8c67fd23b1d704bdcf60b1",
+        "xrun.log": "1ed419f9d2c86908c05dd7ba0034a6d315cf86c209efddb81617d0d36b2f7d75"
+      },
+      "cycles_saved_vs_baseline": 118,
+      "cycle_reduction_percent": 4.1993
+    },
+    {
+      "seed": 10004,
+      "mode": "reuse8_eq",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "cf2d98e2042a81919aa201ae007f1bb058563d4448312d7a9c3280a77ee12670",
+      "files_sha256": {
+        "firmware.hex": "12076d2672456bddad26fd877d668ead45435b4ea84b39d71adee29830e52b2e",
+        "firmware.S": "1d0e51251cdd1f996f0e8a1ee24c3bc365f530c561dd1c49efbc30cdd31b793b",
+        "firmware_meta.json": "de373a7ce88ec35b199308e090594a9394c9cffd8b1fd4144a467b7ff19c04b6"
+      },
+      "observed_cycles": 2699,
+      "hardware_soc_cycles": 2694,
+      "npu_cycles": 949,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.571,
+      "log_sha256": {
+        "console.log": "39e4b2388ba5f756abc4b699ec9ccc22ee31dcb6bd84a8a62fdcf0a917c2820e",
+        "xrun.log": "1962ba0c30bf651ac441aa61a6ae3dd180f00ded14dcbcffedb41b6e3053dda0"
+      },
+      "cycles_saved_vs_baseline": 111,
+      "cycle_reduction_percent": 3.9502
+    },
+    {
+      "seed": 10005,
+      "mode": "scheduled4",
+      "batch": 4,
+      "code_bytes": 1388,
+      "instruction_words": 347,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "40dc55d8d28ba64fd82f66770caf7a2e384d17587dca3242493476c8279f0d3c",
+      "files_sha256": {
+        "firmware.hex": "d18219831aa77983c447c705a75e79f78021ef5e3a140dc4841894ac0f4ab434",
+        "firmware.S": "cb655982873c79aa2517a79efc12344a4791d99628e7dfdf71f0f2f17164bbd1",
+        "firmware_meta.json": "54e989199d00f5e5bbc49f4c2197e20e888e571de742a36f395b228cdfa1cc4e"
+      },
+      "observed_cycles": 2810,
+      "hardware_soc_cycles": 2805,
+      "npu_cycles": 940,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "6519b111edb1088f5c91115163cdb4b880dc5bbcf0d638c4335d022dcfb5682d",
+        "xrun.log": "e9eb862b561cf4e7a3e149d6e1f03b366e4ea7e72804ec7d804f519c7525bc29"
+      },
+      "cycles_saved_vs_baseline": 0,
+      "cycle_reduction_percent": 0.0
+    },
+    {
+      "seed": 10005,
+      "mode": "scheduled8",
+      "batch": 4,
+      "code_bytes": 1660,
+      "instruction_words": 415,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "40dc55d8d28ba64fd82f66770caf7a2e384d17587dca3242493476c8279f0d3c",
+      "files_sha256": {
+        "firmware.hex": "bd50a3087a3eb8e9bf90ad25f9b3e830ea06eaa57d807123f295b50242516f17",
+        "firmware.S": "5d022d97d9d3f64c9f0ba6b4825320d9831387a5a43c15dda60021ee62471bd5",
+        "firmware_meta.json": "c91534fd5436c00f832ba7d027822c901d8c5654ca0751252cd506b0223d91e7"
+      },
+      "observed_cycles": 2723,
+      "hardware_soc_cycles": 2718,
+      "npu_cycles": 942,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.521,
+      "log_sha256": {
+        "console.log": "3debd704f016f68e9bb3efe06cb2a8ad91c1ca73966845e9c7eb49cb1016689e",
+        "xrun.log": "a0a9db1afc03e781f6d5d5a3a9ab6bb4a00486d7d0718b0c36547c6359d4652d"
+      },
+      "cycles_saved_vs_baseline": 87,
+      "cycle_reduction_percent": 3.0961
+    },
+    {
+      "seed": 10005,
+      "mode": "reuse8",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "40dc55d8d28ba64fd82f66770caf7a2e384d17587dca3242493476c8279f0d3c",
+      "files_sha256": {
+        "firmware.hex": "c652787786df02e8eb06cbb02df406a30e41e8f1330a66f066c0c3a404f61aa1",
+        "firmware.S": "0271ade619dfdbb1174e0c9d49769638d6bd374b642be1904fafb4d90db8f96d",
+        "firmware_meta.json": "ecbb6a4a32a06813414da7006d6404931851853df6f0b6e8bf9001c04b92a24d"
+      },
+      "observed_cycles": 2692,
+      "hardware_soc_cycles": 2687,
+      "npu_cycles": 944,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.621,
+      "log_sha256": {
+        "console.log": "a3ba004225af318cddbbd5a38df4d844e84e6ae002c9cb6ccbb35828702e77a9",
+        "xrun.log": "51bc09dd7dccd5d2f623f32d510bc5528099630b549e8be8924184144e2c3d1e"
+      },
+      "cycles_saved_vs_baseline": 118,
+      "cycle_reduction_percent": 4.1993
+    },
+    {
+      "seed": 10005,
+      "mode": "reuse8_eq",
+      "batch": 4,
+      "code_bytes": 1520,
+      "instruction_words": 380,
+      "input_data_start_offset": 4096,
+      "input_data_sha256": "40dc55d8d28ba64fd82f66770caf7a2e384d17587dca3242493476c8279f0d3c",
+      "files_sha256": {
+        "firmware.hex": "32501052e993fd183855b172caffeb696e80fb77497824ff9e1e2d2617b90404",
+        "firmware.S": "1d0e51251cdd1f996f0e8a1ee24c3bc365f530c561dd1c49efbc30cdd31b793b",
+        "firmware_meta.json": "6d5153e040154ad1780002ccf4da075108b98e35af7567eb8cf42c5cd64bdef0"
+      },
+      "observed_cycles": 2699,
+      "hardware_soc_cycles": 2694,
+      "npu_cycles": 949,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "seconds": 1.57,
+      "log_sha256": {
+        "console.log": "ea708128011548865b17fbc019d1fece0c2031e31c731715de99ab921f192dce",
+        "xrun.log": "91126ffc3794172d862200f5a29b59ef1559ee7854aefa6d9331a0a9a38647c7"
+      },
+      "cycles_saved_vs_baseline": 111,
+      "cycle_reduction_percent": 3.9502
+    }
+  ],
+  "baseline_mode": "scheduled4",
+  "same_input_data": true,
+  "reused_build_from": "/home/s2400012713/chip-loopopt-20261109-v2/suite/test/int8/runs/combo_sweep",
+  "compile_seconds": 0,
+  "snapshot_directory": "/home/s2400012713/chip-loopopt-20261109/suite/test/int8/runs/sweep/build/xcelium.d"
+}

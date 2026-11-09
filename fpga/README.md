@@ -6,7 +6,7 @@ FPGA 系统时钟为 20 MHz，器件为 `xc7a35tcsg324-1`。
 FPGA bitstream、固件和测试证据按不可覆盖版本归档，入口见
 [版本目录](versions/README.md)。最近完成板测的冻结版本为
 [20261104_rtl-1c265c0_int22](versions/20261104_rtl-1c265c0_int22/README.md)；
-该冻结版本的板级测试已 PASS。2026-11-09 活动固件已更新为 `scheduled4`，
+该冻结版本的板级测试已 PASS。2026-11-09 活动固件已更新为 `reuse8`，
 完成固定 RTL 的 CPU 仿真验证，尚未重新生成 bitstream 或重新上板测试。
 上一版的完整 PASS 报告保存在
 [20261101_rtl-fce9d9b_board-pass](versions/20261101_rtl-fce9d9b_board-pass/README.md)。

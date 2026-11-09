@@ -29,3 +29,6 @@ rtl/memory/boot*.sv -text
 report/ifetch_20261109/** -text
 report/optimization_20261109/** -text
 report/firmware_optimization_20261109/** -text
+# Raw evidence may have Windows line endings; frozen sources keep original EOF.
+report/loop_optimization_20261109/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+report/loop_optimization_20261109/source_at_measurement/** whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol

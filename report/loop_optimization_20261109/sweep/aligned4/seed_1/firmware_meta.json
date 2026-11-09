@@ -1,0 +1,40 @@
+{
+  "mode": "aligned4",
+  "seed": 1,
+  "batch": 2,
+  "code_bytes": 996,
+  "instruction_words": 249,
+  "compact_li": true,
+  "unroll": 4,
+  "labels": {
+    "bias1": 2147483744,
+    "bias2": 2147483808,
+    "x0": 2147483904,
+    "x1": 2147484000,
+    "poll": 2147484064,
+    "hidden0": 2147484128,
+    "scores0": 2147484208,
+    "class0": 2147484296,
+    "hidden1": 2147484352,
+    "scores1": 2147484432,
+    "class1": 2147484520,
+    "fail": 2147484620,
+    "finish": 2147484628,
+    "halt": 2147484640
+  },
+  "phases": {
+    "configure": 2147483648,
+    "copy": 2147483700,
+    "launch": 2147484048,
+    "verify": 2147484076,
+    "counters": 2147484532,
+    "statistics": 2147484568,
+    "end": 2147484644
+  },
+  "code_limit_bytes": 4096,
+  "align_loops_to_bytes": 32,
+  "alignment_padding_words": 34,
+  "poll_gap_words": 0,
+  "poll_exact_busy": false,
+  "reuse_known_pointers": false
+}
