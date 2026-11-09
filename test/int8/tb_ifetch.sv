@@ -4,6 +4,11 @@
 module tb_ifetch;
     `AXI_TYPEDEF_ALL(axi, logic [31:0], logic [3:0], logic [31:0], logic [3:0], logic)
     logic clk=0, rst_n=0, req=0, invalidate=0;
+    logic write_valid=0;
+    logic [31:0] write_address=0;
+    logic [3:0] write_strobes=4'hf;
+    logic selective_memory=0;
+    integer line_version[256];
     logic [31:0] address=0;
     wire grant, valid;
     wire [31:0] data;
@@ -27,12 +32,17 @@ module tb_ifetch;
         .clk_i(clk), .rst_ni(rst_n), .req_i(req), .addr_i(address),
 `ifndef IFETCH_LEGACY
         .invalidate_i(invalidate),
+        .snoop_valid_i(write_valid && (|write_strobes)),
+        // Same physical alias normalization as the SoC memory boundary.
+        .snoop_addr_i(32'h80000000 | (write_address & 32'h1fff)),
 `endif
         .gnt_o(grant), .valid_o(valid), .rdata_o(data),
         .axi_req_o(bus_req), .axi_resp_i(bus_rsp)
     );
 
     function automatic logic [31:0] memory_word(input logic [31:0] addr, input integer version);
+        if (selective_memory && addr>=32'h80000000 && addr<32'h90000000)
+            addr=32'h80000000 | (addr & 32'h1fff);
         return addr ^ (32'h9e3779b9 * (version+1));
     endfunction
 
@@ -75,7 +85,9 @@ module tb_ifetch;
                 last_request_address<=bus_req.ar.addr;
                 burst_words<=inject_fault==2 ? 3 : inject_fault==3 ? 9 : int'(bus_req.ar.len)+1;
                 burst_fault<=inject_fault; inject_fault=0;
-                burst_index<=0; burst_epoch<=epoch; bursts=bursts+1;
+                burst_index<=0;
+                burst_epoch<=selective_memory ? line_version[bus_req.ar.addr[12:5]] : epoch;
+                bursts=bursts+1;
             end
             if (read_valid && bus_req.r_ready) begin
                 read_valid<=0;
@@ -91,16 +103,41 @@ module tb_ifetch;
             if (req && grant) grants=grants+1;
         end
         #1;
+        if ($isunknown({grant,valid})) $fatal(1,"IFETCH_FAIL unknown_control");
+        if (valid && $isunknown(data)) $fatal(1,"IFETCH_FAIL unknown_valid_data");
         if (rst_n && valid) responses=responses+1;
     end
 
     task automatic reset_device;
-        @(negedge clk); req=0; invalidate=0; rst_n=0;
+        @(negedge clk); req=0; invalidate=0; write_valid=0; rst_n=0;
         force_ar_hold=0; force_r_hold=0;
         repeat(3) @(negedge clk);
-        if (grant || valid) $fatal(1,"IFETCH_FAIL reset_response");
+        if (grant!==1'b0 || valid!==1'b0) $fatal(1,"IFETCH_FAIL reset_response");
         rst_n=1;
         repeat(2) @(negedge clk);
+    endtask
+
+    task automatic write_line(input logic [31:0] addr, input integer version,
+                              input logic [3:0] strobes=4'hf);
+        @(negedge clk); write_address=addr; write_strobes=strobes; write_valid=1;
+        if (strobes!=0) line_version[addr[12:5]]=version;
+        @(negedge clk); write_valid=0;
+    endtask
+
+    task automatic checked_hit(input logic [31:0] addr, input integer version);
+        integer before_grants,before_responses;
+        before_grants=grants; before_responses=responses;
+        @(negedge clk); req=1; address=addr;
+        @(posedge clk);
+        if (!grant) $fatal(1,"IFETCH_FAIL unrelated_write_evicted_line");
+        #2;
+        if (!valid || data!==memory_word(addr,version))
+            $fatal(1,"IFETCH_FAIL checked_hit_wrong_data");
+        @(negedge clk); req=0;
+        repeat(2) @(negedge clk);
+        if (grants-before_grants!=1 || responses-before_responses!=1)
+            $fatal(1,"IFETCH_FAIL checked_hit_response_count");
+        checks=checks+1;
     endtask
 
     task automatic fetch(input logic [31:0] addr, input integer expected_epoch,
@@ -294,6 +331,107 @@ module tb_ifetch;
         inject_fault=1;
         fetch(32'h00000804,epoch,1);
         fetch(32'h00000804,epoch);
+
+        // Per-line memory versions make unrelated-write preservation and
+        // stale-refill cancellation independent of global invalidation tests.
+        reset_device;
+        selective_memory=1;
+        for (integer n=0;n<256;n=n+1) line_version[n]=20;
+        fetch(32'h8000101c,20);
+        fetch(32'h8000103c,20);
+        write_line(32'h80001f00,21);
+        checked_hit(32'h80001000,20);
+        checked_hit(32'h80001020,20);
+        write_line(32'h80001000,22,0);
+        checked_hit(32'h80001000,20);
+        // A byte write through an alias maps to the canonical cached line.
+        write_line(32'h80003004,21,4'b0010);
+        checked_hit(32'h80001020,20);
+        fetch(32'h80001004,21);
+
+        // No old hit may grant in the very cycle of a matching write.
+        @(negedge clk);
+        address=32'h80001004;req=1;
+        write_address=32'h80001004;write_strobes=4'hf;write_valid=1;
+        line_version[32'h1004>>5]=22;
+        @(posedge clk);
+        if (grant) $fatal(1,"IFETCH_FAIL stale_grant_during_write");
+        @(negedge clk); req=0;write_valid=0;
+        fetch(32'h80001004,22);
+
+        // A matching write must not withdraw a stalled AR, but the eventual
+        // response is killed. A second transaction reads the new version.
+        reset_device;
+        force_ar_hold=1;
+        fork
+            fetch(32'h8000111c,21);
+            begin
+                wait(bus_req.ar_valid);
+                write_line(32'h80003100,21);
+                repeat(3) @(negedge clk);force_ar_hold=0;
+            end
+        join
+
+        // Cancel a fill after it has already published two words. The frozen
+        // old burst must drain; its later words cannot restore the old line.
+        reset_device;
+        fork
+            fetch(32'h8000121c,21);
+            begin
+                wait(active && burst_address==32'h80001200 && burst_index==2);
+                if (!dut.svalid_q[dut.fill_slot_q])
+                    $fatal(1,"IFETCH_FAIL selective_partial_line_missing");
+                write_line(32'h80003200,21);
+            end
+        join
+        fetch(32'h80001200,21);
+
+        // An unrelated write while R is stalled must leave this fill intact.
+        reset_device;
+        force_r_hold=1;
+        fork
+            fetch(32'h8000131c,20);
+            begin
+                wait(active);
+                write_line(32'h80001f00,23);
+                repeat(3) @(negedge clk);force_r_hold=0;
+            end
+        join
+
+        // A matching write coincident with a new miss defers the request;
+        // there is no stale AR transaction whose refill could be published.
+        reset_device;
+        @(negedge clk);req=1;address=32'h8000141c;
+        write_valid=1;write_address=32'h80003400;write_strobes=4'hf;
+        line_version[32'h1400>>5]=21;
+        @(posedge clk);
+        if (grant || bus_req.ar_valid) $fatal(1,"IFETCH_FAIL started_matching_write_fill");
+        @(negedge clk);req=0;write_valid=0;
+        fetch(32'h8000141c,21);
+
+        // The reverse alias direction matters too: an uncached fetch through
+        // 800020xx must be revoked by a canonical write to the same SRAM.
+        reset_device;
+        force_r_hold=1;
+        fork
+            fetch(32'h80003504,21);
+            begin
+                wait(active);
+                write_line(32'h80001504,21);
+                repeat(3) @(negedge clk);force_r_hold=0;
+            end
+        join
+
+        // Hold the CPU request away while its single-word response arrives,
+        // then modify that physical address before consuming the transient.
+        reset_device;
+        force_r_hold=1;
+        @(negedge clk);req=1;address=32'h80003604;
+        wait(active);
+        @(negedge clk);req=0;force_r_hold=0;
+        wait(dut.single_valid_q);
+        write_line(32'h80001604,21);
+        fetch(32'h80003604,21);
         $display("IFETCH_PASS checks=%0d grants=%0d responses=%0d bursts=%0d",checks,grants,responses,bursts);
         $finish;
     end

@@ -46,9 +46,11 @@
       "data_bytes": 128,
       "refill": "AXI INCR, incremental publication, next-line prefetch",
       "cacheable_regions": "physical 8 KiB SRAM and immutable 32 B boot trampoline",
-      "coherence": "all entries invalidated on accepted SRAM/boot write; in-flight refill drained",
-      "uncached": "exact-address one-word transaction; debug and MMIO not retained"
-    }
+      "coherence": "address-matched SRAM line invalidation; uncached transients conservatively revoked; global boot-write invalidation",
+      "uncached": "exact-address one-word transaction; debug and MMIO not retained",
+      "data_storage_reset": false
+    },
+    "dma_response": "B response accepted after final W and completed R without a dedicated RESP bubble"
   },
   "mmio": {
     "base_address": 1879048192,

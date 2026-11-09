@@ -22,3 +22,11 @@ python test/int8/run_soc_xcelium.py --out test/int8/runs/soc_new --debug-cold
 `run_soc_xcelium.py` 默认运行 seed 0/1/2/10000，可重复指定 `--seed`；`--firmware-dir <基线输出目录>` 复用逐字节相同的固件，适合新旧 RTL 性能对照。输出目录必须尚不存在，每次保存原始日志、源码与固件 SHA。完整 SoC 的拍数包含 CPU golden 自检；10 ns 功能仿真时钟不代表达到 100 MHz 物理时序。
 
 原生授权 SRAM 行为模型可加 --vendor-model /本地授权路径/RA1SHD_2048x32M8.v（同时使用 --soc）。该 RTL 功能运行关闭模型 timing notifier，不作为 SDF 时序后仿。
+
+本轮默认 `run.py` 还自动执行 8 组 DMA 响应协议测试，检查即时/延迟 B、读写错误、异常 RLAST、32 字两次突发和跨 4 KiB 拆分。取指回归扩展到 71 项，含物理地址别名、零字节使能、已发布部分行和四态未知值；真实 SoC 写入边界单独运行：
+
+```bash
+python test/int8/run_ifetch_snoop_soc.py --out test/int8/runs/snoop_new
+```
+
+`firmware_workloads.py` 可生成 `scratch_128` 或 `code_patch_alias_byte` 附加程序，随后执行完整 HAR 自检；复现命令和适用范围见 [本轮报告](../report/performance.md)。

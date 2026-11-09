@@ -37,6 +37,9 @@ module my_ifetch #(
     input  logic        clk_i,
     input  logic        rst_ni,
     input  logic        invalidate_i,
+    // Accepted memory writes, with aliases normalized by the integration.
+    input  logic        snoop_valid_i,
+    input  logic [31:0] snoop_addr_i,
     // Instruction port (CPU side)
     input  logic        req_i,
     input  logic [31:0] addr_i,
@@ -80,6 +83,14 @@ module my_ifetch #(
     // -------------------------------------------------------------- request
     wire [31:0]       req_line = {addr_i[31:IDX_MSB+1], {(IDX_MSB+1){1'b0}}};
     wire [LINE_W-1:0] req_idx  = addr_i[IDX_MSB:IDX_LSB];
+    wire [31:0] snoop_line = {snoop_addr_i[31:IDX_MSB+1], {(IDX_MSB+1){1'b0}}};
+    // Non-cacheable SRAM aliases and debug fetches retain conservative write
+    // ordering: any SRAM write revokes their transient single-word response.
+    wire snoop_request = snoop_valid_i &&
+                         (req_line == snoop_line || !burst_ok(word_addr));
+    wire snoop_fill = snoop_valid_i &&
+                     (!fill_cached_q ||
+                      {fill_addr_q[31:IDX_MSB+1], {(IDX_MSB+1){1'b0}}} == snoop_line);
 
     logic [SLOTS-1:0] hit_vec;
     logic [SLOT_W-1:0] hit_sel;
@@ -95,7 +106,7 @@ module my_ifetch #(
     wire hit = |hit_vec;
 
     wire single_hit = single_valid_q && single_addr_q == word_addr;
-    assign gnt_o = rst_ni && !invalidate_i && req_i &&
+    assign gnt_o = rst_ni && !invalidate_i && !snoop_request && req_i &&
                    ((burst_ok(word_addr) && hit) || single_hit);
 
     wire miss = req_i && !gnt_o;
@@ -134,9 +145,10 @@ module my_ifetch #(
             if (svalid_q[pi] && (stag_q[pi] == pf_line)) pf_present = 1'b1;
     end
 
-    wire start_miss = rst_ni && !invalidate_i && miss && (fstate_q == F_IDLE);
-    wire start_pf   = rst_ni && !invalidate_i && !start_miss && (fstate_q == F_IDLE) && svalid_q[last_q] &&
-                      !pf_present && burst_ok(pf_line);
+    wire start_miss = rst_ni && !invalidate_i && !snoop_request && miss && (fstate_q == F_IDLE);
+    wire start_pf   = rst_ni && !invalidate_i && !miss && (fstate_q == F_IDLE) && svalid_q[last_q] &&
+                      !pf_present && burst_ok(pf_line) &&
+                      !(snoop_valid_i && pf_line == snoop_line);
     wire do_start   = start_miss || start_pf;
 
     wire start_cached = !start_miss || burst_ok(word_addr);
@@ -181,6 +193,17 @@ module my_ifetch #(
         end
     end
 
+    // Payload bits need no reset: a word is visible only after its successful
+    // refill beat sets the slot valid/length. Control and CPU output still reset.
+    wire publish_cached_word = rst_ni && (fstate_q == F_R) &&
+        axi_resp_i.r_valid && fill_cached_q && !fill_drop_q && !fill_error_q &&
+        !invalidate_i && !snoop_fill && (axi_resp_i.r.resp == axi_pkg::RESP_OKAY) &&
+        (axi_resp_i.r.last == (fill_cnt_q == fill_len_q));
+    always_ff @(posedge clk_i) begin
+        if (publish_cached_word)
+            sdata_q[fill_slot_q][fill_cnt_q] <= axi_resp_i.r.data;
+    end
+
     // ------------------------------------------------------- fill + buffers
     always_ff @(posedge clk_i or negedge rst_ni) begin
         if (~rst_ni) begin
@@ -198,7 +221,6 @@ module my_ifetch #(
             last_q      <= '0;
             svalid_q    <= '0;
             for (int ri = 0; ri < SLOTS; ri++) begin
-                sdata_q[ri] <= '0;
                 stag_q[ri]  <= '0;
                 slen_q[ri]  <= '0;
                 sage_q[ri]  <= 2'd3;
@@ -244,7 +266,7 @@ module my_ifetch #(
 
                 F_R: begin
                     if (axi_resp_i.r_valid) begin
-                        if (!fill_drop_q && !invalidate_i) begin
+                        if (!fill_drop_q && !invalidate_i && !snoop_fill) begin
                             if (fill_error_q || axi_resp_i.r.resp != axi_pkg::RESP_OKAY ||
                                 (axi_resp_i.r.last != (fill_cnt_q == fill_len_q))) begin
                                 // Never publish an error beat or wrap the line
@@ -262,7 +284,6 @@ module my_ifetch #(
                                     single_valid_q <= 1'b1;
                                 end
                             end else if (fill_cached_q) begin
-                                sdata_q[fill_slot_q][fill_cnt_q] <= axi_resp_i.r.data;
                                 svalid_q[fill_slot_q] <= 1'b1;
                                 slen_q[fill_slot_q] <= fill_cnt_q;
                             end else begin
@@ -282,8 +303,18 @@ module my_ifetch #(
 
                 default: fstate_q <= F_IDLE;
             endcase
-            // Writes revoke all cached instructions, including a refill in
-            // progress. Its accepted bus transaction still drains to RLAST.
+            // A write revokes only its matching line. The write beat itself
+            // also blocks that line's grant/publication combinationally. Any
+            // already issued AR/R transaction remains stable and drains.
+            if (snoop_valid_i) begin
+                for (int si = 0; si < SLOTS; si++)
+                    if (stag_q[si] == snoop_line) svalid_q[si] <= 1'b0;
+                if (!burst_ok(single_addr_q) ||
+                    {single_addr_q[31:IDX_MSB+1], {(IDX_MSB+1){1'b0}}} == snoop_line)
+                    single_valid_q <= 1'b0;
+                if (fstate_q != F_IDLE && snoop_fill) fill_drop_q <= 1'b1;
+            end
+            // Global invalidation (for example boot reload) has priority.
             if (invalidate_i) begin
                 svalid_q <= '0;
                 single_valid_q <= 1'b0;

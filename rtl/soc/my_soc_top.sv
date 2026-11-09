@@ -177,6 +177,14 @@ module my_soc_top #(
   `AXI_ASSIGN_FROM_REQ(slave[2], dm_axi_m_req)
   `AXI_ASSIGN_TO_RESP(dm_axi_m_resp, slave[2])
 
+  // Shared SRAM command signals are also observed by the instruction snoop.
+  logic        sram_req;
+  logic        sram_we;
+  logic [31:0] sram_addr;
+  logic [31:0] sram_wdata;
+  logic [3:0]  sram_be;
+  logic [31:0] sram_rdata;
+
   assign data_valid = data_rvalid | data_axi_resp.b_valid;
 
   // Instruction fetch: four 8-word buffers refilled with an INCR burst and
@@ -199,8 +207,11 @@ module my_soc_top #(
   ) i_ifetch (
       .clk_i      (clk_i),
       .rst_ni     (ndmreset_n),
-      .invalidate_i((master[IDX_SRAM].w_valid && master[IDX_SRAM].w_ready) ||
-                    (master[IDX_BOOT].w_valid && master[IDX_BOOT].w_ready)),
+      .invalidate_i(master[IDX_BOOT].w_valid && master[IDX_BOOT].w_ready),
+      .snoop_valid_i(sram_req && sram_we && (|sram_be)),
+      // The AXI decode aperture is larger than the physical SRAM. Writes
+      // through any alias must revoke the same canonical instruction line.
+      .snoop_addr_i(SRAM_BASE | (sram_addr & (SRAM_WORDS * 4 - 1))),
       .req_i      (instr_req),
       .addr_i     (instr_addr),
       .gnt_o      (instr_gnt),
@@ -368,12 +379,6 @@ module my_soc_top #(
       .axi_resp_i            (dm_axi_m_resp)
   );
 
-  logic        sram_req;
-  logic        sram_we;
-  logic [31:0] sram_addr;
-  logic [31:0] sram_wdata;
-  logic [3:0]  sram_be;
-  logic [31:0] sram_rdata;
   logic sram_transaction_reset_n;
   // Do not distribute the asynchronously asserting SoC reset directly into
   // the non-reset SRAM command D path. One shared boundary controls both ends;
