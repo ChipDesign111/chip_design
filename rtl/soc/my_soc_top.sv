@@ -179,34 +179,35 @@ module my_soc_top #(
 
   assign data_valid = data_rvalid | data_axi_resp.b_valid;
 
-  axi_adapter #(
-      .ADDR_WIDTH         (32),
-      .DATA_WIDTH         (32),
-      .AXI_DATA_WIDTH     (32),
-      .AXI_ID_WIDTH       (4),
-      .MAX_OUTSTANDING_AW (7),
-      .axi_req_t          (axi_req_t),
-      .axi_rsp_t          (axi_resp_t)
-  ) i_axi_adapter_instr (
-      .clk_i                 (clk_i),
-      .rst_ni                (ndmreset_n),
-      .req_i                 (instr_req),
-      .type_i                (1'b0),
-      .amo_i                 (4'b0000),
-      .gnt_o                 (instr_gnt),
-      .addr_i                (instr_addr),
-      .we_i                  (1'b0),
-      .wdata_i               ('0),
-      .be_i                  (4'b1111),
-      .size_i                (2'b10),
-      .id_i                  (4'b0001),
-      .valid_o               (instr_rvalid),
-      .rdata_o               (instr_rdata),
-      .id_o                  (),
-      .critical_word_o       (),
-      .critical_word_valid_o (),
-      .axi_req_o             (instr_axi_req),
-      .axi_resp_i            (instr_axi_resp)
+  // Instruction fetch: four 8-word buffers refilled with an INCR burst and
+  // prefetched one line ahead, instead of one single-beat AXI transaction per
+  // instruction. Hits are granted in the request cycle and return data one
+  // cycle later, so the core fetches at one instruction per cycle while the
+  // sequential code runs; a line that is not buffered costs one burst, and it
+  // becomes hittable word by word as the burst streams in.
+  my_ifetch #(
+      .axi_req_t   (axi_req_t),
+      .axi_rsp_t   (axi_resp_t),
+      .LINE_WORDS  (8),
+      .SLOTS       (4),
+      .SRAM_BASE   (SRAM_BASE),
+      .SRAM_LENGTH (SRAM_WORDS * 4),
+      .BOOT_BASE   (BOOT_BASE),
+      // Only the immutable trampoline line is cached. Boot status/cycle
+      // registers and the remainder of its decode aperture stay uncached.
+      .BOOT_LENGTH (32)
+  ) i_ifetch (
+      .clk_i      (clk_i),
+      .rst_ni     (ndmreset_n),
+      .invalidate_i((master[IDX_SRAM].w_valid && master[IDX_SRAM].w_ready) ||
+                    (master[IDX_BOOT].w_valid && master[IDX_BOOT].w_ready)),
+      .req_i      (instr_req),
+      .addr_i     (instr_addr),
+      .gnt_o      (instr_gnt),
+      .valid_o    (instr_rvalid),
+      .rdata_o    (instr_rdata),
+      .axi_req_o  (instr_axi_req),
+      .axi_resp_i (instr_axi_resp)
   );
 
   axi_adapter #(

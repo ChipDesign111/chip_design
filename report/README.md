@@ -1,8 +1,10 @@
 # 当前设计说明
 
+2026-11-09：当前源码已集成 CPU 取指缓存并修复单样本 Argmax；功能回归及同固件拍数对照见 [性能报告](performance.md) 和 [证据索引](ifetch_20261109/summary.json)。以下较早日期的面积、SDF、FPGA 数据仅代表对应归档版本。
+
 2026-10-29：为满足 A7-35T 容量，NPU 最大 batch 调整为 4 个样本共享一个权重 tile，输入、累加器和输出全部驻留寄存器，没有新增 NPU 内部 SRAM。32 组随机单/双/四样本和 6 组训练模型四样本批次逐值通过，完整 CPU SoC batch=4 自检通过。
 
-同日完成调度优化：移除 tile 间固定交接气泡；FC2 改为每 8 行、每行 6 输出打包为 48 B，并在 W1 尾部跨层预取 W2。共享 MAC bank 最终收为 32 个乘法器，FC1 分两个 16 输出相位。上一版把 FC2 改为每拍 2 输入行，并把 FINISH 分类改为每拍比较一个候选；该版本地回归通过，batch=1/2/4 NPU 为 1401/1431/1541 拍，完整 SoC 为 6369 拍。当前 RTL 把内部累加器收窄为 INT22，并已完成同源 34 步 EDA 和 MAXIMUM SDF 后仿：NPU 面积降至 0.896961 mm²，20 ns 下 Setup/Hold WNS 为 +0.032/+0.019 ns，后仿 11/11 功能通过且工作窗口时序事件为 0。详见 [INT22 完整结果](../eda/results/int22_20261104/README.md) 和 [SDF 后仿](../eda/results/int22_20261104/postsim/README.md)。
+同日完成调度优化：移除 tile 间固定交接气泡；FC2 改为每 8 行、每行 6 输出打包为 48 B，并在 W1 尾部跨层预取 W2。共享 MAC bank 最终收为 32 个乘法器，FC1 分两个 16 输出相位。上一版把 FC2 改为每拍 2 输入行，并把 FINISH 分类改为每拍比较一个候选；该版本地回归通过，batch=1/2/4 NPU 为 1401/1431/1541 拍，完整 SoC 为 6369 拍。2026-11-04 归档版本把内部累加器收窄为 INT22，并完成该版本的同源 34 步 EDA 和 MAXIMUM SDF 后仿：NPU 面积降至 0.896961 mm²，20 ns 下 Setup/Hold WNS 为 +0.032/+0.019 ns，后仿 11/11 功能通过且工作窗口时序事件为 0。详见 [INT22 完整结果](../eda/results/int22_20261104/README.md) 和 [SDF 后仿](../eda/results/int22_20261104/postsim/README.md)。
 
 本页下方的旧面积、时序和 SDF 数字属于 batch=2 的历史物理结果。当前 batch=4 + INT22 的同源 34 步结果见 [INT22 验证记录](int22_validation.json)，不能与下方旧 PPA 混用。
 
@@ -16,6 +18,6 @@
 
 从 [架构](architecture.md) 理解信号与数据通路，再看 [NPU](npu.md)、[MMIO](mmio.md)、[DMA](dma.md)、[性能对比](performance.md) 和 [SRAM/启动](sram.md)。[开发与验证](development.md) 说明复现功能测试的方法；物理实现从 [EDA 操作指南](../eda/README.md) 开始。
 
-功能回归使用 `python test/int8/run.py --count 32 --trained --soc`。当前 INT22 版本的随机参考已覆盖 22 位补码边界和回绕；训练数据按 6 个四样本批次覆盖 24 条 UCI 固定输入。新版完整 SoC 结果需重新由用户本地确认。
+功能回归使用 `python test/int8/run.py --count 32 --trained --soc`。当前 INT22 版本的随机参考已覆盖 22 位补码边界和回绕；训练数据按 6 个四样本批次覆盖 24 条 UCI 固定输入。本次集成的完整 SoC 已在 Xcelium 复验，详情见上述性能报告。
 
 功能仿真不是物理签核；实际 EDA 状态及最终面积以本次上传的 evidence 和最终视图为准，不能引用旧 xzx/rtl 结果。

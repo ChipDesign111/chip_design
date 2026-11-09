@@ -25,3 +25,5 @@ rtl/debug/** -text
 rtl/include/** -text
 rtl/soc/** -text
 rtl/memory/boot*.sv -text
+# Preserve raw simulator/report bytes referenced by the evidence SHA-256 index.
+report/ifetch_20261109/** -text

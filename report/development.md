@@ -1,6 +1,6 @@
 # 开发与验证
 
-基于 main d40b217 的 rtl-dev 是当前 batch=4 寄存器驻留实现，并包含 INT22 内部累加、零气泡 tile 交接、FC2 八 tile 打包和 W2 跨层预取。当前 ASIC RTL 使用 `CUT_SLV_AX` 地址通道边界；若继续使用 FPGA bitstream，必须按该配置重新综合验证。旧 xzx 实现、旧 RTL/测试和旧 EDA 证据保存在本地 archives。
+本次集成基于 rtl-dev `1eb6462`，移入 perf/ifetch-line-buffer `5da2148` 的取指缓存并修复非缓存地址、写入一致性和异常填充处理，同时修复单样本 Argmax 的旧值比较。NPU 保持 batch=4、32 个共享 INT8 乘法器、INT22 内部累加、零气泡 tile 交接、FC2 八 tile 打包和 W2 跨层预取。当前 ASIC RTL 保留 `CUT_SLV_AX` 地址通道边界；FPGA bitstream 也必须从当前源码重新构建验证。旧版本 RTL 和 EDA 证据不可直接作为本次集成的验收结果。
 
 ```bash
 python tools/project.py doctor
