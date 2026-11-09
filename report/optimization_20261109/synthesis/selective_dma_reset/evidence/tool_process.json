@@ -1,0 +1,15 @@
+{
+  "pid": 28152,
+  "host": "tc-01a0e839f77e",
+  "command": [
+    "genus",
+    "-abort_on_error",
+    "-f",
+    "/home/s2400012713/chip-opt-ppa-20261109/selective_dma_reset/work/syn/scripts/eda_synthesis.tcl",
+    "-log",
+    "eda_synthesis",
+    "-overwrite"
+  ],
+  "completed": true,
+  "exit_code": 0
+}

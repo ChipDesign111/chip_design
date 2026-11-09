@@ -1,6 +1,8 @@
 # INT8 HAR 全芯片实现
 
-2026-11-09 当前源码在 `rtl-dev@1eb6462` 上集成 128 B CPU 取指缓存，保留 `CUT_SLV_AX`，并修复单样本 Argmax 的最终值比较。41 组 NPU/DMA 回归、56 项取指检查、4 组完整 SoC 对照和冷启动 Debug 均通过；相同训练固件的 SoC 自检从 **6369→3510 拍（−44.89%）**。详情和后续优化方向见 [本次性能与验证](report/performance.md)、[原始证据索引](report/ifetch_20261109/summary.json)。当前源码尚未重新完成 PNR、SDF 后仿或板测；以下物理和 FPGA 成果均绑定各自的历史版本。
+本轮优化在 `codex/rtl-dev-opt-20261109`：按 SRAM 地址失效取指缓存、缩短 DMA 写响应等待、去除缓存数据阵列复位。相同训练 HAR 自检 **3510→3462 拍（−1.37%）**；附加 SRAM 写入程序 **7748→4497 拍（−41.96%）**，两者属于不同工作负载。完整对照、验证范围和综合结果见 [优化报告](report/performance.md)。
+
+2026-11-09 前一轮源码在 `rtl-dev@1eb6462` 上集成 128 B CPU 取指缓存，保留 `CUT_SLV_AX`，并修复单样本 Argmax 的最终值比较。41 组 NPU/DMA 回归、56 项取指检查、4 组完整 SoC 对照和冷启动 Debug 均通过；相同训练固件的 SoC 自检从 **6369→3510 拍（−44.89%）**。详情和后续优化方向见 [本次性能与验证](report/performance.md)、[原始证据索引](report/ifetch_20261109/summary.json)。当前源码尚未重新完成 PNR、SDF 后仿或板测；以下物理和 FPGA 成果均绑定各自的历史版本。
 
 历史 INT22 累加版 `9970d6f` 已完成独立34步 EDA 和最终网表 SDF 后仿：含PAD **3.795639mm²**，20ns下Setup/Hold **+0.032/+0.019ns**，TNS与违规路径均为0；10组MAXIMUM SDF加1组无SDF对照 **11/11功能通过**，回标error/缺失实例/缺失检查均为0，工作窗口与最终复位阶段动态时序违规为0。详见[完整结果](eda/results/int22_20261104/README.md)和[SDF后仿](eda/results/int22_20261104/postsim/README.md)。每个SDF用例的108条初始复位事件及10条负IOPATH截零限制保留。
 

@@ -1,4 +1,75 @@
-# NPU 调度优化性能
+# SoC 与 NPU 优化报告
+
+## 2026-11-09 第二轮：缓存一致性、DMA 响应和面积优化
+
+上一版 `49911b2` 已推送到 GitHub `rtl-dev`。本轮在独立 `codex/rtl-dev-opt-20261109` 分支实验，保持 32 个共享乘法器、两组 64 B 权重 bank、128 B 指令缓存以及 `CUT_SLV_AX`。标准 HAR 自检的改进为 **1.37%～2.49%**；额外 SRAM 写入负载的改进为 **41.96%**，二者对应不同工作负载。
+
+### 修改及取舍
+
+- **按 SRAM 物理地址失效指令缓存。** 普通数据写入保留无关指令行；命中指令行的写入同时撤销正在进行的填充。通过 +8 KiB 等地址别名写入时，按实际 SRAM 低 13 位归一化；零字节使能不撤销缓存。非缓存读取的暂存结果继续保守失效，Boot 控制写入保留全局失效。AXI 已发事务保持稳定并排空。
+- **提前接收 DMA 写响应。** 最后一拍 W 已接受且 R 已完成后即可握手 B，去掉进入 RESP 状态前的等待。独立定向测试中，即时 B 的最后 W 到 DONE 从 2 拍变为 1 拍；延迟 B 的测试仍为 8 拍。32 字分两次突发由 60→58 拍，跨 4 KiB 的 4+12 字突发由 40→38 拍，数据、错误和完成次数均正确。
+- **缓存数据不复位。** 仅移除 1024 位数据阵列的复位，放到独立时钟过程；valid、填充长度、控制状态和 CPU 返回寄存器仍复位。成功填充一个字后才允许读取该字。此修改不减少执行拍数，目的在于降低数据阵列成本；冷启动未知值、复位和失效测试均通过。
+- **FallThrough 只作功能试验。** 保留 `CUT_SLV_AX`、打开 `FallThrough` 时可进一步减少拍数，但本轮主候选仍为 0；没有为该选项完成新物理时序验证。
+
+### 相同固件的 SoC 对比
+
+所有候选复用本轮基线的原始固件，SHA-256 逐字节一致，保持原 testbench 和 10 ns 功能仿真时钟。下面的拍数从 commit 后到 CPU golden 自检结束，包含搬运、NPU 和检查，不是纯推理延迟，也不证明 100 MHz 物理频率。[完整对照和源文件记录](optimization_20261109/soc/comparison.json)。
+
+| 标准 HAR 用例 | 已上传版 | 本轮候选 | 减少 |
+| --- | ---: | ---: | ---: |
+| seed 0，batch 4 | 3520 | 3471 | 1.39% |
+| seed 1，batch 2 | 2494 | 2432 | 2.49% |
+| seed 2，batch 1 | 1966 | 1919 | 2.39% |
+| 训练 seed 10000，batch 4 | 3510 | 3462 | 1.37% |
+
+| 配置 | 训练 HAR | 128 次 SRAM 写入 + HAR | 自修改代码 + HAR |
+| --- | ---: | ---: | ---: |
+| 已上传基线 | 3510 | 7748 | 3636 |
+| 仅 DMA 响应优化 | 3477 | 7714 | 3602 |
+| 仅按行失效 | 3495 | 4531 | 3584 |
+| 按行失效 + DMA | 3462 | 4497 | 3550 |
+| 上述 + 数据不复位 | 3462 | 4497 | 3550 |
+| 上述 + FallThrough（未采用） | 3356 | 4261 | 3441 |
+
+原 HAR 固件没有栈，循环主要从 SRAM 读取并向 NPU MMIO 写入，因此按行失效只节省少量尾部写入成本。`scratch_128` 在完整 HAR 前运行 128 次 SRAM 写循环，适合观察代码与数据共享 SRAM 时的影响。`code_patch_alias_byte` 则先执行指令返回 1，通过 SRAM 别名的单字节写改为返回 2，再通过正常地址的字写改为返回 3，每次执行 FENCE.I，随后完成原 HAR 自检。两项附加测试均通过，不能把它们的改善当作普通 HAR 收益。
+
+独立 NPU+DMA 固定 seed 10000、相同确定性背压的 batch 1/2/4 为 **1401/1431/1541→1328/1377/1480 拍**，分别少 5.21%/3.77%/3.96%。这些数字来自独立总线模型，不能与完整 SoC 的 NPU 计数混用。[独立性能结果](optimization_20261109/npu_perf.json)。
+
+### 验证与复现
+
+已通过 41 组 NPU 数值回归、8 组 DMA 响应专项、71 项取指协议检查、13 项真实 SoC 写入边界检查，以及原始记录中七种配置的四组 HAR、两个附加程序和冷启动 Debug 对照。新增 `$isunknown` 检查覆盖冷启动和复位，防止未知握手/有效数据被测试忽略。真实 SoC 边界测试的写入经过 Debug SBA→AXI→SRAM，取指端由 testbench 驱动；实际 CPU 固件执行由另一组 SoC 测试覆盖。这些测试未包含物理 JTAG TAP 或板测。
+
+```bash
+python test/int8/run.py --count 32 --trained
+python test/int8/run_ifetch.py
+python test/int8/run_ifetch_snoop_soc.py --out test/int8/runs/snoop_new
+python test/int8/run_soc_xcelium.py --out test/int8/runs/soc_new --debug-cold
+# 复现额外写入程序；另一种 workload 为 code_patch_alias_byte
+python test/int8/firmware_workloads.py --workload scratch_128 --out test/int8/runs/inputs/seed_10000
+python test/int8/run_soc_xcelium.py --out test/int8/runs/scratch_new --seed 10000 --firmware-dir test/int8/runs/inputs
+```
+
+NPU/DMA 单元回归使用 Icarus；取指及完整 SoC 使用 Xcelium。所有输出目录使用新路径，原始日志、固件和源文件哈希保存在 [证据目录](optimization_20261109)。
+
+### 综合结果及最终选择
+
+同一 Genus 19.17、TT 库、20 ns SDC、理想时钟下，新两版综合输入仅 `my_ifetch.sv` 和标注数据是否复位的工程元数据不同，其他 RTL/约束/流程一致。两版均正常退出；未解析引用、未驱动、多驱动、latch 均为 0。
+
+| 版本 | 全 SoC 单元面积（含 SRAM） | 取指模块面积 | 最差 setup 余量 |
+| --- | ---: | ---: | ---: |
+| 已上传 49911b2 | 2.152504 mm² | 0.091344 mm² | +0.3398 ns |
+| 按行失效 + DMA，数据仍复位 | 2.154559 mm² | 0.094154 mm² | +0.5936 ns |
+| 按行失效 + DMA，数据不复位（保留） | **2.148261 mm²** | **0.087437 mm²** | **+0.4936 ns** |
+
+去掉数据复位相对同组合有复位版节省 0.006298 mm²（总面积约 0.292%，取指模块约 7.13%），代价是 setup 余量减少 0.100 ns，两者 TNS 和违规路径都为 0。因此保留无数据复位作为面积取舍，不能把它描述为面积、时序全面占优。最终组合相对已上传版的总单元面积减少约 0.197%，收益很小，不是芯片尺寸大幅缩减。
+
+空间规划两版均通过：核心 1648×1648 µm，计划含外围裸片 1.948×1.948 mm、3.794704 mm²。单元面积与裸片面积是不同指标；本轮没有新的放置布线结果。最差路径仍从下降沿 SRAM 事务复位寄存器，经 AXI 返回逻辑，到 NPU 读返回寄存器；下一轮物理优化应关注这条半周期路径。现有约束的部分外部输入零 slew、输出零负载假设未改变，未执行多角、CTS/布线、SDF 或板级验证。
+
+最终源码保留 `FallThrough=0`。功能试验中的 FT 版本还能让训练用例从 3462→3356 拍，但其组合路径变化未做本轮综合比较，暂不进入所选实现。后续应先对所选版本完成新 PNR/布线后时序与 SDF，再决定是否启用 FT；不建议仅为这些测试继续堆 MAC 或扩大权重 bank。
+
+[证据总索引](optimization_20261109/summary.json)、[有复位综合](optimization_20261109/synthesis/selective_dma_reset/evidence/ppa_summary.json)、[所选无复位综合](optimization_20261109/synthesis/selective_dma_noreset/evidence/ppa_summary.json) 保留源文件和报告哈希。原始 area、qor、时序路径、结构检查及完成日志同时归档。
+
+---
 
 ## 2026-11-09：rtl-dev 与 CPU 取指优化集成
 

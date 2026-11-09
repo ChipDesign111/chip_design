@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "finished_utc": "2026-11-09T08:52:49.867250+00:00",
+  "negative_control": false,
+  "command": [
+    "xrun",
+    "-64bit",
+    "-sv",
+    "-timescale",
+    "1ns/1ps",
+    "+incdir+/home/s2400012713/chip-selective-noreset-20261109/rtl/include",
+    "/home/s2400012713/chip-selective-noreset-20261109/rtl/axi/axi_pkg.sv",
+    "/home/s2400012713/chip-selective-noreset-20261109/rtl/soc/my_ifetch.sv",
+    "/home/s2400012713/chip-selective-noreset-20261109/test/int8/tb_ifetch.sv",
+    "-top",
+    "tb_ifetch",
+    "-l",
+    "/home/s2400012713/chip-selective-noreset-20261109/test/int8/runs/final_noreset_unit/xrun.log"
+  ],
+  "exit_code": 0,
+  "source_sha256": {
+    "/home/s2400012713/chip-selective-noreset-20261109/rtl/axi/axi_pkg.sv": "76b3797792ee5b95ab5937f3d457b48852e5c427de48298dafbdde43d0916ac2",
+    "/home/s2400012713/chip-selective-noreset-20261109/rtl/soc/my_ifetch.sv": "3d8d8ba907e5ad8a4b27e1e8d4b4abf9958a9a32c49056ed81150eeedfed1ea0",
+    "/home/s2400012713/chip-selective-noreset-20261109/test/int8/tb_ifetch.sv": "5485e183b69dc2469ed206a78e3da55489535c2ba0aa86d4344e127aea1ff1f8",
+    "/home/s2400012713/chip-selective-noreset-20261109/rtl/include/axi/typedef.svh": "c2ef2098fea077e07100b9b9c40f2ac5453e7e01af407e236a810b43aeb8b2ef",
+    "/home/s2400012713/chip-selective-noreset-20261109/test/int8/run_ifetch.py": "465b8e69736cb775e533369a069088f921b6460253a787769f88630ed6060057"
+  },
+  "sources_unchanged": true,
+  "errors": [],
+  "checks": 71,
+  "console_sha256": "d758f34a0c1a6a99f22d5b886cc61461c19042be84e1ff00ac1a85598e16588b",
+  "scope": "Standalone RTL protocol regression, synthetic AXI memory; not SoC or SDF acceptance"
+}

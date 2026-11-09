@@ -1,0 +1,29 @@
+{
+  "seed": 10000,
+  "results": {
+    "1": {
+      "cycles": 1401,
+      "cycles_per_sample": 1401.0,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 16,
+      "read_mac_overlap": 39,
+      "write_mac_overlap": 38
+    },
+    "2": {
+      "cycles": 1431,
+      "cycles_per_sample": 715.5,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 32,
+      "read_mac_overlap": 70,
+      "write_mac_overlap": 66
+    },
+    "4": {
+      "cycles": 1541,
+      "cycles_per_sample": 385.25,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "read_mac_overlap": 152,
+      "write_mac_overlap": 151
+    }
+  }
+}

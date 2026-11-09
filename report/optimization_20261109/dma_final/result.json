@@ -1,0 +1,99 @@
+{
+  "status": "PASS",
+  "source_sha256": {
+    "C:\\Users\\wyh\\Desktop\\chipcourse\\reference\\github-chip-design-opt-20261109\\rtl\\dma\\har_dma.sv": "6aaa673d985b4c431ed7f65cb12ff7794bf6af48fbced4f399f3b5dbd45da2cb",
+    "C:\\Users\\wyh\\Desktop\\chipcourse\\reference\\github-chip-design-opt-20261109\\test\\int8\\tb_dma_response.sv": "b8d3001dca601535af09f159f4081ed4cd2fe7789290df37c85d445946e92040",
+    "C:\\Users\\wyh\\Desktop\\chipcourse\\reference\\github-chip-design-opt-20261109\\test\\int8\\run_dma_response.py": "08f07acae6ee6c9718bccd9e0b05aa71a13183e1aa358fffa74fbf484e7b00bc"
+  },
+  "cases": [
+    {
+      "kind": 0,
+      "b_delay": 0,
+      "last_w_to_done": 1,
+      "b_to_done": 0,
+      "reads": 16,
+      "writes": 16,
+      "bursts": 1,
+      "copied": 16,
+      "elapsed": 29
+    },
+    {
+      "kind": 0,
+      "b_delay": 7,
+      "last_w_to_done": 8,
+      "b_to_done": 0,
+      "reads": 16,
+      "writes": 16,
+      "bursts": 1,
+      "copied": 16,
+      "elapsed": 36
+    },
+    {
+      "kind": 1,
+      "b_delay": 0,
+      "last_w_to_done": 1,
+      "b_to_done": 0,
+      "reads": 16,
+      "writes": 16,
+      "bursts": 1,
+      "copied": 0,
+      "elapsed": 29
+    },
+    {
+      "kind": 2,
+      "b_delay": 0,
+      "last_w_to_done": 1,
+      "b_to_done": 0,
+      "reads": 16,
+      "writes": 16,
+      "bursts": 1,
+      "copied": 0,
+      "elapsed": 29
+    },
+    {
+      "kind": 3,
+      "b_delay": 0,
+      "last_w_to_done": 1,
+      "b_to_done": 0,
+      "reads": 8,
+      "writes": 16,
+      "bursts": 1,
+      "copied": 0,
+      "elapsed": 29
+    },
+    {
+      "kind": 4,
+      "b_delay": 0,
+      "last_w_to_done": 2,
+      "b_to_done": 0,
+      "reads": 18,
+      "writes": 16,
+      "bursts": 1,
+      "copied": 0,
+      "elapsed": 30
+    },
+    {
+      "kind": 5,
+      "b_delay": 0,
+      "last_w_to_done": 1,
+      "b_to_done": 0,
+      "reads": 32,
+      "writes": 32,
+      "bursts": 2,
+      "copied": 32,
+      "elapsed": 58
+    },
+    {
+      "kind": 6,
+      "b_delay": 0,
+      "last_w_to_done": 1,
+      "b_to_done": 0,
+      "reads": 16,
+      "writes": 16,
+      "bursts": 2,
+      "copied": 16,
+      "elapsed": 38
+    }
+  ],
+  "scope": "Directed RTL DMA only; not full SoC or timing signoff"
+}

@@ -1,0 +1,35 @@
+{
+  "scope": "Same original full SoC TB plus explicit CPU workload before full trained HAR golden checks; scratch timing is not HAR-only latency",
+  "generator_sha256": "cedb80bc233769a320c6fdc7e19493f6613aa6045316a778dcef6b2590a5a642",
+  "source_snapshot_sha256": "4fa89d6f3e6c7d4b3f8d06168da937f54ffa4060f2fb7c2f828923e8cf63a366",
+  "cases": [
+    {
+      "observed_cycles": 7748,
+      "hardware_soc_cycles": 7743,
+      "npu_cycles": 973,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "variant": "base",
+      "workload": "scratch_128",
+      "seed": 10000,
+      "firmware_sha256": "e2e54696c8f49d42267cabd41df3253e04bc4a1cc315975337c9bf351a05f1b5",
+      "status": "PASS"
+    },
+    {
+      "observed_cycles": 3636,
+      "hardware_soc_cycles": 3631,
+      "npu_cycles": 979,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 64,
+      "dma_read_overlap": 278,
+      "dma_write_overlap": 279,
+      "variant": "base",
+      "workload": "code_patch_alias_byte",
+      "seed": 10000,
+      "firmware_sha256": "e1ae2267c82ccbebfade89482aefe09e21f90236bfb548cf3d0d3a0610bb0759",
+      "status": "PASS"
+    }
+  ]
+}
