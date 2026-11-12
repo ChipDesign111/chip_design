@@ -83,6 +83,7 @@ def generate_steps(work, die):
     bodies['10.tcl'] = ''.join(add('PAD60LU_OBV', 'i_bond_' + s['pad'], s['side'], s['offset_um'], True, 73.16) for s in signals)
     bodies['10.tcl'] += ''.join(add('PAD60LU_OBV', 'i_bond_' + side + '_' + p['suffix'], side, p['offset_um'], True, 73.16) for side in 'NSWE' for p in powers)
     bodies['10.tcl'] += 'if {[llength [dbGet -e top.insts.cell.name PAD60LU_OBV -p2]] != 34} {error "Bond PAD count mismatch"}\n'
+    bodies['10.tcl'] += 'source [file join $eda_work flow tcl wire_bond_keepout.tcl]\neda_apply_wire_bond_keepouts\n'
     # The continuity check uses both measured dimensions, which may differ
     # slightly after the tool snaps the square request to legal row/site grids.
     text = bodies['12_check.tcl']

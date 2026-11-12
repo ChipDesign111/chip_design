@@ -1,0 +1,14 @@
+{
+  "status": "native_preflight_only_not_full_flow_pass",
+  "baseline_physical_commit": "07af8464f4fbbd1c76b41a326f8b05fa745ad3b6",
+  "baseline_wb_violations": {"CB.S.2.M5": 3, "CB.S.2.M6": 6},
+  "cause": "Regular CPU signal routes approach bottom bond-pad M5/M6 metal closer than native 2.5um requirement; no special-wire objects at sampled violation windows",
+  "measured_examples": [
+    {"net": "i_cpu/core_i/id_stage_i/regfile_data_ra_id[15]", "layer": "METAL5", "box_um": [1147.58,73.5,1157.38,73.78]},
+    {"net": "i_cpu/core_i/lsu_rdata[26]", "layer": "METAL6", "box_um": [1149.18,73.98,1151.86,74.42]},
+    {"net": "i_cpu/core_i/id_stage_i/register_file_i/n_4598", "layer": "METAL6", "box_um": [1441.5,73.98,1441.94,154.5]}
+  ],
+  "fix": "Create native regular-signal routing blockage over each actual fixed PAD60LU_OBV box on METAL5/METAL6, with 2.5um spacing; power/ground exempt from routing blockage, not exempt from final WB checks",
+  "preflight": {"tool": "Innovus 21.16", "pads": 34, "layer_blockage_objects": 68, "spacing_um": 2.5, "isExceptPGNet": 1, "isPGNetOnly": 0, "checkpoint_saved": false},
+  "remaining_validation": "Fresh committed source deployment, synthesis and 34 steps; TT STA/SDF with all checks; same-source Lab5 DRC/LVS/ERC/antenna/WB; SHA-verified reports. No modification of main or frozen baseline work."
+}

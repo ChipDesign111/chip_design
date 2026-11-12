@@ -86,6 +86,8 @@ if {[catch {
     }
     source [file join $eda_work flow tcl register_mapping.tcl]
     eda_apply_register_mapping_innovus
+    source [file join $eda_work flow tcl wire_bond_keepout.tcl]
+    if {$eda_last >= 10} {eda_check_wire_bond_keepouts}
     if {!$eda_headless} {win}
     source [file join $eda_work flow config repair.tcl]
     source [file join $eda_work flow tcl antenna_strategy.tcl]

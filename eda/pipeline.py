@@ -26,6 +26,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('command',choices=['run'])
     p.add_argument('--only',choices=['all','lab5'],default='all')
+    p.add_argument('--start-at',choices=['rtl','implementation'],default='rtl',help='implementation retains source checks and starts fresh synthesis; skips unchanged RTL regression')
     p.add_argument('--host',default='chipdesign')
     p.add_argument('--eda-upload',help='Required when selecting only Lab5')
     p.add_argument('--output',type=Path,required=True)
@@ -45,7 +46,10 @@ def main():
     try:
         stage('rtl_check_and_regression')
         command('tools/project.py','check')
-        command('tools/project.py','test','--soc')
+        if a.start_at=='rtl':
+            command('tools/project.py','test','--soc')
+        else:
+            journal['rtl_regression']='Not rerun: explicit implementation start; source provenance checks still executed'
         stage('synthesis_and_implementation')
         command('eda/remote.py','run','--host',a.host,'--output',a.output/'implementation')
         physical=json.loads((ROOT/'eda/dist/last_upload.json').read_text())['upload']
@@ -59,6 +63,8 @@ def main():
             idle=0 if state['running'] else idle+1
             if idle>=3:raise RuntimeError('No active TT simulation and no completed result')
             time.sleep(20)
+        stage('sram_half_cycle_timing')
+        command('eda/postsim.py','timing','--host',a.host,'--upload',simulation)
         command('eda/postsim.py','fetch','--host',a.host,'--upload',simulation,'--output',a.output/'postsim_tt')
         audit=json.loads((a.output/'postsim_tt/audit.json').read_text())
         if audit.get('normal_postsim_pass') is not True:
