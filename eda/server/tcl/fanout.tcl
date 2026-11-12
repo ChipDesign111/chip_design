@@ -80,12 +80,21 @@ proc eda_fix_fanout {directory} {
         set new_instance [eda_db_string $new_instance]
         set input_net [eda_db_string $input_net]
         set output_net [eda_db_string $output_net]
-        if {$input_net ne $net_name || $output_net eq $net_name} {
+        if {$input_net eq $net_name} {
+            set source_net $input_net
+            set branch_net $output_net
+        } elseif {$output_net eq $net_name} {
+            set source_net $output_net
+            set branch_net $input_net
+        } else {
             error "Unexpected fanout ECO net split: report=$net_name input=$input_net output=$output_net"
+        }
+        if {$branch_net eq $source_net} {
+            error "Fanout ECO did not create a distinct branch: net=$net_name"
         }
         foreach pin $original_inputs {
             lassign $pin object original_name cell_name
-            set expected [expr {$original_name in $selected ? $output_net : $input_net}]
+            set expected [expr {$original_name in $selected ? $branch_net : $source_net}]
             set actual_net [eda_db_string [dbGet $object.net.name]]
             if {$actual_net ne $expected} {
                 if {[string match ANTENNA* $cell_name]} {
@@ -95,7 +104,7 @@ proc eda_fix_fanout {directory} {
                 error "Fanout ECO sink mismatch: pin=$original_name expected=$expected actual=$actual_net"
             }
         }
-        puts "EDA_FANOUT_SPLIT net=$net_name driver=$actual_driver old_load=[llength $receivers] limit=$maximum moved=[llength $selected] original_inputs=[llength $original_inputs] buffer=$new_instance new_net=$output_net"
+        puts "EDA_FANOUT_SPLIT net=$net_name driver=$actual_driver old_load=[llength $receivers] limit=$maximum moved=[llength $selected] original_inputs=[llength $original_inputs] buffer=$new_instance new_net=$branch_net"
     }
     eda_eval 32_eco_legalize {globalNetConnect VDD -type pgpin -pin VDD -all; globalNetConnect VSS -type pgpin -pin VSS -all; refinePlace}
     eda_eval 32_eco_route {ecoRoute}
