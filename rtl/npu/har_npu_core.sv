@@ -43,6 +43,11 @@ module har_npu_core (
     logic signed [15:0] product[0:31];
     logic signed [ACC_WIDTH-1:0] a1[0:MAX_BATCH-1][0:31],a2[0:MAX_BATCH-1][0:5];
     logic [255:0] h[0:MAX_BATCH-1];
+    // Preload the two selected FC1 input bytes for every sample at a tile
+    // boundary.  This keeps the 32-way tile decode out of the MAC/CSA cone.
+    logic [7:0] x_lane_q[0:MAX_BATCH-1][0:1];
+    logic [1:0] fc2_group_q;
+    logic first_tile_q;
     logic [2:0] class_id_q[0:MAX_BATCH-1];
     logic signed [ACC_WIDTH-1:0] finish_best_q;
     logic [2:0] finish_compare_index,finish_class_q;
@@ -54,9 +59,11 @@ module har_npu_core (
     wire last_sample_issue=issue && sample==batch_q[2:0]-1'b1;
     wire final_tile_phase=layer ? phase==FC2_PHASES-1 : phase==FC1_PHASES-1;
     wire last_phase_issue=last_sample_issue && final_tile_phase;
-    wire [511:0] x=input_features[sample*512+:512];
     wire [255:0] hs=h[sample];
-    wire [1:0] fc2_group=tile_index_o[1:0];
+    wire [4:0] next_tile_index=tile_index_o+5'd1;
+    wire has_next_tile=layer ? tile_index_o!=FC2_GROUPS-1 : tile_index_o!=FC1_TILES-1;
+    wire prepare_current_tile=state==WAIT_TILE && tile_valid_i;
+    wire prepare_next_tile=last_phase_issue && has_next_tile;
     wire signed [ACC_WIDTH-1:0] finish_score=a2[finish_sample][finish_compare_index];
     // The last FC2 ISSUE may still update class 0 on the edge entering FINISH
     // (batch=1). Seed the first comparison from the committed accumulator.
@@ -127,13 +134,13 @@ module har_npu_core (
                 localparam int W2_ROW=P/6;
                 if(P<12) begin: fc2_active
                     assign product[P]=layer ?
-                        $signed(hs[(fc2_group*8+phase*2+W2_ROW)*8+:8])*
+                        $signed(hs[(fc2_group_q*8+phase*2+W2_ROW)*8+:8])*
                             $signed(tile_data_i[(phase*12+P)*8+:8]) :
-                        $signed(x[tile_index_o*16+k*8+:8])*
+                        $signed(x_lane_q[product_sample][k])*
                             $signed(tile_data_i[(phase[0]*16+j)*16+k*8+:8]);
                 end else begin: fc2_idle
                     assign product[P]=layer ? 16'sd0 :
-                        $signed(x[tile_index_o*16+k*8+:8])*
+                        $signed(x_lane_q[product_sample][k])*
                         $signed(tile_data_i[(phase[0]*16+j)*16+k*8+:8]);
                 end
             end
@@ -161,6 +168,8 @@ module har_npu_core (
             finish_class_q<=0;
             finish_best_q<=0;
             tile_index_o<=0;
+            fc2_group_q<=0;
+            first_tile_q<=0;
             quant_sample<=0;
             class_id_q[0]<=0;class_id_q[1]<=0;class_id_q[2]<=0;class_id_q[3]<=0;
             cycle_count<=0;
@@ -171,11 +180,33 @@ module har_npu_core (
             fc2_cycles<=0;
             for(s=0;s<MAX_BATCH;s=s+1) begin
                 h[s]<=0;
+                x_lane_q[s][0]<=0;
+                x_lane_q[s][1]<=0;
                 for(o=0;o<32;o=o+1) a1[s][o]<=0;
                 for(o=0;o<6;o=o+1) a2[s][o]<=0;
             end
         end else begin
             if(busy) cycle_count<=cycle_count+1'b1;
+            // Tile metadata and FC1 operands are ready before ISSUE starts.
+            // A ready-bank handoff preloads the following tile in the final
+            // ISSUE cycle, so this register boundary adds no compute bubble.
+            if(prepare_current_tile) begin
+                fc2_group_q<=tile_index_o[1:0];
+                first_tile_q<=tile_index_o==0;
+                if(!layer)
+                    for(s=0;s<MAX_BATCH;s=s+1)
+                        for(o=0;o<2;o=o+1)
+                            x_lane_q[s][o]<=
+                                input_features[s*512+tile_index_o*16+o*8+:8];
+            end else if(prepare_next_tile) begin
+                fc2_group_q<=next_tile_index[1:0];
+                first_tile_q<=1'b0;
+                if(!layer)
+                    for(s=0;s<MAX_BATCH;s=s+1)
+                        for(o=0;o<2;o=o+1)
+                            x_lane_q[s][o]<=
+                                input_features[s*512+next_tile_index*16+o*8+:8];
+            end
             if(product_valid) begin
                 if(dma_read_i || dma_write_i) overlap_count<=overlap_count+1'b1;
                 if(dma_read_i) read_overlap_count<=read_overlap_count+1'b1;
@@ -185,7 +216,7 @@ module har_npu_core (
                     if(phase==0) begin
                         for(o=0;o<16;o=o+1)
                             a1[product_sample][o] <=
-                                (tile_index_o==0 ?
+                                (first_tile_q ?
                                     $signed(bias1[o*32+:ACC_WIDTH]):
                                     a1[product_sample][o])
                                 + extend_product(product[o*2])
@@ -193,7 +224,7 @@ module har_npu_core (
                     end else begin
                         for(o=0;o<16;o=o+1)
                             a1[product_sample][16+o] <=
-                                (tile_index_o==0 ?
+                                (first_tile_q ?
                                     $signed(bias1[(16+o)*32+:ACC_WIDTH]):
                                     a1[product_sample][16+o])
                                 + extend_product(product[o*2])
@@ -203,7 +234,7 @@ module har_npu_core (
                     fc2_cycles<=fc2_cycles+1'b1;
                     for(o=0;o<6;o=o+1)
                         a2[product_sample][o] <=
-                            (tile_index_o==0 && phase==0 ?
+                            (first_tile_q && phase==0 ?
                                 $signed(bias2[o*32+:ACC_WIDTH]):
                                 a2[product_sample][o])
                             + extend_product(product[o])
@@ -241,6 +272,8 @@ module har_npu_core (
                     finish_class_q<=0;
                     finish_best_q<=0;
                     tile_index_o<=0;
+                    fc2_group_q<=0;
+                    first_tile_q<=0;
                     state<=WAIT_TILE;
                     cycle_count<=0;
                     overlap_count<=0;
@@ -272,7 +305,7 @@ module har_npu_core (
                         state<=FINISH;
                     end else begin
                         phase<=0;
-                        tile_index_o<=tile_index_o+1'b1;
+                        tile_index_o<=next_tile_index;
                         sample<=0;
                         state<=tile_next_valid_i ? ISSUE:WAIT_TILE;
                     end
