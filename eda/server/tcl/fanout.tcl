@@ -67,6 +67,9 @@ proc eda_fix_fanout {directory} {
             continue
         }
         set selected [eda_choose_fanout_terms $receivers]
+        array unset selected_set
+        array set selected_set {}
+        foreach selected_name $selected {set selected_set($selected_name) 1}
         while {1} {
             incr eda_fanout_serial
             set name [format EDA_FANOUT_%04d $eda_fanout_serial]
@@ -94,7 +97,7 @@ proc eda_fix_fanout {directory} {
         }
         foreach pin $original_inputs {
             lassign $pin object original_name cell_name
-            set expected [expr {$original_name in $selected ? $branch_net : $source_net}]
+            set expected [expr {[info exists selected_set($original_name)] ? $branch_net : $source_net}]
             set actual_net [eda_db_string [dbGet $object.net.name]]
             if {$actual_net ne $expected} {
                 if {[string match ANTENNA* $cell_name]} {
