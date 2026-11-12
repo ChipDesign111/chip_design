@@ -5,6 +5,10 @@ proc eda_literal_net_pattern {name} {
     regsub -all {[][\\.^$*+?(){}|]} $name {\\&} escaped
     return "^${escaped}$"
 }
+proc eda_db_string {value} {
+    if {[llength $value] == 1} {return [lindex $value 0]}
+    return $value
+}
 proc eda_choose_fanout_terms {receivers} {
     set logical {}
     foreach row $receivers {
@@ -36,11 +40,12 @@ proc eda_fix_fanout {directory} {
         set receivers {}; set drivers {}; set original_inputs {}
         foreach it [dbGet $net.instTerms] {
             if {[dbGet $it.isInput] && [dbGet $it.isOutput]} {error "Bidirectional fanout pin requires manual adaptation"}
-            if {[dbGet $it.isOutput]} {lappend drivers [dbGet $it.name]}
+            set pin_name [eda_db_string [dbGet $it.name]]
+            if {[dbGet $it.isOutput]} {lappend drivers $pin_name}
             if {[dbGet $it.isInput]} {
                 lassign [lindex [dbGet $it.pt] 0] x y
-                lappend receivers [list $x $y [dbGet $it.name] [dbGet $it.inst.cell.name]]
-                lappend original_inputs [list $it [dbGet $it.name]]
+                lappend receivers [list $x $y $pin_name [eda_db_string [dbGet $it.inst.cell.name]]]
+                lappend original_inputs [list $it $pin_name]
             }
         }
         if {[llength $drivers] != 1} {error "Fanout net must have exactly one output driver: $net_name drivers=$drivers"}
