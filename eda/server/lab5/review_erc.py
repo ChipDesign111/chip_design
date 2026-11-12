@@ -13,9 +13,11 @@ import gdstk
 
 def review(summary, results, gds):
     text=summary.read_text(errors='replace')
-    rows={n:(int(h),int(e)) for n,h,e in re.findall(r'(?im)^RULECHECK\s+(\S+)\s+\.+\s+TOTAL Result Count\s*=\s*(\d+)\s*\((\d+)\)',text)}
+    records=re.findall(r'(?im)^RULECHECK\s+(\S+)\s+\.+\s+TOTAL Result Count\s*=\s*(\d+)\s*\((\d+)\)',text)
+    rows={n:(int(h),int(e)) for n,h,e in records}
+    checks=re.search(r'TOTAL ERC RuleChecks Executed:\s*(\d+)',text)
     total=re.search(r'TOTAL ERC RuleCheck Results Generated:\s*(\d+)\s*\((\d+)\)',text)
-    if not rows or not total or any(sum(x[i] for x in rows.values())!=int(total.group(i+1)) for i in [0,1]):
+    if not rows or not total or not checks or len(rows)!=len(records) or len(rows)!=int(checks.group(1)) or any(sum(x[i] for x in rows.values())!=int(total.group(i+1)) for i in [0,1]):
         raise ValueError('Incomplete native ERC summary')
     allowed={'mnpg':{'PVDD1CDG','PVDD2CDG','PVDD2POC'},
              'floating.nxwell_float':{'PVSS1CDG'},'npvss49':{'PVSS1CDG'},
@@ -54,7 +56,7 @@ def review(summary, results, gds):
                 reason='Entire representative marker inside measured native protection PAD master'
             if not accepted:errors.append('Marker outside documented native object: '+name)
             markers.append({'rule':name,'bbox_um':box,'native_pad_hits':hits,'accepted_course_residual':accepted,'basis':reason})
-    return {'schema':1,'native_erc_hierarchical':int(total.group(1)),'native_erc_expanded':int(total.group(2)),
+    return {'schema':1,'native_erc_checks':int(checks.group(1)),'native_erc_hierarchical':int(total.group(1)),'native_erc_expanded':int(total.group(2)),
         'erc_clean':int(total.group(1))==0,'accepted_course_residuals':not errors,'errors':errors,
         'rule_counts':rows,'markers':markers,'native_report_sha256':hashlib.sha256(results.read_bytes()).hexdigest(),
         'reviewer_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
