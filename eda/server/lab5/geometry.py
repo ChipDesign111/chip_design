@@ -28,14 +28,16 @@ def assemble(source, output, ring_zip, evidence, patch_io=False):
     changes=[]
     if patch_io:
         # Native CO.R.4 marker measured on b54663c, same physical source.
-        cell=next(c for c in lib.cells if c.name=='PVDD2CDG')
-        pp=[p for p in cell.get_polygons(layer=7,datatype=0) if all(abs(a-b)<1e-6 for a,b in zip(sum(p.bounding_box(),()),(2.7,52.91,57.3,73.795)))]
-        co=[p for p in cell.get_polygons(layer=15,datatype=0) if all(abs(a-b)<1e-6 for a,b in zip(sum(p.bounding_box(),()),(57.23,72.13,57.45,72.35)))]
-        npoly=cell.get_polygons(layer=8,datatype=0)
-        if len(pp)!=1 or len(co)!=1 or not any(any(abs(x-57.59)<1e-6 and abs(y-73.795)<1e-6 for x,y in p.points) for p in npoly):
-            raise ValueError('Private IO patch does not match measured PP/CO/NP geometry')
-        cell.add(gdstk.rectangle((57.3,52.91),(57.59,73.795),layer=7,datatype=0))
-        changes.append({'cell':'PVDD2CDG','layer':7,'datatype':0,'added_rect_um':[[57.3,52.91],[57.59,73.795]],'reason':'Measured CO.R.4; PP extends to existing NP boundary; shared PDK unchanged'})
+        # 3b928b8 identified the remaining four instances as PVDD2POC.
+        for master in ['PVDD2CDG','PVDD2POC']:
+            cell=next(c for c in lib.cells if c.name==master)
+            pp=[p for p in cell.get_polygons(layer=7,datatype=0) if all(abs(a-b)<1e-6 for a,b in zip(sum(p.bounding_box(),()),(2.7,52.91,57.3,73.795)))]
+            co=[p for p in cell.get_polygons(layer=15,datatype=0) if all(abs(a-b)<1e-6 for a,b in zip(sum(p.bounding_box(),()),(57.23,72.13,57.45,72.35)))]
+            npoly=cell.get_polygons(layer=8,datatype=0)
+            if len(pp)!=1 or len(co)!=1 or not any(any(abs(x-57.59)<1e-6 and abs(y-73.795)<1e-6 for x,y in p.points) for p in npoly):
+                raise ValueError('Private IO patch does not match measured PP/CO/NP geometry: '+master)
+            cell.add(gdstk.rectangle((57.3,52.91),(57.59,73.795),layer=7,datatype=0))
+            changes.append({'cell':master,'layer':7,'datatype':0,'added_rect_um':[[57.3,52.91],[57.59,73.795]],'reason':'Measured CO.R.4; PP extends to existing NP boundary; shared PDK unchanged'})
     # DIEAREA from DEF, not the polygon/instance text bounding box.
     import re
     text = source.with_name('my_soc_top.def').read_text()
@@ -89,7 +91,7 @@ def assemble(source, output, ring_zip, evidence, patch_io=False):
     for c in lib.cells:
         if c.name in original_counts and c.name!='my_soc_top':
             expected=list(original_counts[c.name])
-            if patch_io and c.name=='PVDD2CDG':expected[0]+=1
+            if c.name in [x['cell'] for x in changes]:expected[0]+=1
             if expected!=[len(c.polygons),len(c.paths),len(c.labels),len(c.references)]:
                 raise ValueError('Native original cell changed: '+c.name)
     lib.write_gds(str(output))
