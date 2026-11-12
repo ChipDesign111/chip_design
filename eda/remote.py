@@ -189,7 +189,9 @@ def fetch(host, upload, output):
     if output.exists() and any(output.iterdir()):
         raise ValueError('Choose an empty local --output directory: ' + str(output))
     output.mkdir(parents=True, exist_ok=True)
-    staging = Path(tempfile.mkdtemp(prefix='.download_', dir=str(output)))
+    # Unpack outside synced folders. Windows/OneDrive can deny directory
+    # renames while indexing newly extracted reports; publish files instead.
+    staging = Path(tempfile.mkdtemp(prefix='chip_design_eda_download_'))
     try:
         names = ['review_delivery.tar.gz', 'review_delivery.tar.gz.sha256', 'review_manifest.json', 'delivery_manifest.json']
         scp(host, [upload + '/work/' + name for name in names], staging, download=True)
@@ -206,10 +208,18 @@ def fetch(host, upload, output):
         spec.loader.exec_module(renderer)
         page = '<!doctype html><meta charset="utf-8"><style>body{font-family:sans-serif;max-width:1000px;margin:40px auto;line-height:1.8}code{overflow-wrap:anywhere}a{color:#075ea9}</style>' + renderer.render_markdown(md)
         (staging / 'README.html').write_text(page, encoding='utf-8')
-        for item in list(staging.iterdir()):
-            os.replace(str(item), str(output / item.name))
+        files = [p for p in staging.rglob('*') if p.is_file() and p.name != 'receipt.json']
+        for item in files:
+            target = output / item.relative_to(staging)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(str(item), str(target))
+        for item in files:
+            if digest(item) != digest(output / item.relative_to(staging)):
+                raise ValueError('Published local report changed: ' + str(item.relative_to(staging)))
+        # A receipt appears only after every published file has been checked.
+        save(output / 'receipt.json', receipt)
     finally:
-        staging.resolve().relative_to(output.resolve())
+        staging.resolve().relative_to(Path(tempfile.gettempdir()).resolve())
         shutil.rmtree(str(staging))
     print('Verified results: ' + str(output) + '\nOpen: ' + str(output / 'README.html'), flush=True)
     return output
