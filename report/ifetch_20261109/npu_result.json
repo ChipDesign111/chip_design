@@ -1,0 +1,14 @@
+{
+  "unit_cases": 41,
+  "directed_cases": [
+    "argmax_final_rises",
+    "argmax_final_falls",
+    "argmax_final_ties"
+  ],
+  "trained_samples": 24,
+  "accumulator_bits": 22,
+  "soc": false,
+  "soc_timing": null,
+  "vendor_model_sha256": null,
+  "passed": true
+}

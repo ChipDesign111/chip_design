@@ -3,6 +3,7 @@ BASE=0x80000000
 class Assembler:
     def __init__(self):
         self.words, self.labels, self.fixups, self.listing = [], {}, [], []
+        self.compact_li = False
     def label(self, name):
         self.labels[name] = BASE + 4 * len(self.words)
         self.listing.append(name + ":")
@@ -18,14 +19,21 @@ class Assembler:
         self.emit(((imm & 4095) << 20) | (rs << 15) | (7 << 12) | (rd << 7) | 0x13, f"andi x{rd}, x{rs}, {imm}")
     def li(self, rd, value):
         value &= 0xffffffff
+        signed = value if value < 0x80000000 else value - 0x100000000
+        if self.compact_li and -2048 <= signed <= 2047:
+            self.addi(rd, 0, signed)
+            return
         low = value & 4095
         if low >= 2048:
             low -= 4096
         self.lui(rd, (value - low) & 0xffffffff)
-        self.addi(rd, rd, low)
+        if not self.compact_li or low:
+            self.addi(rd, rd, low)
     def la(self, rd, name):
         self.fixups.append(("la", len(self.words), rd, name))
-        self.li(rd, 0)
+        # Address fixups always own two slots, including with compact constants.
+        self.lui(rd, 0)
+        self.addi(rd, rd, 0)
     def lw(self, rd, rs, offset=0):
         self.emit(((offset & 4095) << 20) | (rs << 15) | (2 << 12) | (rd << 7) | 3, f"lw x{rd}, {offset}(x{rs})")
     def sw(self, rs2, rs1, offset=0):

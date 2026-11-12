@@ -1,0 +1,18 @@
+xrun(64): 21.09-s013: (c) Copyright 1995-2022 Cadence Design Systems, Inc.
+TOOL:	xrun(64)	21.09-s013: Started on Nov 09, 2026 at 15:07:55 UTC
+xrun
+	-64bit
+	-R
+	-xmlibdirname /home/s2400012713/chip-loopopt-20261109/suite/test/int8/runs/sweep/build/xcelium.d
+	-l /home/s2400012713/chip-loopopt-20261109-v2/suite/test/int8/runs/final_faults/hidden_last/xrun.log
+Loading snapshot worklib.tb_soc:sv .................... Done
+xmsim: *W,DSEM2009: This SystemVerilog design is simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
+xcelium> source /opt/eda/Cadence/XCELIUM2109/tools/xcelium/files/xmsimrc
+xcelium> run
+xmsim: *F,FATSEV (/home/s2400012713/chip-loopopt-20261109/suite/test/int8/tb_soc.sv,73): (time 128950 NS).
+tb_soc
+CPU numerical self-check failed
+Simulation terminated via $fatal(1) at time 128950 NS + 0
+/home/s2400012713/chip-loopopt-20261109/suite/test/int8/tb_soc.sv:73             if(magic===32'hdeadbeef) $fatal(1,"CPU numerical self-check failed");
+xcelium> exit
+TOOL:	xrun(64)	21.09-s013: Exiting on Nov 09, 2026 at 15:07:57 UTC  (total: 00:00:02)

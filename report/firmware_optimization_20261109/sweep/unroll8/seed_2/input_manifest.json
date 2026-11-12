@@ -1,0 +1,14 @@
+{
+  "seed": 2,
+  "mode": "unroll8",
+  "batch": 1,
+  "code_bytes": 680,
+  "instruction_words": 170,
+  "input_data_start_offset": 4096,
+  "input_data_sha256": "dc15a83da593d1631ffe2ab3f1aa028e1c03d780933d436ba3049cbf645764b6",
+  "files_sha256": {
+    "firmware.hex": "72e30204f1e098974bcfa2f85f5b643c60640c78d602db317f8566b6afd0644d",
+    "firmware.S": "06ea2e4cd93fd4369043a684881876e94784b4b8dea1ddf0a51697499e3fe3a1",
+    "firmware_meta.json": "7812342b4071de709e427a46e3ac810193f68e1f01c8a19f0fd0afd8792c7f36"
+  }
+}

@@ -5,9 +5,9 @@
 | cpu_cv32e40p/ | RISC-V CPU 与 package |
 | axi/、common_cells/、include/ | 互连、公共模块和头文件 |
 | debug/、clk_rst/ | Debug、时钟与复位 |
-| soc/ | my_soc_top 与 NPU 接入包装层 |
+| soc/ | my_soc_top、128 B 指令缓存 my_ifetch 与 NPU 接入包装层 |
 | memory/ | Boot 存储、8 KiB 主 SRAM 适配及接口声明 |
-| npu/ | 当前 INT8 2×32 / 1×6 tile DMA MLP |
+| npu/ | 当前 INT8 共享 32 MAC、tile DMA MLP |
 | filelist.f | 当前 SoC 的统一编译源清单 |
 | project.json | 网络、地址和流水参数 |
 | manifest.json | 外围来源、当前 SHA-256 及已说明的集成覆盖项 |

@@ -1,0 +1,24 @@
+{
+  "python": "3.8.10",
+  "genus": "/opt/eda/Cadence/GENUS191/bin/genus",
+  "innovus": "/opt/eda/Cadence/INNOVUS211/tools/bin/innovus",
+  "libraries_sha256": {
+    "/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Back_End/lef/tcb018gbwp7t_270a/lef/tcb018gbwp7t_6lm.lef": "8b43a6818b058e2ed185f56ffb3f026b67046a7c209c3d9a3f04281a3347bbc7",
+    "/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Back_End/lef/tpd018nv_280a/mt_2/6lm/lef/tpd018nv_6lm.lef": "2b6bff7ef1d8b63de3a55cfa7cd1d1619edbae9c6b9b93419fdb6a6d9f174e29",
+    "/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Back_End/lef/tpd018nv_280a/mt_2/6lm/lef/antenna_6lm.lef": "f806ecee02314fba91983bba49c5a7b68944e29d8776952d581ffe5ba4b591f9",
+    "/lec/pdk/tsmc180/tpb018v_180a/TSMCHOME/digital/Back_End/lef/tpb018v_180a/cup/6lm/lef/tpb018v_6lm.lef": "21090e17e0b4f4ddf02b78a61b14a975bd0e89a7366295124dd8a2695b5e60da",
+    "/home/s2400012713/chip-sync-integrated-syn-20261109/work/src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8.vclef": "d46ab0a3933aef99ab57ebcc2d1dd998ad712d734d294d9b920b1cf5d69e72ba",
+    "/home/s2400012713/chip-sync-integrated-syn-20261109/work/src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8_ant.lef": "d169a0611766f2ce824a0fef660c1158db1b4f023e25de3d9721898d39da5e29",
+    "/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tcb018gbwp7t_270a/tcb018gbwp7ttc.lib": "7378c9a4ae778909fe36956e2c7b42b90851eb7e6d37af84290ac6c4c64cc10f",
+    "/home/s2400012713/chip-sync-integrated-syn-20261109/work/src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8_tt_1p8_25C_syn.lib": "e179b0f6842b66e34c4ae95c2ee3253ace2e35475300b6cfcb15f0bc079fd6fe",
+    "/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Back_End/gds/tcb018gbwp7t_270a/tcb018gbwp7t.gds": "0917a1e04e97644e8092c1634bad36e8b7596d14bdd7fb3de6848c7aa20c11a1",
+    "/home/s2400012713/chip-sync-integrated-syn-20261109/work/src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8.gds": "2b3cb5a4c098951fced63907cf38ed6a33ac10d2b0cc856e707dc2168a02c521",
+    "/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Back_End/gds/tpd018nv_280a/mt_2/6lm/tpd018nv.gds": "6f53635b0f4c3e267b4a58288dd4bfeb15f3b08a554a246a241e7f986d02b454",
+    "/lec/pdk/tsmc180/tpb018v_180a/TSMCHOME/digital/Back_End/gds/tpb018v_180a/cup/6lm/tpb018v.gds": "aad59c67546ac18c9d23f2afafdc46b58cd2bf1901c9ce8598e9720f0bcd7834",
+    "/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tpd018nv_280a/tpd018nvtc.lib": "09ec264c1f98b5827fedcbeb0c8432c57fa178826bdd18f44af7d005224cbb57",
+    "/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Back_End/lef/tcb018gbwp7t_270a/techfiles/captable/t018lo_1p6m_typical.captable": "0cd9ae6eba98de068664420153f51206f4440b6c48d7bcde37696f7d5bb8e7bc",
+    "/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Back_End/lef/tcb018gbwp7t_270a/techfiles/gds2.map": "1413b4af5abe7e0afa59ab89a93e1c985ead78f0dcaedc63abb83a062f527e65"
+  },
+  "Xvfb": "/usr/bin/Xvfb",
+  "no_eda_stage_executed": true
+}

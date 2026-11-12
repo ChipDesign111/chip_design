@@ -11,6 +11,7 @@ module tb_soc;
     reg [31:0] load_addr=0,load_data=0;
     reg [31:0] image[0:2047];
     reg [31:0] magic=0;
+    reg fetch_started=0;
     integer cycles=0,read_overlap=0,write_overlap=0;
     task sba_write(input reg [31:0] address,value,input reg [3:0] be);
         integer timeout;
@@ -28,6 +29,14 @@ module tb_soc;
     endtask
     always @(posedge clk) begin
         if(dut.ndmreset_n && !dut.boot_ready && dut.instr_req) $fatal(1,"CPU fetched before firmware commit");
+        if(dut.boot_ready && !dut.firmware_fetch_start && !fetch_started &&
+           dut.i_bootram.soc_cycles!==32'd0)
+            $fatal(1,"SoC cycle counter started before first firmware fetch");
+        if(dut.firmware_fetch_start && !fetch_started) begin
+            if(dut.i_bootram.soc_cycles!==32'd0)
+                $fatal(1,"SoC cycle counter did not start at first firmware fetch");
+            fetch_started<=1;
+        end
         if(dut.sram_req && dut.sram_we && dut.sram_addr==32'h80001fe0) magic<=dut.sram_wdata;
         if(dut.i_npu_subsystem.i_npu_core.core.product_valid && dut.dma_read_active) read_overlap<=read_overlap+1;
         if(dut.i_npu_subsystem.i_npu_core.core.product_valid && dut.dma_write_active) write_overlap<=write_overlap+1;
@@ -64,8 +73,19 @@ module tb_soc;
             if(magic===32'hdeadbeef) $fatal(1,"CPU numerical self-check failed");
         end
         if(magic!==32'hc0dec0de) $fatal(1,"SoC timeout, PC=%h",dut.instr_addr);
+        if(!fetch_started) $fatal(1,"Firmware boot fetch was not observed");
         if(read_overlap==0 || write_overlap==0) $fatal(1,"Full AXI SoC did not overlap DMA and MAC");
-        $display("INT8_SOC PASS cycles=%0d DMA_read_MAC_overlap=%0d DMA_write_MAC_overlap=%0d",cycles,read_overlap,write_overlap);
+        if(!dut.i_bootram.soc_cycles_captured ||
+           dut.i_bootram.soc_cycles<=0 ||
+           dut.i_bootram.soc_cycles>=cycles ||
+           ^dut.i_bootram.soc_cycles===1'bx)
+            $fatal(1,"Invalid hardware SoC cycle count: %0d",dut.i_bootram.soc_cycles);
+        $display("INT8_SOC PASS cycles=%0d hw_soc_cycles=%0d npu_cycles=%0d fc1_issue_cycles=%0d fc2_issue_cycles=%0d DMA_read_MAC_overlap=%0d DMA_write_MAC_overlap=%0d",
+                 cycles,dut.i_bootram.soc_cycles,
+                 dut.i_npu_subsystem.i_npu_core.core.cycle_count,
+                 dut.i_npu_subsystem.i_npu_core.core.fc1_cycles,
+                 dut.i_npu_subsystem.i_npu_core.core.fc2_cycles,
+                 read_overlap,write_overlap);
         // Asynchronous reassertion must revoke execution immediately.
         #2;rst_n=0;#1;
         if(dut.ndmreset_n || dut.boot_ready) $fatal(1,"Reset assertion failed");

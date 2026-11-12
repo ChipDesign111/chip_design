@@ -71,6 +71,18 @@ def check() -> list[str]:
         network = config["network"]
         if tuple(network[key] for key in ("input_features", "hidden_features", "classes")) != (64, 32, 6):
             errors.append("Network dimensions differ from the fixed accelerator contract")
+        architecture = config["architecture"]
+        fc1_multipliers = architecture["fc1_parallel_outputs"] * architecture["fc1_input_lanes"]
+        if architecture["dot_product_multipliers"] != fc1_multipliers:
+            errors.append("Dot-product multiplier count differs from the FC1 bank width")
+        if f"SHARED_{fc1_multipliers}MAC_" not in config["status"]:
+            errors.append("Project status does not identify the shared FC1 multiplier bank")
+        eda_config = json.loads((ROOT / "eda/server/config/design.json").read_text(encoding="utf-8"))
+        physical_target = config["physical_target"]
+        if physical_target["whole_die_with_pad_mm2_max"] != eda_config["max_die_area_mm2"]:
+            errors.append("RTL project and EDA die-area targets differ")
+        if physical_target["period_ns"] != eda_config["system_period_ns"]:
+            errors.append("RTL project and EDA clock periods differ")
         mmio = config["mmio"]
         if not 0 <= mmio["base_address"] < 2**32 or mmio["base_address"] % 4:
             errors.append("Invalid MMIO base")

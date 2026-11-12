@@ -1,0 +1,1044 @@
+Reading D:/modeltech64_2019.2/tcl/vsim/pref.tcl
+
+# 2019.2
+
+# do soc.do
+# Model Technology ModelSim SE-64 vmap 2019.2 Lib Mapping Utility 2019.04 Apr 17 2019
+# vmap work work 
+# Copying D:/modeltech64_2019.2/win64/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# Model Technology ModelSim SE-64 vlog 2019.2 Compiler 2019.04 Apr 17 2019
+# Start time: 23:06:35 on Nov 04,2026
+# vlog -sv -f soc.f 
+# -- Compiling package cv32e40p_pkg
+# -- Compiling package cv32e40p_apu_core_pkg
+# -- Compiling package cv32e40p_fpu_pkg
+# -- Compiling package my_soc_pkg
+# -- Compiling package axi_pkg
+# -- Compiling package cf_math_pkg
+# -- Compiling package dm
+# -- Compiling interface AXI_BUS
+# -- Importing package axi_pkg
+# -- Compiling interface AXI_BUS_DV
+# -- Compiling interface AXI_BUS_ASYNC
+# -- Compiling interface AXI_BUS_ASYNC_GRAY
+# -- Compiling interface AXI_LITE
+# -- Compiling interface AXI_LITE_DV
+# -- Compiling interface AXI_LITE_ASYNC_GRAY
+# -- Compiling module addr_decode
+# -- Importing package cf_math_pkg
+# -- Compiling module axi_xbar
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_xbar.sv(45): (vlog-13314) Defaulting port 'default_mst_port_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# -- Compiling module axi_xbar_intf
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_xbar.sv(254): (vlog-13314) Defaulting port 'default_mst_port_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# -- Compiling module axi_demux
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(179): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(180): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(186): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(187): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(189): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(191): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(194): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(197): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(198): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(199): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(200): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(210): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(212): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(215): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(216): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(219): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(220): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(368): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(369): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(374): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(375): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(377): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(381): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(384): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(385): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(386): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(387): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(396): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(399): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(400): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(403): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(404): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(490): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(491): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(492): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(494): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(494): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(496): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(497): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(499): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(503): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(504): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(506): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(507): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(508): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(512): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(515): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(516): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(518): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(522): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# -- Compiling module axi_demux_id_counters
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(628): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(629): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(630): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(633): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(634): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(635): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(639): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(640): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(641): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(645): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(646): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(647): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(650): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(651): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(652): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(655): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(656): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(657): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(626): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(626): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(626): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(628): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(629): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(630): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(633): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(634): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(635): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(639): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(640): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(641): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(645): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(646): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(647): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(650): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(651): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(652): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(655): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(656): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_demux.sv(657): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# -- Compiling module axi_demux_intf
+# -- Compiling module axi_mux
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(210): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(211): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(212): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(213): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(214): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(217): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(220): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(221): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(222): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(226): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(227): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(229): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(232): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(233): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(280): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(281): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(282): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(286): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(287): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_mux.sv(289): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# -- Compiling module axi_mux_intf
+# -- Compiling module axi_id_prepend
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_id_prepend.sv(87): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_id_prepend.sv(88): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_id_prepend.sv(89): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_id_prepend.sv(90): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# -- Compiling module axi_err_slv
+# -- Compiling module axi_atop_filter
+# -- Compiling module axi_atop_filter_intf
+# -- Compiling module axi_adapter
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_adapter.sv(39): (vlog-13314) Defaulting port 'wdata_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/axi/axi_adapter.sv(40): (vlog-13314) Defaulting port 'be_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# -- Compiling module axi2mem
+# -- Compiling module fifo_v2
+# -- Compiling module fifo_v3
+# -- Compiling module rr_arb_tree
+# -- Compiling module stream_register
+# -- Compiling module spill_register
+# -- Compiling module spill_register_flushable
+# -- Compiling module counter
+# -- Compiling module delta_counter
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/common_cells/delta_counter.sv(33): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/common_cells/delta_counter.sv(35): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/common_cells/delta_counter.sv(38): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/common_cells/delta_counter.sv(40): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# -- Compiling module lzc
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/common_cells/lzc.sv(66): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/common_cells/lzc.sv(66): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/common_cells/lzc.sv(67): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# -- Compiling module cdc_2phase
+# -- Compiling module cdc_2phase_src
+# -- Compiling module cdc_2phase_dst
+# -- Compiling module pulp_clock_and2
+# -- Compiling module pulp_clock_buffer
+# -- Compiling module pulp_clock_gating
+# -- Compiling module pulp_clock_inverter
+# -- Compiling module pulp_clock_mux2
+# -- Compiling module pulp_clock_xor2
+# -- Compiling module pulp_clock_delay
+# -- Compiling module cluster_clock_and2
+# -- Compiling module cluster_clock_buffer
+# -- Compiling module cluster_clock_gating
+# -- Compiling module cluster_clock_inverter
+# -- Compiling module cluster_clock_mux2
+# -- Compiling module cluster_clock_xor2
+# -- Compiling module tc_clk_and2
+# -- Compiling module tc_clk_buffer
+# -- Compiling module tc_clk_gating
+# -- Compiling module tc_clk_inverter
+# -- Compiling module tc_clk_mux2
+# -- Compiling module tc_clk_xor2
+# -- Compiling module tc_clk_or2
+# -- Compiling module tc_clk_delay
+# -- Compiling module rstgen_bypass
+# -- Compiling module rstgen
+# -- Compiling module cv32e40p_clock_gate
+# -- Compiling module bootram
+# -- Compiling module debug_rom
+# -- Compiling module dm_csrs
+# -- Importing package dm
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/debug/dm_csrs.sv(29): (vlog-13314) Defaulting port 'dmi_req_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/debug/dm_csrs.sv(39): (vlog-13314) Defaulting port 'hartinfo_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/debug/dm_csrs.sv(58): (vlog-13314) Defaulting port 'data_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# -- Compiling module dm_mem
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/debug/dm_mem.sv(39): (vlog-13314) Defaulting port 'progbuf_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/debug/dm_mem.sv(41): (vlog-13314) Defaulting port 'data_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/debug/dm_mem.sv(46): (vlog-13314) Defaulting port 'cmd_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# -- Compiling module dm_sba
+# -- Compiling module dm_top
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/debug/dm_top.sv(36): (vlog-13314) Defaulting port 'hartinfo_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/debug/dm_top.sv(58): (vlog-13314) Defaulting port 'dmi_req_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# -- Compiling module dmi_cdc
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/debug/dmi_cdc.sv(24): (vlog-13314) Defaulting port 'jtag_dmi_req_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/debug/dmi_cdc.sv(40): (vlog-13314) Defaulting port 'core_dmi_resp_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# -- Compiling module dmi_jtag_tap
+# -- Compiling module dmi_jtag
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/debug/dmi_jtag.sv(31): (vlog-13314) Defaulting port 'dmi_resp_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# -- Compiling module cv32e40p_ff_one
+# -- Compiling module cv32e40p_fifo
+# -- Compiling module cv32e40p_aligner
+# -- Compiling module cv32e40p_compressed_decoder
+# -- Importing package cv32e40p_pkg
+# -- Compiling module cv32e40p_decoder
+# -- Importing package cv32e40p_apu_core_pkg
+# -- Importing package cv32e40p_fpu_pkg
+# -- Compiling module cv32e40p_controller
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_controller.sv(84): (vlog-13314) Defaulting port 'hwlp_start_addr_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_controller.sv(85): (vlog-13314) Defaulting port 'hwlp_end_addr_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_controller.sv(86): (vlog-13314) Defaulting port 'hwlp_counter_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# -- Compiling module cv32e40p_int_controller
+# -- Compiling module cv32e40p_prefetch_controller
+# -- Compiling module cv32e40p_prefetch_buffer
+# -- Compiling module cv32e40p_obi_interface
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv(130): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv(139): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv(147): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv(156): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv(157): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv(158): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv(159): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv(160): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv(161): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv(164): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv(165): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv(166): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv(167): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv(168): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv(169): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# -- Compiling module cv32e40p_if_stage
+# -- Compiling module cv32e40p_id_stage
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(813): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(814): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(816): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(817): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(821): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(822): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(825): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(826): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(829): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(830): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(810): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(813): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(814): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(816): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(817): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(821): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(822): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(825): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(826): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(829): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(830): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(838): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(839): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(842): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(843): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(846): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(847): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(851): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(852): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(854): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(855): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(859): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(860): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(836): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(838): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(839): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(842): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(843): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(846): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(847): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(851): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(852): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(854): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(855): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(859): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(860): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(868): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(869): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(875): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(876): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(878): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(879): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(883): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(884): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(866): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(868): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(869): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(875): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(876): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(878): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(879): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(883): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(884): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(1366): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(1367): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(1368): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(1369): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(1376): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(1377): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(1378): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(1379): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(1386): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv(1387): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# -- Compiling module cv32e40p_hwloop_regs
+# -- Compiling module cv32e40p_load_store_unit
+# -- Compiling module cv32e40p_ex_stage
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_ex_stage.sv(95): (vlog-13314) Defaulting port 'apu_operands_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_ex_stage.sv(99): (vlog-13314) Defaulting port 'apu_read_regs_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_ex_stage.sv(103): (vlog-13314) Defaulting port 'apu_write_regs_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# -- Compiling module cv32e40p_apu_disp
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_apu_disp.sv(47): (vlog-13314) Defaulting port 'read_regs_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_apu_disp.sv(52): (vlog-13314) Defaulting port 'write_regs_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# -- Compiling module cv32e40p_alu_div
+# -- Compiling module cv32e40p_alu
+# -- Compiling module cv32e40p_mult
+# -- Compiling module cv32e40p_popcnt
+# -- Compiling module cv32e40p_register_file
+# -- Compiling module cv32e40p_sleep_unit
+# -- Compiling module cv32e40p_cs_registers
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(120): (vlog-13314) Defaulting port 'hwlp_start_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(121): (vlog-13314) Defaulting port 'hwlp_end_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(122): (vlog-13314) Defaulting port 'hwlp_cnt_i' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(295): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(296): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(297): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(301): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(316): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(320): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(324): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(326): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(328): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(330): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(333): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(337): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(340): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(343): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(346): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(349): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(351): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(352): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(353): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(354): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(356): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(357): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(358): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(359): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(382): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(404): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(406): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(416): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(419): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(420): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(421): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(422): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(423): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(424): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(427): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(428): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(429): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(430): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(436): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(440): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(442): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(444): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(446): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(448): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(451): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(453): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(462): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(463): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(464): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(467): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(483): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(486): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(490): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(492): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(494): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(496): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(499): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(502): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(505): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(508): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(512): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(516): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(518): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(519): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(520): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(521): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(523): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(524): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(525): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(526): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(549): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(571): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(573): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(583): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(586): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(587): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(588): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(589): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(590): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(591): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(595): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(597): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(599): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(600): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(608): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(609): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(610): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(611): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(612): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(613): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(614): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(615): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(616): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(618): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(619): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(620): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(621): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(622): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(623): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(624): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(625): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(626): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(627): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(628): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(629): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(630): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(632): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(634): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(638): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(639): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(642): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(643): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(649): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(661): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(666): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(667): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(672): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(677): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(680): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(691): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(692): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(693): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(694): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(695): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(696): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(697): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(698): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(699): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(704): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(709): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(714): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(720): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(721): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(725): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(726): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(730): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(731): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(735): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(736): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(744): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(745): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(753): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(765): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(766): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(771): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(774): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(783): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(784): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(785): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(782): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(783): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(784): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(785): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(794): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(795): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(796): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(797): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(798): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(799): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(800): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(805): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(806): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(807): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(808): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(809): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(810): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(814): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(815): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(816): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(817): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(818): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(819): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(820): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(829): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(830): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(831): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(834): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(835): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(836): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(837): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(838): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(839): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(789): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(794): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(795): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(796): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(797): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(798): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(799): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(800): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(805): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(806): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(807): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(808): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(809): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(810): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(814): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(815): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(816): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(817): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(818): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(819): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(820): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(829): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(830): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(831): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(834): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(835): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(836): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(837): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(838): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(839): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(850): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(851): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(852): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(858): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(859): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(860): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(861): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(864): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(865): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(866): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(867): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(856): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(856): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(856): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(858): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(859): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(860): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(861): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(864): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(865): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(866): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(867): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(876): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(778): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(782): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(783): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(784): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(785): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(789): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(794): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(795): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(796): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(797): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(798): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(799): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(800): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(805): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(806): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(807): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(808): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(809): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(810): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(814): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(815): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(816): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(817): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(818): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(819): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(820): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(829): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(830): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(831): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(834): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(835): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(836): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(837): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(838): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(839): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(850): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(851): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(852): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(856): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(856): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(858): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(859): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(860): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(861): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(864): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(865): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(866): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(867): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(876): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(887): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(888): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(890): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(891): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(894): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(895): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(896): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(897): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(898): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(899): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(900): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(902): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(903): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(904): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(905): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(906): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(907): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(908): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(909): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(910): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(911): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(912): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(913): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(914): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(916): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(917): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(918): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(925): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(927): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(934): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(936): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(943): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(944): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(946): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(954): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(963): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(964): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(970): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(975): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(976): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(981): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(986): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(989): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(999): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1000): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1001): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1002): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1003): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1004): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1005): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1006): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1007): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1012): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1017): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1022): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1029): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1035): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1045): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1046): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1047): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1044): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1045): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1046): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1047): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1054): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1055): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1056): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1058): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1059): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1060): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1061): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1062): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1063): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1068): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1069): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1070): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1071): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1076): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1041): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1044): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1045): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1046): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1047): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1054): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1055): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1056): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1058): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1059): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1060): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1061): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1062): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1063): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1068): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1069): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1070): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1071): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# ** Warning: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv(1076): (vlog-2583) [SVCHK] - Extra checking for conflicts with always_comb and always_latch variables is done at vopt time.
+# -- Compiling module cv32e40p_core
+# -- Compiling module cv32e40p_top
+# -- Compiling module har_dma
+# -- Compiling module har_dma_axi
+# -- Compiling module my_npu_subsystem
+# -- Compiling module my_soc_top
+# -- Importing package my_soc_pkg
+# -- Compiling module chip_sram_2048x32
+# -- Compiling module my_mainmem
+# -- Compiling module sram_transaction_reset
+# -- Compiling module har_weight_store
+# -- Compiling module har_npu_core
+# -- Compiling module simple_npu_top
+# -- Compiling module tb_soc
+# 
+# Top level modules:
+# 	axi_demux_intf
+# 	axi_mux_intf
+# 	axi_atop_filter_intf
+# 	pulp_clock_and2
+# 	pulp_clock_buffer
+# 	pulp_clock_gating
+# 	pulp_clock_inverter
+# 	pulp_clock_xor2
+# 	pulp_clock_delay
+# 	cluster_clock_and2
+# 	cluster_clock_buffer
+# 	cluster_clock_gating
+# 	cluster_clock_mux2
+# 	cluster_clock_xor2
+# 	tc_clk_or2
+# 	tc_clk_delay
+# 	tb_soc
+# End time: 23:06:36 on Nov 04,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 615
+# vsim -suppress 12110 -novopt -onfinish stop work.tb_soc 
+# Start time: 23:06:36 on Nov 04,2026
+# ** Warning: (vsim-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# //  ModelSim SE-64 2019.2 Apr 17 2019
+# //
+# //  Copyright 1991-2019 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.tb_soc
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading sv_std.std
+# Loading work.tb_soc
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.my_soc_top
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.dm
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.dm
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.axi_pkg
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.axi_pkg
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.my_soc_pkg
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.my_soc_pkg
+# Loading work.my_soc_top
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.rstgen
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.rstgen
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.rstgen_bypass
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.rstgen_bypass
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.axi_xbar_intf
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.axi_xbar_intf
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.axi_xbar
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.axi_xbar
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_top
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_apu_core_pkg
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_apu_core_pkg
+# Loading work.cv32e40p_top
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_core
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_pkg
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_pkg
+# Loading work.cv32e40p_core
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_sleep_unit
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_sleep_unit
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_clock_gate
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_clock_gate
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_if_stage
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_if_stage
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_prefetch_buffer
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_prefetch_buffer
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_prefetch_controller
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_prefetch_controller
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_fifo
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_fifo
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_obi_interface
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_obi_interface
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_aligner
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_aligner
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_compressed_decoder
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_compressed_decoder
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_id_stage
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_fpu_pkg
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_fpu_pkg
+# Loading work.cv32e40p_id_stage
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_register_file
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_register_file
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_decoder
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_decoder
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_controller
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_controller
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_int_controller
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_int_controller
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_ex_stage
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_ex_stage
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_alu
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_alu
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_popcnt
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_popcnt
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_ff_one
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_ff_one
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_alu_div
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_alu_div
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_mult
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_mult
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_load_store_unit
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_load_store_unit
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cv32e40p_cs_registers
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cv32e40p_cs_registers
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.axi_adapter
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.axi_adapter
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.dmi_jtag
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.dmi_jtag
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.dmi_jtag_tap
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.dmi_jtag_tap
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cluster_clock_inverter
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cluster_clock_inverter
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.tc_clk_inverter
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.tc_clk_inverter
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.pulp_clock_mux2
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.pulp_clock_mux2
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.tc_clk_mux2
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.tc_clk_mux2
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.dmi_cdc
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.dmi_cdc
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cdc_2phase
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cdc_2phase
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cdc_2phase_src
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cdc_2phase_src
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cdc_2phase_dst
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cdc_2phase_dst
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.axi2mem
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.axi2mem
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.dm_top
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.dm_top
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.dm_csrs
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.dm_csrs
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.fifo_v2
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.fifo_v2
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.fifo_v3
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.fifo_v3
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.dm_sba
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.dm_sba
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.dm_mem
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.dm_mem
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.sram_transaction_reset
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.sram_transaction_reset
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.bootram
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.bootram
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.my_mainmem
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.my_mainmem
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.chip_sram_2048x32
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.chip_sram_2048x32
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.my_npu_subsystem
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.my_npu_subsystem
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.simple_npu_top
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.simple_npu_top
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.har_weight_store
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.har_weight_store
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.har_npu_core
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.har_npu_core
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.har_dma_axi
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.har_dma_axi
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.har_dma
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.har_dma
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.debug_rom
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.debug_rom
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.AXI_BUS
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.AXI_BUS
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.addr_decode
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.cf_math_pkg
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.cf_math_pkg
+# Loading work.addr_decode
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.axi_demux
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.axi_demux
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.axi_err_slv
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.axi_err_slv
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.counter
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.counter
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.delta_counter
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.delta_counter
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.axi_mux
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.axi_mux
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.spill_register
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.spill_register
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.spill_register_flushable
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.spill_register_flushable
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.axi_demux_id_counters
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.axi_demux_id_counters
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.rr_arb_tree
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.rr_arb_tree
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.axi_atop_filter
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.axi_atop_filter
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.stream_register
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.stream_register
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.axi_id_prepend
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.axi_id_prepend
+# Refreshing D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/runs/20261104_230627/work.lzc
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading work.lzc
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'i_dm_axi2mem'.  Expected 11, found 9.
+#    Time: 0 ps  Iteration: 0  Instance: /tb_soc/dut/i_dm_axi2mem File: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/soc/my_soc_top.sv Line: 292
+# ** Warning: (vsim-3722) D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/soc/my_soc_top.sv(292): [TFMPC] - Missing connection for port 'user_o'.
+# ** Warning: (vsim-3722) D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/soc/my_soc_top.sv(292): [TFMPC] - Missing connection for port 'user_i'.
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'i_axi2boot'.  Expected 11, found 9.
+#    Time: 0 ps  Iteration: 0  Instance: /tb_soc/dut/i_axi2boot File: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/soc/my_soc_top.sv Line: 416
+# ** Warning: (vsim-3722) D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/soc/my_soc_top.sv(416): [TFMPC] - Missing connection for port 'user_o'.
+# ** Warning: (vsim-3722) D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/soc/my_soc_top.sv(416): [TFMPC] - Missing connection for port 'user_i'.
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'i_axi2sram'.  Expected 11, found 9.
+#    Time: 0 ps  Iteration: 0  Instance: /tb_soc/dut/i_axi2sram File: D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/soc/my_soc_top.sv Line: 447
+# ** Warning: (vsim-3722) D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/soc/my_soc_top.sv(447): [TFMPC] - Missing connection for port 'user_o'.
+# ** Warning: (vsim-3722) D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/rtl/soc/my_soc_top.sv(447): [TFMPC] - Missing connection for port 'user_i'.
+# INT8_SOC PASS cycles=6369 hw_soc_cycles=6364 npu_cycles=975 fc1_issue_cycles=256 fc2_issue_cycles=64 DMA_read_MAC_overlap=278 DMA_write_MAC_overlap=278
+# ** Note: $finish    : D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/tb_soc.sv(92)
+#    Time: 166893 ns  Iteration: 0  Instance: /tb_soc
+# Break in Module tb_soc at D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/tb_soc.sv line 92
+# Stopped at D:/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/test/int8/tb_soc.sv line 92
+# c0dec0de
+# End time: 23:06:56 on Nov 04,2026, Elapsed time: 0:00:20
+# Errors: 0, Warnings: 10

@@ -49,10 +49,9 @@ module my_soc_top #(
       MaxMstTrans:        1,
       MaxSlvTrans:        1,
       FallThrough:        1'b0,
-      // At 50 MHz the registered CPU/DMA adapters and target bridges
-      // provide the transaction boundaries. Avoid duplicating spill-register
-      // banks at every internal crossbar channel; STA checks the longer paths.
-      LatencyMode:        axi_pkg::NO_LATENCY,
+      // Register AW/AR at each slave port. This cuts the CPU-to-NPU MMIO
+      // address/control path without adding latency to W/R data beats.
+      LatencyMode:        axi_pkg::CUT_SLV_AX,
       AxiIdWidthSlvPorts: 2,
       AxiIdUsedSlvPorts:  2,
       UniqueIds:          1'b0,
@@ -111,6 +110,7 @@ module my_soc_top #(
   logic           debug_resp_ready;
   dm::dmi_resp_t  debug_resp;
   logic           debug_req_irq;
+  logic           debug_halted;
   localparam logic [31:0] DM_HALT_ADDR      = dm::HaltAddress[31:0];
   localparam logic [31:0] DM_EXCEPTION_ADDR = dm::ExceptionAddress[31:0];
 
@@ -151,8 +151,8 @@ module my_soc_top #(
       .debug_req_i         (debug_req_irq),
       .debug_havereset_o   (),
       .debug_running_o     (),
-      .debug_halted_o      (),
-      .fetch_enable_i      (boot_ready),
+      .debug_halted_o      (debug_halted),
+      .fetch_enable_i      (boot_ready | debug_req_irq),
       .core_sleep_o        ()
   );
 
@@ -177,36 +177,48 @@ module my_soc_top #(
   `AXI_ASSIGN_FROM_REQ(slave[2], dm_axi_m_req)
   `AXI_ASSIGN_TO_RESP(dm_axi_m_resp, slave[2])
 
+  // Shared SRAM command signals are also observed by the instruction snoop.
+  logic        sram_req;
+  logic        sram_we;
+  logic [31:0] sram_addr;
+  logic [31:0] sram_wdata;
+  logic [3:0]  sram_be;
+  logic [31:0] sram_rdata;
+
   assign data_valid = data_rvalid | data_axi_resp.b_valid;
 
-  axi_adapter #(
-      .ADDR_WIDTH         (32),
-      .DATA_WIDTH         (32),
-      .AXI_DATA_WIDTH     (32),
-      .AXI_ID_WIDTH       (4),
-      .MAX_OUTSTANDING_AW (7),
-      .axi_req_t          (axi_req_t),
-      .axi_rsp_t          (axi_resp_t)
-  ) i_axi_adapter_instr (
-      .clk_i                 (clk_i),
-      .rst_ni                (ndmreset_n),
-      .req_i                 (instr_req),
-      .type_i                (1'b0),
-      .amo_i                 (4'b0000),
-      .gnt_o                 (instr_gnt),
-      .addr_i                (instr_addr),
-      .we_i                  (1'b0),
-      .wdata_i               ('0),
-      .be_i                  (4'b1111),
-      .size_i                (2'b10),
-      .id_i                  (4'b0001),
-      .valid_o               (instr_rvalid),
-      .rdata_o               (instr_rdata),
-      .id_o                  (),
-      .critical_word_o       (),
-      .critical_word_valid_o (),
-      .axi_req_o             (instr_axi_req),
-      .axi_resp_i            (instr_axi_resp)
+  // Instruction fetch: four 8-word buffers refilled with an INCR burst and
+  // prefetched one line ahead, instead of one single-beat AXI transaction per
+  // instruction. Hits are granted in the request cycle and return data one
+  // cycle later, so the core fetches at one instruction per cycle while the
+  // sequential code runs; a line that is not buffered costs one burst, and it
+  // becomes hittable word by word as the burst streams in.
+  my_ifetch #(
+      .axi_req_t   (axi_req_t),
+      .axi_rsp_t   (axi_resp_t),
+      .LINE_WORDS  (8),
+      .SLOTS       (4),
+      .SRAM_BASE   (SRAM_BASE),
+      .SRAM_LENGTH (SRAM_WORDS * 4),
+      .BOOT_BASE   (BOOT_BASE),
+      // Only the immutable trampoline line is cached. Boot status/cycle
+      // registers and the remainder of its decode aperture stay uncached.
+      .BOOT_LENGTH (32)
+  ) i_ifetch (
+      .clk_i      (clk_i),
+      .rst_ni     (ndmreset_n),
+      .invalidate_i(master[IDX_BOOT].w_valid && master[IDX_BOOT].w_ready),
+      .snoop_valid_i(sram_req && sram_we && (|sram_be)),
+      // The AXI decode aperture is larger than the physical SRAM. Writes
+      // through any alias must revoke the same canonical instruction line.
+      .snoop_addr_i(SRAM_BASE | (sram_addr & (SRAM_WORDS * 4 - 1))),
+      .req_i      (instr_req),
+      .addr_i     (instr_addr),
+      .gnt_o      (instr_gnt),
+      .valid_o    (instr_rvalid),
+      .rdata_o    (instr_rdata),
+      .axi_req_o  (instr_axi_req),
+      .axi_resp_i (instr_axi_resp)
   );
 
   axi_adapter #(
@@ -367,12 +379,6 @@ module my_soc_top #(
       .axi_resp_i            (dm_axi_m_resp)
   );
 
-  logic        sram_req;
-  logic        sram_we;
-  logic [31:0] sram_addr;
-  logic [31:0] sram_wdata;
-  logic [3:0]  sram_be;
-  logic [31:0] sram_rdata;
   logic sram_transaction_reset_n;
   // Do not distribute the asynchronously asserting SoC reset directly into
   // the non-reset SRAM command D path. One shared boundary controls both ends;
@@ -387,9 +393,17 @@ module my_soc_top #(
   logic [31:0] boot_addr;
   logic [31:0] boot_wdata;
   logic [31:0] boot_rdata;
+  logic        firmware_fetch_start;
+
+  // Start after the first CPU fetch made outside debug mode. Normal boot
+  // begins at BOOT_BASE, but debug resume may continue from a saved DPC.
+  // Ignoring fetch activity while debug_halted excludes JTAG wait time.
+  assign firmware_fetch_start = instr_req && !debug_halted;
 
   bootram #(.PREINITIALIZED(FPGA_INIT_FILE!="")) i_bootram (
       .sram_write_i(sram_req && sram_we),.sram_addr_i(sram_addr),.sram_be_i(sram_be),
+      .sram_wdata_i(sram_wdata),
+      .firmware_fetch_i(firmware_fetch_start),
       .ready_o(boot_ready),
       .clk_i (clk_i),
       .rst_ni(ndmreset_n),

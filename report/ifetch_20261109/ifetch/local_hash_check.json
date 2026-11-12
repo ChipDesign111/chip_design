@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "checks": 56,
+  "all_local_sources_match": true,
+  "sources": {
+    "rtl/axi/axi_pkg.sv": {
+      "expected": "76b3797792ee5b95ab5937f3d457b48852e5c427de48298dafbdde43d0916ac2",
+      "local": "76b3797792ee5b95ab5937f3d457b48852e5c427de48298dafbdde43d0916ac2",
+      "matches": true
+    },
+    "rtl/soc/my_ifetch.sv": {
+      "expected": "352eede71d7fe6d747f32c2c9a292781b59fb26f5abc8387811ee7d49512fa80",
+      "local": "352eede71d7fe6d747f32c2c9a292781b59fb26f5abc8387811ee7d49512fa80",
+      "matches": true
+    },
+    "test/int8/tb_ifetch.sv": {
+      "expected": "3c8abc68f712cc5b66807a3793e2de18b6b316a1ec722e59f5ae5af12c66feab",
+      "local": "3c8abc68f712cc5b66807a3793e2de18b6b316a1ec722e59f5ae5af12c66feab",
+      "matches": true
+    },
+    "rtl/include/axi/typedef.svh": {
+      "expected": "c2ef2098fea077e07100b9b9c40f2ac5453e7e01af407e236a810b43aeb8b2ef",
+      "local": "c2ef2098fea077e07100b9b9c40f2ac5453e7e01af407e236a810b43aeb8b2ef",
+      "matches": true
+    },
+    "test/int8/run_ifetch.py": {
+      "expected": "465b8e69736cb775e533369a069088f921b6460253a787769f88630ed6060057",
+      "local": "465b8e69736cb775e533369a069088f921b6460253a787769f88630ed6060057",
+      "matches": true
+    }
+  }
+}

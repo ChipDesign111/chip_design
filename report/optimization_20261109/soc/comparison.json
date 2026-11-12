@@ -1,0 +1,711 @@
+{
+  "baseline_commit": "49911b22f809d6487afd1129c4f460800b6cd0ce",
+  "clock_period_ns": 10,
+  "scope": "Original full SoC TB. HAR cycles include CPU copies and numerical checks. Scratch/self-modifying-code cases add explicit CPU workloads before the same HAR checks; do not describe them as HAR-only latency. No SDF in these runs.",
+  "variants": {
+    "base": {
+      "status": "PASS",
+      "har_cases": [
+        {
+          "observed_cycles": 3520,
+          "hardware_soc_cycles": 3515,
+          "npu_cycles": 986,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "seed": 0,
+          "firmware_sha256": "2d222a0e9a79787a87d6dd16a7d347602094d79bc5b40ecff0364c2f75baebdf",
+          "seconds": 3.523,
+          "reduction_vs_base_pct": 0.0
+        },
+        {
+          "observed_cycles": 2494,
+          "hardware_soc_cycles": 2489,
+          "npu_cycles": 881,
+          "fc1_issue_cycles": 128,
+          "fc2_issue_cycles": 32,
+          "dma_read_overlap": 141,
+          "dma_write_overlap": 140,
+          "seed": 1,
+          "firmware_sha256": "f77bb26b59a52c7a005f4c81f645c4c6afd774e2deae32c1397c5f886e2a6db4",
+          "seconds": 1.57,
+          "reduction_vs_base_pct": 0.0
+        },
+        {
+          "observed_cycles": 1966,
+          "hardware_soc_cycles": 1961,
+          "npu_cycles": 835,
+          "fc1_issue_cycles": 64,
+          "fc2_issue_cycles": 16,
+          "dma_read_overlap": 69,
+          "dma_write_overlap": 68,
+          "seed": 2,
+          "firmware_sha256": "3591413364059858bea0aba6b93df842277655f7316820c1310e2a52726fbb54",
+          "seconds": 1.57,
+          "reduction_vs_base_pct": 0.0
+        },
+        {
+          "observed_cycles": 3510,
+          "hardware_soc_cycles": 3505,
+          "npu_cycles": 976,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "seed": 10000,
+          "firmware_sha256": "3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b",
+          "seconds": 1.62,
+          "reduction_vs_base_pct": 0.0
+        }
+      ],
+      "extra_cases": [
+        {
+          "observed_cycles": 7748,
+          "hardware_soc_cycles": 7743,
+          "npu_cycles": 973,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "variant": "base",
+          "workload": "scratch_128",
+          "seed": 10000,
+          "firmware_sha256": "e2e54696c8f49d42267cabd41df3253e04bc4a1cc315975337c9bf351a05f1b5",
+          "status": "PASS",
+          "reduction_vs_base_pct": 0.0
+        },
+        {
+          "observed_cycles": 3636,
+          "hardware_soc_cycles": 3631,
+          "npu_cycles": 979,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "variant": "base",
+          "workload": "code_patch_alias_byte",
+          "seed": 10000,
+          "firmware_sha256": "e1ae2267c82ccbebfade89482aefe09e21f90236bfb548cf3d0d3a0610bb0759",
+          "status": "PASS",
+          "reduction_vs_base_pct": 0.0
+        }
+      ],
+      "debug_cold": {
+        "status": "PASS",
+        "halt_cycles": 61,
+        "pc": "0000082c"
+      },
+      "source_delta_from_base": {},
+      "raw_results": "base/matched/results.json"
+    },
+    "dma_only": {
+      "status": "PASS",
+      "har_cases": [
+        {
+          "observed_cycles": 3486,
+          "hardware_soc_cycles": 3481,
+          "npu_cycles": 953,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "seed": 0,
+          "firmware_sha256": "2d222a0e9a79787a87d6dd16a7d347602094d79bc5b40ecff0364c2f75baebdf",
+          "seconds": 1.57,
+          "reduction_vs_base_pct": 0.965909
+        },
+        {
+          "observed_cycles": 2461,
+          "hardware_soc_cycles": 2456,
+          "npu_cycles": 848,
+          "fc1_issue_cycles": 128,
+          "fc2_issue_cycles": 32,
+          "dma_read_overlap": 141,
+          "dma_write_overlap": 140,
+          "seed": 1,
+          "firmware_sha256": "f77bb26b59a52c7a005f4c81f645c4c6afd774e2deae32c1397c5f886e2a6db4",
+          "seconds": 1.57,
+          "reduction_vs_base_pct": 1.323176
+        },
+        {
+          "observed_cycles": 1932,
+          "hardware_soc_cycles": 1927,
+          "npu_cycles": 801,
+          "fc1_issue_cycles": 64,
+          "fc2_issue_cycles": 16,
+          "dma_read_overlap": 69,
+          "dma_write_overlap": 68,
+          "seed": 2,
+          "firmware_sha256": "3591413364059858bea0aba6b93df842277655f7316820c1310e2a52726fbb54",
+          "seconds": 1.57,
+          "reduction_vs_base_pct": 1.7294
+        },
+        {
+          "observed_cycles": 3477,
+          "hardware_soc_cycles": 3472,
+          "npu_cycles": 944,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "seed": 10000,
+          "firmware_sha256": "3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b",
+          "seconds": 1.57,
+          "reduction_vs_base_pct": 0.940171
+        }
+      ],
+      "extra_cases": [
+        {
+          "observed_cycles": 7714,
+          "hardware_soc_cycles": 7709,
+          "npu_cycles": 940,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "variant": "dma_only",
+          "workload": "scratch_128",
+          "seed": 10000,
+          "firmware_sha256": "e2e54696c8f49d42267cabd41df3253e04bc4a1cc315975337c9bf351a05f1b5",
+          "status": "PASS",
+          "reduction_vs_base_pct": 0.438823
+        },
+        {
+          "observed_cycles": 3602,
+          "hardware_soc_cycles": 3597,
+          "npu_cycles": 946,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "variant": "dma_only",
+          "workload": "code_patch_alias_byte",
+          "seed": 10000,
+          "firmware_sha256": "e1ae2267c82ccbebfade89482aefe09e21f90236bfb548cf3d0d3a0610bb0759",
+          "status": "PASS",
+          "reduction_vs_base_pct": 0.935094
+        }
+      ],
+      "debug_cold": {
+        "status": "PASS",
+        "halt_cycles": 61,
+        "pc": "0000082c"
+      },
+      "source_delta_from_base": {
+        "rtl/dma/har_dma.sv": "5ca59e5e4977e56749cadb01a5f36143eb582294760dbf81e21d62081beb3881"
+      },
+      "raw_results": "dma_only/matched/results.json"
+    },
+    "selective_final": {
+      "status": "PASS",
+      "har_cases": [
+        {
+          "observed_cycles": 3505,
+          "hardware_soc_cycles": 3500,
+          "npu_cycles": 986,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "seed": 0,
+          "firmware_sha256": "2d222a0e9a79787a87d6dd16a7d347602094d79bc5b40ecff0364c2f75baebdf",
+          "seconds": 1.57,
+          "reduction_vs_base_pct": 0.426136
+        },
+        {
+          "observed_cycles": 2465,
+          "hardware_soc_cycles": 2460,
+          "npu_cycles": 881,
+          "fc1_issue_cycles": 128,
+          "fc2_issue_cycles": 32,
+          "dma_read_overlap": 141,
+          "dma_write_overlap": 140,
+          "seed": 1,
+          "firmware_sha256": "f77bb26b59a52c7a005f4c81f645c4c6afd774e2deae32c1397c5f886e2a6db4",
+          "seconds": 1.52,
+          "reduction_vs_base_pct": 1.162791
+        },
+        {
+          "observed_cycles": 1953,
+          "hardware_soc_cycles": 1948,
+          "npu_cycles": 835,
+          "fc1_issue_cycles": 64,
+          "fc2_issue_cycles": 16,
+          "dma_read_overlap": 69,
+          "dma_write_overlap": 68,
+          "seed": 2,
+          "firmware_sha256": "3591413364059858bea0aba6b93df842277655f7316820c1310e2a52726fbb54",
+          "seconds": 1.52,
+          "reduction_vs_base_pct": 0.661241
+        },
+        {
+          "observed_cycles": 3495,
+          "hardware_soc_cycles": 3490,
+          "npu_cycles": 976,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "seed": 10000,
+          "firmware_sha256": "3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b",
+          "seconds": 1.57,
+          "reduction_vs_base_pct": 0.42735
+        }
+      ],
+      "extra_cases": [
+        {
+          "observed_cycles": 4531,
+          "hardware_soc_cycles": 4526,
+          "npu_cycles": 973,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "variant": "selective_final",
+          "workload": "scratch_128",
+          "seed": 10000,
+          "firmware_sha256": "e2e54696c8f49d42267cabd41df3253e04bc4a1cc315975337c9bf351a05f1b5",
+          "status": "PASS",
+          "reduction_vs_base_pct": 41.520392
+        },
+        {
+          "observed_cycles": 3584,
+          "hardware_soc_cycles": 3579,
+          "npu_cycles": 979,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "variant": "selective_final",
+          "workload": "code_patch_alias_byte",
+          "seed": 10000,
+          "firmware_sha256": "e1ae2267c82ccbebfade89482aefe09e21f90236bfb548cf3d0d3a0610bb0759",
+          "status": "PASS",
+          "reduction_vs_base_pct": 1.430143
+        }
+      ],
+      "debug_cold": {
+        "status": "PASS",
+        "halt_cycles": 61,
+        "pc": "0000082c"
+      },
+      "source_delta_from_base": {
+        "rtl/soc/my_ifetch.sv": "47a35fd9ec50b5123916026b5176a552db1d80310f6e65aab8e2fb2e1118c9b9",
+        "rtl/soc/my_soc_top.sv": "8f67ff81452ea80d4314c1c8d67b88bc72091e03e8f345b9aa2b2c2780483dd8"
+      },
+      "raw_results": "selective_final/matched/results.json"
+    },
+    "selective_dma": {
+      "status": "PASS",
+      "har_cases": [
+        {
+          "observed_cycles": 3471,
+          "hardware_soc_cycles": 3466,
+          "npu_cycles": 953,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "seed": 0,
+          "firmware_sha256": "2d222a0e9a79787a87d6dd16a7d347602094d79bc5b40ecff0364c2f75baebdf",
+          "seconds": 1.57,
+          "reduction_vs_base_pct": 1.392045
+        },
+        {
+          "observed_cycles": 2432,
+          "hardware_soc_cycles": 2427,
+          "npu_cycles": 848,
+          "fc1_issue_cycles": 128,
+          "fc2_issue_cycles": 32,
+          "dma_read_overlap": 141,
+          "dma_write_overlap": 140,
+          "seed": 1,
+          "firmware_sha256": "f77bb26b59a52c7a005f4c81f645c4c6afd774e2deae32c1397c5f886e2a6db4",
+          "seconds": 1.52,
+          "reduction_vs_base_pct": 2.485966
+        },
+        {
+          "observed_cycles": 1919,
+          "hardware_soc_cycles": 1914,
+          "npu_cycles": 801,
+          "fc1_issue_cycles": 64,
+          "fc2_issue_cycles": 16,
+          "dma_read_overlap": 69,
+          "dma_write_overlap": 68,
+          "seed": 2,
+          "firmware_sha256": "3591413364059858bea0aba6b93df842277655f7316820c1310e2a52726fbb54",
+          "seconds": 1.519,
+          "reduction_vs_base_pct": 2.390641
+        },
+        {
+          "observed_cycles": 3462,
+          "hardware_soc_cycles": 3457,
+          "npu_cycles": 944,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "seed": 10000,
+          "firmware_sha256": "3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b",
+          "seconds": 1.57,
+          "reduction_vs_base_pct": 1.367521
+        }
+      ],
+      "extra_cases": [
+        {
+          "observed_cycles": 4497,
+          "hardware_soc_cycles": 4492,
+          "npu_cycles": 940,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "variant": "selective_dma",
+          "workload": "scratch_128",
+          "seed": 10000,
+          "firmware_sha256": "e2e54696c8f49d42267cabd41df3253e04bc4a1cc315975337c9bf351a05f1b5",
+          "status": "PASS",
+          "reduction_vs_base_pct": 41.959215
+        },
+        {
+          "observed_cycles": 3550,
+          "hardware_soc_cycles": 3545,
+          "npu_cycles": 946,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "variant": "selective_dma",
+          "workload": "code_patch_alias_byte",
+          "seed": 10000,
+          "firmware_sha256": "e1ae2267c82ccbebfade89482aefe09e21f90236bfb548cf3d0d3a0610bb0759",
+          "status": "PASS",
+          "reduction_vs_base_pct": 2.365237
+        }
+      ],
+      "debug_cold": {
+        "status": "PASS",
+        "halt_cycles": 61,
+        "pc": "0000082c"
+      },
+      "source_delta_from_base": {
+        "rtl/dma/har_dma.sv": "5ca59e5e4977e56749cadb01a5f36143eb582294760dbf81e21d62081beb3881",
+        "rtl/soc/my_ifetch.sv": "47a35fd9ec50b5123916026b5176a552db1d80310f6e65aab8e2fb2e1118c9b9",
+        "rtl/soc/my_soc_top.sv": "8f67ff81452ea80d4314c1c8d67b88bc72091e03e8f345b9aa2b2c2780483dd8"
+      },
+      "raw_results": "selective_dma/matched/results.json"
+    },
+    "selective_dma_ft": {
+      "status": "PASS",
+      "har_cases": [
+        {
+          "observed_cycles": 3365,
+          "hardware_soc_cycles": 3360,
+          "npu_cycles": 953,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "seed": 0,
+          "firmware_sha256": "2d222a0e9a79787a87d6dd16a7d347602094d79bc5b40ecff0364c2f75baebdf",
+          "seconds": 1.57,
+          "reduction_vs_base_pct": 4.403409
+        },
+        {
+          "observed_cycles": 2358,
+          "hardware_soc_cycles": 2353,
+          "npu_cycles": 848,
+          "fc1_issue_cycles": 128,
+          "fc2_issue_cycles": 32,
+          "dma_read_overlap": 141,
+          "dma_write_overlap": 140,
+          "seed": 1,
+          "firmware_sha256": "f77bb26b59a52c7a005f4c81f645c4c6afd774e2deae32c1397c5f886e2a6db4",
+          "seconds": 1.52,
+          "reduction_vs_base_pct": 5.453087
+        },
+        {
+          "observed_cycles": 1862,
+          "hardware_soc_cycles": 1857,
+          "npu_cycles": 802,
+          "fc1_issue_cycles": 64,
+          "fc2_issue_cycles": 16,
+          "dma_read_overlap": 69,
+          "dma_write_overlap": 68,
+          "seed": 2,
+          "firmware_sha256": "3591413364059858bea0aba6b93df842277655f7316820c1310e2a52726fbb54",
+          "seconds": 1.52,
+          "reduction_vs_base_pct": 5.289929
+        },
+        {
+          "observed_cycles": 3356,
+          "hardware_soc_cycles": 3351,
+          "npu_cycles": 944,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "seed": 10000,
+          "firmware_sha256": "3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b",
+          "seconds": 1.57,
+          "reduction_vs_base_pct": 4.387464
+        }
+      ],
+      "extra_cases": [
+        {
+          "observed_cycles": 4261,
+          "hardware_soc_cycles": 4256,
+          "npu_cycles": 940,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "variant": "selective_dma_ft",
+          "workload": "scratch_128",
+          "seed": 10000,
+          "firmware_sha256": "e2e54696c8f49d42267cabd41df3253e04bc4a1cc315975337c9bf351a05f1b5",
+          "status": "PASS",
+          "reduction_vs_base_pct": 45.005163
+        },
+        {
+          "observed_cycles": 3441,
+          "hardware_soc_cycles": 3436,
+          "npu_cycles": 947,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "variant": "selective_dma_ft",
+          "workload": "code_patch_alias_byte",
+          "seed": 10000,
+          "firmware_sha256": "e1ae2267c82ccbebfade89482aefe09e21f90236bfb548cf3d0d3a0610bb0759",
+          "status": "PASS",
+          "reduction_vs_base_pct": 5.363036
+        }
+      ],
+      "debug_cold": {
+        "status": "PASS",
+        "halt_cycles": 60,
+        "pc": "00000828"
+      },
+      "source_delta_from_base": {
+        "rtl/dma/har_dma.sv": "5ca59e5e4977e56749cadb01a5f36143eb582294760dbf81e21d62081beb3881",
+        "rtl/soc/my_ifetch.sv": "47a35fd9ec50b5123916026b5176a552db1d80310f6e65aab8e2fb2e1118c9b9",
+        "rtl/soc/my_soc_top.sv": "720d9987d5dab3a1f3a6d5428bf78e95ada24c46d77267161b0d12fb1e53c8db"
+      },
+      "raw_results": "selective_dma_ft/matched/results.json"
+    },
+    "final_noreset": {
+      "status": "PASS",
+      "har_cases": [
+        {
+          "observed_cycles": 3471,
+          "hardware_soc_cycles": 3466,
+          "npu_cycles": 953,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "seed": 0,
+          "firmware_sha256": "2d222a0e9a79787a87d6dd16a7d347602094d79bc5b40ecff0364c2f75baebdf",
+          "seconds": 1.569,
+          "reduction_vs_base_pct": 1.392045
+        },
+        {
+          "observed_cycles": 2432,
+          "hardware_soc_cycles": 2427,
+          "npu_cycles": 848,
+          "fc1_issue_cycles": 128,
+          "fc2_issue_cycles": 32,
+          "dma_read_overlap": 141,
+          "dma_write_overlap": 140,
+          "seed": 1,
+          "firmware_sha256": "f77bb26b59a52c7a005f4c81f645c4c6afd774e2deae32c1397c5f886e2a6db4",
+          "seconds": 1.519,
+          "reduction_vs_base_pct": 2.485966
+        },
+        {
+          "observed_cycles": 1919,
+          "hardware_soc_cycles": 1914,
+          "npu_cycles": 801,
+          "fc1_issue_cycles": 64,
+          "fc2_issue_cycles": 16,
+          "dma_read_overlap": 69,
+          "dma_write_overlap": 68,
+          "seed": 2,
+          "firmware_sha256": "3591413364059858bea0aba6b93df842277655f7316820c1310e2a52726fbb54",
+          "seconds": 1.519,
+          "reduction_vs_base_pct": 2.390641
+        },
+        {
+          "observed_cycles": 3462,
+          "hardware_soc_cycles": 3457,
+          "npu_cycles": 944,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "seed": 10000,
+          "firmware_sha256": "3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b",
+          "seconds": 1.569,
+          "reduction_vs_base_pct": 1.367521
+        }
+      ],
+      "extra_cases": [
+        {
+          "observed_cycles": 4497,
+          "hardware_soc_cycles": 4492,
+          "npu_cycles": 940,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "variant": "final_noreset",
+          "workload": "scratch_128",
+          "seed": 10000,
+          "firmware_sha256": "e2e54696c8f49d42267cabd41df3253e04bc4a1cc315975337c9bf351a05f1b5",
+          "status": "PASS",
+          "reduction_vs_base_pct": 41.959215
+        },
+        {
+          "observed_cycles": 3550,
+          "hardware_soc_cycles": 3545,
+          "npu_cycles": 946,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "variant": "final_noreset",
+          "workload": "code_patch_alias_byte",
+          "seed": 10000,
+          "firmware_sha256": "e1ae2267c82ccbebfade89482aefe09e21f90236bfb548cf3d0d3a0610bb0759",
+          "status": "PASS",
+          "reduction_vs_base_pct": 2.365237
+        }
+      ],
+      "debug_cold": {
+        "status": "PASS",
+        "halt_cycles": 61,
+        "pc": "0000082c"
+      },
+      "source_delta_from_base": {
+        "rtl/dma/har_dma.sv": "6aaa673d985b4c431ed7f65cb12ff7794bf6af48fbced4f399f3b5dbd45da2cb",
+        "rtl/manifest.json": "2320acfe68f6c43593312197d9942ae1c3bad969cfa5f95a02c4bee2c5593819",
+        "rtl/project.json": "150bfcd7583317fd77bec449a6ca2969d7f1d50eb57a185b81155dcc2291f6d9",
+        "rtl/soc/my_ifetch.sv": "3d8d8ba907e5ad8a4b27e1e8d4b4abf9958a9a32c49056ed81150eeedfed1ea0",
+        "rtl/soc/my_soc_top.sv": "8f67ff81452ea80d4314c1c8d67b88bc72091e03e8f345b9aa2b2c2780483dd8"
+      },
+      "raw_results": "final_noreset/matched/results.json"
+    },
+    "final_noreset_ft": {
+      "status": "PASS",
+      "har_cases": [
+        {
+          "observed_cycles": 3365,
+          "hardware_soc_cycles": 3360,
+          "npu_cycles": 953,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "seed": 0,
+          "firmware_sha256": "2d222a0e9a79787a87d6dd16a7d347602094d79bc5b40ecff0364c2f75baebdf",
+          "seconds": 1.619,
+          "reduction_vs_base_pct": 4.403409
+        },
+        {
+          "observed_cycles": 2358,
+          "hardware_soc_cycles": 2353,
+          "npu_cycles": 848,
+          "fc1_issue_cycles": 128,
+          "fc2_issue_cycles": 32,
+          "dma_read_overlap": 141,
+          "dma_write_overlap": 140,
+          "seed": 1,
+          "firmware_sha256": "f77bb26b59a52c7a005f4c81f645c4c6afd774e2deae32c1397c5f886e2a6db4",
+          "seconds": 1.569,
+          "reduction_vs_base_pct": 5.453087
+        },
+        {
+          "observed_cycles": 1862,
+          "hardware_soc_cycles": 1857,
+          "npu_cycles": 802,
+          "fc1_issue_cycles": 64,
+          "fc2_issue_cycles": 16,
+          "dma_read_overlap": 69,
+          "dma_write_overlap": 68,
+          "seed": 2,
+          "firmware_sha256": "3591413364059858bea0aba6b93df842277655f7316820c1310e2a52726fbb54",
+          "seconds": 1.569,
+          "reduction_vs_base_pct": 5.289929
+        },
+        {
+          "observed_cycles": 3356,
+          "hardware_soc_cycles": 3351,
+          "npu_cycles": 944,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "seed": 10000,
+          "firmware_sha256": "3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b",
+          "seconds": 1.569,
+          "reduction_vs_base_pct": 4.387464
+        }
+      ],
+      "extra_cases": [
+        {
+          "observed_cycles": 4261,
+          "hardware_soc_cycles": 4256,
+          "npu_cycles": 940,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "variant": "final_noreset_ft",
+          "workload": "scratch_128",
+          "seed": 10000,
+          "firmware_sha256": "e2e54696c8f49d42267cabd41df3253e04bc4a1cc315975337c9bf351a05f1b5",
+          "status": "PASS",
+          "reduction_vs_base_pct": 45.005163
+        },
+        {
+          "observed_cycles": 3441,
+          "hardware_soc_cycles": 3436,
+          "npu_cycles": 947,
+          "fc1_issue_cycles": 256,
+          "fc2_issue_cycles": 64,
+          "dma_read_overlap": 278,
+          "dma_write_overlap": 279,
+          "variant": "final_noreset_ft",
+          "workload": "code_patch_alias_byte",
+          "seed": 10000,
+          "firmware_sha256": "e1ae2267c82ccbebfade89482aefe09e21f90236bfb548cf3d0d3a0610bb0759",
+          "status": "PASS",
+          "reduction_vs_base_pct": 5.363036
+        }
+      ],
+      "debug_cold": {
+        "status": "PASS",
+        "halt_cycles": 60,
+        "pc": "00000828"
+      },
+      "source_delta_from_base": {
+        "rtl/dma/har_dma.sv": "6aaa673d985b4c431ed7f65cb12ff7794bf6af48fbced4f399f3b5dbd45da2cb",
+        "rtl/manifest.json": "2320acfe68f6c43593312197d9942ae1c3bad969cfa5f95a02c4bee2c5593819",
+        "rtl/project.json": "150bfcd7583317fd77bec449a6ca2969d7f1d50eb57a185b81155dcc2291f6d9",
+        "rtl/soc/my_ifetch.sv": "3d8d8ba907e5ad8a4b27e1e8d4b4abf9958a9a32c49056ed81150eeedfed1ea0",
+        "rtl/soc/my_soc_top.sv": "720d9987d5dab3a1f3a6d5428bf78e95ada24c46d77267161b0d12fb1e53c8db"
+      },
+      "raw_results": "final_noreset_ft/matched/results.json"
+    }
+  },
+  "integrity": {
+    "all_compared_firmware_byte_identical": true,
+    "all_result_sources_match_frozen_snapshots": true,
+    "final_hdl_filelist_and_soc_benches_match_current": true,
+    "compiled_files_checked": 88,
+    "reproducible_extra_generator_sha256": "332c39cf0ca5f954db97808db76febeba37d9ff0ec85777b7d9f9aa7edc40e9c"
+  }
+}

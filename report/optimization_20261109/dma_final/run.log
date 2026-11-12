@@ -1,0 +1,9 @@
+DMA_RESPONSE_CASE kind=0 b_delay=0 last_w_to_done=1 b_to_done=0 reads=16 writes=16 bursts=1 copied=16 elapsed=29
+DMA_RESPONSE_CASE kind=0 b_delay=7 last_w_to_done=8 b_to_done=0 reads=16 writes=16 bursts=1 copied=16 elapsed=36
+DMA_RESPONSE_CASE kind=1 b_delay=0 last_w_to_done=1 b_to_done=0 reads=16 writes=16 bursts=1 copied=0 elapsed=29
+DMA_RESPONSE_CASE kind=2 b_delay=0 last_w_to_done=1 b_to_done=0 reads=16 writes=16 bursts=1 copied=0 elapsed=29
+DMA_RESPONSE_CASE kind=3 b_delay=0 last_w_to_done=1 b_to_done=0 reads=8 writes=16 bursts=1 copied=0 elapsed=29
+DMA_RESPONSE_CASE kind=4 b_delay=0 last_w_to_done=2 b_to_done=0 reads=18 writes=16 bursts=1 copied=0 elapsed=30
+DMA_RESPONSE_CASE kind=5 b_delay=0 last_w_to_done=1 b_to_done=0 reads=32 writes=32 bursts=2 copied=32 elapsed=58
+DMA_RESPONSE_CASE kind=6 b_delay=0 last_w_to_done=1 b_to_done=0 reads=16 writes=16 bursts=2 copied=16 elapsed=38
+DMA_RESPONSE_PASS checks=8

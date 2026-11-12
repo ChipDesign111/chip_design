@@ -1,0 +1,14 @@
+{
+  "observed_cycles": 3602,
+  "hardware_soc_cycles": 3597,
+  "npu_cycles": 946,
+  "fc1_issue_cycles": 256,
+  "fc2_issue_cycles": 64,
+  "dma_read_overlap": 278,
+  "dma_write_overlap": 279,
+  "variant": "dma_only",
+  "workload": "code_patch_alias_byte",
+  "seed": 10000,
+  "firmware_sha256": "e1ae2267c82ccbebfade89482aefe09e21f90236bfb548cf3d0d3a0610bb0759",
+  "status": "PASS"
+}

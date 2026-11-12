@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "INT8_64MAC_6MAC_SRAM_TILE_DMA",
+  "status": "INT8_SHARED_32MAC_SRAM_TILE_DMA_BATCH4_ZERO_BUBBLE_W2_PACKED_ACC22",
   "organization": "ChipDesign111",
   "repository": "chip_design",
   "network": {
@@ -12,25 +12,45 @@
     "input_bits": 8,
     "weight_bits": 8,
     "bias_bits": 32,
-    "accumulator_bits": 32,
+    "accumulator_bits": 22,
     "hidden_bits": 8,
-    "score_bits": 32
+    "score_bits": 32,
+    "score_storage_bits": 22
   },
   "architecture": {
     "fc1_input_lanes": 2,
-    "fc1_parallel_outputs": 32,
-    "fc2_input_lanes": 1,
+    "fc1_parallel_outputs": 16,
+    "fc2_input_lanes": 2,
     "fc2_parallel_outputs": 6,
-    "dot_product_multipliers": 70,
+    "dot_product_multipliers": 32,
+    "shared_dot_product_bank": true,
     "requant_multipliers": 1,
     "weight_tile_buffers": 2,
     "weight_tile_bytes": 64,
-    "batch_max": 2,
-    "fc1_mac_issue_cycles_per_sample": 32,
-    "fc2_mac_issue_cycles_per_sample": 32,
-    "weight_layout": "FC1[tile32][output32][lane2]; FC2[input32][output6+padding2]",
-    "mac_pipeline": "combinational INT8 multiplication into INT32 accumulator per ISSUE cycle",
-    "axi_crossbar_latency": "NO_LATENCY, registered initiator/target adapters retained"
+    "batch_max": 4,
+    "fc1_mac_issue_cycles_per_sample": 64,
+    "fc2_mac_issue_cycles_per_sample": 16,
+    "weight_layout": "FC1[tile32][output32][lane2]; FC2[packet4][row8][output6], 48 bytes per packet",
+    "shared_mac_mapping": "FC1: 16 outputs x 2 lanes per phase; FC2: 6 outputs x 2 input rows per phase",
+    "tile_handoff": "last-sample consumed pulse, direct ISSUE when next bank is ready",
+    "fc2_prefetch": "two 64-byte banks preloaded during final W1 tile and requant",
+    "mac_pipeline": "combinational INT8 multiplication into INT22 accumulator per ISSUE cycle",
+    "requant_pipeline": "sample/group select; 8:1 output select; 22x16 multiply, shift and saturation",
+    "finish_pipeline": "one shared signed 22-bit comparison per cycle; five comparisons per sample; 32-bit sign-extended score output",
+    "requant_pipeline_data_registers": 198,
+    "axi_crossbar_latency": "CUT_SLV_AX",
+    "fpga_clock_hz": 20000000,
+    "instruction_fetch": {
+      "line_words": 8,
+      "lines": 4,
+      "data_bytes": 128,
+      "refill": "AXI INCR, incremental publication, next-line prefetch",
+      "cacheable_regions": "physical 8 KiB SRAM and immutable 32 B boot trampoline",
+      "coherence": "address-matched SRAM line invalidation; uncached transients conservatively revoked; global boot-write invalidation",
+      "uncached": "exact-address one-word transaction; debug and MMIO not retained",
+      "data_storage_reset": false
+    },
+    "dma_response": "B response accepted after final W and completed R without a dedicated RESP bubble"
   },
   "mmio": {
     "base_address": 1879048192,
@@ -73,6 +93,11 @@
         "size_bytes": 64
       },
       {
+        "name": "input2_3",
+        "offset": 4096,
+        "size_bytes": 128
+      },
+      {
         "name": "hidden1",
         "offset": 3136,
         "size_bytes": 32
@@ -88,6 +113,11 @@
         "size_bytes": 4
       },
       {
+        "name": "output2_3",
+        "offset": 4608,
+        "size_bytes": 128
+      },
+      {
         "name": "dma_registers",
         "offset": 3328,
         "size_bytes": 32
@@ -101,6 +131,9 @@
     "max_burst_words": 16,
     "buffer_bytes": 8,
     "outstanding_bursts": 1,
+    "fc1_transfers_per_batch": 32,
+    "fc2_transfers_per_batch": 4,
+    "weight_bytes_per_batch": 2240,
     "source_bytes": 8192,
     "compute_overlap": true
   },
@@ -112,7 +145,7 @@
     "post_commit_margin_clocks": 5
   },
   "physical_target": {
-    "whole_die_with_pad_mm2_max": 4.0,
+    "whole_die_with_pad_mm2_max": 3.8,
     "period_ns": 20
   }
 }

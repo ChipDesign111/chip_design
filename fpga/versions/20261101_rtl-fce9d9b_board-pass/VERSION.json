@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "version_id": "20261101_rtl-fce9d9b_board-pass",
+  "status": "historical_board_pass",
+  "test_report": "TEST_REPORT.md",
+  "test_date": "2026-11-01",
+  "branch": "rtl-dev",
+  "rtl_logic_baseline": "fce9d9bb6334e28eff8858aec76c2aa84377a165",
+  "build_snapshot_commit": "9485538ed38d32bf109b9e5360c7a7f853032f2f",
+  "fpga": {
+    "part": "xc7a35tcsg324-1",
+    "clock_hz": 20000000,
+    "preloaded": false,
+    "implementation_strategy": "Performance_ExplorePostRoutePhysOpt"
+  },
+  "bitstream": {
+    "available": false,
+    "known_sha256": "e4247f4ae84d01a8a6a1ad556d2d4ae79444c49d14d454f099828f1e24c917b6",
+    "known_size_bytes": 2192116,
+    "note": "The tested working-tree bitstream was overwritten by the 2026-11-04 rebuild and is not present elsewhere in the workspace."
+  },
+  "firmware": {
+    "canonical": "firmware/int8_selftest.hex",
+    "canonical_size_bytes": 20480,
+    "canonical_sha256": "fa38f91311768cd73386f8e093370831383d9e0e1b8a4832a2f3f978a2bfe850",
+    "jtag_binary": "firmware/int8_selftest.bin"
+  },
+  "board_test": {
+    "result": "PASS",
+    "npu_cycles": 908,
+    "dma_read_mac_overlap_cycles": 270,
+    "dma_write_mac_overlap_cycles": 269,
+    "soc_hardware_cycles": 5105,
+    "evidence": "TEST_REPORT.md"
+  },
+  "compatibility": {
+    "compatible_with_current_rtl": false,
+    "reason": "The archived firmware expects the prior FC2 issue schedule and predates the INT22 bias/reference update."
+  }
+}
