@@ -28,7 +28,7 @@ def switch(text, name, on):
 def run(argv,cwd,log,save):
     save(log.with_suffix('.command.json'),{'argv':list(map(str,argv)),'cwd':str(cwd)})
     with log.open('w') as f:
-        p=subprocess.run(list(map(str,argv)),cwd=str(cwd),stdout=f,stderr=subprocess.STDOUT,timeout=14400)
+        p=subprocess.run(list(map(str,argv)),cwd=str(cwd),stdout=f,stderr=subprocess.STDOUT,timeout=600 if str(argv[0]) in ['dbAccess','virtuoso'] else 14400)
     text=log.read_text(errors='replace')
     if p.returncode or re.search(r'(?im)^\s*(?:ERROR:|FATAL:|Error [A-Z]+\d+)',text):
         raise ValueError('Native command failed: '+str(log))
@@ -85,7 +85,7 @@ unless(techSaveTechFile(tf) error("Cannot save private technology"))
 printf("LAB5_PRIVATE_TECH_DBU=2000\\n")
 exit(0)
 '''%(private_tech,tech_path))
-    run(['virtuoso','-nograph','-restore',skill,'-log',evidence/'private_tech_ciw.log'],workspace,evidence/'private_tech.log',save)
+    run(['dbAccess','-load',skill],workspace,evidence/'private_tech.log',save)
     if 'LAB5_PRIVATE_TECH_DBU=2000' not in (evidence/'private_tech.log').read_text():
         raise ValueError('Private technology preparation did not finish')
     pre=workspace/'my_soc_top_preDummy.gds'
@@ -106,6 +106,8 @@ exit(0)
             text=line(text,key,value)
         deck=rules/(kind+'.drc');deck.write_text(text)
         save(evidence/(kind+'_inputs.json'),{'gds_sha256':sha(gds),'top':top,'source_rule_sha256':sha(source),'configured_rule_sha256':sha(deck)})
+        report['stages'][kind]={'status':'running'}
+        save(evidence/'progress.json',report)
         run(['calibre','-hyper','-turbo','8','-hier','-drc',deck],directory,evidence/(kind+'.log'),save)
         summary=drc_summary(directory/'summary.rpt');shutil.copyfile(str(directory/'summary.rpt'),str(evidence/(kind+'.summary')))
         report['stages'][kind]={'status':'executed_review_required','summary':summary}
