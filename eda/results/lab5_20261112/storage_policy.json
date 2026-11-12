@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-12",
+  "limit_bytes": 20000000000,
+  "home_allocated_bytes": 2943340544,
+  "kept_uploads": [
+    "20261029_150649_07af846",
+    "20261029_171221_postsim_vcs_tt_4e3ed25",
+    "20261112_210755_lab5_aefa356"
+  ],
+  "removed_lab5_iterations": [
+    "20261112_203948_lab5_d91f106",
+    "20261112_204329_lab5_b56e150",
+    "20261112_204536_lab5_b54663c",
+    "20261112_205428_lab5_3b928b8",
+    "20261112_205736_lab5_658b6dc"
+  ],
+  "reason": "Keep latest physical/TT source dependencies plus latest Lab5 only. Previous source archives and lightweight reports SHA verified locally."
+}

@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-12",
+  "physical_commit": "07af8464f4fbbd1c76b41a326f8b05fa745ad3b6",
+  "lab5_script_commit": "aefa35686512a1aeaa9fbe2004a2915561e461c3",
+  "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261112_210755_lab5_aefa356",
+  "complete_deployment_entries_including_manifest": 204,
+  "review_files_verified": 62,
+  "review_archive_sha256": "b9d2e20e6aa5acf1e989129966535f301032503f926ce47346af719a1af70ea5",
+  "physical_inputs_unchanged": true,
+  "full_lab5_execution_completed": true,
+  "overall_lab5_pass": false,
+  "drc": {
+    "checks": 523,
+    "raw_hierarchical": 2426,
+    "raw_expanded": 14515,
+    "teaching_exclusions": [
+      "DRM",
+      "ESD",
+      "MOM",
+      "LUP"
+    ],
+    "remaining_nonexcluded": {},
+    "teaching_drc_pass": true
+  },
+  "lvs": {
+    "correct": true,
+    "trace_property_statements": 605,
+    "pr_tolerance_percent": 3.48,
+    "split_gates": true,
+    "sram_box_added": false
+  },
+  "antenna": {
+    "checks": 62,
+    "violations": 0
+  },
+  "wire_bond": {
+    "checks": 64,
+    "violations": 9,
+    "rules": {
+      "CB.S.2.M5": 3,
+      "CB.S.2.M6": 6
+    },
+    "exact_marker_sets_equal_to_original": {
+      "CB.S.2.M5": true,
+      "CB.S.2.M6": true
+    },
+    "waived": false
+  },
+  "erc": {
+    "hierarchical": 7,
+    "expanded": 977,
+    "classification": "Native IO protection and isolated outer substrate; reviewed against representative marker geometry, not ERC Clean",
+    "native_io_masters": [
+      "PVDD1CDG",
+      "PVDD2CDG",
+      "PVSS1CDG"
+    ],
+    "outer_psub_bbox_um": [
+      [
+        -15.385,
+        -15.385
+      ],
+      [
+        1963.625,
+        1963.625
+      ]
+    ]
+  },
+  "geometry": {
+    "original_die_side_um": 1948.24,
+    "original_die_including_pad_area_mm2": 3.7956390976,
+    "final_ring_side_um": 1979,
+    "final_ring_envelope_mm2": 3.916441,
+    "co_r_4_after_private_repair": 0,
+    "m6_density_minimum_passed": 0.3
+  },
+  "final_gds_sha256": "d9ce2df098a80ffb469064e53c7ad3b7d79773fbdef01cd903c8f72e05cd311b",
+  "observed_remote_main": "6e76b772d4b6f68910ad8e788c7391bcda8e24a1",
+  "scope": "Lab5 validates bound 07af846 physical input, not newer main RTL; no new synthesis/PNR/SDF run. Dummy-after extraction/STA and formal foundry signoff not performed."
+}
