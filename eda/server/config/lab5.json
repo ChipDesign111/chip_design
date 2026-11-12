@@ -10,6 +10,9 @@
   "layout_source": "/lec/lab5/layout",
   "dummy_metal": "/lec/lab5/layout/dummy/scripts/Dummy_Metal_Calibre_0.18um.215a",
   "dummy_od_po": "/lec/lab5/layout/dummy/scripts/Dummy_OD_PO_Calibre_0.18um.210a",
+  "measured_pvdd2_pimp_patch": true,
+  "pr_tolerance_percent": 3.48,
+  "ordinary_m6_dummy_density_target": 0.35,
   "stages": ["input_audit", "cdl", "oa_sealring_poc", "drc_preDummy", "dummy_metal", "dummy_od_po", "merge", "drc_postDummy", "lvs_erc", "antenna", "wire_bond"],
   "note": "Copy layout into this upload's soc-stu/layout; never run inherited runsets or modify shared originals. Teaching exclusions are reported separately from raw results."
 }

@@ -13,7 +13,7 @@ import zipfile
 import gdstk
 
 
-def assemble(source, output, ring_zip, evidence):
+def assemble(source, output, ring_zip, evidence, patch_io=False):
     with tempfile.TemporaryDirectory() as temp:
         original = Path(temp)/'original.gds'
         with gzip.open(source, 'rb') as f:
@@ -25,6 +25,17 @@ def assemble(source, output, ring_zip, evidence):
         ring_lib = gdstk.read_gds(str(ring_file), unit=lib.unit)
     top = next(c for c in lib.cells if c.name == 'my_soc_top')
     original_counts = {c.name: [len(c.polygons),len(c.paths),len(c.labels),len(c.references)] for c in lib.cells}
+    changes=[]
+    if patch_io:
+        # Native CO.R.4 marker measured on b54663c, same physical source.
+        cell=next(c for c in lib.cells if c.name=='PVDD2CDG')
+        pp=[p for p in cell.get_polygons(layer=7,datatype=0) if all(abs(a-b)<1e-6 for a,b in zip(sum(p.bounding_box(),()),(2.7,52.91,57.3,73.795)))]
+        co=[p for p in cell.get_polygons(layer=15,datatype=0) if all(abs(a-b)<1e-6 for a,b in zip(sum(p.bounding_box(),()),(57.23,72.13,57.45,72.35)))]
+        npoly=cell.get_polygons(layer=8,datatype=0)
+        if len(pp)!=1 or len(co)!=1 or not any(any(abs(x-57.59)<1e-6 and abs(y-73.795)<1e-6 for x,y in p.points) for p in npoly):
+            raise ValueError('Private IO patch does not match measured PP/CO/NP geometry')
+        cell.add(gdstk.rectangle((57.3,52.91),(57.59,73.795),layer=7,datatype=0))
+        changes.append({'cell':'PVDD2CDG','layer':7,'datatype':0,'added_rect_um':[[57.3,52.91],[57.59,73.795]],'reason':'Measured CO.R.4; PP extends to existing NP boundary; shared PDK unchanged'})
     # DIEAREA from DEF, not the polygon/instance text bounding box.
     import re
     text = source.with_name('my_soc_top.def').read_text()
@@ -77,18 +88,21 @@ def assemble(source, output, ring_zip, evidence):
         raise ValueError('Unexpected sealring bbox')
     for c in lib.cells:
         if c.name in original_counts and c.name!='my_soc_top':
-            if original_counts[c.name]!=[len(c.polygons),len(c.paths),len(c.labels),len(c.references)]:
+            expected=list(original_counts[c.name])
+            if patch_io and c.name=='PVDD2CDG':expected[0]+=1
+            if expected!=[len(c.polygons),len(c.paths),len(c.labels),len(c.references)]:
                 raise ValueError('Native original cell changed: '+c.name)
     lib.write_gds(str(output))
     evidence.write_text(json.dumps({'gdstk':gdstk.__version__,'unit_m':lib.unit,'precision_m':lib.precision,
         'die_um':coords,'ring_reference_um':size,'ring_external_bbox_um':actual,
         'ring_external_size_um':size+30,'ring_edges':4*(size+10),'ring_corners':4,
         'poc_master':ref.cell_name,'poc_instance_origin_um':ref.origin,'poc_anchor_um':point,
-        'original_subcell_element_counts_unchanged':True,
+        'original_subcell_element_counts_unchanged':not patch_io,'private_cell_changes':changes,
         'method':'Native GDS cell assembly; no scaling or flattening. Native OA import and Calibre required.'},indent=2))
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('source',type=Path);p.add_argument('output',type=Path)
     p.add_argument('ring_zip',type=Path);p.add_argument('evidence',type=Path)
-    a=p.parse_args();assemble(a.source,a.output,a.ring_zip,a.evidence)
+    p.add_argument('--patch-io',action='store_true')
+    a=p.parse_args();assemble(a.source,a.output,a.ring_zip,a.evidence,a.patch_io)

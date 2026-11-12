@@ -1,0 +1,15 @@
+{
+  "physical_commit": "07af8464f4fbbd1c76b41a326f8b05fa745ad3b6",
+  "first_complete_lab5_script_commit": "b54663cff73502d81b60ca674879aefd358ab0be",
+  "first_complete_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261112_204536_lab5_b54663c",
+  "scope": "Measured causes and next implementation choices; not final acceptance",
+  "input_audit": {"gds_cells": 611, "undefined_references": 0, "rtl_matches": true},
+  "geometry": {"die_um": 1948.24, "ring_reference_um": 1949, "final_ring_size_um": 1979, "native_edge_count": 7836, "native_corner_count": 4},
+  "precision": {"gds_dbu_per_um": 2000, "private_technology_dbu_per_um": 2000, "drc_grid_um": 0.005, "lvs_resolution_um": 0.001, "shared_pdk_modified": false},
+  "co_r_4": {"hierarchical": 1, "expanded": 8, "cell": "PVDD2CDG", "pp_bbox_um": [[2.7,52.91],[57.3,73.795]], "affected_contact_um": [[57.23,72.13],[57.45,72.35]], "adjacent_np_inner_x_um": 57.59, "private_extension_um": [[57.3,52.91],[57.59,73.795]]},
+  "m6_density": {"measured_fraction_after_dummy": 0.283812, "rule_minimum_fraction": 0.3, "next_dummy_insertion_target": 0.35, "rule_limit_changed": false},
+  "lvs": {"ports_matched": 11, "nets_matched": 293022, "unmatched_objects": 0, "property_statements": 605, "property_errors": 42, "property_type": "R(PR)", "measured_deviation_percent": 3.47, "next_course_comparison_tolerance_percent": 3.48},
+  "erc": {"mnpg": [4,832], "floating.nxwell_float": [1,72], "floating.psub_float": [1,1], "npvss49": [1,72], "scope": "Matches course residual counts; specific geometry review retained, not ERC Clean"},
+  "antenna": {"checks": 62, "violations": 0},
+  "wire_bond": {"checks": 64, "cb_s_2_m5": 3, "cb_s_2_m6": 6, "original_innovus_gds_diagnostic": 9, "pre_dummy_diagnostic": 9, "post_dummy": 9, "origin": "Already present in original physical export; not introduced by sealring/dummy", "waived": false}
+}

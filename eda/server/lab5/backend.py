@@ -50,12 +50,15 @@ def drc_summary(path):
     # Native summary totals mandatory. Unknown report syntax never becomes zero.
     checks=re.search(r'TOTAL\s+DRC\s+RuleChecks?\s+Executed\s*[:=]\s*(\d+)',text,re.I)
     results=re.search(r'TOTAL\s+DRC\s+Results\s+Generated\s*[:=]\s*(\d+)',text,re.I)
-    rows={}
-    for name,count in re.findall(r'(?m)^\s*([\w.\-]+)\s+.*?TOTAL\s+RESULTS\s*=\s*(\d+)',text,re.I):
-        rows[name]=int(count)
+    rows={};expanded={}
+    for name,count,flat in re.findall(r'(?im)^\s*RULECHECK\s+(\S+)\s+\.+\s+TOTAL\s+Result\s+Count\s*=\s*(\d+)\s*\((\d+)\)',text):
+        rows[name]=int(count);expanded[name]=int(flat)
+    excluded={k:v for k,v in rows.items() if re.match(r'^(?:DRM|ESD|MOM|LUP)[.:_]',k)}
+    remaining={k:v for k,v in rows.items() if v and k not in excluded}
     return {'checks':int(checks.group(1)) if checks else None,
             'raw_results':int(results.group(1)) if results else None,'rule_results':rows,
-            'parsed':bool(checks and results and int(checks.group(1))>0)}
+            'expanded_rule_results':expanded,'teaching_excluded':excluded,'remaining_nonzero':remaining,
+            'parsed':bool(checks and results and int(checks.group(1))>0 and rows and sum(rows.values())==int(results.group(1)))}
 
 
 def execute(root,physical,config,report,save,sha):
@@ -66,7 +69,10 @@ def execute(root,physical,config,report,save,sha):
     pdk=Path(config['pdk_root']);process=pdk/config['process_pdk']
     py=root.parent.parent/'tools/lab5_python/bin/python'
     if not py.is_file():
-        raise ValueError('Missing pinned Python3.12/gdstk0.9.61 environment')
+        py.parent.parent.parent.mkdir(parents=True,exist_ok=True)
+        run(['python3.12','-m','venv',py.parent.parent],workspace,evidence/'create_python.log',save)
+        run([py,'-m','pip','install','--no-cache-dir','--disable-pip-version-check','gdstk==0.9.61','numpy==2.2.6'],workspace,evidence/'python_dependencies.log',save)
+    run([py,'-c','import gdstk,numpy; assert gdstk.__version__=="0.9.61"; assert numpy.__version__=="2.2.6"; print(gdstk.__version__,numpy.__version__)'],workspace,evidence/'python_versions.log',save)
     # New private OA library mapping; inherited user libraries/runsets not loaded.
     private_tech=workspace/'tsmc18_project'
     (workspace/'cds.lib').write_text('DEFINE basic /opt/eda/Cadence/IC618/tools/dfII/etc/cdslib/basic\nDEFINE analogLib /opt/eda/Cadence/IC618/tools/dfII/etc/cdslib/artist/analogLib\nDEFINE tsmc18 '+str(process/'tsmc18')+'\nDEFINE tsmc18_project '+str(private_tech)+'\nDEFINE to_iohelpers '+str(pdk/'io/T18_1P6M_CUP_IO')+'\n')
@@ -90,7 +96,9 @@ exit(0)
         raise ValueError('Private technology preparation did not finish')
     pre=workspace/'my_soc_top_preDummy.gds'
     ring_zip=pdk/'tsmc180/Foundry Design Documents/t018lodr001_2_15.zip'
-    run([py,root/'deploy/server/lab5/geometry.py',work/'inputs/my_soc_top.gds.gz',pre,ring_zip,evidence/'geometry.json'],workspace,evidence/'geometry.log',save)
+    command=[py,root/'deploy/server/lab5/geometry.py',work/'inputs/my_soc_top.gds.gz',pre,ring_zip,evidence/'geometry.json']
+    if config.get('measured_pvdd2_pimp_patch'):command.append('--patch-io')
+    run(command,workspace,evidence/'geometry.log',save)
     run(['strmin','-library','my_soc_top_manual','-strmFile',pre,'-topCell','my_soc_top',
          '-attachTechFileOfLib','tsmc18_project','-layerMap',process/'tsmc18/tsmc18.layermap',
          '-dbuPerUU','2000','-reportPrecisionLoss','-logFile',evidence/'strmin_pre.log'],workspace,evidence/'strmin_pre_stdout.log',save)
@@ -127,6 +135,12 @@ exit(0)
             for name in ['dmW_M6','dmL_M6']:
                 text,n=re.subn(r'(?m)^(VARIABLE\s+'+name+r'\s+)0\.6\b',r'\g<1>0.8',text)
                 if n!=1:raise ValueError('Ambiguous ordinary M6 dummy branch')
+            ordinary=re.search(r'(?m)^VARIABLE\s+dmW_M6\s+0\.8\b',text)
+            if not ordinary:raise ValueError('Ordinary M6 branch not identified')
+            prefix=text[:ordinary.start()];suffix=text[ordinary.start():]
+            suffix,n=re.subn(r'(?m)^(VARIABLE\s+minD_M6\s+)0\.3\b',r'\g<1>'+str(config['ordinary_m6_dummy_density_target']),suffix,count=1)
+            if n!=1:raise ValueError('Missing ordinary M6 density target')
+            text=prefix+suffix
         deck=dummy/source.name;deck.write_text(text)
         save(evidence/(stage+'_inputs.json'),{'gds_sha256':sha(pre),'original_rule_sha256':sha(source),'configured_rule_sha256':sha(deck)})
         run(['calibre','-hyper','-turbo','8','-hier','-drc',deck],dummy,evidence/(stage+'.log'),save)
@@ -156,12 +170,19 @@ exit(0)
             if n!=1:raise ValueError('Ambiguous LVS report path')
         else:text=line(text,key,value)
     text+='\nLVS EXECUTE ERC YES\n'
+    # Measured first run: 42 PR-only errors, 3.47%, zero unmatched objects.
+    if config.get('pr_tolerance_percent')!=3.48:raise ValueError('Unreviewed PR tolerance')
+    text,n=re.subn(r'(?im)^(\s*TRACE PROPERTY R\(PR\) R R)\s+(?:2|0)\s*$',r'\g<1> 3.48',text)
+    if n!=3:raise ValueError('Expected exactly three native PR comparison branches')
+    text=line(text,'LVS REPORT MAXIMUM','ALL')
     deck=rules/'my_soc_top_postDummy.lvs';deck.write_text(text)
-    save(evidence/'lvs_inputs.json',{'gds_sha256':identity,'cdl_sha256':sha(work/'my_soc_top.cdl'),'configured_deck_sha256':sha(deck),'pr_tolerance':'original; measure differences before adopting course 3.48%'})
+    save(evidence/'lvs_inputs.json',{'gds_sha256':identity,'cdl_sha256':sha(work/'my_soc_top.cdl'),'configured_deck_sha256':sha(deck),'pr_tolerance_percent':3.48,'basis':'b54663c: 42 PR errors at 3.47%, zero unmatched ports/nets/devices; full 605 property statements retained'})
     run(['calibre','-lvs','-hier','-turbo','8',deck],lvsdir,evidence/'lvs.log',save)
     lvs=(lvsdir/'lvs.report').read_text(errors='replace');shutil.copyfile(str(lvsdir/'lvs.report'),str(evidence/'lvs.report'))
     if (lvsdir/'erc.summary').exists():shutil.copyfile(str(lvsdir/'erc.summary'),str(evidence/'erc.summary'))
-    correct=bool(re.search(r'OVERALL COMPARISON RESULTS\s*[:=]?\s*CORRECT\b',lvs,re.I))
+    if (lvsdir/'erc.results').exists():shutil.copyfile(str(lvsdir/'erc.results'),str(evidence/'erc.results'))
+    overall=lvs.split('OVERALL COMPARISON RESULTS',1)[-1][:500]
+    correct=bool(re.search(r'\bCORRECT\b',overall))
     report['stages']['lvs_erc']={'status':'executed_review_required','lvs_correct':correct,
         'trace_property_count':len(re.findall(r'(?im)^\s*TRACE PROPERTY\s',lvs)),'erc':'all residual objects require review; no blanket waiver'}
     ant=drc('antenna',rules/'ant.drc',final,'my_soc_top_postDummy')
@@ -171,9 +192,18 @@ exit(0)
     for name,on in [('PITCH_55_SINGLE',True),('PITCH_60_STAGGER',False),('OBV_CUP',True)]:wb=switch(wb,name,on)
     wbfile=rules/'wb_reference.drc';wbfile.write_text(wb)
     bond=drc('wire_bond',wbfile,final,'my_soc_top_postDummy')
+    if bond['raw_results']:
+        drc('wire_bond_original_diagnostic',wbfile,work/'inputs/my_soc_top.gds.gz','my_soc_top')
     if sha(final)!=identity:raise ValueError('Final GDS changed between independent checks')
     save(evidence/'final_inputs.json',{'gds_sha256':identity,'cdl_sha256':sha(work/'my_soc_top.cdl'),'unchanged':True})
     # Actual report parsing and ERC object review required; never infer clean.
-    report['status']='review_required'
-    report['blockers'] += ['Review native final reports, teaching exclusions and exact ERC objects before final acceptance']
-    return 2
+    report['flow_completed']=True
+    errors=[]
+    if not after['parsed'] or after['remaining_nonzero']:errors.append('Final geometry DRC has unresolved/unparsed non-excluded rules')
+    if not correct:errors.append('LVS not CORRECT')
+    if not ant['parsed'] or ant['raw_results']!=0:errors.append('Final antenna not clean or report incomplete')
+    if not bond['parsed'] or bond['raw_results']!=0:errors.append('Wire Bond not clean or report incomplete')
+    report['blockers']+=errors
+    report['blockers'].append('ERC native IO/outer substrate residuals retained for specific object review; not ERC Clean')
+    report['status']='failed_checks' if errors else 'review_required'
+    return 1 if errors else 2
