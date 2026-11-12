@@ -33,6 +33,7 @@
     "weight_layout": "FC1[tile32][output32][lane2]; FC2[packet4][row8][output6], 48 bytes per packet",
     "shared_mac_mapping": "FC1: 16 outputs x 2 lanes per phase; FC2: 6 outputs x 2 input rows per phase",
     "fc1_tile_operand_prefetch": "two 8-bit input slices per sample registered at the tile boundary; ready-bank handoff adds no ISSUE bubble",
+    "tile_bias_control": "32 preserved per-output first-tile flags avoid a shared accumulator-bias control fanout",
     "tile_handoff": "last-sample consumed pulse, direct ISSUE when next bank is ready",
     "fc2_prefetch": "two 64-byte banks preloaded during final W1 tile and requant",
     "mac_pipeline": "combinational INT8 multiplication into INT22 accumulator per ISSUE cycle",

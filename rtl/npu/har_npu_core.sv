@@ -47,7 +47,9 @@ module har_npu_core (
     // boundary.  This keeps the 32-way tile decode out of the MAC/CSA cone.
     logic [7:0] x_lane_q[0:MAX_BATCH-1][0:1];
     logic [1:0] fc2_group_q;
-    logic first_tile_q;
+    // Keep one local flag per output lane.  Collapsing them back into one
+    // net would recreate the original hundreds-of-load control fanout.
+    (* dont_touch = "true" *) logic [31:0] first_tile_q;
     logic [2:0] class_id_q[0:MAX_BATCH-1];
     logic signed [ACC_WIDTH-1:0] finish_best_q;
     logic [2:0] finish_compare_index,finish_class_q;
@@ -169,7 +171,7 @@ module har_npu_core (
             finish_best_q<=0;
             tile_index_o<=0;
             fc2_group_q<=0;
-            first_tile_q<=0;
+            first_tile_q<='0;
             quant_sample<=0;
             class_id_q[0]<=0;class_id_q[1]<=0;class_id_q[2]<=0;class_id_q[3]<=0;
             cycle_count<=0;
@@ -192,7 +194,8 @@ module har_npu_core (
             // ISSUE cycle, so this register boundary adds no compute bubble.
             if(prepare_current_tile) begin
                 fc2_group_q<=tile_index_o[1:0];
-                first_tile_q<=tile_index_o==0;
+                for(o=0;o<32;o=o+1)
+                    first_tile_q[o]<=tile_index_o==0;
                 if(!layer)
                     for(s=0;s<MAX_BATCH;s=s+1)
                         for(o=0;o<2;o=o+1)
@@ -200,7 +203,7 @@ module har_npu_core (
                                 input_features[s*512+tile_index_o*16+o*8+:8];
             end else if(prepare_next_tile) begin
                 fc2_group_q<=next_tile_index[1:0];
-                first_tile_q<=1'b0;
+                first_tile_q<='0;
                 if(!layer)
                     for(s=0;s<MAX_BATCH;s=s+1)
                         for(o=0;o<2;o=o+1)
@@ -216,7 +219,7 @@ module har_npu_core (
                     if(phase==0) begin
                         for(o=0;o<16;o=o+1)
                             a1[product_sample][o] <=
-                                (first_tile_q ?
+                                (first_tile_q[o] ?
                                     $signed(bias1[o*32+:ACC_WIDTH]):
                                     a1[product_sample][o])
                                 + extend_product(product[o*2])
@@ -224,7 +227,7 @@ module har_npu_core (
                     end else begin
                         for(o=0;o<16;o=o+1)
                             a1[product_sample][16+o] <=
-                                (first_tile_q ?
+                                (first_tile_q[16+o] ?
                                     $signed(bias1[(16+o)*32+:ACC_WIDTH]):
                                     a1[product_sample][16+o])
                                 + extend_product(product[o*2])
@@ -234,7 +237,7 @@ module har_npu_core (
                     fc2_cycles<=fc2_cycles+1'b1;
                     for(o=0;o<6;o=o+1)
                         a2[product_sample][o] <=
-                            (first_tile_q && phase==0 ?
+                            (first_tile_q[o] && phase==0 ?
                                 $signed(bias2[o*32+:ACC_WIDTH]):
                                 a2[product_sample][o])
                             + extend_product(product[o])
@@ -273,7 +276,7 @@ module har_npu_core (
                     finish_best_q<=0;
                     tile_index_o<=0;
                     fc2_group_q<=0;
-                    first_tile_q<=0;
+                    first_tile_q<='0;
                     state<=WAIT_TILE;
                     cycle_count<=0;
                     overlap_count<=0;
