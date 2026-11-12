@@ -70,7 +70,7 @@ proc eda_fix_fanout {directory} {
             if {![llength [dbGet -e top.insts.name *$name]]} {break}
         }
         # LEQCheck stays enabled; a single BUFFD2 is non-inverting.
-        set command [concat [list ecoAddRepeater -term] $selected [list -cell BUFFD2BWP7T -name $name]]
+        set command [concat [list ecoAddRepeater -net $net_name -term] $selected [list -cell BUFFD2BWP7T -name $name]]
         set result [eda_eval 32_fanout_split $command]
         if {[llength $result] != 3} {error "Expected one non-inverting ECO buffer"}
         lassign $result new_instance input_net output_net
