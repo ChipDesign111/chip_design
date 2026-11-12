@@ -43,7 +43,17 @@ proc eda_fix_fanout {directory} {
                 lappend original_inputs [list $it [dbGet $it.name]]
             }
         }
-        if {[llength $drivers] != 1 || [lindex $drivers 0] ne $driver_name} {error "Fanout driver differs from current report"}
+        if {[llength $drivers] != 1} {error "Fanout net must have exactly one output driver: $net_name drivers=$drivers"}
+        set actual_driver [lindex $drivers 0]
+        if {$actual_driver ne $driver_name} {
+            # Report generation and the ECO database can differ after an earlier
+            # timing/DRV repair. The unique live driver is authoritative.
+            puts "EDA_FANOUT_DRIVER_REFRESH net=$net_name report=$driver_name actual=$actual_driver"
+        }
+        if {[llength $receivers] <= $maximum} {
+            puts "EDA_FANOUT_ALREADY_FIXED net=$net_name load=[llength $receivers] limit=$maximum"
+            continue
+        }
         set selected [eda_choose_fanout_terms $receivers]
         while {1} {
             incr eda_fanout_serial
@@ -61,7 +71,7 @@ proc eda_fix_fanout {directory} {
             set expected [expr {$original_name in $selected ? $output_net : $input_net}]
             if {[dbGet $object.net.name] ne $expected} {error "Fanout ECO changed an unselected sink"}
         }
-        puts "EDA_FANOUT_SPLIT net=$net_name driver=$driver_name old_load=$actual limit=$maximum moved=[llength $selected] original_inputs=[llength $original_inputs] buffer=$new_instance new_net=$output_net"
+        puts "EDA_FANOUT_SPLIT net=$net_name driver=$actual_driver old_load=[llength $receivers] limit=$maximum moved=[llength $selected] original_inputs=[llength $original_inputs] buffer=$new_instance new_net=$output_net"
     }
     eda_eval 32_eco_legalize {globalNetConnect VDD -type pgpin -pin VDD -all; globalNetConnect VSS -type pgpin -pin VSS -all; refinePlace}
     eda_eval 32_eco_route {ecoRoute}
