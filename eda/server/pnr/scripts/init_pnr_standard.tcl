@@ -81,7 +81,7 @@ setOptMode  -allEndPoints                       true \
             -honorDensityScreenInOpt            false \
             -honorFence                         true \
             -leakageToDynamicRatio              1 \
-            -maxDensity                         0.75 \
+            -maxDensity                         0.85 \
             -multiBitFlopOpt                    false \
             -postRouteAreaReclaim               none \
             -postRouteSetupRecovery             auto \

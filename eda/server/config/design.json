@@ -15,7 +15,7 @@
     250,
     650
   ],
-  "max_repair_iterations": 3,
+  "max_repair_iterations": 6,
   "setup_target_ns": 0.1,
   "hold_target_ns": 0.05,
   "cpu_clock_gate": "repository_passthrough",
