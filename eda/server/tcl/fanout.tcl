@@ -37,7 +37,9 @@ proc eda_fix_fanout {directory} {
     foreach target $eda_fanout_targets {
         lassign $target net_name driver_name maximum actual
         set net [dbGet -e -regexp top.nets.name [eda_literal_net_pattern $net_name] -p]
-        if {[llength $net] != 1 || $net in {{} 0x0} || [dbGet $net.name] ne $net_name} {error "Fanout net not uniquely resolved: $net_name"}
+        if {[llength $net] != 1 || $net in {{} 0x0}} {error "Fanout net not uniquely resolved: $net_name count=[llength $net]"}
+        set actual_net_name [eda_db_string [dbGet $net.name]]
+        if {$actual_net_name ne $net_name} {error "Fanout net name mismatch: report=$net_name actual=$actual_net_name"}
         if {[dbGet $net.isPwrOrGnd] || [dbGet $net.isClock] || [dbGet $net.isCTSClock] || [llength [dbGet -e $net.terms]]} {
             error "Refuse automatic ECO on supply/clock/external net: $net_name"
         }
