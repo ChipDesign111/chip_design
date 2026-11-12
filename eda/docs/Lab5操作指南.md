@@ -10,8 +10,9 @@ python eda/pipeline.py run --only lab5 --eda-upload /home/s2400011041/Desktop/fu
 python eda/signoff.py run --eda-upload /home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261029_150649_07af846 --output C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/lab5/本次新目录
 ```
 
-pipeline默认依次执行RTL检查/SoC回归、综合与01–34、TT后仿及Lab5；--only lab5只调用最后一段。
-本轮只实跑Lab5，未重新执行前面的RTL回归/综合/布线/TT。新增总入口完整模式只做了静态检查，不能称整条链路新实跑通过。
+pipeline默认依次执行RTL检查/SoC回归、综合与01–34、TT后仿及同数据库半周期STA、Lab5；--only lab5只调用最后一段。
+`--start-at implementation`适用于RTL未改的物理修复，保留来源检查并从全新Genus开始，只省略RTL功能回归。
+2026-11-12的结果只实跑Lab5；2026-11-13的Wire Bond修复已启动新综合、01–34、TT和Lab5链路，完成情况以各阶段原始结果为准。
 
 完整上传、公共unpack.sh校验解压后，只启动Lab5，不调用原run_all.sh重跑综合和布局布线。
 run --detach只启动；status查状态；fetch --wait --output 新目录等待并校验回传。
@@ -38,6 +39,8 @@ soc-stu/layout/workspace保存私有OA、GDS及检查数据库；results保存�
 
 依据 https://full-stack-ai-chip.tianyuj.com/lab-5/ 保留原始DRC报告，单列DRM/ESD/MOM/LUP四类。
 ERC不能按名字全部忽略，需核对实际IO保护电路或外环对象；核心浮井、真实开短路须修复。
+`erc_review.json`核对原生结果总数、全部代表标记和最终GDS：mnpg标记须完整位于原生PVDD保护PAD内，nxwell/npvss49须完整位于PVSS1CDG内，外环psub须与实测环边界一致。
+只将匹配的课程残项单列为`accepted_course_residuals`，保留原始计数和`erc_clean=false`；未知规则、标记不完整或核心标记均失败。这不是代工厂正式豁免。
 PR先保留原始容差，确认实测偏差与教程同类后才采用有依据的教学设置。不新增SRAM Box、虚连或假标签。
 converted、executed_review_required、review_required均非通过。报告解析不完整、几何需修正或ERC未审阅均非零退出并回传依据。
 最终检查绑定同一SHA最终GDS/CDL。Dummy后寄生/STA、IR/EM及封装人工规则未做分别列未做。

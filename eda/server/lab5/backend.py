@@ -200,12 +200,17 @@ exit(0)
     save(evidence/'final_inputs.json',{'gds_sha256':identity,'cdl_sha256':sha(work/'my_soc_top.cdl'),'unchanged':True})
     # Actual report parsing and ERC object review required; never infer clean.
     report['flow_completed']=True
+    run([py,root/'deploy/server/lab5/review_erc.py',lvsdir/'erc.summary',lvsdir/'erc.results',final,evidence/'erc_review.json'],workspace,evidence/'erc_review.log',save)
+    erc=json.loads((evidence/'erc_review.json').read_text())
+    report['stages']['lvs_erc']['erc_review']=erc
     errors=[]
     if not after['parsed'] or after['remaining_nonzero']:errors.append('Final geometry DRC has unresolved/unparsed non-excluded rules')
     if not correct:errors.append('LVS not CORRECT')
     if not ant['parsed'] or ant['raw_results']!=0:errors.append('Final antenna not clean or report incomplete')
     if not bond['parsed'] or bond['raw_results']!=0:errors.append('Wire Bond not clean or report incomplete')
+    if not erc['accepted_course_residuals']:errors.append('ERC has unidentified or non-course residual objects')
     report['blockers']+=errors
-    report['blockers'].append('ERC native IO/outer substrate residuals retained for specific object review; not ERC Clean')
-    report['status']='failed_checks' if errors else 'review_required'
-    return 1 if errors else 2
+    report['documented_exceptions']={'erc':erc,'drc_teaching_excluded':after['teaching_excluded']}
+    report['lab5_pass']=not errors
+    report['status']='failed_checks' if errors else 'course_checks_passed_with_documented_exceptions'
+    return 1 if errors else 0
