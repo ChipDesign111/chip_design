@@ -211,6 +211,10 @@ exit(0)
     if not erc['accepted_course_residuals']:errors.append('ERC has unidentified or non-course residual objects')
     report['blockers']+=errors
     report['documented_exceptions']={'erc':erc,'drc_teaching_excluded':after['teaching_excluded']}
+    report['stages']['drc_postDummy']['status']='passed_with_teaching_exclusions' if after['parsed'] and not after['remaining_nonzero'] else 'failed'
+    report['stages']['lvs_erc']['status']='passed_with_reviewed_erc_residuals' if correct and erc['accepted_course_residuals'] else 'failed'
+    for name,summary in [('antenna',ant),('wire_bond',bond)]:
+        report['stages'][name]['status']='passed' if summary['parsed'] and summary['raw_results']==0 else 'failed'
     report['lab5_pass']=not errors
     report['status']='failed_checks' if errors else 'course_checks_passed_with_documented_exceptions'
     return 1 if errors else 0

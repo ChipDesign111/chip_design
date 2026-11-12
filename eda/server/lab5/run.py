@@ -38,6 +38,9 @@ def bundle(root, report):
     text += '\n'.join('- %s：%s' % (s, r['status']) for s, r in report['stages'].items())
     text += '\n\n' + '\n'.join('- ' + x for x in report['blockers'])
     text += '\n\nCDL转换与输入核验不代表DRC/LVS通过。大型/授权资料留在服务器。\n'
+    if report.get('documented_exceptions'):
+        erc=report['documented_exceptions']['erc']
+        text+='\n课程例外单列，原始ERC %d层次/%d展开；ERC Clean=%s，逐对象识别=%s。不代表代工厂完整签核。\n'%(erc['native_erc_hierarchical'],erc['native_erc_expanded'],erc['erc_clean'],erc['accepted_course_residuals'])
     (root/'README_lab5.md').write_text(text, encoding='utf-8')
     import html
     (root/'README_lab5.html').write_text('<meta charset="utf-8"><pre>'+html.escape(text)+'</pre>', encoding='utf-8')
