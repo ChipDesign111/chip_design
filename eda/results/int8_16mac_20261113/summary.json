@@ -1,0 +1,108 @@
+{
+  "result": "main 16-MAC INT22-bias RTL completed Genus and Innovus 01-34; whole die <=3.8 mm2, final density <75%, and 20 ns Setup/Hold targets met",
+  "branch": "main",
+  "deployment_commit": "c02527ec96cd4cf5d31c0a903c9e57e03f5ad107",
+  "rtl_commit": "29f6b88",
+  "upload": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_main_16mac_bias22_c02527e",
+  "archive_sha256": "dd497943898e3bc44f2eac7d40b5907bf072dd89abe0771e2d66f47faf60c3b9",
+  "input_manifest_sha256": "84bcbc854981aa8b2c0029861251fa3ab0018d34d3c585e5c73b1c53ed2b9805",
+  "all_34_steps_same_input": true,
+  "stage_exit_codes": {
+    "environment": 0,
+    "eda": 0,
+    "collect": 0
+  },
+  "system_period_ns": 20,
+  "die_um": [
+    0.0,
+    0.0,
+    1948.24,
+    1948.24
+  ],
+  "whole_die_area_mm2": 3.7956390976,
+  "max_whole_die_area_mm2": 3.8,
+  "actual_final_density_percent": 72.509,
+  "placement_density_percent": 71.61,
+  "placement_density_including_fixed_percent": 72.76,
+  "synthesis": {
+    "cell_count": 66348,
+    "cell_area_um2": 2023900.544,
+    "net_area_um2": 719359.603,
+    "memory_area_um2": 401443.591,
+    "latch_area_um2": 0.0,
+    "npu_subsystem_cell_area_um2": 775048.288,
+    "npu_core_cell_area_um2": 472979.987,
+    "previous_cell_count": 69317,
+    "previous_cell_area_um2": 2154018.829,
+    "previous_npu_subsystem_cell_area_um2": 905127.059,
+    "previous_npu_core_cell_area_um2": 570297.594
+  },
+  "final_timing_ns": {
+    "Setup": {
+      "wns": 0.335,
+      "tns": 0.0,
+      "violating_paths": 0
+    },
+    "Hold": {
+      "wns": 0.05,
+      "tns": 0.0,
+      "violating_paths": 0
+    }
+  },
+  "final_physical_checks": {
+    "unplaced_instances": 0,
+    "default_drc_violations": 0,
+    "process_antenna_violating_nets": 0,
+    "full_core_pg_problems_or_warnings": 0,
+    "unresolved_signal_problems": 0,
+    "classified_io_abstract_nets": [
+      "VDDPST",
+      "VSSPST"
+    ]
+  },
+  "functional_regression": {
+    "status": "PASS",
+    "executed_by": "user local environment",
+    "soc_testbench_cycles": 2700,
+    "soc_hardware_cycles": 2695,
+    "npu_cycles": 952,
+    "fc1_issue_cycles": 512,
+    "fc2_issue_cycles": 64,
+    "dma_read_mac_overlap": 466,
+    "dma_write_mac_overlap": 499
+  },
+  "review_archive": {
+    "bytes": 13075157,
+    "sha256": "263428b9a5ba9c2f61a46ace4fd27f08ee9fa77c24d3f89271eb999c0c2a7561",
+    "files": 621
+  },
+  "large_views_retained_remote": {
+    "pnr/my_soc_top/outputs/manual_final/my_soc_top.def": {
+      "bytes": 94594209,
+      "sha256": "f735117caff8e6eedbc77efedd8e5942a1efb943b3de9a0d94396b54a5f83bd5"
+    },
+    "pnr/my_soc_top/outputs/manual_final/my_soc_top.gds.gz": {
+      "bytes": 15165174,
+      "sha256": "41b8d67dc5567964a5b767c014d097917eb3978b9a7ed383946428dda2c87448"
+    },
+    "pnr/my_soc_top/outputs/manual_final/my_soc_top_flat_lvs.v": {
+      "bytes": 25954755,
+      "sha256": "98e97e86e7188793928fa8b834852d28f3eebc2e3a61737b011d1d1a62cfc9b2"
+    },
+    "pnr/my_soc_top/outputs/manual_final/my_soc_top_tt_io.sdf.gz": {
+      "bytes": 12030728,
+      "sha256": "1d0658be337153f59cb11ac3315ab20fba162b20cf44a79a5866840ce8329d68"
+    },
+    "pnr/my_soc_top/outputs/manual_final/my_soc_top_tt_io.spef.gz": {
+      "bytes": 25314544,
+      "sha256": "481594e7ed34e5ad7afc29c13e0082aa7867449a780a34ed07ef566ff54f9969"
+    }
+  },
+  "not_executed": [
+    "SDF backannotation simulation",
+    "independent foundry DRC/LVS",
+    "multi-PVT signoff",
+    "IR/EM/ESD signoff",
+    "formal equivalence"
+  ]
+}

@@ -1,6 +1,8 @@
 # 从本机部署到完整 EDA 结果
 
-当前 INT22 累加版 `9970d6f` 已完成34步EDA和最终网表SDF后仿。含PAD **3.795639mm²**，20ns下Setup/Hold **+0.032/+0.019ns**；10组MAXIMUM SDF与无SDF对照 **11/11功能通过**，回标error/缺失实例/缺失检查均为0，工作窗口和最终复位阶段动态时序违规为0。见[完整物理结果](results/int22_20261104/README.md)和[SDF后仿](results/int22_20261104/postsim/README.md)。每个SDF用例的108条初始复位事件和10条负IOPATH截零限制保留。下方为旧版历史结果。
+当前 `main@c02527e`（RTL功能提交 `29f6b88`）已用16个共享MAC和INT22 bias完成同源34步EDA。含PAD **3.795639mm²**，最终密度 **72.509%**，20ns下Setup/Hold **+0.335/+0.050ns**；DRV、DRC、天线、完整核心PG和常规信号连接通过。用户本地完整功能回归通过，batch=4完整SoC testbench/硬件为2700/2695拍、NPU为952拍。见[16-MAC完整物理结果](results/int8_16mac_20261113/README.md)。本轮尚未执行该版SDF后仿。
+
+历史 INT22 累加版 `9970d6f` 已完成34步EDA和最终网表SDF后仿。含PAD **3.795639mm²**，20ns下Setup/Hold **+0.032/+0.019ns**；10组MAXIMUM SDF与无SDF对照 **11/11功能通过**，回标error/缺失实例/缺失检查均为0，工作窗口和最终复位阶段动态时序违规为0。见[完整物理结果](results/int22_20261104/README.md)和[SDF后仿](results/int22_20261104/postsim/README.md)。每个SDF用例的108条初始复位事件和10条负IOPATH截零限制保留。下方为旧版历史结果。
 
 2026-10-26 后仿补充：16组完整SoC MAXIMUM SDF及无SDF对照通过功能自检，回标error/缺失实例/缺失检查均0，工作窗口动态违规0；复位事件及19条负IOPATH截零限制仍保留。详见[与现有main结果对比](results/postsim_ntc_20261026/README.md)。下方“未后仿”描述对应原物理交付时点。
 
