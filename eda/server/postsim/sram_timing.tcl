@@ -19,7 +19,9 @@ report_timing -early -from $outputs -max_paths 20 -path_type full_clock > [file 
 # Report its real half-cycle path into the rising-edge SRAM command register
 # in every active library view, without changing any clock/path constraint.
 if {[file exists [file join $eda_work src chip_design rtl memory sram_transaction_reset.sv]]} {
-    set qualified_reset [get_cells -hierarchical *i_sram_transaction_reset*reset_qualified_n_reg*]
+    # -hierarchical patterns match local cell names, not the slash-separated
+    # full name printed by report_timing. Use the actual full instance path.
+    set qualified_reset [get_cells i_sram_transaction_reset/reset_qualified_n_reg]
     if {[sizeof_collection $qualified_reset] != 1} {error "Expected one common SRAM transaction-reset output register"}
     set request_d [get_pins i_mainmem/port_req_q_reg/D]
     if {[sizeof_collection $request_d] != 1} {error "Expected one SRAM request register D pin"}

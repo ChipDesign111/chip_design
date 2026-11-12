@@ -6,6 +6,7 @@ import hashlib
 import importlib.util
 import json
 from pathlib import Path
+import re
 import shlex
 import subprocess
 import sys
@@ -29,6 +30,7 @@ def main():
     parser.add_argument('--simulator',choices=['vcs','xcelium'],default='vcs')
     parser.add_argument('--upload',help='An existing isolated post-simulation upload for status/fetch/timing')
     parser.add_argument('--sdf-mode',choices=['tt','pvt-min','pvt-max'],default='tt')
+    parser.add_argument('--timing-tag',default='native',help='Unique identifier for a fresh read-only timing report directory; retains earlier analysis')
     args=parser.parse_args()
     if args.command=='run':
         eda=remote.valid_upload(args.eda_upload or json.loads((DIST/'last_upload.json').read_text())['upload'])
@@ -62,7 +64,8 @@ def main():
         # Run only after simulation, keeping heavy server tools sequential.
         eda=remote.valid_upload(state['eda_upload'])
         tool=ROOT/'eda/server/postsim/sram_timing.tcl'
-        output=upload+'/postsim/sram_timing'
+        if not re.fullmatch(r'[A-Za-z][A-Za-z0-9_]*',args.timing_tag):raise ValueError('Use an ASCII timing tag')
+        output=upload+'/postsim/sram_timing'+('' if args.timing_tag=='native' else '_'+args.timing_tag)
         remote.ssh(args.host,'set -e\ntest -f '+shlex.quote(upload+'/postsim/results.json')+'\ntest ! -e '+shlex.quote(output)+'\nmkdir '+shlex.quote(output)+'\n')
         remote.scp(args.host,[tool],output+'/')
         driver='set eda_work {'+eda+'/work}\nset timing_output {'+output+'}\nsource {'+output+'/sram_timing.tcl}\n'
