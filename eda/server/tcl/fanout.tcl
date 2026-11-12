@@ -6,7 +6,11 @@ proc eda_literal_net_pattern {name} {
     return "^${escaped}$"
 }
 proc eda_db_string {value} {
-    if {[llength $value] == 1} {return [lindex $value 0]}
+    while {[llength $value] == 1} {
+        set unwrapped [lindex $value 0]
+        if {$unwrapped eq $value} {break}
+        set value $unwrapped
+    }
     return $value
 }
 proc eda_choose_fanout_terms {receivers} {
