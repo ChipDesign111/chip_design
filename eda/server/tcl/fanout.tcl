@@ -100,11 +100,10 @@ proc eda_fix_fanout {directory} {
             set expected [expr {[info exists selected_set($original_name)] ? $branch_net : $source_net}]
             set actual_net [eda_db_string [dbGet $object.net.name]]
             if {$actual_net ne $expected} {
-                if {[string match ANTENNA* $cell_name]} {
-                    puts "EDA_FANOUT_ANTENNA_MOVED net=$net_name pin=$original_name from=$expected to=$actual_net"
-                    continue
+                if {$actual_net ni [list $source_net $branch_net]} {
+                    error "Fanout ECO disconnected sink: pin=$original_name expected=$expected actual=$actual_net"
                 }
-                error "Fanout ECO sink mismatch: pin=$original_name expected=$expected actual=$actual_net"
+                puts "EDA_FANOUT_SINK_REGROUPED net=$net_name pin=$original_name selected=[info exists selected_set($original_name)] actual=$actual_net"
             }
         }
         puts "EDA_FANOUT_SPLIT net=$net_name driver=$actual_driver old_load=[llength $receivers] limit=$maximum moved=[llength $selected] original_inputs=[llength $original_inputs] buffer=$new_instance new_net=$branch_net"
