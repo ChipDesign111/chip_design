@@ -34,6 +34,17 @@ def run(argv,cwd,log,save):
         raise ValueError('Native command failed: '+str(log))
 
 
+def precision(text):
+    """Match 2000 DBU/um input, preserving original physical rule resolution."""
+    p=re.findall(r'(?im)^\s*PRECISION\s+(\d+)\b',text)
+    r=re.findall(r'(?im)^\s*RESOLUTION\s+(\d+)\b',text)
+    if len(p)!=1 or len(r)!=1 or int(p[0]) not in [1000,2000]:
+        raise ValueError('Unrecognized precision/resolution pair')
+    resolution=2000*int(r[0])/int(p[0])
+    if resolution!=int(resolution):raise ValueError('Noninteger database resolution')
+    return line(line(text,'PRECISION','2000'),'RESOLUTION',str(int(resolution)))
+
+
 def drc_summary(path):
     text=path.read_text(errors='replace')
     # Native summary totals mandatory. Unknown report syntax never becomes zero.
@@ -57,20 +68,38 @@ def execute(root,physical,config,report,save,sha):
     if not py.is_file():
         raise ValueError('Missing pinned Python3.12/gdstk0.9.61 environment')
     # New private OA library mapping; inherited user libraries/runsets not loaded.
-    (workspace/'cds.lib').write_text('DEFINE basic /opt/eda/Cadence/IC618/tools/dfII/etc/cdslib/basic\nDEFINE analogLib /opt/eda/Cadence/IC618/tools/dfII/etc/cdslib/artist/analogLib\nDEFINE tsmc18 '+str(process/'tsmc18')+'\nDEFINE to_iohelpers '+str(pdk/'io/T18_1P6M_CUP_IO')+'\n')
+    private_tech=workspace/'tsmc18_project'
+    (workspace/'cds.lib').write_text('DEFINE basic /opt/eda/Cadence/IC618/tools/dfII/etc/cdslib/basic\nDEFINE analogLib /opt/eda/Cadence/IC618/tools/dfII/etc/cdslib/artist/analogLib\nDEFINE tsmc18 '+str(process/'tsmc18')+'\nDEFINE tsmc18_project '+str(private_tech)+'\nDEFINE to_iohelpers '+str(pdk/'io/T18_1P6M_CUP_IO')+'\n')
     (workspace/'.cdsinit').write_text('load("/opt/eda/Mentor/aok_cal_2022.3_17.8/lib/calibre.OA.skl")\n')
+    tech_source=workspace/'techfile'
+    tech,n=re.subn(r'(\(\s*maskLayout\s+"micron"\s+)1000\b',r'\g<1>2000',tech_source.read_text())
+    if n!=1:raise ValueError('Unrecognized original technology units')
+    tech_path=workspace/'technology_2000.tf';tech_path.write_text(tech)
+    skill=workspace/'prepare_technology.il'
+    skill.write_text('''unless(ddCreateLib("tsmc18_project" "%s") error("Cannot create private tech library"))
+tf=techOpenTechFile("tsmc18_project" "tech.db" "w")
+unless(tf error("Cannot open private technology"))
+unless(tcLoadTechFile(tf "%s" "w") error("Cannot compile private technology"))
+unless(techGetDBUPerUU(tf "maskLayout")==2000 error("Private DBU readback mismatch"))
+unless(techSaveTechFile(tf) error("Cannot save private technology"))
+printf("LAB5_PRIVATE_TECH_DBU=2000\\n")
+exit(0)
+'''%(private_tech,tech_path))
+    run(['virtuoso','-nograph','-restore',skill,'-log',evidence/'private_tech_ciw.log'],workspace,evidence/'private_tech.log',save)
+    if 'LAB5_PRIVATE_TECH_DBU=2000' not in (evidence/'private_tech.log').read_text():
+        raise ValueError('Private technology preparation did not finish')
     pre=workspace/'my_soc_top_preDummy.gds'
     ring_zip=pdk/'tsmc180/Foundry Design Documents/t018lodr001_2_15.zip'
     run([py,root/'deploy/server/lab5/geometry.py',work/'inputs/my_soc_top.gds.gz',pre,ring_zip,evidence/'geometry.json'],workspace,evidence/'geometry.log',save)
     run(['strmin','-library','my_soc_top_manual','-strmFile',pre,'-topCell','my_soc_top',
-         '-attachTechFileOfLib','tsmc18','-layerMap',process/'tsmc18/tsmc18.layermap',
+         '-attachTechFileOfLib','tsmc18_project','-layerMap',process/'tsmc18/tsmc18.layermap',
          '-dbuPerUU','2000','-reportPrecisionLoss','-logFile',evidence/'strmin_pre.log'],workspace,evidence/'strmin_pre_stdout.log',save)
     report['stages']['oa_sealring_poc']={'status':'generated_and_imported','pre_gds_sha256':sha(pre)}
     save(evidence/'progress.json',report)
     rules=layout/'rule';rundirs={}
     def drc(kind,source,gds,top,final=False):
         directory=workspace/kind;directory.mkdir();rundirs[kind]=directory
-        text=source.read_text(errors='replace')
+        text=precision(source.read_text(errors='replace'))
         for key,value in [('LAYOUT PATH','"'+str(gds)+'"'),('LAYOUT PRIMARY','"'+top+'"'),
                           ('DRC RESULTS DATABASE','"'+str(directory/'results.db')+'" ASCII'),
                           ('DRC SUMMARY REPORT','"'+str(directory/'summary.rpt')+'"')]:
@@ -88,7 +117,7 @@ def execute(root,physical,config,report,save,sha):
         raise ValueError('Actual preDummy CO.R.4 requires measured private IO geometry correction')
     dummy=layout/'dummy/manual_final';dummy.mkdir(parents=True,exist_ok=True)
     for stage,src,stem in [('dummy_metal',config['dummy_metal'],'DM'),('dummy_od_po',config['dummy_od_po'],'DOD')]:
-        source=Path(src);text=source.read_text(errors='replace')
+        source=Path(src);text=precision(source.read_text(errors='replace'))
         text=line(text,'LAYOUT PATH','"'+str(pre)+'"');text=line(text,'LAYOUT PRIMARY','"my_soc_top"')
         if stage=='dummy_metal':
             for n in ['THICK_40K_M6','THICK_M6','THICK_30K_M6']:
@@ -108,11 +137,11 @@ def execute(root,physical,config,report,save,sha):
          '-rename','-createtop','my_soc_top_postDummy','-out',final],dummy,evidence/'merge.log',save)
     identity=sha(final);report['stages']['merge']={'status':'generated','final_gds_sha256':identity}
     run(['strmin','-library','my_soc_top_final','-strmFile',final,'-topCell','my_soc_top_postDummy',
-         '-attachTechFileOfLib','tsmc18','-layerMap',process/'tsmc18/tsmc18.layermap','-dbuPerUU','2000',
+         '-attachTechFileOfLib','tsmc18_project','-layerMap',process/'tsmc18/tsmc18.layermap','-dbuPerUU','2000',
          '-reportPrecisionLoss','-logFile',evidence/'strmin_final.log'],workspace,evidence/'strmin_final_stdout.log',save)
     after=drc('drc_postDummy',rules/'calibre.drc',final,'my_soc_top_postDummy',True)
     lvsdir=workspace/'lvs_postDummy';lvsdir.mkdir()
-    text=(rules/'calibre.lvs').read_text(errors='replace')
+    text=precision((rules/'calibre.lvs').read_text(errors='replace'))
     for key,value in [('LAYOUT PATH','"'+str(final)+'"'),('LAYOUT PRIMARY','"my_soc_top_postDummy"'),
                       ('SOURCE PATH','"'+str(work/'my_soc_top.cdl')+'"'),('SOURCE PRIMARY','"my_soc_top"'),
                       ('TEXT DEPTH','1'),('PORT DEPTH','1'),('VIRTUAL CONNECT COLON','NO'),
