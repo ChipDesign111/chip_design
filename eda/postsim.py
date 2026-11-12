@@ -62,7 +62,9 @@ def main():
     state=json.loads((DIST/'last_postsim.json').read_text());upload=remote.valid_upload(args.upload or state['upload'])
     if args.command=='timing':
         # Run only after simulation, keeping heavy server tools sequential.
-        eda=remote.valid_upload(state['eda_upload'])
+        bound=json.loads(remote.ssh(args.host,'cat '+shlex.quote(upload+'/postsim/input_manifest.json')+'\n'))['eda_work']
+        if not isinstance(bound,str) or not bound.endswith('/work'):raise ValueError('Invalid simulation physical binding')
+        eda=remote.valid_upload(bound[:-5])
         tool=ROOT/'eda/server/postsim/sram_timing.tcl'
         if not re.fullmatch(r'[A-Za-z][A-Za-z0-9_]*',args.timing_tag):raise ValueError('Use an ASCII timing tag')
         output=upload+'/postsim/sram_timing'+('' if args.timing_tag=='native' else '_'+args.timing_tag)
