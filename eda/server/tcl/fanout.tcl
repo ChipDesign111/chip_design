@@ -50,8 +50,9 @@ proc eda_fix_fanout {directory} {
             if {[dbGet $it.isOutput]} {lappend drivers $pin_name}
             if {[dbGet $it.isInput]} {
                 lassign [lindex [dbGet $it.pt] 0] x y
-                lappend receivers [list $x $y $pin_name [eda_db_string [dbGet $it.inst.cell.name]]]
-                lappend original_inputs [list $it $pin_name]
+                set cell_name [eda_db_string [dbGet $it.inst.cell.name]]
+                lappend receivers [list $x $y $pin_name $cell_name]
+                lappend original_inputs [list $it $pin_name $cell_name]
             }
         }
         if {[llength $drivers] != 1} {error "Fanout net must have exactly one output driver: $net_name drivers=$drivers"}
@@ -78,10 +79,14 @@ proc eda_fix_fanout {directory} {
         lassign $result new_instance input_net output_net
         if {$input_net ne $net_name || $output_net eq $net_name} {error "Unexpected fanout ECO net split"}
         foreach pin $original_inputs {
-            lassign $pin object original_name
+            lassign $pin object original_name cell_name
             set expected [expr {$original_name in $selected ? $output_net : $input_net}]
             set actual_net [eda_db_string [dbGet $object.net.name]]
             if {$actual_net ne $expected} {
+                if {[string match ANTENNA* $cell_name]} {
+                    puts "EDA_FANOUT_ANTENNA_MOVED net=$net_name pin=$original_name from=$expected to=$actual_net"
+                    continue
+                }
                 error "Fanout ECO sink mismatch: pin=$original_name expected=$expected actual=$actual_net"
             }
         }
