@@ -83,6 +83,10 @@ def check() -> list[str]:
             errors.append("RTL project and EDA die-area targets differ")
         if physical_target["period_ns"] != eda_config["system_period_ns"]:
             errors.append("RTL project and EDA clock periods differ")
+        if physical_target["setup_wns_ns_min"] != eda_config["setup_target_ns"]:
+            errors.append("RTL project and EDA setup slack targets differ")
+        if physical_target["hold_wns_ns_min"] != eda_config["hold_target_ns"]:
+            errors.append("RTL project and EDA hold slack targets differ")
         mmio = config["mmio"]
         if not 0 <= mmio["base_address"] < 2**32 or mmio["base_address"] % 4:
             errors.append("Invalid MMIO base")

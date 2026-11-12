@@ -72,7 +72,8 @@ def area_summary(path):
     return {'cell_count': int(numbers[0]), 'cell_area_um2': numbers[1], 'net_area_um2': numbers[2], 'latch_area_um2': numbers[7], 'memory_area_um2': numbers[9], 'report': str(path)}
 
 
-def timing(directory, require_clean=False):
+def timing(directory, require_clean=False, target_slack_ns=None):
+    target_slack_ns = target_slack_ns or {}
     found = {}
     for p in sorted(directory.glob('*.summary*')):
         text = load_text(p)
@@ -88,8 +89,9 @@ def timing(directory, require_clean=False):
         # identify the omission in Hold rather than inventing zero fields.
         if mode == 'Setup' and not {'max_cap', 'max_tran', 'max_fanout'}.issubset(drv):
             raise ValueError('Missing electrical DRV fields: ' + str(p))
-        value = {'report': str(p), 'wns_ns': float(fields[0].group(1)), 'tns_ns': float(fields[1].group(1)), 'violating_paths': int(fields[2].group(1)), 'drv': drv, 'electrical_drv_table_reported_here': bool(drv)}
-        value['targets_met'] = value['wns_ns'] >= 0 and value['tns_ns'] == 0 and value['violating_paths'] == 0 and all(x['real'] == x['total'] == 0 for x in drv.values())
+        target = float(target_slack_ns.get(mode, 0))
+        value = {'report': str(p), 'target_slack_ns': target, 'wns_ns': float(fields[0].group(1)), 'tns_ns': float(fields[1].group(1)), 'violating_paths': int(fields[2].group(1)), 'drv': drv, 'electrical_drv_table_reported_here': bool(drv)}
+        value['targets_met'] = value['wns_ns'] >= target and value['tns_ns'] == 0 and value['violating_paths'] == 0 and all(x['real'] == x['total'] == 0 for x in drv.values())
         if mode in found:
             raise ValueError('Ambiguous multiple timing summaries for ' + mode + ': ' + str(directory))
         found[mode] = value
@@ -379,9 +381,15 @@ def audit_step(work, step):
         checks['io_controls'] = helper(work, 'audit_io_ties.py')
     timing_dirs = {26: 'preCTS', 28: 'postCTS', 29: 'postCTS_holdFix_check', 32: 'postRoute_holdAuto_check', 33: 'postFiller'}
     if step in timing_dirs:
-        checks['timing'] = timing(pnr / 'reports' / timing_dirs[step], step in [32, 33])
+        target_slack = None
+        if step == 33:
+            config = json.loads((work / 'config/design.json').read_text())
+            target_slack = {'Setup': config['setup_target_ns'], 'Hold': config['hold_target_ns']}
+        checks['timing'] = timing(pnr / 'reports' / timing_dirs[step], step in [32, 33], target_slack)
         if step in [26, 28, 29]:
             checks['timing_scope'] = 'Pre-route diagnostic: residuals are recorded; only post-route steps32/33 require all timing/electrical targets met.'
+        elif step == 33:
+            checks['timing_scope'] = 'Final target slack must be met for both Setup and Hold; DRV real/total and violations must all be zero.'
     if step == 14:
         checks['physical_pins'] = physical_pins(work, pnr / 'my_soc_top_physicalPins.def')
     if step in [31, 32, 33]:

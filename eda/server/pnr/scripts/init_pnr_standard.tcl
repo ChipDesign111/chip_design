@@ -77,7 +77,7 @@ setOptMode  -allEndPoints                       true \
             -fixSISlew                          true \
             -highEffortOptCells                 ${hold_fixing_cells} \
             -holdFixingCells                    ${hold_fixing_cells} \
-            -holdTargetSlack                    0 \
+            -holdTargetSlack                    ${rm_hold_target_slack} \
             -honorDensityScreenInOpt            false \
             -honorFence                         true \
             -leakageToDynamicRatio              1 \
@@ -88,8 +88,8 @@ setOptMode  -allEndPoints                       true \
             -powerEffort                        none \
             -reclaimArea                        default \
             -restruct                           true \
-            -setupTargetSlackForReclaim         0 \
-            -setupTargetSlack                   0 \
+            -setupTargetSlackForReclaim         ${rm_setup_target_slack} \
+            -setupTargetSlack                   ${rm_setup_target_slack} \
             -timeDesignNumPaths                 50 \
             -unfixClkInstForOpt                 true \
             -usefulSkew                         true \

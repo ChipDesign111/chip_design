@@ -147,6 +147,8 @@
   },
   "physical_target": {
     "whole_die_with_pad_mm2_max": 3.8,
-    "period_ns": 20
+    "period_ns": 20,
+    "setup_wns_ns_min": 0.1,
+    "hold_wns_ns_min": 0.05
   }
 }
