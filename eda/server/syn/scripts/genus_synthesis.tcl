@@ -20,6 +20,16 @@ default {error "Only syn_opt_level standard is supported by this flow"}
 # uniquify the instances under the specified design or subdesign
 uniquify [get_design $rm_core_top ] -verbose
 
+# first_tile_q intentionally contains 32 equivalent per-output flops.  Do not
+# merge them back into one high-fanout control net during generic synthesis.
+set first_tile_regs [vfind . -inst *first_tile_q_reg*]
+if {[sizeof_collection $first_tile_regs] != 32} {
+  error "Expected 32 first_tile_q registers, found [sizeof_collection $first_tile_regs]"
+}
+set_db $first_tile_regs .optimize_merge_seq    false
+set_db $first_tile_regs .optimize_constant_0_seq false
+set_db $first_tile_regs .optimize_constant_1_seq false
+
 # preserve module
 
 # timing contraints applied only to synthesis

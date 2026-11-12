@@ -47,9 +47,9 @@ module har_npu_core (
     // boundary.  This keeps the 32-way tile decode out of the MAC/CSA cone.
     logic [7:0] x_lane_q[0:MAX_BATCH-1][0:1];
     logic [1:0] fc2_group_q;
-    // Keep one local flag per output lane.  Collapsing them back into one
-    // net would recreate the original hundreds-of-load control fanout.
-    (* dont_touch = "true" *) logic [31:0] first_tile_q;
+    // Keep one local flag per output lane.  Synthesis must not merge these
+    // equivalent flops back into one net with hundreds of loads.
+    logic [31:0] first_tile_q;
     logic [2:0] class_id_q[0:MAX_BATCH-1];
     logic signed [ACC_WIDTH-1:0] finish_best_q;
     logic [2:0] finish_compare_index,finish_class_q;
