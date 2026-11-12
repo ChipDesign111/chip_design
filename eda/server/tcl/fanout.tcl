@@ -80,7 +80,9 @@ proc eda_fix_fanout {directory} {
         set new_instance [eda_db_string $new_instance]
         set input_net [eda_db_string $input_net]
         set output_net [eda_db_string $output_net]
-        if {$input_net ne $net_name || $output_net eq $net_name} {error "Unexpected fanout ECO net split"}
+        if {$input_net ne $net_name || $output_net eq $net_name} {
+            error "Unexpected fanout ECO net split: report=$net_name input=$input_net output=$output_net"
+        }
         foreach pin $original_inputs {
             lassign $pin object original_name cell_name
             set expected [expr {$original_name in $selected ? $output_net : $input_net}]
