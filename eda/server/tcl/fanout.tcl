@@ -80,7 +80,10 @@ proc eda_fix_fanout {directory} {
         foreach pin $original_inputs {
             lassign $pin object original_name
             set expected [expr {$original_name in $selected ? $output_net : $input_net}]
-            if {[dbGet $object.net.name] ne $expected} {error "Fanout ECO changed an unselected sink"}
+            set actual_net [eda_db_string [dbGet $object.net.name]]
+            if {$actual_net ne $expected} {
+                error "Fanout ECO sink mismatch: pin=$original_name expected=$expected actual=$actual_net"
+            }
         }
         puts "EDA_FANOUT_SPLIT net=$net_name driver=$actual_driver old_load=[llength $receivers] limit=$maximum moved=[llength $selected] original_inputs=[llength $original_inputs] buffer=$new_instance new_net=$output_net"
     }
