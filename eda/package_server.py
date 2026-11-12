@@ -31,6 +31,12 @@ def main():
     manifest['working_tree_dirty'] = bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=str(ROOT), text=True).strip())
     target = args.output.expanduser().resolve()
     target.parent.mkdir(parents=True, exist_ok=True)
+    workflow = json.loads((EDA / 'server/config/workflow.json').read_text(encoding='utf-8'))
+    for stage, names in workflow['required_payload'].items():
+        missing = [name for name in names if name not in selected]
+        if missing:
+            raise ValueError('Incomplete workflow payload %s: %s' % (stage, missing))
+    manifest['workflow'] = workflow
     source_json = json.dumps(manifest, ensure_ascii=False, indent=2).encode('utf-8') + b'\n'
     import io
     with tarfile.open(str(target), 'w:gz') as tar:

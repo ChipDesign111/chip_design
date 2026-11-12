@@ -1,0 +1,148 @@
+"""Course Lab5 native tool stages. Report raw errors before teaching exclusions."""
+import io
+import json
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import tarfile
+import zipfile
+
+
+def line(text, key, value):
+    pattern=r'(?im)^\s*'+re.escape(key)+r'\s+[^\n]*$'
+    text,n=re.subn(pattern,key+' '+value,text)
+    if n!=1:
+        raise ValueError('Expected one active directive %s; found %d'%(key,n))
+    return text
+
+
+def switch(text, name, on):
+    pattern=r'(?m)^\s*(?://\s*)?#DEFINE\s+'+re.escape(name)+r'\b[^\n]*$'
+    matches=list(re.finditer(pattern,text))
+    if not matches:
+        raise ValueError('Missing rule option '+name)
+    return re.sub(pattern,('#DEFINE ' if on else '//#DEFINE ')+name,text)
+
+
+def run(argv,cwd,log,save):
+    save(log.with_suffix('.command.json'),{'argv':list(map(str,argv)),'cwd':str(cwd)})
+    with log.open('w') as f:
+        p=subprocess.run(list(map(str,argv)),cwd=str(cwd),stdout=f,stderr=subprocess.STDOUT,timeout=14400)
+    text=log.read_text(errors='replace')
+    if p.returncode or re.search(r'(?im)^\s*(?:ERROR:|FATAL:|Error [A-Z]+\d+)',text):
+        raise ValueError('Native command failed: '+str(log))
+
+
+def drc_summary(path):
+    text=path.read_text(errors='replace')
+    # Native summary totals mandatory. Unknown report syntax never becomes zero.
+    checks=re.search(r'TOTAL\s+DRC\s+RuleChecks?\s+Executed\s*[:=]\s*(\d+)',text,re.I)
+    results=re.search(r'TOTAL\s+DRC\s+Results\s+Generated\s*[:=]\s*(\d+)',text,re.I)
+    rows={}
+    for name,count in re.findall(r'(?m)^\s*([\w.\-]+)\s+.*?TOTAL\s+RESULTS\s*=\s*(\d+)',text,re.I):
+        rows[name]=int(count)
+    return {'checks':int(checks.group(1)) if checks else None,
+            'raw_results':int(results.group(1)) if results else None,'rule_results':rows,
+            'parsed':bool(checks and results and int(checks.group(1))>0)}
+
+
+def execute(root,physical,config,report,save,sha):
+    work=root/'lab5';evidence=work/'evidence';soc=root/'soc-stu';layout=soc/'layout'
+    if not layout.is_dir():
+        raise ValueError('Missing frozen soc-stu/layout')
+    workspace=layout/'workspace'
+    pdk=Path(config['pdk_root']);process=pdk/config['process_pdk']
+    py=root.parent.parent/'tools/lab5_python/bin/python'
+    if not py.is_file():
+        raise ValueError('Missing pinned Python3.12/gdstk0.9.61 environment')
+    # New private OA library mapping; inherited user libraries/runsets not loaded.
+    (workspace/'cds.lib').write_text('DEFINE basic /opt/eda/Cadence/IC618/tools/dfII/etc/cdslib/basic\nDEFINE analogLib /opt/eda/Cadence/IC618/tools/dfII/etc/cdslib/artist/analogLib\nDEFINE tsmc18 '+str(process/'tsmc18')+'\nDEFINE to_iohelpers '+str(pdk/'io/T18_1P6M_CUP_IO')+'\n')
+    (workspace/'.cdsinit').write_text('load("/opt/eda/Mentor/aok_cal_2022.3_17.8/lib/calibre.OA.skl")\n')
+    pre=workspace/'my_soc_top_preDummy.gds'
+    ring_zip=pdk/'tsmc180/Foundry Design Documents/t018lodr001_2_15.zip'
+    run([py,root/'deploy/server/lab5/geometry.py',work/'inputs/my_soc_top.gds.gz',pre,ring_zip,evidence/'geometry.json'],workspace,evidence/'geometry.log',save)
+    run(['strmin','-library','my_soc_top_manual','-strmFile',pre,'-topCell','my_soc_top',
+         '-attachTechFileOfLib','tsmc18','-layerMap',process/'tsmc18/tsmc18.layermap',
+         '-dbuPerUU','2000','-reportPrecisionLoss','-logFile',evidence/'strmin_pre.log'],workspace,evidence/'strmin_pre_stdout.log',save)
+    report['stages']['oa_sealring_poc']={'status':'generated_and_imported','pre_gds_sha256':sha(pre)}
+    save(evidence/'progress.json',report)
+    rules=layout/'rule';rundirs={}
+    def drc(kind,source,gds,top,final=False):
+        directory=workspace/kind;directory.mkdir();rundirs[kind]=directory
+        text=source.read_text(errors='replace')
+        for key,value in [('LAYOUT PATH','"'+str(gds)+'"'),('LAYOUT PRIMARY','"'+top+'"'),
+                          ('DRC RESULTS DATABASE','"'+str(directory/'results.db')+'" ASCII'),
+                          ('DRC SUMMARY REPORT','"'+str(directory/'summary.rpt')+'"')]:
+            text=line(text,key,value)
+        deck=rules/(kind+'.drc');deck.write_text(text)
+        save(evidence/(kind+'_inputs.json'),{'gds_sha256':sha(gds),'top':top,'source_rule_sha256':sha(source),'configured_rule_sha256':sha(deck)})
+        run(['calibre','-hyper','-turbo','8','-hier','-drc',deck],directory,evidence/(kind+'.log'),save)
+        summary=drc_summary(directory/'summary.rpt');shutil.copyfile(str(directory/'summary.rpt'),str(evidence/(kind+'.summary')))
+        report['stages'][kind]={'status':'executed_review_required','summary':summary}
+        save(evidence/'progress.json',report)
+        return summary
+    before=drc('drc_preDummy',rules/'calibre.drc',pre,'my_soc_top')
+    # Do not guess private IO implant patches: inspect actual rule markers first.
+    if before['rule_results'].get('CO.R.4',0):
+        raise ValueError('Actual preDummy CO.R.4 requires measured private IO geometry correction')
+    dummy=layout/'dummy/manual_final';dummy.mkdir(parents=True,exist_ok=True)
+    for stage,src,stem in [('dummy_metal',config['dummy_metal'],'DM'),('dummy_od_po',config['dummy_od_po'],'DOD')]:
+        source=Path(src);text=source.read_text(errors='replace')
+        text=line(text,'LAYOUT PATH','"'+str(pre)+'"');text=line(text,'LAYOUT PRIMARY','"my_soc_top"')
+        if stage=='dummy_metal':
+            for n in ['THICK_40K_M6','THICK_M6','THICK_30K_M6']:
+                text=switch(text,n,False)
+            for name in ['dmW_M6','dmL_M6']:
+                text,n=re.subn(r'(?m)^(VARIABLE\s+'+name+r'\s+)0\.6\b',r'\g<1>0.8',text)
+                if n!=1:raise ValueError('Ambiguous ordinary M6 dummy branch')
+        deck=dummy/source.name;deck.write_text(text)
+        save(evidence/(stage+'_inputs.json'),{'gds_sha256':sha(pre),'original_rule_sha256':sha(source),'configured_rule_sha256':sha(deck)})
+        run(['calibre','-hyper','-turbo','8','-hier','-drc',deck],dummy,evidence/(stage+'.log'),save)
+        if not (dummy/(stem+'.gds')).is_file() or not (dummy/(stem+'.gds')).stat().st_size:
+            raise ValueError('Dummy generation did not produce '+stem+'.gds')
+        shutil.copyfile(str(dummy/(stem+'.sum')),str(evidence/(stem+'.sum')))
+        report['stages'][stage]={'status':'generated','output_sha256':sha(dummy/(stem+'.gds'))}
+    final=workspace/'my_soc_top_postDummy.gds'
+    run(['calibredrv','-a','layout','filemerge','-in',pre,'-in',dummy/'DOD.gds','-in',dummy/'DM.gds',
+         '-rename','-createtop','my_soc_top_postDummy','-out',final],dummy,evidence/'merge.log',save)
+    identity=sha(final);report['stages']['merge']={'status':'generated','final_gds_sha256':identity}
+    run(['strmin','-library','my_soc_top_final','-strmFile',final,'-topCell','my_soc_top_postDummy',
+         '-attachTechFileOfLib','tsmc18','-layerMap',process/'tsmc18/tsmc18.layermap','-dbuPerUU','2000',
+         '-reportPrecisionLoss','-logFile',evidence/'strmin_final.log'],workspace,evidence/'strmin_final_stdout.log',save)
+    after=drc('drc_postDummy',rules/'calibre.drc',final,'my_soc_top_postDummy',True)
+    lvsdir=workspace/'lvs_postDummy';lvsdir.mkdir()
+    text=(rules/'calibre.lvs').read_text(errors='replace')
+    for key,value in [('LAYOUT PATH','"'+str(final)+'"'),('LAYOUT PRIMARY','"my_soc_top_postDummy"'),
+                      ('SOURCE PATH','"'+str(work/'my_soc_top.cdl')+'"'),('SOURCE PRIMARY','"my_soc_top"'),
+                      ('TEXT DEPTH','1'),('PORT DEPTH','1'),('VIRTUAL CONNECT COLON','NO'),
+                      ('LVS REDUCE SPLIT GATES','YES'),('LVS REPORT','"'+str(lvsdir/'lvs.report')+'"'),
+                      ('ERC RESULTS DATABASE','"'+str(lvsdir/'erc.results')+'" ASCII'),
+                      ('ERC SUMMARY REPORT','"'+str(lvsdir/'erc.summary')+'"')]:
+        # LVS REPORT option/maximum are separate directives.
+        if key=='LVS REPORT':
+            text,n=re.subn(r'(?im)^LVS REPORT\s+"[^\n]+$',key+' '+value,text)
+            if n!=1:raise ValueError('Ambiguous LVS report path')
+        else:text=line(text,key,value)
+    text+='\nLVS EXECUTE ERC YES\n'
+    deck=rules/'my_soc_top_postDummy.lvs';deck.write_text(text)
+    save(evidence/'lvs_inputs.json',{'gds_sha256':identity,'cdl_sha256':sha(work/'my_soc_top.cdl'),'configured_deck_sha256':sha(deck),'pr_tolerance':'original; measure differences before adopting course 3.48%'})
+    run(['calibre','-lvs','-hier','-turbo','8',deck],lvsdir,evidence/'lvs.log',save)
+    lvs=(lvsdir/'lvs.report').read_text(errors='replace');shutil.copyfile(str(lvsdir/'lvs.report'),str(evidence/'lvs.report'))
+    if (lvsdir/'erc.summary').exists():shutil.copyfile(str(lvsdir/'erc.summary'),str(evidence/'erc.summary'))
+    correct=bool(re.search(r'OVERALL COMPARISON RESULTS\s*[:=]?\s*CORRECT\b',lvs,re.I))
+    report['stages']['lvs_erc']={'status':'executed_review_required','lvs_correct':correct,
+        'trace_property_count':len(re.findall(r'(?im)^\s*TRACE PROPERTY\s',lvs)),'erc':'all residual objects require review; no blanket waiver'}
+    ant=drc('antenna',rules/'ant.drc',final,'my_soc_top_postDummy')
+    with zipfile.ZipFile(pdk/'tsmc180/Foundry Design Documents/t000cldr002c1_1_9_1a.zip') as z:
+        with tarfile.open(fileobj=io.BytesIO(z.read('DRC_Calibre_AL_WB_FC_v19_1a1.tar.gz')),mode='r:gz') as t:
+            wb=t.extractfile('wire_bond/0.18um/C18_WIRE_BOND_6M.19_1a1').read().decode()
+    for name,on in [('PITCH_55_SINGLE',True),('PITCH_60_STAGGER',False),('OBV_CUP',True)]:wb=switch(wb,name,on)
+    wbfile=rules/'wb_reference.drc';wbfile.write_text(wb)
+    bond=drc('wire_bond',wbfile,final,'my_soc_top_postDummy')
+    if sha(final)!=identity:raise ValueError('Final GDS changed between independent checks')
+    save(evidence/'final_inputs.json',{'gds_sha256':identity,'cdl_sha256':sha(work/'my_soc_top.cdl'),'unchanged':True})
+    # Actual report parsing and ERC object review required; never infer clean.
+    report['status']='review_required'
+    report['blockers'] += ['Review native final reports, teaching exclusions and exact ERC objects before final acceptance']
+    return 2

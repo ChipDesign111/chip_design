@@ -1,6 +1,6 @@
 # 从本机部署到完整 EDA 结果
 
-当前xzx已按用户正常条件完成四角EDA与TT/快/慢三组SDF：20ns、含PAD3.7956390976mm²，最终最差Setup/Hold+0.001/+0.020ns，三组各17例通过，全阶段动态事件0。详见[最新结果及main对比](results/native_mux_dff_20261027/README.md)。main保持d40b217，功能RTL相同，后续映射/脚本修复仅在xzx；负IOPATH截零等模型限制如实保留。[历史main结果](results/sram_reset_20261027/README.md)单独保存。
+当前物理源码07af846、main已按用户要求集成RTL至43f5e389；活动开发分支为xzx。最新核验结果为完整34步和对应TT后仿，TT Setup/Hold为+3.751/+0.092ns，TT负IOPATH截零0。历史4427四角/三组SDF结果保留在[历史多角结果](results/native_mux_dff_20261027/README.md)，不能代替新版本证据。[Lab5操作指南](docs/Lab5操作指南.md)说明完整工程部署及仅执行新增物理检查；Lab5执行状态独立记录，不由Innovus或TT后仿结果推定。
 
 功能RTL基线已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。设计是完整 CV32E40P SoC：第一层每拍 2 个输入×32 个输出，第二层 1×6，输入、权重、隐藏值使用 INT8，偏置、累加和分类分数使用 INT32。主 SRAM 保存完整权重；DMA 将当前需要的小块搬入两个 64 字节缓冲。面积验收是 **包含 PAD 的整个 Die ≤3.8 mm²**。
 

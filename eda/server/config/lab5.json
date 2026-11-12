@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "top": "my_soc_top",
+  "home_limit_bytes": 20000000000,
+  "peak_additional_budget_bytes": 6000000000,
+  "pdk_root": "/lec/pdk/tsmc180",
+  "process_pdk": "t018cmsp007k3_1_3a/tsmc18mm_1.8v_3.3v_T-018-CM-SP-007-K3_IC61_bsim4.5_pdk_v1.3a_20170119/PDK",
+  "std_spi": "tcb018gbwp7t_290a/TSMCHOME/digital/Back_End/spice/tcb018gbwp7t_270a/tcb018gbwp7t_270a.spi",
+  "io_spi": "tpd018nv_280a/TSMCHOME/digital/Back_End/spice/tpd018nv_270a/tpd018nv_1_2.spi",
+  "layout_source": "/lec/lab5/layout",
+  "dummy_metal": "/lec/lab5/layout/dummy/scripts/Dummy_Metal_Calibre_0.18um.215a",
+  "dummy_od_po": "/lec/lab5/layout/dummy/scripts/Dummy_OD_PO_Calibre_0.18um.210a",
+  "stages": ["input_audit", "cdl", "oa_sealring_poc", "drc_preDummy", "dummy_metal", "dummy_od_po", "merge", "drc_postDummy", "lvs_erc", "antenna", "wire_bond"],
+  "note": "Copy layout into this upload's soc-stu/layout; never run inherited runsets or modify shared originals. Teaching exclusions are reported separately from raw results."
+}

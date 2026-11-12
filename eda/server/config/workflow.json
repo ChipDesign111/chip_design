@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "order": ["rtl", "synthesis", "implementation", "postsim_tt", "lab5"],
+  "required_payload": {
+    "rtl": ["rtl/filelist.f", "rtl/manifest.json"],
+    "synthesis": ["server/bin/flow.py", "server/config/design.json"],
+    "implementation": ["server/tcl/driver.tcl", "server/tools/checks.py", "server/entry/run_all.sh"],
+    "postsim_tt": ["server/postsim/run.py", "server/postsim/tb_postsim.sv", "server/postsim/collect.py"],
+    "lab5": ["server/lab5/run.py", "server/lab5/backend.py", "server/lab5/geometry.py", "server/config/lab5.json"]
+  },
+  "scope": "Complete deployment source contract. Presence and hashes do not assert any stage passed."
+}
