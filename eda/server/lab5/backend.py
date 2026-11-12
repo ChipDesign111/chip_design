@@ -140,6 +140,8 @@ exit(0)
             prefix=text[:ordinary.start()];suffix=text[ordinary.start():]
             suffix,n=re.subn(r'(?m)^(VARIABLE\s+minD_M6\s+)0\.3\b',r'\g<1>'+str(config['ordinary_m6_dummy_density_target']),suffix,count=1)
             if n!=1:raise ValueError('Missing ordinary M6 density target')
+            suffix,n=re.subn(r'(?m)^(VARIABLE\s+WdmS_M6\s+)2\.0\b',r'\g<1>'+str(config['ordinary_m6_large_dummy_spacing_um']),suffix,count=1)
+            if n!=1:raise ValueError('Missing ordinary M6 large pattern spacing')
             text=prefix+suffix
         deck=dummy/source.name;deck.write_text(text)
         save(evidence/(stage+'_inputs.json'),{'gds_sha256':sha(pre),'original_rule_sha256':sha(source),'configured_rule_sha256':sha(deck)})
