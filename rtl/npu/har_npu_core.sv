@@ -1,5 +1,5 @@
-// INT8 64->32->6 with up to four register-resident samples, INT22 internal
-// accumulation, and a pipelined requantization path.
+// INT8 64->32->6 with up to four register-resident samples, a shared 16-MAC
+// bank, INT22 internal accumulation, and a pipelined requantization path.
 // Each weight tile is reused for every sample and all compute phases before
 // it is released.
 module har_npu_core (
@@ -7,8 +7,8 @@ module har_npu_core (
     input logic [3:0] batch_count,
     input logic abort_i,
     input logic [4095:0] input_features,
-    input logic [1023:0] bias1,
-    input logic [191:0] bias2,
+    input logic [31:0][21:0] bias1,
+    input logic [5:0][21:0] bias2,
     input logic [15:0] requant_mult,
     input logic [4:0] requant_shift,
     input logic tile_valid_i,tile_next_valid_i,
@@ -28,7 +28,7 @@ module har_npu_core (
     localparam int MAX_BATCH=4;
     localparam int FC1_TILES=32;
     localparam int FC2_GROUPS=4;
-    localparam int FC1_PHASES=2;
+    localparam int FC1_PHASES=4;
     localparam int FC2_PHASES=4;
     localparam int ACC_WIDTH=22;
     logic [2:0] state;
@@ -38,9 +38,9 @@ module har_npu_core (
     logic [2:0] sample,quant_sample,finish_sample;
     wire product_valid;
     wire [2:0] product_sample;
-    // FC1 uses 16 outputs by 2 lanes per phase. FC2 uses 2 input rows by
-    // 6 outputs per phase. All phases reuse the same 32-multiplier bank.
-    logic signed [15:0] product[0:31];
+    // FC1 uses 8 outputs by 2 lanes per phase. FC2 uses 2 input rows by
+    // 6 outputs per phase. All phases reuse the same 16-multiplier bank.
+    logic signed [15:0] product[0:15];
     logic signed [ACC_WIDTH-1:0] a1[0:MAX_BATCH-1][0:31],a2[0:MAX_BATCH-1][0:5];
     logic [255:0] h[0:MAX_BATCH-1];
     // Preload the two selected FC1 input bytes for every sample at a tile
@@ -127,10 +127,10 @@ module har_npu_core (
 
     integer o,s;
     genvar j,k;
-    // FC1 phase selects one set of 16 output accumulators. FC2 phase selects
+    // FC1 phase selects one set of 8 output accumulators. FC2 phase selects
     // two packed six-byte rows; only its first twelve product lanes are active.
     generate
-        for(j=0;j<16;j=j+1) begin: shared_products
+        for(j=0;j<8;j=j+1) begin: shared_products
             for(k=0;k<2;k=k+1) begin: lanes
                 localparam int P=j*2+k;
                 localparam int W2_ROW=P/6;
@@ -139,11 +139,11 @@ module har_npu_core (
                         $signed(hs[(fc2_group_q*8+phase*2+W2_ROW)*8+:8])*
                             $signed(tile_data_i[(phase*12+P)*8+:8]) :
                         $signed(x_lane_q[product_sample][k])*
-                            $signed(tile_data_i[(phase[0]*16+j)*16+k*8+:8]);
+                            $signed(tile_data_i[(phase*8+j)*16+k*8+:8]);
                 end else begin: fc2_idle
                     assign product[P]=layer ? 16'sd0 :
                         $signed(x_lane_q[product_sample][k])*
-                        $signed(tile_data_i[(phase[0]*16+j)*16+k*8+:8]);
+                        $signed(tile_data_i[(phase*8+j)*16+k*8+:8]);
                 end
             end
         end
@@ -216,29 +216,19 @@ module har_npu_core (
                 if(dma_write_i) write_overlap_count<=write_overlap_count+1'b1;
                 if(!layer) begin
                     fc1_cycles<=fc1_cycles+1'b1;
-                    if(phase==0) begin
-                        for(o=0;o<16;o=o+1)
-                            a1[product_sample][o] <=
-                                (first_tile_q[o] ?
-                                    $signed(bias1[o*32+:ACC_WIDTH]):
-                                    a1[product_sample][o])
-                                + extend_product(product[o*2])
-                                + extend_product(product[o*2+1]);
-                    end else begin
-                        for(o=0;o<16;o=o+1)
-                            a1[product_sample][16+o] <=
-                                (first_tile_q[16+o] ?
-                                    $signed(bias1[(16+o)*32+:ACC_WIDTH]):
-                                    a1[product_sample][16+o])
-                                + extend_product(product[o*2])
-                                + extend_product(product[o*2+1]);
-                    end
+                    for(o=0;o<8;o=o+1)
+                        a1[product_sample][phase*8+o] <=
+                            (first_tile_q[phase*8+o] ?
+                                $signed(bias1[phase*8+o]):
+                                a1[product_sample][phase*8+o])
+                            + extend_product(product[o*2])
+                            + extend_product(product[o*2+1]);
                 end else begin
                     fc2_cycles<=fc2_cycles+1'b1;
                     for(o=0;o<6;o=o+1)
                         a2[product_sample][o] <=
                             (first_tile_q[o] && phase==0 ?
-                                $signed(bias2[o*32+:ACC_WIDTH]):
+                                $signed(bias2[o]):
                                 a2[product_sample][o])
                             + extend_product(product[o])
                             + extend_product(product[6+o]);

@@ -108,6 +108,8 @@ module tb_tiled_dma;
         if(!$value$plusargs("COUNT=%d",count)) count=24;
         if($bits(dut.core.a1[0][0])!=22 || $bits(dut.core.a2[0][0])!=22)
             $fatal(1,"Expected INT22 accumulators");
+        if($bits(dut.b1[0])!=22 || $bits(dut.b2[0])!=22)
+            $fatal(1,"Expected INT22 bias storage");
         #1;rst_n=0;repeat(3) @(negedge clk);rst_n=1;
         // Invalid SRAM pointer cannot start an inference.
         put(0,1);check(4,4);
@@ -131,7 +133,7 @@ module tb_tiled_dma;
                 check(class_addr,mem[golden_addr/4+14]);
             end
             if(batch==4) check('h1280,0);
-            check('h28,batch*64);check('h2c,batch*16);
+            check('h28,batch*128);check('h2c,batch*16);
             $display("CASE %0d PASS cycles=%0d fc1=%0d fc2=%0d read_overlap=%0d write_overlap=%0d",
                 which,dut.cycles,dut.fc1_cycles,dut.fc2_cycles,dut.read_overlap,dut.write_overlap);
             put(0,2);

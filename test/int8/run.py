@@ -117,6 +117,6 @@ def main():
         if hardware_soc_cycles<=0 or hardware_soc_cycles>observed_cycles:raise RuntimeError('Invalid hardware SoC cycle count')
         soc_timing={'observed_cycles':observed_cycles,'hardware_soc_cycles':hardware_soc_cycles}
     if any(hashlib.sha256((ROOT/name).read_bytes()).hexdigest()!=value for name,value in source_sha.items()):raise RuntimeError('Source changed during functional run')
-    (run/'result.json').write_text(json.dumps({'unit_cases':len(cases),'dma_response_cases':len(dma_response_result['cases']),'directed_cases':[case[0] for case in directed_cases],'trained_samples':24 if args.trained else 0,'accumulator_bits':22,'soc':args.soc,'soc_timing':soc_timing,'vendor_model_sha256':hashlib.sha256(args.vendor_model.read_bytes()).hexdigest() if args.vendor_model else None,'passed':True},indent=2)+'\n')
+    (run/'result.json').write_text(json.dumps({'unit_cases':len(cases),'dma_response_cases':len(dma_response_result['cases']),'directed_cases':[case[0] for case in directed_cases],'trained_samples':24 if args.trained else 0,'accumulator_bits':22,'bias_bits':22,'soc':args.soc,'soc_timing':soc_timing,'vendor_model_sha256':hashlib.sha256(args.vendor_model.read_bytes()).hexdigest() if args.vendor_model else None,'passed':True},indent=2)+'\n')
     print('Results: '+str(run))
 if __name__=='__main__':main()

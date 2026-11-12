@@ -151,7 +151,7 @@ def build(run,seed=10000,mode=DEFAULT_MODE):
         compare('class'+str(n),class_address,0x80001c38+n*64,1)
     mark('counters')
     a.lw(5,20,0x30);a.li(6,64);a.branch('bne',5,6,'fail')
-    a.lw(5,20,0x28);a.li(6,batch*64);a.branch('bne',5,6,'fail')
+    a.lw(5,20,0x28);a.li(6,batch*128);a.branch('bne',5,6,'fail')
     a.lw(5,20,0x2c);a.li(6,batch*16);a.branch('bne',5,6,'fail')
     mark('statistics')
     a.li(6,0x80001fc0)

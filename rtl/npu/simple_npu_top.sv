@@ -14,8 +14,10 @@ module simple_npu_top (
     localparam int OUTPUT2_BASE=1152;
     localparam int W2_GROUPS=4;
     logic [511:0] x[0:3];
-    logic [1023:0] b1;
-    logic [191:0] b2;
+    // MMIO writes remain 32-bit words, but only the signed INT22 value used
+    // by the datapath is retained.
+    logic [31:0][21:0] b1;
+    logic [5:0][21:0] b2;
     logic [15:0] mult;
     logic [4:0] shift;
     logic [3:0] batch_count;
@@ -128,8 +130,8 @@ module simple_npu_top (
                     9:w2_base<=dina;
                     default:begin
                         if(addra>=16 && addra<32) x[0][(addra-16)*32+:32]<=dina;
-                        else if(addra>=624 && addra<656) b1[(addra-624)*32+:32]<=dina;
-                        else if(addra>=656 && addra<662) b2[(addra-656)*32+:32]<=dina;
+                        else if(addra>=624 && addra<656) b1[addra-624]<=dina[21:0];
+                        else if(addra>=656 && addra<662) b2[addra-656]<=dina[21:0];
                         else if(addra>=768 && addra<784) x[1][(addra-768)*32+:32]<=dina;
                         else if(addra>=INPUT2_BASE && addra<INPUT2_BASE+64) begin
                             input_rel=addra-INPUT2_BASE;

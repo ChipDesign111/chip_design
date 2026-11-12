@@ -1,6 +1,6 @@
 # 开发与验证
 
-本次集成基于 rtl-dev `1eb6462`，移入 perf/ifetch-line-buffer `5da2148` 的取指缓存并修复非缓存地址、写入一致性和异常填充处理，同时修复单样本 Argmax 的旧值比较。NPU 保持 batch=4、32 个共享 INT8 乘法器、INT22 内部累加、零气泡 tile 交接、FC2 八 tile 打包和 W2 跨层预取。当前 ASIC RTL 保留 `CUT_SLV_AX` 地址通道边界；FPGA bitstream 也必须从当前源码重新构建验证。旧版本 RTL 和 EDA 证据不可直接作为本次集成的验收结果。
+本次集成基于 rtl-dev `1eb6462`，移入 perf/ifetch-line-buffer `5da2148` 的取指缓存并修复非缓存地址、写入一致性和异常填充处理，同时修复单样本 Argmax 的旧值比较。当前 NPU 保持 batch=4、零气泡 tile 交接、FC2 八 tile 打包和 W2 跨层预取，并将共享 INT8 乘法器从 32 个收为 16 个：FC1 改为四个 8 输出×2 lane 相位，FC2 仍为四个 2 行×6 输出相位并只使用 12 个乘法器；内部累加器和 bias 存储均为 INT22。该调度变化尚待本地完整功能回归和新 EDA 结果，旧版本 RTL、周期和 EDA 证据不可直接作为本次验收结果。当前 ASIC RTL 保留 `CUT_SLV_AX` 地址通道边界；FPGA bitstream 也必须从当前源码重新构建验证。
 
 ```bash
 python tools/project.py doctor
