@@ -77,6 +77,9 @@ proc eda_fix_fanout {directory} {
         set result [eda_eval 32_fanout_split $command]
         if {[llength $result] != 3} {error "Expected one non-inverting ECO buffer"}
         lassign $result new_instance input_net output_net
+        set new_instance [eda_db_string $new_instance]
+        set input_net [eda_db_string $input_net]
+        set output_net [eda_db_string $output_net]
         if {$input_net ne $net_name || $output_net eq $net_name} {error "Unexpected fanout ECO net split"}
         foreach pin $original_inputs {
             lassign $pin object original_name cell_name
