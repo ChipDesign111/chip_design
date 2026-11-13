@@ -108,8 +108,11 @@
     "commit_address": "0x0001003c",
     "commit_key": "0xb007c0de",
     "required_sequential_full_words": 2048,
-    "reset_synchronizer_clocks": 8,
-    "post_commit_margin_clocks": 5
+    "reset_synchronizer_clocks": 10,
+    "post_commit_margin_clocks": 5,
+    "reset_request_falling_edges": 2,
+    "functional_reset_release_edge": "falling",
+    "clock_required_during_reset": true
   },
   "physical_target": {
     "whole_die_with_pad_mm2_max": 4.0,

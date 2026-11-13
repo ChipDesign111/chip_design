@@ -19,9 +19,22 @@ report_timing -early -from $outputs -max_paths 20 -path_type full_clock > [file 
 # Report its real half-cycle path into the rising-edge SRAM command register
 # in every active library view, without changing any clock/path constraint.
 if {[file exists [file join $eda_work src chip_design rtl memory sram_transaction_reset.sv]]} {
-    # -hierarchical patterns match local cell names, not the slash-separated
-    # full name printed by report_timing. Use the actual full instance path.
-    set qualified_reset [get_cells i_sram_transaction_reset/reset_qualified_n_reg]
+    set source_file [open [file join $eda_work src chip_design rtl soc my_soc_top.sv]]
+    set source_text [read $source_file]
+    close $source_file
+    if {[string first "por_request_qualified_n" $source_text] >= 0} {
+        # Hierarchical search matches local names. Select the final stage of
+        # the shared functional reset tree by its full native object name.
+        set qualified_reset {}
+        foreach_in_collection cell [get_cells -hierarchical *synch_regs_q_reg*] {
+            set name [get_object_name $cell]
+            if {[regexp {^i_rstgen_main/.*synch_regs_q_reg\[3\]$} $name]} {
+                set qualified_reset $cell
+            }
+        }
+    } else {
+        set qualified_reset [get_cells i_sram_transaction_reset/reset_qualified_n_reg]
+    }
     if {[sizeof_collection $qualified_reset] != 1} {error "Expected one common SRAM transaction-reset output register"}
     set request_d [get_pins i_mainmem/port_req_q_reg/D]
     if {[sizeof_collection $request_d] != 1} {error "Expected one SRAM request register D pin"}

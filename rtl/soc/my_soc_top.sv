@@ -15,15 +15,26 @@ module my_soc_top #(
   import my_soc_pkg::*;
 
   logic por_reset_n,boot_ready;
-  // Four system-clock edges for debug/POR, then four for the functional SoC.
-  // Assertion is asynchronous at both stages; deassertion is synchronous.
-  rstgen i_rstgen_por(.clk_i(clk_i),.rst_ni(rst_ni),.test_mode_i(1'b0),.rst_no(por_reset_n),.init_no());
+  // Qualify asynchronous reset requests before they reach system-clock logic.
+  // The clock must run for two falling edges to recognise assertion/release.
+  // JTAG TAP trst_ni remains connected to the independent external reset.
+  logic por_request_qualified_n, ndm_request_qualified_n;
+  wire reset_clk_n = ~clk_i;
+  sram_transaction_reset i_por_request_reset (
+      .clk_i(clk_i), .reset_request_ni(rst_ni),
+      .transaction_reset_no(por_request_qualified_n)
+  );
+  rstgen i_rstgen_por(.clk_i(reset_clk_n),.rst_ni(por_request_qualified_n),.test_mode_i(1'b0),.rst_no(por_reset_n),.init_no());
   logic ndmreset;
   logic ndmreset_n;
+  sram_transaction_reset i_ndm_request_reset (
+      .clk_i(clk_i), .reset_request_ni(~ndmreset),
+      .transaction_reset_no(ndm_request_qualified_n)
+  );
 
   rstgen i_rstgen_main (
-      .clk_i       (clk_i),
-      .rst_ni      (por_reset_n & (~ndmreset)),
+      .clk_i       (reset_clk_n),
+      .rst_ni      (por_reset_n & ndm_request_qualified_n),
       .test_mode_i (1'b0),
       .rst_no      (ndmreset_n),
       .init_no     ()
@@ -374,13 +385,10 @@ module my_soc_top #(
   logic [3:0]  sram_be;
   logic [31:0] sram_rdata;
   logic sram_transaction_reset_n;
-  // Do not distribute the asynchronously asserting SoC reset directly into
-  // the non-reset SRAM command D path. One shared boundary controls both ends;
-  // changing only my_mainmem would leave bridge acceptance inconsistent.
-  sram_transaction_reset i_sram_transaction_reset (
-      .clk_i(clk_i), .reset_request_ni(ndmreset_n),
-      .transaction_reset_no(sram_transaction_reset_n)
-  );
+  // CPU, crossbar, NPU and SRAM now observe the SAME functional reset.
+  // POR assertion and NDM requests enter on falling edges, as does functional
+  // release. Do not delay only the SRAM receiver while producers clear early.
+  assign sram_transaction_reset_n = ndmreset_n;
 
   logic        boot_req;
   logic        boot_we;

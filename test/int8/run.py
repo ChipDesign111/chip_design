@@ -63,9 +63,11 @@ def main():
         if args.vendor_model:
             if not args.vendor_model.is_file():raise ValueError('Missing authorized SRAM model')
             fl=['+define+CHIP_USE_RA1SHD',args.vendor_model.resolve().as_posix()]+fl
-        fl.append((HERE/'tb_soc.sv').as_posix());(run/'soc.f').write_text('\n'.join(fl)+'\n')
+        fl += [(HERE/'tb_soc.sv').as_posix(),(HERE/'tb_system_reset_contract.sv').as_posix()];(run/'soc.f').write_text('\n'.join(fl)+'\n')
         commands=['onerror {quit -code 1}','onbreak {resume}','vlib work','vmap work work','vlog -sv -f soc.f','vsim -suppress 12110 -novopt -onfinish stop '+('+notimingchecks ' if args.vendor_model else '')+'work.tb_soc','run -all','set status [examine -radix hex /tb_soc/magic]','if {![string equal -nocase $status c0dec0de]} {quit -code 3}','quit -code 0']
-        (run/'soc.do').write_text('\n'.join(commands)+'\n');execute([args.vsim,'-c','-do','do soc.do'],run,'soc','INT8_SOC PASS')
+        commands[-1:-1]=['quit -sim','vsim -suppress 12110 -novopt -onfinish stop work.tb_system_reset_contract','run -all','set passed [examine -radix unsigned /tb_system_reset_contract/passed]','if {$passed != 1} {quit -code 4}']
+        (run/'soc.do').write_text('\n'.join(commands)+'\n');text=execute([args.vsim,'-c','-do','do soc.do'],run,'soc','INT8_SOC PASS')
+        if 'SYSTEM_RESET_CONTRACT_PASS' not in text:raise RuntimeError('Shared system reset contract was not verified')
     if any(hashlib.sha256((ROOT/name).read_bytes()).hexdigest()!=value for name,value in source_sha.items()):raise RuntimeError('Source changed during functional run')
     (run/'result.json').write_text(json.dumps({'unit_cases':len(seeds),'trained_samples':24 if args.trained else 0,'soc':args.soc,'vendor_model_sha256':hashlib.sha256(args.vendor_model.read_bytes()).hexdigest() if args.vendor_model else None,'passed':True},indent=2)+'\n')
     print('Results: '+str(run))

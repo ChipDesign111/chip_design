@@ -386,10 +386,10 @@
     {
       "source": "soc/rtl/my_soc_top.sv",
       "path": "rtl/soc/my_soc_top.sv",
-      "sha256": "5eca222d9a5b0b1809b6d8b07f0402fae934388b28a05488efb60c015018d89f",
-      "previous_sha256": "6ff7907978ad2aaeaf058314a889d239df9377ca83d3b8fb22869e08bb5407a3",
+      "sha256": "a80933eb48fedacaee3ea8f8da3653fd7ddc4b6f672efdcab0104f6f59e88d62",
+      "previous_sha256": "5eca222d9a5b0b1809b6d8b07f0402fae934388b28a05488efb60c015018d89f",
       "original_sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6",
-      "project_override": "INT8 tiled DMA, guarded boot and shared falling-edge SRAM transaction reset for both AXI bridge and command bank",
+      "project_override": "INT8/DMA/guarded boot; user-authorized coherent system-clock reset: qualify POR/NDM requests on falling edges and use one functional reset for CPU/AXI/NPU/SRAM; JTAG TAP independent",
       "upstream_sha256": "174207c5682648222a6f280705666d272d1d44406df6193370c0e8efc7ed374e"
     }
   ],

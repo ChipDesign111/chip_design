@@ -66,8 +66,9 @@ module tb_soc;
         if(magic!==32'hc0dec0de) $fatal(1,"SoC timeout, PC=%h",dut.instr_addr);
         if(read_overlap==0 || write_overlap==0) $fatal(1,"Full AXI SoC did not overlap DMA and MAC");
         $display("INT8_SOC PASS cycles=%0d DMA_read_MAC_overlap=%0d DMA_write_MAC_overlap=%0d",cycles,read_overlap,write_overlap);
-        // Asynchronous reassertion must revoke execution immediately.
-        #2;rst_n=0;#1;
+        // The shared system reset recognises assertion within two falling
+        // edges, as required by the clock-running reset interface contract.
+        #2;rst_n=0;repeat(2) @(negedge clk);#1;
         if(dut.ndmreset_n || dut.boot_ready) $fatal(1,"Reset assertion failed");
         $finish;
     end

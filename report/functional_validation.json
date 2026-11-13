@@ -1,6 +1,6 @@
 {
   "validated_at": "2026-10-29T06:56:31.971273+00:00",
-  "scope": "Current RTL has a shared SRAM transaction-reset correction; new section records its RTL functional evidence only. Historical physical/SDF sections refer to their named old sources, not the modified RTL.",
+  "scope": "Latest system_reset_20261113 section is current RTL functional evidence. Historical physical/SDF sections retain their named inputs and do not validate the new RTL.",
   "results": {
     "unit_cases": 44,
     "trained_samples": 24,
@@ -677,5 +677,227 @@
       "canonical_LF_SHA": "d3b9030e3c3e0612bb6fad4318df105582e90eac427100e41fdda02e3911ae1b",
       "semantic_change": false
     }
-  }
+  },
+  "system_reset_20261113": {
+    "validated_at": "2026-11-13T03:20:27.179246+00:00",
+    "scope": "User-authorized system-clock reset unification; no new physical/SDF pass claimed",
+    "regression": {
+      "unit_cases": 44,
+      "trained_samples": 24,
+      "soc": true,
+      "vendor_model_sha256": null,
+      "passed": true
+    },
+    "reset_contract": "80 POR phases and 80 NDM phases passed; NDM does not reset independent POR/debug domain",
+    "native_soc_reset_matrix": {
+      "scope": "RTL full SoC 20ns, original SRAM timing checks ON; not SDF; only physical PAD diagnostic replaced by RTL clock",
+      "testbench_sha256": "614b761a3fe6cce6db70eef445ff704a0b50dddf962bea4b0adcc6425b184832",
+      "cases": [
+        {
+          "seed": 10000,
+          "reset_offset_ps": 2000,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "a6598601f5d5cf10598d7080f92fc1eebbfd465ddb4616f5a5658fca14c04fe4"
+        },
+        {
+          "seed": 10001,
+          "reset_offset_ps": 250,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "dee84ae7eb47c850f6fac49c320efdff25d11711a19883b73fc46b65e41f47ba"
+        },
+        {
+          "seed": 10002,
+          "reset_offset_ps": 1650,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "c0309c8c77165e5e91f13b9c07d393eeebf9fbe0cfc989cc2c02327f60a99454"
+        },
+        {
+          "seed": 10003,
+          "reset_offset_ps": 3050,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "c95d914f0cbbd56a5326ded81f9462b0dbd7aea30fbfabb1743c4af40eada5c2"
+        },
+        {
+          "seed": 10004,
+          "reset_offset_ps": 4450,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "e39a1629fba3d289182e41c4c527b9451049ef58921bc71433322f7e888f381c"
+        },
+        {
+          "seed": 10005,
+          "reset_offset_ps": 5850,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "d91f39e4afbdb9ee19737d80bdc1b48159777283f9a79a6387702128f6983b73"
+        },
+        {
+          "seed": 10006,
+          "reset_offset_ps": 7250,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "47dd3b79e269c69d22ef995c6933a8394edcacb6b285da6fe43c7c1ca06993bb"
+        },
+        {
+          "seed": 10007,
+          "reset_offset_ps": 8650,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "8557b7c8d985b4983f2a4cab78c5399c00761ce55991937407aebd7f33698e89"
+        },
+        {
+          "seed": 10008,
+          "reset_offset_ps": 10050,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "e36e04f60a1b2270b32e157222043297918b61b02b6c18022b67c33861551aa5"
+        },
+        {
+          "seed": 10009,
+          "reset_offset_ps": 11450,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "1009103690e7a61679e0575b75c5e50179a602068846b2dff45571be05fbc4ee"
+        },
+        {
+          "seed": 10010,
+          "reset_offset_ps": 12850,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "8899a1301fe5340475f2e4d08a3b554b4ddbf4a7587ad45a51ac7e860571a56e"
+        },
+        {
+          "seed": 10011,
+          "reset_offset_ps": 14250,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "4c92206106fd7f4b2db26adbe49112296d68a0cc487b788ec6907fc57614f596"
+        },
+        {
+          "seed": 1,
+          "reset_offset_ps": 15650,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "2d94b84be6b58535f8439cc31f664032674d73344ffff75d4d4fc35111a1788d"
+        },
+        {
+          "seed": 3,
+          "reset_offset_ps": 17050,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "91be85a6a319929ac064d75438952da556bc1326da7cc3602dbece66c20d17e7"
+        },
+        {
+          "seed": 5,
+          "reset_offset_ps": 18450,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "4786cd98f5efe31c9b1a1909216cdb44776926c36da6eb413e71227f0f4d5b2f"
+        },
+        {
+          "seed": 7,
+          "reset_offset_ps": 19850,
+          "metrics": [
+            3659,
+            1035,
+            93,
+            62,
+            93
+          ],
+          "sha256": "19380049c14694c3de1957f4da23e95a1eb7daf66ff4fb5c3cb0ec9c51d3a272"
+        }
+      ]
+    },
+    "joint_transaction_tests": {
+      "False": "AXI_SRAM_RESET_PASS phases=80 reset_scenarios=320 accepted=642 actual=642",
+      "True": "AXI_SRAM_RESET_PASS phases=80 reset_scenarios=320 accepted=642 actual=642"
+    },
+    "rtl_sha256": {
+      "rtl/soc/my_soc_top.sv": "a80933eb48fedacaee3ea8f8da3653fd7ddc4b6f672efdcab0104f6f59e88d62",
+      "rtl/memory/sram_transaction_reset.sv": "47dcac9d9d80fee288e73c765481f7ffd0b5c44bf7e3049943b3b527ded2fcd5"
+    },
+    "diagnosis_original_inputs_unchanged": true,
+    "regression_source_manifest_sha256": "608c8d0de6abc97666d32b871f0b28ca687ef01e0721ab5cbdbe4eba714440ed"
+  },
+  "latest_validation_section": "system_reset_20261113",
+  "current_rtl_physical_sdf_accepted": false
 }
