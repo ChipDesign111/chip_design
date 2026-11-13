@@ -11,7 +11,7 @@
 | [results.json](results.json) | 11 组功能、周期、复位相位和时序消息数 |
 | [input_manifest.json](input_manifest.json) | 最终网表、原 SDF、库模型、固件和测试台 SHA |
 | [sdf_max.log](sdf_max.log)、[gate_zero.log](gate_zero.log) | 基础 SDF 和无 SDF 对照完整日志 |
-| [sdf.log](sdf.log) | SDF 回标原文与警告类别 |
+| [review.tar.gz](review.tar.gz) 中的 `build/sdf.log` | SDF 回标原文与警告类别 |
 | [SRAM输入Setup](sram_timing/sram_input_setup.log)、[Hold](sram_timing/sram_input_hold.log) | 输入寄存器到宏的下降沿检查 |
 | [SRAM输出Setup](sram_timing/sram_output_setup.log)、[Hold](sram_timing/sram_output_hold.log) | 宏下降沿到接收寄存器上升沿的检查 |
 | [时钟报告](sram_timing/clocks.log) | 传播后的 sys_clk 20 ns 正负边沿 |

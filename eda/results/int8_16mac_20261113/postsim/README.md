@@ -52,9 +52,8 @@ SDF 与 unit-delay 的 NPU 周期和 DMA 重叠完全一致；CPU 观测相差 1
 - [audit.json](audit.json)：逐用例时序阶段和工作窗口洁净状态。
 - [results.json](results.json)：11 个用例的功能与周期。
 - [input_manifest.json](input_manifest.json)：网表、SDF、firmware、库模型和仿真适配器 SHA。
-- [sdf.log](sdf.log)：SDF 回标原文。
 - [sdf_max.log](sdf_max.log)、[gate_unit.log](gate_unit.log)：基础 SDF 和 unit-delay 完整日志。
-- [review.tar.gz](review.tar.gz)：47 个轻量审核文件。
+- [review.tar.gz](review.tar.gz)：47 个轻量审核文件，其中 `build/sdf.log` 为 SDF 回标原文。
 
 ## 范围
 
