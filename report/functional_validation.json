@@ -702,7 +702,7 @@
       "passed": true,
       "system_reset_contract": "SYSTEM_RESET_CONTRACT_PASS phases=80 POR=80 NDM=80"
     },
-    "source_manifest_sha256": "9b80aee7497f18fad2d5119cae955e0306fbc571bbb8da68fe043be96d999d5e",
+    "source_manifest_sha256": "4f5ead0f7cf70970820a59a04b22bc03d9e82fe4780bf39d7b1c84c399eb4ea3",
     "core_main_sha256": {
       "rtl/npu/har_npu_core.sv": "c1dc90bf9c84c01a8df746fb97e759b6e7b76e33411af2f3d3cb8d5e12b7b7fe",
       "rtl/npu/simple_npu_top.sv": "ad07ac922fed02cf6fd7e393014fdd5a191335e1295282e1e8129950ac4ad31f",

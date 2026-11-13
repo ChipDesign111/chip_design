@@ -387,7 +387,7 @@
     {
       "source": "soc/rtl/my_soc_top.sv",
       "path": "rtl/soc/my_soc_top.sv",
-      "sha256": "74cf8eaa8d69966ee936770890d923f6b9669beba1db6e8ef4380337c3e46a78",
+      "sha256": "c0f2b0b8d8f7c1f1c3b16e9e33f5d7b73cbe7e6fbf20e7cc54447d6cb8cf1a1a",
       "previous_sha256": "71ce705f0b1a362dc4eb99bf519876ea9e1827d7da523b0db2e688b1ae9706d4",
       "original_sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6",
       "project_override": "INT8 tiled DMA, guarded boot, shared 16 MAC, CUT_SLV_AX crossbar address boundaries and shared falling-edge SRAM transaction reset; CPU 4x8-word instruction line buffer with write invalidation, retaining CUT_SLV_AX; address-matched SRAM instruction invalidation with physical alias normalization",

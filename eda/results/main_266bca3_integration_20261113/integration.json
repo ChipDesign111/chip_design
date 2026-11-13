@@ -32,5 +32,7 @@
     "passed": true,
     "system_reset_contract": "SYSTEM_RESET_CONTRACT_PASS phases=80 POR=80 NDM=80"
   },
-  "source_manifest_sha256": "9b80aee7497f18fad2d5119cae955e0306fbc571bbb8da68fe043be96d999d5e"
+  "source_manifest_sha256": "4f5ead0f7cf70970820a59a04b22bc03d9e82fe4780bf39d7b1c84c399eb4ea3",
+  "functional_regression_path": "test/int8/runs/20261113_213223",
+  "soc_reset_only_diff": "31 lines changed versus main after preserving original LF source bytes; main array, cache, DMA and interconnect remain unchanged"
 }

@@ -91,8 +91,7 @@ def main():
         executable=build/'simv'
         if mode=='gate_unit':
             # Main uses an independent unit-delay control for the linebuffer;
-            # the native
-            # models remain original in all SDF cases. Removing SDF alone leaves a mixture of
+            # native models remain original in all SDF cases. Removing SDF alone leaves a mixture of
             # ideal interconnect and intrinsic cell delays. SDF cases retain
             # all annotated delays, checks and native notifiers.
             control=root/'build_unit';control.mkdir()
