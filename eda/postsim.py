@@ -25,8 +25,11 @@ def main():
     parser.add_argument('command',choices=['run','status','fetch','timing'])
     parser.add_argument('--host',default='chipdesign')
     parser.add_argument('--eda-upload',help='Completed physical upload; defaults to last_upload.json')
+    parser.add_argument('--upload',help='Existing post-simulation upload for status/fetch/timing')
     parser.add_argument('--output',type=Path)
     args=parser.parse_args()
+    if args.command=='run' and args.upload:
+        raise ValueError('--upload is only valid for status, fetch and timing')
     if args.command=='run':
         eda=remote.valid_upload(args.eda_upload or json.loads((DIST/'last_upload.json').read_text())['upload'])
         if not remote.status(args.host,eda)['ready']:raise ValueError('Physical EDA must be complete')
@@ -54,10 +57,18 @@ def main():
         cmd='python3 -u deploy/server/postsim/run.py --eda-work '+shlex.quote(eda+'/work')+' --run-root '+shlex.quote(upload+'/postsim')+' --firmware '+shlex.quote(upload+'/configs/firmware.hex')
         print(remote.ssh(args.host,'set -e\nsource /etc/profile.d/eda.sh\ncd '+shlex.quote(upload)+'\nnohup '+cmd+' >logs/postsim.log 2>&1 < /dev/null &\necho $! >logs/postsim.pid\ncat logs/postsim.pid\n'))
         print('Postsim upload: '+upload);return
-    state=json.loads((DIST/'last_postsim.json').read_text());upload=remote.valid_upload(state['upload'])
+    if args.upload:
+        state={'upload':remote.valid_upload(args.upload),'eda_upload':None}
+    else:
+        state=json.loads((DIST/'last_postsim.json').read_text())
+    upload=remote.valid_upload(state['upload'])
     if args.command=='timing':
         # Run only after simulation, keeping heavy server tools sequential.
-        eda=remote.valid_upload(state['eda_upload'])
+        if state.get('eda_upload'):
+            eda=remote.valid_upload(state['eda_upload'])
+        else:
+            manifest=json.loads(Path(upload,'postsim/input_manifest.json').read_text(encoding='utf-8'))
+            eda=remote.valid_upload(str(Path(manifest['eda_work']).parent))
         tool=ROOT/'eda/server/postsim/sram_timing.tcl'
         output=upload+'/postsim/sram_timing'
         remote.ssh(args.host,'set -e\ntest -f '+shlex.quote(upload+'/postsim/results.json')+'\ntest ! -e '+shlex.quote(output)+'\nmkdir '+shlex.quote(output)+'\n')
