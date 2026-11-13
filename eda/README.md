@@ -1,12 +1,10 @@
 # 从本机部署到完整 EDA 结果
 
-当前活动版本：[main 266bca3整合](results/main_266bca3_integration_20261113/README.md)。核心沿用main的16-MAC/INT22/取指缓存和固件，新增公共复位与WB/Lab5流程。合并后RTL回归已过，新物理与TT待跑；以下dea5584是前一版xzx证据。
+当前活动版本：[main266bca3核心完整整合结果](results/main_266bca3_integration_20261113/README.md)。保留16-MAC/INT22/128B取指缓存、CUT_SLV_AX和main固件，接入公共复位、原生WB避让与Lab5。新287ae40已经完成41组计算/8组DMA/完整SoC及复位契约回归、全新Genus/34步、TT16组SDF+1组功能对照、同DB STA和Lab5。
 
-最新版[统一系统复位与Wire Bond结果](results/system_reset_unified_20261113/README.md)已完成：物理源码dea5584，新综合与34步、同源TT后仿、同数据库半周期STA和Lab5均按正常条件验证。TT Setup/Hold +3.825/+0.115 ns，17用例功能全过，绑定/全程动态时序/负IOPATH截零均0；WB64项0违规，完整LVS正确。课程DRC与逐几何核对的ERC残项原样列示，不称ERC Clean或完整foundry签核。
+实测密度74.633%、TT Setup/Hold +0.350/+0.050ns；回标错误/缺失检查/全部阶段动态事件/负IOPATH截零0，WB64项0、天线62项0、完整LVS正确。DRC/ERC课程残项和TDO上层互连工具警告按原文说明，不称全Warning为零或完整foundry签核。本轮按用户授权整合main；以后独立改动需另行验证。
 
-[复位修复说明与功能证据](../report/system_reset_boundary.md)记录用户批准的系统时钟域两下降沿请求识别、共同功能复位及独立JTAG TAP复位。历史be4a7fc虽WB0，TT仍有两条复位事件，不能作最终通过依据。
-
-服务器仅保留最新相关物理、TT、Lab5及必要工具依赖；旧上传清理后不要从历史说明恢复。大模型和物理视图留服务器，完整SHA核验小包在本地lab5/system_reset_unified_20261113。本轮只提交xzx，未修改main；main的独立RTL更新不由本轮验证。[Lab5操作指南](docs/Lab5操作指南.md)区分完整部署、一键全流程和仅执行Lab5。
+本地核验包lab5/main_266bca3_final_20261113，原生利用率日志和TT完整路径另有SHA核验补充，未改原675项回传清单。服务器保留最新三个关联目录及必要工具，旧上传在源码/轻量证据核验缓存后清理。历史[dea5584结果](results/system_reset_unified_20261113/README.md)及其他结果不能替代本轮新输入。[Lab5操作指南](docs/Lab5操作指南.md)区分一键完整流程与只执行Lab5。
 
 功能RTL基线已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。设计是完整 CV32E40P SoC：第一层每拍 2 个输入×32 个输出，第二层 1×6，输入、权重、隐藏值使用 INT8，偏置、累加和分类分数使用 INT32。主 SRAM 保存完整权重；DMA 将当前需要的小块搬入两个 64 字节缓冲。面积验收是 **包含 PAD 的整个 Die ≤3.8 mm²**。
 

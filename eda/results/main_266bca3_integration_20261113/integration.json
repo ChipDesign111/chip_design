@@ -11,7 +11,7 @@
   },
   "main_preserved": "16 shared INT8 MACs, INT22 biases/accumulators, 128B instruction fetch, CUT_SLV_AX, main DMA and firmware",
   "additions": "Common system reset only in SoC perimeter; native WB keepouts, Lab5, full source/input SHA audit, robust read-only status and result fetch, TT native nonnegative combination selection and mux-DFF implementation",
-  "verification": "pending fresh regression/implementation/TT/Lab5; previous results not reused",
+  "verification": "New287ae40 physical34steps, TT16SDF+unit control, same-DB STA and Lab5 passed normal teaching checks; course exceptions retained",
   "functional_regression": {
     "unit_cases": 41,
     "dma_response_cases": 8,
@@ -44,6 +44,8 @@
     "current_mapping": "library_enable",
     "automatic_clock_gating": true,
     "effort": "medium",
-    "new_whole_flow": "pending"
-  }
+    "new_whole_flow": "selected287ae40 complete and source-SHA verified"
+  },
+  "selected_source": "287ae40129c4e7873dcca2e6281bb1a2f4a414d6",
+  "selected_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_220745_287ae40"
 }

@@ -25,3 +25,7 @@ TT静态Setup/Hold为+3.825/+0.115 ns。新TT17用例功能全过，绑定错误
 新同源Lab5完成，WB64项0违规、最终天线0、完整LVS正确；课程DRC残项和按原生IO/外环几何核对的ERC残项保留，不称ERC Clean或完整代工厂签核。本轮只跑TT SDF；独立main RTL、Dummy后STA、IR/EM等没有因此被验证。
 
 [完整最终结果及SHA来源](../eda/results/system_reset_unified_20261113/README.md)。20ns、3.8mm²与原生电气/几何规则保持。有限相位测试及静态分析不等于所有异步相位的亚稳态证明。
+
+## 主线核心整合后的复核
+
+main266bca3的16-MAC/INT22核心已经与本修复整合，并恢复main原生门控/使能与medium综合。新287ae40实际含443个自动门控及3282个受控FF，TT16个SDF用例的全部阶段动态违规0；不再靠禁用全部该类单元实现过关。原始模型、notifier与检查保留。[最终整合结果](../eda/results/main_266bca3_integration_20261113/README.md)。旧dea5584结果仍绑定其历史源码。

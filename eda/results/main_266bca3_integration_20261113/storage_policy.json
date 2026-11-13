@@ -1,0 +1,58 @@
+{
+  "limit_bytes": 20000000000,
+  "home_allocated_bytes": 2719383552,
+  "kept_uploads": [
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_220745_287ae40",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_225252_postsim_vcs_tt_287ae40",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_225800_lab5_287ae40"
+  ],
+  "removed_replaced_uploads": [
+    "20261113_112238_dea5584",
+    "20261113_124759_postsim_vcs_tt_dea5584",
+    "20261113_205904_lab5_22a168c",
+    "20261113_213350_fddabe5",
+    "20261113_220530_dec9319"
+  ],
+  "deployment_cache_verified": {
+    "20261113_220745_287ae40": {
+      "archive_sha256": "9c77238333b5f6c588d32823c7ca3aa52337419ff16880ac7a1e8c38ddabba61",
+      "entries": 207,
+      "source_commit": "287ae40129c4e7873dcca2e6281bb1a2f4a414d6"
+    },
+    "20261113_225252_postsim_vcs_tt_287ae40": {
+      "archive_sha256": "6aa3d9fc8c283bc4b4c5cbca818182cb33535025040d1b758ed5c47d3214feaf",
+      "entries": 207,
+      "source_commit": "287ae40129c4e7873dcca2e6281bb1a2f4a414d6"
+    },
+    "20261113_225800_lab5_287ae40": {
+      "archive_sha256": "ded3522d7c98516174cfdfa10fa9ce9dd8641ca4627c29148a74a8a5a2d4364b",
+      "entries": 207,
+      "source_commit": "287ae40129c4e7873dcca2e6281bb1a2f4a414d6"
+    },
+    "20261113_112238_dea5584": {
+      "archive_sha256": "c08c8f72ad80a43a51513a6b56f69b16eba8590ddf8ed744f19ea8caa25d6e48",
+      "entries": 206,
+      "source_commit": "dea55844d707a146668a8d91b619ae109ca1dc6d"
+    },
+    "20261113_124759_postsim_vcs_tt_dea5584": {
+      "archive_sha256": "3be7548696750e64ec079315d0c502428ce32a7b6dc38a86b31e1af40ecdfa92",
+      "entries": 206,
+      "source_commit": "dea55844d707a146668a8d91b619ae109ca1dc6d"
+    },
+    "20261113_205904_lab5_22a168c": {
+      "archive_sha256": "21128253707df5f70883eea7d6558a34002a192af512a7aaeff1e45c27dc7080",
+      "entries": 206,
+      "source_commit": "22a168c9c3c5e579f51d101f45e803b8f0ba2844"
+    },
+    "20261113_213350_fddabe5": {
+      "archive_sha256": "c6424f4dff87a481742d352dde30e5b12eeb08f00c5de752b131d906899f5407",
+      "entries": 207,
+      "source_commit": "fddabe55bc014e31a4d5f127b6698f1715447039"
+    },
+    "20261113_220530_dec9319": {
+      "archive_sha256": "ba812508c9e9cba99109724f001ffbde7aca69030e8629eb878f6578cb0cb5cd",
+      "entries": 207,
+      "source_commit": "dec9319217151ce615f487b10c558591fe1ba581"
+    }
+  }
+}

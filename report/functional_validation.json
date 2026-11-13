@@ -1,6 +1,6 @@
 {
   "validated_at": "2026-10-29T06:56:31.971273+00:00",
-  "scope": "Current RTL has a shared SRAM transaction-reset correction; new section records its RTL functional evidence only. Historical physical/SDF sections refer to their named old sources, not the modified RTL.",
+  "scope": "Current main266bca3 integration section contains source-bound functional,287ae40 physical/TT/STA/Lab5 evidence. Other named sections remain historical.",
   "results": {
     "unit_cases": 44,
     "trained_samples": 24,
@@ -679,9 +679,9 @@
     }
   },
   "latest_validation_section": "main_266bca3_integration_20261113",
-  "current_rtl_physical_sdf_accepted": false,
+  "current_rtl_physical_sdf_accepted": true,
   "main_266bca3_integration_20261113": {
-    "scope": "Merged main core plus user-authorized common reset; functional regression passed, fresh physical/SDF/Lab5 pending",
+    "scope": "Main16-MAC/INT22 core plus common reset and Lab5 validated; core six main SHA preserved",
     "regression": {
       "unit_cases": 41,
       "dma_response_cases": 8,
@@ -710,6 +710,42 @@
       "rtl/dma/har_dma.sv": "6aaa673d985b4c431ed7f65cb12ff7794bf6af48fbced4f399f3b5dbd45da2cb",
       "rtl/soc/my_ifetch.sv": "3d8d8ba907e5ad8a4b27e1e8d4b4abf9958a9a32c49056ed81150eeedfed1ea0",
       "rtl/memory/bootram.sv": "3a7930a2052e39d94d58042b27725eb60a16541463cfc92792dc0bb9727e714b"
-    }
-  }
+    },
+    "physical_commit": "287ae40129c4e7873dcca2e6281bb1a2f4a414d6",
+    "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_220745_287ae40",
+    "tt_postsim": {
+      "cases": 17,
+      "sdf_cases": 16,
+      "independent_control_cases": 1,
+      "normal_postsim_pass": true,
+      "annotation_errors": 0,
+      "missing_instances": 0,
+      "negative_iopath_clamps": 0,
+      "negative_path_delay_support_complete": true,
+      "all_stage_dynamic_timing_clean": true
+    },
+    "tt_sta": {
+      "Setup": {
+        "wns_ns": 0.35,
+        "native_report": "tt_sta_expanded/my_soc_top_postRoute_all.tarpt.gz",
+        "sha256": "cbd1069b85b07b5042dc897e2d26a58dac782ac473dd2c563af166e6120c8a60"
+      },
+      "Hold": {
+        "wns_ns": 0.05,
+        "native_report": "tt_sta_expanded/my_soc_top_postRoute_all_hold.tarpt.gz",
+        "sha256": "52e3ef69549dd0558da6730f2d93874990d9150aa09c9ab8b02e11d61e7c6d2c"
+      }
+    },
+    "lab5_pass": true,
+    "wire_bond": {
+      "checks": 64,
+      "violations": 0,
+      "baseline_violations": 9,
+      "waived": false
+    },
+    "lvs_correct": true,
+    "erc_clean": false,
+    "report": "eda/results/main_266bca3_integration_20261113/README.md"
+  },
+  "current_validated_at": "2026-11-13T15:07:19.817369+00:00"
 }

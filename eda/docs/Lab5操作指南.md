@@ -6,8 +6,8 @@
 
 ```powershell
 python eda/pipeline.py run --output C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/lab5/完整新流程目录
-python eda/pipeline.py run --only lab5 --eda-upload /home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_112238_dea5584 --output C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/lab5/仅Lab5新目录
-python eda/signoff.py run --eda-upload /home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_112238_dea5584 --output C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/lab5/本次新目录
+python eda/pipeline.py run --only lab5 --eda-upload /home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_220745_287ae40 --output C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/lab5/仅Lab5新目录
+python eda/signoff.py run --eda-upload /home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_220745_287ae40 --output C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/lab5/本次新目录
 ```
 
 pipeline默认依次执行RTL检查/SoC回归、综合与01–34、TT后仿及同数据库半周期STA、Lab5；--only lab5只调用最后一段。
@@ -53,3 +53,7 @@ converted、executed_review_required、review_required均非通过。报告解�
 2026-11-12实测见[Lab5结果](../results/lab5_20261112/README.md)：本轮完整部署、只跑Lab5，课程DRC/完整LVS/最终天线满足对应要求，原始PNR已有的WB9处仍未通过。中间失败版本已回传留证并清理，服务器保留最新相关物理、TT和Lab5三个目录。
 
 最新版：[统一系统复位与Wire Bond最终结果](../results/system_reset_unified_20261113/README.md)。服务器入口README链接最新三个关联目录；Virtuoso最终版图位于最新Lab5的soc-stu/layout/workspace，库my_soc_top_final、单元my_soc_top_postDummy、视图layout。
+
+当前最终版本：[main266bca3核心完整整合](../results/main_266bca3_integration_20261113/README.md)，物理287ae40、TT225252及Lab5225800同源验证。前述dea5584和2026-11-12记录仅作历史说明，不恢复已清理上传。
+
+已有完整SoC回归可用`--rtl-regression-result 路径/result.json`；pipeline会核对完整RTL/test清单与每个SHA后复用，否则拒绝。默认仍重新执行回归，不豁免任何实现或后仿阶段。

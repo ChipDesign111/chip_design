@@ -1,0 +1,446 @@
+{
+  "observed_utc": "2026-11-13T15:04:45.963609+00:00",
+  "physical_commit": "287ae40129c4e7873dcca2e6281bb1a2f4a414d6",
+  "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_220745_287ae40",
+  "lab5_script_commit": "287ae40129c4e7873dcca2e6281bb1a2f4a414d6",
+  "lab5_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_225800_lab5_287ae40",
+  "all_34_steps_same_input": true,
+  "lab5_pass": true,
+  "physical_files_verified": 675,
+  "lab5_files_verified": 61,
+  "physical_archive_sha256": "e09d2616e776ea97cb5afd2788fe107506a3d5b8584577007fe9f2b82fd8923c",
+  "lab5_archive_sha256": "8429cfc087f1cb62fff04395a94775595e5f4986ba2ce12af3fa894eeacc0ef0",
+  "synthesis": {
+    "cell_count": 64979,
+    "cell_area_um2": 2067330.381,
+    "net_area_um2": 711004.497,
+    "latch_area_um2": 0.0,
+    "memory_area_um2": 401443.591,
+    "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_220745_287ae40/work/syn/my_soc_top/reports/area/area.rpt",
+    "mapped_design": {
+      "native_main_srams": 1,
+      "mapped_leaf_instances": 64979,
+      "all_leaf_types_have_library_models": true,
+      "npu_dma_area_hierarchy_present": true,
+      "latch_area_um2": 0,
+      "automatic_clock_gating_requested": true,
+      "mapped_automatic_clock_gate_instances": 443,
+      "functional_enable_mapping": "library_enable",
+      "mapped_controlled_flip_flop_instances": 3282,
+      "combinational_cell_mapping": "tt_nonnegative_tables",
+      "mapped_excluded_TT_combinational_instances": 0
+    }
+  },
+  "die_area_mm2": 3.7956390976,
+  "density_native_percent": 74.633,
+  "density_log_line": 29650,
+  "tt_sta": {
+    "Setup": {
+      "wns_ns": 0.35,
+      "native_report": "tt_sta_expanded/my_soc_top_postRoute_all.tarpt.gz",
+      "sha256": "cbd1069b85b07b5042dc897e2d26a58dac782ac473dd2c563af166e6120c8a60"
+    },
+    "Hold": {
+      "wns_ns": 0.05,
+      "native_report": "tt_sta_expanded/my_soc_top_postRoute_all_hold.tarpt.gz",
+      "sha256": "52e3ef69549dd0558da6730f2d93874990d9150aa09c9ab8b02e11d61e7c6d2c"
+    }
+  },
+  "tt_postsim": {
+    "cases": 17,
+    "sdf_cases": 16,
+    "independent_control_cases": 1,
+    "normal_postsim_pass": true,
+    "annotation_errors": 0,
+    "missing_instances": 0,
+    "negative_iopath_clamps": 0,
+    "negative_path_delay_support_complete": true,
+    "all_stage_dynamic_timing_clean": true
+  },
+  "wire_bond": {
+    "checks": 64,
+    "violations": 0,
+    "baseline_violations": 9,
+    "waived": false
+  },
+  "antenna": {
+    "checks": 62,
+    "violations": 0
+  },
+  "drc": {
+    "checks": 523,
+    "raw_hierarchical": 2426,
+    "raw_expanded": 14515,
+    "remaining_nonexcluded": {},
+    "teaching_excluded": {
+      "ESD.1g": 0,
+      "ESD.7g": 0,
+      "ESD.9g": 0,
+      "ESD.10g": 0,
+      "ESD.3g": 0,
+      "ESD.5g": 0,
+      "ESD.6g": 0,
+      "ESD.8g": 0,
+      "ESD.18g_1.8V": 0,
+      "ESD.18g_3.3V_N": 0,
+      "ESD.18g_3.3V_P": 0,
+      "ESD.19g": 0,
+      "ESD.20g": 0,
+      "ESD.20g_A": 0,
+      "ESD.21g": 0,
+      "ESD.24g": 30,
+      "ESD.25g": 2384,
+      "ESD.26g": 0,
+      "ESD.27g": 0,
+      "ESD.28g": 0,
+      "ESD.30g": 0,
+      "ESD.32g": 0,
+      "ESD.34g": 0,
+      "ESD.35g": 0,
+      "ESD.37g": 0,
+      "ESD.WARN.1": 0,
+      "ESD.WARN.3": 0,
+      "LUP.1g": 0,
+      "LUP.2g": 0,
+      "LUP.3.1g_1.8V": 0,
+      "LUP.3.3g_3.3V": 1,
+      "LUP.4g": 0,
+      "LUP.5.1g_1.8V": 0,
+      "LUP.5.3g_3.3V": 9,
+      "LUP.6": 0,
+      "MOM.S.2:M1": 0,
+      "MOM.S.2:M2": 0,
+      "MOM.S.2:M3": 0,
+      "MOM.S.2:M4": 0,
+      "MOM.S.2:M5": 0,
+      "MOM.A.1": 0,
+      "MOM.R.1": 0,
+      "MOM.R.2": 1,
+      "DRM.R.1": 1
+    }
+  },
+  "lvs": true,
+  "trace_property_statements": 605,
+  "erc": {
+    "schema": 1,
+    "native_erc_checks": 12,
+    "native_erc_hierarchical": 7,
+    "native_erc_expanded": 977,
+    "erc_clean": false,
+    "accepted_course_residuals": true,
+    "errors": [],
+    "rule_counts": {
+      "mnpg": [
+        4,
+        832
+      ],
+      "mppg": [
+        0,
+        0
+      ],
+      "mnpg_ldd": [
+        0,
+        0
+      ],
+      "mppg_ldd": [
+        0,
+        0
+      ],
+      "mnpg_hvs": [
+        0,
+        0
+      ],
+      "mppg_hvs": [
+        0,
+        0
+      ],
+      "floating": [
+        0,
+        0
+      ],
+      "floating.HVNW_float": [
+        0,
+        0
+      ],
+      "floating.nxwell_float": [
+        1,
+        72
+      ],
+      "floating.psub_float": [
+        1,
+        1
+      ],
+      "npvss49": [
+        1,
+        72
+      ],
+      "ppvdd49": [
+        0,
+        0
+      ]
+    },
+    "markers": [
+      {
+        "rule": "mnpg",
+        "bbox_um": [
+          [
+            83.525,
+            903.43
+          ],
+          [
+            107.525,
+            903.61
+          ]
+        ],
+        "native_pad_hits": [
+          "PVDD1CDG"
+        ],
+        "accepted_course_residual": true,
+        "basis": "Entire representative marker inside measured native protection PAD master"
+      },
+      {
+        "rule": "mnpg",
+        "bbox_um": [
+          [
+            83.525,
+            904.55
+          ],
+          [
+            107.525,
+            904.73
+          ]
+        ],
+        "native_pad_hits": [
+          "PVDD1CDG"
+        ],
+        "accepted_course_residual": true,
+        "basis": "Entire representative marker inside measured native protection PAD master"
+      },
+      {
+        "rule": "mnpg",
+        "bbox_um": [
+          [
+            2.24,
+            1104.27
+          ],
+          [
+            26.24,
+            1104.67
+          ]
+        ],
+        "native_pad_hits": [
+          "PVDD2CDG"
+        ],
+        "accepted_course_residual": true,
+        "basis": "Entire representative marker inside measured native protection PAD master"
+      },
+      {
+        "rule": "mnpg",
+        "bbox_um": [
+          [
+            2.24,
+            1105.42
+          ],
+          [
+            26.24,
+            1105.82
+          ]
+        ],
+        "native_pad_hits": [
+          "PVDD2CDG"
+        ],
+        "accepted_course_residual": true,
+        "basis": "Entire representative marker inside measured native protection PAD master"
+      },
+      {
+        "rule": "floating.nxwell_float",
+        "bbox_um": [
+          [
+            1.575,
+            607.955
+          ],
+          [
+            18.995,
+            614.045
+          ]
+        ],
+        "native_pad_hits": [
+          "PVSS1CDG"
+        ],
+        "accepted_course_residual": true,
+        "basis": "Entire representative marker inside measured native protection PAD master"
+      },
+      {
+        "rule": "floating.psub_float",
+        "bbox_um": [
+          [
+            -15.385,
+            -15.385
+          ],
+          [
+            1963.625,
+            1963.625
+          ]
+        ],
+        "native_pad_hits": [],
+        "accepted_course_residual": true,
+        "basis": "Extracted isolated outer substrate enclosing native seal ring"
+      },
+      {
+        "rule": "npvss49",
+        "bbox_um": [
+          [
+            1.975,
+            608.155
+          ],
+          [
+            18.595,
+            613.845
+          ]
+        ],
+        "native_pad_hits": [
+          "PVSS1CDG"
+        ],
+        "accepted_course_residual": true,
+        "basis": "Entire representative marker inside measured native protection PAD master"
+      }
+    ],
+    "native_report_sha256": "e7894232139e161c2e4927b250ca3fa6f74422263041943ce25d3bea54af71ab",
+    "reviewer_sha256": "1266b03fe7f330a37ee3d973fcc2583cf1c1f4f4cefdf14707e14669dd4bb570",
+    "scope": "Course handling of specifically identified native IO and isolated outer-substrate residuals; not a formal foundry waiver or ERC Clean assertion."
+  },
+  "final_geometry": {
+    "gdstk": "0.9.61",
+    "unit_m": 9.999999999999997e-07,
+    "precision_m": 4.999999999999999e-10,
+    "die_um": [
+      0.0,
+      0.0,
+      1948.24,
+      1948.24
+    ],
+    "ring_reference_um": 1949,
+    "ring_external_bbox_um": [
+      [
+        -15.379999999999995,
+        -15.379999999999995
+      ],
+      [
+        1963.62,
+        1963.62
+      ]
+    ],
+    "ring_external_size_um": 1979,
+    "ring_edges": 7836,
+    "ring_corners": 4,
+    "poc_master": "PVDD2CDG",
+    "poc_instance_origin_um": [
+      1100.0,
+      0.0
+    ],
+    "poc_anchor_um": [
+      1130.0,
+      113.215
+    ],
+    "original_subcell_element_counts_unchanged": false,
+    "private_cell_changes": [
+      {
+        "cell": "PVDD2CDG",
+        "layer": 7,
+        "datatype": 0,
+        "added_rect_um": [
+          [
+            57.3,
+            52.91
+          ],
+          [
+            57.59,
+            73.795
+          ]
+        ],
+        "reason": "Measured CO.R.4; PP extends to existing NP boundary; shared PDK unchanged"
+      },
+      {
+        "cell": "PVDD2POC",
+        "layer": 7,
+        "datatype": 0,
+        "added_rect_um": [
+          [
+            57.3,
+            52.91
+          ],
+          [
+            57.59,
+            73.795
+          ]
+        ],
+        "reason": "Measured CO.R.4; PP extends to existing NP boundary; shared PDK unchanged"
+      }
+    ],
+    "method": "Native GDS cell assembly; no scaling or flattening. Native OA import and Calibre required."
+  },
+  "final_gds_sha256": "851420136cdac758cb4222f112e276b51ebf7d166b919254e39acbbfc865cac7",
+  "observed_main_before_publication": "266bca3ac99998df5375c61301a9102a6f6fc461",
+  "main_base": "266bca3ac99998df5375c61301a9102a6f6fc461",
+  "main_integration_authorized": true,
+  "scope": "Fresh287ae40 merged main266bca3 core implementation with user-authorized unified system reset, new TT SDF and same-input Lab5. JTAG TAP external reset retained. Validates the integrated 266bca3 main core plus common reset and Lab5 additions; do not apply to later independent main changes. Post-Dummy extraction/STA, IR/EM and full foundry signoff not performed.",
+  "supplemental_sta": {
+    "reset_to_request_func_tt_io_hold.log": {
+      "minimum_reported_slack_ns": 11.703,
+      "reported_views_minimum_ns": {
+        "func_tt_io": 11.703
+      },
+      "paths_reported": 1,
+      "sha256": "b603f96cf3ed2b30e378e5ef6c9e23cb66982f4fe4a2bc6fb1afd185d71ca506"
+    },
+    "reset_to_request_func_tt_io_setup.log": {
+      "minimum_reported_slack_ns": 5.616,
+      "reported_views_minimum_ns": {
+        "func_tt_io": 5.616
+      },
+      "paths_reported": 1,
+      "sha256": "0e73f37a0244d54200534585477c8cca3ba6e62007c9c9945f864519d6ffd479"
+    },
+    "sram_input_hold.log": {
+      "minimum_reported_slack_ns": 10.045,
+      "reported_views_minimum_ns": {
+        "func_tt_io": 10.045
+      },
+      "paths_reported": 20,
+      "sha256": "8e9c97abd5431200e6b1abfaf6f5748ecf192b622c71c3825ef6845434805b79"
+    },
+    "sram_input_setup.log": {
+      "minimum_reported_slack_ns": 6.307,
+      "reported_views_minimum_ns": {
+        "func_tt_io": 6.307
+      },
+      "paths_reported": 20,
+      "sha256": "c223bbbdb1a07b47ba84d61cdd124b83ec1956b7cc1443ec3808a9e12aa6ecb2"
+    },
+    "sram_output_hold.log": {
+      "minimum_reported_slack_ns": 11.592,
+      "reported_views_minimum_ns": {
+        "func_tt_io": 11.592
+      },
+      "paths_reported": 20,
+      "sha256": "4bd416329bffe8c1e2838ca14021f0741f403bd19f9bccf3755ee4c500c3a1ca"
+    },
+    "sram_output_setup.log": {
+      "minimum_reported_slack_ns": 2.783,
+      "reported_views_minimum_ns": {
+        "func_tt_io": 2.783
+      },
+      "paths_reported": 20,
+      "sha256": "ae37d7e1cde8ec4c86a8028f69d8aa0c1569924bda45995b995d5accf27eeb89"
+    }
+  },
+  "system_reset_contract": {
+    "request_recognition_max_falling_edges": 2,
+    "clock_must_run": true,
+    "por_generator_stages": 4,
+    "functional_generator_stages": 4,
+    "independent_jtag_tap_external_reset": true,
+    "sram_receiver_additional_delay_removed": true
+  },
+  "postsim_files_verified": 78
+}

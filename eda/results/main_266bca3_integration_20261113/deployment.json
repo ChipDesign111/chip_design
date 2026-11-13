@@ -1,0 +1,25 @@
+{
+  "source_commit": "287ae40129c4e7873dcca2e6281bb1a2f4a414d6",
+  "source_json_sha256": "3ae9520b1922b97aa47d230d44f3ce135bb0fc8b92d4f64368b94bc1f24fe10a",
+  "source_archive_sha256": "9c77238333b5f6c588d32823c7ca3aa52337419ff16880ac7a1e8c38ddabba61",
+  "source_entries_verified": 207,
+  "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_220745_287ae40",
+  "tt_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_225252_postsim_vcs_tt_287ae40",
+  "lab5_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_225800_lab5_287ae40",
+  "physical_receipt": {
+    "archive_sha256": "e09d2616e776ea97cb5afd2788fe107506a3d5b8584577007fe9f2b82fd8923c",
+    "files_verified": 675,
+    "input_manifest_sha256": "3f6081842c6222ebb8e071e319a53e51494f7a1674dc5d22cf8c648d1729e304",
+    "remote_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_220745_287ae40",
+    "all_34_steps_same_input": true,
+    "whole_die_area_mm2": 3.7956390976,
+    "max_whole_die_area_mm2": 3.8
+  },
+  "tt_review_manifest_sha256": "d17eea254b69759b9d3a05658270eca0beb01864c1479831e1ee220724e5dcba",
+  "lab5_receipt": {
+    "host": "chipdesign",
+    "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_225800_lab5_287ae40",
+    "files_verified": 61,
+    "archive_sha256": "8429cfc087f1cb62fff04395a94775595e5f4986ba2ce12af3fa894eeacc0ef0"
+  }
+}

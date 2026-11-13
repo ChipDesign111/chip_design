@@ -1,0 +1,18 @@
+{
+  "native_sdf_log_sha256": "940dcb2830b4bfcc3a0e868a1cd26f738e805cf87da13afc271fe8752cd43a54",
+  "warning_categories": {
+    "SDFCOM_SWC": 3591,
+    "SDFCOM_IWSBA": 1164,
+    "SDFCOM_UHICD": 1
+  },
+  "reported_annotation_errors": 0,
+  "missing_instances": 0,
+  "unmatched_timing_checks": 0,
+  "negative_iopath_clamps": 0,
+  "native_interpretation": {
+    "SDFCOM_SWC": "Native message explicitly states delay will still be annotated.",
+    "SDFCOM_IWSBA": "Native message explicitly states INTERCONNECT will still be annotated.",
+    "SDFCOM_UHICD": "One i_pad_tdo/PDDW1216CDG PAD to up-hierarchy accOutput INTERCONNECT delay is ignored; native message states DEVICE delay on PAD applied. Retain warning, do not claim complete external board/JTAG timing coverage."
+  },
+  "scope": "Normal binding result concerns reported instance/timing-check errors; does not mean zero warnings or measured 100% port/interconnect coverage."
+}

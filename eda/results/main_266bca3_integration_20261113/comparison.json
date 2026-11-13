@@ -1,0 +1,36 @@
+{
+  "main_base": "266bca3ac99998df5375c61301a9102a6f6fc461",
+  "validated_source": "287ae40129c4e7873dcca2e6281bb1a2f4a414d6",
+  "core_main_sha256": {
+    "rtl/npu/har_npu_core.sv": "c1dc90bf9c84c01a8df746fb97e759b6e7b76e33411af2f3d3cb8d5e12b7b7fe",
+    "rtl/npu/simple_npu_top.sv": "ad07ac922fed02cf6fd7e393014fdd5a191335e1295282e1e8129950ac4ad31f",
+    "rtl/npu/har_weight_store.sv": "473106074ca66f795445cd3862104d7e57da364b6ab119996eb612934b7d2913",
+    "rtl/dma/har_dma.sv": "6aaa673d985b4c431ed7f65cb12ff7794bf6af48fbced4f399f3b5dbd45da2cb",
+    "rtl/soc/my_ifetch.sv": "3d8d8ba907e5ad8a4b27e1e8d4b4abf9958a9a32c49056ed81150eeedfed1ea0",
+    "rtl/memory/bootram.sv": "3a7930a2052e39d94d58042b27725eb60a16541463cfc92792dc0bb9727e714b"
+  },
+  "old_density_native_percent": 72.509,
+  "new_density_native_percent": 74.633,
+  "density_delta_percentage_points": 2.124,
+  "old_tt_setup_hold_ns": [
+    0.335,
+    0.05
+  ],
+  "new_tt_setup_hold_ns": [
+    0.35,
+    0.05
+  ],
+  "old_cell_area_um2": 2023900.544,
+  "new_cell_area_um2": 2067330.381,
+  "cell_area_delta_um2": 43429.837,
+  "cell_area_delta_percent": 2.14585,
+  "old_cell_count": 66348,
+  "new_cell_count": 64979,
+  "tt_clamps_old": 21,
+  "tt_clamps_new": 0,
+  "old_matrix_sdf_cases": 10,
+  "new_matrix_sdf_cases": 16,
+  "old_initial_timing_messages_each": 28,
+  "new_all_stage_timing_messages": 0,
+  "stimulus_difference": "New board drive2ns, first clock rise50ns after40ns low; main old first rise10ns. Cannot attribute initial-event differences solely to RTL. All SDF checks remain enabled."
+}
