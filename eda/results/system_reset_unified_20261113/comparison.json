@@ -1,0 +1,46 @@
+{
+  "baseline_physical": "be4a7fc4a5a862371f550242d19686da0efef898",
+  "new_physical": "dea55844d707a146668a8d91b619ae109ca1dc6d",
+  "new_lab5_script": "22a168c9c3c5e579f51d101f45e803b8f0ba2844",
+  "packaged_rtl_entries_same_physical_lab5_and_current": 92,
+  "unchanged_stimulus_and_native_models": {
+    "firmware": "3dcd4ca932b501d55f71349d2cde61c744b42ab09578623e183a4b56e72382cd",
+    "testbench": "614b761a3fe6cce6db70eef445ff704a0b50dddf962bea4b0adcc6425b184832",
+    "standard_cells": "e1d4d2b7b789f9b7e5bfdc1b1597434b53d65699b68823c457dc78e146c636b3",
+    "io_cells": "57d800247aa58b8113d89ec5584b646e7d620248eec08381cb024734e8cfa2c2",
+    "firmware_1": "38747e36f85a714705b40f6ef21077eefbb2c0bb9b09d21ec624eaba83d49924",
+    "firmware_10001": "09dd02bb0ccc5ce532c938465fa4cad5674c170a0195879393bc6d69d8eebdf7",
+    "firmware_10002": "9bc3e73261a1cec923bb30a2408329b926028e5b1baae49581fbe6b92c035250",
+    "firmware_10003": "c96fa27844a2caca74571a61a015997be22b2b73cb1f1633b4aae8d7982404d7",
+    "firmware_10004": "a6df95b27d7b7f327f4b912dd49d41ecbfdfe16471fe2e0ffafdcad9af56f48e",
+    "firmware_10005": "252276d55c1476ced25a1f723747482356aff2442bdb70fde366f695ec991564",
+    "firmware_10006": "c519fcdfb84bab5beed91a37b8c251684a7481afd15f934bffcd8d58e88f8616",
+    "firmware_10007": "21f713d90f9829f28e020405fe73bbf63d165b7b6e095ea7ee45547ffd791b26",
+    "firmware_10008": "e81a6f84cc4d02b91571fbe67c6fb02b6a9febfff689b451f0c6ce0116e70b32",
+    "firmware_10009": "4bf5bb28b6d9782b255ac9dfabd8c010e00280111b6a4f97fdfd73752333ec3d",
+    "firmware_10010": "875a9c64611155a5f7564d1049883812fed83e53ea7651531be5161399bb8ff9",
+    "firmware_10011": "8b33e5891a9cc17144ff4d4221f8e6ea46d6febe41900f2ec076e67d4ceb9743",
+    "firmware_3": "2981b0996504b49edcafd4026216895513b62bc5e292ea2344a25ccf1bda314b",
+    "firmware_5": "06fe60806fe484e1a970edcb1578ba8ba34f168e6b188c459d3fbc9f170df6ef",
+    "firmware_7": "e67893935d8dc38bbb116a1d2c2c1e024850c50130f7ae65a19b68c67e47b6a7"
+  },
+  "old_tt_dynamic_events": 2,
+  "new_tt_dynamic_events": 0,
+  "old_tt_setup_hold_ns": [
+    3.765,
+    0.091
+  ],
+  "new_tt_setup_hold_ns": [
+    3.825,
+    0.115
+  ],
+  "old_cell_count": 68676,
+  "new_cell_count": 68703,
+  "cell_area_delta_um2": 439.04,
+  "cell_area_delta_percent": 0.02127,
+  "die_area_unchanged_mm2": 3.7956390976,
+  "wire_bond_previous_original_violations": 9,
+  "wire_bond_before_reset_unification": 0,
+  "wire_bond_after_reset_unification": 0,
+  "scope": "TT comparison uses identical testbench/native STD/IO and firmware SHA. No matched-activity power measurement or formal equivalence claim; independent main unchanged."
+}

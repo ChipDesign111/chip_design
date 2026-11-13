@@ -1,10 +1,10 @@
 # 从本机部署到完整 EDA 结果
 
-最新be4a7fc候选的[Wire Bond实测](results/wire_bond_fix_20261113/README.md)已由9条降为0，Lab5按课程口径通过；TT仍有两条真实复位边界事件，整体未验收。用户已允许统一系统时钟域的复位边界，[新RTL修复及功能证据](../report/system_reset_boundary.md)待重新物理/SDF验证。
+最新版[统一系统复位与Wire Bond结果](results/system_reset_unified_20261113/README.md)已完成：物理源码dea5584，新综合与34步、同源TT后仿、同数据库半周期STA和Lab5均按正常条件验证。TT Setup/Hold +3.825/+0.115 ns，17用例功能全过，绑定/全程动态时序/负IOPATH截零均0；WB64项0违规，完整LVS正确。课程DRC与逐几何核对的ERC残项原样列示，不称ERC Clean或完整foundry签核。
 
-当前服务器按用户最新存储要求仅保留相关物理、TT、Lab5及必要工具依赖；旧的用户目录Lab4副本和历史上传已清理，不从旧说明恢复这些历史目录。
+[复位修复说明与功能证据](../report/system_reset_boundary.md)记录用户批准的系统时钟域两下降沿请求识别、共同功能复位及独立JTAG TAP复位。历史be4a7fc虽WB0，TT仍有两条复位事件，不能作最终通过依据。
 
-be4候选完整34步、TT静态+3.765/+0.091ns、负IOPATH截零0，但功能PASS不豁免两条最终复位事件。当前活动分支xzx不自动合入main；main有独立RTL更新，本轮不能证明新版main。07af846和4427均为历史证据，不能用于验证新RTL。[Lab5操作指南](docs/Lab5操作指南.md)区分完整部署、一键全流程和仅执行Lab5。
+服务器仅保留最新相关物理、TT、Lab5及必要工具依赖；旧上传清理后不要从历史说明恢复。大模型和物理视图留服务器，完整SHA核验小包在本地lab5/system_reset_unified_20261113。本轮只提交xzx，未修改main；main的独立RTL更新不由本轮验证。[Lab5操作指南](docs/Lab5操作指南.md)区分完整部署、一键全流程和仅执行Lab5。
 
 功能RTL基线已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。设计是完整 CV32E40P SoC：第一层每拍 2 个输入×32 个输出，第二层 1×6，输入、权重、隐藏值使用 INT8，偏置、累加和分类分数使用 INT32。主 SRAM 保存完整权重；DMA 将当前需要的小块搬入两个 64 字节缓冲。面积验收是 **包含 PAD 的整个 Die ≤3.8 mm²**。
 

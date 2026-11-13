@@ -1,0 +1,64 @@
+{
+  "limit_bytes": 20000000000,
+  "home_allocated_bytes": 2970558464,
+  "kept_uploads": [
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_112238_dea5584",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_124759_postsim_vcs_tt_dea5584",
+    "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_205904_lab5_22a168c"
+  ],
+  "removed_replaced_uploads": [
+    "20261029_150649_07af846",
+    "20261029_171221_postsim_vcs_tt_4e3ed25",
+    "20261112_210755_lab5_aefa356",
+    "20261113_000112_be4a7fc",
+    "20261113_011251_postsim_vcs_tt_d6be0f4",
+    "20261113_012558_lab5_cbc52fb"
+  ],
+  "deployment_cache_verified": {
+    "20261113_112238_dea5584": {
+      "archive_sha256": "c08c8f72ad80a43a51513a6b56f69b16eba8590ddf8ed744f19ea8caa25d6e48",
+      "entries": 206,
+      "source_commit": "dea55844d707a146668a8d91b619ae109ca1dc6d"
+    },
+    "20261113_124759_postsim_vcs_tt_dea5584": {
+      "archive_sha256": "3be7548696750e64ec079315d0c502428ce32a7b6dc38a86b31e1af40ecdfa92",
+      "entries": 206,
+      "source_commit": "dea55844d707a146668a8d91b619ae109ca1dc6d"
+    },
+    "20261113_205904_lab5_22a168c": {
+      "archive_sha256": "21128253707df5f70883eea7d6558a34002a192af512a7aaeff1e45c27dc7080",
+      "entries": 206,
+      "source_commit": "22a168c9c3c5e579f51d101f45e803b8f0ba2844"
+    },
+    "20261029_150649_07af846": {
+      "archive_sha256": "ddd4fd9a5f331f127449e44d5b020b52097495297235eb8072a9d1238737c1be",
+      "entries": 198,
+      "source_commit": "07af8464f4fbbd1c76b41a326f8b05fa745ad3b6"
+    },
+    "20261029_171221_postsim_vcs_tt_4e3ed25": {
+      "archive_sha256": "2f46c44cc736ba4d4b60f1c7fedbf3556db4430058c9c8459aa794d2529e7d32",
+      "entries": 198,
+      "source_commit": "4e3ed25fb00dfc1071718216db5324da6baade5e"
+    },
+    "20261112_210755_lab5_aefa356": {
+      "archive_sha256": "74813086bd87a40c71179ad1b9282ecc2548336f2544e98c89955b53d4c45078",
+      "entries": 204,
+      "source_commit": "aefa35686512a1aeaa9fbe2004a2915561e461c3"
+    },
+    "20261113_000112_be4a7fc": {
+      "archive_sha256": "12be04077cab52e9477c5724ea79f01519c50cced21f969d4b766bd973d56bbb",
+      "entries": 205,
+      "source_commit": "be4a7fc4a5a862371f550242d19686da0efef898"
+    },
+    "20261113_011251_postsim_vcs_tt_d6be0f4": {
+      "archive_sha256": "158c31054d4416cdf08923f02e20d2f5ebc0bb79294da73d84c6e2d301b9258f",
+      "entries": 206,
+      "source_commit": "d6be0f43bebe45680f8296c4bea27a8243abacce"
+    },
+    "20261113_012558_lab5_cbc52fb": {
+      "archive_sha256": "06d4512602320136aeeacad6dc5d0bc06ba25d940774549b1ca36daebe72e055",
+      "entries": 206,
+      "source_commit": "cbc52fbd722b6afed3861329568ba3e5188e5d1b"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "validated_at": "2026-10-29T06:56:31.971273+00:00",
-  "scope": "Latest system_reset_20261113 section is current RTL functional evidence. Historical physical/SDF sections retain their named inputs and do not validate the new RTL.",
+  "scope": "Latest system_reset_20261113 section contains current RTL functional, fresh physical, TT SDF and same-input Lab5 evidence. Historical sections retain their named inputs.",
   "results": {
     "unit_cases": 44,
     "trained_samples": 24,
@@ -680,7 +680,7 @@
   },
   "system_reset_20261113": {
     "validated_at": "2026-11-13T03:20:27.179246+00:00",
-    "scope": "User-authorized system-clock reset unification; no new physical/SDF pass claimed",
+    "scope": "User-authorized unified system-clock reset; fresh dea5584 physical implementation, TT SDF and same-input Lab5 verified",
     "regression": {
       "unit_cases": 44,
       "trained_samples": 24,
@@ -896,8 +896,45 @@
       "rtl/memory/sram_transaction_reset.sv": "47dcac9d9d80fee288e73c765481f7ffd0b5c44bf7e3049943b3b527ded2fcd5"
     },
     "diagnosis_original_inputs_unchanged": true,
-    "regression_source_manifest_sha256": "608c8d0de6abc97666d32b871f0b28ca687ef01e0721ab5cbdbe4eba714440ed"
+    "regression_source_manifest_sha256": "608c8d0de6abc97666d32b871f0b28ca687ef01e0721ab5cbdbe4eba714440ed",
+    "physical_sdf_lab5": {
+      "verified_at": "2026-11-13T13:05:05.022156+00:00",
+      "physical_commit": "dea55844d707a146668a8d91b619ae109ca1dc6d",
+      "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_112238_dea5584",
+      "lab5_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_205904_lab5_22a168c",
+      "tt_postsim": {
+        "cases": 17,
+        "sdf_cases": 16,
+        "independent_control_cases": 1,
+        "normal_postsim_pass": true,
+        "annotation_errors": 0,
+        "missing_instances": 0,
+        "negative_iopath_clamps": 0,
+        "all_stage_dynamic_timing_clean": true
+      },
+      "tt_sta": {
+        "Setup": {
+          "wns_ns": 3.825,
+          "native_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/func_tt_io/my_soc_top_postRoute_all.tarpt.gz",
+          "sha256": "6205858106f54a9e7975bcf7497d95733f93d4b13f146cdb36aa5877187440fa"
+        },
+        "Hold": {
+          "wns_ns": 0.115,
+          "native_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/func_tt_io/my_soc_top_postRoute_all_hold.tarpt.gz",
+          "sha256": "8a0f1a2a00937be3271aec8795d5b481e48a914848cd37088770a8acd12e89b8"
+        }
+      },
+      "wire_bond": {
+        "checks": 64,
+        "violations": 0,
+        "baseline_violations": 9,
+        "waived": false
+      },
+      "report": "eda/results/system_reset_unified_20261113/README.md",
+      "scope": "This xzx RTL only; independent main RTL not validated; phase coverage is finite, not a metastability proof."
+    }
   },
   "latest_validation_section": "system_reset_20261113",
-  "current_rtl_physical_sdf_accepted": false
+  "current_rtl_physical_sdf_accepted": true,
+  "current_validated_at": "2026-11-13T13:07:30.299666+00:00"
 }

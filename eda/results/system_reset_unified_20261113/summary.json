@@ -1,0 +1,495 @@
+{
+  "observed_utc": "2026-11-13T13:04:56.647044+00:00",
+  "physical_commit": "dea55844d707a146668a8d91b619ae109ca1dc6d",
+  "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_112238_dea5584",
+  "lab5_script_commit": "22a168c9c3c5e579f51d101f45e803b8f0ba2844",
+  "lab5_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_205904_lab5_22a168c",
+  "all_34_steps_same_input": true,
+  "lab5_pass": true,
+  "physical_files_verified": 917,
+  "lab5_files_verified": 61,
+  "physical_archive_sha256": "cfb4c7d29f67e377f363f1595259897b5c2e19db066ce36e7a12fd7ac6c82d53",
+  "lab5_archive_sha256": "b1c173f0420c5fdf0dbae645da11d209ad785584b461178b40677bdb38b368b1",
+  "synthesis": {
+    "cell_count": 68703,
+    "cell_area_um2": 2064513.94,
+    "net_area_um2": 777120.125,
+    "latch_area_um2": 0.0,
+    "memory_area_um2": 401443.591,
+    "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_112238_dea5584/work/syn/my_soc_top/reports/area/area.rpt",
+    "mapped_design": {
+      "native_main_srams": 1,
+      "mapped_leaf_instances": 68703,
+      "all_leaf_types_have_library_models": true,
+      "npu_dma_area_hierarchy_present": true,
+      "latch_area_um2": 0,
+      "automatic_clock_gating_requested": false,
+      "mapped_automatic_clock_gate_instances": 0,
+      "functional_enable_mapping": "mux_dff",
+      "mapped_controlled_flip_flop_instances": 0,
+      "combinational_cell_mapping": "tt_nonnegative_tables",
+      "mapped_excluded_TT_combinational_instances": 0
+    }
+  },
+  "die_area_mm2": 3.7956390976,
+  "density_native_percent": 75.129,
+  "density_log_line": 29024,
+  "tt_sta": {
+    "Setup": {
+      "wns_ns": 3.825,
+      "native_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/func_tt_io/my_soc_top_postRoute_all.tarpt.gz",
+      "sha256": "6205858106f54a9e7975bcf7497d95733f93d4b13f146cdb36aa5877187440fa"
+    },
+    "Hold": {
+      "wns_ns": 0.115,
+      "native_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/func_tt_io/my_soc_top_postRoute_all_hold.tarpt.gz",
+      "sha256": "8a0f1a2a00937be3271aec8795d5b481e48a914848cd37088770a8acd12e89b8"
+    }
+  },
+  "tt_postsim": {
+    "cases": 17,
+    "sdf_cases": 16,
+    "independent_control_cases": 1,
+    "normal_postsim_pass": true,
+    "annotation_errors": 0,
+    "missing_instances": 0,
+    "negative_iopath_clamps": 0,
+    "all_stage_dynamic_timing_clean": true
+  },
+  "wire_bond": {
+    "checks": 64,
+    "violations": 0,
+    "baseline_violations": 9,
+    "waived": false
+  },
+  "antenna": {
+    "checks": 62,
+    "violations": 0
+  },
+  "drc": {
+    "checks": 523,
+    "raw_hierarchical": 2426,
+    "raw_expanded": 14515,
+    "remaining_nonexcluded": {},
+    "teaching_excluded": {
+      "ESD.1g": 0,
+      "ESD.7g": 0,
+      "ESD.9g": 0,
+      "ESD.10g": 0,
+      "ESD.3g": 0,
+      "ESD.5g": 0,
+      "ESD.6g": 0,
+      "ESD.8g": 0,
+      "ESD.18g_1.8V": 0,
+      "ESD.18g_3.3V_N": 0,
+      "ESD.18g_3.3V_P": 0,
+      "ESD.19g": 0,
+      "ESD.20g": 0,
+      "ESD.20g_A": 0,
+      "ESD.21g": 0,
+      "ESD.24g": 30,
+      "ESD.25g": 2384,
+      "ESD.26g": 0,
+      "ESD.27g": 0,
+      "ESD.28g": 0,
+      "ESD.30g": 0,
+      "ESD.32g": 0,
+      "ESD.34g": 0,
+      "ESD.35g": 0,
+      "ESD.37g": 0,
+      "ESD.WARN.1": 0,
+      "ESD.WARN.3": 0,
+      "LUP.1g": 0,
+      "LUP.2g": 0,
+      "LUP.3.1g_1.8V": 0,
+      "LUP.3.3g_3.3V": 1,
+      "LUP.4g": 0,
+      "LUP.5.1g_1.8V": 0,
+      "LUP.5.3g_3.3V": 9,
+      "LUP.6": 0,
+      "MOM.S.2:M1": 0,
+      "MOM.S.2:M2": 0,
+      "MOM.S.2:M3": 0,
+      "MOM.S.2:M4": 0,
+      "MOM.S.2:M5": 0,
+      "MOM.A.1": 0,
+      "MOM.R.1": 0,
+      "MOM.R.2": 1,
+      "DRM.R.1": 1
+    }
+  },
+  "lvs": true,
+  "trace_property_statements": 605,
+  "erc": {
+    "schema": 1,
+    "native_erc_checks": 12,
+    "native_erc_hierarchical": 7,
+    "native_erc_expanded": 977,
+    "erc_clean": false,
+    "accepted_course_residuals": true,
+    "errors": [],
+    "rule_counts": {
+      "mnpg": [
+        4,
+        832
+      ],
+      "mppg": [
+        0,
+        0
+      ],
+      "mnpg_ldd": [
+        0,
+        0
+      ],
+      "mppg_ldd": [
+        0,
+        0
+      ],
+      "mnpg_hvs": [
+        0,
+        0
+      ],
+      "mppg_hvs": [
+        0,
+        0
+      ],
+      "floating": [
+        0,
+        0
+      ],
+      "floating.HVNW_float": [
+        0,
+        0
+      ],
+      "floating.nxwell_float": [
+        1,
+        72
+      ],
+      "floating.psub_float": [
+        1,
+        1
+      ],
+      "npvss49": [
+        1,
+        72
+      ],
+      "ppvdd49": [
+        0,
+        0
+      ]
+    },
+    "markers": [
+      {
+        "rule": "mnpg",
+        "bbox_um": [
+          [
+            83.525,
+            903.43
+          ],
+          [
+            107.525,
+            903.61
+          ]
+        ],
+        "native_pad_hits": [
+          "PVDD1CDG"
+        ],
+        "accepted_course_residual": true,
+        "basis": "Entire representative marker inside measured native protection PAD master"
+      },
+      {
+        "rule": "mnpg",
+        "bbox_um": [
+          [
+            83.525,
+            904.55
+          ],
+          [
+            107.525,
+            904.73
+          ]
+        ],
+        "native_pad_hits": [
+          "PVDD1CDG"
+        ],
+        "accepted_course_residual": true,
+        "basis": "Entire representative marker inside measured native protection PAD master"
+      },
+      {
+        "rule": "mnpg",
+        "bbox_um": [
+          [
+            2.24,
+            1104.27
+          ],
+          [
+            26.24,
+            1104.67
+          ]
+        ],
+        "native_pad_hits": [
+          "PVDD2CDG"
+        ],
+        "accepted_course_residual": true,
+        "basis": "Entire representative marker inside measured native protection PAD master"
+      },
+      {
+        "rule": "mnpg",
+        "bbox_um": [
+          [
+            2.24,
+            1105.42
+          ],
+          [
+            26.24,
+            1105.82
+          ]
+        ],
+        "native_pad_hits": [
+          "PVDD2CDG"
+        ],
+        "accepted_course_residual": true,
+        "basis": "Entire representative marker inside measured native protection PAD master"
+      },
+      {
+        "rule": "floating.nxwell_float",
+        "bbox_um": [
+          [
+            1.575,
+            607.955
+          ],
+          [
+            18.995,
+            614.045
+          ]
+        ],
+        "native_pad_hits": [
+          "PVSS1CDG"
+        ],
+        "accepted_course_residual": true,
+        "basis": "Entire representative marker inside measured native protection PAD master"
+      },
+      {
+        "rule": "floating.psub_float",
+        "bbox_um": [
+          [
+            -15.385,
+            -15.385
+          ],
+          [
+            1963.625,
+            1963.625
+          ]
+        ],
+        "native_pad_hits": [],
+        "accepted_course_residual": true,
+        "basis": "Extracted isolated outer substrate enclosing native seal ring"
+      },
+      {
+        "rule": "npvss49",
+        "bbox_um": [
+          [
+            1.975,
+            608.155
+          ],
+          [
+            18.595,
+            613.845
+          ]
+        ],
+        "native_pad_hits": [
+          "PVSS1CDG"
+        ],
+        "accepted_course_residual": true,
+        "basis": "Entire representative marker inside measured native protection PAD master"
+      }
+    ],
+    "native_report_sha256": "3c0dcf89c58ff8d690ecdc9b8ee0c6585ba26824fbb532a92646a526c81a41b9",
+    "reviewer_sha256": "1266b03fe7f330a37ee3d973fcc2583cf1c1f4f4cefdf14707e14669dd4bb570",
+    "scope": "Course handling of specifically identified native IO and isolated outer-substrate residuals; not a formal foundry waiver or ERC Clean assertion."
+  },
+  "final_geometry": {
+    "gdstk": "0.9.61",
+    "unit_m": 9.999999999999997e-07,
+    "precision_m": 4.999999999999999e-10,
+    "die_um": [
+      0.0,
+      0.0,
+      1948.24,
+      1948.24
+    ],
+    "ring_reference_um": 1949,
+    "ring_external_bbox_um": [
+      [
+        -15.379999999999995,
+        -15.379999999999995
+      ],
+      [
+        1963.62,
+        1963.62
+      ]
+    ],
+    "ring_external_size_um": 1979,
+    "ring_edges": 7836,
+    "ring_corners": 4,
+    "poc_master": "PVDD2CDG",
+    "poc_instance_origin_um": [
+      1100.0,
+      0.0
+    ],
+    "poc_anchor_um": [
+      1130.0,
+      113.215
+    ],
+    "original_subcell_element_counts_unchanged": false,
+    "private_cell_changes": [
+      {
+        "cell": "PVDD2CDG",
+        "layer": 7,
+        "datatype": 0,
+        "added_rect_um": [
+          [
+            57.3,
+            52.91
+          ],
+          [
+            57.59,
+            73.795
+          ]
+        ],
+        "reason": "Measured CO.R.4; PP extends to existing NP boundary; shared PDK unchanged"
+      },
+      {
+        "cell": "PVDD2POC",
+        "layer": 7,
+        "datatype": 0,
+        "added_rect_um": [
+          [
+            57.3,
+            52.91
+          ],
+          [
+            57.59,
+            73.795
+          ]
+        ],
+        "reason": "Measured CO.R.4; PP extends to existing NP boundary; shared PDK unchanged"
+      }
+    ],
+    "method": "Native GDS cell assembly; no scaling or flattening. Native OA import and Calibre required."
+  },
+  "final_gds_sha256": "8187f27d46be91c92842b610a3df502b8bcf16a3162502559e09f7cf1f74d400",
+  "observed_remote_main": "266bca3ac99998df5375c61301a9102a6f6fc461",
+  "main_modified_by_this_task": false,
+  "scope": "Fresh dea5584 implementation with user-authorized unified system reset, new TT SDF and same-input Lab5. JTAG TAP external reset retained. Does not validate independent main RTL. Post-Dummy extraction/STA, IR/EM and full foundry signoff not performed.",
+  "supplemental_sta": {
+    "reset_to_request_func_ff0_io_hold.log": {
+      "minimum_reported_slack_ns": 10.785,
+      "reported_views_minimum_ns": {
+        "func_ff0_io": 10.785
+      },
+      "paths_reported": 1,
+      "sha256": "06fe4b042436696531ecb2c37a5f0892c5ec701856c7e7e7ef3e8a68cb16965f"
+    },
+    "reset_to_request_func_ff0_io_setup.log": {
+      "minimum_reported_slack_ns": 7.464,
+      "reported_views_minimum_ns": {
+        "func_ff0_io": 7.464
+      },
+      "paths_reported": 1,
+      "sha256": "06048f3d5f57012dd2c63f541280a6aeac7b88f2fb50c0eef09cff08fc751fb9"
+    },
+    "reset_to_request_func_ffm40_io_hold.log": {
+      "minimum_reported_slack_ns": 10.756,
+      "reported_views_minimum_ns": {
+        "func_ffm40_io": 10.756
+      },
+      "paths_reported": 1,
+      "sha256": "9e0e23e014ed03153d3ba91360d8505a7557c21132578a48f0edba6ae74f4f22"
+    },
+    "reset_to_request_func_ffm40_io_setup.log": {
+      "minimum_reported_slack_ns": 7.554,
+      "reported_views_minimum_ns": {
+        "func_ffm40_io": 7.554
+      },
+      "paths_reported": 1,
+      "sha256": "e56ce33998289b074d277dd08ddf2daceb300b680b3807cd5546a3b0b0e83451"
+    },
+    "reset_to_request_func_ss_io_hold.log": {
+      "minimum_reported_slack_ns": 11.734,
+      "reported_views_minimum_ns": {
+        "func_ss_io": 11.734
+      },
+      "paths_reported": 1,
+      "sha256": "0764dd52a702e85130661886e3d80b880533e3bf8f69d0989ba936befcc779ea"
+    },
+    "reset_to_request_func_ss_io_setup.log": {
+      "minimum_reported_slack_ns": 5.004,
+      "reported_views_minimum_ns": {
+        "func_ss_io": 5.004
+      },
+      "paths_reported": 1,
+      "sha256": "2ac257297810ea7cdaf144aaf193793099ffd77e16b55c63a27642b3f942430c"
+    },
+    "reset_to_request_func_tt_io_hold.log": {
+      "minimum_reported_slack_ns": 11.064,
+      "reported_views_minimum_ns": {
+        "func_tt_io": 11.064
+      },
+      "paths_reported": 1,
+      "sha256": "1576dd0f5a962a1db727f1088f889cc6b1dcda3c8cc30a9e78398b34cf46ea18"
+    },
+    "reset_to_request_func_tt_io_setup.log": {
+      "minimum_reported_slack_ns": 6.714,
+      "reported_views_minimum_ns": {
+        "func_tt_io": 6.714
+      },
+      "paths_reported": 1,
+      "sha256": "c9d2fab56e6671553b1af457a6ebcf7d90444ac9d5f413e9843b80049de1f55a"
+    },
+    "sram_input_hold.log": {
+      "minimum_reported_slack_ns": 9.935,
+      "reported_views_minimum_ns": {
+        "func_ffm40_io": 9.935
+      },
+      "paths_reported": 20,
+      "sha256": "22874534fcd007dfe2a580e231774b3358423eb53bef101bad2e86dc5e257ecc"
+    },
+    "sram_input_setup.log": {
+      "minimum_reported_slack_ns": 1.951,
+      "reported_views_minimum_ns": {
+        "func_ss_io": 1.951,
+        "func_tt_io": 6.284
+      },
+      "paths_reported": 20,
+      "sha256": "22b9433b519ba24c2d548ffbc3fa0a0428ed263b3733f7cb37366aeb21448830"
+    },
+    "sram_output_hold.log": {
+      "minimum_reported_slack_ns": 10.879,
+      "reported_views_minimum_ns": {
+        "func_ffm40_io": 10.879
+      },
+      "paths_reported": 20,
+      "sha256": "42eaf0b19cb9fa6f42614c2a975f7349733453315b69128798a76c4130fffa75"
+    },
+    "sram_output_setup.log": {
+      "minimum_reported_slack_ns": 0.367,
+      "reported_views_minimum_ns": {
+        "func_ss_io": 0.367
+      },
+      "paths_reported": 20,
+      "sha256": "377b3f696533c7b18b3af378738804a75988103514fffd3af96798282d4e5ff0"
+    }
+  },
+  "system_reset_contract": {
+    "request_recognition_max_falling_edges": 2,
+    "clock_must_run": true,
+    "por_generator_stages": 4,
+    "functional_generator_stages": 4,
+    "independent_jtag_tap_external_reset": true,
+    "sram_receiver_additional_delay_removed": true
+  },
+  "postsim_files_verified": 84,
+  "observed_main_rtl_tree": "c249a06d9a6e59898e09f0687283d5e89aaf2598",
+  "validated_xzx_rtl_tree": "7252f841e24a32774bd305df275ba7c5a880b6b0"
+}

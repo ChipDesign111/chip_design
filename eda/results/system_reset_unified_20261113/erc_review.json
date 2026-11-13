@@ -1,0 +1,188 @@
+{
+  "schema": 1,
+  "native_erc_checks": 12,
+  "native_erc_hierarchical": 7,
+  "native_erc_expanded": 977,
+  "erc_clean": false,
+  "accepted_course_residuals": true,
+  "errors": [],
+  "rule_counts": {
+    "mnpg": [
+      4,
+      832
+    ],
+    "mppg": [
+      0,
+      0
+    ],
+    "mnpg_ldd": [
+      0,
+      0
+    ],
+    "mppg_ldd": [
+      0,
+      0
+    ],
+    "mnpg_hvs": [
+      0,
+      0
+    ],
+    "mppg_hvs": [
+      0,
+      0
+    ],
+    "floating": [
+      0,
+      0
+    ],
+    "floating.HVNW_float": [
+      0,
+      0
+    ],
+    "floating.nxwell_float": [
+      1,
+      72
+    ],
+    "floating.psub_float": [
+      1,
+      1
+    ],
+    "npvss49": [
+      1,
+      72
+    ],
+    "ppvdd49": [
+      0,
+      0
+    ]
+  },
+  "markers": [
+    {
+      "rule": "mnpg",
+      "bbox_um": [
+        [
+          83.525,
+          903.43
+        ],
+        [
+          107.525,
+          903.61
+        ]
+      ],
+      "native_pad_hits": [
+        "PVDD1CDG"
+      ],
+      "accepted_course_residual": true,
+      "basis": "Entire representative marker inside measured native protection PAD master"
+    },
+    {
+      "rule": "mnpg",
+      "bbox_um": [
+        [
+          83.525,
+          904.55
+        ],
+        [
+          107.525,
+          904.73
+        ]
+      ],
+      "native_pad_hits": [
+        "PVDD1CDG"
+      ],
+      "accepted_course_residual": true,
+      "basis": "Entire representative marker inside measured native protection PAD master"
+    },
+    {
+      "rule": "mnpg",
+      "bbox_um": [
+        [
+          2.24,
+          1104.27
+        ],
+        [
+          26.24,
+          1104.67
+        ]
+      ],
+      "native_pad_hits": [
+        "PVDD2CDG"
+      ],
+      "accepted_course_residual": true,
+      "basis": "Entire representative marker inside measured native protection PAD master"
+    },
+    {
+      "rule": "mnpg",
+      "bbox_um": [
+        [
+          2.24,
+          1105.42
+        ],
+        [
+          26.24,
+          1105.82
+        ]
+      ],
+      "native_pad_hits": [
+        "PVDD2CDG"
+      ],
+      "accepted_course_residual": true,
+      "basis": "Entire representative marker inside measured native protection PAD master"
+    },
+    {
+      "rule": "floating.nxwell_float",
+      "bbox_um": [
+        [
+          1.575,
+          607.955
+        ],
+        [
+          18.995,
+          614.045
+        ]
+      ],
+      "native_pad_hits": [
+        "PVSS1CDG"
+      ],
+      "accepted_course_residual": true,
+      "basis": "Entire representative marker inside measured native protection PAD master"
+    },
+    {
+      "rule": "floating.psub_float",
+      "bbox_um": [
+        [
+          -15.385,
+          -15.385
+        ],
+        [
+          1963.625,
+          1963.625
+        ]
+      ],
+      "native_pad_hits": [],
+      "accepted_course_residual": true,
+      "basis": "Extracted isolated outer substrate enclosing native seal ring"
+    },
+    {
+      "rule": "npvss49",
+      "bbox_um": [
+        [
+          1.975,
+          608.155
+        ],
+        [
+          18.595,
+          613.845
+        ]
+      ],
+      "native_pad_hits": [
+        "PVSS1CDG"
+      ],
+      "accepted_course_residual": true,
+      "basis": "Entire representative marker inside measured native protection PAD master"
+    }
+  ],
+  "native_report_sha256": "3c0dcf89c58ff8d690ecdc9b8ee0c6585ba26824fbb532a92646a526c81a41b9",
+  "reviewer_sha256": "1266b03fe7f330a37ee3d973fcc2583cf1c1f4f4cefdf14707e14669dd4bb570",
+  "scope": "Course handling of specifically identified native IO and isolated outer-substrate residuals; not a formal foundry waiver or ERC Clean assertion."
+}
