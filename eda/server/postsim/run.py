@@ -68,7 +68,7 @@ def main():
     command+=['-v',str(macro)]
     execute(command,build,'compile.log')
     results={}
-    cases=[('sdf_max',[],inputs/'firmware.hex'),('gate_zero',['+NO_SDF'],inputs/'firmware.hex')]
+    cases=[('sdf_max',[],inputs/'firmware.hex'),('gate_unit',['+NO_SDF'],inputs/'firmware.hex')]
     # Sweep asynchronous reset assertion across a full system period, without
     # masking timing checks/notifiers. Keep the first case at the old2ns phase.
     cases += [('sdf_'+p.stem,['+RESET_OFFSET_PS=%d'%(250+1400*i)],p) for i,p in enumerate(additional)]
@@ -76,13 +76,14 @@ def main():
         run=root/mode;run.mkdir();shutil.copyfile(firmware,run/'firmware.hex')
         os.link(inputs/'timing.sdf',run/'timing.sdf')
         executable=build/'simv'
-        if mode=='gate_zero':
-            # A zero-delay netlist driving a native nonzero-setup SRAM is not
-            # a timing experiment. This explicit control alone disables checks.
-            control=root/'build_zero';control.mkdir()
-            zero=command.copy();zero[zero.index('-o')+1]=str(control/'simv')
-            zero+=['+notimingcheck','+define+NO_SDF']
-            execute(zero,control,'compile.log');executable=control/'simv'
+        if mode=='gate_unit':
+            # A literal zero-delay gate netlist is race-prone around the line
+            # buffer and pad interfaces. Use one unit delay per primitive for
+            # a deterministic no-SDF functional control, with checks disabled.
+            control=root/'build_unit';control.mkdir()
+            unit=command.copy();unit[unit.index('-o')+1]=str(control/'simv')
+            unit+=['+delay_mode_unit','+notimingcheck','+define+NO_SDF']
+            execute(unit,control,'compile.log');executable=control/'simv'
         execute([str(executable)]+flags,run,'simulation.log')
         text=(run/'simulation.log').read_text(errors='replace')
         match=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
