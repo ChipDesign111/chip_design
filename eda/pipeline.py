@@ -18,7 +18,13 @@ ROOT=Path(__file__).resolve().parents[1]
 def command(script,*args,capture=False):
     argv=[sys.executable,str(ROOT/script)]+list(map(str,args))
     if capture:
-        return subprocess.check_output(argv,cwd=str(ROOT),text=True)
+        # Only read-only status queries may retry a transient SSH failure.
+        for attempt in range(6):
+            try:
+                return subprocess.check_output(argv,cwd=str(ROOT),text=True,timeout=60)
+            except (subprocess.CalledProcessError,subprocess.TimeoutExpired):
+                if attempt==5:raise
+                time.sleep(5*(attempt+1))
     subprocess.run(argv,cwd=str(ROOT),check=True)
 
 
