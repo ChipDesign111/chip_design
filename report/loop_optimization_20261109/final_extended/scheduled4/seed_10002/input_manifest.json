@@ -1,0 +1,14 @@
+{
+  "seed": 10002,
+  "mode": "scheduled4",
+  "batch": 4,
+  "code_bytes": 1388,
+  "instruction_words": 347,
+  "input_data_start_offset": 4096,
+  "input_data_sha256": "bfac0e0750b53529d720e1de1740848333c2fac127a6d0d05f9c8c15f493048e",
+  "files_sha256": {
+    "firmware.hex": "abda80b51f5525de488681a65187f330e6219b57eafc6068321f6aa091e7dada",
+    "firmware.S": "cb655982873c79aa2517a79efc12344a4791d99628e7dfdf71f0f2f17164bbd1",
+    "firmware_meta.json": "2a6945561fb9ba4131f48bd76ea7c6587dc5efe580b1bfebd3e6f5cfb3f2af29"
+  }
+}

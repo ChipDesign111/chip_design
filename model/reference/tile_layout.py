@@ -18,6 +18,6 @@ def weights():
     return result
 def encode(w1,w2):
     first=bytes(w1[o][2*t+k]&255 for t in range(32) for o in range(32) for k in range(2))
-    second=bytes((w2[o][t]&255) if o<6 else 0 for t in range(32) for o in range(8))
+    second=bytes((w2[o][t]&255) for t in range(32) for o in range(6))
     return first,second
 def parameters():return json.loads((ROOT/'model/export/quant_params.json').read_text())

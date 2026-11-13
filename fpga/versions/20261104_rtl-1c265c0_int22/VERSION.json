@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "version_id": "20261104_rtl-1c265c0_int22",
+  "status": "build_rtl_and_board_validation_pass",
+  "test_report": "TEST_REPORT.md",
+  "snapshot_commit": "1c265c0b08dce9c39b01f088b568991bda7794af",
+  "rtl_logic_baseline": "9970d6f648140de7b1878fc183229d04773a95e0",
+  "fpga": {
+    "part": "xc7a35tcsg324-1",
+    "clock_hz": 20000000,
+    "preloaded": false,
+    "sram_init_file_empty": true,
+    "implementation_strategy": "Performance_ExplorePostRoutePhysOpt"
+  },
+  "bitstream": {
+    "path": "artifacts/fpga_top.bit",
+    "size_bytes": 2192116,
+    "sha256": "bdf36e5888703ebc6905f3cd87a4f42b8256168484147baf97b966e9d47d326e"
+  },
+  "firmware": {
+    "canonical_hex": "firmware/int8_selftest.hex",
+    "canonical_hex_size_bytes": 18432,
+    "canonical_hex_sha256": "3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b",
+    "canonical_bin": "firmware/int8_selftest.bin",
+    "canonical_bin_size_bytes": 8192,
+    "canonical_bin_sha256": "b639ab3ca002e73de3f79bd945d1760ec7111f05dfdb9c27efd7b05796303486",
+    "manifest": "firmware/image_manifest.json"
+  },
+  "build": {
+    "synthesis_errors": 0,
+    "synthesis_critical_warnings": 0,
+    "implementation_errors": 0,
+    "routed_drc_errors": 0,
+    "fully_routed": true,
+    "timing_met": true,
+    "setup_wns_ns": 0.407,
+    "hold_whs_ns": 0.034,
+    "slice_luts": 17625,
+    "slice_lut_percent": 84.74,
+    "slice_registers": 13855,
+    "dsp48e1": 40,
+    "block_ram_tiles": 2
+  },
+  "rtl_validation": {
+    "unit_cases": 38,
+    "trained_inputs": 24,
+    "passed": true,
+    "full_soc_passed": true,
+    "full_soc_observed_cycles": 6369,
+    "full_soc_hardware_cycles": 6364,
+    "npu_cycles": 975,
+    "fc1_issue_cycles": 256,
+    "fc2_issue_cycles": 64,
+    "dma_read_mac_overlap_cycles": 278,
+    "dma_write_mac_overlap_cycles": 278
+  },
+  "board_test": {
+    "status": "pass",
+    "test_date": "2026-11-04",
+    "mode": "jtag_no_preload",
+    "canonical_sha256": "3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b",
+    "boot_status": "0x00002800",
+    "final_pass_word": "0xc0dec0de",
+    "final_pc": "0x80000470",
+    "npu_status": "0x00000001",
+    "batch": 4,
+    "weight_tile_loads": 64,
+    "fc1_issue_cycles": 256,
+    "fc2_issue_cycles": 64,
+    "npu_cycles": 975,
+    "dma_mac_overlap_cycles": 279,
+    "dma_read_mac_overlap_cycles": 278,
+    "dma_write_mac_overlap_cycles": 278,
+    "soc_cycles": 6368,
+    "soc_cycles_hex": "0x000018e0",
+    "byte_access_probe": "word write/read, byte 0/1/2/3 writes, little-endian byte reads, and final word 0xddccbbaa passed",
+    "evidence": "evidence/board_gdb_20261104.txt",
+    "report": "TEST_REPORT.md",
+    "extended_regression": {
+      "status": "pass",
+      "leds": "M1 locked, K1 TCK activity, K3 PASS",
+      "continuous_reset": "pass",
+      "repeated_bitstream_reconfiguration": "pass",
+      "long_running_stress": "pass"
+    },
+    "raw_extended_regression_logs_attached": false
+  }
+}

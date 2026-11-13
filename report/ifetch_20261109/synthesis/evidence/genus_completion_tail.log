@@ -1,0 +1,80 @@
+|             |        |      | CPU server was successfully shut down.         |
+| ST-120      |Info    |    1 |Attempting to launch a super-threading server.  |
+|             |        |      |The tool is entering super-threading mode and   |
+|             |        |      | is launching a CPU server process.  This is    |
+|             |        |      | enabled by the root attribute                  |
+|             |        |      | 'super_thread_servers' or 'auto_super_thread'. |
+| ST-128      |Info    |    6 |Super thread servers are launched successfully. |
+| SYNTH-1     |Info    |    1 |Synthesizing.                                   |
+| SYNTH-2     |Info    |    1 |Done synthesizing.                              |
+| SYNTH-4     |Info    |    1 |Mapping.                                        |
+| SYNTH-5     |Info    |    1 |Done mapping.                                   |
+| SYNTH-7     |Info    |    1 |Incrementally optimizing.                       |
+| SYNTH-8     |Info    |    1 |Done incrementally optimizing.                  |
+| TIM-11      |Warning |    1 |Timing problems have been detected in this      |
+|             |        |      | design.                                        |
+|             |        |      |Use 'check_timing_intent' or 'report timing     |
+|             |        |      | -lint' to report more information.             |
+| TUI-67      |Warning |    3 |The attribute is not applicable to the object.  |
+|             |        |      |To see the description and usage for this       |
+|             |        |      | attribute, type '::legacy::set_attribute -h    |
+|             |        |      | <attr_name> *' (in legacy UI mode)             |
+|             |        |      | or 'help * <attr_name> -detail' (in CUI mode). |
+| TUI-744     |Info    |    1 |Timing analysis will be done for this view.     |
+|             |        |      |Worst paths will be shown in this view.         |
+| WSDF-104    |Warning |    2 |Default value for an option has changed in this |
+|             |        |      | release.                                       |
+|             |        |      |Specify the option explicitly.                  |
+| WSDF-201    |Warning |   20 |No delay description exists for an instance.    |
+|             |        |      |The timing arc of the instance does not exist   |
+|             |        |      | or is disabled by disable_timing or constant   |
+|             |        |      | value. The delay information will not be       |
+|             |        |      | generated for the instance. The instance could |
+|             |        |      | be a loop breaker or its inputs could be       |
+|             |        |      | driven by constant                             |
+--------------------------------------------------------------------------------
+@file(genus_synthesis.tcl) 120: report_runtime finish
+===========================================
+The RUNTIME after finish is 963.000000 secs
+and the MEMORY_USAGE after finish is 2305.54 MB
+===========================================
+@file(genus_synthesis.tcl) 122: puts "
+======================
+= SYNTHESIS FINISHED =
+=                    =
+=      ^     ^       =
+=        \\_/         =
+=                    =
+=  Congratulations!  =
+======================"
+
+======================
+= SYNTHESIS FINISHED =
+=                    =
+=      ^     ^       =
+=        \_/         =
+=                    =
+=  Congratulations!  =
+======================
+@file(genus_synthesis.tcl) 132: puts "EDA_SYNTHESIS_COMMANDS_COMPLETE"
+EDA_SYNTHESIS_COMMANDS_COMPLETE
+#@ End verbose source ../scripts/genus_synthesis.tcl
+@file(eda_synthesis.tcl) 2: puts "EDA_SYNTHESIS_COMPLETE"
+EDA_SYNTHESIS_COMPLETE
+@file(eda_synthesis.tcl) 3: exit
+
++-----------+-----------------+-----+----------------------+---------------------------+
+|   Host    |     Machine     | CPU | Physical Memory (MB) | Peak Physical Memory (MB) |
++-----------+-----------------+-----+----------------------+---------------------------+
+| localhost | tc-01a0e839f77e |  1  |        1630.6        |          2602.6           |
++-----------+-----------------+-----+----------------------+---------------------------+
+
++---------------+----------------------+---------------------------+
+|    Server     | Physical Memory (MB) | Peak Physical Memory (MB) |
++---------------+----------------------+---------------------------+
+| localhost_1_0 |        505.9         |          1135.3           |
++---------------+----------------------+---------------------------+
+
+Info    : A super-threading server has been shut down normally. [ST-112]
+        : The server 'localhost_1_0' was process '8631' on this host.
+Normal exit.

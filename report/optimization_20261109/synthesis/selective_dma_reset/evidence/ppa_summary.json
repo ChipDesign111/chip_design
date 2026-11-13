@@ -1,0 +1,71 @@
+{
+  "status": "PASS",
+  "work": "/home/s2400012713/chip-opt-ppa-20261109/selective_dma_reset/work",
+  "tool_exit_code": 0,
+  "all_packaged_rtl_match_frozen_inputs": true,
+  "errors": [],
+  "synthesis": {
+    "cell_count": 68983,
+    "cell_area_um2": 2154558.848,
+    "net_area_um2": 755806.485,
+    "latch_area_um2": 0.0,
+    "memory_area_um2": 401443.591,
+    "report": "/home/s2400012713/chip-opt-ppa-20261109/selective_dma_reset/work/syn/my_soc_top/reports/area/area.rpt",
+    "mapped_design": {
+      "native_main_srams": 1,
+      "mapped_leaf_instances": 68983,
+      "all_leaf_types_have_library_models": true,
+      "npu_dma_area_hierarchy_present": true,
+      "latch_area_um2": 0
+    }
+  },
+  "hierarchy": {
+    "my_soc_top": {
+      "cell_count": 68983,
+      "cell_area_um2": 2154558.848,
+      "net_area_um2": 755806.485
+    },
+    "i_cpu": {
+      "cell_count": 16177,
+      "cell_area_um2": 369305.082,
+      "net_area_um2": 190005.04
+    },
+    "i_ifetch": {
+      "cell_count": 3373,
+      "cell_area_um2": 94154.323,
+      "net_area_um2": 30233.876
+    },
+    "i_npu_subsystem": {
+      "cell_count": 33284,
+      "cell_area_um2": 898229.741,
+      "net_area_um2": 361350.776
+    },
+    "i_dma": {
+      "cell_count": 1297,
+      "cell_area_um2": 37557.677,
+      "net_area_um2": 11994.442
+    }
+  },
+  "setup_wns_ps": 593.6,
+  "setup_wns_ns": 0.5936,
+  "setup_tns_ps": 0.0,
+  "setup_violating_paths": 0,
+  "planning": {
+    "cell_count": 68983,
+    "cell_area_um2": 2154558.848,
+    "net_area_um2": 755806.485,
+    "latch_area_um2": 0.0,
+    "memory_area_um2": 401443.591,
+    "report": "/home/s2400012713/chip-opt-ppa-20261109/selective_dma_reset/work/syn/my_soc_top/reports/area/area.rpt",
+    "planning_pass": true,
+    "required_core_area_um2": 2533115.268691177,
+    "planned_whole_die_area_mm2": 3.794704,
+    "max_whole_die_area_mm2": 3.8,
+    "standard_cell_area_estimate_um2": 1753115.2572500003,
+    "reserved_macro_halo_um2": 470626.73075000005,
+    "target_utilization": 0.85,
+    "core_size_um": 1648,
+    "planning_only_not_timing_or_IR_proof": true
+  },
+  "scope": "Fresh TT Genus synthesis, ideal clocks and unchanged20nsSDC; no PNR/SDF simulation or board validation"
+}

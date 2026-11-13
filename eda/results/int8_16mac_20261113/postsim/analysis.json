@@ -1,0 +1,45 @@
+{
+  "status": "PASS",
+  "postsim_source_commit": "c2a73393ff298fa1e47f27fc57e2f571946cfac2",
+  "eda_deployment_commit": "c02527ec96cd4cf5d31c0a903c9e57e03f5ad107",
+  "upload": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_173500_postsim_c2a7339",
+  "source_archive_sha256": "782daa4a6df70ff20f09de26909f417d9fad4a89441a4f6ec8a85f716270f642",
+  "netlist_sha256": "21952575977cd9595c550765dd84abbc5bec3da0107010e46e2fb5cd3eb873f9",
+  "sdf_gz_sha256": "1d0658be337153f59cb11ac3315ab20fba162b20cf44a79a5866840ce8329d68",
+  "cases_total": 11,
+  "sdf_cases": 10,
+  "unit_delay_controls": 1,
+  "functional_passes": 11,
+  "annotation_errors": 0,
+  "missing_instances": 0,
+  "unmatched_timing_checks": 0,
+  "negative_iopath_clamped_by_simulator": 21,
+  "active_window_dynamic_timing_clean": true,
+  "initial_reset_events_per_sdf_case": 28,
+  "final_reset_events": 0,
+  "sdf_max": {
+    "observed_cpu_cycles": 2701,
+    "npu_cycles": 952,
+    "dma_mac_overlap": 500,
+    "read_overlap": 466,
+    "write_overlap": 499
+  },
+  "gate_unit": {
+    "observed_cpu_cycles": 2700,
+    "npu_cycles": 952,
+    "dma_mac_overlap": 500,
+    "read_overlap": 466,
+    "write_overlap": 499
+  },
+  "control_note": "A literal zero-delay, no-SDF gate simulation is race-prone around the instruction buffer and pad interfaces. The deterministic functional control uses +delay_mode_unit with timing checks disabled.",
+  "review_archive": {
+    "bytes": 234204,
+    "sha256": "8c4f40b0e4cd3f6b695aacfef4193c8446a45776e70281f5102cf693b3e2118b",
+    "files": 47
+  },
+  "known_limitations": [
+    "28 initial-reset timing events remain in every MAXIMUM SDF case",
+    "21 negative IOPATH values are clamped by the simulator",
+    "No independent foundry DRC/LVS, multi-PVT, IR/EM/ESD or formal equivalence"
+  ]
+}

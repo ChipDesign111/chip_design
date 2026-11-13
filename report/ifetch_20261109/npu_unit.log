@@ -1,0 +1,49 @@
+CASE 0 PASS cycles=1541 fc1=256 fc2=64 read_overlap=154 write_overlap=144
+CASE 1 PASS cycles=1440 fc1=128 fc2=32 read_overlap=69 write_overlap=65
+CASE 2 PASS cycles=1462 fc1=64 fc2=16 read_overlap=33 write_overlap=31
+CASE 3 PASS cycles=1439 fc1=128 fc2=32 read_overlap=76 write_overlap=76
+CASE 4 PASS cycles=1402 fc1=64 fc2=16 read_overlap=37 write_overlap=36
+CASE 5 PASS cycles=1411 fc1=128 fc2=32 read_overlap=64 write_overlap=64
+CASE 6 PASS cycles=1519 fc1=256 fc2=64 read_overlap=146 write_overlap=140
+CASE 7 PASS cycles=1429 fc1=128 fc2=32 read_overlap=81 write_overlap=64
+CASE 8 PASS cycles=1399 fc1=64 fc2=16 read_overlap=40 write_overlap=42
+CASE 9 PASS cycles=1462 fc1=128 fc2=32 read_overlap=80 write_overlap=67
+CASE 10 PASS cycles=1407 fc1=64 fc2=16 read_overlap=37 write_overlap=41
+CASE 11 PASS cycles=1468 fc1=128 fc2=32 read_overlap=78 write_overlap=68
+CASE 12 PASS cycles=1526 fc1=256 fc2=64 read_overlap=154 write_overlap=147
+CASE 13 PASS cycles=1421 fc1=128 fc2=32 read_overlap=76 write_overlap=73
+CASE 14 PASS cycles=1386 fc1=64 fc2=16 read_overlap=32 write_overlap=38
+CASE 15 PASS cycles=1474 fc1=128 fc2=32 read_overlap=79 write_overlap=73
+CASE 16 PASS cycles=1454 fc1=64 fc2=16 read_overlap=40 write_overlap=30
+CASE 17 PASS cycles=1470 fc1=128 fc2=32 read_overlap=66 write_overlap=57
+CASE 18 PASS cycles=1497 fc1=256 fc2=64 read_overlap=152 write_overlap=142
+CASE 19 PASS cycles=1453 fc1=128 fc2=32 read_overlap=81 write_overlap=67
+CASE 20 PASS cycles=1360 fc1=64 fc2=16 read_overlap=43 write_overlap=33
+CASE 21 PASS cycles=1426 fc1=128 fc2=32 read_overlap=65 write_overlap=65
+CASE 22 PASS cycles=1407 fc1=64 fc2=16 read_overlap=46 write_overlap=41
+CASE 23 PASS cycles=1450 fc1=128 fc2=32 read_overlap=76 write_overlap=56
+CASE 24 PASS cycles=1534 fc1=256 fc2=64 read_overlap=138 write_overlap=136
+CASE 25 PASS cycles=1397 fc1=128 fc2=32 read_overlap=77 write_overlap=72
+CASE 26 PASS cycles=1356 fc1=64 fc2=16 read_overlap=33 write_overlap=33
+CASE 27 PASS cycles=1425 fc1=128 fc2=32 read_overlap=83 write_overlap=67
+CASE 28 PASS cycles=1409 fc1=64 fc2=16 read_overlap=39 write_overlap=29
+CASE 29 PASS cycles=1502 fc1=128 fc2=32 read_overlap=75 write_overlap=72
+CASE 30 PASS cycles=1631 fc1=256 fc2=64 read_overlap=140 write_overlap=132
+CASE 31 PASS cycles=1382 fc1=128 fc2=32 read_overlap=78 write_overlap=65
+CASE 32 PASS cycles=1547 fc1=256 fc2=64 read_overlap=140 write_overlap=131
+CASE 33 PASS cycles=1486 fc1=256 fc2=64 read_overlap=148 write_overlap=143
+CASE 34 PASS cycles=1544 fc1=256 fc2=64 read_overlap=132 write_overlap=134
+CASE 35 PASS cycles=1544 fc1=256 fc2=64 read_overlap=149 write_overlap=140
+CASE 36 PASS cycles=1616 fc1=256 fc2=64 read_overlap=123 write_overlap=115
+CASE 37 PASS cycles=1568 fc1=256 fc2=64 read_overlap=136 write_overlap=136
+CASE 38 PASS cycles=1421 fc1=64 fc2=16 read_overlap=32 write_overlap=34
+CASE 39 PASS cycles=1385 fc1=64 fc2=16 read_overlap=41 write_overlap=41
+CASE 40 PASS cycles=1406 fc1=64 fc2=16 read_overlap=39 write_overlap=39
+ERROR_TEST read
+ERROR_TEST write
+ERROR_TEST early
+ERROR_TEST late
+ERROR_TEST W2 prefetch
+ERROR_TEST batch above four
+ERROR_TEST busy write
+INT8_TILED_DMA PASS cases=41 accumulator_bits=22

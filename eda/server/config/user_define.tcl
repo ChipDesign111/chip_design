@@ -42,6 +42,10 @@ set pnr_opt_level standard
 set syn_cpus 8
 set pnr_cpus 8
 
+# Optimizer target slack; final audit also checks these margins.
+set rm_setup_target_slack 0.1
+set rm_hold_target_slack 0.05
+
 # Power net name
 set init_gnd_net {VSS}
 set init_pwr_net {VDD}

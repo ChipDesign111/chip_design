@@ -1,13 +1,19 @@
 {
-  "samples": 24,
-  "batches": 12,
-  "code_bytes": 1116,
-  "image_used_bytes": 6580,
+  "samples": 4,
+  "batches": 1,
+  "code_bytes": 1520,
+  "image_used_bytes": 7952,
   "sram_bytes": 8192,
-  "sha256": "54c32dca604287846adf60fca7c0aa9a5125c69dc96dc69ecea6df03bce3689f",
+  "rtl_version": "f5e3a7c",
+  "firmware_version": "20261109_reuse8",
+  "firmware_mode": "reuse8",
+  "board_retested": false,
+  "last_board_tested_snapshot": "20261104_rtl-1c265c0_int22",
+  "sha256": "770876652242b4248f390845388a71c9146384bde80b18a4d674d1e8510a15d3",
+  "binary_sha256": "3138265a94b452151a0191066246716fd4591542ef30c5a65c2146a95fa747ce",
   "comparison": "Every hidden, score and predicted class against integer gold, not against the true activity label",
   "transport": "dma",
-  "parameter_words": 598,
-  "input_words": 384,
-  "measured": "mcycle: parameter copy, cumulative input copy, application including identical result checks"
+  "parameter_words": 38,
+  "input_words": 64,
+  "measured": "RTL CPU simulation with reuse8 firmware includes configuration, four-sample inference, shared 32-MAC FC1/FC2 phases, INT22 boundaries and identical result checks; no renewed FPGA board test"
 }

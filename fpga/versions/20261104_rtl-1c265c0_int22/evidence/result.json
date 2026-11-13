@@ -1,0 +1,12 @@
+{
+  "unit_cases": 38,
+  "trained_samples": 24,
+  "accumulator_bits": 22,
+  "soc": true,
+  "soc_timing": {
+    "observed_cycles": 6369,
+    "hardware_soc_cycles": 6364
+  },
+  "vendor_model_sha256": null,
+  "passed": true
+}

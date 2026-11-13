@@ -1,0 +1,118 @@
+{
+  "validated_at": "2026-11-03",
+  "branch": "rtl-dev",
+  "base_commit": "2931fe08012b3e5b06b7f2885ed71b81634a2d3c",
+  "current_status": "historical_passed_before_int22_change",
+  "scope": "Historical 32-bit-accumulator validation for the shared FC1/FC2 multiplier bank with two FC2 input rows per phase, a three-stage requantization pipeline, sequential Argmax and CUT_SLV_AX crossbar address boundaries. The current INT22 RTL requires a fresh functional and physical regression.",
+  "architecture": {
+    "dot_product_multipliers": 32,
+    "fc1_mapping": "16 outputs x 2 input lanes per phase",
+    "fc2_mapping": "6 outputs x 2 input rows per phase",
+    "fc2_phases_per_packet": 4,
+    "fc2_active_multipliers": 12,
+    "fc2_mac_issue_cycles_per_sample": 16,
+    "fc1_physical_tiles": 32,
+    "fc2_physical_packets": 4,
+    "fc2_packet_bytes": 48,
+    "logical_tile_load_count": 64,
+    "mac_pipeline": "combinational INT8 multiplication into INT32 accumulator per ISSUE cycle",
+    "argmax": "one shared signed 32-bit comparator; one candidate per cycle; five comparisons per sample",
+    "requant_pipeline": "sample/group select; 8:1 output select; 32x16 multiply, shift and saturation",
+    "requant_pipeline_data_registers": 288,
+    "requant_drain_cycles": 2,
+    "axi_crossbar_latency": "CUT_SLV_AX"
+  },
+  "results": {
+    "unit_cases": 38,
+    "trained_samples": 24,
+    "soc": true,
+    "passed": true,
+    "boot_cycle_start": {
+      "pre_fetch": 0,
+      "captured": 23,
+      "frozen": 23
+    },
+    "debug_cold": {
+      "halt_cycles": 44,
+      "boot_ready": 0,
+      "pc": "0x0000082c",
+      "dm_halted": 1
+    },
+    "modelsim_runtime_errors": 0,
+    "full_soc_total_cycles": 6369,
+    "performance": {
+      "batch_1": {
+        "cycles": 1401,
+        "cycles_per_sample": 1401.0,
+        "fc1_issue_cycles": 64,
+        "fc2_issue_cycles": 16,
+        "read_mac_overlap": 39,
+        "write_mac_overlap": 38
+      },
+      "batch_2": {
+        "cycles": 1431,
+        "cycles_per_sample": 715.5,
+        "fc1_issue_cycles": 128,
+        "fc2_issue_cycles": 32,
+        "read_mac_overlap": 70,
+        "write_mac_overlap": 66
+      },
+      "batch_4": {
+        "cycles": 1541,
+        "cycles_per_sample": 385.25,
+        "fc1_issue_cycles": 256,
+        "fc2_issue_cycles": 64,
+        "read_mac_overlap": 152,
+        "write_mac_overlap": 151
+      }
+    }
+  },
+  "pre_axi_boundary_reference": {
+    "batch_1": {
+      "cycles": 1395,
+      "cycles_per_sample": 1395.0,
+      "fc1_issue_cycles": 64,
+      "fc2_issue_cycles": 8
+    },
+    "batch_2": {
+      "cycles": 1415,
+      "cycles_per_sample": 707.5,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 16
+    },
+    "batch_4": {
+      "cycles": 1514,
+      "cycles_per_sample": 378.5,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 32
+    }
+  },
+  "full_soc_batch_4": {
+    "total_cycles": 6369,
+    "pre_serial_fc2_cycles": 6337,
+    "increase_vs_pre_serial_fc2": 32
+  },
+  "pre_requant_pipeline_reference": {
+    "fixed_seed_batch_1_cycles": 1395,
+    "fixed_seed_batch_2_cycles": 1413,
+    "fixed_seed_batch_4_cycles": 1512,
+    "full_soc_testbench_cycles": 5109,
+    "full_soc_hardware_cycles": 5104
+  },
+  "artifacts": {
+    "rtl/soc/my_soc_top.sv": "4a50d83d85b7ae7c4abd29bd45b5e0d1bcddcd57105f509e66184da6e7476bdd",
+    "rtl/npu/har_npu_core.sv": "c619203459123e26c62e7a53c414bb667d51172e4ace1cfaac2d8e048236fcfb",
+    "rtl/npu/har_weight_store.sv": "473106074ca66f795445cd3862104d7e57da364b6ab119996eb612934b7d2913",
+    "rtl/npu/simple_npu_top.sv": "a2c35d04c11661eba29ced83115b8e7e9e3767c5e94c77ac226f4aab14eba260",
+    "test/int8/tb_tiled_dma.sv": "f4072454c4974b539656291c17edd0b2849e347908d2d745923b49563f513c96",
+    "test/int8/firmware.py": "22c42c2a7329c6480c92cc516c06e5e7fb1f0157f19fd506182e35d8b627e4d6"
+  },
+  "excluded": [
+    "FPGA synthesis",
+    "FPGA place and route",
+    "ASIC physical implementation",
+    "SDF simulation",
+    "20 ns ASIC timing signoff",
+    "board validation"
+  ]
+}

@@ -5,6 +5,7 @@
 results. No implicit rerun of earlier tools and no automatic retry of mutations.
 """
 import argparse
+import hashlib
 from datetime import datetime, timezone
 import json
 from pathlib import Path
@@ -35,6 +36,7 @@ def main():
     p.add_argument('--start-at',choices=['rtl','implementation'],default='rtl',help='implementation retains source checks and starts fresh synthesis; skips unchanged RTL regression')
     p.add_argument('--host',default='chipdesign')
     p.add_argument('--eda-upload',help='Required when selecting only Lab5')
+    p.add_argument('--rtl-regression-result',type=Path,help='Reuse a completed full-SoC regression only after verifying every recorded RTL/test source SHA against this checkout')
     p.add_argument('--output',type=Path,required=True)
     a=p.parse_args()
     if a.output.exists() and any(a.output.iterdir()):
@@ -52,7 +54,22 @@ def main():
     try:
         stage('rtl_check_and_regression')
         command('tools/project.py','check')
-        if a.start_at=='rtl':
+        if a.rtl_regression_result:
+            report=a.rtl_regression_result.resolve()
+            result=json.loads(report.read_text(encoding='utf-8'))
+            manifest=report.with_name('source_manifest.json')
+            sources=json.loads(manifest.read_text(encoding='utf-8'))
+            expected={p.relative_to(ROOT).as_posix() for folder in ['rtl','test/int8'] for p in (ROOT/folder).rglob('*') if p.is_file() and 'runs' not in p.parts and '__pycache__' not in p.parts}
+            expected.add('model/reference/tile_layout.py')
+            if not result.get('passed') or not result.get('soc') or set(sources)!=expected:
+                raise ValueError('Incomplete full-SoC regression or source inventory')
+            for name,digest in sources.items():
+                source=(ROOT/name).resolve()
+                source.relative_to(ROOT)
+                if hashlib.sha256(source.read_bytes()).hexdigest()!=digest:
+                    raise ValueError('RTL/test changed after regression: '+name)
+            journal['rtl_regression']={'status':'passed_before_deployment','report':str(report),'report_sha256':hashlib.sha256(report.read_bytes()).hexdigest(),'source_manifest_sha256':hashlib.sha256(manifest.read_bytes()).hexdigest(),'source_files_verified':len(sources),'result':result}
+        elif a.start_at=='rtl':
             command('tools/project.py','test','--soc')
         else:
             journal['rtl_regression']='Not rerun: explicit implementation start; source provenance checks still executed'

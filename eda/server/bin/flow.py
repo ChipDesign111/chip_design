@@ -97,7 +97,7 @@ def read_config(path):
         raise ValueError('Setup optimization goal must be finite, nonnegative and below the clock period')
     if c['analysis_profile'] not in ['single_TT_SI_off_native_low_RC','matched_TT_SS_FF0_FFm40_SI_off_native_low_RC']:
         raise ValueError('Unknown library PVT profile')
-    if not isinstance(c['max_repair_iterations'], int) or not 1 <= c['max_repair_iterations'] <= 10 or c['hold_target_ns'] not in [0,0.02]:
+    if not isinstance(c['max_repair_iterations'], int) or not 1 <= c['max_repair_iterations'] <= 10 or c['hold_target_ns'] not in [0,0.02,0.05]:
         raise ValueError('Invalid repair iteration count/target')
     if len(c['macro_xy_um']) != 2 or any(not isinstance(x, (int, float)) or not math.isfinite(x) or x < 200 for x in c['macro_xy_um']):
         raise ValueError('Macro coordinates must leave room for core rings and halo')

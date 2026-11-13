@@ -1,0 +1,2 @@
+FATAL: C:\Users\wyh\Desktop\chipcourse\reference\github-chip-design-integrated-20261109\test\int8\tb_tiled_dma.sv:78: MMIO 00000008 expected 00000000 actual 00000001
+       Time: 15616000 Scope: tb_tiled_dma.check

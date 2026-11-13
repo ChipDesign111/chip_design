@@ -1,0 +1,14 @@
+{
+  "seed": 16,
+  "mode": "reuse8_eq",
+  "batch": 1,
+  "code_bytes": 644,
+  "instruction_words": 161,
+  "input_data_start_offset": 4092,
+  "input_data_sha256": "862341c9607ba41de04df51cfbee0f2f8054e70047ebfb58e7b551099ef2670a",
+  "files_sha256": {
+    "firmware.hex": "c830ec6e2cb6aa2df45a8bdba81998e6abbc9f4b4fac7504d94f35a097a79118",
+    "firmware.S": "56bd1e15bfffe3c29b99c5dc765c1b83211c0afb8ec26b093c29f46e87c3d8a2",
+    "firmware_meta.json": "510054afea115c1963d14307a9ea64f6a51a82a3ec1338ccee162c21b9136b18"
+  }
+}

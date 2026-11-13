@@ -1,5 +1,7 @@
 # 从本机部署到完整 EDA 结果
 
+当前活动版本：[main 266bca3整合](results/main_266bca3_integration_20261113/README.md)。核心沿用main的16-MAC/INT22/取指缓存和固件，新增公共复位与WB/Lab5流程。合并后RTL回归已过，新物理与TT待跑；以下dea5584是前一版xzx证据。
+
 最新版[统一系统复位与Wire Bond结果](results/system_reset_unified_20261113/README.md)已完成：物理源码dea5584，新综合与34步、同源TT后仿、同数据库半周期STA和Lab5均按正常条件验证。TT Setup/Hold +3.825/+0.115 ns，17用例功能全过，绑定/全程动态时序/负IOPATH截零均0；WB64项0违规，完整LVS正确。课程DRC与逐几何核对的ERC残项原样列示，不称ERC Clean或完整foundry签核。
 
 [复位修复说明与功能证据](../report/system_reset_boundary.md)记录用户批准的系统时钟域两下降沿请求识别、共同功能复位及独立JTAG TAP复位。历史be4a7fc虽WB0，TT仍有两条复位事件，不能作最终通过依据。

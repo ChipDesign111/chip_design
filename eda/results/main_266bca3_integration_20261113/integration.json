@@ -1,0 +1,36 @@
+{
+  "main_base": "266bca3ac99998df5375c61301a9102a6f6fc461",
+  "xzx_base": "358dd5a97bcef05bf37847bd73c77dbc6866dfcf",
+  "core_main_sha256": {
+    "rtl/npu/har_npu_core.sv": "c1dc90bf9c84c01a8df746fb97e759b6e7b76e33411af2f3d3cb8d5e12b7b7fe",
+    "rtl/npu/simple_npu_top.sv": "ad07ac922fed02cf6fd7e393014fdd5a191335e1295282e1e8129950ac4ad31f",
+    "rtl/npu/har_weight_store.sv": "473106074ca66f795445cd3862104d7e57da364b6ab119996eb612934b7d2913",
+    "rtl/dma/har_dma.sv": "6aaa673d985b4c431ed7f65cb12ff7794bf6af48fbced4f399f3b5dbd45da2cb",
+    "rtl/soc/my_ifetch.sv": "3d8d8ba907e5ad8a4b27e1e8d4b4abf9958a9a32c49056ed81150eeedfed1ea0",
+    "rtl/memory/bootram.sv": "3a7930a2052e39d94d58042b27725eb60a16541463cfc92792dc0bb9727e714b"
+  },
+  "main_preserved": "16 shared INT8 MACs, INT22 biases/accumulators, 128B instruction fetch, CUT_SLV_AX, main DMA and firmware",
+  "additions": "Common system reset only in SoC perimeter; native WB keepouts, Lab5, full source/input SHA audit, robust read-only status and result fetch, TT native nonnegative combination selection and mux-DFF implementation",
+  "verification": "pending fresh regression/implementation/TT/Lab5; previous results not reused",
+  "functional_regression": {
+    "unit_cases": 41,
+    "dma_response_cases": 8,
+    "directed_cases": [
+      "argmax_final_rises",
+      "argmax_final_falls",
+      "argmax_final_ties"
+    ],
+    "trained_samples": 24,
+    "accumulator_bits": 22,
+    "bias_bits": 22,
+    "soc": true,
+    "soc_timing": {
+      "observed_cycles": 2700,
+      "hardware_soc_cycles": 2695
+    },
+    "vendor_model_sha256": null,
+    "passed": true,
+    "system_reset_contract": "SYSTEM_RESET_CONTRACT_PASS phases=80 POR=80 NDM=80"
+  },
+  "source_manifest_sha256": "9b80aee7497f18fad2d5119cae955e0306fbc571bbb8da68fe043be96d999d5e"
+}

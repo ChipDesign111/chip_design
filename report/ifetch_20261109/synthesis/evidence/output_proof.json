@@ -1,0 +1,151 @@
+{
+  "files": {
+    "syn/my_soc_top/reports/runtime/check_opt.rpt": {
+      "bytes": 3432811,
+      "sha256": "1511aab4944aed653730c2b8366c4adee5e182c7a126cbd2b70ecc556f710e44"
+    },
+    "evidence/genus_synthesis.log": {
+      "bytes": 61104276,
+      "sha256": "6bdf69ffa643974ac981245560abdf9847ec139799fcbd460ad41e02b79c5346"
+    },
+    "evidence/input_manifest.json": {
+      "bytes": 22385,
+      "sha256": "0055802314ba3e5b54bab07e55feafc2620042037775985b7e2d84ad4fb4a8e1"
+    },
+    "evidence/source.json": {
+      "bytes": 28820,
+      "sha256": "c212813705e6c3d4edf86514bd3f936b3488dde37efd7343006d73f3a4673c19"
+    },
+    "syn/my_soc_top/my_soc_top_postsyn.v": {
+      "bytes": 11983817,
+      "sha256": "8186c9728196d60fe0fab8f386521000c151ab06856fe86c01e2cb07bf91ed59"
+    },
+    "syn/my_soc_top/my_soc_top_tt_1p80v_25c.sdf": {
+      "bytes": 69132293,
+      "sha256": "8dd62c99b0a7d3f819e6074727503ce623b950334a615c65618b18ec0c4bcab0"
+    },
+    "syn/my_soc_top/backup/my_soc_top.func.sdc": {
+      "bytes": 5132292,
+      "sha256": "5ff9f7aca9f239d9a5254fc5fa9e82155541c3ed9041cc739440b190bda4d472"
+    },
+    "syn/my_soc_top/reports/area/area.rpt": {
+      "bytes": 58589,
+      "sha256": "17e00d08c4caa60228702d0094e295d23c08254d27f8013c742ed145bded0250"
+    },
+    "syn/my_soc_top/reports/others/boundary_opto.rpt": {
+      "bytes": 1908910,
+      "sha256": "2b9b8f09b5422a508da4f6747f1e61a55e13e892ae254f4064ff114b8d9e9f49"
+    },
+    "syn/my_soc_top/reports/others/clock_gating.rpt": {
+      "bytes": 2264,
+      "sha256": "5c6a1fee639a78b5413de18d32d3ab823d448f00096e58b1ad0eb16c138daf0f"
+    },
+    "syn/my_soc_top/reports/others/clocks.rpt": {
+      "bytes": 3203,
+      "sha256": "689a599cd76f2f586f508af9e6c82af049be61c5364f864cfa532e7be72e5070"
+    },
+    "syn/my_soc_top/reports/others/datapath.rpt": {
+      "bytes": 908,
+      "sha256": "ae8589293cd4788ed27244a76385c8576c1bcaf6e8d4fc349189c15768c94237"
+    },
+    "syn/my_soc_top/reports/others/des_memories.rpt": {
+      "bytes": 3013,
+      "sha256": "ddb592f1d4545ce9242ef26302fd74e2d0742089baf58ae3ec6cc6fd1a2eaf92"
+    },
+    "syn/my_soc_top/reports/others/des_registers.rpt": {
+      "bytes": 3322577,
+      "sha256": "e695e4a0da6a6c3b618d22e9efa04a7cc366bf0fd6a61b32b1f3225a7e649a5b"
+    },
+    "syn/my_soc_top/reports/others/des_units.rpt": {
+      "bytes": 2736,
+      "sha256": "94cada1eca49ed78a59465d60beb16753750742d115ead7a0da4374ae6f5129f"
+    },
+    "syn/my_soc_top/reports/others/des_yield.rpt": {
+      "bytes": 32147,
+      "sha256": "579e97f442aece7c1b3b7fd48016cf531ac84b03a70fd11f873e802f52faa971"
+    },
+    "syn/my_soc_top/reports/others/design_rules.rpt": {
+      "bytes": 690,
+      "sha256": "85690385f172a2194fd6ac9f378122d26391d00f1ea5853c1fac156c4af59404"
+    },
+    "syn/my_soc_top/reports/others/gates.rpt": {
+      "bytes": 14548,
+      "sha256": "1379e2855bcaf993ea77fd7e8e329fa155c557e9a52bceb5408e175f84c2114d"
+    },
+    "syn/my_soc_top/reports/others/loop_breakers.rpt": {
+      "bytes": 587,
+      "sha256": "44c96f3f039a5fab221a028e734864899db8a309eb4c46afc2881e9a13408e6e"
+    },
+    "syn/my_soc_top/reports/others/ple.rpt": {
+      "bytes": 2424,
+      "sha256": "2dac2eb968968625c201e40b86f80edeaae442aab77f082101d6c2f9c5a7ec38"
+    },
+    "syn/my_soc_top/reports/others/qor.rpt": {
+      "bytes": 2931,
+      "sha256": "6aa6f6c6c830ccb8b2425a446ecee49e2dcf5cec12acd9b65ac2cc60327932c3"
+    },
+    "syn/my_soc_top/reports/power/func_tt_1p80v_25c_power.rpt": {
+      "bytes": 1205,
+      "sha256": "1ee2b1fd986983ae20ac176296aad2822e9b102494e308e6d53a7d3a84cad57c"
+    },
+    "syn/my_soc_top/reports/power/func_tt_1p80v_25c_power_hier.rpt": {
+      "bytes": 3893,
+      "sha256": "146777f5f1d3b1e6cd11d13f577788f4ff347ecf562d933e59c4342c0925a277"
+    },
+    "syn/my_soc_top/reports/runtime/check_elab.rpt": {
+      "bytes": 4943815,
+      "sha256": "217a7a86c859aa08035639eb01c954fde99e74008eb0983192c8348d42211e06"
+    },
+    "syn/my_soc_top/reports/runtime/check_map.rpt": {
+      "bytes": 3434959,
+      "sha256": "a58507008b745eae981d13ad42623b542f7844c4b12847cf2beb58aee765ed16"
+    },
+    "syn/my_soc_top/reports/runtime/check_syn_generic.rpt": {
+      "bytes": 3382809,
+      "sha256": "98f2b00535b04c87c9aa4bcc45980051bb38c4ec7b77518ccc18e2744b7a5f11"
+    },
+    "syn/my_soc_top/reports/runtime/elaborate_message.rpt": {
+      "bytes": 6782,
+      "sha256": "45e309bce551252dd0372a2a5f6b3f727ccf49599b97e1be3d37262d16435efc"
+    },
+    "syn/my_soc_top/reports/runtime/syn_generic_message.rpt": {
+      "bytes": 707,
+      "sha256": "d073debeea7b14eb6c5a3b740801ab388021ae1e9d26a7e59328d314071f1c7e"
+    },
+    "syn/my_soc_top/reports/runtime/syn_map_message.rpt": {
+      "bytes": 1031,
+      "sha256": "9ce4bd13f7e60786e0693af8d2e2e0ad07bf625f970cdf152cc115216259df50"
+    },
+    "syn/my_soc_top/reports/runtime/syn_opt_message.rpt": {
+      "bytes": 344,
+      "sha256": "9650e858d393d6987a6ac83883f795adaa4003d7520dca0d7143b936bfa08b2c"
+    },
+    "syn/my_soc_top/reports/time_intent/func_tt_1p80v_25c_timing_intent_elab.rpt": {
+      "bytes": 4644,
+      "sha256": "b1aea84023f81a2f8c5382470be75b2e09ec7e85a11f63c87505e47d5e81dea6"
+    },
+    "syn/my_soc_top/reports/timing/func_tt_1p80v_25c_timing.rpt": {
+      "bytes": 112003,
+      "sha256": "b217b66bf42ed9dc97c80a88496bc978ca6d55a79aa5d5fa9972c56283e708ad"
+    }
+  },
+  "synthesis_complete_marker": true,
+  "normal_exit": true,
+  "error_or_fatal_lines": [],
+  "tool_process": {
+    "pid": 7916,
+    "host": "tc-01a0e839f77e",
+    "command": [
+      "genus",
+      "-abort_on_error",
+      "-f",
+      "/home/s2400012713/chip-sync-integrated-syn-20261109/work/syn/scripts/eda_synthesis.tcl",
+      "-log",
+      "eda_synthesis",
+      "-overwrite"
+    ],
+    "completed": true,
+    "exit_code": 0
+  },
+  "scope": "Raw Genus records; no PNR/SDF-simulation acceptance"
+}

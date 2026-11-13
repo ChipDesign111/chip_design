@@ -1,12 +1,12 @@
 `timescale 1ns/1ps
 
 // Lab6-compatible board top for the current HAR SoC.
-// The 100 MHz board clock is converted to 50 MHz by clk_wiz_0.
+// The 100 MHz board clock is converted to 20 MHz by clk_wiz_0.
 module fpga_top #(
     // Absolute by default because Vivado resolves $readmemh relative paths
     // against its launch directory. Override this parameter if the tree moves.
     parameter SRAM_INIT_FILE =
-        "fpga/firmware/int8_selftest.hex"
+        ""
 ) (
     input  logic fpga_clk_i,
     input  logic rst_ni,

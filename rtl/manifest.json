@@ -366,9 +366,10 @@
     {
       "source": "soc/rtl/mem/bootram.sv",
       "path": "rtl/memory/bootram.sv",
-      "sha256": "537ad5ccbce367cd216ff0d8b1134c18eecd72b9c638f67597b761dbb3992db9",
+      "sha256": "3a7930a2052e39d94d58042b27725eb60a16541463cfc92792dc0bb9727e714b",
+      "previous_sha256": "daab5315b0c94e66ce1de229075a56c129708d8dbc5916a63587d02df8427ba0",
       "upstream_sha256": "4aa5f14dbb92a7ac9855f3019486a51a42ba210242a58b653b3e59049c2d82bf",
-      "project_override": "INT8 autonomous tile DMA integration; guarded boot commit and synchronized reset release"
+      "project_override": "INT8 autonomous tile DMA integration; guarded boot commit, synchronized reset release and full SoC cycles from first non-debug CPU fetch to PASS/FAIL"
     },
     {
       "source": "soc/rtl/mem/bootrom.sv",
@@ -386,11 +387,13 @@
     {
       "source": "soc/rtl/my_soc_top.sv",
       "path": "rtl/soc/my_soc_top.sv",
-      "sha256": "a80933eb48fedacaee3ea8f8da3653fd7ddc4b6f672efdcab0104f6f59e88d62",
-      "previous_sha256": "5eca222d9a5b0b1809b6d8b07f0402fae934388b28a05488efb60c015018d89f",
+      "sha256": "74cf8eaa8d69966ee936770890d923f6b9669beba1db6e8ef4380337c3e46a78",
+      "previous_sha256": "71ce705f0b1a362dc4eb99bf519876ea9e1827d7da523b0db2e688b1ae9706d4",
       "original_sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6",
-      "project_override": "INT8/DMA/guarded boot; user-authorized coherent system-clock reset: qualify POR/NDM requests on falling edges and use one functional reset for CPU/AXI/NPU/SRAM; JTAG TAP independent",
-      "upstream_sha256": "174207c5682648222a6f280705666d272d1d44406df6193370c0e8efc7ed374e"
+      "project_override": "INT8 tiled DMA, guarded boot, shared 16 MAC, CUT_SLV_AX crossbar address boundaries and shared falling-edge SRAM transaction reset; CPU 4x8-word instruction line buffer with write invalidation, retaining CUT_SLV_AX; address-matched SRAM instruction invalidation with physical alias normalization",
+      "upstream_sha256": "174207c5682648222a6f280705666d272d1d44406df6193370c0e8efc7ed374e",
+      "main_266bca3_sha256": "8f67ff81452ea80d4314c1c8d67b88bc72091e03e8f345b9aa2b2c2780483dd8",
+      "integration_override": "; retain 266bca3 16-MAC/INT22/ifetch/CUT_SLV_AX core; integrate user-authorized common falling-edge system reset from dea5584"
     }
   ],
   "dma_integration": {
@@ -399,6 +402,6 @@
       "rtl/soc/my_npu_subsystem.sv",
       "rtl/soc/my_soc_top.sv"
     ],
-    "unchanged": "CPU, debug and upstream clock/reset library sources remain unchanged; AXI memory bridge and SoC integration overrides are documented per file"
+    "unchanged": "CPU, debug and upstream clock/reset library sources remain unchanged; AXI memory bridge and SoC integration overrides are listed per file"
   }
 }

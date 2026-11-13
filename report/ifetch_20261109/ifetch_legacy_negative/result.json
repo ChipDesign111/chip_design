@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "finished_utc": "2026-11-09T07:48:13.135348+00:00",
+  "negative_control": true,
+  "command": [
+    "xrun",
+    "-64bit",
+    "-sv",
+    "-timescale",
+    "1ns/1ps",
+    "+incdir+/home/s2400012713/chip-sync-ifetch-unit-20261109/rtl/include",
+    "/home/s2400012713/chip-sync-ifetch-unit-20261109/rtl/axi/axi_pkg.sv",
+    "/home/s2400012713/chip-sync-ifetch-unit-20261109/legacy_my_ifetch.sv",
+    "/home/s2400012713/chip-sync-ifetch-unit-20261109/test/int8/tb_ifetch.sv",
+    "-top",
+    "tb_ifetch",
+    "-l",
+    "/home/s2400012713/chip-sync-ifetch-unit-20261109/test/int8/runs/legacy-negative02/xrun.log",
+    "+define+IFETCH_LEGACY",
+    "+ONLY_UNCACHED"
+  ],
+  "exit_code": 2,
+  "source_sha256": {
+    "/home/s2400012713/chip-sync-ifetch-unit-20261109/rtl/axi/axi_pkg.sv": "76b3797792ee5b95ab5937f3d457b48852e5c427de48298dafbdde43d0916ac2",
+    "/home/s2400012713/chip-sync-ifetch-unit-20261109/legacy_my_ifetch.sv": "f879fac316bf6e081255ee525b0b61d9015984a6a24526d012ec6c18da9ca9b5",
+    "/home/s2400012713/chip-sync-ifetch-unit-20261109/test/int8/tb_ifetch.sv": "dc2db2ed1b79b425b5653383bac3d9ad78bd736d4b59c4f2da28be78429dcb5c",
+    "/home/s2400012713/chip-sync-ifetch-unit-20261109/rtl/include/axi/typedef.svh": "c2ef2098fea077e07100b9b9c40f2ac5453e7e01af407e236a810b43aeb8b2ef",
+    "/home/s2400012713/chip-sync-ifetch-unit-20261109/test/int8/run_ifetch.py": "465b8e69736cb775e533369a069088f921b6460253a787769f88630ed6060057"
+  },
+  "sources_unchanged": true,
+  "errors": [
+    "xmsim: *F,FATSEV (/home/s2400012713/chip-sync-ifetch-unit-20261109/test/int8/tb_ifetch.sv,127): (time 5067 NS).",
+    "IFETCH_FAIL fetch_timeout addr=00000804",
+    "/home/s2400012713/chip-sync-ifetch-unit-20261109/test/int8/tb_ifetch.sv:127         if (!accepted) $fatal(1,\"IFETCH_FAIL fetch_timeout addr=%h\",addr);"
+  ],
+  "checks": null,
+  "console_sha256": "80598873cc3e7a19516326753eda35c8b3ddca231d111e3341229fa9987bf134",
+  "scope": "Standalone RTL protocol regression, synthetic AXI memory; not SoC or SDF acceptance"
+}

@@ -1,0 +1,79 @@
+{
+  "physical_source_commit": "9970d6f648140de7b1878fc183229d04773a95e0",
+  "postsim_source_commit": "5edf6cd",
+  "physical_upload": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261103_int22_9970d6f",
+  "postsim_upload": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261104_191006_postsim_5edf6cd",
+  "verified_report_files": 56,
+  "review_archive_sha256": "54117accf66d58f285c5cecdc864a00d89a15edc4e297c42957e0ffccba14973",
+  "sdf_sha256": "f97cd4aeed976e458c7e01f04369503ad7f3c6815f0886e4388d785200e171eb",
+  "sdf_cases": 10,
+  "gate_control_cases": 1,
+  "all_functional_pass": true,
+  "trained_inputs": 24,
+  "random_cases": 4,
+  "initial_timing_events_per_sdf_case": 108,
+  "active_timing_events_total": 0,
+  "final_reset_timing_events_total": 0,
+  "annotation_errors": 0,
+  "missing_instances": 0,
+  "unmatched_timing_checks": 0,
+  "negative_iopath_clamps": 10,
+  "timing_checks_and_notifiers_enabled_for_all_sdf_runs": true,
+  "reset_offsets_ps": [
+    250,
+    1650,
+    3050,
+    4450,
+    5850,
+    7250,
+    8650,
+    10050,
+    11450
+  ],
+  "sram_port_timing": {
+    "sram_input_setup": {
+      "worst_reported_slack_ns": 6.222,
+      "paths_reported": 20,
+      "all_met": true
+    },
+    "sram_input_hold": {
+      "worst_reported_slack_ns": 10.061,
+      "paths_reported": 20,
+      "all_met": true
+    },
+    "sram_output_setup": {
+      "worst_reported_slack_ns": 2.685,
+      "paths_reported": 20,
+      "all_met": true
+    },
+    "sram_output_hold": {
+      "worst_reported_slack_ns": 11.524,
+      "paths_reported": 20,
+      "all_met": true
+    }
+  },
+  "representative_cycles": {
+    "batch_4_sdf": {
+      "cpu_cycles": 6370,
+      "npu_cycles": 975,
+      "dma_mac_overlap": 279,
+      "read_overlap": 278,
+      "write_overlap": 278
+    },
+    "batch_2_sdf": {
+      "cpu_cycles": 4258,
+      "npu_cycles": 880,
+      "dma_mac_overlap": 140,
+      "read_overlap": 140,
+      "write_overlap": 139
+    },
+    "batch_4_no_sdf": {
+      "cpu_cycles": 6369,
+      "npu_cycles": 975,
+      "dma_mac_overlap": 279,
+      "read_overlap": 278,
+      "write_overlap": 278
+    }
+  },
+  "limits": "TT MAXIMUM SDF with finite stimuli and 9 reset phases; 108 initial-reset messages per SDF case and 10 negative IOPATH clamps retained; no formal equivalence, independent foundry DRC/LVS, multi-PVT, IR/EM/ESD or active-power signoff"
+}

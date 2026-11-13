@@ -70,7 +70,11 @@ module har_dma (
     // zero padding, then report failure. The NPU never publishes that bank.
     wire pad=state==COPY && read_done && read_count<burst_words && (occupancy<2 || pop);
     wire push=(receive && read_count<burst_words) || pad;
-    assign b_ready_o=state==RESP;
+    // Once the final W beat has been accepted and the read is complete,
+    // accept an already-available B response without an extra RESP bubble.
+    wire response_window=state==RESP ||
+        (state==COPY && read_done && aw_done && (write_done || (pop && w_last_o)));
+    assign b_ready_o=response_window;
     assign read_active_o=receive;
     assign write_active_o=pop;
     always_ff @(posedge clk_i) if(push) fifo[write_ptr]<=pad ? 32'd0:r_data_i;
@@ -146,20 +150,21 @@ module har_dma (
                     if(pad) read_count<=read_count+1'b1;
                     if(read_done && write_done && aw_done) state<=RESP;
                 end
-                RESP:if(b_valid_i) begin
-                    if(b_resp_i!=0 || read_error) begin
-                        error<=1;if(b_resp_i!=0) error_code<=6;done<=1;state<=IDLE;
-                    end else begin
-                        copied<=copied+{27'd0,burst_words};
-                        if(remaining=={27'd0,burst_words}) begin done<=1;state<=IDLE;end
-                        else begin
-                            source_q<=source_q+({27'd0,burst_words}<<2);dest_q<=dest_q+({27'd0,burst_words}<<2);
-                            remaining<=remaining-{27'd0,burst_words};state<=PREP;
-                        end
-                    end
-                end
+                RESP:begin end
                 default:state<=IDLE;
             endcase
+            if(response_window && b_valid_i) begin
+                if(b_resp_i!=0 || read_error) begin
+                    error<=1;if(b_resp_i!=0) error_code<=6;done<=1;state<=IDLE;
+                end else begin
+                    copied<=copied+{27'd0,burst_words};
+                    if(remaining=={27'd0,burst_words}) begin done<=1;state<=IDLE;end
+                    else begin
+                        source_q<=source_q+({27'd0,burst_words}<<2);dest_q<=dest_q+({27'd0,burst_words}<<2);
+                        remaining<=remaining-{27'd0,burst_words};state<=PREP;
+                    end
+                end
+            end
         end
     end
 endmodule

@@ -1,4 +1,4 @@
-// Falling-edge request qualifier, used before the shared system reset trees.
+// One reset boundary shared by the SRAM AXI bridge and its command registers.
 // Both assertion and release are sampled; neither output stage has an async
 // reset connection. The external reset must be held while the clock runs for
 // at least two falling edges. Until then the transaction domain is uninitialised.

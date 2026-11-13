@@ -6,35 +6,65 @@ HERE=Path(__file__).resolve().parent
 sys.path.insert(0,str(ROOT))
 from model.reference.tile_layout import weights,parameters
 def pack(v):return [sum((x&255)<<(8*j) for j,x in enumerate(v[i:i+4])) for i in range(0,len(v),4)]
-def i32(v):return ((v+2**31)%2**32)-2**31
+def i22(v):return ((v+2**21)%2**22)-2**21
 def make_case(seed):
     r=random.Random(17000+seed)
     w1=[[r.randint(-128,127) for _ in range(64)] for _ in range(32)]
     w2=[[r.randint(-128,127) for _ in range(32)] for _ in range(6)]
-    xs=[[r.randint(-128,127) for _ in range(64)] for _ in range(2)]
     b1=[r.randint(-100000,100000) for _ in range(32)]
     b2=[r.randint(-100000,100000) for _ in range(6)]
-    mult=[1,65535,123,7][seed%4];shift=[0,31,14,7][seed%4];batch=1+seed%2
+    mult=[1,65535,123,7][seed%4];shift=[0,31,14,7][seed%4]
+    batch=4 if seed%6==0 else 1+seed%2
+    xs=[[r.randint(-128,127) for _ in range(64)] for _ in range(batch)]
     if seed%8==6:mult=0
-    if seed%5==0:b1[0]=2**31-1;b2[0]=-2**31
+    if seed%5==0:
+        b1[0]=2**21-1;b1[1]=-2**21
+        b2[0]=-2**21;b2[1]=2**21-1
     if seed>=10000:
         w1,w2=weights();q=parameters();b1=q['fc1']['bias_int32'];b2=q['fc2']['bias_int32']
-        fixture=json.loads((HERE/'har_uci24.json').read_text());i=(seed-10000)*2
-        xs=fixture['x_int8'][i:i+2];mult=q['hidden_requant']['mul'];shift=q['hidden_requant']['shift'];batch=2
+        fixture=json.loads((HERE/'har_uci24.json').read_text());i=(seed-10000)*4
+        xs=fixture['x_int8'][i:i+4]
+        if len(xs)!=4:raise ValueError('Trained seed %d has no complete four-sample fixture' % seed)
+        mult=q['hidden_requant']['mul'];shift=q['hidden_requant']['shift'];batch=4
     mem=[0]*2048
     def store(offset,values):mem[offset//4:offset//4+len(values)]=[x&0xffffffff for x in values]
     # Tile-major order: input pair, output neuron, lane.
     w1_address=0xffc if seed<10000 and seed%4==0 else 0x1000
     store(w1_address,pack([w1[o][2*t+k] for t in range(32) for o in range(32) for k in range(2)]))
-    store(0x1800,pack([w2[o][t] if o<6 else 0 for t in range(32) for o in range(8)]))
-    store(0x1900,b1);store(0x1980,b2);store(0x1a00,pack(xs[0]));store(0x1a40,pack(xs[1]))
+    # Each FC2 bank packet holds eight packed six-byte output rows (48 B).
+    store(0x1800,pack([w2[o][t] for t in range(32) for o in range(6)]))
+    store(0x1900,b1);store(0x1980,b2)
+    for n,x in enumerate(xs):store(0x1a00+n*64,pack(x))
     for n,x in enumerate(xs):
-        acc=[i32(b1[o]+sum(a*b for a,b in zip(x,w1[o]))) for o in range(32)]
+        acc=[]
+        for o in range(32):
+            value=b1[o]
+            for a,b in zip(x,w1[o]):value=i22(value+a*b)
+            acc.append(value)
         h=[min(127,(max(0,a)*mult+((1<<(shift-1)) if shift else 0))>>shift) for a in acc]
-        y=[i32(b2[o]+sum(a*b for a,b in zip(h,w2[o]))) for o in range(6)]
-        store(0x1b00+n*64,pack(h)+y+[max(range(6),key=lambda o:y[o])])
+        y=[]
+        for o in range(6):
+            value=b2[o]
+            for a,b in zip(h,w2[o]):value=i22(value+a*b)
+            y.append(value)
+        store(0x1c00+n*64,pack(h)+y+[max(range(6),key=lambda o:y[o])])
     store(0x1f00,[mult,shift,batch,0x80000000+w1_address])
     return mem
+def make_argmax_final_phase_case(weight,class0_bias,class1_bias):
+    """Class 0 changes only on the final FC2 phase of a one-sample batch."""
+    mem=[0]*2048
+    # Zero W1/input and B1=1 produce 32 hidden values of 1 with mult=1,shift=0.
+    mem[0x1900//4:0x1900//4+32]=[1]*32
+    mem[0x1980//4:0x1980//4+6]=[class0_bias,class1_bias,0,0,0,0]
+    for row in (30,31):
+        offset=0x1800+row*6
+        mem[offset//4]|=(weight&255)<<((offset%4)*8)
+    scores=[class0_bias+2*weight,class1_bias,0,0,0,0]
+    golden=pack([1]*32)+scores+[max(range(6),key=lambda o:scores[o])]
+    mem[0x1c00//4:0x1c00//4+len(golden)]=golden
+    mem[0x1f00//4:0x1f00//4+4]=[1,0,1,0x80001000]
+    return [value&0xffffffff for value in mem]
+
 def execute(command,run,name,marker=None):
     result=subprocess.run([str(x) for x in command],cwd=run,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=300)
     (run/(name+'.log')).write_text(result.stdout,encoding='utf-8')
@@ -45,14 +75,28 @@ def execute(command,run,name,marker=None):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--count',type=int,default=32);p.add_argument('--soc',action='store_true');p.add_argument('--trained',action='store_true');p.add_argument('--vsim',default='vsim');p.add_argument('--vendor-model',type=Path);args=p.parse_args()
     run=HERE/'runs'/datetime.datetime.now().strftime('%Y%m%d_%H%M%S');run.mkdir(parents=True)
-    source_sha={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for folder in ['rtl','test/int8'] for p in (ROOT/folder).rglob('*') if p.is_file() and 'runs' not in p.parts and '__pycache__' not in p.parts}
+    source_files=[p for folder in ['rtl','test/int8'] for p in (ROOT/folder).rglob('*') if p.is_file() and 'runs' not in p.parts and '__pycache__' not in p.parts]
+    source_files.append(ROOT/'model/reference/tile_layout.py')
+    source_sha={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in source_files}
     (run/'source_manifest.json').write_text(json.dumps(source_sha,indent=2)+'\n')
-    seeds=list(range(args.count))+(list(range(10000,10012)) if args.trained else [])
-    for index,seed in enumerate(seeds):(run/('case_%d.hex'%index)).write_text(''.join('%08x\n'%v for v in make_case(seed)))
+    seeds=list(range(args.count))+(list(range(10000,10006)) if args.trained else [])
+    cases=[make_case(seed) for seed in seeds]
+    # Final products make class 0 win, lose, or tie class 1. Ties keep class 0.
+    directed_cases=[('argmax_final_rises',1,0,1),('argmax_final_falls',-1,2,1),
+                    ('argmax_final_ties',1,0,2)]
+    cases.extend(make_argmax_final_phase_case(*values) for _,*values in directed_cases)
+    for index,memory in enumerate(cases):(run/('case_%d.hex'%index)).write_text(''.join('%08x\n'%v for v in memory))
+    boot_sources=['rtl/memory/bootram.sv','test/int8/tb_boot_cycles.sv']
+    execute(['iverilog','-g2012','-s','tb_boot_cycles','-o','boot_cycles.vvp']+[ROOT/x for x in boot_sources],run,'compile_boot_cycles')
+    execute(['vvp','boot_cycles.vvp'],run,'boot_cycles','BOOT_CYCLES PASS')
+    execute([sys.executable,HERE/'run_dma_response.py','--out',run/'dma_response'],
+            run,'dma_response','DMA_RESPONSE_PASS')
+    dma_response_result=json.loads((run/'dma_response/result.json').read_text())
     sources=['rtl/npu/har_weight_store.sv','rtl/npu/har_npu_core.sv','rtl/npu/simple_npu_top.sv','rtl/dma/har_dma.sv','test/int8/tb_tiled_dma.sv']
     execute(['iverilog','-g2012','-s','tb_tiled_dma','-o','test.vvp']+[ROOT/x for x in sources],run,'compile_unit')
-    output=execute(['vvp','test.vvp','+DIR='+run.as_posix(),'+COUNT='+str(len(seeds))],run,'unit','INT8_TILED_DMA PASS')
+    output=execute(['vvp','test.vvp','+DIR='+run.as_posix(),'+COUNT='+str(len(cases))],run,'unit','INT8_TILED_DMA PASS')
     print('\n'.join(x for x in output.splitlines() if 'CASE' in x)[-3000:])
+    soc_timing=None
     if args.soc:
         from firmware import build
         build(run)
@@ -63,12 +107,18 @@ def main():
         if args.vendor_model:
             if not args.vendor_model.is_file():raise ValueError('Missing authorized SRAM model')
             fl=['+define+CHIP_USE_RA1SHD',args.vendor_model.resolve().as_posix()]+fl
-        fl += [(HERE/'tb_soc.sv').as_posix(),(HERE/'tb_system_reset_contract.sv').as_posix()];(run/'soc.f').write_text('\n'.join(fl)+'\n')
+        fl.extend([(HERE/'tb_soc.sv').as_posix(),(HERE/'tb_system_reset_contract.sv').as_posix()]);(run/'soc.f').write_text('\n'.join(fl)+'\n')
         commands=['onerror {quit -code 1}','onbreak {resume}','vlib work','vmap work work','vlog -sv -f soc.f','vsim -suppress 12110 -novopt -onfinish stop '+('+notimingchecks ' if args.vendor_model else '')+'work.tb_soc','run -all','set status [examine -radix hex /tb_soc/magic]','if {![string equal -nocase $status c0dec0de]} {quit -code 3}','quit -code 0']
         commands[-1:-1]=['quit -sim','vsim -suppress 12110 -novopt -onfinish stop work.tb_system_reset_contract','run -all','set passed [examine -radix unsigned /tb_system_reset_contract/passed]','if {$passed != 1} {quit -code 4}']
-        (run/'soc.do').write_text('\n'.join(commands)+'\n');text=execute([args.vsim,'-c','-do','do soc.do'],run,'soc','INT8_SOC PASS')
-        if 'SYSTEM_RESET_CONTRACT_PASS' not in text:raise RuntimeError('Shared system reset contract was not verified')
+        (run/'soc.do').write_text('\n'.join(commands)+'\n')
+        soc_output=execute([args.vsim,'-c','-do','do soc.do'],run,'soc','INT8_SOC PASS')
+        if 'SYSTEM_RESET_CONTRACT_PASS' not in soc_output:raise RuntimeError('Common system reset contract missing')
+        soc_match=re.search(r'INT8_SOC PASS cycles=(\d+) hw_soc_cycles=(\d+)',soc_output)
+        if not soc_match:raise RuntimeError('Missing full SoC timing line')
+        observed_cycles=int(soc_match.group(1));hardware_soc_cycles=int(soc_match.group(2))
+        if hardware_soc_cycles<=0 or hardware_soc_cycles>observed_cycles:raise RuntimeError('Invalid hardware SoC cycle count')
+        soc_timing={'observed_cycles':observed_cycles,'hardware_soc_cycles':hardware_soc_cycles}
     if any(hashlib.sha256((ROOT/name).read_bytes()).hexdigest()!=value for name,value in source_sha.items()):raise RuntimeError('Source changed during functional run')
-    (run/'result.json').write_text(json.dumps({'unit_cases':len(seeds),'trained_samples':24 if args.trained else 0,'soc':args.soc,'vendor_model_sha256':hashlib.sha256(args.vendor_model.read_bytes()).hexdigest() if args.vendor_model else None,'passed':True},indent=2)+'\n')
+    (run/'result.json').write_text(json.dumps({'unit_cases':len(cases),'dma_response_cases':len(dma_response_result['cases']),'directed_cases':[case[0] for case in directed_cases],'trained_samples':24 if args.trained else 0,'accumulator_bits':22,'bias_bits':22,'soc':args.soc,'soc_timing':soc_timing,'vendor_model_sha256':hashlib.sha256(args.vendor_model.read_bytes()).hexdigest() if args.vendor_model else None,'passed':True},indent=2)+'\n')
     print('Results: '+str(run))
 if __name__=='__main__':main()

@@ -12,6 +12,7 @@
 *.json text eol=lf
 *.yml text eol=lf
 *.hex binary
+*.bit binary
 *.png binary
 *.pdf binary
 *.npz binary
@@ -24,3 +25,10 @@ rtl/debug/** -text
 rtl/include/** -text
 rtl/soc/** -text
 rtl/memory/boot*.sv -text
+# Preserve raw simulator/report bytes referenced by the evidence SHA-256 index.
+report/ifetch_20261109/** -text
+report/optimization_20261109/** -text
+report/firmware_optimization_20261109/** -text
+# Raw evidence may have Windows line endings; frozen sources keep original EOF.
+report/loop_optimization_20261109/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+report/loop_optimization_20261109/source_at_measurement/** whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol

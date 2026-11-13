@@ -1,0 +1,15 @@
+{
+  "pid": 7916,
+  "host": "tc-01a0e839f77e",
+  "command": [
+    "genus",
+    "-abort_on_error",
+    "-f",
+    "/home/s2400012713/chip-sync-integrated-syn-20261109/work/syn/scripts/eda_synthesis.tcl",
+    "-log",
+    "eda_synthesis",
+    "-overwrite"
+  ],
+  "completed": true,
+  "exit_code": 0
+}

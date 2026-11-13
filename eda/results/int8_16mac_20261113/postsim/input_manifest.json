@@ -1,0 +1,78 @@
+{
+  "eda_work": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_main_16mac_bias22_c02527e/work",
+  "files": {
+    "netlist": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_main_16mac_bias22_c02527e/work/pnr/my_soc_top/outputs/manual_final/my_soc_top_hier_postpnr.v",
+      "sha256": "021dae598e93260508d279c0d48e53656287065b68fbd45992a84874128e90c7"
+    },
+    "sdf_gz": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_main_16mac_bias22_c02527e/work/pnr/my_soc_top/outputs/manual_final/my_soc_top_tt_io.sdf.gz",
+      "sha256": "1d0658be337153f59cb11ac3315ab20fba162b20cf44a79a5866840ce8329d68"
+    },
+    "firmware": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_173500_postsim_c2a7339/configs/firmware.hex",
+      "sha256": "735031c0039aa61dc9b3d694e8d744a9cf1322810adb86097d784638ceeca8ec"
+    },
+    "testbench": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_173500_postsim_c2a7339/deploy/server/postsim/tb_postsim.sv",
+      "sha256": "30d5da736131557b6fed48d7c99459eef6044476a17591a78f965f5285ca147b"
+    },
+    "standard_cells": {
+      "source": "/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v",
+      "sha256": "e1d4d2b7b789f9b7e5bfdc1b1597434b53d65699b68823c457dc78e146c636b3"
+    },
+    "io_cells": {
+      "source": "/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Front_End/verilog/tpd018nv_260a/tpd018nv.v",
+      "sha256": "57d800247aa58b8113d89ec5584b646e7d620248eec08381cb024734e8cfa2c2"
+    },
+    "sram": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_main_16mac_bias22_c02527e/work/src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8.v",
+      "sha256": "52fd590082b4f63573856baf44d8e59b5ab21db56b9c11aeaf4d45376b32d54d"
+    },
+    "firmware_1": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_173500_postsim_c2a7339/configs/firmware_1.hex",
+      "sha256": "60aac44e94e6afed04683c617a4fc38ce667b7250f710fee826a782f90c1c402"
+    },
+    "firmware_10001": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_173500_postsim_c2a7339/configs/firmware_10001.hex",
+      "sha256": "94cac87eb6fab7d35e9eaf873290e83847dce2b997549421c54d843c5f52b61b"
+    },
+    "firmware_10002": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_173500_postsim_c2a7339/configs/firmware_10002.hex",
+      "sha256": "ff92fa5491919a64d4021eb334b9d9eb16c0db6f04170ae6122d60f786c5359f"
+    },
+    "firmware_10003": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_173500_postsim_c2a7339/configs/firmware_10003.hex",
+      "sha256": "691b566e523351687afd68338eef9c59d6add344b4af3afc0633430d0143a1d8"
+    },
+    "firmware_10004": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_173500_postsim_c2a7339/configs/firmware_10004.hex",
+      "sha256": "999cd4f838074d7c3d6edc4c7c14ab0b90b036eb787d7ba3ebccc3ebe4e6c4fc"
+    },
+    "firmware_10005": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_173500_postsim_c2a7339/configs/firmware_10005.hex",
+      "sha256": "48f27352b488bf53c67bca16389b28be7220b27d3067f1ac871eef22369520db"
+    },
+    "firmware_3": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_173500_postsim_c2a7339/configs/firmware_3.hex",
+      "sha256": "4586f9ecf4e3e59970671cd2978a9ca6669c0b0f56519938ad0593e570fa8996"
+    },
+    "firmware_5": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_173500_postsim_c2a7339/configs/firmware_5.hex",
+      "sha256": "e614713640c0ca7b155ec7a8a3c448d27395c15e842405454b206ffa91c88845"
+    },
+    "firmware_7": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_173500_postsim_c2a7339/configs/firmware_7.hex",
+      "sha256": "7b9db26044b028aa45d8f72e4be5956f029f0f8a4ff9cfa60b4293424950e184"
+    },
+    "simulation_netlist": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_173500_postsim_c2a7339/postsim/inputs/netlist.v",
+      "sha256": "21952575977cd9595c550765dd84abbc5bec3da0107010e46e2fb5cd3eb873f9"
+    },
+    "sram_simulation_adapter": {
+      "source": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261113_173500_postsim_c2a7339/postsim/inputs/sram_period_adapter.v",
+      "sha256": "f348b8b1f9d5dc8b23714bde247371ce556ed8ac12c772f6f140527920e36b3d",
+      "change": "Add negedge period declaration; native notifier, SDF limits; licensed copy retained server-only"
+    }
+  }
+}

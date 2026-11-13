@@ -38,7 +38,7 @@ def main():
         sys.path.insert(0,str(ROOT/'test/int8'))
         from firmware import build
         firmware=DIST/('postsim_firmware_'+datetime.now().strftime('%Y%m%d_%H%M%S'));firmware.mkdir(parents=True)
-        for seed in [10000]+list(range(10001,10012))+[1,3,5,7]:
+        for seed in list(range(10000,10006))+[1,3,5,7,9,11,13,15,17,19]:
             p=firmware/str(seed);p.mkdir();build(p,seed)
             name='firmware.hex' if seed==10000 else 'firmware_%d.hex'%seed
             (firmware/name).write_bytes((p/'firmware.hex').read_bytes())
@@ -116,7 +116,7 @@ PY
             if hashlib.sha256(data).hexdigest()!=manifest['files'][member.name]:raise ValueError('File SHA mismatch')
             p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data)
     audit=json.loads((output/'audit.json').read_text());results=json.loads((output/'results.json').read_text())
-    md='# SDF完整SoC后仿结果\n\n服务器：`'+upload+'`。本包'+str(len(manifest['files']))+'个文件已核验SHA。\n\n功能通过 '+str(sum(v['functional_pass'] for v in results.values()))+'/'+str(len(results))+'；回标error '+str(audit['annotation_errors'])+'，缺失实例 '+str(audit['missing_instances'])+'，缺失检查 '+str(audit['unmatched_timing_checks'])+'。\n\n工作窗口检查：'+str(audit['active_window_dynamic_timing_clean'])+'。原始复位事件及负IOPATH截零限制仍须查看，不等于全程无违规。\n\n- [完整审核](audit.json)\n- [全部功能结果](results.json)\n- [输入身份](input_manifest.json)\n- [回标原文](build/sdf.log)\n- [SDF运行](sdf_max/simulation.log)\n- [无SDF功能对照](gate_zero/simulation.log)\n\n大网表、SDF、授权模型和编译数据库仅留服务器。本轮不宣称独立签核。\n'
+    md='# SDF完整SoC后仿结果\n\n服务器：`'+upload+'`。本包'+str(len(manifest['files']))+'个文件已核验SHA。\n\n功能通过 '+str(sum(v['functional_pass'] for v in results.values()))+'/'+str(len(results))+'；回标error '+str(audit['annotation_errors'])+'，缺失实例 '+str(audit['missing_instances'])+'，缺失检查 '+str(audit['unmatched_timing_checks'])+'。\n\n工作窗口检查：'+str(audit['active_window_dynamic_timing_clean'])+'。原始复位事件及负IOPATH截零限制仍须查看，不等于全程无违规。\n\n- [完整审核](audit.json)\n- [全部功能结果](results.json)\n- [输入身份](input_manifest.json)\n- [回标原文](build/sdf.log)\n- [SDF运行](sdf_max/simulation.log)\n- [unit-delay功能对照](gate_unit/simulation.log)\n\n大网表、SDF、授权模型和编译数据库仅留服务器。本轮不宣称独立签核。\n'
     quality='正常后仿验收（功能、绑定、实际动态时序）：'+str(audit.get('normal_postsim_pass','旧审核未给出此字段'))+'。已定位工具/模型Warning保留说明，不要求所有Warning为零。\n\n绑定完整性：'+str(audit['binding_complete_for_instances_and_checks'])+'；负路径延时支持完整：'+str(audit.get('negative_path_delay_support_complete',False))+'。后者单独说明模型能力，不作为额外的零Warning门槛。\n\n'
     md=md.replace('# SDF完整SoC后仿结果\n\n','# SDF完整SoC后仿结果\n\n'+quality)
     if not (output/'build/sdf.log').is_file():

@@ -28,6 +28,7 @@ Thumbs.db
 /vivado_*.backup.jou
 /vivado.log
 /vivado_*.backup.log
+/.Xil/
 /fpga/final_project/*.cache/
 /fpga/final_project/*.hw/
 /fpga/final_project/*.ip_user_files/
@@ -40,3 +41,21 @@ Thumbs.db
 
 /eda/dist/
 /test/int8/runs/
+
+# Generated EDA/FPGA run trees and transient logs. Curated evidence under
+# eda/results is retained explicitly rather than ignored wholesale.
+/eda_runs/
+/report/**/build/
+/report/**/runs/
+/report/**/console.log
+/report/**/xrun.log
+/fpga/versions/**/logs/
+
+# Raw post-simulation products are preserved in the reviewed archive and
+# report manifests; only small, human-readable evidence logs are tracked.
+/eda/results/**/postsim/build/
+/eda/results/**/postsim/build_*/
+/eda/results/**/postsim/*/simulation.log*
+/eda/results/**/postsim/view_export.log*
+/eda/results/**/postsim/sdf.log
+/eda/results/**/sram_timing/tool.log

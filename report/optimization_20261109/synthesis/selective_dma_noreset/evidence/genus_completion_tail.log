@@ -1,0 +1,60 @@
+|             |        |      | <attr_name> *' (in legacy UI mode)             |
+|             |        |      | or 'help * <attr_name> -detail' (in CUI mode). |
+| TUI-744     |Info    |    1 |Timing analysis will be done for this view.     |
+|             |        |      |Worst paths will be shown in this view.         |
+| WSDF-104    |Warning |    2 |Default value for an option has changed in this |
+|             |        |      | release.                                       |
+|             |        |      |Specify the option explicitly.                  |
+| WSDF-201    |Warning |   20 |No delay description exists for an instance.    |
+|             |        |      |The timing arc of the instance does not exist   |
+|             |        |      | or is disabled by disable_timing or constant   |
+|             |        |      | value. The delay information will not be       |
+|             |        |      | generated for the instance. The instance could |
+|             |        |      | be a loop breaker or its inputs could be       |
+|             |        |      | driven by constant                             |
+--------------------------------------------------------------------------------
+@file(genus_synthesis.tcl) 120: report_runtime finish
+===========================================
+The RUNTIME after finish is 978.000000 secs
+and the MEMORY_USAGE after finish is 2314.71 MB
+===========================================
+@file(genus_synthesis.tcl) 122: puts "
+======================
+= SYNTHESIS FINISHED =
+=                    =
+=      ^     ^       =
+=        \\_/         =
+=                    =
+=  Congratulations!  =
+======================"
+
+======================
+= SYNTHESIS FINISHED =
+=                    =
+=      ^     ^       =
+=        \_/         =
+=                    =
+=  Congratulations!  =
+======================
+@file(genus_synthesis.tcl) 132: puts "EDA_SYNTHESIS_COMMANDS_COMPLETE"
+EDA_SYNTHESIS_COMMANDS_COMPLETE
+#@ End verbose source ../scripts/genus_synthesis.tcl
+@file(eda_synthesis.tcl) 2: puts "EDA_SYNTHESIS_COMPLETE"
+EDA_SYNTHESIS_COMPLETE
+@file(eda_synthesis.tcl) 3: exit
+
++-----------+-----------------+-----+----------------------+---------------------------+
+|   Host    |     Machine     | CPU | Physical Memory (MB) | Peak Physical Memory (MB) |
++-----------+-----------------+-----+----------------------+---------------------------+
+| localhost | tc-01a0e839f77e |  1  |        1682.9        |          2611.3           |
++-----------+-----------------+-----+----------------------+---------------------------+
+
++---------------+----------------------+---------------------------+
+|    Server     | Physical Memory (MB) | Peak Physical Memory (MB) |
++---------------+----------------------+---------------------------+
+| localhost_1_0 |        511.3         |          1128.3           |
++---------------+----------------------+---------------------------+
+
+Info    : A super-threading server has been shut down normally. [ST-112]
+        : The server 'localhost_1_0' was process '35585' on this host.
+Normal exit.
