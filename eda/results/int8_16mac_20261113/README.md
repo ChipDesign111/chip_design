@@ -58,3 +58,5 @@ RTL 功能提交:   29f6b88
 34 个 `step_*.json` 均引用同一输入清单。轻量回传包为 `review_delivery.tar.gz`，SHA-256 为 `263428b9a5ba9c2f61a46ace4fd27f08ee9fa77c24d3f89271eb999c0c2a7561`。GDS、DEF、SPEF、SDF、平坦网表和 EDA 数据库保留在服务器上传目录，路径与 SHA 见 [summary.json](summary.json)。
 
 本结果范围是 TT/1.8 V/25°C、SI 关闭的单工艺角工具流程。未执行 SDF 回标后仿、独立 foundry DRC/LVS、多 PVT、IR/EM/ESD 或形式等价。
+
+该数据库的 MAXIMUM SDF 后仿随后完成：10 个 SDF 用例和 1 个 unit-delay 无 SDF 对照 **11/11 功能通过**，工作窗口动态时序违规为 0。详细限制见 [后仿结果](postsim/README.md)。

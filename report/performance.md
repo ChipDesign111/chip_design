@@ -2,7 +2,7 @@
 
 ## 2026-11-13：16-MAC 与 INT22 bias
 
-NPU 共享乘法器由 32 个降为 16 个：FC1 改为 4 个 `8 输出×2 lane` phase，FC2 保持 4 个 `6 输出×2 输入行` phase 并只使用 12 个乘法器。FC1 tile 在 batch=4 时计算 16 拍，与 16 拍权重读取重叠；bias1/bias2 内部存储由 32 bit 收为 22 bit。用户本地完整回归通过，batch=4 的 SoC testbench/硬件周期为 **2700/2695**，NPU 为 **952** 拍，FC1/FC2 ISSUE 为 **512/64**，DMA 读/写与 MAC 重叠为 **466/499**。同源 EDA 中综合 Cell Area 为 **2.023901 mm²**，最终密度 **72.509%**，20 ns Setup/Hold 为 **+0.335/+0.050 ns**。详见 [16-MAC 结果](../eda/results/int8_16mac_20261113/README.md)。
+NPU 共享乘法器由 32 个降为 16 个：FC1 改为 4 个 `8 输出×2 lane` phase，FC2 保持 4 个 `6 输出×2 输入行` phase 并只使用 12 个乘法器。FC1 tile 在 batch=4 时计算 16 拍，与 16 拍权重读取重叠；bias1/bias2 内部存储由 32 bit 收为 22 bit。用户本地完整回归通过，batch=4 的 SoC testbench/硬件周期为 **2700/2695**，NPU 为 **952** 拍，FC1/FC2 ISSUE 为 **512/64**，DMA 读/写与 MAC 重叠为 **466/499**。同源 EDA 中综合 Cell Area 为 **2.023901 mm²**，最终密度 **72.509%**，20 ns Setup/Hold 为 **+0.335/+0.050 ns**。最终数据库完成 10 组 MAXIMUM SDF 和 1 组 unit-delay 对照，11/11 功能通过，工作窗口动态时序违规为 0。详见 [16-MAC 结果](../eda/results/int8_16mac_20261113/README.md)和[后仿结果](../eda/results/int8_16mac_20261113/postsim/README.md)。
 
 ## 2026-11-09 第四轮：八字加载调度与地址复用
 

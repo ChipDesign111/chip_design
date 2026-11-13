@@ -2,7 +2,7 @@
 
 main 现包含取指行缓冲、缩短后的 DMA 写响应，以及同一套 RTL 上的 reuse8 固件。共享 SRAM 事务复位仍在 RTL 里。下面的面积、SDF 和 FPGA 数字都属于各自的归档版本，不是这次合并新做的物理签核。本轮缓存一致性与 DMA 优化的匹配数据、测试入口和面积/时序比较见 [优化报告](performance.md)。
 
-2026-11-13：当前 RTL 将 NPU 共享乘法器由 32 个减为 16 个，FC1 改为四个 8 输出×2 lane 相位，并把 bias 内部存储收为 INT22。用户本地完整回归通过，batch=4 SoC testbench/硬件为 2700/2695 拍、NPU 为 952 拍、FC1/FC2 发射为 512/64。同源 34 步 EDA 完成，最终密度 72.509%，20 ns Setup/Hold 为 +0.335/+0.050 ns；详见 [16-MAC 结果](../eda/results/int8_16mac_20261113/README.md)。下文明确标注日期的 32-MAC 周期和 PPA 均是变更前证据。
+2026-11-13：当前 RTL 将 NPU 共享乘法器由 32 个减为 16 个，FC1 改为四个 8 输出×2 lane 相位，并把 bias 内部存储收为 INT22。用户本地完整回归通过，batch=4 SoC testbench/硬件为 2700/2695 拍、NPU 为 952 拍、FC1/FC2 发射为 512/64。同源 34 步 EDA 完成，最终密度 72.509%，20 ns Setup/Hold 为 +0.335/+0.050 ns；最终数据库 MAXIMUM SDF 与 unit-delay 对照 11/11 功能通过，工作窗口动态时序违规 0。详见 [16-MAC 结果](../eda/results/int8_16mac_20261113/README.md)和[后仿结果](../eda/results/int8_16mac_20261113/postsim/README.md)。下文明确标注日期的 32-MAC 周期和 PPA 均是变更前证据。
 
 2026-11-09 前一轮：源码已集成 CPU 取指缓存并修复单样本 Argmax；功能回归及同固件拍数对照见 [性能报告](performance.md) 和 [证据索引](ifetch_20261109/summary.json)。以下较早日期的面积、SDF、FPGA 数据仅代表对应归档版本。
 

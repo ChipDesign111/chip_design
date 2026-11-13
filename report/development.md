@@ -1,6 +1,6 @@
 # 开发与验证
 
-本次集成基于 rtl-dev `1eb6462`，移入 perf/ifetch-line-buffer `5da2148` 的取指缓存并修复非缓存地址、写入一致性和异常填充处理，同时修复单样本 Argmax 的旧值比较。当前 NPU 保持 batch=4、零气泡 tile 交接、FC2 八 tile 打包和 W2 跨层预取，并将共享 INT8 乘法器从 32 个收为 16 个：FC1 改为四个 8 输出×2 lane 相位，FC2 仍为四个 2 行×6 输出相位并只使用 12 个乘法器；内部累加器和 bias 存储均为 INT22。用户本地完整回归通过，batch=4 SoC testbench/硬件为 2700/2695 拍、NPU 为 952 拍、FC1/FC2 发射为 512/64，DMA 读/写重叠为 466/499。同源 34 步 EDA 也已完成：最终密度 72.509%，Setup/Hold 为 +0.335/+0.050 ns。当前 ASIC RTL 保留 `CUT_SLV_AX` 地址通道边界；FPGA bitstream 也必须从当前源码重新构建验证。
+本次集成基于 rtl-dev `1eb6462`，移入 perf/ifetch-line-buffer `5da2148` 的取指缓存并修复非缓存地址、写入一致性和异常填充处理，同时修复单样本 Argmax 的旧值比较。当前 NPU 保持 batch=4、零气泡 tile 交接、FC2 八 tile 打包和 W2 跨层预取，并将共享 INT8 乘法器从 32 个收为 16 个：FC1 改为四个 8 输出×2 lane 相位，FC2 仍为四个 2 行×6 输出相位并只使用 12 个乘法器；内部累加器和 bias 存储均为 INT22。用户本地完整回归通过，batch=4 SoC testbench/硬件为 2700/2695 拍、NPU 为 952 拍、FC1/FC2 发射为 512/64，DMA 读/写重叠为 466/499。同源 34 步 EDA 也已完成：最终密度 72.509%，Setup/Hold 为 +0.335/+0.050 ns。最终数据库的 10 组 MAXIMUM SDF 和 1 组 unit-delay 对照功能通过 11/11，工作窗口动态时序违规为 0。当前 ASIC RTL 保留 `CUT_SLV_AX` 地址通道边界；FPGA bitstream 也必须从当前源码重新构建验证。
 
 ```bash
 python tools/project.py doctor

@@ -71,6 +71,19 @@
     "dma_read_mac_overlap": 466,
     "dma_write_mac_overlap": 499
   },
+  "postsim": {
+    "status": "PASS",
+    "commit": "c2a73393ff298fa1e47f27fc57e2f571946cfac2",
+    "functional_passes": 11,
+    "expected_cases": 11,
+    "annotation_errors": 0,
+    "missing_instances": 0,
+    "unmatched_timing_checks": 0,
+    "active_window_dynamic_timing_clean": true,
+    "initial_reset_events_per_sdf_case": 28,
+    "negative_iopath_clamped_by_simulator": 21,
+    "report": "postsim/README.md"
+  },
   "review_archive": {
     "bytes": 13075157,
     "sha256": "263428b9a5ba9c2f61a46ace4fd27f08ee9fa77c24d3f89271eb999c0c2a7561",
@@ -99,7 +112,6 @@
     }
   },
   "not_executed": [
-    "SDF backannotation simulation",
     "independent foundry DRC/LVS",
     "multi-PVT signoff",
     "IR/EM/ESD signoff",
