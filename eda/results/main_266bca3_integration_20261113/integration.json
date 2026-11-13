@@ -34,5 +34,16 @@
   },
   "source_manifest_sha256": "4f5ead0f7cf70970820a59a04b22bc03d9e82fe4780bf39d7b1c84c399eb4ea3",
   "functional_regression_path": "test/int8/runs/20261113_213223",
-  "soc_reset_only_diff": "31 lines changed versus main after preserving original LF source bytes; main array, cache, DMA and interconnect remain unchanged"
+  "soc_reset_only_diff": "31 lines changed versus main after preserving original LF source bytes; main array, cache, DMA and interconnect remain unchanged",
+  "implementation_revision": {
+    "reason": "Retire full old xzx enable-mapping policy due measured +245221.402um2 (+12.116%) synthesis area over main; preserve main native controlled FF/automatic ICG and medium effort, keep TT nonnegative combinational tables and WB/Lab5 additions",
+    "retired_source": "fddabe55bc014e31a4d5f127b6698f1715447039",
+    "retired_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_213350_fddabe5",
+    "last_independently_accepted_step": 23,
+    "status": "Explicitly stopped owned Innovus for profile revision; no new TT or Lab5 claimed",
+    "current_mapping": "library_enable",
+    "automatic_clock_gating": true,
+    "effort": "medium",
+    "new_whole_flow": "pending"
+  }
 }
