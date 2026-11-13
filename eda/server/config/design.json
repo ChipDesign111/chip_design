@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "profile": "main266bca3_int8_16mac_with_lab5",
+  "profile": "xzx_int8_tiled_tsmc180",
   "top": "my_soc_top",
   "rtl_commit_baseline": "267c873808204190f72e5f1552440b7e610095ef",
   "pdk_root": "/lec/pdk/tsmc180",

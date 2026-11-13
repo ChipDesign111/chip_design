@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import runpy
 from pathlib import Path
 import subprocess
 import tarfile
@@ -15,6 +16,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, default=EDA / 'dist/chip_design_eda.tar.gz')
     args = parser.parse_args()
+    # Use the production validator before uploading. This checks the profile
+    # and implementation options without starting EDA or needing the PDK.
+    validation = runpy.run_path(str(EDA / 'server/bin/flow.py'))
+    validation['read_config'](EDA / 'server/config/design.json')
     branch = subprocess.check_output(
         ['git', 'branch', '--show-current'], cwd=str(ROOT), text=True
     ).strip() or None
