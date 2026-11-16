@@ -1,0 +1,21 @@
+{
+  "kind": "synthetic deployment smoke test",
+  "training": false,
+  "seed": 42,
+  "torch_version": "2.15.0+cpu",
+  "input_shape": [
+    1,
+    17
+  ],
+  "topology": "17->12->5, ReLU/Sigmoid/residual/Mul/Softmax",
+  "calibration_samples": 2,
+  "held_out_samples": 1,
+  "files": {
+    "calibration.npy": "061044f97f0f564f69cc5fe15775f160e38400b321628da7bc3d021c97129cbf",
+    "expected_float.npy": "9036ecf4d7c92c1c6ed84afd13a50d482d6012ace33c19aebb204bf40425c5d1",
+    "held_out.npy": "59957d69cab1d0771f6eaa4449e4eb38c209091f5ba06427755f88713a23e0d6",
+    "held_out_expected_float.npy": "fd3108e65e8edb20aafb1d81b844f3abd23a2f997aeb81eba0ce5ef77d17540b",
+    "input.npy": "b24615e195c9a63631adbee7a0ff55abc6c2c9b8e709d932099cf57c98165aac",
+    "weights.pth": "e37d144395c387eaff7541770da7eb662c428477ab18f717d36d7f5b917a5c90"
+  }
+}

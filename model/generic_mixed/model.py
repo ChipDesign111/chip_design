@@ -13,13 +13,3 @@ def build_model():
     with torch.random.fork_rng():
         torch.manual_seed(42)
         return Network().eval()
-
-if __name__=='__main__':
-    import argparse
-    from pathlib import Path
-    import numpy as np
-    p=argparse.ArgumentParser();p.add_argument('--write-inputs',type=Path,required=True);a=p.parse_args()
-    a.write_inputs.mkdir(parents=True,exist_ok=True)
-    x=np.linspace(-1,1,17,dtype=np.float32).reshape(1,17)
-    np.save(a.write_inputs/'input.npy',x)
-    np.save(a.write_inputs/'calibration.npy',np.stack([-x,x*0.5]))

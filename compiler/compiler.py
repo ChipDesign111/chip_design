@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 from .frontend import capture,CompileError
 from .rv32 import Program,BASE
-from model.reference.fc import plan_fc
+from .tiling import plan_fc
 
 SRAM_BYTES=8192
 DATA_TOP=0x1fc0  # Reserve statistics and boot-completion mailboxes.

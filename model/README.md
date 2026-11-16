@@ -6,4 +6,6 @@
 
 用 python tools/export_tiles.py --output tools/local/int8_tiles 导出两层 tile 权重及量化元数据。原 NPZ 按输出×输入排列，不能直接作为本设计的 DMA 内存布局。新布局见 [DMA](../report/dma.md)。读取现有导出无需 NumPy；训练需要 requirements.txt。
 
-模型到完整SoC启动镜像的入口见 [PyTorch编译器](compiler/README.md)。
+模型到完整SoC启动镜像的入口见 [PyTorch编译器](../compiler/README.md)。
+
+新增通用混合执行样例位于 [generic_mixed](generic_mixed/README.md)，包含网络定义、固定权重、输入、校准数据及浮点参考。编译器及运行时位于同级的compiler/，不属于模型目录。

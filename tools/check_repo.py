@@ -14,12 +14,15 @@ ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_FILES = (
     "README.md", ".gitignore", ".gitattributes", ".editorconfig",
     "tools/project.py", "tools/check_hardware.py",
+    "compiler/README.md", "compiler/compiler.py", "compiler/requirements.txt",
+    "model/generic_mixed/model.py", "model/generic_mixed/data/input.npy",
+    "model/generic_mixed/data/calibration.npy", "model/generic_mixed/data/weights.pth",
     "model/requirements.txt", "rtl/project.json", "rtl/filelist.f", "rtl/manifest.json",
     "report/README.md", "report/architecture.md", "report/development.md", "report/mmio.md",
     "report/sram.md", "report/THIRD_PARTY_NOTICES.md", "model/numerics.md",
     ".github/workflows/ci.yml", "test/README.md", "tools/README.md",
 )
-REQUIRED_DIRS = ("rtl", "model", "tools", "test", "report", "fpga", "eda")
+REQUIRED_DIRS = ("rtl", "model", "tools", "test", "report", "fpga", "eda", "compiler")
 EXCLUDED_PARTS = {".git", "data", "local", "runs", ".venv", "venv", "__pycache__", "dist"}
 
 
@@ -42,7 +45,7 @@ def check() -> list[str]:
     for name in REQUIRED_DIRS:
         if not (ROOT / name).is_dir(): errors.append(f"Missing directory: {name}")
     visible = {p.name for p in ROOT.iterdir() if p.is_dir() and not p.name.startswith(".")}
-    if visible != set(REQUIRED_DIRS): errors.append("Top-level directories must be exactly rtl/fpga/model/eda/test/report/tools")
+    if visible != set(REQUIRED_DIRS): errors.append("Top-level directories must be exactly rtl/fpga/model/eda/test/report/tools/compiler")
     if (ROOT/"rtl/npu/lab3").exists(): errors.append("Original NPU must not be retained")
     for doc in files(".md"):
         content = doc.read_text(encoding="utf-8")

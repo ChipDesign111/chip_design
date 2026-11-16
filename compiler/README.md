@@ -8,12 +8,11 @@
 
 ```powershell
 python -m venv .venv
-.venv/Scripts/python -m pip install -r model/compiler/requirements.txt
-.venv/Scripts/python model/compiler/examples/mixed.py --write-inputs test/int8/runs/demo
-.venv/Scripts/python -m model.compiler --model model/compiler/examples/mixed.py --input test/int8/runs/demo/input.npy --calibration test/int8/runs/demo/calibration.npy --out test/int8/runs/demo/package --simulate
+.venv/Scripts/python -m pip install -r compiler/requirements.txt
+.venv/Scripts/python -m compiler --model model/generic_mixed/model.py --weights model/generic_mixed/data/weights.pth --input model/generic_mixed/data/input.npy --calibration model/generic_mixed/data/calibration.npy --out test/int8/runs/demo/package --simulate
 ```
 
-Linux使用`.venv/bin/python`。不加`--simulate`只编译；之后可独立执行`python -m model.compiler.sim PACKAGE_DIR --vsim PATH_TO_VSIM`。模拟通过真实Debug SBA、AXI、SRAM装载全部2048个字并提交启动密钥，真实CPU运行生成程序。完成后通过SBA读回每个中间张量，与整数参考逐字核对，并输出实际读回的`actual_output.json`。
+Linux使用`.venv/bin/python`。不加`--simulate`只编译；之后可独立执行`python -m compiler.sim PACKAGE_DIR --vsim PATH_TO_VSIM`。模拟通过真实Debug SBA、AXI、SRAM装载全部2048个字并提交启动密钥，真实CPU运行生成程序。完成后通过SBA读回每个中间张量，与整数参考逐字核对，并输出实际读回的`actual_output.json`。
 
 演示模型是Linear→ReLU→Sigmoid→张量乘法/残差加法→Linear→标量乘加→Softmax。两个Linear走NPU，其余运算由真实CPU执行。
 
@@ -75,4 +74,6 @@ python test/int8/run_model_compiler.py --soc
 
 本功能不修改RTL，也没有声称任意PyTorch模型都能部署。原双层专用固件及其2700拍基线保持独立；通用编译器有CPU量化与调度开销，不把它的程序周期等同于专用模式性能。未新增板级、综合、STA或SDF验证。
 
-本轮8组完整SoC的实测、精度边界与可启动示例包见 [验收报告](../../report/model_compiler_20261117/README.md)。
+本轮8组完整SoC的实测、精度边界与可启动示例包见 [验收报告](../report/model_compiler_20261117/README.md)。
+
+编译器与运行时位于仓库顶层compiler/；独立的网络、权重和样例数据位于 [model/generic_mixed](../model/generic_mixed/README.md)。

@@ -28,11 +28,11 @@ MODE=0 保留原始 64→32→6、ReLU/requant、Argmax、权重字节布局及�
 
 ## 软件与数值契约
 
-[plan_fc](../model/reference/fc.py) 返回按执行顺序排列的任务以及连续权重镜像，顺序为输出块、输入段、输入对、补齐输出、输入lane。布局兼容原始FC1的2输入×32输出情况。小N按8向上补齐，最后一个输入对补零；布局容量可能比逻辑K×N大。
+[plan_fc](../compiler/tiling.py) 返回按执行顺序排列的任务以及连续权重镜像，顺序为输出块、输入段、输入对、补齐输出、输入lane。布局兼容原始FC1的2输入×32输出情况。小N按8向上补齐，最后一个输入对补零；布局容量可能比逻辑K×N大。
 
 该工具检查INT8操作数、INT22偏置、形状与权重镜像的物理SRAM边界。调用者还必须安排程序、输入/输出及其他数据，不能让它们与权重镜像重叠。它不负责装载镜像、分配程序内存或添加外存；超出当前SRAM范围会明确拒绝。
 
-[普通C MMIO驱动](../model/runtime/har_fc.h) 提交一个硬件任务，等待有界完成并读回该输出块。可根据plan_fc生成的任务依次调用；沿K分块用accumulate=1，沿N切换用accumulate=0。输出stride以int32元素计，输入stride以int8元素计；批次输入可不连续紧排。调用方独占NPU/DMA并先把对应权重放入SRAM。
+[普通C MMIO驱动](../compiler/runtime/har_fc.h) 提交一个硬件任务，等待有界完成并读回该输出块。可根据plan_fc生成的任务依次调用；沿K分块用accumulate=1，沿N切换用accumulate=0。输出stride以int32元素计，输入stride以int8元素计；批次输入可不连续紧排。调用方独占NPU/DMA并先把对应权重放入SRAM。
 
 内部继续采用INT22补码回绕；跨任务保留完整INT22部分和，无中间量化。reference_fc给出精确的wrap22参考。若应用要求数学整数结果，应由模型/输入范围检查证明不溢出；32位MMIO外观不代表内部INT32精度。本次没有声称支持非零量化零点、逐通道量化、INT4或任意32位bias。
 
@@ -56,3 +56,5 @@ python test/int8/compare_fc_perf.py BASELINE_RUN CANDIDATE_RUN --limit 0.05
 [带SHA的验收记录](fc_modes_20261117/summary.json)：与28b6d60修复基线相比，41组匹配用例的NPU总周期与两层ISSUE计数全部不变；固定训练固件完整SoC观测2700→2700拍、硬件计数2695→2695拍，增幅0%，满足≤5%约定。新单层10组形状测试与保护测试通过；65→9完整CPU/AXI/DMA单层SoC观测853拍、硬件计数848拍。单层与双层是不同工作负载，不用853与2700比较加速比。普通C驱动通过GCC C11语法及Wall/Wextra/Werror检查；本次真实CPU运行的是公开RV32I汇编测试程序，没有声称已运行C编译产物。
 
 未重新综合、PNR、STA、SDF或板测；不能从RTL周期不变推断最高频率不变或面积下降。
+
+目录调整说明：编译器及通用分块/运行时现位于顶层compiler/，通用样例位于model/generic_mixed/。历史summary.json保留运行当时的源码路径和SHA，不将迁移后的路径冒充旧验证输入。

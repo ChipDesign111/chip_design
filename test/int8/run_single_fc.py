@@ -3,7 +3,7 @@ import argparse,datetime,hashlib,json,random,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
-from model.reference.fc import plan_fc,reference_fc
+from compiler.tiling import plan_fc,reference_fc
 from run import execute,pack
 
 
@@ -80,7 +80,7 @@ def main():
     if args.soc: run_soc(run,args.vsim)
     source_paths=['rtl/npu/har_npu_core.sv','rtl/npu/simple_npu_top.sv',
                   'rtl/npu/har_weight_store.sv','rtl/dma/har_dma.sv',
-                  'model/reference/fc.py','test/int8/run_single_fc.py','test/int8/tb_tiled_dma.sv']
+                  'compiler/tiling.py','test/int8/run_single_fc.py','test/int8/tb_tiled_dma.sv']
     hashes={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in source_paths}
     (run/'result.json').write_text(json.dumps(dict(passed=True,shapes=shapes,soc=args.soc,source_sha256=hashes),indent=2))
     print('Results: '+str(run))

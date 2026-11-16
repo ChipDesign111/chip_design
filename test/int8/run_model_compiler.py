@@ -5,16 +5,11 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT))
 import torch
 from torch import nn
-from model.compiler.compiler import compile_model
-from model.compiler.frontend import CompileError
+from compiler.compiler import compile_model
+from compiler.frontend import CompileError
 from run import execute
 
-class MixedNetwork(nn.Module):
-    def __init__(self):
-        super().__init__();self.fc1=nn.Linear(17,12);self.relu=nn.ReLU();self.sigmoid=nn.Sigmoid();self.fc2=nn.Linear(12,5)
-    def forward(self,x):
-        y=self.relu(self.fc1(x));z=self.sigmoid(y)
-        return torch.softmax(self.fc2(z*y+y)*0.9+0.1,dim=1)
+from model.generic_mixed.model import Network as MixedNetwork
 
 class ArithmeticNetwork(nn.Module):
     def forward(self,x):return torch.softmax((1.0-x)-x*0.5,dim=-1)
@@ -23,7 +18,7 @@ class WideNetwork(nn.Module):
     def __init__(self):super().__init__();self.fc=nn.Linear(65,9);self.tanh=nn.Tanh()
     def forward(self,x):return self.tanh(self.fc(x))
 
-from model.compiler.sim import simulate
+from compiler.sim import simulate
 
 def run_soc(package,directory,x,vsim='vsim'):
     package.write(directory,x)
@@ -33,10 +28,13 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--soc',action='store_true');p.add_argument('--vsim',default='vsim');args=p.parse_args()
     run=ROOT/'test/int8/runs'/('compiler_'+datetime.datetime.now().strftime('%Y%m%d_%H%M%S'));run.mkdir(parents=True)
     torch.manual_seed(42);mixed=MixedNetwork().eval();wide=WideNetwork().eval()
+    fixture_root=ROOT/'model/generic_mixed/data'
+    mixed.load_state_dict(torch.load(fixture_root/'weights.pth',map_location='cpu',weights_only=True))
+    mixed_example=torch.from_numpy(np.load(fixture_root/'input.npy'))
     fallback=nn.Sequential(nn.Linear(4,3),nn.ReLU()).eval()
     with torch.no_grad():fallback[0].weight.fill_(0.01);fallback[0].bias.fill_(10)
-    configurations=[('mixed',mixed,torch.linspace(-1,1,17).reshape(1,17),False),
-                    ('cpu_only',mixed,torch.linspace(-1,1,17).reshape(1,17),True),
+    configurations=[('mixed',mixed,mixed_example,False),
+                    ('cpu_only',mixed,mixed_example,True),
                     ('wide',wide,torch.linspace(-1,1,130).reshape(2,65),False),
                     ('range_fallback',fallback,torch.tensor([[-1.,0.5,0.2,1.]]),False),
                     ('output_tiled',nn.Linear(9,41).eval(),torch.linspace(-1,1,9).reshape(1,9),False),
@@ -53,10 +51,10 @@ def main():
     configurations.append(('trained_har',har,har_inputs[12:13],False))
     results=[]
     for name,model,example,cpu in configurations:
-        calibration=[v.reshape(1,64) for v in har_inputs[:12]] if name=='trained_har' else [-example,example*0.5]
+        calibration=[v.reshape(1,64) for v in har_inputs[:12]] if name=='trained_har' else ([torch.from_numpy(v) for v in np.load(fixture_root/'calibration.npy')] if name in ('mixed','cpu_only') else [-example,example*0.5])
         package=compile_model(model,example,calibration_inputs=calibration,force_cpu=cpu)
         if name=='range_fallback':assert package.nodes[0]['backend']=='CPU' and 'INT22' in package.nodes[0]['reason']
-        for index,x in enumerate([example,example.flip(1)*0.7] if name=='mixed' else [example]):
+        for index,x in enumerate([example,torch.from_numpy(np.load(fixture_root/'held_out.npy'))] if name=='mixed' else [example]):
             directory=run/(name+str(index));directory.mkdir()
             log=run_soc(package,directory,x.numpy(),args.vsim) if args.soc else ''
             if not args.soc:package.write(directory,x.numpy())
@@ -84,7 +82,7 @@ def main():
         try:compile_model(model,x)
         except (CompileError,ValueError):pass
         else:raise AssertionError('Unsupported/oversized model was accepted')
-    sources=[p for folder in ['model/compiler','rtl'] for p in (ROOT/folder).rglob('*') if p.is_file() and p.suffix in ('.py','.sv','.v')]+[Path(__file__)]
+    sources=[p for folder in ['compiler','model/generic_mixed','rtl'] for p in (ROOT/folder).rglob('*') if p.is_file() and p.suffix in ('.py','.sv','.v')]+[Path(__file__)]+list(fixture_root.iterdir())
     source_hashes={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sources}
     (run/'result.json').write_text(json.dumps(dict(passed=True,soc=args.soc,torch_version=torch.__version__,source_sha256=source_hashes,cases=results),indent=2)+'\n')
     print(json.dumps(results,indent=2));print('Results: '+str(run))

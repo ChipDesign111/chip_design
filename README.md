@@ -24,6 +24,7 @@ main 现包含取指行缓冲和固件循环优化。按 SRAM 地址失效取指
 | --- | --- |
 | [rtl](rtl/README.md) | 当前完整 SoC 硬件及统一 filelist |
 | [eda](eda/README.md) | 正式部署脚本、服务器 EDA 程序、讲义逐步解释及结果分析 |
+| [compiler](compiler/README.md) | PyTorch模型编译、自动分块与CPU/NPU部署运行时 |
 | [model](model/README.md) | 保留的训练模型、量化参数和整数参考 |
 | [test](test/README.md) | 当前 INT8/DMA/启动保护功能回归 |
 | [report](report/README.md) | 架构、MMIO、DMA、性能、SRAM 和验证范围 |
@@ -43,4 +44,4 @@ python eda/remote.py run
 
 新增单层FC模式与原双层模式共用16 MAC和双bank，支持软件分块、部分和续算；接口与验证范围见 [FC模式](report/fc_modes.md)。
 
-PyTorch模型编译、自动FC分块和CPU/NPU混合执行见 [模型编译器](model/compiler/README.md)。
+PyTorch模型编译、自动FC分块和CPU/NPU混合执行见 [模型编译器](compiler/README.md)。

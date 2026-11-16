@@ -1,7 +1,7 @@
 """Boot a compiled deployment package through the real Debug SBA / AXI path."""
 import json,re,subprocess
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[2]
+ROOT=Path(__file__).resolve().parents[1]
 
 def execute(command,run,name,marker):
     result=subprocess.run([str(v) for v in command],cwd=run,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=300)

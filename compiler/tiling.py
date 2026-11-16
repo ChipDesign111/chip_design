@@ -3,7 +3,9 @@
 Tiles retain the FC1 order: input pair, padded output, input lane.
 Jobs for one output block must execute consecutively to retain INT22 partial sums.
 """
-from model.reference.mlp_int import wrap_accumulator
+def wrap_accumulator(value):
+    """Shared datapath's signed INT22 two's-complement arithmetic."""
+    return ((value + (1 << 21)) % (1 << 22)) - (1 << 21)
 
 
 def plan_fc(xs, weights, bias, base=0x80000000):

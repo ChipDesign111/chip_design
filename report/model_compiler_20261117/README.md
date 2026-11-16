@@ -19,6 +19,10 @@
 
 每个用例的PyTorch浮点误差单列于summary.json。混合示例两种输入最大绝对误差分别0.001304和0.000563；HAR单个运行样本为0.073597。RTL与整数参考完全一致，不等于与浮点模型完全一致，更不等于完整数据集分类准确率验证。
 
-已验证不支持的CPU算子、容量超限、非有限输入均明确拒绝。CPU回退目前覆盖Linear、ReLU、Sigmoid、Tanh、Softmax、Add/Sub/Mul和有限形状操作，尚不包含任意PyTorch算子。首次模型部署须提供源码/工厂、权重、输入形状及代表性校准数据。使用方法见[编译器说明](../../model/compiler/README.md)。
+已验证不支持的CPU算子、容量超限、非有限输入均明确拒绝。CPU回退目前覆盖Linear、ReLU、Sigmoid、Tanh、Softmax、Add/Sub/Mul和有限形状操作，尚不包含任意PyTorch算子。首次模型部署须提供源码/工厂、权重、输入形状及代表性校准数据。使用方法见[编译器说明](../../compiler/README.md)。
 
 本地依赖为PyTorch 2.15.0+cpu、Python 3.12。仓库及硬件外围检查通过。没有重新综合、PNR、STA、SDF或板测；CI新增主机编译检查，完整SoC证据来自本地ModelSim。
+
+目录调整说明：编译器及通用分块/运行时现位于顶层compiler/，通用样例位于model/generic_mixed/。历史summary.json保留运行当时的源码路径和SHA，不将迁移后的路径冒充旧验证输入。
+
+[目录迁移验证](relocation.json)：8组主机编译的机器码SHA全部保持不变；使用随仓库提供的模型与数据，从新的`python -m compiler`入口完成SoC运行，仍为3724拍、2个NPU任务；单层FC DMA回归通过。本轮没有重复声称迁移后重新跑完8组SoC。
