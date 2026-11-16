@@ -5,3 +5,5 @@
 当前 RTL 回归已对固定 24 条六类 UCI 输入逐值比较隐藏层、六个分数和类别；完整 SoC CPU 另跑其中两个样本。数据来源、行号与哈希保存在 test/int8/har_uci24.json。硬件与整数参考一致，不表示所有分类标签都正确。
 
 用 python tools/export_tiles.py --output tools/local/int8_tiles 导出两层 tile 权重及量化元数据。原 NPZ 按输出×输入排列，不能直接作为本设计的 DMA 内存布局。新布局见 [DMA](../report/dma.md)。读取现有导出无需 NumPy；训练需要 requirements.txt。
+
+模型到完整SoC启动镜像的入口见 [PyTorch编译器](compiler/README.md)。

@@ -42,3 +42,5 @@ python eda/remote.py run
 旧分支、旧 RTL 和旧范式记录保存在本地 archives，当前分支只保留更新后实现。第三方源码许可及固定输入来源见 [组件声明](report/THIRD_PARTY_NOTICES.md)。
 
 新增单层FC模式与原双层模式共用16 MAC和双bank，支持软件分块、部分和续算；接口与验证范围见 [FC模式](report/fc_modes.md)。
+
+PyTorch模型编译、自动FC分块和CPU/NPU混合执行见 [模型编译器](model/compiler/README.md)。

@@ -32,3 +32,5 @@ python test/int8/run_ifetch_snoop_soc.py --out test/int8/runs/snoop_new
 `firmware_workloads.py` 可生成 `scratch_128` 或 `code_patch_alias_byte` 附加程序，随后执行完整 HAR 自检；复现命令和适用范围见 [本轮报告](../report/performance.md)。
 
 单/双层共享硬件回归：`python test/int8/run_single_fc.py --soc`，见 [FC模式](../report/fc_modes.md)。
+
+PyTorch混合执行编译器回归：装好model/compiler/requirements.txt后运行 `python test/int8/run_model_compiler.py --soc`，核对完整SoC各层结果。
