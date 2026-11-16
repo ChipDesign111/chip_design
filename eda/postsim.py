@@ -27,6 +27,7 @@ def main():
     parser.add_argument('--host',default='chipdesign')
     parser.add_argument('--eda-upload',help='Completed physical upload; defaults to last_upload.json')
     parser.add_argument('--output',type=Path)
+    parser.add_argument('--extra-firmware-dir',type=Path,help='Additional firmware_*.hex with mandatory .checks.json word checks')
     parser.add_argument('--simulator',choices=['vcs','xcelium'],default='vcs')
     parser.add_argument('--upload',help='An existing isolated post-simulation upload for status/fetch/timing')
     parser.add_argument('--sdf-mode',choices=['tt','pvt-min','pvt-max'],default='tt')
@@ -42,6 +43,15 @@ def main():
             p=firmware/str(seed);p.mkdir();build(p,seed)
             name='firmware.hex' if seed==10000 else 'firmware_%d.hex'%seed
             (firmware/name).write_bytes((p/'firmware.hex').read_bytes())
+        if args.extra_firmware_dir:
+            extras=sorted(args.extra_firmware_dir.glob('firmware_*.hex'))
+            if not extras:raise ValueError('No additional firmware images')
+            for image in extras:
+                checks=image.with_suffix('.checks.json')
+                if not checks.is_file() or not json.loads(checks.read_text()):raise ValueError('Missing expected-word checks: '+str(image))
+                if (firmware/image.name).exists():raise ValueError('Duplicate firmware name')
+                (firmware/image.name).write_bytes(image.read_bytes())
+                (firmware/checks.name).write_bytes(checks.read_bytes())
         subprocess.run([sys.executable,str(ROOT/'eda/package_server.py')],cwd=ROOT,check=True)
         parent=str(Path(eda).parent).replace('\\','/')
         name=datetime.now().strftime('%Y%m%d_%H%M%S')+'_postsim_'+args.simulator+'_'+args.sdf_mode+'_'+subprocess.check_output(['git','rev-parse','--short','HEAD'],cwd=ROOT).decode().strip()
@@ -54,7 +64,7 @@ def main():
         guide='# 本次是已完成版图的后仿运行\n\n物理输入：`'+eda+'`。后仿目录：`'+upload+'`。不重新运行34步，原work不修改。\n\n'+(ROOT/'eda/docs/后仿真操作指南.md').read_text(encoding='utf-8')
         ui=firmware/'gui';ui.mkdir();(ui/'README.md').write_text(guide,encoding='utf-8');(ui/'README.html').write_text(html_page(guide),encoding='utf-8')
         remote.scp(args.host,[ui/'README.md',ui/'README.html'],upload+'/')
-        remote.scp(args.host,list(firmware.glob('firmware*.hex')),upload+'/configs/')
+        remote.scp(args.host,list(firmware.glob('firmware*.hex'))+list(firmware.glob('*.checks.json')),upload+'/configs/')
         remote.save(DIST/'last_postsim.json',{'host':args.host,'upload':upload,'eda_upload':eda,'simulator':args.simulator,'sdf_mode':args.sdf_mode})
         cmd='python3 -u deploy/server/postsim/run.py --eda-work '+shlex.quote(eda+'/work')+' --run-root '+shlex.quote(upload+'/postsim')+' --firmware '+shlex.quote(upload+'/configs/firmware.hex')+' --simulator '+args.simulator+' --sdf-mode '+args.sdf_mode
         print(remote.ssh(args.host,'set -e\nsource /etc/profile.d/eda.sh\ncd '+shlex.quote(upload)+'\nnohup '+cmd+' >logs/postsim.log 2>&1 < /dev/null &\necho $! >logs/postsim.pid\ncat logs/postsim.pid\n'))

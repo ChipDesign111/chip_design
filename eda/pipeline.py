@@ -37,6 +37,7 @@ def main():
     p.add_argument('--host',default='chipdesign')
     p.add_argument('--eda-upload',help='Required when selecting only Lab5')
     p.add_argument('--rtl-regression-result',type=Path,help='Reuse a completed full-SoC regression only after verifying every recorded RTL/test source SHA against this checkout')
+    p.add_argument('--postsim-firmware-dir',type=Path,help='Extra checked model payloads for TT gate simulation')
     p.add_argument('--output',type=Path,required=True)
     a=p.parse_args()
     if a.output.exists() and any(a.output.iterdir()):
@@ -48,6 +49,8 @@ def main():
     if a.eda_upload:raise ValueError('Full flow starts fresh; existing physical input is only for --only lab5')
     a.output.mkdir(parents=True,exist_ok=True)
     journal={'scope':'New RTL-to-Lab5 execution, TT SDF only','stages':[]}
+    if a.postsim_firmware_dir:
+        journal['extra_postsim_payloads']={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(a.postsim_firmware_dir.iterdir()) if p.is_file()}
     def stage(name):
         journal['stages'].append({'name':name,'started_utc':datetime.now(timezone.utc).isoformat()})
         (a.output/'pipeline.json').write_text(json.dumps(journal,indent=2),encoding='utf-8')
@@ -77,7 +80,8 @@ def main():
         command('eda/remote.py','run','--host',a.host,'--output',a.output/'implementation')
         physical=json.loads((ROOT/'eda/dist/last_upload.json').read_text())['upload']
         stage('postsim_tt')
-        command('eda/postsim.py','run','--host',a.host,'--eda-upload',physical,'--simulator','vcs','--sdf-mode','tt')
+        extra=['--extra-firmware-dir',a.postsim_firmware_dir] if a.postsim_firmware_dir else []
+        command('eda/postsim.py','run','--host',a.host,'--eda-upload',physical,'--simulator','vcs','--sdf-mode','tt',*extra)
         simulation=json.loads((ROOT/'eda/dist/last_postsim.json').read_text())['upload']
         idle=0
         while True:

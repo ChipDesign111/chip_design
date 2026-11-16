@@ -6,7 +6,7 @@
 
 本地核验包lab5/main_266bca3_final_20261113，原生利用率日志和TT完整路径另有SHA核验补充，未改原675项回传清单。服务器保留最新三个关联目录及必要工具，旧上传在源码/轻量证据核验缓存后清理。历史[dea5584结果](results/system_reset_unified_20261113/README.md)及其他结果不能替代本轮新输入。[Lab5操作指南](docs/Lab5操作指南.md)区分一键完整流程与只执行Lab5。
 
-功能RTL基线已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。设计是完整 CV32E40P SoC：第一层每拍 2 个输入×32 个输出，第二层 1×6，输入、权重、隐藏值使用 INT8，偏置、累加和分类分数使用 INT32。主 SRAM 保存完整权重；DMA 将当前需要的小块搬入两个 64 字节缓冲。面积验收是 **包含 PAD 的整个 Die ≤3.8 mm²**。
+功能RTL基线已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。设计是完整 CV32E40P SoC：共享16个INT8乘法器，FC1每相位为2个输入×8个输出，FC2为2×6；偏置及累加使用INT22，MMIO分数符号扩展到32位。新增单层FC和续算模式与原双层HAR路径共用硬件。主 SRAM 保存完整权重；DMA 将当前需要的小块搬入两个 64 字节缓冲。面积验收是 **包含 PAD 的整个 Die ≤3.8 mm²**。
 
 建议先读[当前设计数据流](docs/当前设计数据流.md)，用两个输入理解 MAC、tile、DMA、启动和 PAD。
 
@@ -186,3 +186,16 @@ bash deploy/server/bin/eda.sh clean --work "$PWD/work"
 ## 继续执行SDF回标后仿
 
 物理实现完成后，按[后仿真操作指南](docs/后仿真操作指南.md)运行 `python eda/postsim.py run`、`status`、`fetch`。该流程新建独立上传，原版图work保持不变。
+
+## 单/双层通用FC本轮验证
+
+更新后的完整入口是`eda/pipeline.py`，包含RTL、Genus、Innovus 01–34、TT SDF、同DB半周期STA、Lab5，不能只运行remote.py就声称全流程完成。
+
+对新增单层、跨任务续算及CPU/NPU混合网络，先用装有编译器依赖的Python运行：
+
+```powershell
+python test/int8/build_postsim_models.py --out eda/dist/本次模型固件目录
+python eda/pipeline.py run --postsim-firmware-dir eda/dist/本次模型固件目录 --output 本地新结果目录
+```
+
+该目录中的firmware_*.hex必须有同名.checks.json，包含实际SBA地址、期望值与掩码。后仿除原17组外新增混合网络和65→41双维分块各一组TT SDF，逐值检查中间张量、单层ISSUE计数、无FC2发射及完成状态。新用例最终K分块可能只有一个tile，因此不要求最后任务有DMA/MAC重叠，原有双层重叠检查保持不变。19组中18组为真实SDF、1组为独立功能对照；全部保留时序检查及最终复位。

@@ -34,6 +34,7 @@ def audit(root):
              'warning_counts_are_printed_messages_not_uncapped_totals':engine=='xcelium',
              'missing_instances':warnings.get('SDFCOM_CFIIS',0)+warnings.get('SDFINF',0),
              'unmatched_timing_checks':warnings.get('SDFCOM_CFTC',0)+warnings.get('SDFNET',0),'cases':{}}
+    plan={p['mode']:p for p in json.loads((root/'run_plan.json').read_text())}
     for mode in sorted(root.glob('sdf_*')):
         if not mode.is_dir():continue
         text=(mode/'simulation.log').read_text(errors='replace')
@@ -48,7 +49,10 @@ def audit(root):
         values=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
         if not values or 'POSTSIM_DONE' not in text:raise ValueError('Incomplete functional run')
         clocks=[float(x) for x in re.findall(r'CLOCK_AT_CORE time_ns=([\d.]+)',text)]
-        summary['cases'][mode.name]={'functional_pass':True,
+        expected=[int(v.split('=')[1]) for v in plan[mode.name]['flags'] if v.startswith('+CHECK_WORDS=')]
+        checked=re.search(r'MODEL_CHECKS_PASS words=(\d+)',text)
+        if expected and (not checked or int(checked.group(1))!=expected[0]):raise ValueError('Missing model word checks')
+        summary['cases'][mode.name]={'functional_pass':True,'checked_model_words':int(checked.group(1)) if checked else 0,
             **dict(zip(['observed_cpu_cycles','npu_cycles','dma_mac_overlap','read_overlap','write_overlap'],map(int,values.groups()))),
             'active_start_ns':start,'active_end_ns':end,'clock_core_edges_ns':clocks,
             'timing_counts':dict(collections.Counter(x['phase'] for x in violations)),

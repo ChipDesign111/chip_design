@@ -42,7 +42,10 @@ def main():
            'sram':work/'src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8.v'}
     record={k:{'source':str(p),'sha256':sha(p)} for k,p in paths.items()}
     additional=sorted(args.firmware.parent.glob('firmware_*.hex'))
-    for p in additional:record[p.stem]={'source':str(p.resolve()),'sha256':sha(p)}
+    for p in additional:
+        record[p.stem]={'source':str(p.resolve()),'sha256':sha(p)}
+        checks=p.with_suffix('.checks.json')
+        if checks.is_file():record[p.stem+'_checks']={'source':str(checks.resolve()),'sha256':sha(checks)}
     (root/'input_manifest.json').write_text(json.dumps({'eda_work':str(work),'simulator':args.simulator,'sdf_mode':args.sdf_mode,'files':record},indent=2)+'\n')
     driver=root/'export.tcl'
     driver.write_text('set eda_work {'+str(work)+'}\nset sim_inputs {'+str(inputs)+'}\nsource {'+str(Path(__file__).resolve().with_name('export_view.tcl'))+'}\n')
@@ -83,10 +86,23 @@ def main():
     cases=[('sdf_max',[],inputs/'firmware.hex'),('gate_unit',['+NO_SDF'],inputs/'firmware.hex')]
     # Sweep asynchronous reset assertion across a full system period, without
     # masking timing checks/notifiers. Keep the first case at the old2ns phase.
-    cases += [('sdf_'+p.stem,['+RESET_OFFSET_PS=%d'%(250+1400*i)],p) for i,p in enumerate(additional)]
+    cases += [('sdf_'+p.stem,['+RESET_OFFSET_PS=%d'%(250+(1400*i)%19500)],p) for i,p in enumerate(additional)]
+    for mode,flags,firmware in cases:
+        checks=firmware.with_suffix('.checks.json')
+        if checks.is_file():
+            words=json.loads(checks.read_text())
+            if not 1<=len(words)<=1024:raise ValueError('Invalid check count')
+            for word in words:
+                if set(word)!={'address','expected','mask'} or any(type(v) is not int or not 0<=v<2**32 for v in word.values()):
+                    raise ValueError('Invalid model check word')
+            flags.append('+CHECK_WORDS=%d'%len(words))
     (root/'run_plan.json').write_text(json.dumps([{'mode':m,'flags':f,'firmware':str(p)} for m,f,p in cases],indent=2)+'\n')
     for mode,flags,firmware in cases:
         run=root/mode;run.mkdir();shutil.copyfile(firmware,run/'firmware.hex')
+        checks=firmware.with_suffix('.checks.json')
+        if checks.is_file():
+            words=json.loads(checks.read_text())
+            (run/'expected_checks.hex').write_text(''.join('%08x%08x%08x\n'%(w['address'],w['expected'],w['mask']) for w in words))
         os.link(inputs/'timing.sdf',run/'timing.sdf')
         executable=build/'simv'
         if mode=='gate_unit':
@@ -112,6 +128,8 @@ def main():
                      '-snapshot','tb_postsim_sdf']+flags,run,'simulation.log')
         text=(run/'simulation.log').read_text(errors='replace')
         match=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
+        if checks.is_file() and 'MODEL_CHECKS_PASS words=%d'%len(words) not in text:
+            raise RuntimeError('Model expected-word verification missing: '+mode)
         reset_match=re.search(r'RESET_ASSERT offset_ps=(\d+)',text)
         if not match or not reset_match or 'POSTSIM_DONE' not in text:raise RuntimeError('Functional/reset result missing: '+mode)
         io_events=[{'time_ps':int(t),'instance':i.strip()} for t,i in re.findall(r'ERROR\s*:\s*(\d+)\s*\+\+BUS CONFLICT\+\+\s*:\s*([^\r\n]+)',text)]

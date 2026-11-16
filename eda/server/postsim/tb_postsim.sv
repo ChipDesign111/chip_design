@@ -26,7 +26,8 @@ module tb_postsim;
   reg [31:0] load_addr=0,load_data=0;
   reg [31:0] image[0:2047];
   reg [31:0] magic=0;
-  integer cycles=0,i;
+  integer cycles=0,i,check_words=0;
+  reg [95:0] expected_checks[0:1023];
   integer reset_offset_ps=2000;
   reg [31:0] value,stats[0:3];
   initial begin
@@ -89,6 +90,10 @@ module tb_postsim;
     force dut.dm_master_add=load_addr;force dut.dm_master_wdata=load_data;
     force dut.dm_master_be=load_be;
     $readmemh("firmware.hex",image);
+    if($value$plusargs("CHECK_WORDS=%d",check_words)) begin
+      if(check_words<1 || check_words>1024) $fatal(1,"Invalid expected check count");
+      $readmemh("expected_checks.hex",expected_checks,0,check_words-1);
+    end
     #1;rst_n=0;repeat(4) @(negedge clk);#2;rst_n=1;
     repeat(7) @(posedge clk);#1;
     if(dut.ndmreset_n!==1'b0) $fatal(1,"Reset released before8edges");
@@ -117,10 +122,21 @@ module tb_postsim;
       if(magic===32'hdeadbeef) $fatal(1,"CPU numeric self-check failed");
     end
     if(magic!==32'hc0dec0de) $fatal(1,"CPU timeout PC=%h",dut.instr_addr);
-    for(i=0;i<4;i=i+1) begin
+    if(check_words>0) begin
+      for(i=0;i<check_words;i=i+1) begin
+        sba_access(0,expected_checks[i][95:64],0,15,value);
+        if((value & expected_checks[i][31:0]) !== (expected_checks[i][63:32] & expected_checks[i][31:0]))
+          $fatal(1,"Model check %0d addr=%h expected=%h actual=%h",i,expected_checks[i][95:64],expected_checks[i][63:32],value);
+      end
+      $display("MODEL_CHECKS_PASS words=%0d",check_words);
+      sba_access(0,32'h7000000c,0,15,stats[0]);
+      sba_access(0,32'h7000001c,0,15,stats[1]);
+      sba_access(0,32'h70000034,0,15,stats[2]);
+      sba_access(0,32'h70000038,0,15,stats[3]);
+    end else for(i=0;i<4;i=i+1) begin
       sba_access(0,32'h80001fc0+i*4,0,15,value);stats[i]=value;
     end
-    if(stats[2]===0 || stats[3]===0 || (^stats[2])===1'bx || (^stats[3])===1'bx)
+    if(check_words==0 && (stats[2]===0 || stats[3]===0 || (^stats[2])===1'bx || (^stats[3])===1'bx))
       $fatal(1,"No actual DMA/MAC overlap");
     $display("FUNCTIONAL_PASS cycles=%0d npu_cycles=%0d dma_mac_overlap=%0d read_overlap=%0d write_overlap=%0d time_ns=%0.3f",
              cycles,stats[0],stats[1],stats[2],stats[3],$realtime);
