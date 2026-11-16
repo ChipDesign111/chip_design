@@ -57,7 +57,7 @@
   "mmio": {
     "base_address": 1879048192,
     "window_bytes": 16384,
-    "register_area_bytes": 60,
+    "register_area_bytes": 64,
     "windows": [
       {
         "name": "input0",
@@ -123,6 +123,16 @@
         "name": "dma_registers",
         "offset": 3328,
         "size_bytes": 32
+      },
+      {
+        "name": "single_fc_shape_capability",
+        "offset": 128,
+        "size_bytes": 12
+      },
+      {
+        "name": "single_fc_results",
+        "offset": 5120,
+        "size_bytes": 512
       }
     ]
   },
@@ -154,5 +164,18 @@
     "period_ns": 20,
     "setup_wns_ns_min": 0.1,
     "hold_wns_ns_min": 0.05
+  },
+  "single_fc": {
+    "abi": 1,
+    "k_per_job_max": 64,
+    "n_per_job_max": 32,
+    "batch_max": 4,
+    "software_tiling": true,
+    "retained_accumulator_bits": 22,
+    "modes": {
+      "dual": 0,
+      "single_init": 1,
+      "single_accumulate": 3
+    }
   }
 }

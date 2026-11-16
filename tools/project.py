@@ -14,5 +14,9 @@ def main():
         return 0
     cmd=[sys.executable,str(ROOT/'test/int8/run.py'),'--count',str(a.count),'--trained']
     if a.soc:cmd+=['--soc','--vsim',a.vsim]
-    return subprocess.run(cmd,cwd=ROOT).returncode
+    result=subprocess.run(cmd,cwd=ROOT).returncode
+    if result:return result
+    single=[sys.executable,str(ROOT/'test/int8/run_single_fc.py')]
+    if a.soc:single+=['--soc','--vsim',a.vsim]
+    return subprocess.run(single,cwd=ROOT).returncode
 if __name__=='__main__':raise SystemExit(main())

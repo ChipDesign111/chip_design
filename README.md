@@ -40,3 +40,5 @@ python eda/remote.py run
 本机功能测试使用 Icarus；完整 SoC 另需 ModelSim。当前训练权重读取与 tile 导出无需 NumPy；训练仍使用 model/requirements.txt。EDA 总控需要 Python 3.8+ 与 OpenSSH。大版图、授权库和中间数据库保留服务器；轻量结果回传 lab4 下新目录。
 
 旧分支、旧 RTL 和旧范式记录保存在本地 archives，当前分支只保留更新后实现。第三方源码许可及固定输入来源见 [组件声明](report/THIRD_PARTY_NOTICES.md)。
+
+新增单层FC模式与原双层模式共用16 MAC和双bank，支持软件分块、部分和续算；接口与验证范围见 [FC模式](report/fc_modes.md)。

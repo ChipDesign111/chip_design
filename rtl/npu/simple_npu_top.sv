@@ -22,6 +22,18 @@ module simple_npu_top (
     logic [4:0] shift;
     logic [3:0] batch_count;
     logic error;
+    logic [1:0] fc_mode;
+    logic [6:0] fc_k;
+    logic [5:0] fc_n;
+    logic partial_valid;
+    logic [5:0] partial_n;
+    logic [3:0] partial_batch;
+    wire single_mode=fc_mode[0];
+    wire [5:0] fc_tiles=single_mode ? (({1'b0,fc_k}+1)>>1):6'd32;
+    wire [4:0] fc_words=single_mode ? ((({1'b0,fc_n}+7)>>3)<<2):5'd16;
+    wire continuation_ok=!fc_mode[1] ||
+        (partial_valid && partial_n==fc_n && partial_batch==batch_count);
+    wire [4095:0] fc_results;
     logic [31:0] w1_base,w2_base;
     wire busy,done,layer,consumed;
     wire [4:0] tile_index;
@@ -40,21 +52,22 @@ module simple_npu_top (
     wire [4095:0] input_packed={2048'd0,x[3],x[2],x[1],x[0]};
     wire write_req=ena && wea;
     wire cpu_write=write_req && !dma_write_i;
-    wire [32:0] end1={1'b0,w1_base}+33'd2048,end2={1'b0,w2_base}+33'd256;
-    wire valid_bases=w1_base[1:0]==0 && w2_base[1:0]==0 &&
+    wire [32:0] end1={1'b0,w1_base}+(single_mode ? ({27'd0,fc_tiles}*{28'd0,fc_words}*33'd4):33'd2048),end2={1'b0,w2_base}+33'd256;
+    wire valid_bases=w1_base[1:0]==0 &&
         w1_base>=32'h80000000 && end1<=33'h080002000 &&
-        w2_base>=32'h80000000 && end2<=33'h080002000;
+        (single_mode ? continuation_ok : (w2_base[1:0]==0 &&
+        w2_base>=32'h80000000 && end2<=33'h080002000));
     wire start=cpu_write && addra==0 && dina[0] && !busy && !dma_busy_i && valid_bases;
     wire tile_window=addra>=64 && addra<96;
-    wire want_w1=next_w1<32;
+    wire want_w1=next_w1<fc_tiles;
     wire load_bank=want_w1 ? next_w1[0]:next_w2[0];
-    wire load_pending=want_w1 || next_w2<W2_GROUPS;
+    wire load_pending=want_w1 || (!single_mode && next_w2<W2_GROUPS);
     wire load_bank_free=!ready_w1[load_bank] && !ready_w2[load_bank];
     wire safe_tile_write=write_req && dma_write_i && tile_window && pending &&
         addra[4]==loading_bank && !ready_w1[loading_bank] && !ready_w2[loading_bank];
     wire load_finished=pending && !dma_busy_i && dma_done_i;
     wire load_failed=load_finished &&
-        (dma_error_i || received!=(pending_w2 ? 16'h0fff:16'hffff));
+        (dma_error_i || received!=(pending_w2 ? 16'h0fff:(16'hffff>>(16-fc_words))));
     wire [4:0] next_tile_index=tile_index+1'b1;
     // FC1 selects one of 32 tiles and FC2 one of four packets. Both streams
     // alternate between the two physical banks using the tile index low bit.
@@ -68,14 +81,15 @@ module simple_npu_top (
     assign busy_o=busy;
     assign auto_start_o=busy && !pending && !dma_busy_i && load_pending && load_bank_free;
     assign auto_source_o=want_w1 ?
-        w1_base+({26'd0,next_w1}<<6):w2_base+({26'd0,next_w2}*32'd48);
+        w1_base+({26'd0,next_w1}*{27'd0,fc_words}*32'd4):w2_base+({26'd0,next_w2}*32'd48);
     assign auto_dest_o=32'h70000100+({31'd0,load_bank}<<6);
-    assign auto_words_o=want_w1 ? 32'd16:32'd12;
+    assign auto_words_o=want_w1 ? {27'd0,fc_words}:32'd12;
     har_weight_store weights(.clk(clka),.we_i(safe_tile_write),.bank_i(addra[4]),
         .word_i(addra[3:0]),.data_i(dina),.compute_bank_i(compute_bank),.tile_o(tile_data));
     har_npu_core core(.clk(clka),.rst_ni(rst_ni),.start(start),
         .ack_done(cpu_write && addra==0 && dina[1]),.batch_count(batch_count),.abort_i(load_failed),
-        .input_features(input_packed),.bias1(b1),.bias2(b2),
+        .single_i(single_mode),.accumulate_i(fc_mode[1]),.fc_k_i(fc_k),.fc_n_i(fc_n),
+        .fc_all(fc_results),.input_features(input_packed),.bias1(b1),.bias2(b2),
         .requant_mult(mult),.requant_shift(shift),
         .tile_valid_i(current_ready && layer==layer_q && !auto_start_o &&
                       (!pending || dma_write_active_i)),.tile_next_valid_i(next_tile_valid),
@@ -89,11 +103,18 @@ module simple_npu_top (
         if(!rst_ni) begin
             for(input_slot=0;input_slot<4;input_slot=input_slot+1) x[input_slot]<=0;
             b1<=0;b2<=0;mult<=1;shift<=0;batch_count<=1;
+            fc_mode<=0;fc_k<=64;fc_n<=32;
+            partial_valid<=0;partial_n<=0;partial_batch<=0;
             w1_base<=0;w2_base<=0;error<=0;douta<=0;ready_w1<=0;ready_w2<=0;
             layer_q<=0;pending<=0;pending_w2<=0;loading_bank<=0;
             next_w1<=0;next_w2<=0;received<=0;loads<=0;
         end else begin
             douta<=0;
+            if(start && !single_mode) partial_valid<=0;
+            if(load_failed) partial_valid<=0;
+            if(consumed && single_mode && tile_index==fc_tiles-1) begin
+                partial_valid<=1;partial_n<=fc_n;partial_batch<=batch_count;
+            end
             if(start) begin
                 ready_w1<=0;ready_w2<=0;next_w1<=0;next_w2<=0;layer_q<=0;
                 pending<=0;pending_w2<=0;error<=0;loads<=0;
@@ -128,6 +149,9 @@ module simple_npu_top (
                     6:if(dina>=1 && dina<=4) batch_count<=dina[3:0];else error<=1;
                     8:w1_base<=dina;
                     9:w2_base<=dina;
+                    15:if(dina==0 || dina==1 || dina==3) fc_mode<=dina[1:0];else error<=1;
+                    32:if(dina>=1 && dina<=64) fc_k<=dina[6:0];else error<=1;
+                    33:if(dina>=1 && dina<=32) fc_n<=dina[5:0];else error<=1;
                     default:begin
                         if(addra>=16 && addra<32) x[0][(addra-16)*32+:32]<=dina;
                         else if(addra>=624 && addra<656) b1[addra-624]<=dina[21:0];
@@ -157,9 +181,17 @@ module simple_npu_top (
                 12:douta<=loads;
                 13:douta<=read_overlap;
                 14:douta<=write_overlap;
+                15:douta<={30'd0,fc_mode};
+                32:douta<={25'd0,fc_k};
+                33:douta<={26'd0,fc_n};
+                34:douta<=32'h00014020; // ABI 1, K_MAX=64, N_MAX=32
                 806:douta<={29'b0,class_all[3+:3]};
                 default:begin
-                    if(addra>=672 && addra<680) douta<=hidden_all[(addra-672)*32+:32];
+                    if(addra>=1280 && addra<1408) begin
+                        out_rel=addra-1280;
+                        douta<=((out_rel>>5)<batch_count && (out_rel&31)<fc_n && single_mode) ?
+                            fc_results[out_rel*32+:32]:32'd0;
+                    end else if(addra>=672 && addra<680) douta<=hidden_all[(addra-672)*32+:32];
                     else if(addra>=704 && addra<710) douta<=scores_all[(addra-704)*32+:32];
                     else if(addra>=784 && addra<792)
                         douta<=hidden_all[256+(addra-784)*32+:32];

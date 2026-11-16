@@ -5,3 +5,5 @@ har_weight_store：两个 64B bank；FC1 一 bank 一 tile，FC2 每 bank 是一
 simple_npu_top：MMIO、自动 DMA 描述符、W1/W2 分域发布、W1 尾部 W2 预取、1/2/4 样本配置与保护。
 
 文件和使用方法见 [NPU](../../report/npu.md)、[MMIO](../../report/mmio.md)。
+
+新增共享硬件单层 FC 模式、续算和结果窗口见 [FC模式](../../report/fc_modes.md)。

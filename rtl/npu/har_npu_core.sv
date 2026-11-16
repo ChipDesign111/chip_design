@@ -1,4 +1,4 @@
-// INT8 64->32->6 with up to four register-resident samples, a shared 16-MAC
+// INT8 dual 64->32->6 or tiled single FC, with four samples and one 16-MAC
 // bank, INT22 internal accumulation, and a pipelined requantization path.
 // Each weight tile is reused for every sample and all compute phases before
 // it is released.
@@ -6,6 +6,10 @@ module har_npu_core (
     input logic clk,rst_ni,start,ack_done,
     input logic [3:0] batch_count,
     input logic abort_i,
+    input logic single_i,accumulate_i,
+    input logic [6:0] fc_k_i,
+    input logic [5:0] fc_n_i,
+    output wire [4095:0] fc_all,
     input logic [4095:0] input_features,
     input logic [31:0][21:0] bias1,
     input logic [5:0][21:0] bias2,
@@ -26,13 +30,16 @@ module har_npu_core (
 );
     localparam [2:0] IDLE=0,WAIT_TILE=1,ISSUE=2,QDRAIN=3,QUANT=4,FINISH=5;
     localparam int MAX_BATCH=4;
-    localparam int FC1_TILES=32;
     localparam int FC2_GROUPS=4;
-    localparam int FC1_PHASES=4;
     localparam int FC2_PHASES=4;
     localparam int ACC_WIDTH=22;
     logic [2:0] state;
     logic layer;
+    logic single_q,accumulate_q;
+    logic [6:0] k_q;
+    logic [5:0] n_q;
+    wire [2:0] output_phases=single_q ? (({1'b0,n_q}+7)>>3):3'd4;
+    wire [5:0] input_tiles=single_q ? (({1'b0,k_q}+1)>>1):6'd32;
     logic [1:0] phase;
     logic [3:0] batch_q;
     logic [2:0] sample,quant_sample,finish_sample;
@@ -59,11 +66,11 @@ module har_npu_core (
     logic [4:0] quant_group_index_q,quant_value_index_q;
     wire issue=state==ISSUE;
     wire last_sample_issue=issue && sample==batch_q[2:0]-1'b1;
-    wire final_tile_phase=layer ? phase==FC2_PHASES-1 : phase==FC1_PHASES-1;
+    wire final_tile_phase=layer ? phase==FC2_PHASES-1 : phase==output_phases-1;
     wire last_phase_issue=last_sample_issue && final_tile_phase;
     wire [255:0] hs=h[sample];
     wire [4:0] next_tile_index=tile_index_o+5'd1;
-    wire has_next_tile=layer ? tile_index_o!=FC2_GROUPS-1 : tile_index_o!=FC1_TILES-1;
+    wire has_next_tile=layer ? tile_index_o!=FC2_GROUPS-1 : tile_index_o!=input_tiles-1;
     wire prepare_current_tile=state==WAIT_TILE && tile_valid_i;
     wire prepare_next_tile=last_phase_issue && has_next_tile;
     wire signed [ACC_WIDTH-1:0] finish_score=a2[finish_sample][finish_compare_index];
@@ -81,11 +88,15 @@ module har_npu_core (
     assign product_valid=issue;
     assign product_sample=sample;
 
-    genvar gs,go;
+    genvar gs,go,fn;
     generate
         for(gs=0;gs<8;gs=gs+1) begin: output_views
             if(gs<MAX_BATCH) begin: active_output
                 assign hidden_all[gs*256+:256]=h[gs];
+                for(fn=0;fn<32;fn=fn+1) begin: fc_views
+                    assign fc_all[gs*1024+fn*32+:32]=
+                        {{(32-ACC_WIDTH){a1[gs][fn][ACC_WIDTH-1]}},a1[gs][fn]};
+                end
                 assign class_all[gs*3+:3]=class_id_q[gs];
                 for(go=0;go<6;go=go+1) begin: score_views
                     assign scores_all[gs*192+go*32+:32]=
@@ -154,7 +165,7 @@ module har_npu_core (
             state<=IDLE;
             busy<=0;
             done<=0;
-            layer<=0;
+            layer<=0;single_q<=0;accumulate_q<=0;k_q<=64;n_q<=32;
             batch_q<=1;
             sample<=0;
             phase<=0;
@@ -195,11 +206,12 @@ module har_npu_core (
             if(prepare_current_tile) begin
                 fc2_group_q<=tile_index_o[1:0];
                 for(o=0;o<32;o=o+1)
-                    first_tile_q[o]<=tile_index_o==0;
+                    first_tile_q[o]<=tile_index_o==0 && !(single_q && accumulate_q);
                 if(!layer)
                     for(s=0;s<MAX_BATCH;s=s+1)
                         for(o=0;o<2;o=o+1)
                             x_lane_q[s][o]<=
+                                (single_q && tile_index_o*2+o>=k_q) ? 8'd0 :
                                 input_features[s*512+tile_index_o*16+o*8+:8];
             end else if(prepare_next_tile) begin
                 fc2_group_q<=next_tile_index[1:0];
@@ -208,6 +220,7 @@ module har_npu_core (
                     for(s=0;s<MAX_BATCH;s=s+1)
                         for(o=0;o<2;o=o+1)
                             x_lane_q[s][o]<=
+                                (single_q && next_tile_index*2+o>=k_q) ? 8'd0 :
                                 input_features[s*512+next_tile_index*16+o*8+:8];
             end
             if(product_valid) begin
@@ -255,6 +268,8 @@ module har_npu_core (
                     done<=0;
                     layer<=0;
                     batch_q<=batch_count;
+                    single_q<=single_i;accumulate_q<=accumulate_i;
+                    k_q<=fc_k_i;n_q<=fc_n_i;
                     sample<=0;
                     phase<=0;
                     quant_group_valid_q<=0;
@@ -286,10 +301,12 @@ module har_npu_core (
                     if(!final_tile_phase) begin
                         phase<=phase+1'b1;
                         sample<=0;
-                    end else if(tile_index_o==FC1_TILES-1 && !layer) begin
+                    end else if(tile_index_o==input_tiles-1 && !layer) begin
                         quant_sample<=0;
                         tile_index_o<=0;
-                        state<=QUANT;
+                        if(single_q) begin
+                            busy<=0;done<=1;state<=IDLE;
+                        end else state<=QUANT;
                     end else if(layer && tile_index_o==FC2_GROUPS-1) begin
                         finish_sample<=0;
                         finish_compare_index<=1;
