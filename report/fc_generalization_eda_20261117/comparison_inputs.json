@@ -1,0 +1,58 @@
+{
+  "source_commit": "aca6c09d7030465135d7f3439a5267b14f687672",
+  "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_011258_aca6c09",
+  "baseline_commit": "287ae40129c4e7873dcca2e6281bb1a2f4a414d6",
+  "baseline_area": {
+    "cell_count": 64979,
+    "cell_area_um2": 2067330.381,
+    "net_area_um2": 711004.497,
+    "latch_area_um2": 0.0,
+    "memory_area_um2": 401443.591,
+    "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261113_220745_287ae40/work/syn/my_soc_top/reports/area/area.rpt",
+    "mapped_design": {
+      "native_main_srams": 1,
+      "mapped_leaf_instances": 64979,
+      "all_leaf_types_have_library_models": true,
+      "npu_dma_area_hierarchy_present": true,
+      "latch_area_um2": 0,
+      "automatic_clock_gating_requested": true,
+      "mapped_automatic_clock_gate_instances": 443,
+      "functional_enable_mapping": "library_enable",
+      "mapped_controlled_flip_flop_instances": 3282,
+      "combinational_cell_mapping": "tt_nonnegative_tables",
+      "mapped_excluded_TT_combinational_instances": 0
+    }
+  },
+  "baseline_die_mm2": 3.7956390976,
+  "baseline_density_percent": 74.633,
+  "baseline_tt_sta": {
+    "Setup": {
+      "wns_ns": 0.35,
+      "native_report": "tt_sta_expanded/my_soc_top_postRoute_all.tarpt.gz",
+      "sha256": "cbd1069b85b07b5042dc897e2d26a58dac782ac473dd2c563af166e6120c8a60"
+    },
+    "Hold": {
+      "wns_ns": 0.05,
+      "native_report": "tt_sta_expanded/my_soc_top_postRoute_all_hold.tarpt.gz",
+      "sha256": "52e3ef69549dd0558da6730f2d93874990d9150aa09c9ab8b02e11d61e7c6d2c"
+    }
+  },
+  "rtl": [
+    {
+      "file": "rtl/npu/har_npu_core.sv",
+      "sha256": "92a026b9b8b2a57b2670a9f4604c4b2568e3bfc95d93e1895c9f88fe747bfcfe"
+    },
+    {
+      "file": "rtl/npu/simple_npu_top.sv",
+      "sha256": "c0909312ea153d4f0ec1efa0dba59e18cda03daf24db645a68e1eecae24683fb"
+    },
+    {
+      "file": "rtl/npu/har_weight_store.sv",
+      "sha256": "473106074ca66f795445cd3862104d7e57da364b6ab119996eb612934b7d2913"
+    },
+    {
+      "file": "rtl/dma/har_dma.sv",
+      "sha256": "6aaa673d985b4c431ed7f65cb12ff7794bf6af48fbced4f399f3b5dbd45da2cb"
+    }
+  ]
+}

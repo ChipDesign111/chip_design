@@ -1,0 +1,36 @@
+{
+  "def_signal_routes": [
+    {
+      "section": "NETS 71802 ;",
+      "net": "- i_npu_subsystem/i_npu_core/core/FE_OFN3703_a1_0__add_233_51_I4__15",
+      "route": "NEW METAL2 ( 1711920 3636080 ) ( * 3665200 ) VIA2"
+    },
+    {
+      "section": "NETS 71802 ;",
+      "net": "- i_npu_subsystem/i_npu_core/fc_results[3789]",
+      "route": "NEW METAL2 ( 1679440 3661840 ) ( * 3665200 )"
+    },
+    {
+      "section": "NETS 71802 ;",
+      "net": "- i_npu_subsystem/i_npu_core/core/n_7614",
+      "route": "NEW METAL2 ( 1681680 3655120 ) ( * 3665200 ) VIA2"
+    }
+  ],
+  "probe_log": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_021054_lab5_aca6c09/analysis/io_m2_probe/tool.log",
+  "probe_log_sha256": "40564900e72d88d5468b4e2cdf045e88ccbe337a23178a1b29b8bc70fa316958",
+  "probe_succeeded": true,
+  "keepouts_created": 28,
+  "readback_pass": true,
+  "first_source": "aca6c09",
+  "lab5_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_021054_lab5_aca6c09",
+  "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_011258_aca6c09",
+  "rule": "M2.S.2",
+  "violations_before_and_after_dummy": 3,
+  "minimum_spacing_um": 0.6,
+  "observed_gap_um": 0.45,
+  "native_wide_m2_bottom_um": 1833.24,
+  "signal_via_enclosure_top_um": 1832.79,
+  "repair": "28 native PV* power-pad signal-only METAL2 route blockages; spacing 0.65um; PG exempt; PDD* signal pads unaffected",
+  "probe_scope": "Read old step12 checkpoint in memory, apply/check blockages; no save and no reroute; not proof of full repair",
+  "pdks_and_original_work_modified": false
+}

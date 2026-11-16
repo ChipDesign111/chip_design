@@ -1,0 +1,248 @@
+{
+  "cell_count": 68519,
+  "cell_area_um2": 2124284.845,
+  "net_area_um2": 759138.448,
+  "latch_area_um2": 0.0,
+  "memory_area_um2": 401443.591,
+  "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_011258_aca6c09/work/syn/my_soc_top/reports/area/area.rpt",
+  "mapped_design": {
+    "native_main_srams": 1,
+    "mapped_leaf_instances": 68519,
+    "all_leaf_types_have_library_models": true,
+    "npu_dma_area_hierarchy_present": true,
+    "latch_area_um2": 0,
+    "automatic_clock_gating_requested": true,
+    "mapped_automatic_clock_gate_instances": 446,
+    "functional_enable_mapping": "library_enable",
+    "mapped_controlled_flip_flop_instances": 3285,
+    "combinational_cell_mapping": "tt_nonnegative_tables",
+    "mapped_excluded_TT_combinational_instances": 0
+  },
+  "baseline_cell_area_um2": 2067330.381,
+  "delta_um2": 56954.46400000015,
+  "delta_percent": 2.754976394844566,
+  "hierarchy_comparison": [
+    {
+      "path": "i_cpu",
+      "before": {
+        "path": "i_cpu",
+        "module": "cv32e40p_top",
+        "cell_count": 15875,
+        "cell_area_um2": 383892.186,
+        "comb_area_um2": 240837.587,
+        "buffer_area_um2": 4241.126,
+        "flop_area_um2": 127117.446,
+        "clock_gate_area_um2": 2985.472,
+        "memory_area_um2": 0.0
+      },
+      "after": {
+        "path": "i_cpu",
+        "module": "cv32e40p_top",
+        "cell_count": 15869,
+        "cell_area_um2": 383371.923,
+        "comb_area_um2": 240598.31,
+        "buffer_area_um2": 4008.435,
+        "flop_area_um2": 127108.666,
+        "clock_gate_area_um2": 2985.472,
+        "memory_area_um2": 0.0
+      },
+      "delta_cell_um2": -520.2629999999772,
+      "delta_percent": -0.1355232065077705
+    },
+    {
+      "path": "i_dma",
+      "before": {
+        "path": "i_dma",
+        "module": "har_dma_axi_master_AXI_BUS_Master",
+        "cell_count": 1295,
+        "cell_area_um2": 37638.899,
+        "comb_area_um2": 17168.659,
+        "buffer_area_um2": 94.394,
+        "flop_area_um2": 19449.472,
+        "clock_gate_area_um2": 485.139,
+        "memory_area_um2": 0.0
+      },
+      "after": {
+        "path": "i_dma",
+        "module": "har_dma_axi_master_AXI_BUS_Master",
+        "cell_count": 1298,
+        "cell_area_um2": 37667.437,
+        "comb_area_um2": 17177.44,
+        "buffer_area_um2": 87.808,
+        "flop_area_um2": 19449.472,
+        "clock_gate_area_um2": 485.139,
+        "memory_area_um2": 0.0
+      },
+      "delta_cell_um2": 28.538000000000466,
+      "delta_percent": 0.07582049623715559
+    },
+    {
+      "path": "i_mainmem",
+      "before": {
+        "path": "i_mainmem",
+        "module": "my_mainmem",
+        "cell_count": 57,
+        "cell_area_um2": 403542.202,
+        "comb_area_um2": 10.976,
+        "buffer_area_um2": 0.0,
+        "flop_area_um2": 2010.803,
+        "clock_gate_area_um2": 37.318,
+        "memory_area_um2": 401443.591
+      },
+      "after": {
+        "path": "i_mainmem",
+        "module": "my_mainmem",
+        "cell_count": 57,
+        "cell_area_um2": 403542.202,
+        "comb_area_um2": 10.976,
+        "buffer_area_um2": 0.0,
+        "flop_area_um2": 2010.803,
+        "clock_gate_area_um2": 37.318,
+        "memory_area_um2": 401443.591
+      },
+      "delta_cell_um2": 0.0,
+      "delta_percent": 0.0
+    },
+    {
+      "path": "i_npu_subsystem",
+      "before": {
+        "path": "i_npu_subsystem",
+        "module": "my_npu_subsystem",
+        "cell_count": 29628,
+        "cell_area_um2": 797544.698,
+        "comb_area_um2": 341731.174,
+        "buffer_area_um2": 4895.296,
+        "flop_area_um2": 435760.371,
+        "clock_gate_area_um2": 3806.477,
+        "memory_area_um2": 0.0
+      },
+      "after": {
+        "path": "i_npu_subsystem",
+        "module": "my_npu_subsystem",
+        "cell_count": 33157,
+        "cell_area_um2": 855061.133,
+        "comb_area_um2": 393845.222,
+        "buffer_area_um2": 5946.797,
+        "flop_area_um2": 437793.126,
+        "clock_gate_area_um2": 3918.432,
+        "memory_area_um2": 0.0
+      },
+      "delta_cell_um2": 57516.435000000056,
+      "delta_percent": 7.211687964854363
+    },
+    {
+      "path": "i_npu_subsystem/i_npu_core",
+      "before": {
+        "path": "i_npu_subsystem/i_npu_core",
+        "module": "simple_npu_top",
+        "cell_count": 29583,
+        "cell_area_um2": 796699.546,
+        "comb_area_um2": 341019.93,
+        "buffer_area_um2": 4816.269,
+        "flop_area_um2": 435712.077,
+        "clock_gate_area_um2": 3806.477,
+        "memory_area_um2": 0.0
+      },
+      "after": {
+        "path": "i_npu_subsystem/i_npu_core",
+        "module": "simple_npu_top",
+        "cell_count": 33110,
+        "cell_area_um2": 854237.933,
+        "comb_area_um2": 393131.782,
+        "buffer_area_um2": 5911.674,
+        "flop_area_um2": 437744.832,
+        "clock_gate_area_um2": 3918.432,
+        "memory_area_um2": 0.0
+      },
+      "delta_cell_um2": 57538.38699999999,
+      "delta_percent": 7.222093609678049
+    },
+    {
+      "path": "i_npu_subsystem/i_npu_core/core",
+      "before": {
+        "path": "i_npu_subsystem/i_npu_core/core",
+        "module": "har_npu_core",
+        "cell_count": 18387,
+        "cell_area_um2": 490758.912,
+        "comb_area_um2": 248130.042,
+        "buffer_area_um2": 3751.597,
+        "flop_area_um2": 231132.608,
+        "clock_gate_area_um2": 1828.602,
+        "memory_area_um2": 0.0
+      },
+      "after": {
+        "path": "i_npu_subsystem/i_npu_core/core",
+        "module": "har_npu_core",
+        "cell_count": 18560,
+        "cell_area_um2": 493933.171,
+        "comb_area_um2": 250057.427,
+        "buffer_area_um2": 4148.928,
+        "flop_area_um2": 231863.61,
+        "clock_gate_area_um2": 1828.602,
+        "memory_area_um2": 0.0
+      },
+      "delta_cell_um2": 3174.258999999962,
+      "delta_percent": 0.6468061857631602
+    },
+    {
+      "path": "i_npu_subsystem/i_npu_core/weights",
+      "before": {
+        "path": "i_npu_subsystem/i_npu_core/weights",
+        "module": "har_weight_store",
+        "cell_count": 1796,
+        "cell_area_um2": 68384.87,
+        "comb_area_um2": 10378.906,
+        "buffer_area_um2": 362.208,
+        "flop_area_um2": 56197.12,
+        "clock_gate_area_um2": 74.637,
+        "memory_area_um2": 0.0
+      },
+      "after": {
+        "path": "i_npu_subsystem/i_npu_core/weights",
+        "module": "har_weight_store",
+        "cell_count": 1772,
+        "cell_area_um2": 68143.398,
+        "comb_area_um2": 10389.882,
+        "buffer_area_um2": 381.965,
+        "flop_area_um2": 56197.12,
+        "clock_gate_area_um2": 74.637,
+        "memory_area_um2": 0.0
+      },
+      "delta_cell_um2": -241.4719999999943,
+      "delta_percent": -0.3531073466981671
+    }
+  ],
+  "provenance": {
+    "area.rpt": "bb510506e051170ac7a5a83a7f2204dd31126ca3a283199f1390e58a86dfc931",
+    "geometry.json": "64f239f2d8972489ab37d3c23f30ad0b09688ea4bdfa18e485d714fd911ed720",
+    "synthesis.json": "42f8acdff07f526a99f1a3bd6cafb37663e4c6b976b95a8f541df7ad643d5ef1"
+  },
+  "scope": "Completed Genus synthesis only; Innovus and final validation still running",
+  "exclusive_npu_wrapper": {
+    "cell_area_um2": {
+      "before": 237555.76399999997,
+      "after": 292161.36399999994,
+      "delta": 54605.59999999998
+    },
+    "comb_area_um2": {
+      "before": 82510.98200000002,
+      "after": 132684.473,
+      "delta": 50173.49099999998
+    },
+    "flop_area_um2": {
+      "before": 148382.349,
+      "after": 149684.102,
+      "delta": 1301.753000000026
+    },
+    "buffer_area_um2": {
+      "before": 702.4639999999999,
+      "after": 1380.781,
+      "delta": 678.317
+    },
+    "clock_gate_area_um2": {
+      "before": 1903.2379999999998,
+      "after": 2015.1929999999998,
+      "delta": 111.95499999999993
+    }
+  }
+}

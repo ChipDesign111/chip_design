@@ -1,0 +1,93 @@
+{
+  "receipt": {
+    "archive_sha256": "b5a200b366213602c74ce847ddc842af8d70643cbe4cb404f27f53a977432cb1",
+    "files_verified": 676,
+    "input_manifest_sha256": "1b6b5460fb63154655fafccd18a692df90cab444c08b9aa95681797ae9d748ce",
+    "remote_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_011258_aca6c09",
+    "all_34_steps_same_input": true,
+    "whole_die_area_mm2": 3.7956390976,
+    "max_whole_die_area_mm2": 3.8
+  },
+  "timing": {
+    "Setup": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_011258_aca6c09/work/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute.summary.gz",
+      "wns_ns": 0.163,
+      "tns_ns": 0.0,
+      "violating_paths": 0,
+      "drv": {
+        "max_cap": {
+          "real": 0,
+          "total": 0
+        },
+        "max_tran": {
+          "real": 0,
+          "total": 0
+        },
+        "max_fanout": {
+          "real": 0,
+          "total": 0
+        },
+        "max_length": {
+          "real": 0,
+          "total": 0
+        }
+      },
+      "electrical_drv_table_reported_here": true,
+      "minimum_wns_ns": 0.0,
+      "targets_met": true,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute.summary.gz",
+      "report_sha256": "4baf1766821dfa8814a6cdc668a563926378baf548f4810b66e551990253df3c"
+    },
+    "Hold": {
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_011258_aca6c09/work/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute_hold.summary.gz",
+      "wns_ns": 0.048,
+      "tns_ns": 0.0,
+      "violating_paths": 0,
+      "drv": {},
+      "electrical_drv_table_reported_here": false,
+      "minimum_wns_ns": 0.0,
+      "targets_met": true,
+      "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute_hold.summary.gz",
+      "report_sha256": "13fbcdeda3c5ad74b80d709c1d73a48c4f7051b5f89e46c3f9c3fab03e082f6e"
+    }
+  },
+  "default_drc": {
+    "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_011258_aca6c09/work/pnr/my_soc_top/my_soc_top_postFiller_drc.rpt",
+    "zero_reported_violations": true,
+    "scope": "drc",
+    "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_drc.rpt",
+    "report_sha256": "95db3f21c0e5ee63df0ba41c53bf47755dcc50a3dc8bed5c26fd52f875415a3c"
+  },
+  "full_core_pg": {
+    "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_011258_aca6c09/work/pnr/my_soc_top/my_soc_top_postFiller_pg.rpt",
+    "zero_reported_violations": true,
+    "scope": "connectivity",
+    "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_pg.rpt",
+    "report_sha256": "d7c454e7cbb738972154071ca239b064dceb5086656b3ce5210346e2df2201a9"
+  },
+  "signal_connectivity": {
+    "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_011258_aca6c09/work/pnr/my_soc_top/my_soc_top_postFiller_signal.rpt",
+    "unresolved_signal_problems": 0,
+    "classified_io_abstract_nets": [
+      "VDDPST",
+      "VSSPST"
+    ],
+    "same_input_native_geometry_proof_step": 22,
+    "not_independent_LVS": true,
+    "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_signal.rpt",
+    "report_sha256": "cfd669585d4c0356ea5bfddeb75c0b068a04dd42d796da7183525798b5f699cd"
+  },
+  "antenna": {
+    "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_011258_aca6c09/work/pnr/my_soc_top/my_soc_top_postFiller_antenna.rpt",
+    "violating_nets": 0,
+    "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_antenna.rpt",
+    "report_sha256": "5083ca59a6564febefce843f461219f0d4acfe1e00d32d3c581dd928b6998bd3"
+  },
+  "density_native_percent": 77.379,
+  "scope": "Implementation complete; TT SDF and half-cycle STA now also passed separately; Lab5 in progress",
+  "density_source": {
+    "file": "native_density_evidence.json",
+    "line": 31446,
+    "text": "Density: 77.379%"
+  }
+}

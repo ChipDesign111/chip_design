@@ -1,0 +1,30 @@
+{
+  "scope": "Architectural lower bound, not measured performance; fixed original four-sample program and no useful CPU overlap during NPU wait",
+  "baseline_soc_cycles": 2700,
+  "baseline_npu_cycles": 952,
+  "accepted_soc_cycles": 2835,
+  "allowed_npu_cycles_if_other_costs_unchanged": 1087,
+  "rows": [
+    {
+      "mac_lanes": 8,
+      "products": 8960,
+      "ideal_mac_cycles": 1120,
+      "requant_drain_argmax_cycles": 150,
+      "npu_ideal_lower_bound": 1270
+    },
+    {
+      "mac_lanes": 12,
+      "products": 8960,
+      "ideal_mac_cycles": 747,
+      "requant_drain_argmax_cycles": 150,
+      "npu_ideal_lower_bound": 897
+    },
+    {
+      "mac_lanes": 16,
+      "products": 8960,
+      "ideal_mac_cycles": 560,
+      "requant_drain_argmax_cycles": 150,
+      "npu_ideal_lower_bound": 710
+    }
+  ]
+}
