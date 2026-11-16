@@ -133,7 +133,7 @@ module simple_npu_top (
                         else if(addra>=624 && addra<656) b1[addra-624]<=dina[21:0];
                         else if(addra>=656 && addra<662) b2[addra-656]<=dina[21:0];
                         else if(addra>=768 && addra<784) x[1][(addra-768)*32+:32]<=dina;
-                        else if(addra>=INPUT2_BASE && addra<INPUT2_BASE+64) begin
+                        else if(addra>=INPUT2_BASE && addra<INPUT2_BASE+32) begin
                             input_rel=addra-INPUT2_BASE;
                             input_slot=2+(input_rel>>4);
                             input_word=input_rel & 15;

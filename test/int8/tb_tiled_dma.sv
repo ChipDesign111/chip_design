@@ -102,6 +102,7 @@ module tb_tiled_dma;
         end
     endtask
     string directory,filename;
+    reg [2047:0] input_snapshot;
     integer count,which,j,n,batch,input_addr,output_addr,golden_addr,class_addr;
     initial begin
         if(!$value$plusargs("DIR=%s",directory)) $fatal(1,"DIR required");
@@ -111,6 +112,18 @@ module tb_tiled_dma;
         if($bits(dut.b1[0])!=22 || $bits(dut.b2[0])!=22)
             $fatal(1,"Expected INT22 bias storage");
         #1;rst_n=0;repeat(3) @(negedge clk);rst_n=1;
+        // Samples 2/3 occupy exactly 128 bytes; later slots are reserved.
+        put('h1000,32'h12345678);put('h107c,32'h89abcdef);check(4,0);
+        if(dut.x[2][31:0]!==32'h12345678 || dut.x[3][511:480]!==32'h89abcdef)
+            $fatal(1,"Valid extended input boundary write was lost");
+        input_snapshot={dut.x[3],dut.x[2],dut.x[1],dut.x[0]};
+        for(input_addr='h1080;input_addr<'h1180;input_addr=input_addr+4) begin
+            put(input_addr,32'hdeadbeef);check(4,4);
+            if({dut.x[3],dut.x[2],dut.x[1],dut.x[0]}!==input_snapshot)
+                $fatal(1,"Reserved input write changed an active sample");
+            put(0,2);check(4,0);
+        end
+        $display("INPUT_WINDOW_BOUNDS PASS reserved_words=64");
         // Invalid SRAM pointer cannot start an inference.
         put(0,1);check(4,4);
         for(which=0;which<count;which=which+1) begin
