@@ -46,7 +46,7 @@ def select_special_segments(nodes,tensors,memory,output):
     return segments
 
 
-def plan_segments(nodes,tensors,memory,output,*,forward=True,fuse=True):
+def plan_segments(nodes,tensors,memory,output,*,forward=True,fuse=True,lut_cache=False):
     users={name:[] for name in tensors}
     producers={node['name']:node for node in nodes}
     for node in nodes:
@@ -103,6 +103,7 @@ def plan_segments(nodes,tensors,memory,output,*,forward=True,fuse=True):
                     last_k=last,input_internal=internal,keep_output=keep and last,end_segment=False,
                     act_multiplier=act_mult if last else 1,act_shift=act_shift if last else 0,
                     lut_address=act['lut_address'] if act_mode>=Activation.SIGMOID else 0,
+                    lut_cache=lut_cache and act_mode>=Activation.SIGMOID,
                     clamp_max=act.get('clamp_max',127) if act is not None else 127,
                     negative_multiplier=act.get('negative_mult',1) if act is not None else 1,
                     negative_shift=act.get('negative_shift',0) if act is not None else 0)
@@ -121,8 +122,8 @@ def plan_segments(nodes,tensors,memory,output,*,forward=True,fuse=True):
                 activation['backend']='NPU';activation['reason']='Fused activation, preserving FC INT8 boundary'
             i=after
         tasks[-1]=replace(tasks[-1],end_segment=True);records[-1]['descriptor']=asdict(tasks[-1])
-        address=memory.alloc(f'task_segment:{len(segments)}',len(tasks)*64,b''.join(t.pack() for t in tasks),alignment=64)
-        validate_segment(address,tasks)
+        address=memory.alloc(f'task_segment:{len(segments)}',len(tasks)*64,b''.join(t.pack(allow_cache=lut_cache) for t in tasks),alignment=64)
+        validate_segment(address,tasks,allow_cache=lut_cache)
         segment=dict(index=len(segments),address=address,count=len(tasks),nodes=[n['name'] for n in group],tasks=records,
                      fc_jobs=sum(t.op==Op.FC for t in tasks),internal_edges=[n['name'] for n in group if tensors[n['name']].get('storage')=='internal'])
         for node in group:node['segment']=segment['index']

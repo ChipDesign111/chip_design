@@ -1,0 +1,631 @@
+{
+  "abi": 1,
+  "input": "x",
+  "output": "softmax",
+  "tensors": {
+    "x": {
+      "shape": [
+        1,
+        17
+      ],
+      "scale": 0.007874015748031496,
+      "stride": 20,
+      "address": 2147491756
+    },
+    "fc1": {
+      "shape": [
+        1,
+        12
+      ],
+      "scale": 0.005052586240092601,
+      "stride": 12,
+      "address": 2147491744,
+      "storage": "fused"
+    },
+    "relu": {
+      "shape": [
+        1,
+        12
+      ],
+      "scale": 0.003942659520727443,
+      "stride": 12,
+      "address": 2147491732
+    },
+    "sigmoid": {
+      "shape": [
+        1,
+        12
+      ],
+      "scale": 0.004902582468948965,
+      "stride": 12,
+      "address": 2147491720
+    },
+    "mul": {
+      "shape": [
+        1,
+        12
+      ],
+      "scale": 0.002454810020491833,
+      "stride": 12,
+      "address": 2147491708
+    },
+    "add": {
+      "shape": [
+        1,
+        12
+      ],
+      "scale": 0.006397469775883231,
+      "stride": 12,
+      "address": 2147491696
+    },
+    "fc2": {
+      "shape": [
+        1,
+        5
+      ],
+      "scale": 0.0031767074517377717,
+      "stride": 8,
+      "address": 2147491688
+    },
+    "mul_1": {
+      "shape": [
+        1,
+        5
+      ],
+      "scale": 0.00285903651883283,
+      "stride": 8,
+      "address": 2147491680
+    },
+    "add_1": {
+      "shape": [
+        1,
+        5
+      ],
+      "scale": 0.0020716349909624715,
+      "stride": 8,
+      "address": 2147491672
+    },
+    "softmax": {
+      "shape": [
+        1,
+        5
+      ],
+      "scale": 0.0018715084068418489,
+      "stride": 8,
+      "address": 2147491664
+    }
+  },
+  "nodes": [
+    {
+      "name": "fc1",
+      "op": "linear",
+      "inputs": [
+        "x"
+      ],
+      "backend": "NPU",
+      "reason": "Autonomous task segment",
+      "mult": [
+        6239
+      ],
+      "shift": 21,
+      "bias_address": 2147491616,
+      "jobs": [
+        {
+          "k": 17,
+          "n": 12,
+          "batch": 1,
+          "accumulate": false,
+          "source": 2147491328,
+          "output_offset": 0,
+          "input_offset": 0,
+          "last_input": true
+        }
+      ],
+      "segment": 0,
+      "start_pc": 2147483656,
+      "end_pc": 2147483812
+    },
+    {
+      "name": "relu",
+      "op": "relu",
+      "inputs": [
+        "fc1"
+      ],
+      "backend": "NPU",
+      "reason": "Fused activation, preserving FC INT8 boundary",
+      "mult": [
+        10750146
+      ],
+      "shift": 23,
+      "segment": 0,
+      "start_pc": 2147483812,
+      "end_pc": 2147483812
+    },
+    {
+      "name": "sigmoid",
+      "op": "sigmoid",
+      "inputs": [
+        "relu"
+      ],
+      "backend": "NPU",
+      "reason": "Autonomous task segment",
+      "lut_address": 2147491072,
+      "segment": 0,
+      "start_pc": 2147483812,
+      "end_pc": 2147483812
+    },
+    {
+      "name": "mul",
+      "op": "mul",
+      "inputs": [
+        "sigmoid",
+        "relu"
+      ],
+      "backend": "CPU",
+      "reason": "CPU operator kernel",
+      "mult": [
+        66052
+      ],
+      "shift": 23,
+      "start_pc": 2147483812,
+      "end_pc": 2147483916
+    },
+    {
+      "name": "add",
+      "op": "add",
+      "inputs": [
+        "mul",
+        "relu"
+      ],
+      "backend": "CPU",
+      "reason": "CPU operator kernel",
+      "mult": [
+        3218841,
+        5169767
+      ],
+      "shift": 23,
+      "start_pc": 2147483916,
+      "end_pc": 2147484032
+    },
+    {
+      "name": "fc2",
+      "op": "linear",
+      "inputs": [
+        "add"
+      ],
+      "backend": "NPU",
+      "reason": "Autonomous task segment",
+      "mult": [
+        9550
+      ],
+      "shift": 21,
+      "bias_address": 2147491052,
+      "jobs": [
+        {
+          "k": 12,
+          "n": 5,
+          "batch": 1,
+          "accumulate": false,
+          "source": 2147490956,
+          "output_offset": 0,
+          "input_offset": 0,
+          "last_input": true
+        }
+      ],
+      "segment": 1,
+      "start_pc": 2147484032,
+      "end_pc": 2147484188
+    },
+    {
+      "name": "mul_1",
+      "op": "mul",
+      "inputs": [
+        "fc2"
+      ],
+      "scalar": 0.9,
+      "scalar_left": false,
+      "backend": "CPU",
+      "reason": "CPU operator kernel",
+      "mult": [
+        8388609
+      ],
+      "shift": 23,
+      "start_pc": 2147484188,
+      "end_pc": 2147484272
+    },
+    {
+      "name": "add_1",
+      "op": "add",
+      "inputs": [
+        "mul_1"
+      ],
+      "scalar": 0.1,
+      "scalar_left": false,
+      "backend": "CPU",
+      "reason": "CPU operator kernel",
+      "mult": [
+        11577009,
+        404926931
+      ],
+      "shift": 23,
+      "start_pc": 2147484272,
+      "end_pc": 2147484368
+    },
+    {
+      "name": "softmax",
+      "op": "softmax",
+      "inputs": [
+        "add_1"
+      ],
+      "backend": "CPU",
+      "reason": "CPU operator kernel",
+      "reciprocal": 534,
+      "lut_address": 2147490444,
+      "start_pc": 2147484368,
+      "end_pc": 2147484564
+    }
+  ],
+  "profile_ranges": [
+    {
+      "start_pc": 2147483648,
+      "phase": "startup",
+      "node": "runtime",
+      "end_pc": 2147483656
+    },
+    {
+      "start_pc": 2147483656,
+      "phase": "cpu_schedule",
+      "node": "fc1",
+      "end_pc": 2147483740
+    },
+    {
+      "start_pc": 2147483740,
+      "phase": "cpu_launch",
+      "node": "fc1",
+      "end_pc": 2147483756
+    },
+    {
+      "start_pc": 2147483756,
+      "phase": "cpu_poll",
+      "node": "fc1",
+      "end_pc": 2147483812
+    },
+    {
+      "start_pc": 2147483812,
+      "phase": "cpu_elementwise",
+      "node": "mul",
+      "end_pc": 2147483868
+    },
+    {
+      "start_pc": 2147483868,
+      "phase": "cpu_quant",
+      "node": "mul",
+      "end_pc": 2147483896
+    },
+    {
+      "start_pc": 2147483896,
+      "phase": "cpu_elementwise",
+      "node": "mul",
+      "end_pc": 2147483916
+    },
+    {
+      "start_pc": 2147483916,
+      "phase": "cpu_elementwise",
+      "node": "add",
+      "end_pc": 2147483988
+    },
+    {
+      "start_pc": 2147483988,
+      "phase": "cpu_quant",
+      "node": "add",
+      "end_pc": 2147484012
+    },
+    {
+      "start_pc": 2147484012,
+      "phase": "cpu_elementwise",
+      "node": "add",
+      "end_pc": 2147484032
+    },
+    {
+      "start_pc": 2147484032,
+      "phase": "cpu_schedule",
+      "node": "fc2",
+      "end_pc": 2147484116
+    },
+    {
+      "start_pc": 2147484116,
+      "phase": "cpu_launch",
+      "node": "fc2",
+      "end_pc": 2147484132
+    },
+    {
+      "start_pc": 2147484132,
+      "phase": "cpu_poll",
+      "node": "fc2",
+      "end_pc": 2147484188
+    },
+    {
+      "start_pc": 2147484188,
+      "phase": "cpu_elementwise",
+      "node": "mul_1",
+      "end_pc": 2147484224
+    },
+    {
+      "start_pc": 2147484224,
+      "phase": "cpu_quant",
+      "node": "mul_1",
+      "end_pc": 2147484252
+    },
+    {
+      "start_pc": 2147484252,
+      "phase": "cpu_elementwise",
+      "node": "mul_1",
+      "end_pc": 2147484272
+    },
+    {
+      "start_pc": 2147484272,
+      "phase": "cpu_elementwise",
+      "node": "add_1",
+      "end_pc": 2147484324
+    },
+    {
+      "start_pc": 2147484324,
+      "phase": "cpu_quant",
+      "node": "add_1",
+      "end_pc": 2147484348
+    },
+    {
+      "start_pc": 2147484348,
+      "phase": "cpu_elementwise",
+      "node": "add_1",
+      "end_pc": 2147484368
+    },
+    {
+      "start_pc": 2147484368,
+      "phase": "cpu_activation",
+      "node": "softmax",
+      "end_pc": 2147484564
+    },
+    {
+      "start_pc": 2147484564,
+      "phase": "finish",
+      "node": "runtime",
+      "end_pc": 2147484600
+    }
+  ],
+  "task_abi": 1,
+  "task_segments": [
+    {
+      "index": 0,
+      "address": 2147490304,
+      "count": 2,
+      "nodes": [
+        "fc1",
+        "relu",
+        "sigmoid"
+      ],
+      "tasks": [
+        {
+          "task": 0,
+          "fc_node": "fc1",
+          "output_node": "relu",
+          "output_offset": 0,
+          "descriptor": {
+            "op": 1,
+            "activation": 1,
+            "k": 17,
+            "n": 12,
+            "batch": 1,
+            "source": 2147491756,
+            "weights": 2147491328,
+            "bias": 2147491616,
+            "destination": 2147491732,
+            "input_stride": 20,
+            "output_stride": 12,
+            "initialize": true,
+            "last_k": true,
+            "input_internal": false,
+            "keep_output": false,
+            "end_segment": false,
+            "lut_cache": false,
+            "fc_multiplier": 6239,
+            "fc_shift": 21,
+            "act_multiplier": 10750146,
+            "act_shift": 23,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 0,
+            "clamp_max": 127,
+            "context": 0
+          }
+        },
+        {
+          "task": 1,
+          "fc_node": null,
+          "output_node": "sigmoid",
+          "output_offset": 0,
+          "descriptor": {
+            "op": 2,
+            "activation": 4,
+            "k": 0,
+            "n": 12,
+            "batch": 1,
+            "source": 2147491732,
+            "weights": 0,
+            "bias": 0,
+            "destination": 2147491720,
+            "input_stride": 12,
+            "output_stride": 12,
+            "initialize": false,
+            "last_k": true,
+            "input_internal": false,
+            "keep_output": false,
+            "end_segment": true,
+            "lut_cache": false,
+            "fc_multiplier": 0,
+            "fc_shift": 0,
+            "act_multiplier": 1,
+            "act_shift": 0,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 2147491072,
+            "clamp_max": 127,
+            "context": 0
+          }
+        }
+      ],
+      "fc_jobs": 1,
+      "internal_edges": []
+    },
+    {
+      "index": 1,
+      "address": 2147490240,
+      "count": 1,
+      "nodes": [
+        "fc2"
+      ],
+      "tasks": [
+        {
+          "task": 0,
+          "fc_node": "fc2",
+          "output_node": "fc2",
+          "output_offset": 0,
+          "descriptor": {
+            "op": 1,
+            "activation": 0,
+            "k": 12,
+            "n": 5,
+            "batch": 1,
+            "source": 2147491696,
+            "weights": 2147490956,
+            "bias": 2147491052,
+            "destination": 2147491688,
+            "input_stride": 12,
+            "output_stride": 8,
+            "initialize": true,
+            "last_k": true,
+            "input_internal": false,
+            "keep_output": false,
+            "end_segment": true,
+            "lut_cache": false,
+            "fc_multiplier": 9550,
+            "fc_shift": 21,
+            "act_multiplier": 1,
+            "act_shift": 0,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 0,
+            "clamp_max": 127,
+            "context": 327680
+          }
+        }
+      ],
+      "fc_jobs": 1,
+      "internal_edges": []
+    }
+  ],
+  "special_segments": [],
+  "rtl_parameters": {},
+  "npu_core_starts": 2,
+  "quantization": "Symmetric per-tensor INT8; per-layer INT8 weights; rounded fixed-point CPU boundaries",
+  "input_shape": [
+    1,
+    17
+  ],
+  "code_bytes": 952,
+  "data_bytes": 1536,
+  "free_bytes": 5640,
+  "allocations": [
+    {
+      "name": "tensor:x",
+      "address": 2147491756,
+      "bytes": 20
+    },
+    {
+      "name": "tensor:fc1",
+      "address": 2147491744,
+      "bytes": 12
+    },
+    {
+      "name": "tensor:relu",
+      "address": 2147491732,
+      "bytes": 12
+    },
+    {
+      "name": "tensor:sigmoid",
+      "address": 2147491720,
+      "bytes": 12
+    },
+    {
+      "name": "tensor:mul",
+      "address": 2147491708,
+      "bytes": 12
+    },
+    {
+      "name": "tensor:add",
+      "address": 2147491696,
+      "bytes": 12
+    },
+    {
+      "name": "tensor:fc2",
+      "address": 2147491688,
+      "bytes": 8
+    },
+    {
+      "name": "tensor:mul_1",
+      "address": 2147491680,
+      "bytes": 8
+    },
+    {
+      "name": "tensor:add_1",
+      "address": 2147491672,
+      "bytes": 8
+    },
+    {
+      "name": "tensor:softmax",
+      "address": 2147491664,
+      "bytes": 8
+    },
+    {
+      "name": "fc1:bias",
+      "address": 2147491616,
+      "bytes": 48
+    },
+    {
+      "name": "fc1:weights",
+      "address": 2147491328,
+      "bytes": 288
+    },
+    {
+      "name": "sigmoid:lut",
+      "address": 2147491072,
+      "bytes": 256
+    },
+    {
+      "name": "fc2:bias",
+      "address": 2147491052,
+      "bytes": 20
+    },
+    {
+      "name": "fc2:weights",
+      "address": 2147490956,
+      "bytes": 96
+    },
+    {
+      "name": "softmax:exp_lut",
+      "address": 2147490444,
+      "bytes": 512
+    },
+    {
+      "name": "task_segment:0",
+      "address": 2147490304,
+      "bytes": 128
+    },
+    {
+      "name": "task_segment:1",
+      "address": 2147490240,
+      "bytes": 64
+    }
+  ],
+  "code_sha256": "6cd9326578d2324c0d0d5d2f8f4aa2b082b197efed02d0d303242d826169f6bd"
+}

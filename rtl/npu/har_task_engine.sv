@@ -1,6 +1,6 @@
 // Task ABI v1. Serial control shares the legacy MMIO/result mux and DMA.
 // No bus request is cancelled: faults drain the current DMA before invalidation.
-module har_task_engine (
+module har_task_engine #(parameter bit LUT_WORD_CACHE=0) (
     input logic clk_i,rst_ni,
     input logic reg_req_i,reg_we_i,
     input logic [5:0] reg_addr_i,
@@ -53,6 +53,8 @@ module har_task_engine (
     logic [2:0] partial_batch_q,forward_batch_q;
     logic signed [7:0] quant_q,output_q;
     logic [31:0] lut_word_q;
+    logic [10:0] lut_tag_q;
+    logic lut_valid_q;
     wire [3:0] op=d[0][11:8],activation=d[0][15:12];
     wire initialize=d[0][16],last_k=d[0][17],input_internal=d[0][18],keep=d[0][19];
     wire [6:0] k=d[1][6:0];
@@ -66,6 +68,9 @@ module har_task_engine (
     wire [31:0] output_bytes=(batch-1)*{16'd0,output_stride}+({28'd0,output_words}<<2);
     wire [31:0] weight_bytes=((({25'd0,k}+1)>>1)*(({26'd0,n}+7)>>3))<<4;
     wire [7:0] lut_index=quant_q[7:0]^8'h80;
+    wire [31:0] lut_word_address=d[11]+{24'd0,lut_index[7:2],2'b00};
+    // Reuse the existing32-bit DMA landing register; only tag/valid are added.
+    wire lut_hit=LUT_WORD_CACHE && d[0][21] && lut_valid_q && lut_tag_q==lut_word_address[12:2];
     wire [31:0] input_row=d[2]+sample_q*{16'd0,input_stride};
     wire [31:0] output_row=d[5]+sample_q*{16'd0,output_stride};
     wire [31:0] input_mmio=sample_q==0 ? 32'h70000040 :
@@ -87,7 +92,7 @@ module har_task_engine (
     logic [3:0] descriptor_error;
     always_comb begin
         descriptor_error=0;
-        if(d[0][7:0]!=1 || (op!=1 && op!=2) || activation>5 || d[0][21])
+        if(d[0][7:0]!=1 || (op!=1 && op!=2) || activation>5 || (d[0][21] && !LUT_WORD_CACHE))
             descriptor_error=E_UNSUPPORTED;
         else if(d[0][31:22]!=0 || d[1][31:24]!=0 || d[8][31:24]!=0 ||
                 d[12]>127 || d[14]!=0 || d[15]!=0 || d[0][20]!=(index_q==count_q-1))
@@ -118,13 +123,13 @@ module har_task_engine (
                 (!input_internal && !region(d[2],input_bytes)) ||
                 (last_k && !keep && !region(d[5],output_bytes)) ||
                 (activation>=4 && !region(d[11],256))) descriptor_error=E_RANGE;
-        else if(activation<4 && d[11]!=0) descriptor_error=E_DESC;
+        else if(activation<4 && (d[11]!=0 || d[0][21])) descriptor_error=E_DESC;
         else if(last_k && !keep && !(({1'b0,d[5]}+{1'b0,output_bytes})<={1'b0,base_q} ||
                 {1'b0,d[5]}>=({1'b0,base_q}+({25'd0,count_q}<<6)))) descriptor_error=E_RANGE;
     end
     assign dma_start_o=state==FETCH || state==INPUT || state==BIAS || state==LUT || state==OUTPUT;
     assign dma_source_o=state==FETCH ? desc_address : state==INPUT ? input_row :
-        state==BIAS ? d[4] : state==LUT ? d[11]+{24'd0,lut_index[7:2],2'b00}:packed_mmio;
+        state==BIAS ? d[4] : state==LUT ? lut_word_address:packed_mmio;
     assign dma_dest_o=state==FETCH ? 32'h70001640 : state==INPUT ? input_mmio :
         state==BIAS ? 32'h700009c0 : state==LUT ? 32'h70001700:output_row;
     assign dma_words_o=state==FETCH ? 32'd16 : state==INPUT ? {27'd0,input_words} :
@@ -191,7 +196,7 @@ module har_task_engine (
             4:reg_read={27'd0,rejected_q,valid_q,failed_q,busy_o,done_q};
             8:reg_read=base_cfg;
             12:reg_read=count_cfg;
-            16:reg_read=32'h014020bf; // all six acts, forwarding; no LUT cache
+            16:reg_read=LUT_WORD_CACHE ? 32'h014020ff:32'h014020bf;
             20:reg_read={24'd0,index_q};
             24:reg_read={28'd0,error_q};
             28:reg_read=cycles_q;
@@ -209,15 +214,16 @@ module har_task_engine (
             received_q<=0;ingress_count_q<=0;ingress_bad_q<=0;bias_bad_q<=0;sample_q<=0;element_q<=0;word_q<=0;config_q<=0;
             partial_q<=0;forward_q<=0;partial_context_q<=0;partial_n_q<=0;forward_n_q<=0;
             partial_batch_q<=0;forward_batch_q<=0;quant_q<=0;output_q<=0;lut_word_q<=0;reg_data_o<=0;
+            lut_tag_q<=0;lut_valid_q<=0;
             for(j=0;j<16;j=j+1)d[j]<=0;
         end else begin
             reg_data_o<=reg_req_i && !reg_we_i ? reg_read:32'd0;
             if(busy_o)cycles_q<=cycles_q+1'b1;
-            if(legacy_start_i)begin valid_q<=0;partial_q<=0;forward_q<=0;end
+            if(legacy_start_i)begin valid_q<=0;partial_q<=0;forward_q<=0;lut_valid_q<=0;end
             if(reject_i || (busy_o && cpu_write) || (start && (core_busy_i || dma_busy_i))) begin
                 rejected_q<=1;reject_q<=E_BUSY;
             end else if(cpu_write && !busy_o) begin
-                if(ack) begin done_q<=0;failed_q<=0;valid_q<=0;rejected_q<=0;error_q<=0;reject_q<=0;end
+                if(ack) begin done_q<=0;failed_q<=0;valid_q<=0;rejected_q<=0;error_q<=0;reject_q<=0;lut_valid_q<=0;end
                 else if(reg_addr_i==8)base_cfg<=reg_data_i;
                 else if(reg_addr_i==12)count_cfg<=reg_data_i;
                 else if(!start)begin rejected_q<=1;reject_q<=E_VALUE;end
@@ -240,6 +246,7 @@ module har_task_engine (
                 IDLE:if(start && !core_busy_i && !dma_busy_i)begin
                     done_q<=0;failed_q<=0;valid_q<=0;rejected_q<=0;error_q<=0;reject_q<=0;
                     index_q<=0;completed_q<=0;cycles_q<=0;partial_q<=0;forward_q<=0;
+                    lut_valid_q<=0;
                     base_q<=base_cfg;count_q<=count_cfg[7:0];
                     if(base_cfg[5:0]!=0)begin done_q<=1;failed_q<=1;error_q<=E_ALIGN;end
                     else if(count_cfg<1 || count_cfg>128)begin done_q<=1;failed_q<=1;error_q<=E_VALUE;end
@@ -297,15 +304,21 @@ module har_task_engine (
                     else begin quant_q<=core_data_i[element_q[1:0]*8+:8];state<=ACT_PREP;end
                 end
                 FC_SCALE:if(scale_done)begin quant_q<=scale_value;state<=ACT_PREP;end
-                ACT_PREP:if(activation>=4)state<=LUT;else state<=ACT_SCALE;
+                ACT_PREP:if(activation>=4)begin
+                    if(lut_hit)begin output_q<=lut_word_q[lut_index[1:0]*8+:8];state<=STORE;end
+                    else state<=LUT;
+                end else state<=ACT_SCALE;
                 ACT_SCALE:if(scale_done)begin
                     output_q<=activation==2 && scale_value>$signed(d[12][7:0]) ? d[12][7:0]:scale_value;
                     state<=STORE;
                 end
-                LUT:state<=WAIT_LUT;
+                LUT:begin lut_valid_q<=0;state<=WAIT_LUT;end
                 WAIT_LUT:if(transfer_finished)begin
                     if(dma_error_i || ingress_bad_q || !received_q[0] || ingress_count_q!=1)begin error_q<=E_DMA;state<=DRAIN;end
-                    else begin output_q<=lut_word_q[lut_index[1:0]*8+:8];state<=STORE;end
+                    else begin
+                        output_q<=lut_word_q[lut_index[1:0]*8+:8];state<=STORE;
+                        lut_tag_q<=lut_word_address[12:2];lut_valid_q<=LUT_WORD_CACHE && d[0][21];
+                    end
                 end
                 STORE:begin
                     if(element_q+1<n)begin element_q<=element_q+1'b1;state<=POST_READ;end
@@ -330,7 +343,7 @@ module har_task_engine (
                     else begin index_q<=index_q+1'b1;state<=FETCH;end
                 end
                 DRAIN:begin
-                    valid_q<=0;partial_q<=0;forward_q<=0;
+                    valid_q<=0;partial_q<=0;forward_q<=0;lut_valid_q<=0;
                     if(!dma_busy_i && !core_busy_i && !scale_busy)begin
                         done_q<=1;failed_q<=1;state<=IDLE;
                     end

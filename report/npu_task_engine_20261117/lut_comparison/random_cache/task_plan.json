@@ -1,0 +1,72 @@
+{
+  "abi": 1,
+  "execution": [
+    {
+      "backend": "TASK",
+      "index": 0,
+      "address": 2147491200,
+      "count": 1,
+      "nodes": [
+        "_0"
+      ],
+      "tasks": [
+        {
+          "task": 0,
+          "fc_node": null,
+          "output_node": "_0",
+          "output_offset": 0,
+          "descriptor": {
+            "op": 2,
+            "activation": 5,
+            "k": 0,
+            "n": 32,
+            "batch": 4,
+            "source": 2147491648,
+            "weights": 0,
+            "bias": 0,
+            "destination": 2147491520,
+            "input_stride": 32,
+            "output_stride": 32,
+            "initialize": false,
+            "last_k": true,
+            "input_internal": false,
+            "keep_output": false,
+            "end_segment": true,
+            "lut_cache": true,
+            "fc_multiplier": 0,
+            "fc_shift": 0,
+            "act_multiplier": 1,
+            "act_shift": 0,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 2147491264,
+            "clamp_max": 127,
+            "context": 0
+          }
+        }
+      ],
+      "fc_jobs": 0,
+      "internal_edges": []
+    }
+  ],
+  "tensors": {
+    "input_1": {
+      "shape": [
+        4,
+        32
+      ],
+      "scale": 0.031424458571306366,
+      "stride": 32,
+      "address": 2147491648
+    },
+    "_0": {
+      "shape": [
+        4,
+        32
+      ],
+      "scale": 0.007868637719492274,
+      "stride": 32,
+      "address": 2147491520
+    }
+  }
+}

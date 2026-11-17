@@ -2,7 +2,8 @@
 `include "axi/assign.svh"
 
 module my_soc_top #(
-    parameter FPGA_INIT_FILE = ""
+    parameter FPGA_INIT_FILE = "",
+    parameter bit TASK_LUT_WORD_CACHE = 0
 ) (
     input   logic   clk_i,
     input   logic   rst_ni,
@@ -499,7 +500,7 @@ module my_soc_top #(
       .data_o(npu_wdata), .data_i(npu_rdata), .user_i('0), .user_o(npu_user)
   );
 
-  my_npu_subsystem i_npu_subsystem (
+  my_npu_subsystem #(.LUT_WORD_CACHE(TASK_LUT_WORD_CACHE)) i_npu_subsystem (
       .clk_i(clk_i), .rst_ni(ndmreset_n), .req_i(npu_req), .we_i(npu_we),
       .addr_i(npu_addr), .wdata_i(npu_wdata), .rdata_o(npu_rdata),
       .auto_start_o(auto_start),.auto_source_o(auto_source),.auto_dest_o(auto_dest),.auto_words_o(auto_words),

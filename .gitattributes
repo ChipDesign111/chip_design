@@ -36,3 +36,4 @@ report/loop_optimization_20261109/source_at_measurement/** whitespace=blank-at-e
 report/npu_task_engine_20261117/stage1/baseline/** -text
 report/npu_task_engine_20261117/stage1/source_at_measurement/** -text
 report/npu_task_engine_20261117/functional/** -text
+report/npu_task_engine_20261117/lut_comparison/** -text

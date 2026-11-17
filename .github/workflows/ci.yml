@@ -22,6 +22,7 @@ jobs:
       - run: python test/int8/test_task_abi.py
       - run: python test/int8/run_task_scale.py
       - run: python test/int8/run_task_engine.py
+      - run: python test/int8/run_task_engine.py --lut-cache
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -41,6 +42,7 @@ jobs:
       - run: python test/int8/run_model_compiler.py
       - run: python test/int8/run_model_compiler.py --task-engine
       - run: python test/int8/run_task_compiler.py
+      - run: python test/int8/test_task_planner.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:

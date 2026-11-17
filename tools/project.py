@@ -20,8 +20,8 @@ def main():
     if a.soc:single+=['--soc','--vsim',a.vsim]
     result=subprocess.run(single,cwd=ROOT).returncode
     if result:return result
-    for name in ['test_task_abi.py','run_task_scale.py','run_task_engine.py']:
-        result=subprocess.run([sys.executable,str(ROOT/'test/int8'/name)],cwd=ROOT).returncode
+    for name,extra in [('test_task_abi.py',[]),('run_task_scale.py',[]),('run_task_engine.py',[]),('run_task_engine.py',['--lut-cache'])]:
+        result=subprocess.run([sys.executable,str(ROOT/'test/int8'/name),*extra],cwd=ROOT).returncode
         if result:return result
     return 0
 if __name__=='__main__':raise SystemExit(main())

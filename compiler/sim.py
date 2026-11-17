@@ -32,6 +32,8 @@ def simulate(directory,vsim='vsim',profile=False):
     checks.append('$fclose(result_fd);')
     starts=metadata.get('npu_core_starts',sum(len(n.get('jobs',[])) for n in metadata['nodes'] if n['backend']=='NPU'))
     tb=(ROOT/'test/int8/tb_soc.sv').read_text().replace('module tb_soc;','module tb_compiled_model;')
+    if metadata.get('rtl_parameters',{}).get('TASK_LUT_WORD_CACHE'):
+        tb=tb.replace('my_soc_top dut(',"my_soc_top #(.TASK_LUT_WORD_CACHE(1'b1)) dut(")
     insert="""
     reg [31:0] observed;
     integer npu_starts=0,npu_issue=0,result_fd;

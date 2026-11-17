@@ -247,7 +247,8 @@ class Codegen:
         self.m.image[:len(code)]=code
         return a
 
-def compile_model(model,example_input,calibration_inputs=None,force_cpu=False,*,task_engine=False,forward=True,fuse=True,specialize=True):
+def compile_model(model,example_input,calibration_inputs=None,force_cpu=False,*,task_engine=False,forward=True,fuse=True,specialize=True,lut_cache=False):
+    if lut_cache and not task_engine:raise CompileError('LUT cache requires task-engine target')
     graph=capture(model,example_input,calibration_inputs);mem=Memory();ts=graph['tensors'];nodes=graph['nodes']
     for name,t in ts.items():
         b,n=t['shape'];t['stride']=(n+3)//4*4;t['address']=mem.alloc('tensor:'+name,b*t['stride'])
@@ -307,7 +308,7 @@ def compile_model(model,example_input,calibration_inputs=None,force_cpu=False,*,
     if task_engine and not force_cpu:
         from .tasks import plan_segments,select_special_segments
         if specialize:specials=select_special_segments(nodes,ts,mem,graph['output'])
-        segments=plan_segments(nodes,ts,mem,graph['output'],forward=forward,fuse=fuse)
+        segments=plan_segments(nodes,ts,mem,graph['output'],forward=forward,fuse=fuse,lut_cache=lut_cache)
     gen=Codegen(mem,ts);emitted=set();special_emitted=set();by_name={n['name']:n for n in nodes}
     for node in nodes:
         node['start_pc']=BASE+len(gen.a.words)*4
@@ -329,6 +330,7 @@ def compile_model(model,example_input,calibration_inputs=None,force_cpu=False,*,
         if first['start_pc']<last['start_pc']:ranges.append(dict(first,end_pc=last['start_pc']))
     meta=dict(abi=1,input=graph['input'],output=graph['output'],tensors=ts,nodes=report_nodes,profile_ranges=ranges,
               task_abi=1 if task_engine else None,task_segments=segments,special_segments=specials,
+              rtl_parameters={'TASK_LUT_WORD_CACHE':1} if lut_cache else {},
               npu_core_starts=sum(s['fc_jobs'] for s in segments)+len(specials)+sum(len(n.get('jobs',[])) for n in nodes if n['backend']=='NPU' and 'segment' not in n),
               quantization='Symmetric per-tensor INT8; per-layer INT8 weights; rounded fixed-point CPU boundaries',
               input_shape=ts[graph['input']]['shape'],code_bytes=len(program.words)*4,data_bytes=DATA_TOP-mem.top,

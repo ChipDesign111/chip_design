@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-module my_npu_subsystem (
+module my_npu_subsystem #(parameter bit LUT_WORD_CACHE=0) (
     input logic clk_i,rst_ni,req_i,we_i,
     input logic [31:0] addr_i,wdata_i,
     output wire [31:0] rdata_o,
@@ -66,7 +66,7 @@ module my_npu_subsystem (
     assign auto_dest_o=task_auto_start ? task_dest:core_dest;
     assign auto_words_o=task_auto_start ? task_words:core_words;
     assign auto_last_be_o=task_auto_start ? task_last_be:4'hf;
-    har_task_engine tasks (
+    har_task_engine #(.LUT_WORD_CACHE(LUT_WORD_CACHE)) tasks (
         .clk_i(clk_i),.rst_ni(rst_ni),
         .reg_req_i((req_i && task_select && (!we_i || !dma_write_i)) || (private_cpu_write && !task_busy)),
         .reg_we_i(we_i),.reg_addr_i(private_cpu_write ? 6'h3c:addr_i[5:0]),.reg_data_i(wdata_i),.reg_data_o(task_rdata),

@@ -1,0 +1,280 @@
+{
+  "abi": 1,
+  "input": "input_1",
+  "output": "_2",
+  "tensors": {
+    "input_1": {
+      "shape": [
+        4,
+        9
+      ],
+      "scale": 0.007874015748031496,
+      "stride": 12,
+      "address": 2147491728
+    },
+    "_0": {
+      "shape": [
+        4,
+        16
+      ],
+      "scale": 0.008725066823283518,
+      "stride": 16,
+      "address": 2147491664,
+      "storage": "fused"
+    },
+    "_1": {
+      "shape": [
+        4,
+        16
+      ],
+      "scale": 0.005728477098810391,
+      "stride": 16,
+      "address": 2147491600,
+      "storage": "internal"
+    },
+    "_2": {
+      "shape": [
+        4,
+        16
+      ],
+      "scale": 0.004894044455580824,
+      "stride": 16,
+      "address": 2147491536
+    }
+  },
+  "nodes": [
+    {
+      "name": "_0",
+      "op": "linear",
+      "inputs": [
+        "input_1"
+      ],
+      "backend": "NPU",
+      "reason": "Autonomous task segment",
+      "mult": [
+        19580
+      ],
+      "shift": 23,
+      "bias_address": 2147491472,
+      "jobs": [
+        {
+          "k": 9,
+          "n": 16,
+          "batch": 4,
+          "accumulate": false,
+          "source": 2147491312,
+          "output_offset": 0,
+          "input_offset": 0,
+          "last_input": true
+        }
+      ],
+      "segment": 0,
+      "start_pc": 2147483656,
+      "end_pc": 2147483812
+    },
+    {
+      "name": "_1",
+      "op": "sigmoid",
+      "inputs": [
+        "_0"
+      ],
+      "backend": "NPU",
+      "reason": "Fused activation, preserving FC INT8 boundary",
+      "lut_address": 2147491056,
+      "segment": 0,
+      "start_pc": 2147483812,
+      "end_pc": 2147483812
+    },
+    {
+      "name": "_2",
+      "op": "tanh",
+      "inputs": [
+        "_1"
+      ],
+      "backend": "NPU",
+      "reason": "Autonomous task segment",
+      "lut_address": 2147490800,
+      "segment": 0,
+      "start_pc": 2147483812,
+      "end_pc": 2147483812
+    }
+  ],
+  "profile_ranges": [
+    {
+      "start_pc": 2147483648,
+      "phase": "startup",
+      "node": "runtime",
+      "end_pc": 2147483656
+    },
+    {
+      "start_pc": 2147483656,
+      "phase": "cpu_schedule",
+      "node": "_0",
+      "end_pc": 2147483740
+    },
+    {
+      "start_pc": 2147483740,
+      "phase": "cpu_launch",
+      "node": "_0",
+      "end_pc": 2147483756
+    },
+    {
+      "start_pc": 2147483756,
+      "phase": "cpu_poll",
+      "node": "_0",
+      "end_pc": 2147483812
+    },
+    {
+      "start_pc": 2147483812,
+      "phase": "finish",
+      "node": "runtime",
+      "end_pc": 2147483848
+    }
+  ],
+  "task_abi": 1,
+  "task_segments": [
+    {
+      "index": 0,
+      "address": 2147490624,
+      "count": 2,
+      "nodes": [
+        "_0",
+        "_1",
+        "_2"
+      ],
+      "tasks": [
+        {
+          "task": 0,
+          "fc_node": "_0",
+          "output_node": "_1",
+          "output_offset": 0,
+          "descriptor": {
+            "op": 1,
+            "activation": 4,
+            "k": 9,
+            "n": 16,
+            "batch": 4,
+            "source": 2147491728,
+            "weights": 2147491312,
+            "bias": 2147491472,
+            "destination": 0,
+            "input_stride": 12,
+            "output_stride": 0,
+            "initialize": true,
+            "last_k": true,
+            "input_internal": false,
+            "keep_output": true,
+            "end_segment": false,
+            "lut_cache": false,
+            "fc_multiplier": 19580,
+            "fc_shift": 23,
+            "act_multiplier": 1,
+            "act_shift": 0,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 2147491056,
+            "clamp_max": 127,
+            "context": 0
+          }
+        },
+        {
+          "task": 1,
+          "fc_node": null,
+          "output_node": "_2",
+          "output_offset": 0,
+          "descriptor": {
+            "op": 2,
+            "activation": 5,
+            "k": 0,
+            "n": 16,
+            "batch": 4,
+            "source": 0,
+            "weights": 0,
+            "bias": 0,
+            "destination": 2147491536,
+            "input_stride": 0,
+            "output_stride": 16,
+            "initialize": false,
+            "last_k": true,
+            "input_internal": true,
+            "keep_output": false,
+            "end_segment": true,
+            "lut_cache": false,
+            "fc_multiplier": 0,
+            "fc_shift": 0,
+            "act_multiplier": 1,
+            "act_shift": 0,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 2147490800,
+            "clamp_max": 127,
+            "context": 0
+          }
+        }
+      ],
+      "fc_jobs": 1,
+      "internal_edges": [
+        "_1"
+      ]
+    }
+  ],
+  "special_segments": [],
+  "rtl_parameters": {},
+  "npu_core_starts": 1,
+  "quantization": "Symmetric per-tensor INT8; per-layer INT8 weights; rounded fixed-point CPU boundaries",
+  "input_shape": [
+    4,
+    9
+  ],
+  "code_bytes": 200,
+  "data_bytes": 1152,
+  "free_bytes": 6776,
+  "allocations": [
+    {
+      "name": "tensor:input_1",
+      "address": 2147491728,
+      "bytes": 48
+    },
+    {
+      "name": "tensor:_0",
+      "address": 2147491664,
+      "bytes": 64
+    },
+    {
+      "name": "tensor:_1",
+      "address": 2147491600,
+      "bytes": 64
+    },
+    {
+      "name": "tensor:_2",
+      "address": 2147491536,
+      "bytes": 64
+    },
+    {
+      "name": "_0:bias",
+      "address": 2147491472,
+      "bytes": 64
+    },
+    {
+      "name": "_0:weights",
+      "address": 2147491312,
+      "bytes": 160
+    },
+    {
+      "name": "_1:lut",
+      "address": 2147491056,
+      "bytes": 256
+    },
+    {
+      "name": "_2:lut",
+      "address": 2147490800,
+      "bytes": 256
+    },
+    {
+      "name": "task_segment:0",
+      "address": 2147490624,
+      "bytes": 128
+    }
+  ],
+  "code_sha256": "1a42299ef544b2cc73aaddd7985da1d5b10e0fdd7732274919ad3d3a52b28b70"
+}

@@ -1,5 +1,6 @@
 `timescale 1ns/1ps
 module tb_task_engine;
+    localparam bit CACHE_SUPPORTED=0;
     reg clk=0,rst_n=0;always #5 clk=~clk;
     reg cpu_req=0,cpu_we=0;
     reg [31:0] cpu_addr=0,cpu_data=0;
@@ -33,7 +34,7 @@ module tb_task_engine;
     assign awready=!writing && !response && rng[2];
     assign wready=writing && rng[3] && (sink_sram || (!cpu_req && !read_request));
     assign bvalid=response && b_delay==0;
-    my_npu_subsystem dut(.clk_i(clk),.rst_ni(rst_n),.req_i(req),.we_i(we),
+    my_npu_subsystem #(.LUT_WORD_CACHE(CACHE_SUPPORTED)) dut(.clk_i(clk),.rst_ni(rst_n),.req_i(req),.we_i(we),
         .addr_i(address),.wdata_i(data),.rdata_o(readback),
         .dma_write_i(dma_write ? 1'b1:cpu_req && cpu_we ? 1'b0:last_user),
         .dma_busy_i(dma_busy),.dma_done_i(dma_done),.dma_error_i(dma_error),
@@ -111,6 +112,7 @@ module tb_task_engine;
     task run_case(input string image,expected,input integer count,code,protect);
         integer i;
         begin
+            rng=32'h12345678;
             $readmemh(image,mem);$readmemh(expected,golden);
             put('h1600,2);put('h1608,'h80001800);put('h160c,count);put('h1600,1);
             if(protect)begin
@@ -139,10 +141,36 @@ module tb_task_engine;
             rst_n=0;repeat(3) @(negedge clk);rst_n=1;
             repeat(15) @(negedge clk);
             check('h1604,0);check('h1620,0);check('h1608,0);
-            if(dma_busy || npu_busy || dut.i_npu_core.partial_valid || dut.tasks.forward_q)
+            if(dma_busy || npu_busy || dut.i_npu_core.partial_valid || dut.tasks.forward_q || dut.tasks.lut_valid_q)
                 $fatal(1,"Reset retained active context");
             run_case("fc_1_1_1_input.hex","fc_1_1_1_golden.hex",1,0,0);
             $display("TASK_RESET PASS state=%0d",target_state);
+        end
+    endtask
+    task legacy_compat;
+        integer i,t;
+        begin
+            put('h1600,2);put(0,2);
+            for(i=0;i<2048;i=i+1)mem[i]=0;
+            put('h3c,1);put('h80,64);put('h84,32);put('h18,4);put('h20,'h80000000);
+            for(i=0;i<32;i=i+1)put('h9c0+i*4,i-16);
+            put(0,1);put('h1600,1);
+            check('h1604,16);check('h1624,1);
+            t=0;
+            while(dut.core_busy && t<20000)begin @(negedge clk);t=t+1;end
+            if(t>=20000)$fatal(1,"Legacy operation aborted/stalled by rejected task start");
+            check(4,1);check('h1400,32'hfffffff0);check('h15fc,15);
+            run_case("fc_7_5_2_input.hex","fc_7_5_2_golden.hex",1,0,0);
+            // Completed task mode cannot leak its partial sums into old MODE3.
+            put(0,2);put('h3c,3);put(0,1);check(4,4);put(0,2);
+            $display("TASK_LEGACY_SWITCH PASS");
+        end
+    endtask
+    task invalid_start(input reg [31:0] base,count,input integer code);
+        begin
+            put('h1600,2);put('h1608,base);put('h160c,count);put('h1600,1);
+            check('h1604,5);check('h1618,code);check('h1620,0);
+            if(dma_busy || npu_busy)$fatal(1,"Invalid configuration emitted a DMA");
         end
     endtask
     // Generated test cases are appended by run_task_engine.py.
