@@ -143,6 +143,23 @@ module tb_postsim;
     $display("ACTIVE_END time_ns=%0.3f",$realtime);
     if(!$value$plusargs("RESET_OFFSET_PS=%d",reset_offset_ps)) reset_offset_ps=2000;
     if(reset_offset_ps<1 || reset_offset_ps>=20000) $fatal(1,"Reset phase must be inside one20ns period");
+    // Exercise the NDM request boundary as well as the external POR input.
+    // Keep the real qualification, retiming, reset tree and native checks.
+    #(reset_offset_ps/1000.0);
+    $display("NDM_RESET_ASSERT offset_ps=%0d time_ns=%0.3f",reset_offset_ps,$realtime);
+    force dut.ndmreset=1'b1;
+    repeat(4) @(negedge clk);
+    if(dut.ndmreset_n!==1'b0 || dut.boot_ready!==1'b0) $fatal(1,"NDM reset did not revoke boot");
+    if(dut.por_reset_n!==1'b1) $fatal(1,"NDM reset disturbed independent debug domain");
+    if(dut.i_mainmem.i_sram.i_macro.CEN!==1'b1) $fatal(1,"SRAM requests continued during NDM reset");
+    #(reset_offset_ps/1000.0);
+    release dut.ndmreset;
+    repeat(16) @(negedge clk);#2;
+    if(dut.ndmreset_n!==1'b1 || dut.boot_ready!==1'b0 || dut.instr_req!==1'b0)
+      $fatal(1,"NDM release bypassed guarded boot");
+    if(dut.i_mainmem.i_sram.i_macro.CEN!==1'b1) $fatal(1,"NDM release issued stale SRAM access");
+    $display("NDM_RESET_PASS time_ns=%0.3f",$realtime);
+    @(negedge clk);
     #(reset_offset_ps/1000.0);
     $display("RESET_ASSERT offset_ps=%0d time_ns=%0.3f",reset_offset_ps,$realtime);
     rst_n=0;repeat(4) @(negedge clk);

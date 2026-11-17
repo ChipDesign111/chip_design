@@ -1,0 +1,175 @@
+{
+  "passed": true,
+  "matched_cases": 41,
+  "unchanged_cases": 41,
+  "max_unit_regression": 0.0,
+  "soc_before": {
+    "observed_cycles": 2700,
+    "hardware_soc_cycles": 2695
+  },
+  "soc_after": {
+    "observed_cycles": 2700,
+    "hardware_soc_cycles": 2695
+  },
+  "soc_regression": 0.0,
+  "limit": 0.05,
+  "candidate_rtl": {
+    "soc_sha256": "bec5e83a3c44e8817f232799655ce60e88b02d089818c7581fb2233d4418d0af",
+    "baseline_commit": "3b9ef76",
+    "source_root": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\reset-safe-clock-gating",
+    "portable_run": "test/int8/runs/20261117_125600",
+    "single_run": "test/int8/runs/single_20261117_125622"
+  },
+  "atomic_reset_stress": {
+    "POR_scenarios": 320,
+    "NDM_scenarios": 320,
+    "phases_each": 80,
+    "accepted_writes": 1282,
+    "actual_writes": 1282,
+    "same_soc_reset_generator_used": true,
+    "log_sha256": "d0ea94c20eb6361d3ed1166347bfb58352dba4c91f8ed886f3e8626b705baabb"
+  },
+  "native_sram": {
+    "run": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\reset-safe-clock-gating\\test\\int8\\runs\\20261117_125821",
+    "model_sha256": "52fd590082b4f63573856baf44d8e59b5ab21db56b9c11aeaf4d45376b32d54d",
+    "fresh_process_timing_checks_on": true,
+    "log_sha256": "d4ff41cf028c1eb569515c79ef69b648f171f93cb2d1f2ebbfd80137996e1be5",
+    "script_sha256": "f349a27e04d11c66e15a927b9408fded09e7ecdc1b7a554e28081be9d4b727d4",
+    "reset_scenarios": 640,
+    "accepted_writes": 1282,
+    "executed_writes": 1282
+  },
+  "compiled_models": {
+    "run": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\reset-safe-clock-gating\\test\\int8\\runs\\compiler_20261117_125846",
+    "result_sha256": "7e9884d2bf71f9392aef1de4b3f87ad6f24f82e102bc348dd041218f4baa6022",
+    "cases": [
+      {
+        "name": "mixed0",
+        "code_sha256": "ddd2f08a29197aa1b61767efd08e14cfb9eac4e9e4f54fa828f013ed288179e8",
+        "backends": [
+          "NPU",
+          "CPU",
+          "CPU",
+          "CPU",
+          "CPU",
+          "NPU",
+          "CPU",
+          "CPU",
+          "CPU"
+        ],
+        "code_bytes": 1460,
+        "observed_cycles": 3724,
+        "npu_jobs": 2,
+        "free_bytes": 5336,
+        "float_max_abs_error": 0.0013041254572981054
+      },
+      {
+        "name": "mixed1",
+        "code_sha256": "ddd2f08a29197aa1b61767efd08e14cfb9eac4e9e4f54fa828f013ed288179e8",
+        "backends": [
+          "NPU",
+          "CPU",
+          "CPU",
+          "CPU",
+          "CPU",
+          "NPU",
+          "CPU",
+          "CPU",
+          "CPU"
+        ],
+        "code_bytes": 1460,
+        "observed_cycles": 3724,
+        "npu_jobs": 2,
+        "free_bytes": 5336,
+        "float_max_abs_error": 0.0005627870559692383
+      },
+      {
+        "name": "cpu_only0",
+        "code_sha256": "3fa9bbf878decd623cb8471aed696aae2fff27e89097d426052ceb691c107e6f",
+        "backends": [
+          "CPU",
+          "CPU",
+          "CPU",
+          "CPU",
+          "CPU",
+          "CPU",
+          "CPU",
+          "CPU",
+          "CPU"
+        ],
+        "code_bytes": 1068,
+        "observed_cycles": 7602,
+        "npu_jobs": 0,
+        "free_bytes": 5848,
+        "float_max_abs_error": 0.0013041254572981054
+      },
+      {
+        "name": "wide0",
+        "code_sha256": "43d0a719af92413a3c23e1cea3aa3f9a98a9f718dc73f11745715bdc156cff00",
+        "backends": [
+          "NPU",
+          "CPU"
+        ],
+        "code_bytes": 860,
+        "observed_cycles": 2044,
+        "npu_jobs": 2,
+        "free_bytes": 5736,
+        "float_max_abs_error": 0.005633973699855022
+      },
+      {
+        "name": "range_fallback0",
+        "code_sha256": "545382e9e1f792b497aab8abd06370d5ef8d285065ce9d2f96b6588fede37ef3",
+        "backends": [
+          "CPU",
+          "CPU"
+        ],
+        "code_bytes": 264,
+        "observed_cycles": 496,
+        "npu_jobs": 0,
+        "free_bytes": 7828,
+        "float_max_abs_error": 0.0
+      },
+      {
+        "name": "output_tiled0",
+        "code_sha256": "9132e0eff25c40aff02b8fe9f63321ca646e0696f2554e7b426693a846c2eeeb",
+        "backends": [
+          "NPU"
+        ],
+        "code_bytes": 708,
+        "observed_cycles": 1959,
+        "npu_jobs": 2,
+        "free_bytes": 6720,
+        "float_max_abs_error": 0.007806730786646444
+      },
+      {
+        "name": "cpu_arithmetic0",
+        "code_sha256": "257144bffeda3a7513574f90e842864ca309f89cb20028c3e9be2aeae44be1e4",
+        "backends": [
+          "CPU",
+          "CPU",
+          "CPU",
+          "CPU"
+        ],
+        "code_bytes": 952,
+        "observed_cycles": 2961,
+        "npu_jobs": 0,
+        "free_bytes": 6584,
+        "float_max_abs_error": 0.0021261171562464987
+      },
+      {
+        "name": "trained_har0",
+        "code_sha256": "93d6e8ef2fd9b79d8ce056f558afe29afd21c9757e671e163582e73eb821f08c",
+        "backends": [
+          "NPU",
+          "CPU",
+          "NPU"
+        ],
+        "code_bytes": 796,
+        "observed_cycles": 4019,
+        "npu_jobs": 2,
+        "free_bytes": 4740,
+        "float_max_abs_error": 0.07359667650358048
+      }
+    ]
+  }
+}

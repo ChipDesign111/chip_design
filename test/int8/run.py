@@ -107,12 +107,15 @@ def main():
         if args.vendor_model:
             if not args.vendor_model.is_file():raise ValueError('Missing authorized SRAM model')
             fl=['+define+CHIP_USE_RA1SHD',args.vendor_model.resolve().as_posix()]+fl
-        fl.extend([(HERE/'tb_soc.sv').as_posix(),(HERE/'tb_system_reset_contract.sv').as_posix()]);(run/'soc.f').write_text('\n'.join(fl)+'\n')
+        fl.extend([(HERE/name).as_posix() for name in ['tb_soc.sv','tb_system_reset_contract.sv','tb_axi_sram_reset.sv']]);(run/'soc.f').write_text('\n'.join(fl)+'\n')
         commands=['onerror {quit -code 1}','onbreak {resume}','vlib work','vmap work work','vlog -sv -f soc.f','vsim -suppress 12110 -novopt -onfinish stop '+('+notimingchecks ' if args.vendor_model else '')+'work.tb_soc','run -all','set status [examine -radix hex /tb_soc/magic]','if {![string equal -nocase $status c0dec0de]} {quit -code 3}','quit -code 0']
         commands[-1:-1]=['quit -sim','vsim -suppress 12110 -novopt -onfinish stop work.tb_system_reset_contract','run -all','set passed [examine -radix unsigned /tb_system_reset_contract/passed]','if {$passed != 1} {quit -code 4}']
+        commands[-1:-1]=['quit -sim','vsim -suppress 12110 -novopt -onfinish stop work.tb_axi_sram_reset','run -all','set passed [examine -radix unsigned /tb_axi_sram_reset/passed]','if {$passed != 1} {quit -code 5}']
         (run/'soc.do').write_text('\n'.join(commands)+'\n')
         soc_output=execute([args.vsim,'-c','-do','do soc.do'],run,'soc','INT8_SOC PASS')
         if 'SYSTEM_RESET_CONTRACT_PASS' not in soc_output:raise RuntimeError('Common system reset contract missing')
+        if 'AXI_SRAM_RESET_PASS phases=80 POR_scenarios=320 NDM_scenarios=320' not in soc_output:raise RuntimeError('Active AXI/SRAM reset stress missing')
+        if re.search(r'Timing violation|\$(?:setuphold|setup|hold|recovery|removal|recrem|period|width)\(',soc_output,re.I):raise RuntimeError('Native timing violation in reset tests')
         soc_match=re.search(r'INT8_SOC PASS cycles=(\d+) hw_soc_cycles=(\d+)',soc_output)
         if not soc_match:raise RuntimeError('Missing full SoC timing line')
         observed_cycles=int(soc_match.group(1));hardware_soc_cycles=int(soc_match.group(2))

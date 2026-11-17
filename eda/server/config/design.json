@@ -19,7 +19,7 @@
   "max_repair_iterations": 6,
   "hold_target_ns": 0.05,
   "cpu_clock_gate": "repository_passthrough",
-  "insert_automatic_clock_gating": false,
+  "insert_automatic_clock_gating": true,
   "functional_enable_mapping": "library_enable",
   "combinational_cell_mapping": "tt_nonnegative_tables",
   "implementation_effort": "medium",

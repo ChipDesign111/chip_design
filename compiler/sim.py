@@ -57,7 +57,11 @@ def simulate(directory,vsim='vsim'):
     tb=tb.replace('if(read_overlap==0 || write_overlap==0) $fatal(1,"Full AXI SoC did not overlap DMA and MAC");',
                   f'if(npu_starts!={starts}) $fatal(1,"Wrong NPU job count %0d",npu_starts);')
     tb=tb.replace('        $display("INT8_SOC PASS', '\n'.join(checks)+'\n        $display("INT8_SOC PASS')
-    tb=tb.replace('        // User-authorized shared reset',f'        $display("COMPILED_MODEL_PASS npu_jobs=%0d npu_issue=%0d",npu_starts,npu_issue);\n        // User-authorized shared reset')
+    # Attach completion to the executable end of the bench, not a comment
+    # whose wording can change when the reset contract is updated.
+    finish='        $finish;'
+    if tb.count(finish)!=1:raise ValueError('Expected one compiled-model completion point')
+    tb=tb.replace(finish,f'        $display("COMPILED_MODEL_PASS npu_jobs=%0d npu_issue=%0d",npu_starts,npu_issue);\n'+finish)
     (directory/'tb_compiled_model.sv').write_text(tb)
     fl=[]
     for line in (ROOT/'rtl/filelist.f').read_text().splitlines():

@@ -17,9 +17,10 @@ module my_mainmem #(
     // at the following falling edge, leaving the read data available before
     // the next rising-edge AXI response handshake. No extra AXI cycle is added.
     //
-    // In the SoC this reset is the shared falling-edge-qualified transaction
-    // reset, also supplied to axi2mem. Do not connect an asynchronously
-    // asserting system reset here: even this synchronous block would then
+    // In the SoC this is the shared clock-qualified reset, also supplied to
+    // axi2mem. Assertion follows a system rising edge; release follows a
+    // falling edge. Both min/max propagation paths require physical checks.
+    // Do not connect an unqualified asynchronous reset: this block would then
     // expose that asynchronous transition on the physical port_req_q D pin.
     // Reset does not asynchronously clear these pins. An already accepted
     // access completes with stable address/data/mask; later rising edges stop

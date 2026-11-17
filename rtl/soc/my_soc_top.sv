@@ -16,15 +16,19 @@ module my_soc_top #(
 
   logic por_reset_n,boot_ready;
   // Qualify asynchronous reset requests before they reach system-clock logic.
-  // The clock must run for two falling edges to recognise assertion/release.
+  // Preserve two falling-edge request samples and their full-cycle settling
+  // interval. Retiming the qualified requests on the following rising edge
+  // gives reset-dependent clock enables a full cycle before the next capture.
+  // Reset release remains on falling edges through the existing rstgen chains.
   // JTAG TAP trst_ni remains connected to the independent external reset.
   logic por_request_qualified_n, ndm_request_qualified_n;
+  logic por_request_retimed_n, ndm_request_retimed_n;
   wire reset_clk_n = ~clk_i;
   sram_transaction_reset i_por_request_reset (
       .clk_i(clk_i), .reset_request_ni(rst_ni),
       .transaction_reset_no(por_request_qualified_n)
   );
-  rstgen i_rstgen_por(.clk_i(reset_clk_n),.rst_ni(por_request_qualified_n),.test_mode_i(1'b0),.rst_no(por_reset_n),.init_no());
+  rstgen i_rstgen_por(.clk_i(reset_clk_n),.rst_ni(por_request_retimed_n),.test_mode_i(1'b0),.rst_no(por_reset_n),.init_no());
   logic ndmreset;
   logic ndmreset_n;
   sram_transaction_reset i_ndm_request_reset (
@@ -32,9 +36,16 @@ module my_soc_top #(
       .transaction_reset_no(ndm_request_qualified_n)
   );
 
+  // No asynchronous control on these retiming flops. External requests must
+  // remain asserted for two falling edges plus the following rising edge.
+  always_ff @(posedge clk_i) begin
+    por_request_retimed_n <= por_request_qualified_n;
+    ndm_request_retimed_n <= ndm_request_qualified_n;
+  end
+
   rstgen i_rstgen_main (
       .clk_i       (reset_clk_n),
-      .rst_ni      (por_reset_n & ndm_request_qualified_n),
+      .rst_ni      (por_reset_n & ndm_request_retimed_n),
       .test_mode_i (1'b0),
       .rst_no      (ndmreset_n),
       .init_no     ()

@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "scope": "Full SoC RTL at20ns, original SRAM timing checks ON; not SDF. Only physical PAD diagnostic changed to RTL clk pin. Tests same POR and NDM reset tail used by gate bench.",
+  "log_sha256": "cca97183476f90be47147c07186a5651d27413ff6394bdf87476bb25ef0232a3",
+  "bench_sha256": "0c330d20f0c118f65c3e6dc4c17b110bc249bc32e7dd502b92312bf6b1b65e58",
+  "run": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\reset-safe-clock-gating\\test\\int8\\runs\\postsim_reset_rtl_20261117_130319"
+}

@@ -48,11 +48,13 @@ def audit(root):
             violations.append({'instance':m[1].strip(),'time_ns':time,'phase':phase,'check':m[2].strip()})
         values=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
         if not values or 'POSTSIM_DONE' not in text:raise ValueError('Incomplete functional run')
+        if 'NDM_RESET_PASS' not in text:raise ValueError('Missing NDM reset verification: '+mode.name)
         clocks=[float(x) for x in re.findall(r'CLOCK_AT_CORE time_ns=([\d.]+)',text)]
         expected=[int(v.split('=')[1]) for v in plan[mode.name]['flags'] if v.startswith('+CHECK_WORDS=')]
         checked=re.search(r'MODEL_CHECKS_PASS words=(\d+)',text)
         if expected and (not checked or int(checked.group(1))!=expected[0]):raise ValueError('Missing model word checks')
         summary['cases'][mode.name]={'functional_pass':True,'checked_model_words':int(checked.group(1)) if checked else 0,
+            'ndm_assert_and_release_verified':True,
             **dict(zip(['observed_cpu_cycles','npu_cycles','dma_mac_overlap','read_overlap','write_overlap'],map(int,values.groups()))),
             'active_start_ns':start,'active_end_ns':end,'clock_core_edges_ns':clocks,
             'timing_counts':dict(collections.Counter(x['phase'] for x in violations)),
@@ -66,9 +68,10 @@ def audit(root):
     summary['normal_acceptance']={
         'functional_pass':bool(summary['cases']) and all(x['functional_pass'] for x in summary['cases'].values()),
         'sdf_binding_complete':summary['binding_complete_for_instances_and_checks'],
+        'negative_path_delays_supported':summary['negative_path_delay_support_complete'],
         'dynamic_timing_clean':bool(summary['cases']) and all(not x['timing_violations'] for x in summary['cases'].values()),
         'warnings_are_reported_not_required_to_be_zero':True}
-    summary['normal_postsim_pass']=all(summary['normal_acceptance'][k] for k in ['functional_pass','sdf_binding_complete','dynamic_timing_clean'])
+    summary['normal_postsim_pass']=all(summary['normal_acceptance'][k] for k in ['functional_pass','sdf_binding_complete','negative_path_delays_supported','dynamic_timing_clean'])
     summary['scope']='Full notifier/message checking in all SDF runs; reset events retained, not masked. Unsupported negative IOPATH clamps remain explicit; not complete signoff.'
     (root/'audit.json').write_text(json.dumps(summary,indent=2)+'\n')
     return summary

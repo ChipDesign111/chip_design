@@ -30,7 +30,7 @@ rc_temperatures.tcl在创建及每次恢复数据库后，用Innovus原生get_rc
 
 **第一次运行 check_env 前** 修改 configs/design.json。准备完成后 work 中的输入被固定，禁止修改来冒充续跑。更换参数请新建上传目录。1648+2×150=1948 μm 只是请求值；实际尺寸按工具网格对齐后的数据库和最终输出核对。
 
-当前默认`insert_automatic_clock_gating=false`，关闭Genus额外插入门控，保留原RTL显式时钟结构。d03513b的NPU和91b0a74的CPU在初始复位传播期间出现真实ICG使能违规；全局取消自动插入后须在新上传中重新执行实现、SDF及Lab5。映射审计要求自动ICG为0，不通过修改库、SDF或关闭检查处理事件。
+当前候选`insert_automatic_clock_gating=true`。POR/NDM保留原两级下降沿请求取样，再各增加一个上升沿重定时FF，改变断言相位；原rstgen继续下降沿释放。原始3b9ef76验收版本采用全局关闭自动门控，是本轮面积对照。候选只有在新34步、TT SDF所有阶段检查、SRAM时序及Lab5通过后才可验收；不能复用旧版通过结论。
 
 `functional_enable_mapping=library_enable`保留原生带使能触发器的合法映射。`mux_dff`是可选的另一种实现，只有选择该模式时才禁止E/SE等受控触发器，并要求实际受控FF计数0。以本上传configs/design.json、原生读回和mapped_design为准；历史4427c4b的mux_dff/关闭门控结果不代表本版。
 

@@ -32,7 +32,10 @@ module tb_soc;
         if(dut.boot_ready && !dut.firmware_fetch_start && !fetch_started &&
            dut.i_bootram.soc_cycles!==32'd0)
             $fatal(1,"SoC cycle counter started before first firmware fetch");
-        if(dut.firmware_fetch_start && !fetch_started) begin
+        // Match bootram.cycle_start: a raw request in the uninitialised
+        // power-on interval is not a committed firmware fetch.
+        if(dut.ndmreset_n===1'b1 && dut.boot_ready===1'b1 &&
+           dut.firmware_fetch_start && !fetch_started) begin
             if(dut.i_bootram.soc_cycles!==32'd0)
                 $fatal(1,"SoC cycle counter did not start at first firmware fetch");
             fetch_started<=1;
@@ -86,8 +89,8 @@ module tb_soc;
                  dut.i_npu_subsystem.i_npu_core.core.fc1_cycles,
                  dut.i_npu_subsystem.i_npu_core.core.fc2_cycles,
                  read_overlap,write_overlap);
-        // User-authorized shared reset recognizes a root request within two falling edges.
-        #2;rst_n=0;repeat(2) @(negedge clk);#1;
+        // Two falling request samples followed by the rising retiming edge.
+        #2;rst_n=0;repeat(2) @(negedge clk);@(posedge clk);#1;
         if(dut.ndmreset_n || dut.boot_ready) $fatal(1,"Reset assertion failed");
         $finish;
     end

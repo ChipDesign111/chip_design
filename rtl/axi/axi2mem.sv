@@ -22,7 +22,7 @@ module axi2mem #(
     parameter int unsigned AXI_ADDR_WIDTH    = 64,
     parameter int unsigned AXI_DATA_WIDTH    = 64,
     parameter int unsigned AXI_USER_WIDTH    = 10,
-    // SRAM integration supplies a shared, falling-edge-qualified reset.
+    // SRAM integration supplies a shared, clock-qualified reset.
     // Retain the original behavior for all other instances by default.
     parameter bit QUIET_ON_RESET             = 1'b0
 )(

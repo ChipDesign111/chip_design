@@ -130,12 +130,14 @@ def main():
         match=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
         if checks.is_file() and 'MODEL_CHECKS_PASS words=%d'%len(words) not in text:
             raise RuntimeError('Model expected-word verification missing: '+mode)
-        reset_match=re.search(r'RESET_ASSERT offset_ps=(\d+)',text)
+        reset_match=re.search(r'^RESET_ASSERT offset_ps=(\d+)',text,re.M)
         if not match or not reset_match or 'POSTSIM_DONE' not in text:raise RuntimeError('Functional/reset result missing: '+mode)
+        if 'NDM_RESET_PASS' not in text:raise RuntimeError('NDM assert/release verification missing: '+mode)
         io_events=[{'time_ps':int(t),'instance':i.strip()} for t,i in re.findall(r'ERROR\s*:\s*(\d+)\s*\+\+BUS CONFLICT\+\+\s*:\s*([^\r\n]+)',text)]
         results[mode]={'functional_pass':bool(match),'values':list(map(int,match.groups())) if match else None,
                        'timing_violation_messages':len(re.findall(r'Timing violation',text,re.I)),
                        'reset_offset_ps':int(reset_match.group(1)),
+                       'ndm_assert_and_release_verified':True,
                        'pad_drive_ps':int(re.search(r'PAD_DRIVE_ON time_ns=[\d.]+ delay_ps=(\d+)',text).group(1)),
                        'io_bus_conflicts':io_events,
                        'timezero_io_warning_free':not io_events}
