@@ -1,0 +1,258 @@
+{
+  "abi": 1,
+  "execution": [
+    {
+      "backend": "TASK",
+      "index": 0,
+      "address": 2147490304,
+      "count": 2,
+      "nodes": [
+        "fc1",
+        "relu",
+        "sigmoid"
+      ],
+      "tasks": [
+        {
+          "task": 0,
+          "fc_node": "fc1",
+          "output_node": "relu",
+          "output_offset": 0,
+          "descriptor": {
+            "op": 1,
+            "activation": 1,
+            "k": 17,
+            "n": 12,
+            "batch": 1,
+            "source": 2147491756,
+            "weights": 2147491328,
+            "bias": 2147491616,
+            "destination": 2147491732,
+            "input_stride": 20,
+            "output_stride": 12,
+            "initialize": true,
+            "last_k": true,
+            "input_internal": false,
+            "keep_output": false,
+            "end_segment": false,
+            "lut_cache": false,
+            "fc_multiplier": 6239,
+            "fc_shift": 21,
+            "act_multiplier": 10750146,
+            "act_shift": 23,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 0,
+            "clamp_max": 127,
+            "context": 0
+          }
+        },
+        {
+          "task": 1,
+          "fc_node": null,
+          "output_node": "sigmoid",
+          "output_offset": 0,
+          "descriptor": {
+            "op": 2,
+            "activation": 4,
+            "k": 0,
+            "n": 12,
+            "batch": 1,
+            "source": 2147491732,
+            "weights": 0,
+            "bias": 0,
+            "destination": 2147491720,
+            "input_stride": 12,
+            "output_stride": 12,
+            "initialize": false,
+            "last_k": true,
+            "input_internal": false,
+            "keep_output": false,
+            "end_segment": true,
+            "lut_cache": true,
+            "fc_multiplier": 0,
+            "fc_shift": 0,
+            "act_multiplier": 1,
+            "act_shift": 0,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 2147491072,
+            "clamp_max": 127,
+            "context": 0
+          }
+        }
+      ],
+      "fc_jobs": 1,
+      "internal_edges": []
+    },
+    {
+      "backend": "CPU",
+      "node": "mul",
+      "op": "mul",
+      "reason": "CPU operator kernel"
+    },
+    {
+      "backend": "CPU",
+      "node": "add",
+      "op": "add",
+      "reason": "CPU operator kernel"
+    },
+    {
+      "backend": "TASK",
+      "index": 1,
+      "address": 2147490240,
+      "count": 1,
+      "nodes": [
+        "fc2"
+      ],
+      "tasks": [
+        {
+          "task": 0,
+          "fc_node": "fc2",
+          "output_node": "fc2",
+          "output_offset": 0,
+          "descriptor": {
+            "op": 1,
+            "activation": 0,
+            "k": 12,
+            "n": 5,
+            "batch": 1,
+            "source": 2147491696,
+            "weights": 2147490956,
+            "bias": 2147491052,
+            "destination": 2147491688,
+            "input_stride": 12,
+            "output_stride": 8,
+            "initialize": true,
+            "last_k": true,
+            "input_internal": false,
+            "keep_output": false,
+            "end_segment": true,
+            "lut_cache": false,
+            "fc_multiplier": 9550,
+            "fc_shift": 21,
+            "act_multiplier": 1,
+            "act_shift": 0,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 0,
+            "clamp_max": 127,
+            "context": 327680
+          }
+        }
+      ],
+      "fc_jobs": 1,
+      "internal_edges": []
+    },
+    {
+      "backend": "CPU",
+      "node": "mul_1",
+      "op": "mul",
+      "reason": "CPU operator kernel"
+    },
+    {
+      "backend": "CPU",
+      "node": "add_1",
+      "op": "add",
+      "reason": "CPU operator kernel"
+    },
+    {
+      "backend": "CPU",
+      "node": "softmax",
+      "op": "softmax",
+      "reason": "CPU operator kernel"
+    }
+  ],
+  "tensors": {
+    "x": {
+      "shape": [
+        1,
+        17
+      ],
+      "scale": 0.007874015748031496,
+      "stride": 20,
+      "address": 2147491756
+    },
+    "fc1": {
+      "shape": [
+        1,
+        12
+      ],
+      "scale": 0.005052586240092601,
+      "stride": 12,
+      "address": 2147491744,
+      "storage": "fused"
+    },
+    "relu": {
+      "shape": [
+        1,
+        12
+      ],
+      "scale": 0.003942659520727443,
+      "stride": 12,
+      "address": 2147491732
+    },
+    "sigmoid": {
+      "shape": [
+        1,
+        12
+      ],
+      "scale": 0.004902582468948965,
+      "stride": 12,
+      "address": 2147491720
+    },
+    "mul": {
+      "shape": [
+        1,
+        12
+      ],
+      "scale": 0.002454810020491833,
+      "stride": 12,
+      "address": 2147491708
+    },
+    "add": {
+      "shape": [
+        1,
+        12
+      ],
+      "scale": 0.006397469775883231,
+      "stride": 12,
+      "address": 2147491696
+    },
+    "fc2": {
+      "shape": [
+        1,
+        5
+      ],
+      "scale": 0.0031767074517377717,
+      "stride": 8,
+      "address": 2147491688
+    },
+    "mul_1": {
+      "shape": [
+        1,
+        5
+      ],
+      "scale": 0.00285903651883283,
+      "stride": 8,
+      "address": 2147491680
+    },
+    "add_1": {
+      "shape": [
+        1,
+        5
+      ],
+      "scale": 0.0020716349909624715,
+      "stride": 8,
+      "address": 2147491672
+    },
+    "softmax": {
+      "shape": [
+        1,
+        5
+      ],
+      "scale": 0.0018715084068418489,
+      "stride": 8,
+      "address": 2147491664
+    }
+  }
+}

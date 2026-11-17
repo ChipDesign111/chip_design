@@ -1,0 +1,31 @@
+{
+  "abi": 1,
+  "execution": [
+    {
+      "backend": "CPU",
+      "node": "_0",
+      "op": "linear",
+      "reason": "Accumulation exceeds NPU INT22 range"
+    }
+  ],
+  "tensors": {
+    "input_1": {
+      "shape": [
+        4,
+        256
+      ],
+      "scale": 0.007874015748031496,
+      "stride": 256,
+      "address": 2147490752
+    },
+    "_0": {
+      "shape": [
+        4,
+        20
+      ],
+      "scale": 1.8901333546075296,
+      "stride": 20,
+      "address": 2147490672
+    }
+  }
+}

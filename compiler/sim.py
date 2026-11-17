@@ -39,6 +39,13 @@ def simulate(directory,vsim='vsim',profile=False,word_checks=None):
         checks.append(f'$display("WORD_CHECKS_PASS words={len(word_checks)}");')
     starts=metadata.get('npu_core_starts',sum(len(n.get('jobs',[])) for n in metadata['nodes'] if n['backend']=='NPU'))
     tb=(ROOT/'test/int8/tb_soc.sv').read_text().replace('module tb_soc;','module tb_compiled_model;')
+    # Fitting in8KiB does not imply a CPU fallback finishes in200k clocks.
+    # Increase only the testbench watchdog; no instructions/cycles are added.
+    cpu_macs=sum(ts[n['inputs'][0]]['shape'][0]*ts[n['inputs'][0]]['shape'][1]*ts[n['name']]['shape'][1]
+        for n in metadata['nodes'] if n['backend']=='CPU' and n['op']=='linear')
+    cpu_elements=sum(ts[n['name']]['shape'][0]*ts[n['name']]['shape'][1] for n in metadata['nodes'] if n['backend']=='CPU')
+    watchdog=max(200000,50000+64*cpu_macs+256*cpu_elements)
+    tb=tb.replace('cycles<200000',f'cycles<{watchdog}')
     if metadata.get('rtl_parameters',{}).get('TASK_LUT_WORD_CACHE'):
         tb=tb.replace('my_soc_top dut(',"my_soc_top #(.TASK_LUT_WORD_CACHE(1'b1)) dut(")
     insert="""

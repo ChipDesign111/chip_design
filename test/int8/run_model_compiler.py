@@ -67,6 +67,7 @@ def main():
             if args.frozen_baseline:
                 package.write(directory,x.numpy())
                 original=args.frozen_baseline/directory.name
+                if not original.is_dir():original=args.frozen_baseline/('models_'+directory.name)
                 if (directory/'firmware.hex').read_bytes()!=(original/'firmware.hex').read_bytes():
                     raise AssertionError('Frozen firmware changed: '+directory.name)
             log=run_soc(package,directory,x.numpy(),args.vsim,profile=args.profile) if args.soc else ''

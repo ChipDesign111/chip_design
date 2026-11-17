@@ -35,6 +35,9 @@ def main():
         ('same_shape_wrong_activation',special_network(nn.LeakyReLU(0.1)),sx,{}),
         ('special_disabled',None,sx,dict(specialize=False))]
     configurations[-1]=(configurations[-1][0],configurations[-3][1],sx,configurations[-1][3])
+    large=nn.Linear(256,20).eval()
+    with torch.no_grad():large.weight.fill_(1);large.bias.zero_()
+    configurations.append(('large_cpu_fallback',large,torch.linspace(0.5,1,1024).reshape(4,256),{}))
     results=[]
     for name,model,x,options in configurations:
         calibration=[-x,x*0.5]
@@ -46,6 +49,7 @@ def main():
         if name in ('same_shape_wrong_activation','special_disabled'):assert not package.metadata['special_segments']
         if name=='chain':assert package.metadata['task_segments'][0]['internal_edges']
         if name=='chain_materialized':assert not package.metadata['task_segments'][0]['internal_edges']
+        if name=='large_cpu_fallback':assert package.nodes[0]['backend']=='CPU' and 'INT22' in package.nodes[0]['reason']
         out=run/name;package.write(out,x.numpy());log=simulate(out,args.vsim) if args.soc else ''
         if name in ('act_relu6','act_leaky') and args.soc:
             cpu_out=run/(name+'_cpu');cpu.write(cpu_out,x.numpy());simulate(cpu_out,args.vsim)

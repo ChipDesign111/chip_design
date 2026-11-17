@@ -1,0 +1,31 @@
+{
+  "abi": 1,
+  "execution": [
+    {
+      "backend": "CPU",
+      "node": "_0",
+      "op": "linear",
+      "reason": "Forced CPU backend"
+    }
+  ],
+  "tensors": {
+    "input_1": {
+      "shape": [
+        1,
+        48
+      ],
+      "scale": 0.007188817178170512,
+      "stride": 48,
+      "address": 2147491728
+    },
+    "_0": {
+      "shape": [
+        1,
+        24
+      ],
+      "scale": 0.013493935892901083,
+      "stride": 24,
+      "address": 2147491704
+    }
+  }
+}

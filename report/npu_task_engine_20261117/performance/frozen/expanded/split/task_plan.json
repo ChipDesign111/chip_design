@@ -1,0 +1,229 @@
+{
+  "abi": 1,
+  "execution": [
+    {
+      "backend": "TASK",
+      "index": 0,
+      "address": 2147487232,
+      "count": 5,
+      "nodes": [
+        "_0",
+        "_1",
+        "_2"
+      ],
+      "tasks": [
+        {
+          "task": 0,
+          "fc_node": "_0",
+          "output_node": null,
+          "output_offset": 0,
+          "descriptor": {
+            "op": 1,
+            "activation": 0,
+            "k": 64,
+            "n": 32,
+            "batch": 1,
+            "source": 2147491708,
+            "weights": 2147488276,
+            "bias": 2147491444,
+            "destination": 0,
+            "input_stride": 68,
+            "output_stride": 0,
+            "initialize": true,
+            "last_k": false,
+            "input_internal": false,
+            "keep_output": false,
+            "end_segment": false,
+            "lut_cache": false,
+            "fc_multiplier": 2556,
+            "fc_shift": 21,
+            "act_multiplier": 1,
+            "act_shift": 0,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 0,
+            "clamp_max": 127,
+            "context": 0
+          }
+        },
+        {
+          "task": 1,
+          "fc_node": "_0",
+          "output_node": "_1",
+          "output_offset": 0,
+          "descriptor": {
+            "op": 1,
+            "activation": 1,
+            "k": 1,
+            "n": 32,
+            "batch": 1,
+            "source": 2147491772,
+            "weights": 2147490324,
+            "bias": 0,
+            "destination": 2147491620,
+            "input_stride": 68,
+            "output_stride": 44,
+            "initialize": false,
+            "last_k": true,
+            "input_internal": false,
+            "keep_output": false,
+            "end_segment": false,
+            "lut_cache": false,
+            "fc_multiplier": 2556,
+            "fc_shift": 21,
+            "act_multiplier": 8457017,
+            "act_shift": 23,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 0,
+            "clamp_max": 127,
+            "context": 0
+          }
+        },
+        {
+          "task": 2,
+          "fc_node": "_0",
+          "output_node": null,
+          "output_offset": 32,
+          "descriptor": {
+            "op": 1,
+            "activation": 0,
+            "k": 64,
+            "n": 9,
+            "batch": 1,
+            "source": 2147491708,
+            "weights": 2147490388,
+            "bias": 2147491572,
+            "destination": 0,
+            "input_stride": 68,
+            "output_stride": 0,
+            "initialize": true,
+            "last_k": false,
+            "input_internal": false,
+            "keep_output": false,
+            "end_segment": false,
+            "lut_cache": false,
+            "fc_multiplier": 2556,
+            "fc_shift": 21,
+            "act_multiplier": 1,
+            "act_shift": 0,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 0,
+            "clamp_max": 127,
+            "context": 32
+          }
+        },
+        {
+          "task": 3,
+          "fc_node": "_0",
+          "output_node": "_1",
+          "output_offset": 32,
+          "descriptor": {
+            "op": 1,
+            "activation": 1,
+            "k": 1,
+            "n": 9,
+            "batch": 1,
+            "source": 2147491772,
+            "weights": 2147491412,
+            "bias": 0,
+            "destination": 2147491652,
+            "input_stride": 68,
+            "output_stride": 44,
+            "initialize": false,
+            "last_k": true,
+            "input_internal": false,
+            "keep_output": false,
+            "end_segment": false,
+            "lut_cache": false,
+            "fc_multiplier": 2556,
+            "fc_shift": 21,
+            "act_multiplier": 8457017,
+            "act_shift": 23,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 0,
+            "clamp_max": 127,
+            "context": 32
+          }
+        },
+        {
+          "task": 4,
+          "fc_node": "_2",
+          "output_node": "_2",
+          "output_offset": 0,
+          "descriptor": {
+            "op": 1,
+            "activation": 0,
+            "k": 41,
+            "n": 9,
+            "batch": 1,
+            "source": 2147491620,
+            "weights": 2147487568,
+            "bias": 2147488240,
+            "destination": 2147491608,
+            "input_stride": 44,
+            "output_stride": 12,
+            "initialize": true,
+            "last_k": true,
+            "input_internal": false,
+            "keep_output": false,
+            "end_segment": true,
+            "lut_cache": false,
+            "fc_multiplier": 4920,
+            "fc_shift": 21,
+            "act_multiplier": 1,
+            "act_shift": 0,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 0,
+            "clamp_max": 127,
+            "context": 131072
+          }
+        }
+      ],
+      "fc_jobs": 5,
+      "internal_edges": []
+    }
+  ],
+  "tensors": {
+    "input_1": {
+      "shape": [
+        1,
+        65
+      ],
+      "scale": 0.007874015748031496,
+      "stride": 68,
+      "address": 2147491708
+    },
+    "_0": {
+      "shape": [
+        1,
+        41
+      ],
+      "scale": 0.006309524295836922,
+      "stride": 44,
+      "address": 2147491664,
+      "storage": "fused"
+    },
+    "_1": {
+      "shape": [
+        1,
+        41
+      ],
+      "scale": 0.006258486762760192,
+      "stride": 44,
+      "address": 2147491620
+    },
+    "_2": {
+      "shape": [
+        1,
+        9
+      ],
+      "scale": 0.0032691756102043814,
+      "stride": 12,
+      "address": 2147491608
+    }
+  }
+}

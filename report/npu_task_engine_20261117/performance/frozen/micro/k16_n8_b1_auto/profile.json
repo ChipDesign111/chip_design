@@ -1,0 +1,170 @@
+{
+  "cpu_stage_occupancy_cycles": {
+    "boot_or_pipeline": 15,
+    "startup": 2,
+    "cpu_schedule": 34,
+    "cpu_launch": 6,
+    "cpu_poll": 265,
+    "finish": 16
+  },
+  "cpu_node_occupancy_cycles": {
+    "runtime": 33,
+    "_0": 305
+  },
+  "exclusive_wall_cycles": {
+    "boot_or_pipeline": 15,
+    "startup": 2,
+    "cpu_schedule": 34,
+    "cpu_launch": 6,
+    "cpu_poll": 14,
+    "task_descriptor_dma": 23,
+    "task_validate": 1,
+    "task_input_dma": 13,
+    "task_bias_dma": 18,
+    "task_fc_setup": 7,
+    "npu_wait_weight": 73,
+    "npu_tile_ready_control": 8,
+    "npu_issue": 8,
+    "task_fc_control": 1,
+    "task_post_select": 16,
+    "task_fc_rescale": 48,
+    "task_activation_prepare": 8,
+    "task_activation_rescale": 8,
+    "task_pack_store": 8,
+    "task_output_dma": 10,
+    "task_commit": 1,
+    "finish": 16
+  },
+  "cpu_node_stage_cycles": {
+    "runtime": {
+      "boot_or_pipeline": 15,
+      "startup": 2,
+      "finish": 16
+    },
+    "_0": {
+      "cpu_schedule": 34,
+      "cpu_launch": 6,
+      "cpu_poll": 265
+    }
+  },
+  "issued_instruction_events": {
+    "boot_or_pipeline": 2,
+    "startup": 2,
+    "cpu_schedule": 20,
+    "cpu_launch": 4,
+    "cpu_poll": 113,
+    "finish": 7
+  },
+  "dma_handshake_cycles": {
+    "busy_cycles": 127,
+    "ar_backpressure": 0,
+    "r_data_unavailable": 29,
+    "aw_backpressure": 0,
+    "w_backpressure": 0,
+    "b_response_unavailable": 12,
+    "weight_unready_dma_idle": 16,
+    "weight_unready_with_r_data_unavailable": 15,
+    "weight_unready_dma_busy": 57
+  },
+  "task_state_occupancy_cycles": {
+    "1": 1,
+    "2": 22,
+    "3": 1,
+    "4": 1,
+    "5": 12,
+    "6": 1,
+    "7": 17,
+    "10": 6,
+    "11": 1,
+    "12": 90,
+    "13": 8,
+    "14": 8,
+    "15": 48,
+    "16": 8,
+    "17": 8,
+    "20": 8,
+    "21": 1,
+    "22": 9,
+    "23": 1
+  },
+  "task_segment_starts": 1,
+  "dma_role_traffic": {
+    "weight": {
+      "read_bytes": 128,
+      "write_payload_bytes": 128,
+      "write_effective_bytes": 128
+    },
+    "descriptor": {
+      "read_bytes": 64,
+      "write_payload_bytes": 64,
+      "write_effective_bytes": 64
+    },
+    "input": {
+      "read_bytes": 16,
+      "write_payload_bytes": 16,
+      "write_effective_bytes": 16
+    },
+    "bias": {
+      "read_bytes": 32,
+      "write_payload_bytes": 32,
+      "write_effective_bytes": 32
+    },
+    "output": {
+      "read_bytes": 8,
+      "write_payload_bytes": 8,
+      "write_effective_bytes": 8
+    }
+  },
+  "observed_edges": 338,
+  "elapsed_edge_difference": 337,
+  "npu_state_cycles": {
+    "wait_weight": 73,
+    "tile_ready_control": 8,
+    "issue": 8
+  },
+  "jobs": [
+    {
+      "start_tick": 10445,
+      "k": 16,
+      "n": 8,
+      "batch": 1,
+      "busy_cycles": 89,
+      "states": {
+        "wait_weight": 73,
+        "tile_ready_control": 8,
+        "issue": 8
+      }
+    }
+  ],
+  "traffic": {
+    "dma_read_bytes": 248,
+    "dma_write_payload_bytes": 248,
+    "dma_write_effective_bytes": 248,
+    "sram_port_read_bytes": 560,
+    "npu_mmio_cpu_read_bytes": 68,
+    "npu_mmio_loads": 17,
+    "npu_mmio_cpu_write_bytes": 16,
+    "npu_mmio_stores": 4,
+    "sram_port_write_bytes": 12,
+    "sram_cpu_write_bytes": 4,
+    "sram_stores": 1
+  },
+  "tensor_traffic": {
+    "input_1": {
+      "macro_read_bytes": 16,
+      "macro_read_commands": 4
+    },
+    "_0": {
+      "macro_write_bytes": 8,
+      "macro_write_commands": 2
+    }
+  },
+  "rules": {
+    "cpu_cycles": "Phase of most recently accepted ID instruction (id_valid && is_decoding); hold across bubbles/stalls. No speculative invalid-ID PC attribution. Wall-time boundary convention, not causal stall attribution.",
+    "npu_cycles": "Busy-edge state occupancy is a separate overlapping view; never add to CPU stage cycles",
+    "exclusive": "Every edge attributed to NPU state while busy, otherwise most recent accepted CPU instruction phase; sums exactly to hardware elapsed count. Accounting convention, not a CPU stall-cause proof.",
+    "wait_weight": "WAIT_TILE with tile_valid=0 only; other idle states are not DMA wait",
+    "traffic": "CPU LSU accepted byte enables and physical SRAM command reads/writes are distinct levels, not additive. SRAM reads are full32-bit accesses, including replay and instruction fetch. DMA reads counted at real R handshake.",
+    "tensor": "Logical tensor byte intervals exclude stride padding; macro_read_bytes also include repeated physical reads. Loader and post-completion SBA checks excluded."
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "cpu_stage_occupancy_cycles": {
+    "boot_or_pipeline": 15,
+    "startup": 2,
+    "cpu_fc": 1759,
+    "cpu_quant": 90,
+    "finish": 14
+  },
+  "cpu_node_occupancy_cycles": {
+    "runtime": 31,
+    "_0": 1849
+  },
+  "exclusive_wall_cycles": {
+    "boot_or_pipeline": 15,
+    "startup": 2,
+    "cpu_fc": 1759,
+    "cpu_quant": 90,
+    "finish": 14
+  },
+  "cpu_node_stage_cycles": {
+    "runtime": {
+      "boot_or_pipeline": 15,
+      "startup": 2,
+      "finish": 14
+    },
+    "_0": {
+      "cpu_fc": 1759,
+      "cpu_quant": 90
+    }
+  },
+  "issued_instruction_events": {
+    "boot_or_pipeline": 2,
+    "startup": 2,
+    "cpu_fc": 820,
+    "cpu_quant": 50,
+    "finish": 7
+  },
+  "dma_handshake_cycles": {
+    "busy_cycles": 0,
+    "ar_backpressure": 0,
+    "r_data_unavailable": 0,
+    "aw_backpressure": 0,
+    "w_backpressure": 0,
+    "b_response_unavailable": 0
+  },
+  "task_state_occupancy_cycles": {},
+  "task_segment_starts": 0,
+  "dma_role_traffic": {
+    "weight": {
+      "read_bytes": 0,
+      "write_payload_bytes": 0,
+      "write_effective_bytes": 0
+    }
+  },
+  "observed_edges": 1880,
+  "elapsed_edge_difference": 1879,
+  "npu_state_cycles": {},
+  "jobs": [],
+  "traffic": {
+    "dma_read_bytes": 0,
+    "dma_write_payload_bytes": 0,
+    "dma_write_effective_bytes": 0,
+    "sram_port_read_bytes": 1848,
+    "sram_cpu_read_bytes": 220,
+    "sram_loads": 190,
+    "sram_cpu_write_bytes": 14,
+    "sram_stores": 11,
+    "sram_port_write_bytes": 14
+  },
+  "tensor_traffic": {
+    "input_1": {
+      "cpu_read_bytes": 90,
+      "cpu_read_transactions": 90,
+      "macro_read_bytes": 330,
+      "macro_read_commands": 90
+    },
+    "_0": {
+      "cpu_write_bytes": 10,
+      "cpu_write_transactions": 10,
+      "macro_write_bytes": 10,
+      "macro_write_commands": 10
+    }
+  },
+  "rules": {
+    "cpu_cycles": "Phase of most recently accepted ID instruction (id_valid && is_decoding); hold across bubbles/stalls. No speculative invalid-ID PC attribution. Wall-time boundary convention, not causal stall attribution.",
+    "npu_cycles": "Busy-edge state occupancy is a separate overlapping view; never add to CPU stage cycles",
+    "exclusive": "Every edge attributed to NPU state while busy, otherwise most recent accepted CPU instruction phase; sums exactly to hardware elapsed count. Accounting convention, not a CPU stall-cause proof.",
+    "wait_weight": "WAIT_TILE with tile_valid=0 only; other idle states are not DMA wait",
+    "traffic": "CPU LSU accepted byte enables and physical SRAM command reads/writes are distinct levels, not additive. SRAM reads are full32-bit accesses, including replay and instruction fetch. DMA reads counted at real R handshake.",
+    "tensor": "Logical tensor byte intervals exclude stride padding; macro_read_bytes also include repeated physical reads. Loader and post-completion SBA checks excluded."
+  }
+}

@@ -1,0 +1,282 @@
+{
+  "abi": 1,
+  "input": "input_1",
+  "output": "_1",
+  "tensors": {
+    "input_1": {
+      "shape": [
+        4,
+        9
+      ],
+      "scale": 0.06299212598425197,
+      "stride": 12,
+      "address": 2147491728
+    },
+    "_0": {
+      "shape": [
+        4,
+        7
+      ],
+      "scale": 0.042265689279150774,
+      "stride": 8,
+      "address": 2147491696
+    },
+    "_1": {
+      "shape": [
+        4,
+        7
+      ],
+      "scale": 0.042265689279150774,
+      "stride": 8,
+      "address": 2147491664
+    }
+  },
+  "nodes": [
+    {
+      "name": "_0",
+      "op": "linear",
+      "inputs": [
+        "input_1"
+      ],
+      "backend": "CPU",
+      "reason": "Forced CPU backend",
+      "mult": [
+        15344
+      ],
+      "shift": 22,
+      "bias_address": 2147491636,
+      "weight_address": 2147491572,
+      "start_pc": 2147483656,
+      "end_pc": 2147484164
+    },
+    {
+      "name": "_1",
+      "op": "leaky_relu",
+      "inputs": [
+        "_0"
+      ],
+      "negative_slope": 0.13,
+      "backend": "CPU",
+      "reason": "CPU operator kernel",
+      "mult": [
+        8388608
+      ],
+      "shift": 23,
+      "negative_mult": 2181038,
+      "negative_shift": 24,
+      "start_pc": 2147484164,
+      "end_pc": 2147484616
+    }
+  ],
+  "profile_ranges": [
+    {
+      "start_pc": 2147483648,
+      "phase": "startup",
+      "node": "runtime",
+      "end_pc": 2147483656
+    },
+    {
+      "start_pc": 2147483656,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147483744
+    },
+    {
+      "start_pc": 2147483744,
+      "phase": "cpu_quant",
+      "node": "_0",
+      "end_pc": 2147483772
+    },
+    {
+      "start_pc": 2147483772,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147483868
+    },
+    {
+      "start_pc": 2147483868,
+      "phase": "cpu_quant",
+      "node": "_0",
+      "end_pc": 2147483896
+    },
+    {
+      "start_pc": 2147483896,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147483992
+    },
+    {
+      "start_pc": 2147483992,
+      "phase": "cpu_quant",
+      "node": "_0",
+      "end_pc": 2147484020
+    },
+    {
+      "start_pc": 2147484020,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147484116
+    },
+    {
+      "start_pc": 2147484116,
+      "phase": "cpu_quant",
+      "node": "_0",
+      "end_pc": 2147484144
+    },
+    {
+      "start_pc": 2147484144,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147484164
+    },
+    {
+      "start_pc": 2147484164,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147484224
+    },
+    {
+      "start_pc": 2147484224,
+      "phase": "cpu_quant",
+      "node": "_1",
+      "end_pc": 2147484240
+    },
+    {
+      "start_pc": 2147484240,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147484244
+    },
+    {
+      "start_pc": 2147484244,
+      "phase": "cpu_quant",
+      "node": "_1",
+      "end_pc": 2147484272
+    },
+    {
+      "start_pc": 2147484272,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147484332
+    },
+    {
+      "start_pc": 2147484332,
+      "phase": "cpu_quant",
+      "node": "_1",
+      "end_pc": 2147484348
+    },
+    {
+      "start_pc": 2147484348,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147484352
+    },
+    {
+      "start_pc": 2147484352,
+      "phase": "cpu_quant",
+      "node": "_1",
+      "end_pc": 2147484380
+    },
+    {
+      "start_pc": 2147484380,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147484440
+    },
+    {
+      "start_pc": 2147484440,
+      "phase": "cpu_quant",
+      "node": "_1",
+      "end_pc": 2147484456
+    },
+    {
+      "start_pc": 2147484456,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147484460
+    },
+    {
+      "start_pc": 2147484460,
+      "phase": "cpu_quant",
+      "node": "_1",
+      "end_pc": 2147484488
+    },
+    {
+      "start_pc": 2147484488,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147484548
+    },
+    {
+      "start_pc": 2147484548,
+      "phase": "cpu_quant",
+      "node": "_1",
+      "end_pc": 2147484564
+    },
+    {
+      "start_pc": 2147484564,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147484568
+    },
+    {
+      "start_pc": 2147484568,
+      "phase": "cpu_quant",
+      "node": "_1",
+      "end_pc": 2147484596
+    },
+    {
+      "start_pc": 2147484596,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147484616
+    },
+    {
+      "start_pc": 2147484616,
+      "phase": "finish",
+      "node": "runtime",
+      "end_pc": 2147484652
+    }
+  ],
+  "task_abi": null,
+  "task_segments": [],
+  "special_segments": [],
+  "rtl_parameters": {},
+  "npu_core_starts": 0,
+  "quantization": "Symmetric per-tensor INT8; per-layer INT8 weights; rounded fixed-point CPU boundaries",
+  "input_shape": [
+    4,
+    9
+  ],
+  "code_bytes": 1004,
+  "data_bytes": 204,
+  "free_bytes": 6920,
+  "allocations": [
+    {
+      "name": "tensor:input_1",
+      "address": 2147491728,
+      "bytes": 48
+    },
+    {
+      "name": "tensor:_0",
+      "address": 2147491696,
+      "bytes": 32
+    },
+    {
+      "name": "tensor:_1",
+      "address": 2147491664,
+      "bytes": 32
+    },
+    {
+      "name": "_0:bias",
+      "address": 2147491636,
+      "bytes": 28
+    },
+    {
+      "name": "_0:weights",
+      "address": 2147491572,
+      "bytes": 63
+    }
+  ],
+  "code_sha256": "a881f3cbbb180b17eba012117a87d801baad7afd79badd4aebf0ebf293b684c3"
+}

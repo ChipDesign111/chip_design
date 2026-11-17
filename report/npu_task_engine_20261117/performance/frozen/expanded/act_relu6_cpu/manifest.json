@@ -1,0 +1,232 @@
+{
+  "abi": 1,
+  "input": "input_1",
+  "output": "_1",
+  "tensors": {
+    "input_1": {
+      "shape": [
+        4,
+        9
+      ],
+      "scale": 0.06299212598425197,
+      "stride": 12,
+      "address": 2147491728
+    },
+    "_0": {
+      "shape": [
+        4,
+        7
+      ],
+      "scale": 0.06422720180721733,
+      "stride": 8,
+      "address": 2147491696
+    },
+    "_1": {
+      "shape": [
+        4,
+        7
+      ],
+      "scale": 0.047244094488188976,
+      "stride": 8,
+      "address": 2147491664
+    }
+  },
+  "nodes": [
+    {
+      "name": "_0",
+      "op": "linear",
+      "inputs": [
+        "input_1"
+      ],
+      "backend": "CPU",
+      "reason": "Forced CPU backend",
+      "mult": [
+        10787
+      ],
+      "shift": 22,
+      "bias_address": 2147491636,
+      "weight_address": 2147491572,
+      "start_pc": 2147483656,
+      "end_pc": 2147484164
+    },
+    {
+      "name": "_1",
+      "op": "relu6",
+      "inputs": [
+        "_0"
+      ],
+      "backend": "CPU",
+      "reason": "CPU operator kernel",
+      "mult": [
+        11404109
+      ],
+      "shift": 23,
+      "clamp_max": 127,
+      "start_pc": 2147484164,
+      "end_pc": 2147484532
+    }
+  ],
+  "profile_ranges": [
+    {
+      "start_pc": 2147483648,
+      "phase": "startup",
+      "node": "runtime",
+      "end_pc": 2147483656
+    },
+    {
+      "start_pc": 2147483656,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147483744
+    },
+    {
+      "start_pc": 2147483744,
+      "phase": "cpu_quant",
+      "node": "_0",
+      "end_pc": 2147483772
+    },
+    {
+      "start_pc": 2147483772,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147483868
+    },
+    {
+      "start_pc": 2147483868,
+      "phase": "cpu_quant",
+      "node": "_0",
+      "end_pc": 2147483896
+    },
+    {
+      "start_pc": 2147483896,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147483992
+    },
+    {
+      "start_pc": 2147483992,
+      "phase": "cpu_quant",
+      "node": "_0",
+      "end_pc": 2147484020
+    },
+    {
+      "start_pc": 2147484020,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147484116
+    },
+    {
+      "start_pc": 2147484116,
+      "phase": "cpu_quant",
+      "node": "_0",
+      "end_pc": 2147484144
+    },
+    {
+      "start_pc": 2147484144,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147484164
+    },
+    {
+      "start_pc": 2147484164,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147484212
+    },
+    {
+      "start_pc": 2147484212,
+      "phase": "cpu_quant",
+      "node": "_1",
+      "end_pc": 2147484240
+    },
+    {
+      "start_pc": 2147484240,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147484300
+    },
+    {
+      "start_pc": 2147484300,
+      "phase": "cpu_quant",
+      "node": "_1",
+      "end_pc": 2147484328
+    },
+    {
+      "start_pc": 2147484328,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147484388
+    },
+    {
+      "start_pc": 2147484388,
+      "phase": "cpu_quant",
+      "node": "_1",
+      "end_pc": 2147484416
+    },
+    {
+      "start_pc": 2147484416,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147484476
+    },
+    {
+      "start_pc": 2147484476,
+      "phase": "cpu_quant",
+      "node": "_1",
+      "end_pc": 2147484504
+    },
+    {
+      "start_pc": 2147484504,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147484532
+    },
+    {
+      "start_pc": 2147484532,
+      "phase": "finish",
+      "node": "runtime",
+      "end_pc": 2147484568
+    }
+  ],
+  "task_abi": null,
+  "task_segments": [],
+  "special_segments": [],
+  "rtl_parameters": {},
+  "npu_core_starts": 0,
+  "quantization": "Symmetric per-tensor INT8; per-layer INT8 weights; rounded fixed-point CPU boundaries",
+  "input_shape": [
+    4,
+    9
+  ],
+  "code_bytes": 920,
+  "data_bytes": 204,
+  "free_bytes": 7004,
+  "allocations": [
+    {
+      "name": "tensor:input_1",
+      "address": 2147491728,
+      "bytes": 48
+    },
+    {
+      "name": "tensor:_0",
+      "address": 2147491696,
+      "bytes": 32
+    },
+    {
+      "name": "tensor:_1",
+      "address": 2147491664,
+      "bytes": 32
+    },
+    {
+      "name": "_0:bias",
+      "address": 2147491636,
+      "bytes": 28
+    },
+    {
+      "name": "_0:weights",
+      "address": 2147491572,
+      "bytes": 63
+    }
+  ],
+  "code_sha256": "8c78f7b3d4efa00c439ab5b6b65006e44bd356554b7ad61ed753a341d057533a"
+}

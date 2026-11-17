@@ -1,0 +1,114 @@
+{
+  "abi": 1,
+  "input": "input_1",
+  "output": "_0",
+  "tensors": {
+    "input_1": {
+      "shape": [
+        1,
+        48
+      ],
+      "scale": 0.007188817178170512,
+      "stride": 48,
+      "address": 2147491728
+    },
+    "_0": {
+      "shape": [
+        1,
+        24
+      ],
+      "scale": 0.013493935892901083,
+      "stride": 24,
+      "address": 2147491704
+    }
+  },
+  "nodes": [
+    {
+      "name": "_0",
+      "op": "linear",
+      "inputs": [
+        "input_1"
+      ],
+      "backend": "CPU",
+      "reason": "Forced CPU backend",
+      "mult": [
+        6451
+      ],
+      "shift": 21,
+      "bias_address": 2147491608,
+      "weight_address": 2147490456,
+      "start_pc": 2147483656,
+      "end_pc": 2147483792
+    }
+  ],
+  "profile_ranges": [
+    {
+      "start_pc": 2147483648,
+      "phase": "startup",
+      "node": "runtime",
+      "end_pc": 2147483656
+    },
+    {
+      "start_pc": 2147483656,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147483744
+    },
+    {
+      "start_pc": 2147483744,
+      "phase": "cpu_quant",
+      "node": "_0",
+      "end_pc": 2147483772
+    },
+    {
+      "start_pc": 2147483772,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147483792
+    },
+    {
+      "start_pc": 2147483792,
+      "phase": "finish",
+      "node": "runtime",
+      "end_pc": 2147483828
+    }
+  ],
+  "task_abi": 1,
+  "task_segments": [],
+  "special_segments": [],
+  "rtl_parameters": {
+    "TASK_LUT_WORD_CACHE": 1
+  },
+  "npu_core_starts": 0,
+  "quantization": "Symmetric per-tensor INT8; per-layer INT8 weights; rounded fixed-point CPU boundaries",
+  "input_shape": [
+    1,
+    48
+  ],
+  "code_bytes": 180,
+  "data_bytes": 1320,
+  "free_bytes": 6628,
+  "allocations": [
+    {
+      "name": "tensor:input_1",
+      "address": 2147491728,
+      "bytes": 48
+    },
+    {
+      "name": "tensor:_0",
+      "address": 2147491704,
+      "bytes": 24
+    },
+    {
+      "name": "_0:bias",
+      "address": 2147491608,
+      "bytes": 96
+    },
+    {
+      "name": "_0:weights",
+      "address": 2147490456,
+      "bytes": 1152
+    }
+  ],
+  "code_sha256": "c931ba651cdfbd8af7898c91e964feb2df210fc0440f8b664e33d53a5d5415f0"
+}

@@ -8,8 +8,8 @@
     "3": "functional passed: automatic input/bias, 16MAC FC, exact postprocessing, masked writeback and B completion; new physical checks pending",
     "4": "passed functional/area comparison: six modes; select shared4B LUT landing cache, +0.000487335mm2 net Genus delta; final physical checks pending",
     "5": "functional passed: internal forwarding, SRAM spill and CPU boundaries; final performance/physical acceptance pending",
-    "6": "functional compiler prototype passed: K/N plans, fusion with integer boundaries, liveness, CPU fallback and strict MODE0 selection; cost policy and final validation in progress",
-    "7": "in progress: first Genus exceeds conservative budget; unified buffer ports, compact descriptor/control and exact scaler reduction functionally passed, optimized Genus then34-step/TT/SRAMSTA/Lab5 pending"
+    "6": "functional passed: K/N plans, six activations, internal/SRAM/CPU handoffs, strict MODE0 and measured small-job cost policy",
+    "7": "in progress: optimized Genus 2.241754388mm2 (+0.117386125mm2), Innovus running; TT/SRAM STA/Lab5 pending"
   },
   "accepted_physical_baseline": "346e467; TT/Lab5 bf2ff30",
   "original_four_sample_target_cycles": 2700,
@@ -19,5 +19,7 @@
     0.05
   ],
   "conservative_available_budget_mm2": 0.155,
-  "acceptance_scope": "First direct/cache Genus measurements completed; optimized full flow TT not yet accepted. Accepted older branch94636cc remains unchanged."
+  "acceptance_scope": "Functional/cycle/traffic regression passed; optimized Genus within conservative area budget. Physical implementation and post-layout acceptance still running.",
+  "current_physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_231529_task_compact_579fd17",
+  "current_rtl_commit": "579fd17"
 }
