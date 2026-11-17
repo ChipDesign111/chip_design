@@ -67,8 +67,9 @@ set_db lp_default_probability 0.5
 # only apply to nets at top level
 set_db lp_default_toggle_rate 0.2
 # Automatic ICG insertion can turn asynchronous-reset-dependent register
-# enables into timing-sensitive clock controls. Keep the original RTL enables
-# as data muxes in this profile. Existing RTL clock cells are not replaced.
+# enables into timing-sensitive clock controls. Configuration selects whether
+# to insert these controls; disabling it retains original RTL enable behavior.
+# Existing RTL clock cells and functional-enable mapping remain independent.
 # The config explicitly records this implementation choice, not a timing waiver.
 set_db lp_insert_clock_gating $eda_insert_clock_gating
 set_db lp_clock_gating_infer_enable $eda_insert_clock_gating

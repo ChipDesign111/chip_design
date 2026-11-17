@@ -247,13 +247,8 @@ def mapped_netlist_check(work):
         raise ValueError('Expected NPU/DMA area hierarchy absent; inspect accidental pruning')
     config=json.loads((work/'config/design.json').read_text())
     automatic_gates=[path for path in leaves if 'RC_CG_HIER_INST' in path]
-    gating_exclusions=config.get('automatic_clock_gating_exclude_hierarchies',[])
-    for hierarchy in gating_exclusions:
-        if not any(path.startswith(hierarchy+'/') for path in leaves):
-            raise ValueError('Clock-gating exclusion hierarchy absent: '+hierarchy)
-        remaining=[path for path in automatic_gates if path.startswith(hierarchy+'/')]
-        if remaining:
-            raise ValueError('Automatic clock gates remain in excluded hierarchy: '+hierarchy)
+    if not config.get('insert_automatic_clock_gating',True) and automatic_gates:
+        raise ValueError('Automatic clock-gating disabled, but mapped automatic gates remain')
     controlled_ffs=[path for path,master in leaves.items() if re.match(r'^(EDF|SDF|SEDF|GSDF|DFK|DFX)',master)]
     combo_policy=work/'evidence/combinational_mapping_policy.json'
     combo=json.loads(combo_policy.read_text()) if combo_policy.is_file() else {'mapping':'native_unrestricted'}
@@ -274,8 +269,6 @@ def mapped_netlist_check(work):
         raise ValueError('mux_dff mapping not applied: %d controlled flip-flops remain'%len(controlled_ffs))
     return {'native_main_srams': 1, 'mapped_leaf_instances': len(leaves), 'all_leaf_types_have_library_models': True, 'npu_dma_area_hierarchy_present': True, 'latch_area_um2': 0,
             'automatic_clock_gating_requested':config.get('insert_automatic_clock_gating',True),
-            'automatic_clock_gating_exclude_hierarchies':gating_exclusions,
-            'excluded_hierarchies_have_no_automatic_clock_gates':True,
             'mapped_automatic_clock_gate_instances':len(automatic_gates),
             'functional_enable_mapping':config.get('functional_enable_mapping','library_enable'),
             'mapped_controlled_flip_flop_instances':len(controlled_ffs),

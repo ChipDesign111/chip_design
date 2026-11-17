@@ -76,10 +76,6 @@ def read_config(path):
     c.setdefault('insert_automatic_clock_gating', True)
     if not isinstance(c['insert_automatic_clock_gating'], bool):
         raise ValueError('insert_automatic_clock_gating must be a JSON boolean')
-    c.setdefault('automatic_clock_gating_exclude_hierarchies', [])
-    excluded=c['automatic_clock_gating_exclude_hierarchies']
-    if not isinstance(excluded,list) or any(not isinstance(x,str) or not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_/]*',x) for x in excluded) or len(set(excluded))!=len(excluded):
-        raise ValueError('Clock-gating exclusions must be unique literal hierarchy paths')
     c.setdefault('functional_enable_mapping','library_enable')
     if c['functional_enable_mapping'] not in ['library_enable','mux_dff']:
         raise ValueError('Unknown functional register-enable implementation')
@@ -180,7 +176,6 @@ def prepare(args):
     # lp_clock_gating_infer_enable is an enum in Genus 19.17: it accepts
     # literal true/false, unlike a Boolean attribute it rejects numeric 0/1.
     text+='set eda_insert_clock_gating %s\n'%('true' if config['insert_automatic_clock_gating'] else 'false')
-    text+='set eda_clock_gating_exclude_hierarchies {%s}\n'%' '.join(config['automatic_clock_gating_exclude_hierarchies'])
     text+='set eda_enable_mapping %s\n'%config['functional_enable_mapping']
     text+='set eda_comb_mapping %s\n'%config['combinational_cell_mapping']
     text+='set eda_implementation_effort %s\n'%config['implementation_effort']

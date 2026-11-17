@@ -20,17 +20,6 @@ default {error "Only syn_opt_level standard is supported by this flow"}
 # uniquify the instances under the specified design or subdesign
 uniquify [get_design $rm_core_top ] -verbose
 
-# Reset-dependent NPU enables can settle inside an ICG aperture during initial
-# reset propagation. Keep the original data-enable implementation in explicitly
-# selected unique hierarchies. This changes mapping, never timing checks.
-foreach path $eda_clock_gating_exclude_hierarchies {
-    set objects [get_db hinsts *$path]
-    if {[llength $objects] != 1} {error "Clock-gating exclusion is not unique: $path"}
-    set_db $objects .lp_clock_gating_exclude true
-    if {![get_db $objects .lp_clock_gating_exclude]} {error "Clock-gating exclusion not applied: $path"}
-    puts "EDA_AUTO_CLOCK_GATING_EXCLUDED $path READBACK=true"
-}
-
 # first_tile_q intentionally contains 32 equivalent per-output flops.  Do not
 # merge them back into one high-fanout control net during generic synthesis.
 set first_tile_regs [vfind . -inst *first_tile_q_reg*]

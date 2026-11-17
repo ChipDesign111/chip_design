@@ -60,3 +60,9 @@ cleanup.json记录42项、322582569字节的本轮缓存和一次性复现文件
 07:58人工查询：新上传20261117_072804_d03513b已通过Genus，到Innovus27/34，running=true、工具错误false。原本地总控68437仍正常推进；下一次纯等待人工查询约08:28。新增文档和失败摘要精简只在本地，RTL/EDA冻结源未再改变。
 
 08:35接续：d03513b的34步完成。TT上传20261117_081941_postsim_vcs_tt_d03513b全部19例功能正确，但18组SDF每组3条初始复位ICG使能违规，54条合计，normal_postsim_pass=false，pipeline68437已退出1。独立Lab5上传20261117_082948_lab5_d03513b已完成并fetch，lab5_pass=true、M2.S.2=0，说明M2修复真实有效，但不能抵消SDF失败。下一版仅取消i_npu_subsystem/i_npu_core/core的Genus自动门控，原生属性与映射后双重检查，保留其他模块门控及library_enable。RTL/test仍未变；需要提交并新上传完整流程。91732的Lab5总控已退出0，无重任务在跑。
+
+08:37启动第三版91b0a74：物理上传20261117_083659_91b0a74，本地总控session12433，输出lab5/fc_generalization_core_gating_20261117，控制台在同级fc_generalization_core_gating_20261117.console.log。08:39已在原生Genus日志确认EDA_AUTO_CLOCK_GATING_EXCLUDED i_npu_subsystem/i_npu_core/core READBACK=true，配置属性有效，综合继续；下一次纯等待人工查询约09:09。RTL/test未变，复用120项SHA核验的完整SoC回归，后续仍由总控串行19例SDF→STA→Lab5。新版本未验收前，不把d03513b的Lab5通过拼接成新版本全过。
+
+09:10查询：91b0a74已通过综合及映射排除核验，到Innovus27/34。Genus面积2186404.615µm²（较287ae40约+5.76%，较d03513b多62119.770µm²）；397个自动门控保留，受控FF实例8100，NPU core无自动ICG。面积/功耗成本需与取消门控的正确性修复分开说明，不再把原2.75%当作最终增幅。下一次纯等待人工查询约09:40。
+
+09:40：91b0a74的完整实现通过，TT/STA完成并fetch，但初始复位在CPU十个ICG出现180条合计事件，NPU此前三处消失；全部19例功能与工作/最终复位无违规。总控12433退出1，未跑本版Lab5。下一版全局关闭自动ICG、保留library_enable，并移除局部排除开关以简化正式实现。仍需提交、新上传和完整重跑。RTL/test未变，120项源SHA回归仍可复用。全局关闭可能增加面积，必须报告实测值；板级功耗未测。

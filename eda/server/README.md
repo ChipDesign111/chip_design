@@ -4,7 +4,7 @@
 
 状态：{{STATUS}}，完成 {{STEP}}/34。最终 Setup/Hold WNS：{{SETUP}} / {{HOLD}} ns。含 PAD 的整个 Die：{{AREA}} mm²，上限 {{AREA_LIMIT}} mm²。尚未生成不表示通过。
 
-本版本为 INT8 64→32→6 完整 SoC：第一层 2 输入×32 输出、第二层 1×6，DMA 从主 SRAM 预取权重，两个 64 字节缓冲交替使用。整颗含 PAD 面积上限 3.8 mm²。双击本目录 README.html 阅读；各版本独立。
+本版本为共享16个INT8 MAC的完整SoC：原始64→32→6双层与K≤64、N≤32单层任务复用计算核心；FC1按2输入×8输出相位，FC2按2×6相位计算，软件可跨任务分块和保留INT22部分和。DMA从主SRAM预取权重，两个64字节缓冲交替使用。整颗含 PAD 面积上限 3.8 mm²。双击本目录 README.html 阅读；各版本独立。
 
 先读[当前设计数据流](../docs/当前设计数据流.md)理解本设计，再按以下阶段执行。
 
@@ -21,7 +21,7 @@ cat configs/design.json
 本次目录下的 deploy 是压缩包解出的源码；configs/design.json 是本版本可编辑配置。默认 PDK 为 /lec/pdk/tsmc180，宏资料来自 /lec/lab4，周期 20 ns，核数 8；核心请求 1648×1648 μm，四侧余量 150 μm，目标利用率 0.85，包含 PAD 的面积上限 3.8 mm²。
 
 
-目标利用率0.85用于标准逻辑面积规划检查；固定核心边长1648µm才直接决定外框。请求1948×1948µm（3.794704mm²），网格对齐后需核对≤3.8mm²。最新4427c4b实测外框1948.24µm、实际逻辑密度74.138%；新上传仍需用自己的数据库核对，不把85%参数或含Filler密度当作实测逻辑密度。
+目标利用率0.85用于标准逻辑面积规划检查；固定核心边长1648µm才直接决定外框。请求1948×1948µm（3.794704mm²），网格对齐后需核对≤3.8mm²。历史实测外框1948.24µm；新上传仍需用自己的数据库核对，不把85%参数或含Filler密度当作实测逻辑密度。
 
 
 
@@ -30,19 +30,17 @@ rc_temperatures.tcl在创建及每次恢复数据库后，用Innovus原生get_rc
 
 **第一次运行 check_env 前** 修改 configs/design.json。准备完成后 work 中的输入被固定，禁止修改来冒充续跑。更换参数请新建上传目录。1648+2×150=1948 μm 只是请求值；实际尺寸按工具网格对齐后的数据库和最终输出核对。
 
-本版`insert_automatic_clock_gating=false`，关闭Genus额外插入门控的优化，配合mux_dff策略让寄存器使能保留为数据选择逻辑；原RTL显式时钟结构不改。上一版的最终复位相位测试发现自动门控使能时序违规，因此本版重新映射并从头实施。时钟功耗或逻辑面积可能增加，须看本版真实结果，不复用旧版本的通过结论。
+当前默认`insert_automatic_clock_gating=false`，关闭Genus额外插入门控，保留原RTL显式时钟结构。d03513b的NPU和91b0a74的CPU在初始复位传播期间出现真实ICG使能违规；全局取消自动插入后须在新上传中重新执行实现、SDF及Lab5。映射审计要求自动ICG为0，不通过修改库、SDF或关闭检查处理事件。
 
-同时`functional_enable_mapping=mux_dff`禁止库内带E/SE等同步控制的触发器作为功能保持结构，使用普通DFF及其数据选择逻辑；原生异步复位DFF仍可使用。只关闭自动门控的cbf40f2仍有30条E/SE最终复位违规，因此需要这个新的映射选择。`deploy/server/tcl/register_mapping.tcl`在综合和后端执行同一策略，实际应用写入work/evidence/register_mapping_*.json，不改SDF或屏蔽任何检查。4427c4b实测受控触发器0、自动门控0，四角完整34步及TT/快/慢各17例通过；其他上传仍须分别验证，不能由此自动视为通过。
+`functional_enable_mapping=library_enable`保留原生带使能触发器的合法映射。`mux_dff`是可选的另一种实现，只有选择该模式时才禁止E/SE等受控触发器，并要求实际受控FF计数0。以本上传configs/design.json、原生读回和mapped_design为准；历史4427c4b的mux_dff/关闭门控结果不代表本版。
 
-Genus在`init_design`后重新应用库选择，覆盖初始化时建立的实际多库角对象；仅初始化前设置曾未达到预期。综合后的实际单元类型也要与所选mux_dff策略一致，否则先停止并报配置未生效，不继续后端。正常零负余量/面积/物理验收条件不变。
-
-2026-10-29的新一轮优化使用combinational_cell_mapping=tt_nonnegative_tables，从未修改的原生TT库派生组合单元选择，Genus和Innovus统一应用；CTS保留原生CKND反相器。implementation_effort=high提高优化力度，setup_optimization_goal_ns=0.3只是增加慢角余量的软目标，不是验收门槛。旧4427c4b的通过结果不能替代这个新实现。实际TT截零是否归零、面积和时序是否改善，须查本上传的新证据与后仿；不改SDF或关闭检查消除警告。
+`combinational_cell_mapping=tt_nonnegative_tables`从未修改的原生TT库派生组合单元选择，Genus和Innovus统一应用；CTS保留原生CKND反相器。当前默认`analysis_profile=single_TT_SI_off_native_low_RC`、优化力度medium、Setup软目标0.1ns及Hold软目标0.05ns。软目标不是验收门槛，TT通过不表示已完成SS/FF或SI签核。参数与最终结果都按本次冻结配置报告。
 
 `antenna_fanout_reserve=1`为物理天线二极管预留一个负载。原生优化命令执行时逻辑扇出目标暂设15，29步在布线前执行全设计DRV优化；命令结束或报错均恢复原SDC16，正常检查、保存及SDC导出按16。它不是新增验收门槛，不删除天线单元，不按指定网络手工ECO。postRoute原生工具会禁用扇出修复，不能依赖布线后补跑DRV解决该类问题。旧配置不含此项时默认0。
 
 `antenna_repair_strategy=native_jumpers_first`使路由优先用原生跨层跳接修复天线，只对独立天线报告中仍违反原规则的网络使用二极管回退。原因是一个网络可能需要多颗保护二极管，单独预留一个负载不能保证扇出通过。`antenna_strategy.tcl`负责工具读回、报告解析和有界修复；时序ECO后再复核几何，所有最终门禁保持。旧配置缺少此项时沿用native_jumpers_and_diodes。32步若只剩不受原生postRoute修复支持的扇出残项，停止无效Setup重试并保留真实失败。
 
-验收使用native_library_zero_slack：保留四个匹配库角、系统20ns、含PAD整颗≤3.8mm²。最终Setup/Hold均要求WNS≥0、TNS=0、违规路径数=0，电气检查遵守原生Liberty及讲义原SDC；不增加设计级边沿限制。default DRC、真实信号/核心供电连通及天线须通过，IO抽象限制按同源原生几何证据记录。只在真实负余量时修复Hold：先0目标，仍有残项时按讲义尝试0.02ns优化目标；0.02ns不是验收门槛。普通优化密度上限统一0.85，不再分83%/85%预算。详见[验收条件](../docs/验收条件.md)。
+验收使用native_library_zero_slack：按所选analysis_profile执行，系统20ns、含PAD实现Die外框≤3.8mm²。Lab5后续SealRing外包络另行报告，不混用这两个面积。最终Setup/Hold均要求WNS≥0、TNS=0、违规路径数=0，电气检查遵守原生Liberty及讲义原SDC；不增加设计级边沿限制。default DRC、真实信号/核心供电连通及天线须通过，IO抽象限制按同源原生几何证据记录。优化器的Hold目标只用于修复策略，最终按原生零负余量标准验收。普通优化密度上限统一0.85，不再分83%/85%预算。详见[验收条件](../docs/验收条件.md)。
 
 ## 2．独立阶段一：环境检查
 

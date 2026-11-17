@@ -19,7 +19,7 @@
   "max_repair_iterations": 6,
   "hold_target_ns": 0.05,
   "cpu_clock_gate": "repository_passthrough",
-  "insert_automatic_clock_gating": true,
+  "insert_automatic_clock_gating": false,
   "functional_enable_mapping": "library_enable",
   "combinational_cell_mapping": "tt_nonnegative_tables",
   "implementation_effort": "medium",
@@ -29,8 +29,5 @@
   "acceptance_profile": "native_library_zero_slack",
   "antenna_fanout_reserve": 1,
   "antenna_repair_strategy": "native_jumpers_first",
-  "setup_target_ns": 0.1,
-  "automatic_clock_gating_exclude_hierarchies": [
-    "i_npu_subsystem/i_npu_core/core"
-  ]
+  "setup_target_ns": 0.1
 }
