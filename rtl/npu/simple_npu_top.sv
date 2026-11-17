@@ -4,6 +4,10 @@ module simple_npu_top (
     input logic clka,rst_ni,ena,wea,dma_write_i,
     input logic [11:0] addra,
     input logic [31:0] dina,
+    input logic task_access_i,task_abort_i,task_invalidate_i,task_write_i,
+    input logic [6:0] task_index_i,
+    input logic [7:0] task_data_i,
+    output wire task_done_o,task_error_o,
     output wire busy_o,
     output logic [31:0] douta,
     output wire auto_start_o,
@@ -79,6 +83,8 @@ module simple_npu_top (
     wire next_tile_valid=next_ready && layer==layer_q && !auto_start_o &&
         (!pending || dma_write_active_i);
     assign busy_o=busy;
+    assign task_done_o=done;
+    assign task_error_o=error;
     assign auto_start_o=busy && !pending && !dma_busy_i && load_pending && load_bank_free;
     assign auto_source_o=want_w1 ?
         w1_base+({26'd0,next_w1}*{27'd0,fc_words}*32'd4):w2_base+({26'd0,next_w2}*32'd48);
@@ -87,7 +93,9 @@ module simple_npu_top (
     har_weight_store weights(.clk(clka),.we_i(safe_tile_write),.bank_i(addra[4]),
         .word_i(addra[3:0]),.data_i(dina),.compute_bank_i(compute_bank),.tile_o(tile_data));
     har_npu_core core(.clk(clka),.rst_ni(rst_ni),.start(start),
-        .ack_done(cpu_write && addra==0 && dina[1]),.batch_count(batch_count),.abort_i(load_failed),
+        .ack_done(cpu_write && addra==0 && dina[1]),.batch_count(batch_count),
+        .abort_i(load_failed || (task_abort_i===1'b1)),
+        .task_write_i(task_write_i),.task_index_i(task_index_i),.task_data_i(task_data_i),
         .single_i(single_mode),.accumulate_i(fc_mode[1]),.fc_k_i(fc_k),.fc_n_i(fc_n),
         .fc_all(fc_results),.input_features(input_packed),.bias1(b1),.bias2(b2),
         .requant_mult(mult),.requant_shift(shift),
@@ -141,7 +149,7 @@ module simple_npu_top (
             end
             if(write_req && dma_write_i && !safe_tile_write) error<=1;
             if(cpu_write) begin
-                if(busy || dma_busy_i) error<=1;
+                if(busy || (dma_busy_i && !(task_access_i===1'b1))) error<=1;
                 else case(addra)
                     0:if(dina[0]) begin if(!valid_bases) error<=1;end else if(dina[1]) error<=0;
                     4:if(dina[31:16]==0) mult<=dina[15:0];else error<=1;
@@ -208,9 +216,21 @@ module simple_npu_top (
                         else if(out_word==14)
                             douta<={29'b0,class_all[out_slot*3+:3]};
                         else douta<=0;
-                    end else douta<=0;
+                    end else if((task_access_i===1'b1) && addra>=1440 && addra<1472)
+                        douta<=hidden_all[(addra-1440)*32+:32];
+                    else if((task_access_i===1'b1) && addra>=16 && addra<32)
+                        douta<=x[0][(addra-16)*32+:32];
+                    else if((task_access_i===1'b1) && addra>=768 && addra<784)
+                        douta<=x[1][(addra-768)*32+:32];
+                    else if((task_access_i===1'b1) && addra>=INPUT2_BASE && addra<INPUT2_BASE+32)
+                        douta<=x[2+((addra-INPUT2_BASE)>>4)][((addra-INPUT2_BASE)&15)*32+:32];
+                    else douta<=0;
                 end
             endcase
+            if(task_invalidate_i===1'b1) partial_valid<=0;
+            if((task_abort_i===1'b1) && !dma_busy_i) begin
+                partial_valid<=0;pending<=0;ready_w1<=0;ready_w2<=0;
+            end
         end
     end
 endmodule

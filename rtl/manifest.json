@@ -380,22 +380,24 @@
     {
       "source": "soc/rtl/my_npu_subsystem.sv",
       "path": "rtl/soc/my_npu_subsystem.sv",
-      "sha256": "85f4fe6b1bf0a093224eb16524ffc5e950e921e9e9a9d21ea73787fddc1cfe21",
+      "sha256": "f78345cef52827ac9ba7b828a51df601adde93e0501aaf33d5865bf69b4b5e65",
       "previous_sha256": "4d09e3bf393b9571e7c2da52a64161deec6e3812d513600465fa32c1e192fe24",
-      "project_override": "INT8 autonomous tile DMA integration; guarded boot commit and synchronized reset release",
-      "upstream_sha256": "b0b6b9000d63845282840c9d56ffcfed00c34f454457e35231e680510557a2f0"
+      "project_override": "INT8 autonomous tile DMA integration; guarded boot commit and synchronized reset release; user-authorized task ABI v1 sequential engine, guarded shared DMA and exact generic postprocessing; legacy ports/reset contract retained",
+      "upstream_sha256": "b0b6b9000d63845282840c9d56ffcfed00c34f454457e35231e680510557a2f0",
+      "task_engine_baseline_sha256": "85f4fe6b1bf0a093224eb16524ffc5e950e921e9e9a9d21ea73787fddc1cfe21"
     },
     {
       "source": "soc/rtl/my_soc_top.sv",
       "path": "rtl/soc/my_soc_top.sv",
-      "sha256": "bec5e83a3c44e8817f232799655ce60e88b02d089818c7581fb2233d4418d0af",
+      "sha256": "8b3d6c6e9cbd6fdca154b1964d48b066a68b30e598b2c514e9967bcb8be75e5e",
       "previous_sha256": "71ce705f0b1a362dc4eb99bf519876ea9e1827d7da523b0db2e688b1ae9706d4",
       "original_sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6",
-      "project_override": "INT8 tiled DMA, guarded boot, shared 16 MAC, CUT_SLV_AX crossbar address boundaries and shared clock-qualified SRAM transaction reset; CPU 4x8-word instruction line buffer with write invalidation, retaining CUT_SLV_AX; address-matched SRAM instruction invalidation with physical alias normalization",
+      "project_override": "INT8 tiled DMA, guarded boot, shared 16 MAC, CUT_SLV_AX crossbar address boundaries and shared clock-qualified SRAM transaction reset; CPU 4x8-word instruction line buffer with write invalidation, retaining CUT_SLV_AX; address-matched SRAM instruction invalidation with physical alias normalization; user-authorized task ABI v1 sequential engine, guarded shared DMA and exact generic postprocessing; legacy ports/reset contract retained",
       "upstream_sha256": "174207c5682648222a6f280705666d272d1d44406df6193370c0e8efc7ed374e",
       "main_266bca3_sha256": "8f67ff81452ea80d4314c1c8d67b88bc72091e03e8f345b9aa2b2c2780483dd8",
       "integration_override": "; retain 266bca3 16-MAC/INT22/ifetch/CUT_SLV_AX core; integrate user-authorized common falling-edge system reset from dea5584; 2026-11-17 retain two falling-edge request samples, add rising-edge retiming for POR/NDM assertion, preserve common reset and falling-edge release for reset-safe ICG mapping",
-      "reset_gating_baseline_sha256": "c0f2b0b8d8f7c1f1c3b16e9e33f5d7b73cbe7e6fbf20e7cc54447d6cb8cf1a1a"
+      "reset_gating_baseline_sha256": "c0f2b0b8d8f7c1f1c3b16e9e33f5d7b73cbe7e6fbf20e7cc54447d6cb8cf1a1a",
+      "task_engine_baseline_sha256": "bec5e83a3c44e8817f232799655ce60e88b02d089818c7581fb2233d4418d0af"
     }
   ],
   "dma_integration": {

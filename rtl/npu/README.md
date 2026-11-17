@@ -7,3 +7,5 @@ simple_npu_top：MMIO、自动 DMA 描述符、W1/W2 分域发布、W1 尾部 W2
 文件和使用方法见 [NPU](../../report/npu.md)、[MMIO](../../report/mmio.md)。
 
 新增共享硬件单层 FC 模式、续算和结果窗口见 [FC模式](../../report/fc_modes.md)。
+
+任务引擎原型：har_task_engine 顺序读取64B描述符，自动装载input/bias、使用上述16MAC计算、后处理并按字节掩码写回。har_task_scale 用一个22×9乘法器分四次实现精确INT22×INT32缩放，再独立舍入和饱和。generic后处理复用原h缓冲，旧MODE0量化通路保留。六种激活和内部交接已做功能验证；面积、时序及物理验收尚未完成。接口与有效性规则见 [ABI](../../compiler/TASK_ABI.md)。

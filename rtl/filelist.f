@@ -70,6 +70,8 @@ rtl/cpu_cv32e40p/rtl/cv32e40p_top.sv
 rtl/dma/har_dma.sv
 rtl/dma/har_dma_axi.sv
 rtl/soc/my_npu_subsystem.sv
+rtl/npu/har_task_scale.sv
+rtl/npu/har_task_engine.sv
 rtl/soc/my_ifetch.sv
 rtl/soc/my_soc_top.sv
 rtl/memory/chip_sram_2048x32.sv

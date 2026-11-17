@@ -16,7 +16,7 @@ class Capture(Interpreter):
 
 def capture(model,example,calibration_inputs=None):
     if model.training:raise CompileError('Call model.eval() before compilation')
-    try:graph=symbolic_trace(nn.Sequential(model) if isinstance(model,(nn.Linear,nn.ReLU,nn.Sigmoid,nn.Tanh,nn.Softmax,nn.Identity)) else model)
+    try:graph=symbolic_trace(nn.Sequential(model) if isinstance(model,(nn.Linear,nn.ReLU,nn.ReLU6,nn.LeakyReLU,nn.Sigmoid,nn.Tanh,nn.Softmax,nn.Identity)) else model)
     except Exception as e:raise CompileError(f'FX capture failed: {e}') from e
     runs=[]
     for sample in list(calibration_inputs or [])+[example]:
@@ -46,6 +46,9 @@ def capture(model,example,calibration_inputs=None):
             if isinstance(m,nn.Linear):
                 op='linear';extra=dict(weight=m.weight.detach().cpu().numpy(),bias=(m.bias.detach().cpu().numpy() if m.bias is not None else np.zeros(m.out_features)))
             elif isinstance(m,nn.ReLU) and (not m.inplace or len(node.args[0].users)==1):op='relu'
+            elif isinstance(m,nn.ReLU6) and (not m.inplace or len(node.args[0].users)==1):op='relu6'
+            elif isinstance(m,nn.LeakyReLU) and (not m.inplace or len(node.args[0].users)==1):
+                op='leaky_relu';extra['negative_slope']=float(m.negative_slope)
             elif isinstance(m,nn.Sigmoid):op='sigmoid'
             elif isinstance(m,nn.Tanh):op='tanh'
             elif isinstance(m,nn.Softmax) and m.dim in (1,-1):op='softmax'
@@ -54,13 +57,18 @@ def capture(model,example,calibration_inputs=None):
         elif node.op=='call_function':
             op={operator.add:'add',torch.add:'add',operator.sub:'sub',torch.sub:'sub',operator.mul:'mul',torch.mul:'mul',torch.relu:'relu',torch.sigmoid:'sigmoid',torch.tanh:'tanh'}.get(node.target)
             if node.target==torch.nn.functional.relu:op='relu'
+            if node.target in (torch.nn.functional.relu6,torch.nn.functional.leaky_relu):
+                op='relu6' if node.target==torch.nn.functional.relu6 else 'leaky_relu'
+                if op=='leaky_relu':extra['negative_slope']=float(node.kwargs.get('negative_slope',node.args[1] if len(node.args)>1 else 0.01))
+                if node.kwargs.get('inplace',False) and len(node.args[0].users)!=1:raise CompileError(f'{node.name}: inplace activation has other consumers')
             if node.target in (torch.softmax,torch.nn.functional.softmax) and node.kwargs.get('dim',node.args[1] if len(node.args)>1 else None) in (1,-1):op='softmax'
-            if node.kwargs and not (op=='relu' and node.kwargs=={'inplace':False}) and not (op=='softmax' and set(node.kwargs)<= {'dim','dtype','_stacklevel'} and node.kwargs.get('dtype') is None):
+            if node.kwargs and not (op=='relu' and node.kwargs=={'inplace':False}) and not (op in ('relu6','leaky_relu') and set(node.kwargs)<={'inplace','negative_slope'}) and not (op=='softmax' and set(node.kwargs)<= {'dim','dtype','_stacklevel'} and node.kwargs.get('dtype') is None):
                 raise CompileError(f'{node.name}: operator keyword arguments unsupported: {node.kwargs}')
         elif node.op=='call_method':
             if node.target in ('relu','sigmoid','tanh'):op=node.target
             elif node.target in ('view','reshape','flatten','contiguous') and tuple(first[args[0]].shape)==tuple(value.shape):op='identity'
         if op is None:raise CompileError(f'{node.name}: no CPU kernel for {node.op} {node.target}')
+        if op=='leaky_relu' and not np.isfinite(extra['negative_slope']):raise CompileError(f'{node.name}: nonfinite negative slope')
         expected_args=2 if op in ('add','sub','mul') else 1
         if len(args)!=expected_args:
             constants=[v for v in node.args if isinstance(v,(int,float)) and not isinstance(v,bool)]

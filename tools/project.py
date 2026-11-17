@@ -18,5 +18,10 @@ def main():
     if result:return result
     single=[sys.executable,str(ROOT/'test/int8/run_single_fc.py')]
     if a.soc:single+=['--soc','--vsim',a.vsim]
-    return subprocess.run(single,cwd=ROOT).returncode
+    result=subprocess.run(single,cwd=ROOT).returncode
+    if result:return result
+    for name in ['test_task_abi.py','run_task_scale.py','run_task_engine.py']:
+        result=subprocess.run([sys.executable,str(ROOT/'test/int8'/name)],cwd=ROOT).returncode
+        if result:return result
+    return 0
 if __name__=='__main__':raise SystemExit(main())

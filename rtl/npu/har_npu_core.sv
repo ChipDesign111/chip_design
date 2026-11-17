@@ -7,6 +7,9 @@ module har_npu_core (
     input logic [3:0] batch_count,
     input logic abort_i,
     input logic single_i,accumulate_i,
+    input logic task_write_i,
+    input logic [6:0] task_index_i,
+    input logic [7:0] task_data_i,
     input logic [6:0] fc_k_i,
     input logic [5:0] fc_n_i,
     output wire [4095:0] fc_all,
@@ -262,6 +265,9 @@ module har_npu_core (
             end
             if(quant_value_valid_q)
                 h[quant_value_sample_q][quant_value_index_q*8+:8]<=quant(quant_value_q);
+            // The sequential engine owns h only while the MAC core is idle.
+            if((task_write_i===1'b1) && !busy)
+                h[task_index_i[6:5]][task_index_i[4:0]*8+:8]<=task_data_i;
             case(state)
                 IDLE:if(start) begin
                     busy<=1;

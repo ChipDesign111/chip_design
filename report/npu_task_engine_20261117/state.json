@@ -1,14 +1,14 @@
 {
   "baseline_commit": "94636cc",
   "branch": "feat/npu-task-engine",
-  "active_stage": 3,
+  "active_stage": 4,
   "stages": {
     "1": "passed: frozen cycles/traffic/corpus; RTL unchanged",
     "2": "passed: host wire vectors, segment guards, exhaustive INT8 semantics and C11 layout; RTL conformance pending",
-    "3": "in progress: autonomous DMA and generic postprocessing RTL",
-    "4": "pending",
-    "5": "pending",
-    "6": "pending",
+    "3": "functional passed: automatic input/bias, 16MAC FC, exact postprocessing, masked writeback and B completion; new physical checks pending",
+    "4": "six modes functional passed; direct SRAM LUT implemented; cache area/access comparison in progress",
+    "5": "functional passed: internal forwarding, SRAM spill and CPU boundaries; final performance/physical acceptance pending",
+    "6": "functional compiler prototype passed: K/N plans, fusion with integer boundaries, liveness, CPU fallback and strict MODE0 selection; cost policy and final validation in progress",
     "7": "pending"
   },
   "accepted_physical_baseline": "346e467; TT/Lab5 bf2ff30",

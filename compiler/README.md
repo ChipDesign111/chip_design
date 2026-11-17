@@ -1,5 +1,7 @@
 # PyTorch → RV32 CPU / NPU 混合部署
 
+新增任务引擎仍在验收中：`--task-engine`选择顺序任务表、自动输入/bias、六种量化激活及写回；连续支持算子一次启动，CPU处理已有Add/Sub/Mul/Softmax等边界。生成task_plan.json/md，详见 [ABI](TASK_ABI.md) 和 [本轮状态](../report/npu_task_engine_20261117/README.md)。不加此参数仍走下述冻结的旧路径。ReLU6/LeakyReLU现也有CPU整数内核。新路径逐值验证同时观察内部交接和融合后的整数边界，不能把未写SRAM的张量当成已物化结果。
+
 入口是一个PyTorch nn.Module和有代表性的浮点输入。编译器使用FX获取静态计算图，进行对称INT8量化、后端选择、FC分块及8KiB SRAM布局，然后直接生成普通RV32IM机器码。芯片上不运行Python或PyTorch，也不需要新的CPU指令。
 
 ## 快速运行

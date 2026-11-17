@@ -1,0 +1,164 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "name": "fc_1_1_1",
+      "tasks": 1,
+      "error": 0,
+      "input_sha256": "bf64e9ff76e431cf991b00543d069d5de25048fcdae8f6b742937375bc0247c2"
+    },
+    {
+      "name": "fc_7_5_2",
+      "tasks": 1,
+      "error": 0,
+      "input_sha256": "a40ab02d08a8011982012e5b7a47ce6428b3e897d74644373ab622143e136613"
+    },
+    {
+      "name": "fc_9_10_3",
+      "tasks": 1,
+      "error": 0,
+      "input_sha256": "5ee81fbe01bf010b08048924b6ecac06cb6cad9e0a01ff57f1fd2155b8dcf53d"
+    },
+    {
+      "name": "fc_63_31_4",
+      "tasks": 1,
+      "error": 0,
+      "input_sha256": "6b1c38806ab873edd015e680ea1dc8b680f36c2b2ff56b43c73cf9e4bb5e188c"
+    },
+    {
+      "name": "fc_64_32_4",
+      "tasks": 1,
+      "error": 0,
+      "input_sha256": "2ab4b9719b5e7036b6024b2fcc039c2b30aa6f709f85fafeffea31508be22ebd"
+    },
+    {
+      "name": "fc_65_41_2",
+      "tasks": 4,
+      "error": 0,
+      "input_sha256": "bbf6ded33f6387e4d16a1fe00dac980df76d723d7b8b2192d0a5dbc7c10f852c"
+    },
+    {
+      "name": "activation_NONE",
+      "tasks": 2,
+      "error": 0,
+      "input_sha256": "04e6bf194c1dda4414a635a5827f625c258ff85d8fe9b33dae9bdc26c0440218"
+    },
+    {
+      "name": "activation_RELU",
+      "tasks": 2,
+      "error": 0,
+      "input_sha256": "cb46e2e217b3abc05fecd9e6181222391cb7ae42d8a0bbc9020472432e4f921c"
+    },
+    {
+      "name": "activation_RELU6",
+      "tasks": 2,
+      "error": 0,
+      "input_sha256": "e1c664a2ef64fafa537b89f5b37cc6658fd05810aad711fc61a9cdec7050beb0"
+    },
+    {
+      "name": "activation_LEAKY_RELU",
+      "tasks": 2,
+      "error": 0,
+      "input_sha256": "541c0728dafa08ca7aa1f12780e08fdf2fff53f13c0e90232e7b12e620ab76c2"
+    },
+    {
+      "name": "activation_SIGMOID",
+      "tasks": 2,
+      "error": 0,
+      "input_sha256": "0108be834d0e05392f2533e9bbf27ca3027519ce91a5a932a11f0e739fe8e0bd"
+    },
+    {
+      "name": "activation_TANH",
+      "tasks": 2,
+      "error": 0,
+      "input_sha256": "75c98a1af5f4eb0ec94a0a97cc0a52b82e520ff2562b84785ebab9fc3a22eb8b"
+    },
+    {
+      "name": "chain_sram",
+      "tasks": 2,
+      "error": 0,
+      "input_sha256": "f3151e5ce8d503b759a1187ee55c968298ec9582994f12c04ea2d3a443bcf991"
+    },
+    {
+      "name": "chain_internal",
+      "tasks": 2,
+      "error": 0,
+      "input_sha256": "cec47505d5d22ddb0a663de3a8a22dc752caee8c6dc6cdff0b8d0424b04ba2d4"
+    },
+    {
+      "name": "version",
+      "tasks": 1,
+      "error": 8,
+      "input_sha256": "0dbfe4c311b25e5d563602fb09e691148b09737caf5e1227a9890b7fffe38ddf"
+    },
+    {
+      "name": "reserved",
+      "tasks": 1,
+      "error": 4,
+      "input_sha256": "0f291be5bea27223f56182ee7655616c28230a4f951c415d0706317a95aaec71"
+    },
+    {
+      "name": "end",
+      "tasks": 1,
+      "error": 4,
+      "input_sha256": "cddd0712234b38b937f89fa94c01cc4394a3d379c100082c99523177cc5686e1"
+    },
+    {
+      "name": "k_zero",
+      "tasks": 1,
+      "error": 7,
+      "input_sha256": "eff180b4f0d32ea8e7034ba14a86f44d29c88efc10436f56867087e19bef29e6"
+    },
+    {
+      "name": "weights_align",
+      "tasks": 1,
+      "error": 2,
+      "input_sha256": "2b72277921b85ea86e59b0c408071ce4be8f877c73ffb6762775f6b34137d436"
+    },
+    {
+      "name": "source_range",
+      "tasks": 1,
+      "error": 3,
+      "input_sha256": "2810ab75941de2770068a88013b848c8fc1c18ee192988450072f35980ae43d6"
+    },
+    {
+      "name": "output_table",
+      "tasks": 1,
+      "error": 3,
+      "input_sha256": "e5b5b2153eaa6ca651d518e2f82a5e1d30176b62ed2fe19e5dd0ef00112650ab"
+    },
+    {
+      "name": "no_partial",
+      "tasks": 1,
+      "error": 4,
+      "input_sha256": "caf0ba90495e09a9f3ba3920c72604601c06e10172535cda28fc4236b3d3b5b9"
+    },
+    {
+      "name": "cache_unsupported",
+      "tasks": 1,
+      "error": 8,
+      "input_sha256": "58f1eb1fb1b120f7104ebd08948babe250163f1469621cc017f5fadad12049b4"
+    },
+    {
+      "name": "bias_value",
+      "tasks": 1,
+      "error": 7,
+      "input_sha256": "db6022d842331738a56af95009e28d0667c949a3723913b1a9650b873a6bd883"
+    },
+    {
+      "name": "partial_context",
+      "tasks": 4,
+      "error": 5,
+      "input_sha256": "0daf9b9af679e56eba702e81e98fd55396fab9f236a69bd0defbacacd89f190a"
+    }
+  ],
+  "source_sha256": {
+    "rtl/npu/har_task_scale.sv": "3dc2ec9fcf6bf2b150e974ad7150e92fd5d6c3f04a4f9095bb247ae42d093e32",
+    "rtl/npu/har_task_engine.sv": "64d67b640cbcb25c4eeac97341e5f1fdb731821a5579d7f123b6fa8ce6a246f2",
+    "rtl/npu/har_weight_store.sv": "473106074ca66f795445cd3862104d7e57da364b6ab119996eb612934b7d2913",
+    "rtl/npu/har_npu_core.sv": "b6945025a125ef113cecec7be0ec23c2b8651b29ba6dfe1de2dc605cb1d1cb52",
+    "rtl/npu/simple_npu_top.sv": "85e08db1d2b41a15ca330cfef12a136b81e02eb27d70896493d96f2c938b6bab",
+    "rtl/dma/har_dma.sv": "9a8bfc17022755b3b0723e2e40cbefbf96bd3d07612cb81c511f7df81e664b74",
+    "rtl/soc/my_npu_subsystem.sv": "f78345cef52827ac9ba7b828a51df601adde93e0501aaf33d5865bf69b4b5e65"
+  }
+}

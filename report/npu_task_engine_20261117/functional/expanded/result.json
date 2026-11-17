@@ -1,0 +1,123 @@
+{
+  "passed": true,
+  "soc": true,
+  "cases": [
+    {
+      "name": "chain",
+      "code_bytes": 200,
+      "free_bytes": 6072,
+      "segments": 1,
+      "descriptors": 2,
+      "special_segments": 0,
+      "observed_cycles": 1803
+    },
+    {
+      "name": "chain_materialized",
+      "code_bytes": 200,
+      "free_bytes": 6008,
+      "segments": 1,
+      "descriptors": 3,
+      "special_segments": 0,
+      "observed_cycles": 2141
+    },
+    {
+      "name": "deep",
+      "code_bytes": 200,
+      "free_bytes": 6584,
+      "segments": 1,
+      "descriptors": 3,
+      "special_segments": 0,
+      "observed_cycles": 1469
+    },
+    {
+      "name": "split",
+      "code_bytes": 200,
+      "free_bytes": 3384,
+      "segments": 1,
+      "descriptors": 5,
+      "special_segments": 0,
+      "observed_cycles": 2706
+    },
+    {
+      "name": "act_none",
+      "code_bytes": 200,
+      "free_bytes": 7608,
+      "segments": 1,
+      "descriptors": 1,
+      "special_segments": 0,
+      "observed_cycles": 721
+    },
+    {
+      "name": "act_relu",
+      "code_bytes": 200,
+      "free_bytes": 7608,
+      "segments": 1,
+      "descriptors": 1,
+      "special_segments": 0,
+      "observed_cycles": 721
+    },
+    {
+      "name": "act_relu6",
+      "code_bytes": 200,
+      "free_bytes": 7608,
+      "segments": 1,
+      "descriptors": 1,
+      "special_segments": 0,
+      "observed_cycles": 721
+    },
+    {
+      "name": "act_leaky",
+      "code_bytes": 200,
+      "free_bytes": 7608,
+      "segments": 1,
+      "descriptors": 1,
+      "special_segments": 0,
+      "observed_cycles": 721
+    },
+    {
+      "name": "act_sigmoid",
+      "code_bytes": 200,
+      "free_bytes": 7352,
+      "segments": 1,
+      "descriptors": 1,
+      "special_segments": 0,
+      "observed_cycles": 749
+    },
+    {
+      "name": "act_tanh",
+      "code_bytes": 200,
+      "free_bytes": 7352,
+      "segments": 1,
+      "descriptors": 1,
+      "special_segments": 0,
+      "observed_cycles": 749
+    },
+    {
+      "name": "special",
+      "code_bytes": 784,
+      "free_bytes": 4344,
+      "segments": 0,
+      "descriptors": 0,
+      "special_segments": 1,
+      "observed_cycles": 3182
+    },
+    {
+      "name": "same_shape_wrong_activation",
+      "code_bytes": 200,
+      "free_bytes": 4792,
+      "segments": 1,
+      "descriptors": 2,
+      "special_segments": 0,
+      "observed_cycles": 3616
+    },
+    {
+      "name": "special_disabled",
+      "code_bytes": 200,
+      "free_bytes": 4792,
+      "segments": 1,
+      "descriptors": 2,
+      "special_segments": 0,
+      "observed_cycles": 3616
+    }
+  ]
+}

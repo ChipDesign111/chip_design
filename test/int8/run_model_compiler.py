@@ -28,8 +28,11 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--soc',action='store_true');p.add_argument('--vsim',default='vsim')
     p.add_argument('--profile',action='store_true',help='Passive PC/state/bus observation; no emitted instrumentation')
     p.add_argument('--frozen-baseline',type=Path,help='Require every generated firmware image to equal a frozen matching case')
+    p.add_argument('--task-engine',action='store_true',help='Use ABI v1 autonomous segments (experimental RTL)')
+    p.add_argument('--comparison-baseline',type=Path,help='Require identical integer references and report same-case frozen cycles')
     args=p.parse_args()
     if args.profile and not args.soc:p.error('--profile requires --soc')
+    if args.task_engine and args.frozen_baseline:p.error('New task firmware cannot be byte-identical to the legacy baseline')
     run=ROOT/'test/int8/runs'/('compiler_'+datetime.datetime.now().strftime('%Y%m%d_%H%M%S'));run.mkdir(parents=True)
     torch.manual_seed(42);mixed=MixedNetwork().eval();wide=WideNetwork().eval()
     fixture_root=ROOT/'model/generic_mixed/data'
@@ -56,7 +59,7 @@ def main():
     results=[]
     for name,model,example,cpu in configurations:
         calibration=[v.reshape(1,64) for v in har_inputs[:12]] if name=='trained_har' else ([torch.from_numpy(v) for v in np.load(fixture_root/'calibration.npy')] if name in ('mixed','cpu_only') else [-example,example*0.5])
-        package=compile_model(model,example,calibration_inputs=calibration,force_cpu=cpu)
+        package=compile_model(model,example,calibration_inputs=calibration,force_cpu=cpu,task_engine=args.task_engine)
         if name=='range_fallback':assert package.nodes[0]['backend']=='CPU' and 'INT22' in package.nodes[0]['reason']
         for index,x in enumerate([example,torch.from_numpy(np.load(fixture_root/'held_out.npy'))] if name=='mixed' else [example]):
             directory=run/(name+str(index));directory.mkdir()
@@ -68,11 +71,18 @@ def main():
             log=run_soc(package,directory,x.numpy(),args.vsim,profile=args.profile) if args.soc else ''
             if not args.soc:package.write(directory,x.numpy())
             quant=package.reference(x.numpy())[package.graph['output']]
+            baseline_cycles=None
+            if args.comparison_baseline:
+                original=args.comparison_baseline/directory.name
+                if not original.is_dir():original=args.comparison_baseline/('models_'+directory.name)
+                assert json.loads((directory/'reference.json').read_text())==json.loads((original/'reference.json').read_text()),directory.name
+                baseline_cycles=int(re.search(r'INT8_SOC PASS cycles=(\d+)',(original/'soc.log').read_text()).group(1))
             scale=package.metadata['tensors'][package.graph['output']]['scale']
             with torch.no_grad():floating=model(x).numpy()
             results.append(dict(name=name+str(index),code_sha256=package.metadata['code_sha256'],
                                 backends=[n['backend'] for n in package.nodes],code_bytes=package.metadata['code_bytes'],
                                 observed_cycles=int(re.search(r'INT8_SOC PASS cycles=(\d+)',log).group(1)) if args.soc else None,
+                                baseline_cycles=baseline_cycles,
                                 npu_jobs=sum(len(n.get('jobs',[])) for n in package.nodes if n['backend']=='NPU'),
                                 free_bytes=package.metadata['free_bytes'],float_max_abs_error=float(np.abs(quant.astype(float)*scale-floating).max())))
     assert results[0]['code_sha256']==results[1]['code_sha256']
@@ -86,7 +96,7 @@ def main():
     except CompileError:pass
     else:raise AssertionError('Nonfinite runtime input was accepted')
     # Unsupported operators and oversized models must be rejected explicitly.
-    for model,x in [(nn.Sequential(nn.LeakyReLU()).eval(),torch.ones(1,4)),
+    for model,x in [(nn.Sequential(nn.Hardswish()).eval(),torch.ones(1,4)),
                     (nn.Sequential(nn.Linear(128,128)).eval(),torch.ones(1,128))]:
         try:compile_model(model,x)
         except (CompileError,ValueError):pass

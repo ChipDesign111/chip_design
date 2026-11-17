@@ -482,6 +482,8 @@ module my_soc_top #(
 
   logic auto_start,dma_done,dma_error,dma_read_active,dma_write_active;
   logic [31:0] auto_source,auto_dest,auto_words;
+  logic auto_task;
+  logic [3:0] auto_last_be;
   logic        npu_req, npu_we;
   logic npu_user, npu_busy, dma_busy, dma_req, dma_we, dma_conflict;
   logic [4:0] dma_addr;
@@ -501,6 +503,7 @@ module my_soc_top #(
       .clk_i(clk_i), .rst_ni(ndmreset_n), .req_i(npu_req), .we_i(npu_we),
       .addr_i(npu_addr), .wdata_i(npu_wdata), .rdata_o(npu_rdata),
       .auto_start_o(auto_start),.auto_source_o(auto_source),.auto_dest_o(auto_dest),.auto_words_o(auto_words),
+      .auto_task_o(auto_task),.auto_last_be_o(auto_last_be),
       .dma_done_i(dma_done),.dma_error_i(dma_error),.dma_read_i(dma_read_active),.dma_write_active_i(dma_write_active),
       .dma_write_i(npu_user), .dma_busy_i(dma_busy), .dma_rdata_i(dma_rdata),
       .dma_req_o(dma_req), .dma_we_o(dma_we), .dma_addr_o(dma_addr),
@@ -512,6 +515,7 @@ module my_soc_top #(
       .reg_req_i(dma_req), .reg_we_i(dma_we), .reg_addr_i(dma_addr),
       .reg_wdata_i(dma_wdata), .reg_rdata_o(dma_rdata),
       .auto_start_i(auto_start),.auto_source_i(auto_source),.auto_dest_i(auto_dest),.auto_words_i(auto_words),
+      .auto_task_i(auto_task),.auto_last_be_i(auto_last_be),
       .done_o(dma_done),.error_o(dma_error),.read_active_o(dma_read_active),.write_active_o(dma_write_active),
       .npu_busy_i(npu_busy), .conflict_i(dma_conflict), .busy_o(dma_busy)
   );

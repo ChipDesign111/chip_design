@@ -1,0 +1,117 @@
+{
+  "abi": 1,
+  "execution": [
+    {
+      "backend": "TASK",
+      "index": 0,
+      "address": 2147490112,
+      "count": 2,
+      "nodes": [
+        "fc",
+        "tanh"
+      ],
+      "tasks": [
+        {
+          "task": 0,
+          "fc_node": "fc",
+          "output_node": null,
+          "output_offset": 0,
+          "descriptor": {
+            "op": 1,
+            "activation": 0,
+            "k": 64,
+            "n": 9,
+            "batch": 2,
+            "source": 2147491640,
+            "weights": 2147490500,
+            "bias": 2147491556,
+            "destination": 0,
+            "input_stride": 68,
+            "output_stride": 0,
+            "initialize": true,
+            "last_k": false,
+            "input_internal": false,
+            "keep_output": false,
+            "end_segment": false,
+            "lut_cache": false,
+            "fc_multiplier": 2440,
+            "fc_shift": 21,
+            "act_multiplier": 1,
+            "act_shift": 0,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 0,
+            "clamp_max": 127,
+            "context": 0
+          }
+        },
+        {
+          "task": 1,
+          "fc_node": "fc",
+          "output_node": "tanh",
+          "output_offset": 0,
+          "descriptor": {
+            "op": 1,
+            "activation": 5,
+            "k": 1,
+            "n": 9,
+            "batch": 2,
+            "source": 2147491704,
+            "weights": 2147491524,
+            "bias": 0,
+            "destination": 2147491592,
+            "input_stride": 68,
+            "output_stride": 12,
+            "initialize": false,
+            "last_k": true,
+            "input_internal": false,
+            "keep_output": false,
+            "end_segment": true,
+            "lut_cache": false,
+            "fc_multiplier": 2440,
+            "fc_shift": 21,
+            "act_multiplier": 1,
+            "act_shift": 0,
+            "negative_multiplier": 1,
+            "negative_shift": 0,
+            "lut_address": 2147490244,
+            "clamp_max": 127,
+            "context": 0
+          }
+        }
+      ],
+      "fc_jobs": 2,
+      "internal_edges": []
+    }
+  ],
+  "tensors": {
+    "x": {
+      "shape": [
+        2,
+        65
+      ],
+      "scale": 0.007874015748031496,
+      "stride": 68,
+      "address": 2147491640
+    },
+    "fc": {
+      "shape": [
+        2,
+        9
+      ],
+      "scale": 0.006581203205378976,
+      "stride": 12,
+      "address": 2147491616,
+      "storage": "fused"
+    },
+    "tanh": {
+      "shape": [
+        2,
+        9
+      ],
+      "scale": 0.005382558022897075,
+      "stride": 12,
+      "address": 2147491592
+    }
+  }
+}

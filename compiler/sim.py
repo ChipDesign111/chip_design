@@ -20,6 +20,7 @@ def simulate(directory,vsim='vsim',profile=False):
     checks=['result_fd=$fopen("actual_tensors.hex","w"); if(result_fd==0) $fatal(1,"Cannot open tensor dump");']
     for name,values in expected.items():
         t=ts[name];b,n=t['shape']
+        if t.get('storage') in ('internal','fused','special_fc','special_hidden'):continue
         for sample in range(b):
             row=bytes(v&255 for v in values[sample])+bytes(t['stride']-n)
             for offset in range(0,len(row),4):
@@ -29,7 +30,7 @@ def simulate(directory,vsim='vsim',profile=False):
                 checks.append(f"$fdisplay(result_fd,\"%08x %08x\",32'h{address:08x},observed);")
                 checks.append(f"if(observed!==32'h{word:08x}) $fatal(1,\"Tensor {name} row {sample} word {offset//4} mismatch actual %h\",observed);")
     checks.append('$fclose(result_fd);')
-    starts=sum(len(n.get('jobs',[])) for n in metadata['nodes'] if n['backend']=='NPU')
+    starts=metadata.get('npu_core_starts',sum(len(n.get('jobs',[])) for n in metadata['nodes'] if n['backend']=='NPU'))
     tb=(ROOT/'test/int8/tb_soc.sv').read_text().replace('module tb_soc;','module tb_compiled_model;')
     insert="""
     reg [31:0] observed;
@@ -53,10 +54,57 @@ def simulate(directory,vsim='vsim',profile=False):
         end
     endtask
 """
+    segments=metadata.get('task_segments',[])
+    if segments:
+        insert+='''
+    integer task_trace_fd,task_segments_seen=0;
+    initial begin
+        task_trace_fd=$fopen("task_trace.csv","w");
+        if(task_trace_fd==0)$fatal(1,"Cannot open task trace");
+        $fdisplay(task_trace_fd,"segment,task,sample,element,fc_quant,output");
+    end
+    always @(posedge clk) begin
+        if(dut.i_npu_subsystem.tasks.start && !dut.i_npu_subsystem.task_busy &&
+           !dut.i_npu_subsystem.core_busy && !dut.dma_busy)
+            task_segments_seen<=task_segments_seen+1;
+        if(dut.i_npu_subsystem.post_write)
+            $fdisplay(task_trace_fd,"%0d,%0d,%0d,%0d,%0d,%0d",task_segments_seen-1,
+                dut.i_npu_subsystem.tasks.index_q,dut.i_npu_subsystem.post_index[6:5],
+                dut.i_npu_subsystem.post_index[4:0],$signed(dut.i_npu_subsystem.tasks.quant_q),
+                $signed(dut.i_npu_subsystem.post_data));
+    end
+'''
+        checks.insert(0,f'if(task_segments_seen!={len(segments)}) $fatal(1,"Wrong segment count");$fclose(task_trace_fd);')
+    specials=metadata.get('special_segments',[])
+    if specials:
+        insert+='''
+    integer special_fd,special_seen=0;
+    reg special_pending=0;
+    reg [1:0] special_sample;
+    reg [4:0] special_element;
+    reg signed [21:0] special_raw;
+    initial begin
+        special_fd=$fopen("special_trace.csv","w");
+        if(special_fd==0)$fatal(1,"Cannot open special trace");
+        $fdisplay(special_fd,"segment,sample,element,accumulator,hidden");
+    end
+    always @(posedge clk) begin
+        if(dut.i_npu_subsystem.i_npu_core.start && !dut.i_npu_subsystem.i_npu_core.single_mode)
+            special_seen<=special_seen+1;
+        special_pending<=dut.i_npu_subsystem.i_npu_core.core.quant_value_valid_q;
+        special_sample<=dut.i_npu_subsystem.i_npu_core.core.quant_value_sample_q;
+        special_element<=dut.i_npu_subsystem.i_npu_core.core.quant_value_index_q;
+        special_raw<=dut.i_npu_subsystem.i_npu_core.core.quant_value_q;
+    end
+    always @(negedge clk) if(special_pending)
+        $fdisplay(special_fd,"%0d,%0d,%0d,%0d,%0d",special_seen-1,special_sample,special_element,
+            special_raw,$signed(dut.i_npu_subsystem.i_npu_core.core.h[special_sample][special_element*8+:8]));
+'''
+        checks.insert(0,f'if(special_seen!={len(specials)})$fatal(1,"Wrong MODE0 count");$fclose(special_fd);')
     tb=tb.replace('    integer i;',insert+'\n    integer i;')
     if profile:
         from .profiling import monitor_source
-        tb=tb.replace('    integer i;',monitor_source()+'\n    integer i;')
+        tb=tb.replace('    integer i;',monitor_source(task_engine=bool(metadata.get('task_abi')))+'\n    integer i;')
     tb=tb.replace('if(read_overlap==0 || write_overlap==0) $fatal(1,"Full AXI SoC did not overlap DMA and MAC");',
                   f'if(npu_starts!={starts}) $fatal(1,"Wrong NPU job count %0d",npu_starts);')
     tb=tb.replace('        $display("INT8_SOC PASS', '\n'.join(checks)+'\n        $display("INT8_SOC PASS')
@@ -79,6 +127,41 @@ def simulate(directory,vsim='vsim',profile=False):
               'if {![string equal -nocase $status c0dec0de]} {quit -code 3}','quit -code 0']
     (directory/'soc.do').write_text('\n'.join(commands)+'\n')
     log=execute([vsim,'-c','-do','do soc.do'],directory,'soc','COMPILED_MODEL_PASS')
+    if segments:
+        import csv
+        observed={}
+        for row in csv.DictReader((directory/'task_trace.csv').open()):
+            si,ti,b,e=(int(row[k]) for k in ('segment','task','sample','element'))
+            record=segments[si]['tasks'][ti];e+=record['output_offset']
+            for key,column in [('fc_node','fc_quant'),('output_node','output')]:
+                name=record[key]
+                if name is None:continue
+                index=(name,b,e);v=int(row[column])
+                if index in observed and observed[index]!=v:raise AssertionError('Inconsistent task trace '+str(index))
+                observed[index]=v
+                if v!=expected[name][b][e]:raise AssertionError(f'Task integer mismatch {index}: {v} != {expected[name][b][e]}')
+        for node in metadata['nodes']:
+            if 'segment' not in node:continue
+            for b,row in enumerate(expected[node['name']]):
+                for e in range(len(row)):
+                    if (node['name'],b,e) not in observed:raise AssertionError('Missing task trace '+str((node['name'],b,e)))
+        (directory/'task_validation.json').write_text(json.dumps(dict(passed=True,segments=len(segments),
+            descriptors=sum(s['count'] for s in segments),observed_integer_values=len(observed)),indent=2)+'\n')
+    if specials:
+        import csv
+        from .compiler import rescale
+        nodes={n['name']:n for n in metadata['nodes']};seen=set()
+        for row in csv.DictReader((directory/'special_trace.csv').open()):
+            si,b,e,acc,h=(int(row[k]) for k in ('segment','sample','element','accumulator','hidden'))
+            segment=specials[si];node=nodes[segment['fc1']]
+            q=int(rescale(acc,node['mult'][0],node['shift']))
+            if q!=expected[segment['fc1']][b][e] or h!=expected[segment['hidden']][b][e]:
+                raise AssertionError(f'MODE0 integer boundary mismatch {(si,b,e)}')
+            if (si,b,e) in seen:raise AssertionError('Duplicate MODE0 hidden output')
+            seen.add((si,b,e))
+        if len(seen)!=sum(s['batch']*32 for s in specials):raise AssertionError('Incomplete MODE0 trace')
+        (directory/'special_validation.json').write_text(json.dumps(dict(passed=True,segments=len(specials),
+            intermediate_values=len(seen)*2),indent=2)+'\n')
     words={int(line.split()[0],16):int(line.split()[1],16) for line in (directory/'actual_tensors.hex').read_text().splitlines()}
     out=ts[metadata['output']];rows=[]
     for sample in range(out['shape'][0]):

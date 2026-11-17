@@ -1,0 +1,155 @@
+{
+  "cpu_stage_occupancy_cycles": {
+    "boot_or_pipeline": 15,
+    "startup": 2,
+    "cpu_fc": 324,
+    "cpu_quant": 27,
+    "cpu_schedule": 34,
+    "cpu_launch": 6,
+    "cpu_poll": 83,
+    "finish": 15
+  },
+  "cpu_node_occupancy_cycles": {
+    "runtime": 32,
+    "_0": 351,
+    "_1": 123
+  },
+  "exclusive_wall_cycles": {
+    "boot_or_pipeline": 15,
+    "startup": 2,
+    "cpu_fc": 324,
+    "cpu_quant": 27,
+    "cpu_schedule": 34,
+    "cpu_launch": 6,
+    "cpu_poll": 12,
+    "task_descriptor_dma": 22,
+    "task_validate": 1,
+    "task_input_dma": 10,
+    "task_post_select": 6,
+    "task_activation_prepare": 3,
+    "task_activation_rescale": 18,
+    "task_pack_store": 3,
+    "task_output_dma": 7,
+    "task_commit": 1,
+    "finish": 15
+  },
+  "cpu_node_stage_cycles": {
+    "runtime": {
+      "boot_or_pipeline": 15,
+      "startup": 2,
+      "finish": 15
+    },
+    "_0": {
+      "cpu_fc": 324,
+      "cpu_quant": 27
+    },
+    "_1": {
+      "cpu_schedule": 34,
+      "cpu_launch": 6,
+      "cpu_poll": 83
+    }
+  },
+  "issued_instruction_events": {
+    "boot_or_pipeline": 2,
+    "startup": 2,
+    "cpu_fc": 132,
+    "cpu_quant": 15,
+    "cpu_schedule": 20,
+    "cpu_launch": 4,
+    "cpu_poll": 36,
+    "finish": 7
+  },
+  "dma_handshake_cycles": {
+    "busy_cycles": 33,
+    "ar_backpressure": 0,
+    "r_data_unavailable": 6,
+    "aw_backpressure": 0,
+    "w_backpressure": 0,
+    "b_response_unavailable": 3
+  },
+  "task_state_occupancy_cycles": {
+    "1": 1,
+    "2": 21,
+    "3": 1,
+    "4": 1,
+    "5": 9,
+    "13": 3,
+    "14": 3,
+    "16": 3,
+    "17": 18,
+    "20": 3,
+    "21": 1,
+    "22": 6,
+    "23": 1
+  },
+  "task_segment_starts": 1,
+  "dma_role_traffic": {
+    "weight": {
+      "read_bytes": 0,
+      "write_payload_bytes": 0,
+      "write_effective_bytes": 0
+    },
+    "descriptor": {
+      "read_bytes": 64,
+      "write_payload_bytes": 64,
+      "write_effective_bytes": 64
+    },
+    "input": {
+      "read_bytes": 4,
+      "write_payload_bytes": 4,
+      "write_effective_bytes": 4
+    },
+    "output": {
+      "read_bytes": 4,
+      "write_payload_bytes": 4,
+      "write_effective_bytes": 3
+    }
+  },
+  "observed_edges": 506,
+  "elapsed_edge_difference": 505,
+  "npu_state_cycles": {},
+  "jobs": [],
+  "traffic": {
+    "dma_read_bytes": 72,
+    "dma_write_payload_bytes": 72,
+    "dma_write_effective_bytes": 71,
+    "sram_port_read_bytes": 816,
+    "sram_cpu_read_bytes": 36,
+    "sram_loads": 27,
+    "sram_cpu_write_bytes": 7,
+    "sram_stores": 4,
+    "sram_port_write_bytes": 10,
+    "npu_mmio_cpu_read_bytes": 24,
+    "npu_mmio_loads": 6,
+    "npu_mmio_cpu_write_bytes": 16,
+    "npu_mmio_stores": 4
+  },
+  "tensor_traffic": {
+    "input_1": {
+      "cpu_read_bytes": 12,
+      "cpu_read_transactions": 12,
+      "macro_read_bytes": 48,
+      "macro_read_commands": 12
+    },
+    "_0": {
+      "cpu_write_bytes": 3,
+      "cpu_write_transactions": 3,
+      "macro_write_bytes": 3,
+      "macro_write_commands": 3,
+      "macro_read_bytes": 3,
+      "macro_read_commands": 1
+    },
+    "_1": {
+      "macro_write_bytes": 3,
+      "macro_write_commands": 1
+    }
+  },
+  "rules": {
+    "cpu_cycles": "Phase of most recently accepted ID instruction (id_valid && is_decoding); hold across bubbles/stalls. No speculative invalid-ID PC attribution. Wall-time boundary convention, not causal stall attribution.",
+    "npu_cycles": "Busy-edge state occupancy is a separate overlapping view; never add to CPU stage cycles",
+    "exclusive": "Every edge attributed to NPU state while busy, otherwise most recent accepted CPU instruction phase; sums exactly to hardware elapsed count. Accounting convention, not a CPU stall-cause proof.",
+    "wait_weight": "WAIT_TILE with tile_valid=0 only; other idle states are not DMA wait",
+    "traffic": "CPU LSU accepted byte enables and physical SRAM command reads/writes are distinct levels, not additive. SRAM reads are full32-bit accesses, including replay and instruction fetch. DMA reads counted at real R handshake.",
+    "tensor": "Logical tensor byte intervals exclude stride padding; macro_read_bytes also include repeated physical reads. Loader and post-completion SBA checks excluded."
+  }
+}

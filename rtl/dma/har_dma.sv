@@ -8,6 +8,8 @@ module har_dma (
     input logic npu_busy_i, conflict_i,
     input logic auto_start_i,
     input logic [31:0] auto_source_i,auto_dest_i,auto_words_i,
+    input logic auto_task_i,
+    input logic [3:0] auto_last_be_i,
     output wire done_o,error_o,read_active_o,write_active_o,
     output wire busy_o,
     output wire [31:0] ar_addr_o, aw_addr_o,
@@ -19,6 +21,7 @@ module har_dma (
     input logic r_last_i, r_valid_i,
     output wire r_ready_o,
     output wire [31:0] w_data_o,
+    output wire [3:0] w_strb_o,
     output wire w_last_o, w_valid_o,
     input logic w_ready_i,
     input logic [1:0] b_resp_i,
@@ -33,6 +36,7 @@ module har_dma (
     logic [31:0] fifo[0:1];
     logic read_ptr,write_ptr;
     logic [1:0] occupancy;
+    logic [3:0] last_be_q;
     wire start=reg_req_i && reg_we_i && reg_addr_i==0 && reg_wdata_i[0];
     wire ack=reg_req_i && reg_we_i && reg_addr_i==0 && reg_wdata_i[1];
     wire [31:0] cfg_source=auto_start_i ? auto_source_i:source_cfg;
@@ -40,9 +44,24 @@ module har_dma (
     wire [31:0] cfg_count=auto_start_i ? auto_words_i:count_cfg;
     wire [32:0] source_end={1'b0,cfg_source}+({1'b0,cfg_count}<<2);
     wire [32:0] dest_end={1'b0,cfg_dest}+({1'b0,cfg_count}<<2);
-    wire valid_source=cfg_count>0 && cfg_count<=2048 && cfg_source[1:0]==0 &&
-        cfg_source>=32'h80000000 && source_end<=33'h080002000;
-    wire valid_dest=cfg_dest[1:0]==0 && cfg_dest>=32'h70000100 && dest_end<=33'h070000180;
+    // Only the internal task owner may request the new directions/windows.
+    // An omitted port in a legacy stand-alone bench has no authorization.
+    wire task_request=auto_start_i && (auto_task_i===1'b1);
+    wire source_sram=cfg_source>=32'h80000000 && source_end<=33'h080002000;
+    wire dest_sram=cfg_dest>=32'h80000000 && dest_end<=33'h080002000;
+    wire source_packed=cfg_source>=32'h70001680 && source_end<=33'h070001700;
+    wire dest_task=(cfg_dest>=32'h70001640 && dest_end<=33'h070001680) ||
+        (cfg_dest>=32'h70000040 && dest_end<=33'h070000080) ||
+        (cfg_dest>=32'h70000c00 && dest_end<=33'h070000c40) ||
+        (cfg_dest>=32'h70001000 && dest_end<=33'h070001080) ||
+        (cfg_dest>=32'h700009c0 && dest_end<=33'h070000a40) ||
+        (cfg_dest==32'h70001700 && cfg_count==1);
+    wire valid_count=cfg_count>0 && cfg_count<=2048;
+    wire valid_source=valid_count && cfg_source[1:0]==0 &&
+        (task_request ? (source_sram || source_packed):source_sram);
+    wire valid_dest=cfg_dest[1:0]==0 && (task_request ?
+        ((source_sram && dest_task) || (source_packed && dest_sram)) && auto_last_be_i!=0:
+        (cfg_dest>=32'h70000100 && dest_end<=33'h070000180));
     function automatic [4:0] burst_size(input logic [31:0] src,dst,count);
         logic [31:0] n,src_boundary,dst_boundary;
         begin
@@ -62,6 +81,7 @@ module har_dma (
     assign w_valid_o=state==COPY && aw_done && occupancy!=0 && !write_done;
     assign w_data_o=fifo[read_ptr];
     assign w_last_o=write_count+1'b1==burst_words;
+    assign w_strb_o=(remaining=={27'd0,burst_words} && w_last_o) ? last_be_q:4'hf;
     wire pop=w_valid_o && w_ready_i;
     assign r_ready_o=state==COPY && ar_done && !read_done &&
         (read_count>=burst_words || occupancy<2 || pop);
@@ -97,7 +117,7 @@ module har_dma (
             state<=IDLE;source_cfg<=0;dest_cfg<=0;count_cfg<=0;source_q<=0;dest_q<=0;
             remaining<=0;cycles<=0;copied<=0;error_code<=0;burst_words<=0;read_count<=0;write_count<=0;
             ar_done<=0;aw_done<=0;read_done<=0;write_done<=0;done<=0;error<=0;read_error<=0;
-            read_ptr<=0;write_ptr<=0;occupancy<=0;reg_rdata_o<=0;
+            read_ptr<=0;write_ptr<=0;occupancy<=0;reg_rdata_o<=0;last_be_q<=4'hf;
         end else begin
             reg_rdata_o<=reg_req_i && !reg_we_i ? reg_data:32'd0;
             if(busy_o) cycles<=cycles+1'b1;
@@ -116,6 +136,7 @@ module har_dma (
                             error<=1;error_code<=1;done<=1;
                         end else begin
                             source_q<=cfg_source;dest_q<=cfg_dest;remaining<=cfg_count;
+                            last_be_q<=task_request ? auto_last_be_i:4'hf;
                             burst_words<=burst_size(cfg_source,cfg_dest,cfg_count);
                             ar_done<=0;aw_done<=0;read_done<=0;write_done<=0;read_error<=0;
                             occupancy<=0;read_ptr<=0;write_ptr<=0;read_count<=0;write_count<=0;state<=COPY;

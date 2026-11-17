@@ -10,14 +10,16 @@ def main():
     p.add_argument('--factory',default='build_model');p.add_argument('--weights',type=Path)
     p.add_argument('--input',type=Path,required=True);p.add_argument('--calibration',type=Path)
     p.add_argument('--simulate',action='store_true');p.add_argument('--vsim',default='vsim');
-    p.add_argument('--out',type=Path,required=True);p.add_argument('--force-cpu',action='store_true');a=p.parse_args()
+    p.add_argument('--out',type=Path,required=True);p.add_argument('--force-cpu',action='store_true')
+    p.add_argument('--task-engine',action='store_true',help='Use experimental autonomous task RTL')
+    a=p.parse_args()
     spec=importlib.util.spec_from_file_location('user_network',a.model)
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     model=getattr(module,a.factory)().cpu().eval()
     if a.weights:model.load_state_dict(torch.load(a.weights,map_location='cpu',weights_only=True))
     x=torch.from_numpy(np.load(a.input).astype(np.float32))
     calibration=[torch.from_numpy(v.astype(np.float32)) for v in np.load(a.calibration)] if a.calibration else None
-    package=compile_model(model,x,calibration,force_cpu=a.force_cpu);package.write(a.out,x.numpy())
+    package=compile_model(model,x,calibration,force_cpu=a.force_cpu,task_engine=a.task_engine);package.write(a.out,x.numpy())
     if a.simulate:
         from .sim import simulate
         simulate(a.out,a.vsim)

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "INT8_SHARED_16MAC_SRAM_TILE_DMA_BATCH4_ZERO_BUBBLE_W2_PACKED_ACC22_BIAS22",
+  "status": "INT8_SHARED_16MAC_SRAM_TILE_DMA_BATCH4_ZERO_BUBBLE_W2_PACKED_ACC22_BIAS22_TASK_ABI1_PROTOTYPE",
   "organization": "ChipDesign111",
   "repository": "chip_design",
   "network": {
@@ -133,6 +133,26 @@
         "name": "single_fc_results",
         "offset": 5120,
         "size_bytes": 512
+      },
+      {
+        "name": "task_control",
+        "offset": 5632,
+        "size_bytes": 64
+      },
+      {
+        "name": "task_descriptor_dma_ingress",
+        "offset": 5696,
+        "size_bytes": 64
+      },
+      {
+        "name": "task_packed_output",
+        "offset": 5760,
+        "size_bytes": 128
+      },
+      {
+        "name": "task_lut_dma_ingress",
+        "offset": 5888,
+        "size_bytes": 4
       }
     ]
   },
@@ -147,7 +167,8 @@
     "fc2_transfers_per_batch": 4,
     "weight_bytes_per_batch": 2240,
     "source_bytes": 8192,
-    "compute_overlap": true
+    "compute_overlap": true,
+    "task_directions": "SRAM to guarded descriptor/input/bias/LUT ingress; packed hidden buffer to SRAM with final-word WSTRB and B-response completion"
   },
   "boot": {
     "commit_address": "0x0001003c",
@@ -177,5 +198,25 @@
       "single_init": 1,
       "single_accumulate": 3
     }
+  },
+  "task_engine": {
+    "abi": 1,
+    "descriptor_bytes": 64,
+    "count_max": 128,
+    "k_max": 64,
+    "n_max": 32,
+    "batch_max": 4,
+    "activations": [
+      "NONE",
+      "ReLU",
+      "ReLU6",
+      "LeakyReLU",
+      "Sigmoid",
+      "Tanh"
+    ],
+    "lut_cache": false,
+    "forward_bytes": 128,
+    "generic_scaler": "shared signed22x9, four byte products, signed54 sum and separate rounding",
+    "acceptance": "functional prototype; new physical acceptance pending"
   }
 }
