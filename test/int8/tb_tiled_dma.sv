@@ -101,6 +101,34 @@ module tb_tiled_dma;
             if(timeout>=30000) $fatal(1,"DMA/NPU timeout");
         end
     endtask
+    task check_input_window;
+        integer slot,word_index,byte_addr;
+        reg [31:0] value;
+        reg [4095:0] inputs_before;
+        begin
+            $display("MMIO_TEST input window bounds");
+            for(slot=2;slot<4;slot=slot+1)
+                for(word_index=0;word_index<16;word_index=word_index+1) begin
+                    byte_addr='h1000+(slot-2)*'h40+word_index*4;
+                    value=32'ha5a50000 | byte_addr;
+                    put(byte_addr,value);
+                    if(dut.input_packed[slot*512+word_index*32+:32]!==value)
+                        $fatal(1,"Legal input write rejected at %h",byte_addr);
+                end
+            check(4,0);
+            inputs_before=dut.input_packed;
+            // Every reserved word must independently set ERROR and leave all
+            // four samples intact, including the adjacent legal word 0x107c.
+            for(byte_addr='h1080;byte_addr<'h1180;byte_addr=byte_addr+4) begin
+                put(0,2);check(4,0);
+                put(byte_addr,32'hdead0000 | byte_addr);check(4,4);
+                if(dut.input_packed!==inputs_before)
+                    $fatal(1,"Reserved input write changed samples at %h",byte_addr);
+            end
+            put(0,2);check(4,0);
+            $display("MMIO_INPUT_WINDOW PASS legal_words=32 reserved_words=64");
+        end
+    endtask
     string directory,filename;
     integer count,which,j,n,batch,input_addr,output_addr,golden_addr,class_addr;
     initial begin
@@ -111,6 +139,7 @@ module tb_tiled_dma;
         if($bits(dut.b1[0])!=22 || $bits(dut.b2[0])!=22)
             $fatal(1,"Expected INT22 bias storage");
         #1;rst_n=0;repeat(3) @(negedge clk);rst_n=1;
+        check_input_window();
         // Invalid SRAM pointer cannot start an inference.
         put(0,1);check(4,4);
         for(which=0;which<count;which=which+1) begin
