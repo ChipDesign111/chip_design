@@ -12,7 +12,9 @@ def main():
     p.add_argument('--simulate',action='store_true');p.add_argument('--vsim',default='vsim');
     p.add_argument('--out',type=Path,required=True);p.add_argument('--force-cpu',action='store_true')
     p.add_argument('--task-engine',action='store_true',help='Use experimental autonomous task RTL')
-    p.add_argument('--lut-cache',action='store_true',help='Target experimental TASK_LUT_WORD_CACHE=1 hardware')
+    cache=p.add_mutually_exclusive_group()
+    cache.add_argument('--lut-cache',dest='lut_cache',action='store_true',default=None,help='Use the selected one-word shared LUT cache')
+    cache.add_argument('--no-lut-cache',dest='lut_cache',action='store_false',help='Use direct SRAM LUT reads')
     a=p.parse_args()
     spec=importlib.util.spec_from_file_location('user_network',a.model)
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)

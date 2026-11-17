@@ -1,0 +1,53 @@
+TASK_CASE PASS image=fc_1_1_1_input.hex tasks=1 error=0 cycles=148
+TASK_CASE PASS image=fc_7_5_2_input.hex tasks=1 error=0 cycles=412
+TASK_CASE PASS image=fc_9_10_3_input.hex tasks=1 error=0 cycles=912
+TASK_CASE PASS image=fc_63_31_4_input.hex tasks=1 error=0 cycles=4427
+TASK_CASE PASS image=fc_64_32_4_input.hex tasks=1 error=0 cycles=4469
+TASK_CASE PASS image=fc_65_41_2_input.hex tasks=4 error=0 cycles=5076
+TASK_CASE PASS image=activation_NONE_input.hex tasks=2 error=0 cycles=3362
+TASK_CASE PASS image=activation_RELU_input.hex tasks=2 error=0 cycles=3362
+TASK_CASE PASS image=activation_RELU6_input.hex tasks=2 error=0 cycles=3362
+TASK_CASE PASS image=activation_LEAKY_RELU_input.hex tasks=2 error=0 cycles=3362
+TASK_CASE PASS image=activation_SIGMOID_input.hex tasks=2 error=0 cycles=2521
+TASK_CASE PASS image=activation_TANH_input.hex tasks=2 error=0 cycles=2521
+TASK_CASE PASS image=chain_sram_input.hex tasks=2 error=0 cycles=2862
+TASK_CASE PASS image=chain_internal_input.hex tasks=2 error=0 cycles=2767
+TASK_CASE PASS image=version_input.hex tasks=1 error=8 cycles=59
+TASK_CASE PASS image=reserved_input.hex tasks=1 error=4 cycles=59
+TASK_CASE PASS image=end_input.hex tasks=1 error=4 cycles=59
+TASK_CASE PASS image=header_reserved_input.hex tasks=1 error=4 cycles=59
+TASK_CASE PASS image=shape_reserved_input.hex tasks=1 error=4 cycles=59
+TASK_CASE PASS image=shift_reserved_input.hex tasks=1 error=4 cycles=59
+TASK_CASE PASS image=clamp_reserved_input.hex tasks=1 error=4 cycles=59
+TASK_CASE PASS image=last_reserved_input.hex tasks=1 error=4 cycles=59
+TASK_CASE PASS image=unknown_activation_input.hex tasks=1 error=8 cycles=59
+TASK_CASE PASS image=batch_invalid_input.hex tasks=1 error=7 cycles=59
+TASK_CASE PASS image=k_zero_input.hex tasks=1 error=7 cycles=59
+TASK_CASE PASS image=weights_align_input.hex tasks=1 error=2 cycles=59
+TASK_CASE PASS image=source_range_input.hex tasks=1 error=3 cycles=59
+TASK_CASE PASS image=output_table_input.hex tasks=1 error=3 cycles=59
+TASK_CASE PASS image=no_partial_input.hex tasks=1 error=4 cycles=59
+TASK_CASE PASS image=cache_on_non_lut_input.hex tasks=1 error=4 cycles=59
+TASK_CASE PASS image=bias_value_input.hex tasks=1 error=7 cycles=79
+TASK_CASE PASS image=partial_context_input.hex tasks=4 error=5 cycles=2153
+TASK_CASE PASS image=cache_new_segment_1_input.hex tasks=1 error=0 cycles=110
+TASK_CASE PASS image=cache_new_segment_2_input.hex tasks=1 error=0 cycles=110
+TASK_CASE PASS image=cache_direct_interleave_input.hex tasks=3 error=0 cycles=329
+TASK_CASE PASS image=fc_1_1_1_input.hex tasks=1 error=6 cycles=58
+TASK_CASE PASS image=fc_7_5_2_input.hex tasks=1 error=6 cycles=388
+TASK_CASE PASS image=fc_7_5_2_input.hex tasks=1 error=0 cycles=412
+TASK_CASE PASS image=fc_1_1_1_input.hex tasks=1 error=0 cycles=148
+TASK_RESET PASS state=2
+TASK_CASE PASS image=fc_1_1_1_input.hex tasks=1 error=0 cycles=148
+TASK_RESET PASS state=5
+TASK_CASE PASS image=fc_1_1_1_input.hex tasks=1 error=0 cycles=148
+TASK_RESET PASS state=12
+TASK_CASE PASS image=fc_1_1_1_input.hex tasks=1 error=0 cycles=148
+TASK_RESET PASS state=15
+TASK_CASE PASS image=fc_1_1_1_input.hex tasks=1 error=0 cycles=148
+TASK_RESET PASS state=17
+TASK_CASE PASS image=fc_1_1_1_input.hex tasks=1 error=0 cycles=148
+TASK_RESET PASS state=22
+TASK_CASE PASS image=fc_7_5_2_input.hex tasks=1 error=0 cycles=412
+TASK_LEGACY_SWITCH PASS
+TASK_ENGINE PASS

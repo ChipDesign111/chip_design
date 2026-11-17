@@ -247,7 +247,8 @@ class Codegen:
         self.m.image[:len(code)]=code
         return a
 
-def compile_model(model,example_input,calibration_inputs=None,force_cpu=False,*,task_engine=False,forward=True,fuse=True,specialize=True,lut_cache=False):
+def compile_model(model,example_input,calibration_inputs=None,force_cpu=False,*,task_engine=False,forward=True,fuse=True,specialize=True,lut_cache=None):
+    if lut_cache is None:lut_cache=task_engine
     if lut_cache and not task_engine:raise CompileError('LUT cache requires task-engine target')
     graph=capture(model,example_input,calibration_inputs);mem=Memory();ts=graph['tensors'];nodes=graph['nodes']
     for name,t in ts.items():

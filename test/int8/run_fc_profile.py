@@ -17,6 +17,7 @@ def main():
     parser.add_argument('--out',type=Path)
     parser.add_argument('--frozen-suite',type=Path,help='Reuse exact model/input/calibration arrays')
     parser.add_argument('--vsim',default='vsim')
+    parser.add_argument('--task-engine',action='store_true')
     args=parser.parse_args()
     out=args.out or ROOT/'test/int8/runs'/('fc_profile_'+datetime.now().strftime('%Y%m%d_%H%M%S'))
     out=out.resolve();out.mkdir(parents=True,exist_ok=False)
@@ -37,9 +38,10 @@ def main():
         x=torch.from_numpy(values['x']);references=[]
         frozen.append(dict(name=name,sha256=hashlib.sha256(file.read_bytes()).hexdigest(),k=k,n=n,batch=b))
         for force_cpu in [False,True]:
-            backend='cpu' if force_cpu else 'npu'
-            package=compile_model(model,x,[-x,x*0.5],force_cpu=force_cpu)
-            assert package.nodes[0]['backend']==backend.upper()
+            backend='cpu' if force_cpu else 'auto' if args.task_engine else 'npu'
+            package=compile_model(model,x,[-x,x*0.5],force_cpu=force_cpu,task_engine=args.task_engine)
+            actual_backend=package.nodes[0]['backend']
+            assert actual_backend==('CPU' if force_cpu or args.task_engine and k*n*b==1 else 'NPU')
             references.append(package.reference(x.numpy())[package.graph['output']])
             directory=out/(name+'_'+backend);directory.mkdir()
             package.write(directory,x.numpy())
@@ -53,7 +55,7 @@ def main():
                 package.write(control,x.numpy());control_log=simulate(control,args.vsim)
                 assert (directory/'firmware.hex').read_bytes()==(control/'firmware.hex').read_bytes()
                 assert re.search(r'INT8_SOC PASS (.*)',log).group(1)==re.search(r'INT8_SOC PASS (.*)',control_log).group(1)
-            results.append(dict(name=name,backend=backend,cycles=cycles,hardware_cycles=hardware,
+            results.append(dict(name=name,backend=backend,actual_backend=actual_backend,cycles=cycles,hardware_cycles=hardware,
                 code_sha256=package.metadata['code_sha256'],profile=profile))
             (out/'partial.json').write_text(json.dumps(results,indent=2)+'\n',encoding='utf-8')
         assert np.array_equal(*references),name
@@ -61,7 +63,7 @@ def main():
         for folder in ['compiler','rtl'] for p in (ROOT/folder).rglob('*') if p.is_file() and p.suffix in ['.py','.sv','.v']}
     sources['test/int8/run_fc_profile.py']=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     result=dict(passed=True,baseline_commit='94636cc',fixtures=frozen,source_sha256=sources,cases=results,
-        scope='Unchanged RTL; paired identical FC weights/input/calibration and integer output. Tiny controls verify passive probe leaves cycles/counters unchanged.')
+        scope=('Task RTL' if args.task_engine else 'Legacy path')+'; paired identical FC weights/input/calibration and integer output. Tiny controls verify passive probe leaves cycles/counters unchanged.')
     (out/'result.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
     print('FC_PROFILE_PASS '+str(out))
 

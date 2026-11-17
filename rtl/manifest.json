@@ -390,16 +390,17 @@
     {
       "source": "soc/rtl/my_soc_top.sv",
       "path": "rtl/soc/my_soc_top.sv",
-      "sha256": "529168baf0f2b9a4a1fd133f82b4b0818db8b48b999547a85fd7fca9c865f2ee",
+      "sha256": "7bc2e97298b65d279d70a166088fcf633ce7530d563b1f6ac8a82d0648a65b8a",
       "previous_sha256": "71ce705f0b1a362dc4eb99bf519876ea9e1827d7da523b0db2e688b1ae9706d4",
       "original_sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6",
-      "project_override": "INT8 tiled DMA, guarded boot, shared 16 MAC, CUT_SLV_AX crossbar address boundaries and shared clock-qualified SRAM transaction reset; CPU 4x8-word instruction line buffer with write invalidation, retaining CUT_SLV_AX; address-matched SRAM instruction invalidation with physical alias normalization; user-authorized task ABI v1 sequential engine, guarded shared DMA and exact generic postprocessing; legacy ports/reset contract retained; optional shared one-word LUT cache parameter, default disabled pending area comparison",
+      "project_override": "INT8 tiled DMA, guarded boot, shared 16 MAC, CUT_SLV_AX crossbar address boundaries and shared clock-qualified SRAM transaction reset; CPU 4x8-word instruction line buffer with write invalidation, retaining CUT_SLV_AX; address-matched SRAM instruction invalidation with physical alias normalization; user-authorized task ABI v1 sequential engine, guarded shared DMA and exact generic postprocessing; legacy ports/reset contract retained; optional shared one-word LUT cache parameter, default disabled pending area comparison; select measured shared LUT word cache; common reset/clock interface unchanged",
       "upstream_sha256": "174207c5682648222a6f280705666d272d1d44406df6193370c0e8efc7ed374e",
       "main_266bca3_sha256": "8f67ff81452ea80d4314c1c8d67b88bc72091e03e8f345b9aa2b2c2780483dd8",
       "integration_override": "; retain 266bca3 16-MAC/INT22/ifetch/CUT_SLV_AX core; integrate user-authorized common falling-edge system reset from dea5584; 2026-11-17 retain two falling-edge request samples, add rising-edge retiming for POR/NDM assertion, preserve common reset and falling-edge release for reset-safe ICG mapping",
       "reset_gating_baseline_sha256": "c0f2b0b8d8f7c1f1c3b16e9e33f5d7b73cbe7e6fbf20e7cc54447d6cb8cf1a1a",
       "task_engine_baseline_sha256": "bec5e83a3c44e8817f232799655ce60e88b02d089818c7581fb2233d4418d0af",
-      "task_cache_prototype_baseline_sha256": "8b3d6c6e9cbd6fdca154b1964d48b066a68b30e598b2c514e9967bcb8be75e5e"
+      "task_cache_prototype_baseline_sha256": "8b3d6c6e9cbd6fdca154b1964d48b066a68b30e598b2c514e9967bcb8be75e5e",
+      "task_area_optimization_parent_sha256": "529168baf0f2b9a4a1fd133f82b4b0818db8b48b999547a85fd7fca9c865f2ee"
     }
   ],
   "dma_integration": {

@@ -84,6 +84,11 @@ module har_npu_core (
     wire finish_take=finish_score>finish_best_current;
     wire signed [ACC_WIDTH-1:0] finish_best_next=finish_take ? finish_score : finish_best_current;
     wire [2:0] finish_class_next=finish_take ? finish_compare_index : finish_class_q;
+    wire task_h_write=(task_write_i===1'b1) && !busy;
+    wire h_write=quant_value_valid_q || task_h_write;
+    wire [1:0] h_write_sample=task_h_write ? task_index_i[6:5]:quant_value_sample_q[1:0];
+    wire [4:0] h_write_index=task_h_write ? task_index_i[4:0]:quant_value_index_q;
+    wire [7:0] h_write_data=task_h_write ? task_data_i:quant(quant_value_q);
     assign layer_o=layer;
     // Release the current bank on its final use, then either hand off to an
     // already-ready bank without a bubble or wait only for a real prefetch.
@@ -263,11 +268,8 @@ module har_npu_core (
                 quant_value_sample_q<=quant_group_sample_q;
                 quant_value_index_q<=quant_group_index_q;
             end
-            if(quant_value_valid_q)
-                h[quant_value_sample_q][quant_value_index_q*8+:8]<=quant(quant_value_q);
-            // The sequential engine owns h only while the MAC core is idle.
-            if((task_write_i===1'b1) && !busy)
-                h[task_index_i[6:5]][task_index_i[4:0]*8+:8]<=task_data_i;
+            // One physical byte-write port, shared by legacy and task modes.
+            if(h_write)h[h_write_sample][h_write_index*8+:8]<=h_write_data;
             case(state)
                 IDLE:if(start) begin
                     busy<=1;

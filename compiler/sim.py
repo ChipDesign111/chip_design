@@ -11,7 +11,7 @@ def execute(command,run,name,marker):
     print(name+': PASS',flush=True)
     return result.stdout
 
-def simulate(directory,vsim='vsim',profile=False):
+def simulate(directory,vsim='vsim',profile=False,word_checks=None):
     directory=Path(directory).resolve()
     metadata=json.loads((directory/'manifest.json').read_text())
     expected=json.loads((directory/'reference.json').read_text());ts=metadata['tensors']
@@ -30,6 +30,13 @@ def simulate(directory,vsim='vsim',profile=False):
                 checks.append(f"$fdisplay(result_fd,\"%08x %08x\",32'h{address:08x},observed);")
                 checks.append(f"if(observed!==32'h{word:08x}) $fatal(1,\"Tensor {name} row {sample} word {offset//4} mismatch actual %h\",observed);")
     checks.append('$fclose(result_fd);')
+    if word_checks:
+        for check in word_checks:
+            address,value,mask=(check[k] for k in ('address','expected','mask'))
+            if any(type(v) is not int or not 0<=v<2**32 for v in (address,value,mask)):
+                raise ValueError('Invalid expected-word check')
+            checks.append(f"sba_read(32'h{address:08x},observed);if((observed & 32'h{mask:08x})!==32'h{value&mask:08x})$fatal(1,\"Expected-word mismatch addr={address:08x} got %h\",observed);")
+        checks.append(f'$display("WORD_CHECKS_PASS words={len(word_checks)}");')
     starts=metadata.get('npu_core_starts',sum(len(n.get('jobs',[])) for n in metadata['nodes'] if n['backend']=='NPU'))
     tb=(ROOT/'test/int8/tb_soc.sv').read_text().replace('module tb_soc;','module tb_compiled_model;')
     if metadata.get('rtl_parameters',{}).get('TASK_LUT_WORD_CACHE'):

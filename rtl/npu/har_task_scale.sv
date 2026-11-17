@@ -19,12 +19,17 @@ module har_task_scale (
     wire signed [8:0] coefficient={index_q==3 && multiplier_q[31],coefficient_byte};
     wire signed [30:0] product=value_q*coefficient;
     wire signed [53:0] extended_product={{23{product[30]}},product};
-    wire signed [53:0] contribution=extended_product<<<(index_q*8);
-    wire signed [53:0] rounded=shift_q==0 ? sum_q :
-        (sum_q+(54'sd1<<<(shift_q-1)))>>>shift_q;
-    function automatic [7:0] saturate(input logic signed [53:0] v);
-        if(v>54'sd127) saturate=8'd127;
-        else if(v< -54'sd128) saturate=8'h80;
+    // MSB-first Horner accumulation uses a fixed8-bit shift, avoiding a
+    // second wide variable shifter for the position of each byte product.
+    wire signed [53:0] next_sum=(sum_q<<<8)+extended_product;
+    wire signed [53:0] rounded_sum=shift_q==0 ? sum_q : sum_q+(54'sd1<<<(shift_q-1));
+    // Caller validates shift0..24. After rounding, anything outside INT32
+    // necessarily clips to INT8 even at shift24. Only32 bits need shifting.
+    wire outside_int32=rounded_sum[53:32]!={22{rounded_sum[31]}};
+    wire signed [31:0] rounded=$signed(rounded_sum[31:0])>>>shift_q;
+    function automatic [7:0] saturate(input logic signed [31:0] v);
+        if(v>32'sd127) saturate=8'd127;
+        else if(v< -32'sd128) saturate=8'h80;
         else saturate=v[7:0];
     endfunction
     always_ff @(posedge clk_i or negedge rst_ni) begin
@@ -35,18 +40,19 @@ module har_task_scale (
             done_o<=0;
             if(start_i && !busy_o) begin
                 if(multiplier_i==1 && shift_i==0) begin
-                    value_o<=saturate({{32{value_i[21]}},value_i});done_o<=1;
+                    value_o<=saturate({{10{value_i[21]}},value_i});done_o<=1;
                 end else begin
                     value_q<=value_i;multiplier_q<=multiplier_i;shift_q<=shift_i;
-                    index_q<=0;sum_q<=0;rounding_q<=0;busy_o<=1;
+                    index_q<=3;sum_q<=0;rounding_q<=0;busy_o<=1;
                 end
             end else if(busy_o) begin
                 if(rounding_q) begin
-                    value_o<=saturate(rounded);busy_o<=0;done_o<=1;rounding_q<=0;
+                    value_o<=outside_int32 ? (rounded_sum[53] ? 8'h80:8'd127):saturate(rounded);
+                    busy_o<=0;done_o<=1;rounding_q<=0;
                 end else begin
-                    sum_q<=sum_q+contribution;
-                    if(index_q==3) rounding_q<=1;
-                    else index_q<=index_q+1'b1;
+                    sum_q<=next_sum;
+                    if(index_q==0) rounding_q<=1;
+                    else index_q<=index_q-1'b1;
                 end
             end
         end

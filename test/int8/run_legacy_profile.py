@@ -14,7 +14,7 @@ def main():
     p.add_argument('--vsim',default='vsim')
     args=p.parse_args()
     out=ROOT/'test/int8/runs'/('legacy_profile_'+datetime.now().strftime('%Y%m%d_%H%M%S'))
-    out.mkdir()
+    out.mkdir(parents=True)
     shutil.copyfile(args.firmware,out/'firmware.hex')
     tb=(ROOT/'test/int8/tb_soc.sv').read_text().replace('module tb_soc;','module tb_legacy_profile;')
     tb=tb.replace('    integer i;',monitor_source()+'\n    integer i;')

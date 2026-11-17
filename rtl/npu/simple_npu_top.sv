@@ -54,6 +54,25 @@ module simple_npu_top (
     logic [31:0] loads;
     integer input_rel,input_slot,input_word,out_rel,out_slot,out_word;
     wire [4095:0] input_packed={2048'd0,x[3],x[2],x[1],x[0]};
+    // One shared32-bit hidden read mux serves every old and new address view.
+    wire hidden0_read=addra>=672 && addra<680;
+    wire hidden1_read=addra>=784 && addra<792;
+    wire extended_output=addra>=OUTPUT2_BASE && addra<OUTPUT2_BASE+96;
+    wire extended_hidden=extended_output && !addra[3];
+    wire packed_hidden=(task_access_i===1'b1) && addra>=1440 && addra<1472;
+    wire [2:0] extended_sample=addra[6:4]+3'd2;
+    wire [4:0] hidden_word=packed_hidden ? addra[4:0] : hidden1_read ? {2'b01,addra[2:0]} :
+        extended_hidden ? {extended_sample[1:0],addra[2:0]}:{2'b00,addra[2:0]};
+    wire hidden_read=hidden0_read || hidden1_read || extended_hidden || packed_hidden;
+    wire [31:0] hidden_data=extended_hidden && extended_sample[2] ? 32'd0:hidden_all[hidden_word*32+:32];
+    // ACT tasks have N<=32. They only read the first eight words of x;
+    // FC input loading/writing retains all sixteen words and K<=64.
+    wire input0_read=addra>=16 && addra<24;
+    wire input1_read=addra>=768 && addra<776;
+    wire input23_read=addra>=INPUT2_BASE && addra<INPUT2_BASE+32 && !addra[3];
+    wire task_input_read=(task_access_i===1'b1) && (input0_read || input1_read || input23_read);
+    wire [1:0] input_read_sample=input0_read ? 2'd0:input1_read ? 2'd1:{1'b1,addra[4]};
+    wire [31:0] input_read_data=x[input_read_sample][addra[2:0]*32+:32];
     wire write_req=ena && wea;
     wire cpu_write=write_req && !dma_write_i;
     wire [32:0] end1={1'b0,w1_base}+(single_mode ? ({27'd0,fc_tiles}*{28'd0,fc_words}*33'd4):33'd2048),end2={1'b0,w2_base}+33'd256;
@@ -195,35 +214,24 @@ module simple_npu_top (
                 34:douta<=32'h00014020; // ABI 1, K_MAX=64, N_MAX=32
                 806:douta<={29'b0,class_all[3+:3]};
                 default:begin
-                    if(addra>=1280 && addra<1408) begin
+                    if(hidden_read)douta<=hidden_data;
+                    else if(addra>=1280 && addra<1408) begin
                         out_rel=addra-1280;
                         douta<=((out_rel>>5)<batch_count && (out_rel&31)<fc_n && single_mode) ?
                             fc_results[out_rel*32+:32]:32'd0;
-                    end else if(addra>=672 && addra<680) douta<=hidden_all[(addra-672)*32+:32];
-                    else if(addra>=704 && addra<710) douta<=scores_all[(addra-704)*32+:32];
-                    else if(addra>=784 && addra<792)
-                        douta<=hidden_all[256+(addra-784)*32+:32];
+                    end else if(addra>=704 && addra<710) douta<=scores_all[(addra-704)*32+:32];
                     else if(addra>=800 && addra<806)
                         douta<=scores_all[192+(addra-800)*32+:32];
                     else if(addra>=OUTPUT2_BASE && addra<OUTPUT2_BASE+96) begin
                         out_rel=addra-OUTPUT2_BASE;
                         out_slot=2+(out_rel>>4);
                         out_word=out_rel & 15;
-                        if(out_word<8)
-                            douta<=hidden_all[out_slot*256+out_word*32+:32];
-                        else if(out_word<14)
+                        if(out_word>=8 && out_word<14)
                             douta<=scores_all[out_slot*192+(out_word-8)*32+:32];
                         else if(out_word==14)
                             douta<={29'b0,class_all[out_slot*3+:3]};
                         else douta<=0;
-                    end else if((task_access_i===1'b1) && addra>=1440 && addra<1472)
-                        douta<=hidden_all[(addra-1440)*32+:32];
-                    else if((task_access_i===1'b1) && addra>=16 && addra<32)
-                        douta<=x[0][(addra-16)*32+:32];
-                    else if((task_access_i===1'b1) && addra>=768 && addra<784)
-                        douta<=x[1][(addra-768)*32+:32];
-                    else if((task_access_i===1'b1) && addra>=INPUT2_BASE && addra<INPUT2_BASE+32)
-                        douta<=x[2+((addra-INPUT2_BASE)>>4)][((addra-INPUT2_BASE)&15)*32+:32];
+                    end else if(task_input_read)douta<=input_read_data;
                     else douta<=0;
                 end
             endcase

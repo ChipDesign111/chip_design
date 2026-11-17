@@ -102,6 +102,9 @@ def cases(lut_cache=False):
     # Independent malformed wire fields, without using the host validator.
     raw,gold,count=results[0][1:4]
     mutations=[('version',0,0x00130100,8),('reserved',14,1,4),('end',0,0x00030101,4),
+        ('header_reserved',0,0x00530101,4),('shape_reserved',1,0x01010101,4),
+        ('shift_reserved',8,0x01000000,4),('clamp_reserved',12,128,4),('last_reserved',15,1,4),
+        ('unknown_activation',0,0x00136101,8),('batch_invalid',1,0x00080101,7),
         ('k_zero',1,0x00010100,7),('weights_align',3,0x80000001,2),
         ('source_range',2,0x80002000,3),('output_table',5,0x80001800,3),
         ('no_partial',0,0x00120101,4), # INIT=0 but nonzero bias is malformed
@@ -163,6 +166,8 @@ def main():
     execute(['iverilog','-g2012','-s','tb_task_engine','-o','task.vvp']+[ROOT/s for s in sources]+[run/'tb_task_engine.sv'],run,'compile')
     output=execute(['vvp','task.vvp'],run,'simulate','TASK_ENGINE PASS')
     print(output)
-    (run/'result.json').write_text(json.dumps(dict(passed=True,cases=records,source_sha256={s:hashlib.sha256((ROOT/s).read_bytes()).hexdigest() for s in sources}),indent=2))
+    (run/'result.json').write_text(json.dumps(dict(passed=True,lut_cache=args.lut_cache,cases=records,
+        reset_stages=[2,5,12,15,17,22],dma_faults=['R error','output B error'],legacy_switch=True,
+        rejected_start_cases=4,source_sha256={s:hashlib.sha256((ROOT/s).read_bytes()).hexdigest() for s in sources}),indent=2))
     print('Results: '+str(run))
 if __name__=='__main__':main()

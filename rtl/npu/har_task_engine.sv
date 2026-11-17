@@ -34,18 +34,21 @@ module har_task_engine #(parameter bit LUT_WORD_CACHE=0) (
     localparam [3:0] E_BUSY=1,E_ALIGN=2,E_RANGE=3,E_DESC=4,E_CONTEXT=5,
         E_DMA=6,E_VALUE=7,E_UNSUPPORTED=8;
     logic [4:0] state;
-    logic [31:0] base_cfg,count_cfg,base_q;
-    logic [7:0] count_q,index_q,completed_q;
+    logic [31:0] base_cfg,count_cfg;
+    logic [12:0] base_offset_q;
+    wire [31:0] base_q={19'h40000,base_offset_q};
+    logic [7:0] count_q,completed_q;
+    logic [6:0] index_q;
+    wire [6:0] final_index=count_q[6:0]-7'd1;
     logic [31:0] cycles_q;
     logic done_q,failed_q,valid_q,rejected_q;
     logic [3:0] error_q,reject_q;
     logic [31:0] d[0:15];
-    logic [15:0] received_q;
     logic [5:0] ingress_count_q;
-    logic ingress_bad_q,bias_bad_q;
-    logic [2:0] sample_q;
-    logic [5:0] element_q;
-    logic [3:0] word_q;
+    logic ingress_bad_q,bias_bad_q,reserved_bad_q;
+    logic [1:0] sample_q;
+    logic [4:0] element_q;
+    logic [2:0] word_q;
     logic [2:0] config_q;
     logic partial_q,forward_q;
     logic [31:0] partial_context_q;
@@ -64,8 +67,9 @@ module har_task_engine #(parameter bit LUT_WORD_CACHE=0) (
     wire [6:0] width=op==1 ? k:{1'b0,n};
     wire [4:0] input_words=({1'b0,width}+3)>>2;
     wire [3:0] output_words=({1'b0,n}+3)>>2;
-    wire [31:0] input_bytes=(batch-1)*{16'd0,input_stride}+({27'd0,input_words}<<2);
-    wire [31:0] output_bytes=(batch-1)*{16'd0,output_stride}+({28'd0,output_words}<<2);
+    wire [1:0] batch_minus_one=batch[1:0]-2'd1; // validated batch1..4
+    wire [31:0] input_bytes={30'd0,batch_minus_one}*{16'd0,input_stride}+({27'd0,input_words}<<2);
+    wire [31:0] output_bytes={30'd0,batch_minus_one}*{16'd0,output_stride}+({28'd0,output_words}<<2);
     wire [31:0] weight_bytes=((({25'd0,k}+1)>>1)*(({26'd0,n}+7)>>3))<<4;
     wire [7:0] lut_index=quant_q[7:0]^8'h80;
     wire [31:0] lut_word_address=d[11]+{24'd0,lut_index[7:2],2'b00};
@@ -74,9 +78,10 @@ module har_task_engine #(parameter bit LUT_WORD_CACHE=0) (
     wire [31:0] input_row=d[2]+sample_q*{16'd0,input_stride};
     wire [31:0] output_row=d[5]+sample_q*{16'd0,output_stride};
     wire [31:0] input_mmio=sample_q==0 ? 32'h70000040 :
-        sample_q==1 ? 32'h70000c00 : 32'h70001000+((sample_q-2)<<6);
-    wire [31:0] packed_mmio=32'h70001680+({29'd0,sample_q}<<5);
-    wire [31:0] desc_address=base_q+({24'd0,index_q}<<6);
+        sample_q==1 ? 32'h70000c00 : sample_q==2 ? 32'h70001000:32'h70001040;
+    wire [31:0] packed_mmio=32'h70001680|({30'd0,sample_q}<<5);
+    wire [12:0] desc_offset=base_offset_q+{index_q,6'd0};
+    wire [31:0] desc_address={19'h40000,desc_offset}; // entire accepted table fits8KiB
     wire cpu_write=reg_req_i && reg_we_i;
     wire start=cpu_write && reg_addr_i==0 && reg_data_i==1;
     wire ack=cpu_write && reg_addr_i==0 && reg_data_i==2;
@@ -94,8 +99,7 @@ module har_task_engine #(parameter bit LUT_WORD_CACHE=0) (
         descriptor_error=0;
         if(d[0][7:0]!=1 || (op!=1 && op!=2) || activation>5 || (d[0][21] && !LUT_WORD_CACHE))
             descriptor_error=E_UNSUPPORTED;
-        else if(d[0][31:22]!=0 || d[1][31:24]!=0 || d[8][31:24]!=0 ||
-                d[12]>127 || d[14]!=0 || d[15]!=0 || d[0][20]!=(index_q==count_q-1))
+        else if(reserved_bad_q || d[0][20]!=(index_q==final_index))
             descriptor_error=E_DESC;
         else if(d[1][15:8]<1 || d[1][15:8]>32 || d[1][23:16]<1 || d[1][23:16]>4 ||
                 (op==1 && (d[1][7:0]<1 || d[1][7:0]>64)) ||
@@ -146,16 +150,16 @@ module har_task_engine #(parameter bit LUT_WORD_CACHE=0) (
     assign ingress_core_o=ingress_i && (input_ingress || bias_ingress);
     assign core_abort_o=state==DRAIN && !dma_busy_i;
     assign core_invalidate_o=(start && !busy_o && !core_busy_i && !dma_busy_i) || state==DRAIN ||
-        (state==COMMIT && index_q==count_q-1);
+        (state==COMMIT && index_q==final_index);
     assign post_write_o=state==STORE;
     assign post_index_o={sample_q[1:0],element_q[4:0]};
     assign post_data_o=output_q;
     always_comb begin
         core_req_o=0;core_we_o=0;core_addr_o=0;core_data_o=0;
         case(state)
-            FWD_READ:begin core_req_o=1;core_addr_o=(packed_mmio[13:2])+word_q;end
+            FWD_READ:begin core_req_o=1;core_addr_o=packed_mmio[13:2]|{9'd0,word_q};end
             FWD_WRITE:begin
-                core_req_o=1;core_we_o=1;core_addr_o=input_mmio[13:2]+word_q;core_data_o=core_data_i;
+                core_req_o=1;core_we_o=1;core_addr_o=input_mmio[13:2]|{9'd0,word_q};core_data_o=core_data_i;
             end
             CONFIG:begin
                 core_req_o=1;core_we_o=1;
@@ -172,8 +176,8 @@ module har_task_engine #(parameter bit LUT_WORD_CACHE=0) (
             START_FC:begin core_req_o=1;core_we_o=1;core_addr_o=0;core_data_o=1;end
             POST_READ:begin
                 core_req_o=1;
-                core_addr_o=op==1 ? 12'd1280+({10'd0,sample_q[1:0]}<<5)+element_q :
-                    input_mmio[13:2]+(element_q>>2);
+                core_addr_o=op==1 ? (12'd1280|({10'd0,sample_q}<<5)|{7'd0,element_q}) :
+                    (input_mmio[13:2]|{9'd0,element_q[4:2]});
             end
             default:begin end
         endcase
@@ -197,7 +201,7 @@ module har_task_engine #(parameter bit LUT_WORD_CACHE=0) (
             8:reg_read=base_cfg;
             12:reg_read=count_cfg;
             16:reg_read=LUT_WORD_CACHE ? 32'h014020ff:32'h014020bf;
-            20:reg_read={24'd0,index_q};
+            20:reg_read={25'd0,index_q};
             24:reg_read={28'd0,error_q};
             28:reg_read=cycles_q;
             32:reg_read={24'd0,completed_q};
@@ -209,9 +213,10 @@ module har_task_engine #(parameter bit LUT_WORD_CACHE=0) (
     integer j;
     always_ff @(posedge clk_i or negedge rst_ni) begin
         if(!rst_ni) begin
-            state<=IDLE;base_cfg<=0;count_cfg<=0;base_q<=0;count_q<=0;index_q<=0;completed_q<=0;
+            state<=IDLE;base_cfg<=0;count_cfg<=0;base_offset_q<=0;count_q<=0;index_q<=0;completed_q<=0;
             cycles_q<=0;done_q<=0;failed_q<=0;valid_q<=0;rejected_q<=0;error_q<=0;reject_q<=0;
-            received_q<=0;ingress_count_q<=0;ingress_bad_q<=0;bias_bad_q<=0;sample_q<=0;element_q<=0;word_q<=0;config_q<=0;
+            ingress_count_q<=0;ingress_bad_q<=0;bias_bad_q<=0;reserved_bad_q<=0;
+            sample_q<=0;element_q<=0;word_q<=0;config_q<=0;
             partial_q<=0;forward_q<=0;partial_context_q<=0;partial_n_q<=0;forward_n_q<=0;
             partial_batch_q<=0;forward_batch_q<=0;quant_q<=0;output_q<=0;lut_word_q<=0;reg_data_o<=0;
             lut_tag_q<=0;lut_valid_q<=0;
@@ -228,26 +233,36 @@ module har_task_engine #(parameter bit LUT_WORD_CACHE=0) (
                 else if(reg_addr_i==12)count_cfg<=reg_data_i;
                 else if(!start)begin rejected_q<=1;reject_q<=E_VALUE;end
             end
-            if(dma_start_o)begin received_q<=0;ingress_count_q<=0;ingress_bad_q<=0;bias_bad_q<=0;end
+            if(dma_start_o)begin ingress_count_q<=0;ingress_bad_q<=0;bias_bad_q<=0;end
+            if(state==FETCH)reserved_bad_q<=0;
             if(ingress_i && busy_o)begin
                 if(desc_ingress || input_ingress || bias_ingress || lut_ingress)begin
                     ingress_count_q<=ingress_count_q+1'b1;
                     if(ingress_addr_i!=(desc_ingress ? 32'h70001640 : input_ingress ? input_mmio :
                         bias_ingress ? 32'h700009c0:32'h70001700)+({26'd0,ingress_count_q}<<2))ingress_bad_q<=1;
                 end
-                if(desc_ingress)begin d[ingress_addr_i[5:2]]<=ingress_data_i;received_q[ingress_addr_i[5:2]]<=1;end
-                else if(input_ingress)received_q[(ingress_addr_i-input_mmio)>>2]<=1;
-                else if(bias_ingress)begin
+                if(desc_ingress)begin
+                    // Reserved bits are checked as they arrive, then dropped;
+                    // storing their raw words would add114 unnecessary flops.
+                    case(ingress_addr_i[5:2])
+                        0:begin d[0]<=ingress_data_i&32'h003fffff;if(|ingress_data_i[31:22])reserved_bad_q<=1;end
+                        1:begin d[1]<=ingress_data_i&32'h00ffffff;if(|ingress_data_i[31:24])reserved_bad_q<=1;end
+                        8:begin d[8]<=ingress_data_i&32'h00ffffff;if(|ingress_data_i[31:24])reserved_bad_q<=1;end
+                        12:begin d[12]<=ingress_data_i&32'h0000007f;if(|ingress_data_i[31:7])reserved_bad_q<=1;end
+                        14,15:if(ingress_data_i!=0)reserved_bad_q<=1;
+                        default:d[ingress_addr_i[5:2]]<=ingress_data_i;
+                    endcase
+                end else if(bias_ingress)begin
                     if(ingress_data_i[31:22]!={10{ingress_data_i[21]}})bias_bad_q<=1;
-                end else if(lut_ingress)begin lut_word_q<=ingress_data_i;received_q[0]<=1;end
-                else if(!tile_ingress)ingress_bad_q<=1;
+                end else if(lut_ingress)lut_word_q<=ingress_data_i;
+                else if(!tile_ingress && !input_ingress)ingress_bad_q<=1;
             end
             case(state)
                 IDLE:if(start && !core_busy_i && !dma_busy_i)begin
                     done_q<=0;failed_q<=0;valid_q<=0;rejected_q<=0;error_q<=0;reject_q<=0;
                     index_q<=0;completed_q<=0;cycles_q<=0;partial_q<=0;forward_q<=0;
                     lut_valid_q<=0;
-                    base_q<=base_cfg;count_q<=count_cfg[7:0];
+                    base_offset_q<=base_cfg[12:0];count_q<=count_cfg[7:0];
                     if(base_cfg[5:0]!=0)begin done_q<=1;failed_q<=1;error_q<=E_ALIGN;end
                     else if(count_cfg<1 || count_cfg>128)begin done_q<=1;failed_q<=1;error_q<=E_VALUE;end
                     else if(!region(base_cfg,count_cfg<<6))begin done_q<=1;failed_q<=1;error_q<=E_RANGE;end
@@ -255,7 +270,7 @@ module har_task_engine #(parameter bit LUT_WORD_CACHE=0) (
                 end
                 FETCH:state<=WAIT_DESC;
                 WAIT_DESC:if(transfer_finished)begin
-                    if(dma_error_i || ingress_bad_q || received_q!=16'hffff || ingress_count_q!=16)begin error_q<=E_DMA;state<=DRAIN;end
+                    if(dma_error_i || ingress_bad_q || ingress_count_q!=16)begin error_q<=E_DMA;state<=DRAIN;end
                     else state<=CHECK;
                 end
                 CHECK:begin
@@ -266,7 +281,7 @@ module har_task_engine #(parameter bit LUT_WORD_CACHE=0) (
                 end
                 INPUT:state<=WAIT_INPUT;
                 WAIT_INPUT:if(transfer_finished)begin
-                    if(dma_error_i || ingress_bad_q || received_q!=(16'hffff>>(16-input_words)) || ingress_count_q!={1'b0,input_words})begin error_q<=E_DMA;state<=DRAIN;end
+                    if(dma_error_i || ingress_bad_q || ingress_count_q!={1'b0,input_words})begin error_q<=E_DMA;state<=DRAIN;end
                     else if(sample_q+1<batch)begin sample_q<=sample_q+1'b1;state<=INPUT;end
                     else begin
                         sample_q<=0;
@@ -314,7 +329,7 @@ module har_task_engine #(parameter bit LUT_WORD_CACHE=0) (
                 end
                 LUT:begin lut_valid_q<=0;state<=WAIT_LUT;end
                 WAIT_LUT:if(transfer_finished)begin
-                    if(dma_error_i || ingress_bad_q || !received_q[0] || ingress_count_q!=1)begin error_q<=E_DMA;state<=DRAIN;end
+                    if(dma_error_i || ingress_bad_q || ingress_count_q!=1)begin error_q<=E_DMA;state<=DRAIN;end
                     else begin
                         output_q<=lut_word_q[lut_index[1:0]*8+:8];state<=STORE;
                         lut_tag_q<=lut_word_address[12:2];lut_valid_q<=LUT_WORD_CACHE && d[0][21];
@@ -339,7 +354,7 @@ module har_task_engine #(parameter bit LUT_WORD_CACHE=0) (
                     partial_q<=!last_k;
                     partial_context_q<=d[13];partial_n_q<=n;partial_batch_q<=batch;
                     if(last_k)begin forward_q<=keep;forward_n_q<=n;forward_batch_q<=batch;end
-                    if(index_q==count_q-1)begin done_q<=1;valid_q<=1;state<=IDLE;end
+                    if(index_q==final_index)begin done_q<=1;valid_q<=1;state<=IDLE;end
                     else begin index_q<=index_q+1'b1;state<=FETCH;end
                 end
                 DRAIN:begin

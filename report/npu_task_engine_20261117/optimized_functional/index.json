@@ -1,0 +1,105 @@
+{
+  "scale": {
+    "run": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\npu-task-engine\\test\\int8\\runs\\task_scale_20261117_230638",
+    "files": {
+      "result.json": "830075b4a5896273a38ddf77f428f8579f9ab88f535a11a13c8a83d058221cd2",
+      "simulate.log": "a98f0cb961882aa81f6498e1c04a791e793770eee436c5b1aa25c4eb1fd5c9de"
+    }
+  },
+  "task_direct": {
+    "run": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\npu-task-engine\\test\\int8\\runs\\task_engine_20261117_225259",
+    "files": {
+      "result.json": "7e7a770a96f574e6ff8b7bbbc4c3c25557d988a59841cffe790f141f3478afc3",
+      "simulate.log": "9a8404a15db31bbd8740cda53f167e5d642700b3c3b5aa4fb530702288f93303"
+    }
+  },
+  "task_cache": {
+    "run": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\npu-task-engine\\test\\int8\\runs\\task_engine_cache_20261117_225302",
+    "files": {
+      "result.json": "a40e86ca051e0cc42569de6cb2b312257b167660a38493aa7761e93df08cc346",
+      "simulate.log": "bb28ef71dd35aa5b13e3ceaf357214e8afc2e1c4ea3c009803cab4be1c463c28"
+    }
+  },
+  "legacy": {
+    "run": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\npu-task-engine\\test\\int8\\runs\\legacy_profile_20261117_230639",
+    "files": {
+      "profile.json": "afe441b4c32b7a7518475276dd34b0e0e4865235f567204c4040b0370ec253aa",
+      "result.json": "2a89148308dc970b21cb5644ff6c3c80eff9c9086f70c8cf24a7da89c15cded6"
+    }
+  },
+  "active_reset": {
+    "run": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\npu-task-engine\\test\\int8\\runs\\task_reset_soc_20261117_230657",
+    "files": {
+      "result.json": "a2d80e3d0d0f27d8feccbef377914d42ecb467fe640b9875e1245d2ecbf84e3f"
+    }
+  },
+  "legacy_unit": {
+    "run": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\npu-task-engine\\test\\int8\\runs\\20261117_224908",
+    "files": {
+      "result.json": "7462205d49d95e54b0d80543d390c0e2e7e82efafe7f3dfa7c8bd9b488996dd5",
+      "source_manifest.json": "1c422c7138790e661b87874d7087482990e92a0688d2bbf157f531ac8e781c4d",
+      "dma_response/result.json": "b94a022b5df27ec596e6d70762ed0f7d2c0373545f0dc5a8dd33b0629faad856"
+    }
+  },
+  "single": {
+    "run": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\npu-task-engine\\test\\int8\\runs\\single_20261117_224913",
+    "files": {
+      "result.json": "fd0569d26bef8be22c3720546151a87c49cc301a4dd18f245c717a8f7092b8f9"
+    }
+  },
+  "postsim_payloads": {
+    "run": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\npu-task-engine\\test\\int8\\runs\\task_postsim_checked_20261117_2252",
+    "files": {
+      "firmware_model_mixed.checks.json": "c77baba90f1ab369588f412231f08ea0b5be26c52a9afdbc1301af95433cff84",
+      "firmware_model_mixed.hex": "0298fa6f02fea714ee51685f49f49dd573b1fd3ab752dcf01b122e2458555222",
+      "firmware_model_tiled.checks.json": "ef00bb69afe29ee47cf47fa254537ddfd21b859bf1ce6edc945c83e83f4e2e13",
+      "firmware_model_tiled.hex": "539945ade22e34c7a7efa7d6b2b4fa149aafff5766d84bab708e3026f8fe82ff",
+      "firmware_task_chain.checks.json": "9d06ddb3b543dcc72dbe955b41b3a50d4f39b0b8f8157652d5216897e2fd301f",
+      "firmware_task_chain.hex": "ee8f8c11edd5de17344521d611014e9a88f03e383125663c9b31e6219dd05c01",
+      "firmware_task_deep.checks.json": "4a567f7cec120f00eac3467d897e200f879a13252abc87a1220bf60d2c1072b6",
+      "firmware_task_deep.hex": "8865c5a9c6aebd4103fd64995c06b4aba274a5b09c0ab4809a37aabde1f8dcb5",
+      "firmware_task_lut.checks.json": "44e4c6d2707d0b83c6fbccd4d63e1143307a2852638ed517d386e7a81cefccb6",
+      "firmware_task_lut.hex": "aa475c2f21159ff7cc58c1f6d0a88816a02f4e35cbfa4de2fb1bdde5699f0dd2",
+      "firmware_task_special.checks.json": "3850f362561238652b60f2ef19d06d4b9877388edcea4dd4e8ba57be988a0868",
+      "firmware_task_special.hex": "f7ef94235446d75907e19474666b6f3a4c0a265333a248fa7331b4a36f303858",
+      "firmware_task_split_chain.checks.json": "f1cc894807a6561303e7c9280b710db30214b7203d1300989519cca569231304",
+      "firmware_task_split_chain.hex": "cc677f03e025357ead3a1248271b4113efd38a0b067181179edbf01e3b8b22d5",
+      "manifest.json": "d7862200e0c9501950700b25c54000061f8ee68ed010cc6606a9954b461ab2ff",
+      "model_mixed/actual_output.json": "cedc008f4d301a859b105c006433416ba97fe6325c8ef5d0fdb35bf700be60e2",
+      "model_mixed/firmware.hex": "0298fa6f02fea714ee51685f49f49dd573b1fd3ab752dcf01b122e2458555222",
+      "model_mixed/manifest.json": "610b333fd5058a40f4a5403b40543d1c738d36d3ce0cd3b5d292f3a990ef8f02",
+      "model_mixed/reference.json": "701adc773a74256e0aa26d37510e7df954c147010c32ee0089b21b72ef03d09c",
+      "model_mixed/task_validation.json": "4ff34fb25ec02d5822c23c8725cbd3518e7628e06a64204d3108616afb367a5e",
+      "model_tiled/actual_output.json": "7948203c4d797cd7d13e2e1a7c8a01f913b2fa6725a36bfd87b1b2d18309d29d",
+      "model_tiled/firmware.hex": "539945ade22e34c7a7efa7d6b2b4fa149aafff5766d84bab708e3026f8fe82ff",
+      "model_tiled/manifest.json": "5f12eec01e3c5cabb87e7bf0b8db52d439141928401c998a502a79a7043b78bc",
+      "model_tiled/reference.json": "deadc1bc9f4a0b49ab9e11b73bd72d77151740c860270a9f89794c2481137cb2",
+      "model_tiled/task_validation.json": "1b1109a393556d3e51e10a9084e0a7997c4b84e6470e2b3527a0ea4b98f86f76",
+      "task_chain/actual_output.json": "7bb072e8d3cac42dea3adbcb04998ae13225aa33b6666b753d81b9f663129827",
+      "task_chain/firmware.hex": "ee8f8c11edd5de17344521d611014e9a88f03e383125663c9b31e6219dd05c01",
+      "task_chain/manifest.json": "9df9cbd1a3b8353faf05e7a5e63bced9c6de8721db90542ff802c98f5a05b9ac",
+      "task_chain/reference.json": "a17c823fd37ac925e17bfe13b345517da0563232f2fc004c3052628c5997e868",
+      "task_chain/task_validation.json": "64a0f1e47f2a2515e1ab857e51af9069a03ce0924662bf97d1d324682a9d4305",
+      "task_deep/actual_output.json": "ebd25a4110301b00dfb43459b3f40aa48a65624bb1bb84a6323c8f62514cba57",
+      "task_deep/firmware.hex": "8865c5a9c6aebd4103fd64995c06b4aba274a5b09c0ab4809a37aabde1f8dcb5",
+      "task_deep/manifest.json": "507cdd89e15f9ab2caba179333954c481888c5ca15b5301e77856349d460b8da",
+      "task_deep/reference.json": "2f89fb5a9bfe076a78e74585f652ae238d61ba44305dfa9239015ad3b1492401",
+      "task_deep/task_validation.json": "a4ebe0af09c854d673749e0dea890f40a7e076110193f2139e7188c90a64fffb",
+      "task_lut/actual_output.json": "a2a44135ea7c06cc361f1246650d52f8bdcbd25d656aa7e222badaaf825ef3de",
+      "task_lut/firmware.hex": "aa475c2f21159ff7cc58c1f6d0a88816a02f4e35cbfa4de2fb1bdde5699f0dd2",
+      "task_lut/manifest.json": "df869db8932504f34d33dfc6847b13b15a77e76396f023026002316d75ce4d37",
+      "task_lut/reference.json": "539702c66317ac1e14499a81b8d34e3dd76c118508e87d5010876a8ee5f05412",
+      "task_lut/task_validation.json": "bdbd3de25ad5383e515a28efca716ef405f830e5e925e538936ae53bf1589b1e",
+      "task_special/actual_output.json": "58b5add6ecf2a5baddca5cf9102c6f0e044e5e158b4e2ec8dd2e981f5451af11",
+      "task_special/firmware.hex": "f7ef94235446d75907e19474666b6f3a4c0a265333a248fa7331b4a36f303858",
+      "task_special/manifest.json": "e6aad42091f05fe80aa204169156275ca552d19f31296905944eb9762a94805d",
+      "task_special/reference.json": "561b94f108a7fc22711b0ad3d921c1d6d41d180b0be6c68f42667c7c4e39ef55",
+      "task_special/special_validation.json": "2598f7a0a3491ce5ddbd357207764084722cdd2dcb6048aa6e63436295cff139",
+      "task_split_chain/actual_output.json": "71957e9363d5ab45877d6fdad89667ab83ce96589f047f2cd53259725bff93a9",
+      "task_split_chain/firmware.hex": "cc677f03e025357ead3a1248271b4113efd38a0b067181179edbf01e3b8b22d5",
+      "task_split_chain/manifest.json": "51b5dfc419084564062bc4f2f0e0405a900a7eaf40cc5b1ad915dfb668b6d1b5",
+      "task_split_chain/reference.json": "8a10b362f8b0bb3e51f416392b769ff01f4f68e3138b4a5bc044184d55dcec27",
+      "task_split_chain/task_validation.json": "f1526f9a72452336564ff70f3359f95c5fd8f682a12791127dffa0088c07128c"
+    }
+  }
+}

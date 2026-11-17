@@ -1,0 +1,58 @@
+{
+  "model_mixed": {
+    "firmware": "firmware_model_mixed.hex",
+    "sha256": "0298fa6f02fea714ee51685f49f49dd573b1fd3ab752dcf01b122e2458555222",
+    "checks": "firmware_model_mixed.checks.json",
+    "checks_sha256": "c77baba90f1ab369588f412231f08ea0b5be26c52a9afdbc1301af95433cff84",
+    "words": 30,
+    "rtl_verified": true
+  },
+  "model_tiled": {
+    "firmware": "firmware_model_tiled.hex",
+    "sha256": "539945ade22e34c7a7efa7d6b2b4fa149aafff5766d84bab708e3026f8fe82ff",
+    "checks": "firmware_model_tiled.checks.json",
+    "checks_sha256": "ef00bb69afe29ee47cf47fa254537ddfd21b859bf1ce6edc945c83e83f4e2e13",
+    "words": 34,
+    "rtl_verified": true
+  },
+  "task_deep": {
+    "firmware": "firmware_task_deep.hex",
+    "sha256": "8865c5a9c6aebd4103fd64995c06b4aba274a5b09c0ab4809a37aabde1f8dcb5",
+    "checks": "firmware_task_deep.checks.json",
+    "checks_sha256": "4a567f7cec120f00eac3467d897e200f879a13252abc87a1220bf60d2c1072b6",
+    "words": 21,
+    "rtl_verified": true
+  },
+  "task_chain": {
+    "firmware": "firmware_task_chain.hex",
+    "sha256": "ee8f8c11edd5de17344521d611014e9a88f03e383125663c9b31e6219dd05c01",
+    "checks": "firmware_task_chain.checks.json",
+    "checks_sha256": "9d06ddb3b543dcc72dbe955b41b3a50d4f39b0b8f8157652d5216897e2fd301f",
+    "words": 35,
+    "rtl_verified": true
+  },
+  "task_split_chain": {
+    "firmware": "firmware_task_split_chain.hex",
+    "sha256": "cc677f03e025357ead3a1248271b4113efd38a0b067181179edbf01e3b8b22d5",
+    "checks": "firmware_task_split_chain.checks.json",
+    "checks_sha256": "f1cc894807a6561303e7c9280b710db30214b7203d1300989519cca569231304",
+    "words": 37,
+    "rtl_verified": true
+  },
+  "task_lut": {
+    "firmware": "firmware_task_lut.hex",
+    "sha256": "aa475c2f21159ff7cc58c1f6d0a88816a02f4e35cbfa4de2fb1bdde5699f0dd2",
+    "checks": "firmware_task_lut.checks.json",
+    "checks_sha256": "44e4c6d2707d0b83c6fbccd4d63e1143307a2852638ed517d386e7a81cefccb6",
+    "words": 99,
+    "rtl_verified": true
+  },
+  "task_special": {
+    "firmware": "firmware_task_special.hex",
+    "sha256": "f7ef94235446d75907e19474666b6f3a4c0a265333a248fa7331b4a36f303858",
+    "checks": "firmware_task_special.checks.json",
+    "checks_sha256": "3850f362561238652b60f2ef19d06d4b9877388edcea4dd4e8ba57be988a0868",
+    "words": 105,
+    "rtl_verified": true
+  }
+}

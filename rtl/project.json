@@ -214,9 +214,10 @@
       "Sigmoid",
       "Tanh"
     ],
-    "lut_cache": false,
+    "lut_cache": true,
     "forward_bytes": 128,
     "generic_scaler": "shared signed22x9, four byte products, signed54 sum and separate rounding",
-    "acceptance": "functional prototype; new physical acceptance pending"
+    "acceptance": "functional passed; first-area overflow corrected by port/control reuse, optimized synthesis and physical acceptance pending",
+    "lut_cache_bytes": 4
   }
 }

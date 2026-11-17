@@ -37,3 +37,5 @@ report/npu_task_engine_20261117/stage1/baseline/** -text
 report/npu_task_engine_20261117/stage1/source_at_measurement/** -text
 report/npu_task_engine_20261117/functional/** -text
 report/npu_task_engine_20261117/lut_comparison/** -text
+report/npu_task_engine_20261117/area/** -text
+report/npu_task_engine_20261117/optimized_functional/** -text

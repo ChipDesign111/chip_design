@@ -13,6 +13,14 @@ def main():
     multipliers=[-(1<<31),-16777217,-65537,-256,-3,-1,0,1,3,255,256,65537,16777217,(1<<31)-1]
     vectors=[(v,m,s) for v in values for m in multipliers for s in range(25)]
     vectors += [(rng.randrange(-(1<<21),1<<21),rng.randrange(-(1<<31),1<<31),rng.randrange(25)) for _ in range(2000)]
+    # Exercise rounding and saturation around every shift's INT8 limits,
+    # including products that cross INT32 before/after rounding at shift24.
+    for s in range(25):
+        for target in [127*(1<<s),128*(1<<s),-128*(1<<s),-129*(1<<s)]:
+            for v in [1,3,7,127,128,32767,32768,-1,-3,-7,-127,-128,-32767,-32768]:
+                m=target//v
+                for delta in [-1,0,1]:
+                    if -(1<<31)<=m+delta<(1<<31):vectors.append((v,m+delta,s))
     def golden(v,m,s):
         q,r=divmod(v*m,2**s)
         if s and r>=2**(s-1):q+=1

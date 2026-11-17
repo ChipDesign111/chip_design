@@ -13,7 +13,7 @@ from run_task_compiler import special_network
 class Planner(unittest.TestCase):
     def special(self,mutate=None):
         x=torch.linspace(0.5,1,256).reshape(4,64)
-        p=compile_model(special_network(),x,[-x,x*0.5])
+        p=compile_model(special_network(),x,[-x,x*0.5],task_engine=False)
         if mutate:mutate(p)
         before=bytes(p.memory.image)
         result=select_special_segments(p.nodes,p.graph['tensors'],p.memory,p.graph['output'])
@@ -47,7 +47,7 @@ class Planner(unittest.TestCase):
     def test_tiny_cpu_choice(self):
         x=torch.ones(1,1);m=nn.Linear(1,1).eval()
         with torch.no_grad():m.weight.fill_(1);m.bias.zero_()
-        old=compile_model(m,x,[-x]);new=compile_model(m,x,[-x],task_engine=True)
+        old=compile_model(m,x,[-x],task_engine=False);new=compile_model(m,x,[-x],task_engine=True)
         self.assertEqual(old.nodes[0]['backend'],'NPU');self.assertEqual(new.nodes[0]['backend'],'CPU')
 
     def test_multi_output_consumer_spills(self):

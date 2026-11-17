@@ -30,6 +30,7 @@ def main():
     p.add_argument('--frozen-baseline',type=Path,help='Require every generated firmware image to equal a frozen matching case')
     p.add_argument('--task-engine',action='store_true',help='Use ABI v1 autonomous segments (experimental RTL)')
     p.add_argument('--comparison-baseline',type=Path,help='Require identical integer references and report same-case frozen cycles')
+    p.add_argument('--no-lut-cache',action='store_true')
     args=p.parse_args()
     if args.profile and not args.soc:p.error('--profile requires --soc')
     if args.task_engine and args.frozen_baseline:p.error('New task firmware cannot be byte-identical to the legacy baseline')
@@ -59,7 +60,7 @@ def main():
     results=[]
     for name,model,example,cpu in configurations:
         calibration=[v.reshape(1,64) for v in har_inputs[:12]] if name=='trained_har' else ([torch.from_numpy(v) for v in np.load(fixture_root/'calibration.npy')] if name in ('mixed','cpu_only') else [-example,example*0.5])
-        package=compile_model(model,example,calibration_inputs=calibration,force_cpu=cpu,task_engine=args.task_engine)
+        package=compile_model(model,example,calibration_inputs=calibration,force_cpu=cpu,task_engine=args.task_engine,lut_cache=False if args.no_lut_cache else None)
         if name=='range_fallback':assert package.nodes[0]['backend']=='CPU' and 'INT22' in package.nodes[0]['reason']
         for index,x in enumerate([example,torch.from_numpy(np.load(fixture_root/'held_out.npy'))] if name=='mixed' else [example]):
             directory=run/(name+str(index));directory.mkdir()
@@ -84,6 +85,8 @@ def main():
                                 observed_cycles=int(re.search(r'INT8_SOC PASS cycles=(\d+)',log).group(1)) if args.soc else None,
                                 baseline_cycles=baseline_cycles,
                                 npu_jobs=sum(len(n.get('jobs',[])) for n in package.nodes if n['backend']=='NPU'),
+                                npu_core_starts=package.metadata['npu_core_starts'],
+                                task_segments=len(package.metadata['task_segments']),task_descriptors=sum(s['count'] for s in package.metadata['task_segments']),
                                 free_bytes=package.metadata['free_bytes'],float_max_abs_error=float(np.abs(quant.astype(float)*scale-floating).max())))
     assert results[0]['code_sha256']==results[1]['code_sha256']
     # Automatic NPU execution and forced CPU execution have the same integer contract.

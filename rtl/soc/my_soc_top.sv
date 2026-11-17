@@ -3,7 +3,7 @@
 
 module my_soc_top #(
     parameter FPGA_INIT_FILE = "",
-    parameter bit TASK_LUT_WORD_CACHE = 0
+    parameter bit TASK_LUT_WORD_CACHE = 1
 ) (
     input   logic   clk_i,
     input   logic   rst_ni,
