@@ -1,11 +1,11 @@
 {
   "baseline_commit": "94636cc",
   "branch": "feat/npu-task-engine",
-  "active_stage": 2,
+  "active_stage": 3,
   "stages": {
     "1": "passed: frozen cycles/traffic/corpus; RTL unchanged",
-    "2": "in progress: task ABI and integer contract",
-    "3": "pending",
+    "2": "passed: host wire vectors, segment guards, exhaustive INT8 semantics and C11 layout; RTL conformance pending",
+    "3": "in progress: autonomous DMA and generic postprocessing RTL",
     "4": "pending",
     "5": "pending",
     "6": "pending",
