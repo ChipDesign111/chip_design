@@ -1,5 +1,7 @@
 # 架构与数据流
 
+新增单层FC及保留部分和的任务与原始两层共用16 MAC、双bank和DMA，接口见[FC模式](fc_modes.md)；PyTorch编译与CPU/NPU部署见[编译器](../compiler/README.md)。下文的固定64→32→6调度描述原始MODE=0路径。
+
 my_soc_top 顶层仍为 clk_i、rst_ni、tck_i、tms_i、td_i、td_o 六个端口。CPU 指令、CPU 数据、Debug SBA、DMA 是四个 AXI 发起端；Boot、主 SRAM、Debug 映射、NPU 是四个目标端。保留完整 CPU 和调试互连。
 
 CPU 指令端增加四条、每条八个 32-bit 字的取指缓存，数据容量共 128 B。缓存命中时当拍授权、下一周期返回；未命中通过 AXI INCR burst 填充，并预取下一条。仅物理 8 KiB SRAM 和 32 B 不可变 Boot 跳板允许缓存，Debug、Boot 状态寄存器等使用精确字地址的单次读取。SRAM 实际非零字节写入只撤销匹配的物理指令行（含地址别名），Boot 写入仍全局撤销；已发出的匹配填充事务继续排空，避免重装程序后使用旧指令。数据阵列不复位，valid、填充长度和输出仍复位，只有成功填充的字可返回。CPU 核本身未修改。

@@ -1,6 +1,6 @@
 # INT8 HAR 全芯片实现
 
-当前开发分支新增共享16 MAC的单/双层FC、K/N自动分块和PyTorch→RV32IM的CPU/NPU混合部署；编译器位于顶层compiler/，网络与数据位于model/。原始四样本完整SoC仍2700拍。首轮M2间距问题已在d03513b的Lab5中修复；该版19例功能通过，但TT初始复位有ICG使能违规，NPU局部修复后又暴露CPU同类问题，正在以全局取消自动插入门控的实现方案继续修复，尚不称全流程通过。[本轮状态、面积和失败证据](report/fc_generalization_eda_20261117/README.md)。
+当前开发分支新增共享16 MAC的单/双层FC、K/N自动分块及PyTorch→RV32IM的CPU/NPU部署；编译器位于顶层compiler/，网络与数据位于model/。原始四样本完整SoC保持2700拍。ee203a3完成34步、19例功能/18组TT SDF全阶段0时序事件和同DB STA；febec45仅修复M6填充并在同一物理输入上续跑Lab5通过。最终Cell Area 2.252109mm²（+8.938%）、Density82.746%、TT Setup/Hold +0.100/+0.001ns。含PAD实现外框3.795639mm²，SealRing外包络3.916441mm²；课程残项与验收口径分别报告。[完整结果、失败修复及SHA](report/fc_generalization_eda_20261117/README.md)。
 
 上一轮整合保留main 266bca3的16-MAC/INT22/取指缓存核心，接入公共复位、WB修复和完整Lab5流程。新源码287ae40已完成RTL回归、34步、TT后仿、同DB STA及Lab5：密度74.633%，Setup/Hold +0.350/+0.050ns；16组SDF及1组独立功能对照全过，全部阶段时序违规与负IOPATH截零0，WB64项0、LVS正确。[本轮实测及SHA](eda/results/main_266bca3_integration_20261113/README.md)。DRC/ERC按课程保留有依据残项，不称完整foundry签核；以下其他结果绑定各自历史来源。
 

@@ -217,7 +217,7 @@
     "geometry.json": "64f239f2d8972489ab37d3c23f30ad0b09688ea4bdfa18e485d714fd911ed720",
     "synthesis.json": "42f8acdff07f526a99f1a3bd6cafb37663e4c6b976b95a8f541df7ad643d5ef1"
   },
-  "scope": "Completed Genus synthesis only; Innovus and final validation still running",
+  "scope": "aca6c09 first synthesis comparison, automatic gating enabled. Superseded by final_synthesis_comparison.json.",
   "exclusive_npu_wrapper": {
     "cell_area_um2": {
       "before": 237555.76399999997,

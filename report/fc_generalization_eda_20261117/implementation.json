@@ -84,7 +84,7 @@
     "report_sha256": "5083ca59a6564febefce843f461219f0d4acfe1e00d32d3c581dd928b6998bd3"
   },
   "density_native_percent": 77.379,
-  "scope": "Implementation complete; TT SDF and half-cycle STA now also passed separately; Lab5 in progress",
+  "scope": "aca6c09 first implementation: TT/STA passed; Lab5 failed M2.S.2. Superseded by final_result.json.",
   "density_source": {
     "file": "native_density_evidence.json",
     "line": 31446,

@@ -24,7 +24,7 @@ python --version
 ssh -o ClearAllForwardings=yes -o BatchMode=yes chipdesign hostname
 ```
 
-复现本次SRAM修正版时，分支应为 xzx，根目录包含 rtl 和 eda。本机用 Python 3.8+、Git 和 OpenSSH；EDA 总控无需额外 Python 包。这里确认“压缩哪份代码”和“传到哪台机器”，避免从另一个分支打包。先提交计划部署的修改；归档还记录逐文件校验值和未提交状态。
+部署前确认当前分支包含目标RTL和EDA版本，根目录包含rtl和eda。本机用 Python 3.8+、Git 和 OpenSSH；EDA 总控无需额外 Python 包。这里确认“压缩哪份代码”和“传到哪台机器”，避免从另一个分支打包。先提交计划部署的修改；归档还记录逐文件校验值和未提交状态。
 
 硬件修改后，先运行功能回归（需 Icarus 和 ModelSim）：
 
