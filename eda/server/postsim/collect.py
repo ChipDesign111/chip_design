@@ -11,6 +11,9 @@ import tarfile
 def audit(root):
     sdf=(root/'build/sdf.log').read_text(errors='replace')
     inputs=json.loads((root/'input_manifest.json').read_text())
+    plan_path=root/'run_plan.json'
+    plan=json.loads(plan_path.read_text()) if plan_path.is_file() else []
+    expects_raw_soc=any(isinstance(item,dict) and item.get('kind')=='raw_soc' for item in plan)
     engine=inputs.get('simulator','vcs');compile=(root/'build/compile.log').read_text(errors='replace')
     failed_negative=0;unmatched_paths=0
     if engine=='vcs':
@@ -45,11 +48,19 @@ def audit(root):
             if not times:raise ValueError('Cannot classify timing event')
             time=max(times);phase='initial_reset' if time<start else 'final_reset' if time>=end else 'active'
             violations.append({'instance':m[1].strip(),'time_ns':time,'phase':phase,'check':m[2].strip()})
-        values=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
-        if not values or 'POSTSIM_DONE' not in text:raise ValueError('Incomplete functional run')
+        legacy=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
+        raw=re.search(r'FUNCTIONAL_PASS cycles=(\d+) scenario=raw_soc tiles=(\d+) outputs=(\d+) inputs=(\d+) reads=(\d+)',text)
+        if (not legacy and not raw) or 'POSTSIM_DONE' not in text:raise ValueError('Incomplete functional run')
         clocks=[float(x) for x in re.findall(r'CLOCK_AT_CORE time_ns=([\d.]+)',text)]
-        summary['cases'][mode.name]={'functional_pass':True,
-            **dict(zip(['observed_cpu_cycles','npu_cycles','dma_mac_overlap','read_overlap','write_overlap'],map(int,values.groups()))),
+        if raw:
+            case_values=dict(zip(['observed_cpu_cycles','raw_tiles','raw_outputs','raw_inputs','raw_reads'],
+                                 map(int,raw.groups())))
+            scenario='raw_soc'
+        else:
+            case_values=dict(zip(['observed_cpu_cycles','npu_cycles','dma_mac_overlap','read_overlap','write_overlap'],
+                                 map(int,legacy.groups())))
+            scenario='legacy'
+        summary['cases'][mode.name]={'functional_pass':True,'scenario':scenario,**case_values,
             'active_start_ns':start,'active_end_ns':end,'clock_core_edges_ns':clocks,
             'timing_counts':dict(collections.Counter(x['phase'] for x in violations)),
             'timing_violations':violations}
@@ -58,13 +69,17 @@ def audit(root):
     summary['binding_complete_for_instances_and_checks']=not (error_count or summary['missing_instances'] or summary['unmatched_timing_checks'] or unmatched_paths)
     summary['negative_path_delay_support_complete']=not (clamped or failed_negative)
     summary['raw_annotation_warnings_retained']=True
+    summary['raw_soc_case_expected']=expects_raw_soc
+    summary['raw_soc_case_present']=any(x.get('scenario')=='raw_soc' for x in summary['cases'].values())
     summary['active_window_dynamic_timing_clean']=all(not x['timing_counts'].get('active',0) for x in summary['cases'].values())
     summary['normal_acceptance']={
         'functional_pass':bool(summary['cases']) and all(x['functional_pass'] for x in summary['cases'].values()),
+        'raw_soc_case_present':summary['raw_soc_case_present'] if expects_raw_soc else True,
         'sdf_binding_complete':summary['binding_complete_for_instances_and_checks'],
         'dynamic_timing_clean':bool(summary['cases']) and all(not x['timing_violations'] for x in summary['cases'].values()),
         'warnings_are_reported_not_required_to_be_zero':True}
-    summary['normal_postsim_pass']=all(summary['normal_acceptance'][k] for k in ['functional_pass','sdf_binding_complete','dynamic_timing_clean'])
+    summary['normal_postsim_pass']=all(summary['normal_acceptance'][k] for k in
+                                       ['functional_pass','raw_soc_case_present','sdf_binding_complete','dynamic_timing_clean'])
     summary['scope']='Full notifier/message checking in all SDF runs; reset events retained, not masked. Unsupported negative IOPATH clamps remain explicit; not complete signoff.'
     (root/'audit.json').write_text(json.dumps(summary,indent=2)+'\n')
     return summary

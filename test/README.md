@@ -22,6 +22,8 @@ python test/int8/run_generic_soc.py --vsim /path/to/vsim
 
 第一项用 Icarus 验证原始 INT22 结果、模式切换与协议保护；reference-only 检查分块参考、容量和数值边界；最后一项在真实 CV32E40P/AXI/8KiB SRAM 上执行 CPU 分块、归约及多层固件。接口、数值约束和容量限制见 [通用 GEMV](../report/generic_gemv.md)。
 
+`python eda/postsim.py run` 已把 `tail_33x65` 加入完整SoC SDF后仿，作为独立的 CPU→AXI→NPU RAW场景。它要求完成34步的物理版本由当前分支RTL生成；历史HAR物理包不能代替，也不能只凭上述RTL功能仿真宣称版后时序通过。场景矩阵和判读见[后仿真操作指南](../eda/docs/后仿真操作指南.md)。
+
 取指模块的独立协议回归使用 Xcelium：
 
 ```bash

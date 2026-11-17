@@ -26,23 +26,60 @@ def execute(command, directory, log):
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--eda-work',type=Path,required=True)
     ap.add_argument('--run-root',type=Path,required=True);ap.add_argument('--firmware',type=Path,required=True)
+    ap.add_argument('--scenario-manifest',type=Path,required=True)
     ap.add_argument('--simulator',choices=['vcs','xcelium'],default='vcs')
     ap.add_argument('--sdf-mode',choices=['tt','pvt-min','pvt-max'],default='tt')
     args=ap.parse_args();work=args.eda_work.resolve();root=args.run_root.resolve()
     if root.exists():raise ValueError('Choose a NEW post-simulation run directory')
     if not (work/'evidence/step_34.json').is_file():raise ValueError('Missing completed EDA input')
+    manifest_path=args.scenario_manifest.resolve();manifest=json.loads(manifest_path.read_text())
+    if (manifest.get('schema')!=1 or not isinstance(manifest.get('legacy'),dict) or
+        not isinstance(manifest.get('raw'),list) or not manifest['raw']):
+        raise ValueError('Unsupported post-simulation scenario manifest')
+    firmware_root=args.firmware.resolve().parent
+    def firmware_file(name):
+        if not isinstance(name,str) or Path(name).name!=name or Path(name).suffix!='.hex':
+            raise ValueError('Unsafe firmware name in scenario manifest')
+        path=(firmware_root/name).resolve()
+        if path.parent!=firmware_root or not path.is_file():raise ValueError('Missing scenario firmware: '+name)
+        return path
+    primary=firmware_file(manifest['legacy'].get('primary'))
+    if primary!=args.firmware.resolve():raise ValueError('Primary firmware differs from scenario manifest')
+    gate_unit=firmware_file(manifest['legacy'].get('gate_unit'))
+    reset_names=manifest['legacy'].get('reset_sweep')
+    if not isinstance(reset_names,list):raise ValueError('Missing legacy reset sweep')
+    reset_firmware=[firmware_file(name) for name in reset_names]
+    raw_cases=[]
+    seen_names=set()
+    for item in manifest['raw']:
+        if not isinstance(item,dict) or not re.fullmatch(r'[a-z0-9_]+',str(item.get('name',''))):
+            raise ValueError('Invalid RAW scenario name')
+        for field in ('tiles','outputs','inputs','reads','w1_base'):
+            if type(item.get(field)) is not int or item[field]<=0:raise ValueError('Invalid RAW scenario '+field)
+        output_blocks=(item['outputs']+31)//32
+        input_blocks=(item['inputs']+63)//64
+        expected_tiles=output_blocks*input_blocks
+        expected_reads=sum(min(32,item['outputs']-block*32)*input_blocks
+                           for block in range(output_blocks))
+        if item['tiles']!=expected_tiles or item['reads']!=expected_reads:
+            raise ValueError('RAW scenario tile/read shape is inconsistent')
+        if item['w1_base']%4 or item['w1_base']>0xffffffff:raise ValueError('Invalid RAW W1 base')
+        if item['name'] in seen_names:raise ValueError('Duplicate RAW scenario name')
+        seen_names.add(item['name'])
+        raw_cases.append({**item,'path':firmware_file(item.get('firmware'))})
     root.mkdir(parents=True);inputs=root/'inputs';inputs.mkdir()
     out=work/'pnr/my_soc_top/outputs/manual_final'
     config=json.loads((work/'config/design.json').read_text())
     if config['system_period_ns']!=20:raise ValueError('Bench requires20ns matching physical timing')
     paths={'netlist':out/'my_soc_top_hier_postpnr.v','sdf_gz':out/('my_soc_top_tt_io.sdf.gz' if args.sdf_mode=='tt' else 'my_soc_top_pvt.sdf.gz'),
-           'firmware':args.firmware.resolve(),'testbench':Path(__file__).resolve().with_name('tb_postsim.sv'),
+           'firmware':args.firmware.resolve(),'scenario_manifest':manifest_path,
+           'testbench':Path(__file__).resolve().with_name('tb_postsim.sv'),
            'standard_cells':Path('/lec/pdk/tsmc180/tcb018gbwp7t_290a/TSMCHOME/digital/Front_End/verilog/tcb018gbwp7t_270a/tcb018gbwp7t.v'),
            'io_cells':Path('/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Front_End/verilog/tpd018nv_260a/tpd018nv.v'),
            'sram':work/'src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8.v'}
     record={k:{'source':str(p),'sha256':sha(p)} for k,p in paths.items()}
-    additional=sorted(args.firmware.parent.glob('firmware_*.hex'))
-    for p in additional:record[p.stem]={'source':str(p.resolve()),'sha256':sha(p)}
+    for p in reset_firmware+[raw['path'] for raw in raw_cases]:
+        record[p.stem]={'source':str(p.resolve()),'sha256':sha(p)}
     (root/'input_manifest.json').write_text(json.dumps({'eda_work':str(work),'simulator':args.simulator,'sdf_mode':args.sdf_mode,'files':record},indent=2)+'\n')
     driver=root/'export.tcl'
     driver.write_text('set eda_work {'+str(work)+'}\nset sim_inputs {'+str(inputs)+'}\nsource {'+str(Path(__file__).resolve().with_name('export_view.tcl'))+'}\n')
@@ -80,12 +117,26 @@ def main():
         command+=(['+define+SDF_MINIMUM'] if args.simulator=='vcs' else ['-define','SDF_MINIMUM'])
     execute(command,build,'compile.log')
     results={}
-    cases=[('sdf_max',[],inputs/'firmware.hex'),('gate_unit',['+NO_SDF'],inputs/'firmware.hex')]
+    cases=[{'mode':'sdf_max','kind':'legacy','flags':[],'firmware':primary,'metadata':{}},
+           {'mode':'gate_unit','kind':'legacy_gate_unit','flags':['+NO_SDF'],'firmware':gate_unit,'metadata':{}}]
     # Sweep asynchronous reset assertion across a full system period, without
     # masking timing checks/notifiers. Keep the first case at the old2ns phase.
-    cases += [('sdf_'+p.stem,['+RESET_OFFSET_PS=%d'%(250+1400*i)],p) for i,p in enumerate(additional)]
-    (root/'run_plan.json').write_text(json.dumps([{'mode':m,'flags':f,'firmware':str(p)} for m,f,p in cases],indent=2)+'\n')
-    for mode,flags,firmware in cases:
+    cases += [{'mode':'sdf_'+p.stem,'kind':'legacy_reset_sweep',
+               'flags':['+RESET_OFFSET_PS=%d'%(250+1400*i)],'firmware':p,
+               'metadata':{'reset_offset_ps':250+1400*i}}
+              for i,p in enumerate(reset_firmware)]
+    for raw in raw_cases:
+        cases.append({'mode':'sdf_raw_'+raw['name'],'kind':'raw_soc',
+                      'flags':['+RAW_SCENARIO','+RAW_TILES=%d'%raw['tiles'],
+                               '+RAW_OUTPUTS=%d'%raw['outputs'],'+RAW_INPUTS=%d'%raw['inputs'],
+                               '+RAW_READS=%d'%raw['reads'],'+RAW_W1_BASE=%h'%raw['w1_base']],
+                      'firmware':raw['path'],
+                      'metadata':{k:raw[k] for k in ('fixture','tiles','outputs','inputs','reads','w1_base')}})
+    plan=[{**{k:v for k,v in case.items() if k!='firmware'},'firmware':str(case['firmware'])}
+          for case in cases]
+    (root/'run_plan.json').write_text(json.dumps(plan,indent=2)+'\n')
+    for case in cases:
+        mode=case['mode'];flags=case['flags'];firmware=case['firmware']
         run=root/mode;run.mkdir();shutil.copyfile(firmware,run/'firmware.hex')
         os.link(inputs/'timing.sdf',run/'timing.sdf')
         executable=build/'simv'
@@ -111,11 +162,24 @@ def main():
             execute(['xrun','-64bit','-R','-xmlibdirname',str(cache/'xcelium.d'),
                      '-snapshot','tb_postsim_sdf']+flags,run,'simulation.log')
         text=(run/'simulation.log').read_text(errors='replace')
-        match=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
+        legacy_match=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
+        raw_match=re.search(r'FUNCTIONAL_PASS cycles=(\d+) scenario=raw_soc tiles=(\d+) outputs=(\d+) inputs=(\d+) reads=(\d+)',text)
         reset_match=re.search(r'RESET_ASSERT offset_ps=(\d+)',text)
+        match=raw_match if case['kind']=='raw_soc' else legacy_match
         if not match or not reset_match or 'POSTSIM_DONE' not in text:raise RuntimeError('Functional/reset result missing: '+mode)
         io_events=[{'time_ps':int(t),'instance':i.strip()} for t,i in re.findall(r'ERROR\s*:\s*(\d+)\s*\+\+BUS CONFLICT\+\+\s*:\s*([^\r\n]+)',text)]
-        results[mode]={'functional_pass':bool(match),'values':list(map(int,match.groups())) if match else None,
+        if case['kind']=='raw_soc':
+            raw_values=dict(zip(('observed_cpu_cycles','raw_tiles','raw_outputs','raw_inputs','raw_reads'),map(int,match.groups())))
+            if (raw_values['raw_tiles']!=case['metadata']['tiles'] or
+                raw_values['raw_outputs']!=case['metadata']['outputs'] or
+                raw_values['raw_inputs']!=case['metadata']['inputs'] or
+                raw_values['raw_reads']!=case['metadata']['reads']):
+                raise RuntimeError('RAW SoC scenario shape mismatch: '+mode)
+            result_values=raw_values
+        else:
+            result_values=dict(zip(('observed_cpu_cycles','npu_cycles','dma_mac_overlap','read_overlap','write_overlap'),
+                                   map(int,legacy_match.groups())))
+        results[mode]={'functional_pass':True,'kind':case['kind'],'values':result_values,
                        'timing_violation_messages':len(re.findall(r'Timing violation',text,re.I)),
                        'reset_offset_ps':int(reset_match.group(1)),
                        'pad_drive_ps':int(re.search(r'PAD_DRIVE_ON time_ns=[\d.]+ delay_ps=(\d+)',text).group(1)),

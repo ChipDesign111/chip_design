@@ -21,6 +21,41 @@ def html_page(markdown):
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     return '<!doctype html><meta charset="utf-8"><title>SDF后仿</title><style>body{font-family:sans-serif;max-width:1100px;margin:32px auto;padding:24px;line-height:1.8}table{border-collapse:collapse}td{border:1px solid #ccd;padding:8px}pre{white-space:pre-wrap;overflow-wrap:anywhere}p,code{overflow-wrap:anywhere}</style>'+module.render_markdown(markdown)
 
+def build_firmware(directory):
+    """Build the legacy matrix and one CPU-driven RAW SoC post-sim case."""
+    sys.path.insert(0,str(ROOT/'test/int8'))
+    from firmware import build as build_legacy
+    from generic_firmware import build as build_generic
+    from generic_runtime import TILE_N, tiles
+    from run_generic_soc import fixtures
+
+    directory.mkdir(parents=True)
+    reset_sweep=[]
+    for seed in list(range(10000,10006))+[1,3,5,7,9,11,13,15,17,19]:
+        p=directory/str(seed);p.mkdir();build_legacy(p,seed)
+        name='firmware.hex' if seed==10000 else 'firmware_%d.hex'%seed
+        (directory/name).write_bytes((p/'firmware.hex').read_bytes())
+        if seed!=10000:reset_sweep.append(name)
+
+    raw_fixture=next(item for item in fixtures() if item[0]=='tail_33x65')
+    fixture,layers,inputs=raw_fixture
+    if len(layers)!=1:raise ValueError('RAW post-sim fixture must contain one layer')
+    raw_directory=directory/('raw_'+fixture)
+    metadata=build_generic(raw_directory,layers,inputs)
+    raw_file='raw_'+fixture+'.hex'
+    (directory/raw_file).write_bytes((raw_directory/'firmware.hex').read_bytes())
+    outputs=len(layers[0].weights)
+    raw_reads=sum(min(TILE_N,outputs-nb) for nb,_,_,_ in tiles(outputs,len(inputs)))
+    manifest={
+        'schema':1,
+        'legacy':{'primary':'firmware.hex','gate_unit':'firmware.hex','reset_sweep':reset_sweep},
+        'raw':[{'name':fixture,'fixture':fixture,'firmware':raw_file,
+                'tiles':metadata['tile_count'],'outputs':outputs,'inputs':len(inputs),
+                'reads':raw_reads,'w1_base':metadata['work_address']}]
+    }
+    (directory/'scenarios.json').write_text(json.dumps(manifest,indent=2)+'\n')
+    return manifest
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command',choices=['run','status','fetch','timing'])
@@ -35,13 +70,8 @@ def main():
     if args.command=='run':
         eda=remote.valid_upload(args.eda_upload or json.loads((DIST/'last_upload.json').read_text())['upload'])
         if not remote.status(args.host,eda)['ready']:raise ValueError('Physical EDA must be complete')
-        sys.path.insert(0,str(ROOT/'test/int8'))
-        from firmware import build
-        firmware=DIST/('postsim_firmware_'+datetime.now().strftime('%Y%m%d_%H%M%S'));firmware.mkdir(parents=True)
-        for seed in list(range(10000,10006))+[1,3,5,7,9,11,13,15,17,19]:
-            p=firmware/str(seed);p.mkdir();build(p,seed)
-            name='firmware.hex' if seed==10000 else 'firmware_%d.hex'%seed
-            (firmware/name).write_bytes((p/'firmware.hex').read_bytes())
+        firmware=DIST/('postsim_firmware_'+datetime.now().strftime('%Y%m%d_%H%M%S'))
+        scenarios=build_firmware(firmware)
         subprocess.run([sys.executable,str(ROOT/'eda/package_server.py')],cwd=ROOT,check=True)
         parent=str(Path(eda).parent).replace('\\','/')
         name=datetime.now().strftime('%Y%m%d_%H%M%S')+'_postsim_'+args.simulator+'_'+args.sdf_mode+'_'+subprocess.check_output(['git','rev-parse','--short','HEAD'],cwd=ROOT).decode().strip()
@@ -51,12 +81,13 @@ def main():
         public=str(Path(parent).parent).replace('\\','/')
         remote.scp(args.host,[ROOT/'eda/unpack.sh'],public+'/unpack.sh')
         remote.ssh(args.host,'bash '+shlex.quote(public+'/unpack.sh')+' '+shlex.quote(upload)+'\n',capture=False)
-        guide='# 本次是已完成版图的后仿运行\n\n物理输入：`'+eda+'`。后仿目录：`'+upload+'`。不重新运行34步，原work不修改。\n\n'+(ROOT/'eda/docs/后仿真操作指南.md').read_text(encoding='utf-8')
+        raw=scenarios['raw'][0]
+        guide='# 本次是已完成版图的后仿运行\n\n物理输入：`'+eda+'`。后仿目录：`'+upload+'`。不重新运行34步，原work不修改。\n\n本矩阵额外执行 CPU-driven RAW SoC 场景 `'+raw['name']+'`：'+str(raw['tiles'])+' 个 RAW tile、'+str(raw['reads'])+' 次 RAW 数据读回，并在慢速 SDF 上检查无 W2 取数及最终 MODE=0。\n\n'+(ROOT/'eda/docs/后仿真操作指南.md').read_text(encoding='utf-8')
         ui=firmware/'gui';ui.mkdir();(ui/'README.md').write_text(guide,encoding='utf-8');(ui/'README.html').write_text(html_page(guide),encoding='utf-8')
         remote.scp(args.host,[ui/'README.md',ui/'README.html'],upload+'/')
-        remote.scp(args.host,list(firmware.glob('firmware*.hex')),upload+'/configs/')
+        remote.scp(args.host,list(firmware.glob('*.hex'))+[firmware/'scenarios.json'],upload+'/configs/')
         remote.save(DIST/'last_postsim.json',{'host':args.host,'upload':upload,'eda_upload':eda,'simulator':args.simulator,'sdf_mode':args.sdf_mode})
-        cmd='python3 -u deploy/server/postsim/run.py --eda-work '+shlex.quote(eda+'/work')+' --run-root '+shlex.quote(upload+'/postsim')+' --firmware '+shlex.quote(upload+'/configs/firmware.hex')+' --simulator '+args.simulator+' --sdf-mode '+args.sdf_mode
+        cmd='python3 -u deploy/server/postsim/run.py --eda-work '+shlex.quote(eda+'/work')+' --run-root '+shlex.quote(upload+'/postsim')+' --firmware '+shlex.quote(upload+'/configs/firmware.hex')+' --scenario-manifest '+shlex.quote(upload+'/configs/scenarios.json')+' --simulator '+args.simulator+' --sdf-mode '+args.sdf_mode
         print(remote.ssh(args.host,'set -e\nsource /etc/profile.d/eda.sh\ncd '+shlex.quote(upload)+'\nnohup '+cmd+' >logs/postsim.log 2>&1 < /dev/null &\necho $! >logs/postsim.pid\ncat logs/postsim.pid\n'))
         print('Postsim upload: '+upload);return
     state=json.loads((DIST/'last_postsim.json').read_text());upload=remote.valid_upload(args.upload or state['upload'])
@@ -90,7 +121,7 @@ logs=list((p/'postsim').glob('*/simulation.log'))
 count=sum('FUNCTIONAL_PASS' in f.read_text(errors='replace') for f in logs)
 plan=p/'postsim/run_plan.json'
 print(json.dumps({'upload':str(p),'running':running,'functional_passes':count,
- 'expected_cases':len(json.loads(plan.read_text())) if plan.is_file() else 2+len(list((p/'configs').glob('firmware_*.hex'))),
+ 'expected_cases':len(json.loads(plan.read_text())) if plan.is_file() else 3+len(list((p/'configs').glob('firmware_*.hex'))),
  'complete':q.exists(),'results':json.loads(q.read_text()) if q.exists() else None,
  'last_log':(p/'logs/postsim.log').read_text(errors='replace')[-2000:]}))
 PY
@@ -117,6 +148,8 @@ PY
             p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data)
     audit=json.loads((output/'audit.json').read_text());results=json.loads((output/'results.json').read_text())
     md='# SDF完整SoC后仿结果\n\n服务器：`'+upload+'`。本包'+str(len(manifest['files']))+'个文件已核验SHA。\n\n功能通过 '+str(sum(v['functional_pass'] for v in results.values()))+'/'+str(len(results))+'；回标error '+str(audit['annotation_errors'])+'，缺失实例 '+str(audit['missing_instances'])+'，缺失检查 '+str(audit['unmatched_timing_checks'])+'。\n\n工作窗口检查：'+str(audit['active_window_dynamic_timing_clean'])+'。原始复位事件及负IOPATH截零限制仍须查看，不等于全程无违规。\n\n- [完整审核](audit.json)\n- [全部功能结果](results.json)\n- [输入身份](input_manifest.json)\n- [回标原文](build/sdf.log)\n- [SDF运行](sdf_max/simulation.log)\n- [unit-delay功能对照](gate_unit/simulation.log)\n\n大网表、SDF、授权模型和编译数据库仅留服务器。本轮不宣称独立签核。\n'
+    raw_cases=sorted(name for name in results if name.startswith('sdf_raw_'))
+    if raw_cases:md=md.replace('\n大网表、SDF、授权模型和编译数据库仅留服务器。','\n- [RAW SoC SDF运行]('+raw_cases[0]+'/simulation.log)\n\n大网表、SDF、授权模型和编译数据库仅留服务器。')
     quality='正常后仿验收（功能、绑定、实际动态时序）：'+str(audit.get('normal_postsim_pass','旧审核未给出此字段'))+'。已定位工具/模型Warning保留说明，不要求所有Warning为零。\n\n绑定完整性：'+str(audit['binding_complete_for_instances_and_checks'])+'；负路径延时支持完整：'+str(audit.get('negative_path_delay_support_complete',False))+'。后者单独说明模型能力，不作为额外的零Warning门槛。\n\n'
     md=md.replace('# SDF完整SoC后仿结果\n\n','# SDF完整SoC后仿结果\n\n'+quality)
     if not (output/'build/sdf.log').is_file():

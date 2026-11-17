@@ -28,6 +28,12 @@ module tb_postsim;
   reg [31:0] magic=0;
   integer cycles=0,i;
   integer reset_offset_ps=2000;
+  integer raw_scenario=0,raw_expected_tiles=0,raw_expected_outputs=0;
+  integer raw_expected_inputs=0,raw_expected_reads=0,timeout_cycles=200000;
+  integer raw_tiles=0,raw_index_writes=0,raw_data_reads=0,raw_ready_reads=0;
+  integer raw_mode_entries=0,raw_mode_clears=0;
+  reg [31:0] raw_w1_base=0;
+  reg raw_mode_requested=0,npu_req_q=0;
   reg [31:0] value,stats[0:3];
   initial begin
 `ifndef NO_SDF
@@ -45,6 +51,38 @@ module tb_postsim;
   always @(posedge dut.i_pad_clk.C) begin
     if(edge_count<4) $display("CLOCK_AT_CORE time_ns=%0.3f",$realtime);
     edge_count=edge_count+1;
+  end
+  // Observe the CPU-visible MMIO path, not internal synthesizable state names.
+  // RAW firmware must set MODE=1, start only in RAW, read every partial sum,
+  // never prefetch W2, and restore MODE=0 before its final status write.
+  always @(posedge clk) begin
+    npu_req_q<=dut.npu_req;
+    if(raw_scenario) begin
+      if(dut.npu_req && !npu_req_q) begin
+        if(dut.npu_we && dut.npu_addr==32'h7000003c) begin
+          if(dut.npu_wdata==32'd1) begin
+            raw_mode_requested<=1;raw_mode_entries<=raw_mode_entries+1;
+          end else if(dut.npu_wdata==32'd0) begin
+            raw_mode_requested<=0;raw_mode_clears<=raw_mode_clears+1;
+          end
+        end
+        if(dut.npu_we && dut.npu_addr==32'h70000000 && dut.npu_wdata[0]) begin
+          if(!raw_mode_requested) $fatal(1,"RAW SoC START without MODE=1");
+          raw_tiles<=raw_tiles+1;
+        end
+        if(dut.npu_we && dut.npu_addr==32'h70000080) begin
+          if(!raw_mode_requested || dut.npu_wdata[31:7]!=0)
+            $fatal(1,"Invalid RAW_INDEX write data=%h",dut.npu_wdata);
+          raw_index_writes<=raw_index_writes+1;
+        end
+        if(!dut.npu_we && dut.npu_addr==32'h70000084) raw_data_reads<=raw_data_reads+1;
+        if(!dut.npu_we && dut.npu_addr==32'h70000088) raw_ready_reads<=raw_ready_reads+1;
+      end
+      if(dut.auto_start &&
+         (dut.auto_source<raw_w1_base || dut.auto_source>=raw_w1_base+2048 || dut.auto_words!=16))
+        $fatal(1,"RAW SoC prefetched outside the W1 workspace source=%h words=%0d",
+               dut.auto_source,dut.auto_words);
+    end
   end
   task sba_access(input bit writing,input reg [31:0] address,data,
                   input reg [3:0] be,output reg [31:0] response);
@@ -85,6 +123,19 @@ module tb_postsim;
       magic<=dut.i_mainmem.i_sram.i_macro.D;
   end
   initial begin
+    raw_scenario=$test$plusargs("RAW_SCENARIO");
+    if(raw_scenario) begin
+      if(!$value$plusargs("RAW_TILES=%d",raw_expected_tiles) ||
+         !$value$plusargs("RAW_OUTPUTS=%d",raw_expected_outputs) ||
+         !$value$plusargs("RAW_INPUTS=%d",raw_expected_inputs) ||
+         !$value$plusargs("RAW_READS=%d",raw_expected_reads) ||
+         !$value$plusargs("RAW_W1_BASE=%h",raw_w1_base))
+        $fatal(1,"Incomplete RAW SoC scenario parameters");
+      if(raw_expected_tiles<=0 || raw_expected_outputs<=0 ||
+         raw_expected_inputs<=64 || raw_expected_reads<=0)
+        $fatal(1,"Invalid RAW SoC scenario shape");
+      timeout_cycles=100000+raw_expected_tiles*50000;
+    end
     force dut.dm_master_req=load_req;force dut.dm_master_we=load_we;
     force dut.dm_master_add=load_addr;force dut.dm_master_wdata=load_data;
     force dut.dm_master_be=load_be;
@@ -112,18 +163,33 @@ module tb_postsim;
     if(dut.boot_ready!==1'b0) $fatal(1,"Wrong commit key started CPU");
     write_word(32'h0001003c,32'hb007c0de,15);
     $display("CPU_WAIT_START time_ns=%0.3f",$realtime);
-    while(cycles<200000 && magic!==32'hc0dec0de) begin
+    while(cycles<timeout_cycles && magic!==32'hc0dec0de) begin
       @(negedge clk);#1;cycles=cycles+1;
       if(magic===32'hdeadbeef) $fatal(1,"CPU numeric self-check failed");
     end
     if(magic!==32'hc0dec0de) $fatal(1,"CPU timeout PC=%h",dut.instr_addr);
-    for(i=0;i<4;i=i+1) begin
-      sba_access(0,32'h80001fc0+i*4,0,15,value);stats[i]=value;
+    if(raw_scenario) begin
+      if(raw_tiles!=raw_expected_tiles)
+        $fatal(1,"RAW SoC expected %0d starts, got %0d",raw_expected_tiles,raw_tiles);
+      if(raw_index_writes!=raw_expected_reads || raw_data_reads!=raw_expected_reads)
+        $fatal(1,"RAW SoC expected %0d index/data reads, got %0d/%0d",
+               raw_expected_reads,raw_index_writes,raw_data_reads);
+      if(raw_ready_reads==0) $fatal(1,"RAW SoC firmware never polled RAW_READY");
+      if(raw_mode_entries==0 || raw_mode_clears==0 || raw_mode_requested!==1'b0)
+        $fatal(1,"RAW SoC MODE lifecycle incomplete entries=%0d clears=%0d requested=%0d",
+               raw_mode_entries,raw_mode_clears,raw_mode_requested);
+      $display("FUNCTIONAL_PASS cycles=%0d scenario=raw_soc tiles=%0d outputs=%0d inputs=%0d reads=%0d raw_ready_reads=%0d time_ns=%0.3f",
+               cycles,raw_tiles,raw_expected_outputs,raw_expected_inputs,raw_data_reads,
+               raw_ready_reads,$realtime);
+    end else begin
+      for(i=0;i<4;i=i+1) begin
+        sba_access(0,32'h80001fc0+i*4,0,15,value);stats[i]=value;
+      end
+      if(stats[2]===0 || stats[3]===0 || (^stats[2])===1'bx || (^stats[3])===1'bx)
+        $fatal(1,"No actual DMA/MAC overlap");
+      $display("FUNCTIONAL_PASS cycles=%0d npu_cycles=%0d dma_mac_overlap=%0d read_overlap=%0d write_overlap=%0d time_ns=%0.3f",
+               cycles,stats[0],stats[1],stats[2],stats[3],$realtime);
     end
-    if(stats[2]===0 || stats[3]===0 || (^stats[2])===1'bx || (^stats[3])===1'bx)
-      $fatal(1,"No actual DMA/MAC overlap");
-    $display("FUNCTIONAL_PASS cycles=%0d npu_cycles=%0d dma_mac_overlap=%0d read_overlap=%0d write_overlap=%0d time_ns=%0.3f",
-             cycles,stats[0],stats[1],stats[2],stats[3],$realtime);
     $display("ACTIVE_END time_ns=%0.3f",$realtime);
     if(!$value$plusargs("RESET_OFFSET_PS=%d",reset_offset_ps)) reset_offset_ps=2000;
     if(reset_offset_ps<1 || reset_offset_ps>=20000) $fatal(1,"Reset phase must be inside one20ns period");
