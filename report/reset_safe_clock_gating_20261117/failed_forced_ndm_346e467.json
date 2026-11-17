@@ -1,0 +1,52 @@
+{
+  "status": "physical 34 steps passed; first extended SDF matrix rejected before Lab5",
+  "physical_source_commit": "346e467",
+  "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_140909_346e467",
+  "postsim_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_150023_postsim_vcs_tt_346e467",
+  "physical_timing_ns": {
+    "setup": 0.126,
+    "hold": 0.0
+  },
+  "postsim_functional_cases": 19,
+  "sdf_cases": 18,
+  "auto_gating_timing_events": 0,
+  "other_events": [
+    {
+      "case": "sdf_firmware_model_mixed",
+      "instance": "tb_postsim.dut.i_ndm_request_reset.reset_sample_n_reg",
+      "time_ns": 283741.836,
+      "phase": "final_reset",
+      "check": "$setuphold( negedge CPN &&& D_DEFCHK:283741836, negedge D:283741811, limits: (32,13) );"
+    }
+  ],
+  "cause": "bench forced synchronous DMCONTROL output asynchronously, bypassing producer and colliding with first request sampler aperture",
+  "source_evidence": [
+    "rtl/debug/dm_csrs.sv:556",
+    "rtl/debug/dm_csrs.sv:577",
+    "rtl/soc/my_soc_top.sv:343"
+  ],
+  "fix": "three writes at system-clock DMI input to actual DMCONTROL; no output force, timing masking or physical change",
+  "local_evidence": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\lab5\\reset_safe_clock_gating_tt_native_repair_20261117",
+  "files": {
+    "pipeline.json": {
+      "sha256": "22b88e9e1612367ee78b78f43c687400bedf8bc53586eae0c395bf06f5610a49",
+      "bytes": 2176
+    },
+    "implementation/receipt.json": {
+      "sha256": "18ee9acdb6a3ce32865646704b0f79b700b3d2ff6640c8dd4fc02aebaa548a3f",
+      "bytes": 427
+    },
+    "postsim_tt/audit.json": {
+      "sha256": "bdf6b4a9631f4894d577329bebda9496eda29df8bd82ccd22fc7eb031d96ad19",
+      "bytes": 10704
+    },
+    "postsim_tt/input_manifest.json": {
+      "sha256": "344c4e474ab71b47a734e2043eb6d309bb32c11ac83b7c32f81c3ba848402d4d",
+      "bytes": 7389
+    },
+    "postsim_tt/sdf_firmware_model_mixed/simulation.log": {
+      "sha256": "33765f978426734f587b72ee629492da47030082b786c9d58749f57059db0a8c",
+      "bytes": 1841
+    }
+  }
+}
