@@ -54,3 +54,9 @@ cleanup.json记录42项、322582569字节的本轮缓存和一次性复现文件
 ## 07:27 修复接续
 
 首轮总控已退出1，Lab5因3项M2.S.2失败，其他阶段结果保留。不是仍在等待。三条普通信号路由在北侧电源PAD下的M2间距0.45µm，小于规则0.6µm；详见io_m2_diagnosis.json和lab5_failure.json。已新增28个PV*电源IO的METAL2信号keepout（0.65µm，PG豁免），原生Innovus读回验证通过，不改PDK或原始GDS。需提交后在新目录fc_generalization_io_m2_20261117重跑完整Genus→34步→19例TT SDF→同DB STA→Lab5。RTL/test未变，可继续使用120项SHA核验的011105回归。冻结旧work未改写。
+
+修复版已提交d03513b，新物理上传20261117_072804_d03513b，输出C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/lab5/fc_generalization_io_m2_20261117。本地pipeline session=68437，启动北京时间07:28。人工下一次约07:58查询；总控内部已有自动阶段推进。若继续时先检查本地总控是否存活，避免重复上传。
+
+07:58人工查询：新上传20261117_072804_d03513b已通过Genus，到Innovus27/34，running=true、工具错误false。原本地总控68437仍正常推进；下一次纯等待人工查询约08:28。新增文档和失败摘要精简只在本地，RTL/EDA冻结源未再改变。
+
+08:35接续：d03513b的34步完成。TT上传20261117_081941_postsim_vcs_tt_d03513b全部19例功能正确，但18组SDF每组3条初始复位ICG使能违规，54条合计，normal_postsim_pass=false，pipeline68437已退出1。独立Lab5上传20261117_082948_lab5_d03513b已完成并fetch，lab5_pass=true、M2.S.2=0，说明M2修复真实有效，但不能抵消SDF失败。下一版仅取消i_npu_subsystem/i_npu_core/core的Genus自动门控，原生属性与映射后双重检查，保留其他模块门控及library_enable。RTL/test仍未变；需要提交并新上传完整流程。91732的Lab5总控已退出0，无重任务在跑。

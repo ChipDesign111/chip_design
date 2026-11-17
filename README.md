@@ -1,6 +1,8 @@
 # INT8 HAR 全芯片实现
 
-最新整合保留main 266bca3的16-MAC/INT22/取指缓存核心，接入公共复位、WB修复和完整Lab5流程。新源码287ae40已完成RTL回归、34步、TT后仿、同DB STA及Lab5：密度74.633%，Setup/Hold +0.350/+0.050ns；16组SDF及1组独立功能对照全过，全部阶段时序违规与负IOPATH截零0，WB64项0、LVS正确。[本轮实测及SHA](eda/results/main_266bca3_integration_20261113/README.md)。DRC/ERC按课程保留有依据残项，不称完整foundry签核；以下其他结果绑定各自历史来源。
+当前开发分支新增共享16 MAC的单/双层FC、K/N自动分块和PyTorch→RV32IM的CPU/NPU混合部署；编译器位于顶层compiler/，网络与数据位于model/。原始四样本完整SoC仍2700拍。首轮M2间距问题已在d03513b的Lab5中修复；该版19例功能通过，但TT初始复位有ICG使能违规，正在以NPU核心定向取消自动门控的实现方案继续修复，尚不称全流程通过。[本轮状态、面积和失败证据](report/fc_generalization_eda_20261117/README.md)。
+
+上一轮整合保留main 266bca3的16-MAC/INT22/取指缓存核心，接入公共复位、WB修复和完整Lab5流程。新源码287ae40已完成RTL回归、34步、TT后仿、同DB STA及Lab5：密度74.633%，Setup/Hold +0.350/+0.050ns；16组SDF及1组独立功能对照全过，全部阶段时序违规与负IOPATH截零0，WB64项0、LVS正确。[本轮实测及SHA](eda/results/main_266bca3_integration_20261113/README.md)。DRC/ERC按课程保留有依据残项，不称完整foundry签核；以下其他结果绑定各自历史来源。
 
 main 现包含取指行缓冲和固件循环优化。按 SRAM 地址失效取指缓存、缩短 DMA 写响应等待、去除缓存数据阵列复位后，相同训练 HAR 自检 **3510→3462 拍（−1.37%）**；附加 SRAM 写入程序 **7748→4497 拍（−41.96%）**，两者属于不同工作负载。同一套 RTL 上，reuse8 固件在 38 组对照里把完整自检再降低 3.65%，从第一次取指到 NPU DONE 降低 1.23%。完整对照见 [优化报告](report/performance.md)。该历史性能记录当时没有重做PNR、SDF后仿或板测；本轮完整验证见页首新报告。
 
@@ -25,7 +27,7 @@ main 现包含取指行缓冲和固件循环优化。按 SRAM 地址失效取指
 | [rtl](rtl/README.md) | 当前完整 SoC 硬件及统一 filelist |
 | [eda](eda/README.md) | 正式部署脚本、服务器 EDA 程序、讲义逐步解释及结果分析 |
 | [compiler](compiler/README.md) | PyTorch模型编译、自动分块与CPU/NPU部署运行时 |
-| [model](model/README.md) | 保留的训练模型、量化参数和整数参考 |
+| [model](model/README.md) | 原训练模型、量化参考，以及通用混合网络和固定测试数据 |
 | [test](test/README.md) | 当前 INT8/DMA/启动保护功能回归 |
 | [report](report/README.md) | 架构、MMIO、DMA、性能、SRAM 和验证范围 |
 | [fpga](fpga/README.md) / [板级测试报告](fpga/TEST_REPORT.md) | Vivado 工程、多镜像 JTAG 装载流程和当前 A7-35T 板上验证结果 |

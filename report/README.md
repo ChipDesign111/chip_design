@@ -1,6 +1,8 @@
 # 当前设计说明
 
-最新完整整合验证（287ae40）：保留main266bca3的16-MAC/INT22/取指缓存核心，接入公共复位、TT单元选择和WB/Lab5流程。密度74.633%，Setup/Hold +0.350/+0.050ns；16组SDF及1组功能对照全过，全部阶段动态事件与负IOPATH截零0；WB64项0、LVS正确。课程DRC/ERC残项及TDO工具警告单列。[最终结果及来源SHA](../eda/results/main_266bca3_integration_20261113/README.md)。下列72.509%等值是整合前main历史基线。
+当前单/双层FC与PyTorch编译部署的接口见[FC模式](fc_modes.md)和[编译器](../compiler/README.md)；8组完整SoC编译验证见[编译验收](model_compiler_20261117/README.md)。更新后完整EDA的面积、19例TT SDF、Lab5失败及M2避让修复进度见[本轮报告](fc_generalization_eda_20261117/README.md)。旧基线记录按日期保留，不代表新增功能的物理结果。
+
+上一轮完整整合验证（287ae40）：保留main266bca3的16-MAC/INT22/取指缓存核心，接入公共复位、TT单元选择和WB/Lab5流程。密度74.633%，Setup/Hold +0.350/+0.050ns；16组SDF及1组功能对照全过，全部阶段动态事件与负IOPATH截零0；WB64项0、LVS正确。课程DRC/ERC残项及TDO工具警告单列。[最终结果及来源SHA](../eda/results/main_266bca3_integration_20261113/README.md)。下列72.509%等值是整合前main历史基线。
 
 main 现包含取指行缓冲、缩短后的 DMA 写响应，以及同一套 RTL 上的 reuse8 固件。共享 SRAM 事务复位仍在 RTL 里。下面的面积、SDF 和 FPGA 数字都属于各自的归档版本，不是这次合并新做的物理签核。本轮缓存一致性与 DMA 优化的匹配数据、测试入口和面积/时序比较见 [优化报告](performance.md)。
 

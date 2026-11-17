@@ -1,0 +1,16 @@
+{
+  "local_removed_cache": "eda/dist/postsim_syntax_work (six explicit files, then empty directory)",
+  "preserved_server_log": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_021054_lab5_aca6c09/analysis/io_m2_probe/tool.log",
+  "removed_server_probe_scripts": [
+    {
+      "path": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_021054_lab5_aca6c09/analysis/io_m2_probe/driver.tcl",
+      "sha256": "d0f4de096e93392555e3e32400b56984fc020ac6013f77c071ad4e5a1553464e",
+      "bytes": 316
+    },
+    {
+      "path": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_021054_lab5_aca6c09/analysis/io_m2_probe/io_m2_keepout.tcl",
+      "sha256": "b9f3d464ebbb82be779694e3158f8b6d27eeb1aabfa1ca53086524dc3ec23003",
+      "bytes": 1962
+    }
+  ]
+}

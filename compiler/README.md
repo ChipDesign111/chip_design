@@ -72,7 +72,7 @@ python test/int8/run_model_compiler.py --soc
 
 完整SoC用例覆盖混合网络的两个不同输入（机器码SHA相同）、强制全CPU、65→9输入分块且batch=2、9→41输出分块、INT22不安全时自动CPU Linear、CPU标量/张量减法与batch Softmax，以及工程保留的训练HAR浮点权重。逐层SBA读回核对，检查实际NPU启动任务数；模型浮点误差单独记录。训练HAR使用12个已有样本校准、另一个样本做SoC执行，不作为全测试集精度结论。
 
-本功能不修改RTL，也没有声称任意PyTorch模型都能部署。原双层专用固件及其2700拍基线保持独立；通用编译器有CPU量化与调度开销，不把它的程序周期等同于专用模式性能。未新增板级、综合、STA或SDF验证。
+本功能不修改RTL，也没有声称任意PyTorch模型都能部署。原双层专用固件及其2700拍基线保持独立；通用编译器有CPU量化与调度开销，不把它的程序周期等同于专用模式性能。编译器提交时未新增板级、综合、STA或SDF验证；后续完整EDA、19例TT SDF及Lab5状态单独见[本轮物理报告](../report/fc_generalization_eda_20261117/README.md)。
 
 本轮8组完整SoC的实测、精度边界与可启动示例包见 [验收报告](../report/model_compiler_20261117/README.md)。
 

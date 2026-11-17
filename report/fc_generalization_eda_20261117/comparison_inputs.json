@@ -54,5 +54,6 @@
       "file": "rtl/dma/har_dma.sv",
       "sha256": "6aaa673d985b4c431ed7f65cb12ff7794bf6af48fbced4f399f3b5dbd45da2cb"
     }
-  ]
+  ],
+  "baseline_rtl_equal_to_main_f2b9814": true
 }

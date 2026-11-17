@@ -29,5 +29,8 @@
   "acceptance_profile": "native_library_zero_slack",
   "antenna_fanout_reserve": 1,
   "antenna_repair_strategy": "native_jumpers_first",
-  "setup_target_ns": 0.1
+  "setup_target_ns": 0.1,
+  "automatic_clock_gating_exclude_hierarchies": [
+    "i_npu_subsystem/i_npu_core/core"
+  ]
 }
