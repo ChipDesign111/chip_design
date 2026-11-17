@@ -22,7 +22,7 @@ set_db design_process_node $tech(process_node)
 
 # specify maximum number of available CPUs
 set_db max_cpus_per_server $syn_cpus
-set_db auto_super_thread $eda_automatic_super_thread
+set_db auto_super_thread true
 
 # specify search path for "`include" in HDL
 set_db init_hdl_search_path $log_syn(hdl_search_path)

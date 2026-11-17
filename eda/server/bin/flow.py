@@ -55,9 +55,6 @@ def read_config(path):
             raise ValueError('Invalid numeric configuration: ' + key)
     if not 0 < c['target_utilization'] <= 1 or not isinstance(c['cpus'], int) or not 1 <= c['cpus'] <= 16:
         raise ValueError('Expected utilization fraction in (0,1] and CPU count in 1..16')
-    c.setdefault('automatic_super_thread',True)
-    if not isinstance(c['automatic_super_thread'],bool):
-        raise ValueError('automatic_super_thread must be a JSON boolean')
     c.setdefault('optimizer_max_density', c['target_utilization'])
     density=c['optimizer_max_density']
     if not isinstance(density,(int,float)) or not math.isfinite(density) or not 0<density<=1:
@@ -179,7 +176,6 @@ def prepare(args):
     # lp_clock_gating_infer_enable is an enum in Genus 19.17: it accepts
     # literal true/false, unlike a Boolean attribute it rejects numeric 0/1.
     text+='set eda_insert_clock_gating %s\n'%('true' if config['insert_automatic_clock_gating'] else 'false')
-    text+='set eda_automatic_super_thread %s\n'%('true' if config['automatic_super_thread'] else 'false')
     text+='set eda_enable_mapping %s\n'%config['functional_enable_mapping']
     text+='set eda_comb_mapping %s\n'%config['combinational_cell_mapping']
     text+='set eda_implementation_effort %s\n'%config['implementation_effort']
@@ -225,7 +221,7 @@ def prepare(args):
         'fanout_reserve_is_optimization_only':True,
         'minimum_accepted_setup_hold_slack_ns':0.0,
         'optimization_goal_is_not_an_acceptance_threshold':True})
-    write_json(work / 'evidence/preparation.json', {'rtl_files': len(listed), 'include_dirs': includes, 'macro_source': str(macro), 'work': str(work), 'functional_retested_here': False, 'profile_changes': ['CHIP_USE_RA1SHD and SYNTHESIS', 'absolute source paths', 'no hidden path_adjust tightening', 'guard empty async net selection', 'original CPU clock passthrough'], 'automatic_super_thread': config['automatic_super_thread']})
+    write_json(work / 'evidence/preparation.json', {'rtl_files': len(listed), 'include_dirs': includes, 'macro_source': str(macro), 'work': str(work), 'functional_retested_here': False, 'profile_changes': ['CHIP_USE_RA1SHD and SYNTHESIS', 'absolute source paths', 'no hidden path_adjust tightening', 'guard empty async net selection', 'original CPU clock passthrough']})
     write_json(work / 'evidence/input_manifest.json', fingerprint_inputs(work))
     print('Prepared NEW project: ' + str(work))
     print('Next: bash ' + str(work / 'flow/bin/eda.sh') + ' doctor --work ' + str(work))

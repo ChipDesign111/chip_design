@@ -26,8 +26,6 @@ cat configs/design.json
 
 
 
-`automatic_super_thread`默认开启Genus自动超级线程。若当前RTL触发的Genus 19.17多线程虚拟映射在`map_condense_send`内部崩溃，可在第一次`check_env.sh`前设为`false`，以单超级线程路径重新综合；该选项不改变综合约束、映射策略或验收阈值，但可能改变运行时间和映射结果，实际配置写入`work/evidence/preparation.json`。
-
 rc_temperatures.tcl在创建及每次恢复数据库后，用Innovus原生get_rc_corner -T读回RC角25/125/0/−40°C，保存evidence/rc_temperatures.json；不一致便停止。Genus使用-temperature，Innovus使用-T，不能混用。旧版本曾只有库温度匹配、RC实际均25°C，是否包含此修正应看本版本源码和实际读回记录。
 
 **第一次运行 check_env 前** 修改 configs/design.json。准备完成后 work 中的输入被固定，禁止修改来冒充续跑。更换参数请新建上传目录。1648+2×150=1948 μm 只是请求值；实际尺寸按工具网格对齐后的数据库和最终输出核对。
