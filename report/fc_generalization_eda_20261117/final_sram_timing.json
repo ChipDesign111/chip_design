@@ -1,0 +1,32 @@
+{
+  "sram_input_setup.log": {
+    "worst_slack_ns": 6.181,
+    "paths": 20,
+    "sha256": "4722e6f729e2397971a98687f6e6a9d0fc92cd2b45fdf99d9c5998a6ae4fc2e0"
+  },
+  "sram_input_hold.log": {
+    "worst_slack_ns": 10.227,
+    "paths": 20,
+    "sha256": "7fd8f49697a3faab131c8e9d43a335727e166bdf90d8e952cd48caa7c5eaa45a"
+  },
+  "sram_output_setup.log": {
+    "worst_slack_ns": 2.546,
+    "paths": 20,
+    "sha256": "d8696bd69f6a721a75d9334369dd9ecc6431ae42b20606a27c125ac1aee02940"
+  },
+  "sram_output_hold.log": {
+    "worst_slack_ns": 11.593,
+    "paths": 20,
+    "sha256": "e4e9b0a1c41f6aacb9b569d7a60c9629af3a4c58c8518cf890bdf6416fa319a3"
+  },
+  "reset_to_request_func_tt_io_setup.log": {
+    "worst_slack_ns": 5.591,
+    "paths": 1,
+    "sha256": "a81eaa51d4f9d3f4b37a5bcca7c9581e8f2d1a3a034807d4f171aa737da6cd96"
+  },
+  "reset_to_request_func_tt_io_hold.log": {
+    "worst_slack_ns": 11.436,
+    "paths": 1,
+    "sha256": "9738d502f46dbd8b432072536ea4adbaa244b852de471c0d6fb24df6d2297b0a"
+  }
+}

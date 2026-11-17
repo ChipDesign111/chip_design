@@ -1,0 +1,18 @@
+{
+  "physical_source": "ee203a3",
+  "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_094344_ee203a3",
+  "lab5_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_104444_lab5_ee203a3",
+  "lab5_pass": false,
+  "source_result_sha256": "7fa1fe1dac01120aee08af4904375c8e6c6d8a6f123ff5c869a91f9431918035",
+  "remaining_nonexcluded_drc": {
+    "M6.R.1": 1
+  },
+  "native_density_source": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_104444_lab5_ee203a3/soc-stu/layout/workspace/drc_postDummy/M6_DENSITY.log",
+  "native_density_line": "-15.38 -15.38 1963.62 1963.62 0.296431",
+  "minimum_required_m6_fraction": 0.3,
+  "measured_m6_fraction": 0.296431,
+  "generation_target_fraction": 0.35,
+  "old_large_dummy_spacing_um": 1.5,
+  "new_large_dummy_spacing_um": 1.2,
+  "scope": "Change dummy generation spacing only; original 30% DRC rule, physical netlist/GDS before Dummy, TT/SDF input and PDK unchanged. New independent Lab5 upload must rerun DRC/LVS/ERC/antenna/WB on newly filled GDS."
+}

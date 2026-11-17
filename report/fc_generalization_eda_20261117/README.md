@@ -104,3 +104,9 @@ d03513b从头完成Genus和34步实现，19/19计算结果通过，但18组SDF�
 91b0a74从头实现、STA及19例功能均通过，NPU初始事件已消失，但CPU register_file/id_stage中的10个自动ICG在初始复位出现违规，每组SDF 10条、18组合计180条。工作与最终复位仍无违规。[完整原因与十个实例](core_only_gating_failure.json)。因此这版也未通过总控，未将前版Lab5结果拼接为本版通过。
 
 下一版使用既有全局insert_automatic_clock_gating=false，保留library_enable，不增加新的层次开关，映射检查全局自动ICG必须为0。原始RTL/test与20ns约束不变；需重新测量面积、完整SDF及Lab5。NPU局部版面积2.186405mm²也不是最终通过版本的面积。
+
+## 全局关闭门控通过SDF，M6填充不足需修复
+
+ee203a3的34步、19例功能、18组SDF全阶段0动态违规、同DB半周期STA全部通过。综合面积2.252109mm²，原生密度82.746%，Setup/Hold +0.100/+0.001ns；Hold余量只有1ps，只覆盖当前TT配置。最后Lab5剩一项M6.R.1：实测全包络覆盖29.6431%，低于原始30%要求。[失败证据](m6_density_failure.json)。M2.S.2已清零，LVS、已审阅ERC、天线、WB均通过。
+
+修复仅将既有普通M6大Dummy间距从1.5改为1.2µm，增加实际金属填充。保留原始30%检查阈值及全部规则，使用新Lab5上传重新生成填充并执行全部最终检查。EE的物理实现与TT/SDF输入不变，失败pipeline.json保留；后续完成记录单独绑定同一physical_upload，不篡改原总控失败状态。
