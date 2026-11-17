@@ -33,6 +33,7 @@ module tb_postsim;
   reg dmi_valid=0,dmi_response_ready=0;
   reg [6:0] dmi_address=0;
   reg [31:0] dmi_data=0;
+  reg [1:0] dmi_operation=0;
   initial begin
 `ifndef NO_SDF
 `ifdef SDF_MINIMUM
@@ -77,21 +78,36 @@ module tb_postsim;
   // Drive the system-clock DMI boundary, downstream of JTAG CDC. The real
   // DMCONTROL flop generates NDM synchronously; never force its output.
   // Gate netlists flatten the request/response structure into these nets.
-  task dmi_write(input reg [6:0] address,input reg [31:0] data);
+  task dmi_access(input bit writing,input reg [6:0] address,
+                  input reg [31:0] data,output reg [31:0] response);
     integer count;
     begin
       @(negedge clk);#2;
       if(dut.debug_req_ready!==1'b1) $fatal(1,"DMI not ready before write");
-      dmi_address=address;dmi_data=data;dmi_valid=1;
+      dmi_address=address;dmi_data=data;dmi_operation=writing ? 2'b10 : 2'b01;dmi_valid=1;
       @(posedge clk);#5;
       if(dut.debug_req_ready!==1'b1) $fatal(1,"DMI write not accepted");
       @(negedge clk);#2;dmi_valid=0;count=0;
       while(dut.debug_resp_valid!==1'b1 && count<100) begin
         @(negedge clk);#2;count=count+1;
       end
-      if(count==100 || dut.\debug_resp[resp] !==2'b00) $fatal(1,"DMI write response failed");
+      if(count==100) $fatal(1,"DMI response timeout");
+      response=dut.\debug_resp[data] ;
       dmi_response_ready=1;
       @(negedge clk);#2;dmi_response_ready=0;
+    end
+  endtask
+  task dmcontrol_write(input reg [31:0] data);
+    reg [31:0] ignored,observed;
+    begin
+      dmi_access(1,7'h10,data,ignored);
+      dmi_access(0,7'h10,0,observed);
+      // The constant-success response-status alias is not driven in the
+      // optimized physical export. Check actual registered DMCONTROL data
+      // through the response FIFO instead; bits1:0 are ndmreset/dmactive.
+      if((observed & 32'h3)!==(data & 32'h3))
+        $fatal(1,"DMCONTROL readback failed expected=%h actual=%h",data,observed);
+      $display("DMCONTROL_READBACK_PASS value=%h time_ns=%0.3f",observed & 32'h3,$realtime);
     end
   endtask
   // Observe after the annotated clock/reset paths have settled. The firmware
@@ -173,25 +189,25 @@ module tb_postsim;
     @(negedge clk);#2;
     force dut.debug_req_valid=dmi_valid;
     force dut.\debug_req[addr] =dmi_address;
-    force dut.\debug_req[op] =2'b10;
+    force dut.\debug_req[op] =dmi_operation;
     force dut.\debug_req[data] =dmi_data;
     force dut.debug_resp_ready=dmi_response_ready;
-    dmi_write(7'h10,32'h00000001); // dmactive
-    dmi_write(7'h10,32'h00000003); // dmactive + ndmreset
+    dmcontrol_write(32'h00000001); // dmactive
+    dmcontrol_write(32'h00000003); // dmactive + ndmreset
     if(dut.ndmreset!==1'b1) $fatal(1,"DMCONTROL did not assert NDM");
     $display("NDM_RESET_ASSERT offset_ps=%0d time_ns=%0.3f",reset_offset_ps,$realtime);
     repeat(4) @(negedge clk);
     if(dut.ndmreset_n!==1'b0 || dut.boot_ready!==1'b0) $fatal(1,"NDM reset did not revoke boot");
     if(dut.por_reset_n!==1'b1) $fatal(1,"NDM reset disturbed independent debug domain");
     if(dut.i_mainmem.i_sram.i_macro.CEN!==1'b1) $fatal(1,"SRAM requests continued during NDM reset");
-    dmi_write(7'h10,32'h00000001);
+    dmcontrol_write(32'h00000001);
     if(dut.ndmreset!==1'b0) $fatal(1,"DMCONTROL did not release NDM");
     repeat(16) @(negedge clk);#2;
     if(dut.ndmreset_n!==1'b1 || dut.boot_ready!==1'b0 || dut.instr_req!==1'b0)
       $fatal(1,"NDM release bypassed guarded boot");
     if(dut.i_mainmem.i_sram.i_macro.CEN!==1'b1) $fatal(1,"NDM release issued stale SRAM access");
     $display("NDM_RESET_PASS time_ns=%0.3f",$realtime);
-    $display("DMCONTROL_RESET_PASS writes=3 time_ns=%0.3f",$realtime);
+    $display("DMCONTROL_RESET_PASS writes=3 readbacks=3 time_ns=%0.3f",$realtime);
     @(negedge clk);
     #(reset_offset_ps/1000.0);
     $display("RESET_ASSERT offset_ps=%0d time_ns=%0.3f",reset_offset_ps,$realtime);

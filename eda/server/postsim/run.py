@@ -133,7 +133,7 @@ def main():
         reset_match=re.search(r'^RESET_ASSERT offset_ps=(\d+)',text,re.M)
         if not match or not reset_match or 'POSTSIM_DONE' not in text:raise RuntimeError('Functional/reset result missing: '+mode)
         if 'NDM_RESET_PASS' not in text:raise RuntimeError('NDM assert/release verification missing: '+mode)
-        if 'DMCONTROL_RESET_PASS writes=3' not in text:raise RuntimeError('Actual DMCONTROL reset writes missing: '+mode)
+        if 'DMCONTROL_RESET_PASS writes=3 readbacks=3' not in text:raise RuntimeError('Actual DMCONTROL writes/readbacks missing: '+mode)
         io_events=[{'time_ps':int(t),'instance':i.strip()} for t,i in re.findall(r'ERROR\s*:\s*(\d+)\s*\+\+BUS CONFLICT\+\+\s*:\s*([^\r\n]+)',text)]
         results[mode]={'functional_pass':bool(match),'values':list(map(int,match.groups())) if match else None,
                        'timing_violation_messages':len(re.findall(r'Timing violation',text,re.I)),
