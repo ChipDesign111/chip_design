@@ -1,0 +1,736 @@
+{
+  "status": "all_required_TT_stages_passed_with_documented_course_exceptions",
+  "lab5_finished_utc": "2026-11-17T09:10:04.182800+00:00",
+  "report_generated_utc": "2026-11-17T11:04:11.802142+00:00",
+  "implementation_commit": "346e467",
+  "postsim_and_lab5_commit": "bf2ff30",
+  "continuation": "34 new physical steps on346e467. Bench-only changes followed; all RTL/physical configuration and scripts unchanged. Fresh strict TT SDF plus same-DB SRAM STA passed. Storage guard failure preserved; Lab5-only fresh retry after verified historical archival, SDF dedup and strict packaging cleanup. Original failed journals remain unchanged.",
+  "changed_paths_since_physical": [
+    "eda/server/postsim/collect.py",
+    "eda/server/postsim/run.py",
+    "eda/server/postsim/tb_postsim.sv",
+    "report/reset_safe_clock_gating_20261117/README.md",
+    "report/reset_safe_clock_gating_20261117/dmcontrol_bench_rtl_smoke.json",
+    "report/reset_safe_clock_gating_20261117/dmcontrol_readback_sdf_smoke.json",
+    "report/reset_safe_clock_gating_20261117/failed_dmi_observation_02bde33.json",
+    "report/reset_safe_clock_gating_20261117/failed_forced_ndm_346e467.json",
+    "report/reset_safe_clock_gating_20261117/physical_metrics.json"
+  ],
+  "rtl": {
+    "passed": true,
+    "verified_source_files": 121,
+    "regression_sha256": "c02bd7d6d18a6812d06645adb9023afb39f82cd27e8ef838d49cee0ff338fde1",
+    "source_manifest_sha256": "34804f753b0c706d3a4629a5af3644417020ddfb20a09c5f06313382653e3dec",
+    "performance": {
+      "passed": true,
+      "matched_cases": 41,
+      "unchanged_cases": 41,
+      "max_unit_regression": 0.0,
+      "soc_before": {
+        "observed_cycles": 2700,
+        "hardware_soc_cycles": 2695
+      },
+      "soc_after": {
+        "observed_cycles": 2700,
+        "hardware_soc_cycles": 2695
+      },
+      "soc_regression": 0.0,
+      "limit": 0.05,
+      "candidate_rtl": {
+        "soc_sha256": "bec5e83a3c44e8817f232799655ce60e88b02d089818c7581fb2233d4418d0af",
+        "baseline_commit": "3b9ef76",
+        "source_root": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\reset-safe-clock-gating",
+        "portable_run": "test/int8/runs/20261117_125600",
+        "single_run": "test/int8/runs/single_20261117_125622"
+      },
+      "atomic_reset_stress": {
+        "POR_scenarios": 320,
+        "NDM_scenarios": 320,
+        "phases_each": 80,
+        "accepted_writes": 1282,
+        "actual_writes": 1282,
+        "same_soc_reset_generator_used": true,
+        "log_sha256": "d0ea94c20eb6361d3ed1166347bfb58352dba4c91f8ed886f3e8626b705baabb"
+      },
+      "native_sram": {
+        "run": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\reset-safe-clock-gating\\test\\int8\\runs\\20261117_125821",
+        "model_sha256": "52fd590082b4f63573856baf44d8e59b5ab21db56b9c11aeaf4d45376b32d54d",
+        "fresh_process_timing_checks_on": true,
+        "log_sha256": "d4ff41cf028c1eb569515c79ef69b648f171f93cb2d1f2ebbfd80137996e1be5",
+        "script_sha256": "f349a27e04d11c66e15a927b9408fded09e7ecdc1b7a554e28081be9d4b727d4",
+        "reset_scenarios": 640,
+        "accepted_writes": 1282,
+        "executed_writes": 1282
+      },
+      "compiled_models": {
+        "run": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\reset-safe-clock-gating\\test\\int8\\runs\\compiler_20261117_125846",
+        "result_sha256": "7e9884d2bf71f9392aef1de4b3f87ad6f24f82e102bc348dd041218f4baa6022",
+        "cases": [
+          {
+            "name": "mixed0",
+            "code_sha256": "ddd2f08a29197aa1b61767efd08e14cfb9eac4e9e4f54fa828f013ed288179e8",
+            "backends": [
+              "NPU",
+              "CPU",
+              "CPU",
+              "CPU",
+              "CPU",
+              "NPU",
+              "CPU",
+              "CPU",
+              "CPU"
+            ],
+            "code_bytes": 1460,
+            "observed_cycles": 3724,
+            "npu_jobs": 2,
+            "free_bytes": 5336,
+            "float_max_abs_error": 0.0013041254572981054
+          },
+          {
+            "name": "mixed1",
+            "code_sha256": "ddd2f08a29197aa1b61767efd08e14cfb9eac4e9e4f54fa828f013ed288179e8",
+            "backends": [
+              "NPU",
+              "CPU",
+              "CPU",
+              "CPU",
+              "CPU",
+              "NPU",
+              "CPU",
+              "CPU",
+              "CPU"
+            ],
+            "code_bytes": 1460,
+            "observed_cycles": 3724,
+            "npu_jobs": 2,
+            "free_bytes": 5336,
+            "float_max_abs_error": 0.0005627870559692383
+          },
+          {
+            "name": "cpu_only0",
+            "code_sha256": "3fa9bbf878decd623cb8471aed696aae2fff27e89097d426052ceb691c107e6f",
+            "backends": [
+              "CPU",
+              "CPU",
+              "CPU",
+              "CPU",
+              "CPU",
+              "CPU",
+              "CPU",
+              "CPU",
+              "CPU"
+            ],
+            "code_bytes": 1068,
+            "observed_cycles": 7602,
+            "npu_jobs": 0,
+            "free_bytes": 5848,
+            "float_max_abs_error": 0.0013041254572981054
+          },
+          {
+            "name": "wide0",
+            "code_sha256": "43d0a719af92413a3c23e1cea3aa3f9a98a9f718dc73f11745715bdc156cff00",
+            "backends": [
+              "NPU",
+              "CPU"
+            ],
+            "code_bytes": 860,
+            "observed_cycles": 2044,
+            "npu_jobs": 2,
+            "free_bytes": 5736,
+            "float_max_abs_error": 0.005633973699855022
+          },
+          {
+            "name": "range_fallback0",
+            "code_sha256": "545382e9e1f792b497aab8abd06370d5ef8d285065ce9d2f96b6588fede37ef3",
+            "backends": [
+              "CPU",
+              "CPU"
+            ],
+            "code_bytes": 264,
+            "observed_cycles": 496,
+            "npu_jobs": 0,
+            "free_bytes": 7828,
+            "float_max_abs_error": 0.0
+          },
+          {
+            "name": "output_tiled0",
+            "code_sha256": "9132e0eff25c40aff02b8fe9f63321ca646e0696f2554e7b426693a846c2eeeb",
+            "backends": [
+              "NPU"
+            ],
+            "code_bytes": 708,
+            "observed_cycles": 1959,
+            "npu_jobs": 2,
+            "free_bytes": 6720,
+            "float_max_abs_error": 0.007806730786646444
+          },
+          {
+            "name": "cpu_arithmetic0",
+            "code_sha256": "257144bffeda3a7513574f90e842864ca309f89cb20028c3e9be2aeae44be1e4",
+            "backends": [
+              "CPU",
+              "CPU",
+              "CPU",
+              "CPU"
+            ],
+            "code_bytes": 952,
+            "observed_cycles": 2961,
+            "npu_jobs": 0,
+            "free_bytes": 6584,
+            "float_max_abs_error": 0.0021261171562464987
+          },
+          {
+            "name": "trained_har0",
+            "code_sha256": "93d6e8ef2fd9b79d8ce056f558afe29afd21c9757e671e163582e73eb821f08c",
+            "backends": [
+              "NPU",
+              "CPU",
+              "NPU"
+            ],
+            "code_bytes": 796,
+            "observed_cycles": 4019,
+            "npu_jobs": 2,
+            "free_bytes": 4740,
+            "float_max_abs_error": 0.07359667650358048
+          }
+        ]
+      }
+    },
+    "compiler_soc_cases": 8,
+    "compiler_result_sha256": "7e9884d2bf71f9392aef1de4b3f87ad6f24f82e102bc348dd041218f4baa6022",
+    "compiler_sources_currently_SHA_verified": 97,
+    "single_shapes": 10,
+    "single_result_sha256": "315055326e602dd4325ba3df6e96459df060d8cfbc86c1faa375108b56da53df"
+  },
+  "implementation": {
+    "receipt": {
+      "archive_sha256": "a644fbb2556567653d076e2f58bda22d2a394e04431afcbf642c6866c3990e32",
+      "files_verified": 681,
+      "input_manifest_sha256": "adae66e8b9420e53fd74e36cc6b3d0db7b21e49ecf71acd6778388c78dc7953a",
+      "remote_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_140909_346e467",
+      "all_34_steps_same_input": true,
+      "whole_die_area_mm2": 3.7956390976,
+      "max_whole_die_area_mm2": 3.8
+    },
+    "checks": {
+      "actual_rc_temperatures_C": {
+        "tt_1p80v_25c": 25
+      },
+      "placement": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_140909_346e467/work/pnr/my_soc_top/my_soc_top_postFiller_place.rpt",
+        "unplaced": 0,
+        "expected_io_bond_covers": [
+          "i_pad_E_poc",
+          "i_pad_E_vdd_1",
+          "i_pad_E_vdd_2",
+          "i_pad_E_vddio",
+          "i_pad_E_vss_1",
+          "i_pad_E_vss_2",
+          "i_pad_E_vssio",
+          "i_pad_N_poc",
+          "i_pad_N_vdd_1",
+          "i_pad_N_vdd_2",
+          "i_pad_N_vddio",
+          "i_pad_N_vss_1",
+          "i_pad_N_vss_2",
+          "i_pad_N_vssio",
+          "i_pad_S_poc",
+          "i_pad_S_vdd_1",
+          "i_pad_S_vdd_2",
+          "i_pad_S_vddio",
+          "i_pad_S_vss_1",
+          "i_pad_S_vss_2",
+          "i_pad_S_vssio",
+          "i_pad_W_poc",
+          "i_pad_W_vdd_1",
+          "i_pad_W_vdd_2",
+          "i_pad_W_vddio",
+          "i_pad_W_vss_1",
+          "i_pad_W_vss_2",
+          "i_pad_W_vssio",
+          "i_pad_clk",
+          "i_pad_rst_n",
+          "i_pad_tck",
+          "i_pad_tdi",
+          "i_pad_tdo",
+          "i_pad_tms"
+        ],
+        "no_other_listed_placement_violations": true,
+        "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_place.rpt",
+        "report_sha256": "b74e5eeeea70a66a1271c3d5347ca23a8496c5e7d92fe89e4bf71bff1d2aba3a"
+      },
+      "timing": {
+        "Setup": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_140909_346e467/work/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute.summary.gz",
+          "wns_ns": 0.126,
+          "tns_ns": 0.0,
+          "violating_paths": 0,
+          "drv": {
+            "max_cap": {
+              "real": 0,
+              "total": 0
+            },
+            "max_tran": {
+              "real": 0,
+              "total": 0
+            },
+            "max_fanout": {
+              "real": 0,
+              "total": 0
+            },
+            "max_length": {
+              "real": 0,
+              "total": 0
+            }
+          },
+          "electrical_drv_table_reported_here": true,
+          "minimum_wns_ns": 0.0,
+          "targets_met": true,
+          "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute.summary.gz",
+          "report_sha256": "d31363bbbf3e34fbb97c31e782f74181fdf8b7949c83e1719f52938674ac043e"
+        },
+        "Hold": {
+          "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_140909_346e467/work/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute_hold.summary.gz",
+          "wns_ns": 0.0,
+          "tns_ns": 0.0,
+          "violating_paths": 0,
+          "drv": {},
+          "electrical_drv_table_reported_here": false,
+          "minimum_wns_ns": 0.0,
+          "targets_met": true,
+          "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/reports/postFiller/my_soc_top_postRoute_hold.summary.gz",
+          "report_sha256": "09d7ec380e412113a5a5fae1f193ec7abb50cbdd4a5e04b032ad3c5e9e34a1ba"
+        }
+      },
+      "default_drc": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_140909_346e467/work/pnr/my_soc_top/my_soc_top_postFiller_drc.rpt",
+        "zero_reported_violations": true,
+        "scope": "drc",
+        "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_drc.rpt",
+        "report_sha256": "7ada23916ce23400d179cd5debb9e869f1d5a1b72ccc2619dd1cef27c74438e2"
+      },
+      "signal_connectivity": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_140909_346e467/work/pnr/my_soc_top/my_soc_top_postFiller_signal.rpt",
+        "unresolved_signal_problems": 0,
+        "classified_io_abstract_nets": [
+          "VDDPST",
+          "VSSPST"
+        ],
+        "same_input_native_geometry_proof_step": 22,
+        "not_independent_LVS": true,
+        "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_signal.rpt",
+        "report_sha256": "151b5b804391450aeb17479ff23eebb00ebb0e7b9097701158b8181350ea7d87"
+      },
+      "full_core_pg": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_140909_346e467/work/pnr/my_soc_top/my_soc_top_postFiller_pg.rpt",
+        "zero_reported_violations": true,
+        "scope": "connectivity",
+        "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_pg.rpt",
+        "report_sha256": "62a6b1af011afd5d74593a0ca153d9c19448686d460e0325e715c1de4f902e31"
+      },
+      "antenna": {
+        "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_140909_346e467/work/pnr/my_soc_top/my_soc_top_postFiller_antenna.rpt",
+        "violating_nets": 0,
+        "archived_report": "evidence/stage_reports/33/pnr/my_soc_top/my_soc_top_postFiller_antenna.rpt",
+        "report_sha256": "21244f5cf2c7701eb329d3d77ca7240fd7b1af9017cbadd739dbd7d776f64f3d"
+      }
+    },
+    "synthesis": {
+      "cell_count": 68521,
+      "cell_area_um2": 2124368.263,
+      "net_area_um2": 759150.618,
+      "latch_area_um2": 0.0,
+      "memory_area_um2": 401443.591,
+      "report": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_140909_346e467/work/syn/my_soc_top/reports/area/area.rpt",
+      "mapped_design": {
+        "native_main_srams": 1,
+        "mapped_leaf_instances": 68521,
+        "all_leaf_types_have_library_models": true,
+        "npu_dma_area_hierarchy_present": true,
+        "latch_area_um2": 0,
+        "automatic_clock_gating_requested": true,
+        "mapped_automatic_clock_gate_instances": 446,
+        "functional_enable_mapping": "library_enable",
+        "mapped_controlled_flip_flop_instances": 3285,
+        "combinational_cell_mapping": "tt_nonnegative_tables",
+        "mapped_excluded_TT_combinational_instances": 0
+      }
+    },
+    "metrics": {
+      "physical_source_commit": "346e467",
+      "density_percent": 77.191,
+      "density_native_log_sha256": "2b5572ef14d3a988bbb6af30239ba141b6b445a1ad7fd1ea3cd776e02f8fcc7e",
+      "density_source": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\lab5\\reset_safe_clock_gating_tt_native_repair_20261117\\physical_native_innovus.log",
+      "placement_density_lines": [
+        "Placement Density:77.17%(1667946/2161451)",
+        "Placement Density (including fixed std cells):78.09%(1758897/2252403)",
+        "Placement Density:77.19%(1668455/2161451)",
+        "Placement Density (including fixed std cells):78.11%(1759407/2252403)",
+        "Placement Density:77.19%(1668455/2161451)",
+        "Placement Density (including fixed std cells):78.11%(1759407/2252403)",
+        "Placement Density:100.00%(2161451/2161451)",
+        "Placement Density (including fixed std cells):100.00%(2252403/2252403)"
+      ],
+      "synthesis_cell_area_um2": 2124368.263,
+      "accepted_no_gating_cell_area_um2": 2252109.146,
+      "old_auto_gating_cell_area_um2": 2124284.845,
+      "main_baseline_cell_area_um2": 2067330.381,
+      "saved_mm2": 0.1277408830000004,
+      "recovered_penalty_percent": 99.93474010861237,
+      "reduction_percent": 5.6720556029392535,
+      "increase_vs_main_percent": 2.7590114538156034,
+      "die_mm2": 3.7956390976,
+      "setup_wns_ns": 0.126,
+      "hold_wns_ns_printed": 0.0,
+      "postsim_and_Lab5_status": "passed, with documented course exceptions"
+    }
+  },
+  "postsim": {
+    "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_161131_postsim_vcs_tt_bf2ff30",
+    "normal_postsim_pass": true,
+    "functional_cases": 19,
+    "sdf_cases": 18,
+    "unit_controls": 1,
+    "all_stage_dynamic_events": 0,
+    "actual_DMCONTROL_writes_and_readbacks_per_case": 3,
+    "annotation_errors": 0,
+    "missing_instances": 0,
+    "missing_checks": 0,
+    "negative_iopath_clamps": 0,
+    "performance": {
+      "baseline_physical_commit": "ee203a3",
+      "candidate_physical_commit": "346e467",
+      "candidate_verification_commit": "bf2ff30",
+      "cases": 19,
+      "unchanged_cases": 19,
+      "changed": {},
+      "baseline_results_sha256": "97407dfa2a25ae04b4eed64be16d1281c8564d637a216ee95082df49aa12747c",
+      "candidate_results_sha256": "f7dae9bc6d4383b1726471c0a75ebbc13d46438c9c45e45967de3f46929bbaa7",
+      "legacy_SDF_cpu_cycles_before": 2701,
+      "legacy_SDF_cpu_cycles_after": 2701,
+      "legacy_NPU_cycles_before": 952,
+      "legacy_NPU_cycles_after": 952,
+      "scope": "All firmware cycle/overlap values before added post-functional reset tests; same input payload matrix",
+      "firmware_payloads_and_checks_SHA_identical": true,
+      "payload_manifest_entries": 20,
+      "baseline_physical_binding": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_094344_ee203a3/work",
+      "candidate_physical_binding": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_140909_346e467/work"
+    },
+    "evidence_sha256": {
+      "audit.json": "26f06499c4fd7b0bbb19670f23dabe46d46e1d14fe6a96a9bc72e5b7deafd48a",
+      "results.json": "f7dae9bc6d4383b1726471c0a75ebbc13d46438c9c45e45967de3f46929bbaa7",
+      "input_manifest.json": "1efb464d3d5cf2ee04ceb8185d16c9a28d0b56609e29d604bea3157f673bbebd",
+      "review_manifest.json": "ce718191226290991632372e8cc06a47cb133e309c708d6448305ba7786c8d27"
+    }
+  },
+  "sram_and_reset_timing": {
+    "reset_to_request_func_tt_io_hold.log": {
+      "worst_ns": 10.651,
+      "reported_paths": 1,
+      "sha256": "279a2e9df93321d90a3d31459f2405a797a0ce4004be4befb3cdb8f225d38508"
+    },
+    "reset_to_request_func_tt_io_setup.log": {
+      "worst_ns": 6.171,
+      "reported_paths": 1,
+      "sha256": "b84641e04622789b02e1528fae2cd621ce89c82f79dc85c5e6061677ff366dd8"
+    },
+    "sram_input_hold.log": {
+      "worst_ns": 10.117,
+      "reported_paths": 20,
+      "sha256": "2de4a271b31bb133ef9fff36d69531899ddb43af262c7c2f5c674cf30cc78740"
+    },
+    "sram_input_setup.log": {
+      "worst_ns": 6.256,
+      "reported_paths": 20,
+      "sha256": "078e24d4369722866ff927d6ace0fc06c65b026cfbc0ffe1d917c57a20c19ce0"
+    },
+    "sram_output_hold.log": {
+      "worst_ns": 11.52,
+      "reported_paths": 20,
+      "sha256": "4fa326b89f7eec1eba0c455e3da40db05e31292396617ba068013c41bc9c1658"
+    },
+    "sram_output_setup.log": {
+      "worst_ns": 2.397,
+      "reported_paths": 20,
+      "sha256": "72281233088b437468f75e537890c62a6b053e914d506f613ec0affcbe140075"
+    }
+  },
+  "lab5": {
+    "receipt": {
+      "host": "chipdesign",
+      "upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_170532_lab5_bf2ff30",
+      "files_verified": 61,
+      "archive_sha256": "d684f9fc699dc576470edb66261725dd6abd6933959e57cdc0cef9c50c2e5515"
+    },
+    "status": "course_checks_passed_with_documented_exceptions",
+    "lab5_pass": true,
+    "physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_140909_346e467",
+    "RTL_matches_physical": true,
+    "original_inputs_unchanged": true,
+    "nonexcluded_postDummy_DRC": {},
+    "postDummy_DRC_raw_count": 2426,
+    "DRC_course_excluded_nonzero": {
+      "ESD.24g": 30,
+      "ESD.25g": 2384,
+      "LUP.3.3g_3.3V": 1,
+      "LUP.5.3g_3.3V": 9,
+      "MOM.R.2": 1,
+      "DRM.R.1": 1
+    },
+    "LVS_correct": true,
+    "antenna_results": 0,
+    "wire_bond_checks": 64,
+    "wire_bond_results": 0,
+    "ERC": {
+      "schema": 1,
+      "native_erc_checks": 12,
+      "native_erc_hierarchical": 7,
+      "native_erc_expanded": 977,
+      "erc_clean": false,
+      "accepted_course_residuals": true,
+      "errors": [],
+      "rule_counts": {
+        "mnpg": [
+          4,
+          832
+        ],
+        "mppg": [
+          0,
+          0
+        ],
+        "mnpg_ldd": [
+          0,
+          0
+        ],
+        "mppg_ldd": [
+          0,
+          0
+        ],
+        "mnpg_hvs": [
+          0,
+          0
+        ],
+        "mppg_hvs": [
+          0,
+          0
+        ],
+        "floating": [
+          0,
+          0
+        ],
+        "floating.HVNW_float": [
+          0,
+          0
+        ],
+        "floating.nxwell_float": [
+          1,
+          72
+        ],
+        "floating.psub_float": [
+          1,
+          1
+        ],
+        "npvss49": [
+          1,
+          72
+        ],
+        "ppvdd49": [
+          0,
+          0
+        ]
+      },
+      "markers": [
+        {
+          "rule": "mnpg",
+          "bbox_um": [
+            [
+              83.525,
+              903.43
+            ],
+            [
+              107.525,
+              903.61
+            ]
+          ],
+          "native_pad_hits": [
+            "PVDD1CDG"
+          ],
+          "accepted_course_residual": true,
+          "basis": "Entire representative marker inside measured native protection PAD master"
+        },
+        {
+          "rule": "mnpg",
+          "bbox_um": [
+            [
+              83.525,
+              904.55
+            ],
+            [
+              107.525,
+              904.73
+            ]
+          ],
+          "native_pad_hits": [
+            "PVDD1CDG"
+          ],
+          "accepted_course_residual": true,
+          "basis": "Entire representative marker inside measured native protection PAD master"
+        },
+        {
+          "rule": "mnpg",
+          "bbox_um": [
+            [
+              2.24,
+              1104.27
+            ],
+            [
+              26.24,
+              1104.67
+            ]
+          ],
+          "native_pad_hits": [
+            "PVDD2CDG"
+          ],
+          "accepted_course_residual": true,
+          "basis": "Entire representative marker inside measured native protection PAD master"
+        },
+        {
+          "rule": "mnpg",
+          "bbox_um": [
+            [
+              2.24,
+              1105.42
+            ],
+            [
+              26.24,
+              1105.82
+            ]
+          ],
+          "native_pad_hits": [
+            "PVDD2CDG"
+          ],
+          "accepted_course_residual": true,
+          "basis": "Entire representative marker inside measured native protection PAD master"
+        },
+        {
+          "rule": "floating.nxwell_float",
+          "bbox_um": [
+            [
+              1.575,
+              607.955
+            ],
+            [
+              18.995,
+              614.045
+            ]
+          ],
+          "native_pad_hits": [
+            "PVSS1CDG"
+          ],
+          "accepted_course_residual": true,
+          "basis": "Entire representative marker inside measured native protection PAD master"
+        },
+        {
+          "rule": "floating.psub_float",
+          "bbox_um": [
+            [
+              -15.385,
+              -15.385
+            ],
+            [
+              1963.625,
+              1963.625
+            ]
+          ],
+          "native_pad_hits": [],
+          "accepted_course_residual": true,
+          "basis": "Extracted isolated outer substrate enclosing native seal ring"
+        },
+        {
+          "rule": "npvss49",
+          "bbox_um": [
+            [
+              1.975,
+              608.155
+            ],
+            [
+              18.595,
+              613.845
+            ]
+          ],
+          "native_pad_hits": [
+            "PVSS1CDG"
+          ],
+          "accepted_course_residual": true,
+          "basis": "Entire representative marker inside measured native protection PAD master"
+        }
+      ],
+      "native_report_sha256": "5cde6e1c0474c5d12abf3a4d92c1c75eafbe66373455270531ec955b2313ac21",
+      "reviewer_sha256": "1266b03fe7f330a37ee3d973fcc2583cf1c1f4f4cefdf14707e14669dd4bb570",
+      "scope": "Course handling of specifically identified native IO and isolated outer-substrate residuals; not a formal foundry waiver or ERC Clean assertion."
+    },
+    "final_gds_sha256": "08cc3cda230918f1f2b1b754cea717b5fe4ed02911106caadf49f762adfc4571",
+    "evidence_sha256": {
+      "result.json": "5a832b4c24c38ae8f57d713be2e04768874490c57018b4b420cc9f1c5d19eee6",
+      "input_manifest.json": "f70074cdbe3a7c2f59458b4f64a2ba63464992d86ace3fbfa8804adeec93574f",
+      "geometry.json": "1e29ca8d0dab7b502e1b1a2c4394d41273f5d85142a3a2e0dbd61623089e299f",
+      "final_inputs.json": "040015c459886363afa5abdae1a96af8cd3e57f4f2afd9de77b41882edfab011"
+    }
+  },
+  "area_definitions": {
+    "implementation_die_um": [
+      0.0,
+      0.0,
+      1948.24,
+      1948.24
+    ],
+    "implementation_with_PAD_mm2": 3.7956390976,
+    "implementation_profile_limit_mm2": 3.8,
+    "sealring_outer_um": 1979,
+    "sealring_outer_envelope_mm2": 3.916441,
+    "sealring_envelope_below_3_8_mm2": false,
+    "existing_private_lab5_pad_changes": [
+      {
+        "cell": "PVDD2CDG",
+        "layer": 7,
+        "datatype": 0,
+        "added_rect_um": [
+          [
+            57.3,
+            52.91
+          ],
+          [
+            57.59,
+            73.795
+          ]
+        ],
+        "reason": "Measured CO.R.4; PP extends to existing NP boundary; shared PDK unchanged"
+      },
+      {
+        "cell": "PVDD2POC",
+        "layer": 7,
+        "datatype": 0,
+        "added_rect_um": [
+          [
+            57.3,
+            52.91
+          ],
+          [
+            57.59,
+            73.795
+          ]
+        ],
+        "reason": "Measured CO.R.4; PP extends to existing NP boundary; shared PDK unchanged"
+      }
+    ],
+    "shared_PDK_unchanged": true
+  },
+  "scope": "TT only,20ns,SI off,native low-RC profile. Finite POR phase matrix and real synchronous DMCONTROL tests; not arbitrary-phase zero metastability proof, other PVT/SI/IR/EM/power or foundry signoff. Reset requests require two falling edges plus next rising edge; recognition up to2.5T, release remains falling-edge.",
+  "local_roots": {
+    "functional": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\tmp\\reset-safe-clock-gating\\test\\int8\\runs\\20261117_125821",
+    "physical": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\lab5\\reset_safe_clock_gating_tt_native_repair_20261117\\implementation",
+    "postsim": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\lab5\\reset_safe_clock_gating_tt_readback_20261117\\postsim_tt",
+    "final_lab5": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\lab5\\reset_safe_clock_gating_tt_lab5_after_cleanup_20261117",
+    "storage": "C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/lab5/reset_safe_clock_gating_storage_20261117"
+  }
+}

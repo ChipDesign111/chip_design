@@ -1,8 +1,8 @@
 # INT8 HAR 全芯片实现
 
-本分支正在验证复位安全自动门控优化：保留原两级请求取样，增加两个上升沿重定时FF，恢复自动门控；用户要求仅做TT。完整功能、原生SRAM及编译模型回归已过，新的物理与后仿结果见[本轮候选报告](report/reset_safe_clock_gating_20261117/README.md)。下述已验收PPA属于此前关闭门控的版本，不能直接当作新候选结果。
+本轮复位安全自动门控已完成TT验证：保留两级下降沿请求采样，新增两个上升沿重定时FF，恢复自动门控。原始41组RTL与19组门级性能逐项不变；完整SoC仍2700拍。综合Cell Area **2.124368mm²**，比关闭门控版减少 **0.127741mm²（5.672%）**，原生Density **77.191%**；TT Setup/Hold **+0.126/0.000ns**。34步、18组SDF全阶段0动态时序事件、同DB SRAM STA和Lab5按课程口径通过；ERC仍有7层次/977展开残项，不能称完整签核。[最终结果、复位契约与失败修复](report/reset_safe_clock_gating_20261117/README.md)。本轮只做TT。
 
-当前开发分支新增共享16 MAC的单/双层FC、K/N自动分块及PyTorch→RV32IM的CPU/NPU部署；编译器位于顶层compiler/，网络与数据位于model/。原始四样本完整SoC保持2700拍。ee203a3完成34步、19例功能/18组TT SDF全阶段0时序事件和同DB STA；febec45仅修复M6填充并在同一物理输入上续跑Lab5通过。最终Cell Area 2.252109mm²（+8.938%）、Density82.746%、TT Setup/Hold +0.100/+0.001ns。含PAD实现外框3.795639mm²，SealRing外包络3.916441mm²；课程残项与验收口径分别报告。[完整结果、失败修复及SHA](report/fc_generalization_eda_20261117/README.md)。
+当前共享16 MAC的单/双层FC、K/N自动分块与PyTorch→RV32IM的CPU/NPU部署保持；编译器位于顶层compiler/，网络与数据位于model/。含PAD实现外框3.795639mm²，Lab5 SealRing外包络3.916441mm²，3.8mm²课程限制适用于实现边界。此前关闭门控的3b9ef76基线为2.252109mm²、Density82.746%，其验证和存档见[上一轮完整报告](report/fc_generalization_eda_20261117/README.md)。
 
 上一轮整合保留main 266bca3的16-MAC/INT22/取指缓存核心，接入公共复位、WB修复和完整Lab5流程。新源码287ae40已完成RTL回归、34步、TT后仿、同DB STA及Lab5：密度74.633%，Setup/Hold +0.350/+0.050ns；16组SDF及1组独立功能对照全过，全部阶段时序违规与负IOPATH截零0，WB64项0、LVS正确。[本轮实测及SHA](eda/results/main_266bca3_integration_20261113/README.md)。DRC/ERC按课程保留有依据残项，不称完整foundry签核；以下其他结果绑定各自历史来源。
 

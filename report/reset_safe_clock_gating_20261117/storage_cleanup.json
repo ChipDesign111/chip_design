@@ -1,0 +1,90 @@
+{
+  "purpose": "Satisfy existing 20GB home / 6GB additional Lab5 budget without changing limits",
+  "before_home_allocated_bytes": 17304997888,
+  "after_home_allocated_bytes": 13744607232,
+  "limit_bytes": 20000000000,
+  "additional_reserved_bytes": 6000000000,
+  "budget_met": true,
+  "historical_archives": [
+    {
+      "original": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_011258_aca6c09/work/pnr/my_soc_top/backup",
+      "archive": "/home/s2400011041/Desktop/fullstack_chipdesign/archives/20261117_verified_history/20261117_011258_aca6c09_work_pnr_my_soc_top_backup.tar.xz",
+      "archive_sha256": "19e72e80ac1391c84d3121d992cc3db13752d56d7bba22b7c0628ea6f2fe4361",
+      "archive_bytes": 461564116,
+      "restoration": "Extract payload into original parent and rename payload to the original leaf; SHA inventory is relative to that leaf.",
+      "manifest": "/home/s2400011041/Desktop/fullstack_chipdesign/archives/20261117_verified_history/20261117_011258_aca6c09_work_pnr_my_soc_top_backup.json"
+    },
+    {
+      "original": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_072804_d03513b/work/pnr/my_soc_top/backup",
+      "archive": "/home/s2400011041/Desktop/fullstack_chipdesign/archives/20261117_verified_history/20261117_072804_d03513b_work_pnr_my_soc_top_backup.tar.xz",
+      "archive_sha256": "40ae66d02ed8ade071c8742aacaa51b8a3b5b2b06fb56cef4664af8dc5dd705e",
+      "archive_bytes": 460297296,
+      "restoration": "Extract payload into original parent and rename payload to the original leaf; SHA inventory is relative to that leaf.",
+      "manifest": "/home/s2400011041/Desktop/fullstack_chipdesign/archives/20261117_verified_history/20261117_072804_d03513b_work_pnr_my_soc_top_backup.json"
+    },
+    {
+      "original": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_083659_91b0a74/work/pnr/my_soc_top/backup",
+      "archive": "/home/s2400011041/Desktop/fullstack_chipdesign/archives/20261117_verified_history/20261117_083659_91b0a74_work_pnr_my_soc_top_backup.tar.xz",
+      "archive_sha256": "875d38e43c6f5acdf2cc3257d7834cdffc28fc59d0771ffb729a9edf91e28b60",
+      "archive_bytes": 472550468,
+      "restoration": "Extract payload into original parent and rename payload to the original leaf; SHA inventory is relative to that leaf.",
+      "manifest": "/home/s2400011041/Desktop/fullstack_chipdesign/archives/20261117_verified_history/20261117_083659_91b0a74_work_pnr_my_soc_top_backup.json"
+    },
+    {
+      "original": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_130714_692b950/work/pnr/my_soc_top/backup",
+      "archive": "/home/s2400011041/Desktop/fullstack_chipdesign/archives/20261117_verified_history/20261117_130714_692b950_work_pnr_my_soc_top_backup.tar.xz",
+      "archive_sha256": "0a165f000ee8fc366cda086fd4e9642a5baca34188c45a2b5c448499f5083487",
+      "archive_bytes": 323384284,
+      "restoration": "Extract payload into original parent and rename payload to the original leaf; SHA inventory is relative to that leaf.",
+      "manifest": "/home/s2400011041/Desktop/fullstack_chipdesign/archives/20261117_verified_history/20261117_130714_692b950_work_pnr_my_soc_top_backup.json"
+    },
+    {
+      "original": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_021054_lab5_aca6c09/soc-stu/layout/workspace",
+      "archive": "/home/s2400011041/Desktop/fullstack_chipdesign/archives/20261117_verified_history/20261117_021054_lab5_aca6c09_soc-stu_layout_workspace.tar.xz",
+      "archive_sha256": "f38d05e7ed9e5f14189c6047a635730af7e5f0f2b9dab08e481d9784c85e4f2d",
+      "archive_bytes": 118294536,
+      "restoration": "Extract payload into original parent and rename payload to the original leaf; SHA inventory is relative to that leaf.",
+      "manifest": "/home/s2400011041/Desktop/fullstack_chipdesign/archives/20261117_verified_history/20261117_021054_lab5_aca6c09_soc-stu_layout_workspace.json"
+    },
+    {
+      "original": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_082948_lab5_d03513b/soc-stu/layout/workspace",
+      "archive": "/home/s2400011041/Desktop/fullstack_chipdesign/archives/20261117_verified_history/20261117_082948_lab5_d03513b_soc-stu_layout_workspace.tar.xz",
+      "archive_sha256": "2e8eb7c5a8982179ccd234a4cd3a670cd5032f668d029dbd5c842b23854ce002",
+      "archive_bytes": 118150704,
+      "restoration": "Extract payload into original parent and rename payload to the original leaf; SHA inventory is relative to that leaf.",
+      "manifest": "/home/s2400011041/Desktop/fullstack_chipdesign/archives/20261117_verified_history/20261117_082948_lab5_d03513b_soc-stu_layout_workspace.json"
+    },
+    {
+      "original": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_104444_lab5_ee203a3/soc-stu/layout/workspace",
+      "archive": "/home/s2400011041/Desktop/fullstack_chipdesign/archives/20261117_verified_history/20261117_104444_lab5_ee203a3_soc-stu_layout_workspace.tar.xz",
+      "archive_sha256": "74d0c343e55d222e2599559d8a5534a445da51ae311161131f8579d4b0f857b6",
+      "archive_bytes": 123281840,
+      "restoration": "Extract payload into original parent and rename payload to the original leaf; SHA inventory is relative to that leaf.",
+      "manifest": "/home/s2400011041/Desktop/fullstack_chipdesign/archives/20261117_verified_history/20261117_104444_lab5_ee203a3_soc-stu_layout_workspace.json"
+    }
+  ],
+  "regular_files_SHA_verified_before_release": 15360,
+  "current_346e467_physical_and_accepted_febec45_kept_raw": true,
+  "all_source_and_evidence_report_directories_preserved": true,
+  "dedup_sdf_paths_and_bytes_preserved": true,
+  "dedup_sdf_files": 7,
+  "dedup_allocated_bytes": 742825984,
+  "only_disposable_core_packaging_removed_bytes": 374612104,
+  "local_evidence": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\lab5\\reset_safe_clock_gating_storage_20261117",
+  "records": {
+    "20261117_011258_aca6c09_work_pnr_my_soc_top_backup.json": "1aa756eea3c26f800e8c51336f8e7704d613281e9c074f74c197e3c32d1bec76",
+    "20261117_021054_lab5_aca6c09_soc-stu_layout_workspace.json": "21bae2c43a707d4e8fe3e1567638eb1d691724b9b83c34f770dcf66fb0e8529d",
+    "20261117_072804_d03513b_work_pnr_my_soc_top_backup.json": "7a19270fb0b9a41328a9b2f3075f548bcdab50863be6ef20e0801efcf300a919",
+    "20261117_082948_lab5_d03513b_soc-stu_layout_workspace.json": "f605f7f478def81e0d8ffb9655855fe28c618c151f642d3fee7787339a9a0500",
+    "20261117_083659_91b0a74_work_pnr_my_soc_top_backup.json": "259518a2123231867b8ff83c841e103244d68b883ad9240b66bc74a333890260",
+    "20261117_104444_lab5_ee203a3_soc-stu_layout_workspace.json": "ea88e3b322dd9db5170a196206f7afa8fcac639066cf551a69f88ad3a5c74846",
+    "20261117_130714_692b950_work_pnr_my_soc_top_backup.json": "893c240911021446294f18c4a92da9d75dddf66bb95476222e560bb6a2406e02",
+    "archive_summary.json": "95d4cd3bb43d1dbcde803c0fcc81079fb0bb76dab824697ea9b019f64f78e0a1",
+    "packaging_cleanup.json": "0a22b64085bebba24cf11dd88faadc770533d2dbaf3b66235315594213114df8",
+    "sdf_dedup.json": "ed4feeb254e00948d64c30a28ba69aac087ba9d6858838f1256be038f7741849"
+  },
+  "local_cache_cleanup": {
+    "performed": false,
+    "reason": "Automatic approval review rejected deletion of four newly generated ModelSim work caches; reason returned: blocked by policy; caches retained"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "baseline_physical_commit": "ee203a3",
+  "candidate_physical_commit": "346e467",
+  "candidate_verification_commit": "bf2ff30",
+  "cases": 19,
+  "unchanged_cases": 19,
+  "changed": {},
+  "baseline_results_sha256": "97407dfa2a25ae04b4eed64be16d1281c8564d637a216ee95082df49aa12747c",
+  "candidate_results_sha256": "f7dae9bc6d4383b1726471c0a75ebbc13d46438c9c45e45967de3f46929bbaa7",
+  "legacy_SDF_cpu_cycles_before": 2701,
+  "legacy_SDF_cpu_cycles_after": 2701,
+  "legacy_NPU_cycles_before": 952,
+  "legacy_NPU_cycles_after": 952,
+  "scope": "All firmware cycle/overlap values before added post-functional reset tests; same input payload matrix",
+  "firmware_payloads_and_checks_SHA_identical": true,
+  "payload_manifest_entries": 20,
+  "baseline_physical_binding": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_094344_ee203a3/work",
+  "candidate_physical_binding": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_140909_346e467/work"
+}

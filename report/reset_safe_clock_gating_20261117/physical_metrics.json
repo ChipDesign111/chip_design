@@ -24,5 +24,5 @@
   "die_mm2": 3.7956390976,
   "setup_wns_ns": 0.126,
   "hold_wns_ns_printed": 0.0,
-  "postsim_and_Lab5_status": "pending new DMCONTROL matrix and bound Lab5"
+  "postsim_and_Lab5_status": "passed, with documented course exceptions"
 }
