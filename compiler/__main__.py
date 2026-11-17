@@ -11,7 +11,9 @@ def main():
     p.add_argument('--input',type=Path,required=True);p.add_argument('--calibration',type=Path)
     p.add_argument('--simulate',action='store_true');p.add_argument('--vsim',default='vsim');
     p.add_argument('--out',type=Path,required=True);p.add_argument('--force-cpu',action='store_true')
-    p.add_argument('--task-engine',action='store_true',help='Use experimental autonomous task RTL')
+    target=p.add_mutually_exclusive_group()
+    target.add_argument('--task-engine',dest='task_engine',action='store_true',default=True,help='Use autonomous task RTL (default)')
+    target.add_argument('--legacy-npu',dest='task_engine',action='store_false',help='Use the compatible legacy MMIO compiler path')
     cache=p.add_mutually_exclusive_group()
     cache.add_argument('--lut-cache',dest='lut_cache',action='store_true',default=None,help='Use the selected one-word shared LUT cache')
     cache.add_argument('--no-lut-cache',dest='lut_cache',action='store_false',help='Use direct SRAM LUT reads')
