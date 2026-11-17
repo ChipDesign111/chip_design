@@ -1,0 +1,23 @@
+{
+  "baseline_commit": "94636cc",
+  "branch": "feat/npu-task-engine",
+  "active_stage": 2,
+  "stages": {
+    "1": "passed: frozen cycles/traffic/corpus; RTL unchanged",
+    "2": "in progress: task ABI and integer contract",
+    "3": "pending",
+    "4": "pending",
+    "5": "pending",
+    "6": "pending",
+    "7": "pending"
+  },
+  "accepted_physical_baseline": "346e467; TT/Lab5 bf2ff30",
+  "original_four_sample_target_cycles": 2700,
+  "original_hard_limit_cycles": 2835,
+  "area_planning_target_mm2": [
+    0.03,
+    0.05
+  ],
+  "conservative_available_budget_mm2": 0.155,
+  "acceptance_scope": "New full flow TT only after functional changes pass; no new EDA claimed yet"
+}

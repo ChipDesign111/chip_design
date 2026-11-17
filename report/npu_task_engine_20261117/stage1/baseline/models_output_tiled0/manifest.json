@@ -1,0 +1,206 @@
+{
+  "abi": 1,
+  "input": "input_1",
+  "output": "_0",
+  "tensors": {
+    "input_1": {
+      "shape": [
+        1,
+        9
+      ],
+      "scale": 0.007874015748031496,
+      "stride": 12,
+      "address": 2147491764
+    },
+    "_0": {
+      "shape": [
+        1,
+        41
+      ],
+      "scale": 0.008701100124148872,
+      "stride": 44,
+      "address": 2147491720
+    }
+  },
+  "nodes": [
+    {
+      "name": "_0",
+      "op": "linear",
+      "inputs": [
+        "input_1"
+      ],
+      "backend": "NPU",
+      "reason": "INT8 operands; full input-domain accumulation fits INT22",
+      "mult": [
+        9931
+      ],
+      "shift": 22,
+      "bias_address": 2147491556,
+      "jobs": [
+        {
+          "k": 9,
+          "n": 32,
+          "batch": 1,
+          "accumulate": false,
+          "source": 2147491076,
+          "output_offset": 0,
+          "input_offset": 0,
+          "last_input": true
+        },
+        {
+          "k": 9,
+          "n": 9,
+          "batch": 1,
+          "accumulate": false,
+          "source": 2147491396,
+          "output_offset": 32,
+          "input_offset": 0,
+          "last_input": true
+        }
+      ],
+      "start_pc": 2147483656,
+      "end_pc": 2147484320
+    }
+  ],
+  "profile_ranges": [
+    {
+      "start_pc": 2147483648,
+      "phase": "startup",
+      "node": "runtime",
+      "end_pc": 2147483656
+    },
+    {
+      "start_pc": 2147483656,
+      "phase": "cpu_schedule",
+      "node": "_0",
+      "end_pc": 2147483752
+    },
+    {
+      "start_pc": 2147483752,
+      "phase": "cpu_input_copy",
+      "node": "_0",
+      "end_pc": 2147483796
+    },
+    {
+      "start_pc": 2147483796,
+      "phase": "cpu_bias_copy",
+      "node": "_0",
+      "end_pc": 2147483840
+    },
+    {
+      "start_pc": 2147483840,
+      "phase": "cpu_launch",
+      "node": "_0",
+      "end_pc": 2147483852
+    },
+    {
+      "start_pc": 2147483852,
+      "phase": "cpu_poll",
+      "node": "_0",
+      "end_pc": 2147483904
+    },
+    {
+      "start_pc": 2147483904,
+      "phase": "cpu_result_copy",
+      "node": "_0",
+      "end_pc": 2147483940
+    },
+    {
+      "start_pc": 2147483940,
+      "phase": "cpu_quant",
+      "node": "_0",
+      "end_pc": 2147483968
+    },
+    {
+      "start_pc": 2147483968,
+      "phase": "cpu_result_copy",
+      "node": "_0",
+      "end_pc": 2147483988
+    },
+    {
+      "start_pc": 2147483988,
+      "phase": "cpu_schedule",
+      "node": "_0",
+      "end_pc": 2147484084
+    },
+    {
+      "start_pc": 2147484084,
+      "phase": "cpu_input_copy",
+      "node": "_0",
+      "end_pc": 2147484128
+    },
+    {
+      "start_pc": 2147484128,
+      "phase": "cpu_bias_copy",
+      "node": "_0",
+      "end_pc": 2147484172
+    },
+    {
+      "start_pc": 2147484172,
+      "phase": "cpu_launch",
+      "node": "_0",
+      "end_pc": 2147484184
+    },
+    {
+      "start_pc": 2147484184,
+      "phase": "cpu_poll",
+      "node": "_0",
+      "end_pc": 2147484236
+    },
+    {
+      "start_pc": 2147484236,
+      "phase": "cpu_result_copy",
+      "node": "_0",
+      "end_pc": 2147484272
+    },
+    {
+      "start_pc": 2147484272,
+      "phase": "cpu_quant",
+      "node": "_0",
+      "end_pc": 2147484300
+    },
+    {
+      "start_pc": 2147484300,
+      "phase": "cpu_result_copy",
+      "node": "_0",
+      "end_pc": 2147484320
+    },
+    {
+      "start_pc": 2147484320,
+      "phase": "finish",
+      "node": "runtime",
+      "end_pc": 2147484356
+    }
+  ],
+  "quantization": "Symmetric per-tensor INT8; per-layer INT8 weights; rounded fixed-point CPU boundaries",
+  "input_shape": [
+    1,
+    9
+  ],
+  "code_bytes": 708,
+  "data_bytes": 700,
+  "free_bytes": 6720,
+  "allocations": [
+    {
+      "name": "tensor:input_1",
+      "address": 2147491764,
+      "bytes": 12
+    },
+    {
+      "name": "tensor:_0",
+      "address": 2147491720,
+      "bytes": 44
+    },
+    {
+      "name": "_0:bias",
+      "address": 2147491556,
+      "bytes": 164
+    },
+    {
+      "name": "_0:weights",
+      "address": 2147491076,
+      "bytes": 480
+    }
+  ],
+  "code_sha256": "9132e0eff25c40aff02b8fe9f63321ca646e0696f2554e7b426693a846c2eeeb"
+}

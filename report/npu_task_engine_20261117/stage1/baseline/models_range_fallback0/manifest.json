@@ -1,0 +1,154 @@
+{
+  "abi": 1,
+  "input": "input_1",
+  "output": "_1",
+  "tensors": {
+    "input_1": {
+      "shape": [
+        1,
+        4
+      ],
+      "scale": 0.007874015748031496,
+      "stride": 4,
+      "address": 2147491772
+    },
+    "_0": {
+      "shape": [
+        1,
+        3
+      ],
+      "scale": 0.0787952753502553,
+      "stride": 4,
+      "address": 2147491768
+    },
+    "_1": {
+      "shape": [
+        1,
+        3
+      ],
+      "scale": 0.0787952753502553,
+      "stride": 4,
+      "address": 2147491764
+    }
+  },
+  "nodes": [
+    {
+      "name": "_0",
+      "op": "linear",
+      "inputs": [
+        "input_1"
+      ],
+      "backend": "CPU",
+      "reason": "Accumulation exceeds NPU INT22 range",
+      "mult": [
+        132
+      ],
+      "shift": 24,
+      "bias_address": 2147491752,
+      "weight_address": 2147491740,
+      "start_pc": 2147483656,
+      "end_pc": 2147483788
+    },
+    {
+      "name": "_1",
+      "op": "relu",
+      "inputs": [
+        "_0"
+      ],
+      "backend": "CPU",
+      "reason": "CPU operator kernel",
+      "mult": [
+        8388608
+      ],
+      "shift": 23,
+      "start_pc": 2147483788,
+      "end_pc": 2147483876
+    }
+  ],
+  "profile_ranges": [
+    {
+      "start_pc": 2147483648,
+      "phase": "startup",
+      "node": "runtime",
+      "end_pc": 2147483656
+    },
+    {
+      "start_pc": 2147483656,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147483740
+    },
+    {
+      "start_pc": 2147483740,
+      "phase": "cpu_quant",
+      "node": "_0",
+      "end_pc": 2147483768
+    },
+    {
+      "start_pc": 2147483768,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147483788
+    },
+    {
+      "start_pc": 2147483788,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147483828
+    },
+    {
+      "start_pc": 2147483828,
+      "phase": "cpu_quant",
+      "node": "_1",
+      "end_pc": 2147483856
+    },
+    {
+      "start_pc": 2147483856,
+      "phase": "cpu_activation",
+      "node": "_1",
+      "end_pc": 2147483876
+    },
+    {
+      "start_pc": 2147483876,
+      "phase": "finish",
+      "node": "runtime",
+      "end_pc": 2147483912
+    }
+  ],
+  "quantization": "Symmetric per-tensor INT8; per-layer INT8 weights; rounded fixed-point CPU boundaries",
+  "input_shape": [
+    1,
+    4
+  ],
+  "code_bytes": 264,
+  "data_bytes": 36,
+  "free_bytes": 7828,
+  "allocations": [
+    {
+      "name": "tensor:input_1",
+      "address": 2147491772,
+      "bytes": 4
+    },
+    {
+      "name": "tensor:_0",
+      "address": 2147491768,
+      "bytes": 4
+    },
+    {
+      "name": "tensor:_1",
+      "address": 2147491764,
+      "bytes": 4
+    },
+    {
+      "name": "_0:bias",
+      "address": 2147491752,
+      "bytes": 12
+    },
+    {
+      "name": "_0:weights",
+      "address": 2147491740,
+      "bytes": 12
+    }
+  ],
+  "code_sha256": "545382e9e1f792b497aab8abd06370d5ef8d285065ce9d2f96b6588fede37ef3"
+}

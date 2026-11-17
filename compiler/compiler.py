@@ -81,43 +81,57 @@ class Package:
 
 class Codegen:
     def __init__(self,memory,tensors):
-        self.m=memory;self.ts=tensors;self.a=Program();self.a.li(30,-128);self.a.li(31,127)
+        self.m=memory;self.ts=tensors;self.a=Program();self.profile_events=[]
+        self.profile_scope=('startup','runtime');self.mark(*self.profile_scope)
+        self.a.li(30,-128);self.a.li(31,127)
+    def mark(self,phase,node):
+        """Metadata only: never emit instructions or change label addresses."""
+        self.profile_scope=(phase,node)
+        self.profile_events.append(dict(start_pc=BASE+4*len(self.a.words),phase=phase,node=node))
     def put(self,offset,value):
         self.a.li(5,value);self.a.li(6,0x70000000+offset);self.a.sw(5,6)
     def quant(self,node,already_scaled=False):
+        previous=self.profile_scope;self.mark('cpu_quant',node['name'])
         a=self.a
         if not already_scaled:a.mul(10,10,17)
         if node['shift']:a.add(10,10,18);a.srai(10,10,node['shift'])
         low=a.fresh('clip_low');high=a.fresh('clip_high')
         a.branch('bge',10,30,low);a.addi(10,30,0);a.label(low)
         a.branch('bge',31,10,high);a.addi(10,31,0);a.label(high)
+        self.mark(*previous)
     def setup_quant(self,node):
         self.a.li(17,node['mult'][0]);self.a.li(18,(1<<(node['shift']-1)) if node['shift'] else 0)
     def linear_npu(self,node):
         a=self.a;src=self.ts[node['inputs'][0]];dst=self.ts[node['name']]
         for job in node['jobs']:
+            self.mark('cpu_schedule',node['name'])
             self.put(0,2);self.put(0x3c,3 if job['accumulate'] else 1)
             self.put(0x80,job['k']);self.put(0x84,job['n']);self.put(0x18,job['batch']);self.put(0x20,job['source'])
+            self.mark('cpu_input_copy',node['name'])
             for b in range(job['batch']):
                 a.li(5,src['address']+b*src['stride']+job['input_offset'])
                 a.li(6,0x70000000+[0x40,0xc00,0x1000,0x1040][b]);a.li(7,(job['k']+3)//4)
                 loop=a.fresh('load_input');a.label(loop);a.lw(8,5);a.sw(8,6)
                 a.addi(5,5,4);a.addi(6,6,4);a.addi(7,7,-1);a.branch('bne',7,0,loop)
             if not job['accumulate']:
+                self.mark('cpu_bias_copy',node['name'])
                 a.li(5,node['bias_address']+job['output_offset']*4);a.li(6,0x700009c0);a.li(7,job['n'])
                 loop=a.fresh('load_bias');a.label(loop);a.lw(8,5);a.sw(8,6)
                 a.addi(5,5,4);a.addi(6,6,4);a.addi(7,7,-1);a.branch('bne',7,0,loop)
-            self.put(0,1);a.li(6,0x70000004);a.li(7,20000)
+            self.mark('cpu_launch',node['name']);self.put(0,1)
+            self.mark('cpu_poll',node['name']);a.li(6,0x70000004);a.li(7,20000)
             loop=a.fresh('wait_npu');finished=a.fresh('npu_finished');a.label(loop)
             a.lw(8,6);a.li(9,1);a.branch('beq',8,9,finished)
             a.andi(9,8,4);a.branch('bne',9,0,'fail');a.addi(7,7,-1);a.branch('bne',7,0,loop);a.jump('fail');a.label(finished)
             if job['last_input']:
+                self.mark('cpu_result_copy',node['name'])
                 self.setup_quant(node)
                 for b in range(job['batch']):
                     a.li(5,0x70001400+b*128);a.li(6,dst['address']+b*dst['stride']+job['output_offset']);a.li(7,job['n'])
                     loop=a.fresh('read_npu');a.label(loop);a.lw(10,5);self.quant(node);a.sb(10,6)
                     a.addi(5,5,4);a.addi(6,6,1);a.addi(7,7,-1);a.branch('bne',7,0,loop)
     def linear_cpu(self,node):
+        self.mark('cpu_fc',node['name'])
         a=self.a;src=self.ts[node['inputs'][0]];dst=self.ts[node['name']];b,k=src['shape'];n=dst['shape'][1]
         self.setup_quant(node)
         for sample in range(b):
@@ -128,6 +142,7 @@ class Codegen:
             a.addi(5,5,1);a.addi(12,12,1);a.addi(7,7,-1);a.branch('bne',7,0,inner)
             self.quant(node);a.sb(10,6);a.addi(6,6,1);a.addi(13,13,4);a.addi(14,14,-1);a.branch('bne',14,0,outer)
     def softmax(self,node):
+        self.mark('cpu_activation',node['name'])
         a=self.a;src=self.ts[node['inputs'][0]];dst=self.ts[node['name']];batch,n=dst['shape']
         a.li(17,node['lut_address']);a.li(19,node['reciprocal'])
         for sample in range(batch):
@@ -147,6 +162,7 @@ class Codegen:
             a.branch('bge',31,10,clip);a.addi(10,31,0);a.label(clip);a.sb(10,6)
             a.addi(5,5,1);a.addi(6,6,1);a.addi(7,7,-1);a.branch('bne',7,0,loop)
     def elementwise(self,node):
+        self.mark('cpu_activation' if node['op'] in ('relu','sigmoid','tanh') else 'cpu_elementwise',node['name'])
         a=self.a;src=self.ts[node['inputs'][0]];dst=self.ts[node['name']];b,n=dst['shape'];op=node['op']
         if op not in ('sigmoid','tanh'):self.setup_quant(node)
         else:a.li(17,node['lut_address'])
@@ -169,6 +185,7 @@ class Codegen:
                 self.quant(node,already_scaled=op in ('add','sub'))
             a.sb(10,6);a.addi(5,5,1);a.addi(6,6,1);a.addi(7,7,-1);a.branch('bne',7,0,loop)
     def finish(self):
+        self.mark('finish','runtime')
         a=self.a;a.li(5,0xc0dec0de);a.jump('finish');a.label('fail');a.li(5,0xdeadbeef)
         a.label('finish');a.li(6,0x80001fe0);a.sw(5,6);a.label('halt');a.jump('halt');a.resolve()
         code=struct.pack('<%dI'%len(a.words),*a.words)
@@ -236,7 +253,11 @@ def compile_model(model,example_input,calibration_inputs=None,force_cpu=False):
         node['end_pc']=BASE+len(gen.a.words)*4
     program=gen.finish()
     report_nodes=[{k:v for k,v in n.items() if k not in ('qweight','qbias','lut')} for n in nodes]
-    meta=dict(abi=1,input=graph['input'],output=graph['output'],tensors=ts,nodes=report_nodes,
+    ranges=[]
+    events=gen.profile_events+[dict(start_pc=BASE+len(program.words)*4)]
+    for first,last in zip(events,events[1:]):
+        if first['start_pc']<last['start_pc']:ranges.append(dict(first,end_pc=last['start_pc']))
+    meta=dict(abi=1,input=graph['input'],output=graph['output'],tensors=ts,nodes=report_nodes,profile_ranges=ranges,
               quantization='Symmetric per-tensor INT8; per-layer INT8 weights; rounded fixed-point CPU boundaries',
               input_shape=ts[graph['input']]['shape'],code_bytes=len(program.words)*4,data_bytes=DATA_TOP-mem.top,
               free_bytes=mem.top-len(program.words)*4,allocations=mem.allocations,

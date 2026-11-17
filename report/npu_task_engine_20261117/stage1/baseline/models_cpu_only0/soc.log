@@ -1,0 +1,141 @@
+Reading D:/modeltech64_2019.2/tcl/vsim/pref.tcl
+
+# 2019.2
+
+# do soc.do
+# Model Technology ModelSim SE-64 vmap 2019.2 Lib Mapping Utility 2019.04 Apr 17 2019
+# vmap work ../work 
+# Modifying D:/modeltech64_2019.2/win64/../modelsim.ini
+# Model Technology ModelSim SE-64 vlog 2019.2 Compiler 2019.04 Apr 17 2019
+# Start time: 20:49:20 on Nov 17,2026
+# vlog -sv tb_compiled_model.sv 
+# -- Compiling module tb_compiled_model
+# 
+# Top level modules:
+# 	tb_compiled_model
+# End time: 20:49:20 on Nov 17,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -suppress 12110 -novopt -onfinish stop work.tb_compiled_model 
+# Start time: 20:49:20 on Nov 17,2026
+# ** Warning: (vsim-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# //  ModelSim SE-64 2019.2 Apr 17 2019
+# //
+# //  Copyright 1991-2019 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Refreshing C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/tmp/npu-task-engine/test/int8/runs/compiler_20261117_204858/work.tb_compiled_model
+# ** Warning: (vlog-8891) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Loading sv_std.std
+# Loading work.tb_compiled_model
+# Loading work.dm
+# Loading work.axi_pkg
+# Loading work.my_soc_pkg
+# Loading work.my_soc_top
+# Loading work.sram_transaction_reset
+# Loading work.rstgen
+# Loading work.rstgen_bypass
+# Loading work.axi_xbar_intf
+# Loading work.axi_xbar
+# Loading work.cv32e40p_apu_core_pkg
+# Loading work.cv32e40p_top
+# Loading work.cv32e40p_pkg
+# Loading work.cv32e40p_core
+# Loading work.cv32e40p_sleep_unit
+# Loading work.cv32e40p_clock_gate
+# Loading work.cv32e40p_if_stage
+# Loading work.cv32e40p_prefetch_buffer
+# Loading work.cv32e40p_prefetch_controller
+# Loading work.cv32e40p_fifo
+# Loading work.cv32e40p_obi_interface
+# Loading work.cv32e40p_aligner
+# Loading work.cv32e40p_compressed_decoder
+# Loading work.cv32e40p_fpu_pkg
+# Loading work.cv32e40p_id_stage
+# Loading work.cv32e40p_register_file
+# Loading work.cv32e40p_decoder
+# Loading work.cv32e40p_controller
+# Loading work.cv32e40p_int_controller
+# Loading work.cv32e40p_ex_stage
+# Loading work.cv32e40p_alu
+# Loading work.cv32e40p_popcnt
+# Loading work.cv32e40p_ff_one
+# Loading work.cv32e40p_alu_div
+# Loading work.cv32e40p_mult
+# Loading work.cv32e40p_load_store_unit
+# Loading work.cv32e40p_cs_registers
+# Loading work.my_ifetch
+# Loading work.axi_adapter
+# Loading work.dmi_jtag
+# Loading work.dmi_jtag_tap
+# Loading work.cluster_clock_inverter
+# Loading work.tc_clk_inverter
+# Loading work.pulp_clock_mux2
+# Loading work.tc_clk_mux2
+# Loading work.dmi_cdc
+# Loading work.cdc_2phase
+# Loading work.cdc_2phase_src
+# Loading work.cdc_2phase_dst
+# Loading work.axi2mem
+# Loading work.dm_top
+# Loading work.dm_csrs
+# Loading work.fifo_v2
+# Loading work.fifo_v3
+# Loading work.dm_sba
+# Loading work.dm_mem
+# Loading work.bootram
+# Loading work.my_mainmem
+# Loading work.chip_sram_2048x32
+# Loading work.my_npu_subsystem
+# Loading work.simple_npu_top
+# Loading work.har_weight_store
+# Loading work.har_npu_core
+# Loading work.har_dma_axi
+# Loading work.har_dma
+# Loading work.debug_rom
+# Loading work.AXI_BUS
+# Loading work.cf_math_pkg
+# Loading work.addr_decode
+# Loading work.axi_demux
+# Loading work.axi_err_slv
+# Loading work.counter
+# Loading work.delta_counter
+# Loading work.axi_mux
+# Loading work.spill_register
+# Loading work.spill_register_flushable
+# Loading work.axi_demux_id_counters
+# Loading work.rr_arb_tree
+# Loading work.axi_atop_filter
+# Loading work.stream_register
+# Loading work.axi_id_prepend
+# Loading work.lzc
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'i_dm_axi2mem'.  Expected 11, found 9.
+#    Time: 0 ps  Iteration: 0  Instance: /tb_compiled_model/dut/i_dm_axi2mem File: C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/tmp/npu-task-engine/rtl/soc/my_soc_top.sv Line: 326
+# ** Warning: (vsim-3722) C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/tmp/npu-task-engine/rtl/soc/my_soc_top.sv(326): [TFMPC] - Missing connection for port 'user_o'.
+# ** Warning: (vsim-3722) C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/tmp/npu-task-engine/rtl/soc/my_soc_top.sv(326): [TFMPC] - Missing connection for port 'user_i'.
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'i_axi2boot'.  Expected 11, found 9.
+#    Time: 0 ps  Iteration: 0  Instance: /tb_compiled_model/dut/i_axi2boot File: C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/tmp/npu-task-engine/rtl/soc/my_soc_top.sv Line: 440
+# ** Warning: (vsim-3722) C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/tmp/npu-task-engine/rtl/soc/my_soc_top.sv(440): [TFMPC] - Missing connection for port 'user_o'.
+# ** Warning: (vsim-3722) C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/tmp/npu-task-engine/rtl/soc/my_soc_top.sv(440): [TFMPC] - Missing connection for port 'user_i'.
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'i_axi2sram'.  Expected 11, found 9.
+#    Time: 0 ps  Iteration: 0  Instance: /tb_compiled_model/dut/i_axi2sram File: C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/tmp/npu-task-engine/rtl/soc/my_soc_top.sv Line: 471
+# ** Warning: (vsim-3722) C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/tmp/npu-task-engine/rtl/soc/my_soc_top.sv(471): [TFMPC] - Missing connection for port 'user_o'.
+# ** Warning: (vsim-3722) C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/tmp/npu-task-engine/rtl/soc/my_soc_top.sv(471): [TFMPC] - Missing connection for port 'user_i'.
+# ** Warning: (vsim-8315) No condition is true in the unique/priority if/case statement.
+#    Time: 0 ps  Iteration: 6  Process: /tb_compiled_model/dut/i_cpu/core_i/load_store_unit_i/#implicit#unique__419 File: C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/tmp/npu-task-engine/rtl/cpu_cv32e40p/rtl/cv32e40p_load_store_unit.sv Line: 419
+# INT8_SOC PASS cycles=7602 hw_soc_cycles=7597 npu_cycles=0 fc1_issue_cycles=0 fc2_issue_cycles=0 DMA_read_MAC_overlap=0 DMA_write_MAC_overlap=0
+# COMPILED_MODEL_PASS npu_jobs=0 npu_issue=0
+# ** Note: $finish    : tb_compiled_model.sv(242)
+#    Time: 180646 ns  Iteration: 0  Instance: /tb_compiled_model
+# Break in Module tb_compiled_model at tb_compiled_model.sv line 242
+# Stopped at tb_compiled_model.sv line 242
+# c0dec0de
+# End time: 20:49:24 on Nov 17,2026, Elapsed time: 0:00:04
+# Errors: 0, Warnings: 11

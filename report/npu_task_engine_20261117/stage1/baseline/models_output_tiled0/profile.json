@@ -1,0 +1,141 @@
+{
+  "cpu_stage_occupancy_cycles": {
+    "boot_or_pipeline": 15,
+    "startup": 2,
+    "cpu_schedule": 72,
+    "cpu_input_copy": 112,
+    "cpu_bias_copy": 549,
+    "cpu_launch": 10,
+    "cpu_poll": 242,
+    "cpu_result_copy": 566,
+    "cpu_quant": 369,
+    "finish": 17
+  },
+  "cpu_node_occupancy_cycles": {
+    "runtime": 34,
+    "_0": 1920
+  },
+  "exclusive_wall_cycles": {
+    "boot_or_pipeline": 15,
+    "startup": 2,
+    "cpu_schedule": 72,
+    "cpu_input_copy": 112,
+    "cpu_bias_copy": 549,
+    "cpu_launch": 10,
+    "cpu_poll": 28,
+    "npu_wait_weight": 174,
+    "npu_tile_ready_control": 10,
+    "npu_issue": 30,
+    "cpu_result_copy": 566,
+    "cpu_quant": 369,
+    "finish": 17
+  },
+  "cpu_node_stage_cycles": {
+    "runtime": {
+      "boot_or_pipeline": 15,
+      "startup": 2,
+      "finish": 17
+    },
+    "_0": {
+      "cpu_schedule": 72,
+      "cpu_input_copy": 112,
+      "cpu_bias_copy": 549,
+      "cpu_launch": 10,
+      "cpu_poll": 242,
+      "cpu_result_copy": 566,
+      "cpu_quant": 369
+    }
+  },
+  "issued_instruction_events": {
+    "boot_or_pipeline": 2,
+    "startup": 2,
+    "cpu_schedule": 48,
+    "cpu_input_copy": 46,
+    "cpu_bias_copy": 256,
+    "cpu_launch": 6,
+    "cpu_poll": 77,
+    "cpu_result_copy": 262,
+    "cpu_quant": 205,
+    "finish": 7
+  },
+  "dma_handshake_cycles": {
+    "busy_cycles": 186,
+    "ar_backpressure": 0,
+    "r_data_unavailable": 36,
+    "aw_backpressure": 0,
+    "w_backpressure": 0,
+    "b_response_unavailable": 10,
+    "weight_unready_dma_idle": 20,
+    "weight_unready_with_r_data_unavailable": 36,
+    "weight_unready_dma_busy": 154
+  },
+  "observed_edges": 1954,
+  "elapsed_edge_difference": 1953,
+  "npu_state_cycles": {
+    "wait_weight": 174,
+    "tile_ready_control": 10,
+    "issue": 30
+  },
+  "jobs": [
+    {
+      "start_tick": 10873,
+      "k": 9,
+      "n": 32,
+      "batch": 1,
+      "busy_cycles": 131,
+      "states": {
+        "wait_weight": 106,
+        "tile_ready_control": 5,
+        "issue": 20
+      }
+    },
+    {
+      "start_tick": 11945,
+      "k": 9,
+      "n": 9,
+      "batch": 1,
+      "busy_cycles": 83,
+      "states": {
+        "wait_weight": 68,
+        "tile_ready_control": 5,
+        "issue": 10
+      }
+    }
+  ],
+  "traffic": {
+    "dma_weight_read_bytes": 480,
+    "dma_weight_NPU_write_bytes": 480,
+    "sram_port_read_bytes": 1596,
+    "npu_mmio_cpu_write_bytes": 244,
+    "npu_mmio_stores": 61,
+    "sram_cpu_read_bytes": 188,
+    "sram_loads": 47,
+    "npu_mmio_cpu_read_bytes": 208,
+    "npu_mmio_loads": 52,
+    "sram_cpu_write_bytes": 45,
+    "sram_stores": 42,
+    "sram_port_write_bytes": 45
+  },
+  "tensor_traffic": {
+    "input_1": {
+      "cpu_read_bytes": 18,
+      "cpu_read_transactions": 6,
+      "macro_read_bytes": 18,
+      "macro_read_commands": 6
+    },
+    "_0": {
+      "cpu_write_bytes": 41,
+      "cpu_write_transactions": 41,
+      "macro_write_bytes": 41,
+      "macro_write_commands": 41
+    }
+  },
+  "rules": {
+    "cpu_cycles": "Phase of most recently accepted ID instruction (id_valid && is_decoding); hold across bubbles/stalls. No speculative invalid-ID PC attribution. Wall-time boundary convention, not causal stall attribution.",
+    "npu_cycles": "Busy-edge state occupancy is a separate overlapping view; never add to CPU stage cycles",
+    "exclusive": "Every edge attributed to NPU state while busy, otherwise most recent accepted CPU instruction phase; sums exactly to hardware elapsed count. Accounting convention, not a CPU stall-cause proof.",
+    "wait_weight": "WAIT_TILE with tile_valid=0 only; other idle states are not DMA wait",
+    "traffic": "CPU LSU accepted byte enables and physical SRAM command reads/writes are distinct levels, not additive. SRAM reads are full32-bit accesses, including replay and instruction fetch. DMA reads counted at real R handshake.",
+    "tensor": "Logical tensor byte intervals exclude stride padding; macro_read_bytes also include repeated physical reads. Loader and post-completion SBA checks excluded."
+  }
+}

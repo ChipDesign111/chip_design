@@ -1,0 +1,231 @@
+{
+  "abi": 1,
+  "input": "x",
+  "output": "tanh",
+  "tensors": {
+    "x": {
+      "shape": [
+        2,
+        65
+      ],
+      "scale": 0.007874015748031496,
+      "stride": 68,
+      "address": 2147491640
+    },
+    "fc": {
+      "shape": [
+        2,
+        9
+      ],
+      "scale": 0.006581203205378976,
+      "stride": 12,
+      "address": 2147491616
+    },
+    "tanh": {
+      "shape": [
+        2,
+        9
+      ],
+      "scale": 0.005382558022897075,
+      "stride": 12,
+      "address": 2147491592
+    }
+  },
+  "nodes": [
+    {
+      "name": "fc",
+      "op": "linear",
+      "inputs": [
+        "x"
+      ],
+      "backend": "NPU",
+      "reason": "INT8 operands; full input-domain accumulation fits INT22",
+      "mult": [
+        2440
+      ],
+      "shift": 21,
+      "bias_address": 2147491556,
+      "jobs": [
+        {
+          "k": 64,
+          "n": 9,
+          "batch": 2,
+          "accumulate": false,
+          "source": 2147490500,
+          "output_offset": 0,
+          "input_offset": 0,
+          "last_input": false
+        },
+        {
+          "k": 1,
+          "n": 9,
+          "batch": 2,
+          "accumulate": true,
+          "source": 2147491524,
+          "output_offset": 0,
+          "input_offset": 64,
+          "last_input": true
+        }
+      ],
+      "start_pc": 2147483656,
+      "end_pc": 2147484352
+    },
+    {
+      "name": "tanh",
+      "op": "tanh",
+      "inputs": [
+        "fc"
+      ],
+      "backend": "CPU",
+      "reason": "CPU operator kernel",
+      "lut_address": 2147490244,
+      "start_pc": 2147484352,
+      "end_pc": 2147484472
+    }
+  ],
+  "profile_ranges": [
+    {
+      "start_pc": 2147483648,
+      "phase": "startup",
+      "node": "runtime",
+      "end_pc": 2147483656
+    },
+    {
+      "start_pc": 2147483656,
+      "phase": "cpu_schedule",
+      "node": "fc",
+      "end_pc": 2147483752
+    },
+    {
+      "start_pc": 2147483752,
+      "phase": "cpu_input_copy",
+      "node": "fc",
+      "end_pc": 2147483840
+    },
+    {
+      "start_pc": 2147483840,
+      "phase": "cpu_bias_copy",
+      "node": "fc",
+      "end_pc": 2147483884
+    },
+    {
+      "start_pc": 2147483884,
+      "phase": "cpu_launch",
+      "node": "fc",
+      "end_pc": 2147483896
+    },
+    {
+      "start_pc": 2147483896,
+      "phase": "cpu_poll",
+      "node": "fc",
+      "end_pc": 2147483948
+    },
+    {
+      "start_pc": 2147483948,
+      "phase": "cpu_schedule",
+      "node": "fc",
+      "end_pc": 2147484044
+    },
+    {
+      "start_pc": 2147484044,
+      "phase": "cpu_input_copy",
+      "node": "fc",
+      "end_pc": 2147484132
+    },
+    {
+      "start_pc": 2147484132,
+      "phase": "cpu_launch",
+      "node": "fc",
+      "end_pc": 2147484144
+    },
+    {
+      "start_pc": 2147484144,
+      "phase": "cpu_poll",
+      "node": "fc",
+      "end_pc": 2147484196
+    },
+    {
+      "start_pc": 2147484196,
+      "phase": "cpu_result_copy",
+      "node": "fc",
+      "end_pc": 2147484232
+    },
+    {
+      "start_pc": 2147484232,
+      "phase": "cpu_quant",
+      "node": "fc",
+      "end_pc": 2147484260
+    },
+    {
+      "start_pc": 2147484260,
+      "phase": "cpu_result_copy",
+      "node": "fc",
+      "end_pc": 2147484304
+    },
+    {
+      "start_pc": 2147484304,
+      "phase": "cpu_quant",
+      "node": "fc",
+      "end_pc": 2147484332
+    },
+    {
+      "start_pc": 2147484332,
+      "phase": "cpu_result_copy",
+      "node": "fc",
+      "end_pc": 2147484352
+    },
+    {
+      "start_pc": 2147484352,
+      "phase": "cpu_activation",
+      "node": "tanh",
+      "end_pc": 2147484472
+    },
+    {
+      "start_pc": 2147484472,
+      "phase": "finish",
+      "node": "runtime",
+      "end_pc": 2147484508
+    }
+  ],
+  "quantization": "Symmetric per-tensor INT8; per-layer INT8 weights; rounded fixed-point CPU boundaries",
+  "input_shape": [
+    2,
+    65
+  ],
+  "code_bytes": 860,
+  "data_bytes": 1532,
+  "free_bytes": 5736,
+  "allocations": [
+    {
+      "name": "tensor:x",
+      "address": 2147491640,
+      "bytes": 136
+    },
+    {
+      "name": "tensor:fc",
+      "address": 2147491616,
+      "bytes": 24
+    },
+    {
+      "name": "tensor:tanh",
+      "address": 2147491592,
+      "bytes": 24
+    },
+    {
+      "name": "fc:bias",
+      "address": 2147491556,
+      "bytes": 36
+    },
+    {
+      "name": "fc:weights",
+      "address": 2147490500,
+      "bytes": 1056
+    },
+    {
+      "name": "tanh:lut",
+      "address": 2147490244,
+      "bytes": 256
+    }
+  ],
+  "code_sha256": "43d0a719af92413a3c23e1cea3aa3f9a98a9f718dc73f11745715bdc156cff00"
+}

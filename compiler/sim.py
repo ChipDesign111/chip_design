@@ -11,7 +11,7 @@ def execute(command,run,name,marker):
     print(name+': PASS',flush=True)
     return result.stdout
 
-def simulate(directory,vsim='vsim'):
+def simulate(directory,vsim='vsim',profile=False):
     directory=Path(directory).resolve()
     metadata=json.loads((directory/'manifest.json').read_text())
     expected=json.loads((directory/'reference.json').read_text());ts=metadata['tensors']
@@ -54,6 +54,9 @@ def simulate(directory,vsim='vsim'):
     endtask
 """
     tb=tb.replace('    integer i;',insert+'\n    integer i;')
+    if profile:
+        from .profiling import monitor_source
+        tb=tb.replace('    integer i;',monitor_source()+'\n    integer i;')
     tb=tb.replace('if(read_overlap==0 || write_overlap==0) $fatal(1,"Full AXI SoC did not overlap DMA and MAC");',
                   f'if(npu_starts!={starts}) $fatal(1,"Wrong NPU job count %0d",npu_starts);')
     tb=tb.replace('        $display("INT8_SOC PASS', '\n'.join(checks)+'\n        $display("INT8_SOC PASS')
@@ -87,6 +90,9 @@ def simulate(directory,vsim='vsim'):
         rows.append(row)
     (directory/'actual_output.json').write_text(json.dumps(dict(int8=rows,scale=out['scale'],
         dequantized=[[v*out['scale'] for v in row] for row in rows]),indent=2)+'\n')
+    if profile:
+        from .profiling import summarize
+        summarize(directory)
     return log
 
 

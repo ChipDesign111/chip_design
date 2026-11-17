@@ -20,12 +20,16 @@ class WideNetwork(nn.Module):
 
 from compiler.sim import simulate
 
-def run_soc(package,directory,x,vsim='vsim'):
+def run_soc(package,directory,x,vsim='vsim',profile=False):
     package.write(directory,x)
-    return simulate(directory,vsim)
+    return simulate(directory,vsim,profile=profile)
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--soc',action='store_true');p.add_argument('--vsim',default='vsim');args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--soc',action='store_true');p.add_argument('--vsim',default='vsim')
+    p.add_argument('--profile',action='store_true',help='Passive PC/state/bus observation; no emitted instrumentation')
+    p.add_argument('--frozen-baseline',type=Path,help='Require every generated firmware image to equal a frozen matching case')
+    args=p.parse_args()
+    if args.profile and not args.soc:p.error('--profile requires --soc')
     run=ROOT/'test/int8/runs'/('compiler_'+datetime.datetime.now().strftime('%Y%m%d_%H%M%S'));run.mkdir(parents=True)
     torch.manual_seed(42);mixed=MixedNetwork().eval();wide=WideNetwork().eval()
     fixture_root=ROOT/'model/generic_mixed/data'
@@ -56,7 +60,12 @@ def main():
         if name=='range_fallback':assert package.nodes[0]['backend']=='CPU' and 'INT22' in package.nodes[0]['reason']
         for index,x in enumerate([example,torch.from_numpy(np.load(fixture_root/'held_out.npy'))] if name=='mixed' else [example]):
             directory=run/(name+str(index));directory.mkdir()
-            log=run_soc(package,directory,x.numpy(),args.vsim) if args.soc else ''
+            if args.frozen_baseline:
+                package.write(directory,x.numpy())
+                original=args.frozen_baseline/directory.name
+                if (directory/'firmware.hex').read_bytes()!=(original/'firmware.hex').read_bytes():
+                    raise AssertionError('Frozen firmware changed: '+directory.name)
+            log=run_soc(package,directory,x.numpy(),args.vsim,profile=args.profile) if args.soc else ''
             if not args.soc:package.write(directory,x.numpy())
             quant=package.reference(x.numpy())[package.graph['output']]
             scale=package.metadata['tensors'][package.graph['output']]['scale']
@@ -84,7 +93,9 @@ def main():
         else:raise AssertionError('Unsupported/oversized model was accepted')
     sources=[p for folder in ['compiler','model/generic_mixed','rtl'] for p in (ROOT/folder).rglob('*') if p.is_file() and p.suffix in ('.py','.sv','.v')]+[Path(__file__)]+list(fixture_root.iterdir())
     source_hashes={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sources}
-    (run/'result.json').write_text(json.dumps(dict(passed=True,soc=args.soc,torch_version=torch.__version__,source_sha256=source_hashes,cases=results),indent=2)+'\n')
+    (run/'result.json').write_text(json.dumps(dict(passed=True,soc=args.soc,passive_profile=args.profile,
+        frozen_baseline=str(args.frozen_baseline) if args.frozen_baseline else None,
+        torch_version=torch.__version__,source_sha256=source_hashes,cases=results),indent=2)+'\n')
     print(json.dumps(results,indent=2));print('Results: '+str(run))
 
 if __name__=='__main__':main()

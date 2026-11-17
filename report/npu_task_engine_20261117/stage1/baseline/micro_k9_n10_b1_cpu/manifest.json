@@ -1,0 +1,107 @@
+{
+  "abi": 1,
+  "input": "input_1",
+  "output": "_0",
+  "tensors": {
+    "input_1": {
+      "shape": [
+        1,
+        9
+      ],
+      "scale": 0.007090787249287282,
+      "stride": 12,
+      "address": 2147491764
+    },
+    "_0": {
+      "shape": [
+        1,
+        10
+      ],
+      "scale": 0.0062403195486294,
+      "stride": 12,
+      "address": 2147491752
+    }
+  },
+  "nodes": [
+    {
+      "name": "_0",
+      "op": "linear",
+      "inputs": [
+        "input_1"
+      ],
+      "backend": "CPU",
+      "reason": "Forced CPU backend",
+      "mult": [
+        19280
+      ],
+      "shift": 22,
+      "bias_address": 2147491712,
+      "weight_address": 2147491620,
+      "start_pc": 2147483656,
+      "end_pc": 2147483792
+    }
+  ],
+  "profile_ranges": [
+    {
+      "start_pc": 2147483648,
+      "phase": "startup",
+      "node": "runtime",
+      "end_pc": 2147483656
+    },
+    {
+      "start_pc": 2147483656,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147483744
+    },
+    {
+      "start_pc": 2147483744,
+      "phase": "cpu_quant",
+      "node": "_0",
+      "end_pc": 2147483772
+    },
+    {
+      "start_pc": 2147483772,
+      "phase": "cpu_fc",
+      "node": "_0",
+      "end_pc": 2147483792
+    },
+    {
+      "start_pc": 2147483792,
+      "phase": "finish",
+      "node": "runtime",
+      "end_pc": 2147483828
+    }
+  ],
+  "quantization": "Symmetric per-tensor INT8; per-layer INT8 weights; rounded fixed-point CPU boundaries",
+  "input_shape": [
+    1,
+    9
+  ],
+  "code_bytes": 180,
+  "data_bytes": 156,
+  "free_bytes": 7792,
+  "allocations": [
+    {
+      "name": "tensor:input_1",
+      "address": 2147491764,
+      "bytes": 12
+    },
+    {
+      "name": "tensor:_0",
+      "address": 2147491752,
+      "bytes": 12
+    },
+    {
+      "name": "_0:bias",
+      "address": 2147491712,
+      "bytes": 40
+    },
+    {
+      "name": "_0:weights",
+      "address": 2147491620,
+      "bytes": 90
+    }
+  ],
+  "code_sha256": "0d57f7becd0982657bf6c8a37e2da5a562dc9fe0ac1576f7d0f2e75ac357e1bb"
+}

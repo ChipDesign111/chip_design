@@ -1,0 +1,270 @@
+{
+  "cpu_stage_occupancy_cycles": {
+    "boot_or_pipeline": 15,
+    "startup": 2,
+    "cpu_schedule": 72,
+    "cpu_input_copy": 135,
+    "cpu_bias_copy": 245,
+    "cpu_launch": 10,
+    "cpu_poll": 246,
+    "cpu_result_copy": 242,
+    "cpu_quant": 550,
+    "cpu_activation": 1070,
+    "cpu_elementwise": 1118,
+    "finish": 14
+  },
+  "cpu_node_occupancy_cycles": {
+    "runtime": 31,
+    "fc1": 731,
+    "relu": 475,
+    "sigmoid": 243,
+    "mul": 495,
+    "add": 522,
+    "fc2": 372,
+    "mul_1": 193,
+    "add_1": 197,
+    "softmax": 460
+  },
+  "exclusive_wall_cycles": {
+    "boot_or_pipeline": 15,
+    "startup": 2,
+    "cpu_schedule": 72,
+    "cpu_input_copy": 135,
+    "cpu_bias_copy": 245,
+    "cpu_launch": 10,
+    "cpu_poll": 31,
+    "npu_wait_weight": 176,
+    "npu_tile_ready_control": 15,
+    "npu_issue": 24,
+    "cpu_result_copy": 242,
+    "cpu_quant": 550,
+    "cpu_activation": 1070,
+    "cpu_elementwise": 1118,
+    "finish": 14
+  },
+  "cpu_node_stage_cycles": {
+    "runtime": {
+      "boot_or_pipeline": 15,
+      "startup": 2,
+      "finish": 14
+    },
+    "fc1": {
+      "cpu_schedule": 36,
+      "cpu_input_copy": 86,
+      "cpu_bias_copy": 169,
+      "cpu_launch": 5,
+      "cpu_poll": 160,
+      "cpu_result_copy": 167,
+      "cpu_quant": 108
+    },
+    "relu": {
+      "cpu_activation": 367,
+      "cpu_quant": 108
+    },
+    "sigmoid": {
+      "cpu_activation": 243
+    },
+    "mul": {
+      "cpu_elementwise": 387,
+      "cpu_quant": 108
+    },
+    "add": {
+      "cpu_elementwise": 426,
+      "cpu_quant": 96
+    },
+    "fc2": {
+      "cpu_schedule": 36,
+      "cpu_input_copy": 49,
+      "cpu_bias_copy": 76,
+      "cpu_launch": 5,
+      "cpu_poll": 86,
+      "cpu_result_copy": 75,
+      "cpu_quant": 45
+    },
+    "mul_1": {
+      "cpu_elementwise": 148,
+      "cpu_quant": 45
+    },
+    "add_1": {
+      "cpu_elementwise": 157,
+      "cpu_quant": 40
+    },
+    "softmax": {
+      "cpu_activation": 460
+    }
+  },
+  "issued_instruction_events": {
+    "boot_or_pipeline": 2,
+    "startup": 2,
+    "cpu_schedule": 48,
+    "cpu_input_copy": 58,
+    "cpu_bias_copy": 112,
+    "cpu_launch": 6,
+    "cpu_poll": 105,
+    "cpu_result_copy": 118,
+    "cpu_quant": 298,
+    "cpu_activation": 383,
+    "cpu_elementwise": 350,
+    "finish": 7
+  },
+  "dma_handshake_cycles": {
+    "busy_cycles": 180,
+    "ar_backpressure": 0,
+    "r_data_unavailable": 39,
+    "aw_backpressure": 0,
+    "w_backpressure": 0,
+    "b_response_unavailable": 15,
+    "weight_unready_dma_idle": 30,
+    "weight_unready_with_r_data_unavailable": 39,
+    "weight_unready_dma_busy": 146
+  },
+  "observed_edges": 3719,
+  "elapsed_edge_difference": 3718,
+  "npu_state_cycles": {
+    "wait_weight": 176,
+    "tile_ready_control": 15,
+    "issue": 24
+  },
+  "jobs": [
+    {
+      "start_tick": 10639,
+      "k": 17,
+      "n": 12,
+      "batch": 1,
+      "busy_cycles": 145,
+      "states": {
+        "wait_weight": 118,
+        "tile_ready_control": 9,
+        "issue": 18
+      }
+    },
+    {
+      "start_tick": 12975,
+      "k": 12,
+      "n": 5,
+      "batch": 1,
+      "busy_cycles": 70,
+      "states": {
+        "wait_weight": 58,
+        "tile_ready_control": 6,
+        "issue": 6
+      }
+    }
+  ],
+  "traffic": {
+    "dma_weight_read_bytes": 384,
+    "dma_weight_NPU_write_bytes": 384,
+    "sram_port_read_bytes": 5568,
+    "npu_mmio_cpu_write_bytes": 156,
+    "npu_mmio_stores": 39,
+    "sram_cpu_read_bytes": 229,
+    "sram_loads": 144,
+    "npu_mmio_cpu_read_bytes": 128,
+    "npu_mmio_loads": 32,
+    "sram_cpu_write_bytes": 84,
+    "sram_stores": 81,
+    "sram_port_write_bytes": 84
+  },
+  "tensor_traffic": {
+    "x": {
+      "cpu_read_bytes": 17,
+      "cpu_read_transactions": 5,
+      "macro_read_bytes": 17,
+      "macro_read_commands": 5
+    },
+    "fc1": {
+      "cpu_write_bytes": 12,
+      "cpu_write_transactions": 12,
+      "macro_write_bytes": 12,
+      "macro_write_commands": 12,
+      "cpu_read_bytes": 12,
+      "cpu_read_transactions": 12,
+      "macro_read_bytes": 48,
+      "macro_read_commands": 12
+    },
+    "relu": {
+      "cpu_write_bytes": 12,
+      "cpu_write_transactions": 12,
+      "macro_write_bytes": 12,
+      "macro_write_commands": 12,
+      "cpu_read_bytes": 36,
+      "cpu_read_transactions": 36,
+      "macro_read_bytes": 144,
+      "macro_read_commands": 36
+    },
+    "sigmoid": {
+      "cpu_write_bytes": 12,
+      "cpu_write_transactions": 12,
+      "macro_write_bytes": 12,
+      "macro_write_commands": 12,
+      "cpu_read_bytes": 12,
+      "cpu_read_transactions": 12,
+      "macro_read_bytes": 48,
+      "macro_read_commands": 12
+    },
+    "mul": {
+      "cpu_write_bytes": 12,
+      "cpu_write_transactions": 12,
+      "macro_write_bytes": 12,
+      "macro_write_commands": 12,
+      "cpu_read_bytes": 12,
+      "cpu_read_transactions": 12,
+      "macro_read_bytes": 48,
+      "macro_read_commands": 12
+    },
+    "add": {
+      "cpu_write_bytes": 12,
+      "cpu_write_transactions": 12,
+      "macro_write_bytes": 12,
+      "macro_write_commands": 12,
+      "cpu_read_bytes": 12,
+      "cpu_read_transactions": 3,
+      "macro_read_bytes": 12,
+      "macro_read_commands": 3
+    },
+    "fc2": {
+      "cpu_write_bytes": 5,
+      "cpu_write_transactions": 5,
+      "macro_write_bytes": 5,
+      "macro_write_commands": 5,
+      "cpu_read_bytes": 5,
+      "cpu_read_transactions": 5,
+      "macro_read_bytes": 17,
+      "macro_read_commands": 5
+    },
+    "mul_1": {
+      "cpu_write_bytes": 5,
+      "cpu_write_transactions": 5,
+      "macro_write_bytes": 5,
+      "macro_write_commands": 5,
+      "cpu_read_bytes": 5,
+      "cpu_read_transactions": 5,
+      "macro_read_bytes": 17,
+      "macro_read_commands": 5
+    },
+    "add_1": {
+      "cpu_write_bytes": 5,
+      "cpu_write_transactions": 5,
+      "macro_write_bytes": 5,
+      "macro_write_commands": 5,
+      "cpu_read_bytes": 15,
+      "cpu_read_transactions": 15,
+      "macro_read_bytes": 51,
+      "macro_read_commands": 15
+    },
+    "softmax": {
+      "cpu_write_bytes": 5,
+      "cpu_write_transactions": 5,
+      "macro_write_bytes": 5,
+      "macro_write_commands": 5
+    }
+  },
+  "rules": {
+    "cpu_cycles": "Phase of most recently accepted ID instruction (id_valid && is_decoding); hold across bubbles/stalls. No speculative invalid-ID PC attribution. Wall-time boundary convention, not causal stall attribution.",
+    "npu_cycles": "Busy-edge state occupancy is a separate overlapping view; never add to CPU stage cycles",
+    "exclusive": "Every edge attributed to NPU state while busy, otherwise most recent accepted CPU instruction phase; sums exactly to hardware elapsed count. Accounting convention, not a CPU stall-cause proof.",
+    "wait_weight": "WAIT_TILE with tile_valid=0 only; other idle states are not DMA wait",
+    "traffic": "CPU LSU accepted byte enables and physical SRAM command reads/writes are distinct levels, not additive. SRAM reads are full32-bit accesses, including replay and instruction fetch. DMA reads counted at real R handshake.",
+    "tensor": "Logical tensor byte intervals exclude stride padding; macro_read_bytes also include repeated physical reads. Loader and post-completion SBA checks excluded."
+  }
+}
