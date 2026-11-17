@@ -15,7 +15,11 @@
 | 0x28 / 0x2c | 两层 MAC 发射周期，FC1 为 batch×128，FC2 为 batch×16 |
 | 0x30 | 完整装入的逻辑 tile 数；W1 每次加 1、W2 每组加 8，成功一批仍为 64 |
 | 0x34 / 0x38 | DMA 读 / 写握手分别与乘积累加重叠的周期 |
+| 0x3c | MODE：0 原有 HAR，1 原始 GEMV；复位默认 0，其他值置 ERROR |
 | 0x40–0x7f / 0xc00–0xc3f | 样本 0 / 1 的 64 个 INT8 输入 |
+| 0x80 | RAW_INDEX 写口：sample×32+output，按最近一次 START 的 batch 检查合法性 |
+| 0x84 | RAW_DATA：INT22 原始部分和符号扩展到 32 位；未就绪或 ERROR 时读零 |
+| 0x88 | RAW_READY：bit0 为所选原始结果就绪；每次合法索引写清零，选择流水完成后置一 |
 | 0x1000–0x107f | 样本 2..3 的输入，每样本 64 B；0x1080–0x117f 为保留区 |
 | 0x100–0x17f | 两个 64B tile bank，仅供 DMA 预取；不是整模型权重窗口 |
 | 0x9c0–0xa3f / 0xa40–0xa57 | 32 / 6 个 32 位偏置写口；内部只保存低 22 位符号数 |
@@ -26,3 +30,7 @@
 | 0xd00–0xd1f | DMA 调试控制和状态 |
 
 权重基址必须 4 字节对齐且整个第一层 2048B、第二层保留 256B 窗口（有效权重 192B）位于 0x80000000–0x80001fff。第二层每组 8 行、每行 6 个输出连续打包为 48B，直接由共享 MAC bank 消费。完整布局见 [DMA](dma.md)。START 后硬件自主提交 36 个传输描述符，即 32 个 W1 和 4 个 W2，不需要 CPU 一块块轮询搬权重。
+
+上述两层流程适用于 MODE=0。MODE=1 仅执行 32 输出×64 输入的 FC1，支持原有 1..4 样本；只校验 W1 基址并提交 32 个 W1 描述符，不访问 W2。bias1 仍按原来的 INT22 回绕语义参与计算，通用分块运行时必须将其清零，在 CPU 归约全部输入块后再加一次完整 bias。FC1 结束即置 DONE，FC2 发射计数为 0，loads 为 32，不进行 ReLU、量化或 Argmax。
+
+成功 RAW 完成后，写 RAW_INDEX，轮询 RAW_READY，再读 RAW_DATA。原始数据保留到下一次 START；ACK 撤销 DONE/READY。MODE=0、未完成、ACK 后或 ERROR 时 RAW_READY/DATA 均读零。选择索引只允许空闲且无 ERROR 的成功 RAW 结果，非法索引置 ERROR，不能借完成后更改 batch 访问未参与计算的样本。MODE 和原有配置均受忙时写保护。完整软件组合方式见 [通用 GEMV](generic_gemv.md)。

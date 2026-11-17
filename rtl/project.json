@@ -40,6 +40,20 @@
     "requant_pipeline": "sample/group select; 8:1 output select; 22x16 multiply, shift and saturation",
     "finish_pipeline": "one shared signed 22-bit comparison per cycle; five comparisons per sample; 32-bit sign-extended score output",
     "requant_pipeline_data_registers": 198,
+    "raw_gemv": {
+      "mode_reset": 0,
+      "mode_raw": 1,
+      "input_features_per_block": 64,
+      "outputs_per_block": 32,
+      "batch_max": 4,
+      "accumulator_bits": 22,
+      "result_bits": 32,
+      "result_selection": "reuse registered requant group/value selectors",
+      "bias": "existing signed INT22 bias1; software zeros it for partial dot products",
+      "weight_descriptors": 32,
+      "weight_bytes_per_block": 2048,
+      "cpu_reduction": "signed INT32 with checked bounds; postprocessing only after all input blocks"
+    },
     "axi_crossbar_latency": "CUT_SLV_AX",
     "fpga_clock_hz": 20000000,
     "instruction_fetch": {
@@ -57,12 +71,17 @@
   "mmio": {
     "base_address": 1879048192,
     "window_bytes": 16384,
-    "register_area_bytes": 60,
+    "register_area_bytes": 64,
     "windows": [
       {
         "name": "input0",
         "offset": 64,
         "size_bytes": 64
+      },
+      {
+        "name": "raw_result_selection",
+        "offset": 128,
+        "size_bytes": 12
       },
       {
         "name": "weight_tiles_dma_only",

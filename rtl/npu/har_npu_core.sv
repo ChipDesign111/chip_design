@@ -6,6 +6,11 @@ module har_npu_core (
     input logic clk,rst_ni,start,ack_done,
     input logic [3:0] batch_count,
     input logic abort_i,
+    input logic raw_mode_i,raw_read_i,
+    input logic [6:0] raw_index_i,
+    output wire raw_done_o,raw_index_valid_o,
+    output logic raw_valid_o,
+    output wire [31:0] raw_data_o,
     input logic [4095:0] input_features,
     input logic [31:0][21:0] bias1,
     input logic [5:0][21:0] bias2,
@@ -33,6 +38,7 @@ module har_npu_core (
     localparam int ACC_WIDTH=22;
     logic [2:0] state;
     logic layer;
+    logic raw_mode_q;
     logic [1:0] phase;
     logic [3:0] batch_q;
     logic [2:0] sample,quant_sample,finish_sample;
@@ -75,6 +81,12 @@ module har_npu_core (
     wire signed [ACC_WIDTH-1:0] finish_best_next=finish_take ? finish_score : finish_best_current;
     wire [2:0] finish_class_next=finish_take ? finish_compare_index : finish_class_q;
     assign layer_o=layer;
+    assign raw_done_o=done && raw_mode_q;
+    assign raw_index_valid_o=raw_done_o && {1'b0,raw_index_i[6:5]}<batch_q;
+    wire raw_select=raw_read_i && raw_index_valid_o && !busy;
+    // Reuse the requantizer's two registered selectors; no new accumulator
+    // read mux, result array, or widened arithmetic is needed for raw reads.
+    assign raw_data_o={{(32-ACC_WIDTH){quant_value_q[ACC_WIDTH-1]}},quant_value_q};
     // Release the current bank on its final use, then either hand off to an
     // already-ready bank without a bubble or wait only for a real prefetch.
     assign tile_consumed_o=last_phase_issue;
@@ -155,6 +167,8 @@ module har_npu_core (
             busy<=0;
             done<=0;
             layer<=0;
+            raw_mode_q<=0;
+            raw_valid_o<=0;
             batch_q<=1;
             sample<=0;
             phase<=0;
@@ -234,12 +248,15 @@ module har_npu_core (
                             + extend_product(product[6+o]);
                 end
             end
-            quant_group_valid_q<=state==QUANT;
-            if(state==QUANT) begin
-                quant_group_sample_q<=quant_sample;
-                quant_group_index_q<=tile_index_o;
+            if(start || ack_done || abort_i || raw_select) raw_valid_o<=0;
+            else if(quant_group_valid_q && raw_done_o) raw_valid_o<=1;
+            quant_group_valid_q<=state==QUANT || raw_select;
+            if(state==QUANT || raw_select) begin
+                quant_group_sample_q<=raw_select ? {1'b0,raw_index_i[6:5]}:quant_sample;
+                quant_group_index_q<=raw_select ? raw_index_i[4:0]:tile_index_o;
                 for(o=0;o<8;o=o+1)
-                    quant_group_q[o]<=a1[quant_sample][tile_index_o[4:3]*8+o];
+                    quant_group_q[o]<=a1[raw_select ? {1'b0,raw_index_i[6:5]}:quant_sample]
+                        [(raw_select ? raw_index_i[4:3]:tile_index_o[4:3])*8+o];
             end
             quant_value_valid_q<=quant_group_valid_q;
             if(quant_group_valid_q) begin
@@ -247,13 +264,14 @@ module har_npu_core (
                 quant_value_sample_q<=quant_group_sample_q;
                 quant_value_index_q<=quant_group_index_q;
             end
-            if(quant_value_valid_q)
+            if(quant_value_valid_q && !raw_mode_q)
                 h[quant_value_sample_q][quant_value_index_q*8+:8]<=quant(quant_value_q);
             case(state)
                 IDLE:if(start) begin
                     busy<=1;
                     done<=0;
                     layer<=0;
+                    raw_mode_q<=raw_mode_i;
                     batch_q<=batch_count;
                     sample<=0;
                     phase<=0;
@@ -289,7 +307,11 @@ module har_npu_core (
                     end else if(tile_index_o==FC1_TILES-1 && !layer) begin
                         quant_sample<=0;
                         tile_index_o<=0;
-                        state<=QUANT;
+                        if(raw_mode_q) begin
+                            busy<=0;
+                            done<=1;
+                            state<=IDLE;
+                        end else state<=QUANT;
                     end else if(layer && tile_index_o==FC2_GROUPS-1) begin
                         finish_sample<=0;
                         finish_compare_index<=1;

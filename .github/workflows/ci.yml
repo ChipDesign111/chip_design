@@ -18,6 +18,8 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y iverilog
       - run: python tools/project.py check
       - run: python test/int8/run.py --count 32 --trained
+      - run: python test/int8/run_raw_gemv.py
+      - run: python test/int8/run_generic_soc.py --reference-only
       - uses: actions/upload-artifact@v4
         if: always()
         with:

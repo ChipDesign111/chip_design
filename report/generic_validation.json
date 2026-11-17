@@ -1,0 +1,184 @@
+{
+  "base_commit": "f0204e656a2d528e59c6382fe7daa62a70c2e92c",
+  "branch": "feat/int22-gemv-runtime",
+  "hardware_contract": {
+    "accumulator_bits": 22,
+    "dot_product_multipliers": 16,
+    "batch_max": 4,
+    "weight_banks": 2,
+    "weight_bank_bytes": 64,
+    "main_sram_bytes": 8192,
+    "default_mode": "legacy HAR",
+    "raw_tile_outputs": 32,
+    "raw_tile_inputs": 64,
+    "raw_bias": "existing bias1; CPU runtime explicitly clears all 32 words"
+  },
+  "legacy": {
+    "unit_cases": 41,
+    "dma_response_cases": 8,
+    "directed_cases": [
+      "argmax_final_rises",
+      "argmax_final_falls",
+      "argmax_final_ties"
+    ],
+    "trained_samples": 24,
+    "accumulator_bits": 22,
+    "bias_bits": 22,
+    "soc": true,
+    "soc_timing": {
+      "observed_cycles": 2700,
+      "hardware_soc_cycles": 2695
+    },
+    "vendor_model_sha256": null,
+    "passed": true
+  },
+  "legacy_reset_contract": "PASS: 80 POR and 80 NDM phases",
+  "raw": {
+    "status": "PASS",
+    "cases": 32,
+    "values_checked": 2560,
+    "legacy_switch_case": "trained seed 10000; hidden/scores/class checked",
+    "protocol_checks": [
+      "reset defaults",
+      "invalid mode and index",
+      "latched batch",
+      "raw selection ready",
+      "ACK",
+      "busy protection",
+      "DMA read/write/RLAST faults",
+      "reset in transfer",
+      "consecutive RAW_INDEX/ACK",
+      "consecutive RAW_INDEX/START",
+      "RAW-legacy-RAW",
+      "no W2 DMA",
+      "INT22 storage"
+    ]
+  },
+  "cpu_generic": {
+    "passed": true,
+    "reference_checks": 260,
+    "cases": [
+      {
+        "case": "tail_33x65",
+        "cycles": 188031,
+        "tiles": 4,
+        "layers": 1,
+        "elapsed_seconds": 70.672,
+        "code_bytes": 948,
+        "compact_data_end": 4832,
+        "firmware_sha256": "77f6dfb464da484498bfbd724154a7ec5de9fb2bc38a95234825d8322ee8a215"
+      },
+      {
+        "case": "beyond_int22",
+        "cycles": 136934,
+        "tiles": 3,
+        "layers": 1,
+        "elapsed_seconds": 35.062,
+        "code_bytes": 948,
+        "compact_data_end": 2368,
+        "firmware_sha256": "9553f53df51e58af476998458da5470afefc34cf38dc305a4d3dc8ec41ba0895"
+      },
+      {
+        "case": "three_layers",
+        "cycles": 139492,
+        "tiles": 3,
+        "layers": 3,
+        "elapsed_seconds": 35.797,
+        "code_bytes": 948,
+        "compact_data_end": 2576,
+        "firmware_sha256": "aa165fc108a450e714cb5cbdec7402bd9fd03d5bc89bfc1546c8122b2bc7258c"
+      },
+      {
+        "case": "requant_64bit",
+        "cycles": 137849,
+        "tiles": 3,
+        "layers": 2,
+        "elapsed_seconds": 46.906,
+        "code_bytes": 948,
+        "compact_data_end": 2440,
+        "firmware_sha256": "051dbf40fbef2a68e51fee10cb8a2cf954c4c5c6d387178a1d1c305aafda10ad"
+      }
+    ],
+    "runtime_code_bytes": 948,
+    "wide_reduction_result": 2113553,
+    "rounding_carry_hidden": [
+      127,
+      0,
+      2
+    ],
+    "rounding_carry_final": [
+      16008
+    ],
+    "source_comparison": {
+      "identical_files": 90,
+      "changed_only": [
+        "test/int8/run_generic_soc.py"
+      ],
+      "reason": "strengthen fourth fixture with an unsaturated rounding carry; all RTL/runtime/assembler/TB sources identical"
+    }
+  },
+  "fpga_npu_synthesis": {
+    "tool": "Vivado 2019.1",
+    "part": "xc7a35tcsg324-1",
+    "period_ns": 20,
+    "mode": "out_of_context",
+    "baseline": {
+      "Slice LUTs": 11779,
+      "Slice Registers": 8940,
+      "DSPs": 3,
+      "Block RAM Tile": 0
+    },
+    "candidate": {
+      "Slice LUTs": 12170,
+      "Slice Registers": 8917,
+      "DSPs": 3,
+      "Block RAM Tile": 0
+    },
+    "delta": {
+      "Slice LUTs": 391,
+      "Slice Registers": -23,
+      "Block RAM Tile": 0,
+      "DSPs": 0
+    },
+    "lut_delta_percent": 3.3194668477799474,
+    "scope": "NPU FPGA synthesis proxy only; neither full SoC nor ASIC area/timing validation"
+  },
+  "sources_sha256": {
+    "rtl/npu/har_npu_core.sv": "93adcc770bf449e124caad4d86fafb2360b13c65d9a5832a78706989263ef949",
+    "rtl/npu/simple_npu_top.sv": "ed24e874deeccedba01cd013c53ef3e83f47e4d466187c0670ed2e60d3522b72",
+    "rtl/npu/har_weight_store.sv": "473106074ca66f795445cd3862104d7e57da364b6ab119996eb612934b7d2913",
+    "rtl/project.json": "ba0626556417b4aef24725610928e00643509c16dd42f6fbc8b69b5d465e6018",
+    "test/int8/generic_runtime.py": "cca173221d6b45283e377d757618eee0074fd11be646c58a0e6278d86921632a",
+    "test/int8/generic_firmware.py": "7245cfcf7d1b9b4eac14b4e5c51452494860d519b7904cd1eb968c0ecc905d6e",
+    "test/int8/run_generic_soc.py": "e1dd251e3281ef784d520de8ed0d4adec67e5b50fda1305c208d78a73fdecbab",
+    "test/int8/tb_generic_soc.sv": "c54db16afaf8b5cd5c20995c50d448b27068ec016cf0d502f315087b5385d573",
+    "test/int8/run_raw_gemv.py": "3b450ceb16f75d962ac0670a1ccd65a9a486bd226dbe1f8c800ef65f267048d3",
+    "test/int8/tb_raw_gemv.sv": "7e7bed8d0e3261fcf4af607eef2e02d005e76f66ed4471a2e6568ea7ed51d170",
+    "test/int8/assembler.py": "dd37a5885d98927fe27d42f663475b439b2b3f918b5d23ff33b8a5d304f2cf38"
+  },
+  "evidence": {
+    "test/int8/runs/20261118_000944": {
+      "result_sha256": "59e0c19c6196b58e1dc6cbb27f137d63a6c6d7389204c08c6de9e12ccbb8ad79"
+    },
+    "test/int8/runs/generic_20261118_001841": {
+      "result_sha256": "479d5cad5aeb95a2258d1109343066f31fd57b6ca1553f2225004240b5d20f20"
+    },
+    "test/int8/runs/generic_20261118_002210": {
+      "result_sha256": "ed51bb99b6cd641a8db23bf2240bccf08ec97c9b4fff46ea065363dda713e3ab"
+    },
+    "test/int8/runs/area_raw_gemv_20261118_001220": {
+      "result_sha256": "ccd61381ff4b33a05ed53a3cac1ef40d3a3deff26bd11c62dfb8c4513f26b6a9"
+    },
+    "test/int8/runs/20261118_002915_raw_gemv": {
+      "result_sha256": "c17e9a3c6eac83114bf3b234a8005edec23133ddae8a0a42de063792f915cc76"
+    }
+  },
+  "limitations": [
+    "No fresh ASIC synthesis, PNR, SDF, or board run",
+    "No external-memory interface; complete self-check images and model working set must fit 8KiB",
+    "Generic runtime initially uses batch=1 while RAW hardware supports 1..4",
+    "CPU packing/MMIO overhead is material; no performance advantage claimed",
+    "Hidden layers require zero-point-zero symmetric INT8 and ReLU requantization; final layer may retain signed INT32",
+    "INT32 overflow and unsupported model capacity are rejected offline"
+  ]
+}

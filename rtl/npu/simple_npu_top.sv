@@ -21,6 +21,9 @@ module simple_npu_top (
     logic [15:0] mult;
     logic [4:0] shift;
     logic [3:0] batch_count;
+    logic raw_mode;
+    wire raw_done,raw_index_valid,raw_valid;
+    wire [31:0] raw_data;
     logic error;
     logic [31:0] w1_base,w2_base;
     wire busy,done,layer,consumed;
@@ -41,14 +44,14 @@ module simple_npu_top (
     wire write_req=ena && wea;
     wire cpu_write=write_req && !dma_write_i;
     wire [32:0] end1={1'b0,w1_base}+33'd2048,end2={1'b0,w2_base}+33'd256;
-    wire valid_bases=w1_base[1:0]==0 && w2_base[1:0]==0 &&
+    wire valid_bases=w1_base[1:0]==0 &&
         w1_base>=32'h80000000 && end1<=33'h080002000 &&
-        w2_base>=32'h80000000 && end2<=33'h080002000;
+        (raw_mode || (w2_base[1:0]==0 && w2_base>=32'h80000000 && end2<=33'h080002000));
     wire start=cpu_write && addra==0 && dina[0] && !busy && !dma_busy_i && valid_bases;
     wire tile_window=addra>=64 && addra<96;
     wire want_w1=next_w1<32;
     wire load_bank=want_w1 ? next_w1[0]:next_w2[0];
-    wire load_pending=want_w1 || next_w2<W2_GROUPS;
+    wire load_pending=want_w1 || (!raw_mode && next_w2<W2_GROUPS);
     wire load_bank_free=!ready_w1[load_bank] && !ready_w2[load_bank];
     wire safe_tile_write=write_req && dma_write_i && tile_window && pending &&
         addra[4]==loading_bank && !ready_w1[loading_bank] && !ready_w2[loading_bank];
@@ -65,6 +68,9 @@ module simple_npu_top (
     wire bank_published=|{ready_w1,ready_w2};
     wire next_tile_valid=next_ready && layer==layer_q && !auto_start_o &&
         (!pending || dma_write_active_i);
+    wire raw_read=cpu_write && addra==32 && !busy && !dma_busy_i &&
+        raw_mode && !error && raw_index_valid && dina[31:7]==0;
+    wire raw_ready=raw_mode && raw_done && raw_valid && !error;
     assign busy_o=busy;
     assign auto_start_o=busy && !pending && !dma_busy_i && load_pending && load_bank_free;
     assign auto_source_o=want_w1 ?
@@ -75,6 +81,9 @@ module simple_npu_top (
         .word_i(addra[3:0]),.data_i(dina),.compute_bank_i(compute_bank),.tile_o(tile_data));
     har_npu_core core(.clk(clka),.rst_ni(rst_ni),.start(start),
         .ack_done(cpu_write && addra==0 && dina[1]),.batch_count(batch_count),.abort_i(load_failed),
+        .raw_mode_i(raw_mode),.raw_read_i(raw_read),.raw_index_i(dina[6:0]),
+        .raw_done_o(raw_done),.raw_index_valid_o(raw_index_valid),
+        .raw_valid_o(raw_valid),.raw_data_o(raw_data),
         .input_features(input_packed),.bias1(b1),.bias2(b2),
         .requant_mult(mult),.requant_shift(shift),
         .tile_valid_i(current_ready && layer==layer_q && !auto_start_o &&
@@ -88,7 +97,7 @@ module simple_npu_top (
     always_ff @(posedge clka or negedge rst_ni) begin
         if(!rst_ni) begin
             for(input_slot=0;input_slot<4;input_slot=input_slot+1) x[input_slot]<=0;
-            b1<=0;b2<=0;mult<=1;shift<=0;batch_count<=1;
+            b1<=0;b2<=0;mult<=1;shift<=0;batch_count<=1;raw_mode<=0;
             w1_base<=0;w2_base<=0;error<=0;douta<=0;ready_w1<=0;ready_w2<=0;
             layer_q<=0;pending<=0;pending_w2<=0;loading_bank<=0;
             next_w1<=0;next_w2<=0;received<=0;loads<=0;
@@ -128,6 +137,8 @@ module simple_npu_top (
                     6:if(dina>=1 && dina<=4) batch_count<=dina[3:0];else error<=1;
                     8:w1_base<=dina;
                     9:w2_base<=dina;
+                    15:if(dina<=1) raw_mode<=dina[0];else error<=1;
+                    32:if(!raw_read) error<=1;
                     default:begin
                         if(addra>=16 && addra<32) x[0][(addra-16)*32+:32]<=dina;
                         else if(addra>=624 && addra<656) b1[addra-624]<=dina[21:0];
@@ -158,6 +169,9 @@ module simple_npu_top (
                 12:douta<=loads;
                 13:douta<=read_overlap;
                 14:douta<=write_overlap;
+                15:douta<={31'b0,raw_mode};
+                33:douta<=raw_ready ? raw_data:32'd0;
+                34:douta<={31'b0,raw_ready};
                 806:douta<={29'b0,class_all[3+:3]};
                 default:begin
                     if(addra>=672 && addra<680) douta<=hidden_all[(addra-672)*32+:32];

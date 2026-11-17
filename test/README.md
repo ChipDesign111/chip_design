@@ -12,6 +12,16 @@ python test/int8/run.py --count 32 --trained --soc
 
 NPU MMIO 回归逐字检查样本 2..3 输入窗口的全部 32 个合法字，以及 `0x1080–0x117f` 保留区的全部 64 个字。合法写必须更新对应输入，保留区每次写必须独立置 ERROR 且不改变任何样本输入，ACK 后错误状态必须清零。
 
+可选 RAW GEMV 模式使用独立测试，原 HAR 回归命令保持不变：
+
+```bash
+python test/int8/run_raw_gemv.py
+python test/int8/run_generic_soc.py --reference-only
+python test/int8/run_generic_soc.py --vsim /path/to/vsim
+```
+
+第一项用 Icarus 验证原始 INT22 结果、模式切换与协议保护；reference-only 检查分块参考、容量和数值边界；最后一项在真实 CV32E40P/AXI/8KiB SRAM 上执行 CPU 分块、归约及多层固件。接口、数值约束和容量限制见 [通用 GEMV](../report/generic_gemv.md)。
+
 取指模块的独立协议回归使用 Xcelium：
 
 ```bash
