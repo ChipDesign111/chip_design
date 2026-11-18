@@ -427,6 +427,24 @@ def audit_step(work, step):
         checks['signal_connectivity'] = signal_connectivity(work, pnr / ('my_soc_top_' + stem + '_signal.rpt'))
         # Full PG must be clean by final fill; early reports remain available.
         if step == 33:
+            log = load_text(work / 'evidence/innovus_01_to_34.log')
+            start = log.find('EDA_BEGIN_STEP 33')
+            end = log.find('EDA_COMPLETED_STEP 33', start)
+            if start < 0 or end < 0:
+                raise ValueError('Missing completed step33 region in Innovus log')
+            density_values = re.findall(r'^Density:\s*([\d.]+)%', log[start:end], re.M)
+            if not density_values:
+                raise ValueError('Missing final native density in step33 log')
+            density_percent = float(density_values[-1])
+            density_limit = cfg.get('max_native_density_percent',75.0)
+            checks['density'] = {
+                'percent': density_percent,
+                'limit_percent': density_limit,
+                'targets_met': density_percent <= density_limit,
+            }
+            if not checks['density']['targets_met']:
+                raise ValueError('Final native density %.3f%% exceeds %.3f%%' %
+                                 (density_percent, density_limit))
             checks['full_core_pg'] = require_clean_report(pnr / 'my_soc_top_postFiller_pg.rpt', 'connectivity')
         ant = pnr / ('my_soc_top_' + stem + '_antenna.rpt')
         if antenna_count(ant):

@@ -67,6 +67,10 @@ def read_config(path):
         raise ValueError('Validated perimeter profile requires core >=1500 um and 150 um margins')
     if not isinstance(c.get('max_die_area_mm2'),(int,float)) or not math.isfinite(c['max_die_area_mm2']) or not 0<c['max_die_area_mm2']<=4.0:
         raise ValueError('This design requires a finite whole-die limit at most 4.0 mm2')
+    density_limit=c.get('max_native_density_percent')
+    if (not isinstance(density_limit,(int,float)) or not math.isfinite(density_limit) or
+        not 0<density_limit<=100):
+        raise ValueError('Native density limit must be a finite percentage in (0,100]')
     if c['core_size_um'] is not None and c['core_size_um'] < c['min_core_size_um']:
         raise ValueError('Fixed core size is below profile minimum')
     if c['cpu_clock_gate'] != 'repository_passthrough':
