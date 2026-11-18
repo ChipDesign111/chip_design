@@ -34,6 +34,15 @@ python test/int8/run_gemv_benchmark.py --vsim /path/to/vsim
 
 从 CPU 写入 BEGIN 到 END 的实际 SRAM 接受边界计时，包含初始化、运行时已有的打包、DMA、轮询、归约和层间处理，CPU 的 golden 检查都在 END 之后。纯 CPU 使用四项展开的 RV32IM 有符号 INT8 乘法及 INT32 累加，各路径复用相同精确重定标。被动监视器逐字节检查结束前的所有层输出、禁止计时区间内读取 golden，确保纯 CPU 没有访问 NPU，并逐笔验证 DMA 源范围和每个 RAW 块的 32 个描述符。日志和 `result.json` 保存分段周期、逐块累加的 NPU/DMA overlap、数据和源码 SHA；加速比为 `CPU周期/对应后端周期`，大于 1 才表示加速。结果与固定模型的使用方法见 [优化报告](../report/gemv_optimization.md)，原始慢速版本的计数保留在 [周期对照报告](../report/gemv_benchmark.md)。
 
+PyTorch 前端使用独立依赖环境，原回归不需要 PyTorch：
+
+```bash
+python test/int8/test_raw_compiler.py
+python test/int8/run_raw_compiler.py --soc --vsim /path/to/vsim
+```
+
+需先安装 [compiler/requirements.txt](../compiler/requirements.txt)。第一项验证原整数固件 SHA、相同 CPU/RAW 整数契约、INT32 归约、量化、容量和输入检查；第二项逐层 SBA 回读完整图的实际输出，并分别记录 CPU/RAW 周期。图程序的 reference 不嵌入固件。混合图、batch=2、整层超过 INT22、纯 CPU 算术以及原整数满块和尾块均在范围内，具体使用见 [编译器说明](../compiler/README.md)。
+
 `python eda/postsim.py run` 已把 `tail_33x65` 加入完整SoC SDF后仿，作为独立的 CPU→AXI→NPU RAW场景。它要求完成34步的物理版本由当前分支RTL生成；历史HAR物理包不能代替，也不能只凭上述RTL功能仿真宣称版后时序通过。场景矩阵和判读见[后仿真操作指南](../eda/docs/后仿真操作指南.md)。
 
 取指模块的独立协议回归使用 Xcelium：

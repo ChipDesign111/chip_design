@@ -1,5 +1,7 @@
 # 当前设计说明
 
+当前 RAW 后端已接入 main 的 PyTorch FX 前端，保留原整数模型及 HAR 接口。新图与原整数基准分别测量，详见 [前端接入与26次SoC验证](raw_frontend.md) 和 [源码／固件／结果记录](raw_frontend_validation.json)。
+
 最新完整整合验证（287ae40）：保留main266bca3的16-MAC/INT22/取指缓存核心，接入公共复位、TT单元选择和WB/版图完成与签核流程。密度74.633%，Setup/Hold +0.350/+0.050ns；16组SDF及1组功能对照全过，全部阶段动态事件与负IOPATH截零0；WB64项0、LVS正确。课程DRC/ERC残项及TDO工具警告单列。[最终结果及来源SHA](../eda/results/main_266bca3_integration_20261113/README.md)。下列72.509%等值是整合前main历史基线。
 
 main 现包含取指行缓冲、缩短后的 DMA 写响应，以及同一套 RTL 上的 reuse8 固件。共享 SRAM 事务复位仍在 RTL 里。下面的面积、SDF 和 FPGA 数字都属于各自的归档版本，不是这次合并新做的物理签核。本轮缓存一致性与 DMA 优化的匹配数据、测试入口和面积/时序比较见 [优化报告](performance.md)。

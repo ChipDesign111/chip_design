@@ -7,6 +7,19 @@ on:
 permissions:
   contents: read
 jobs:
+  raw-compiler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: compiler/requirements.txt
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -r compiler/requirements.txt
+      - run: python test/int8/test_raw_compiler.py
   rtl:
     runs-on: ubuntu-latest
     timeout-minutes: 10

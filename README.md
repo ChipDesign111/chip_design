@@ -2,6 +2,8 @@
 
 当前功能分支新增可选 RAW GEMV：保留默认 HAR 流程，以现有 INT22/16-MAC 计算 32×64 小块，由 CPU 合并更大矩阵及连接多层网络。使用与验证见 [通用 GEMV](report/generic_gemv.md)。该 RAW RTL 已完成 ASIC 综合、PNR、同源 TT SDF 后仿和版图完成与签核，详见[全流程 EDA 结果](eda/results/fullflow_fe04981_20261118/README.md)；下列其他物理数据仍绑定各自注明的历史源码。
 
+PyTorch 模型可通过新增的 [compiler](compiler/README.md) 部署到当前 RAW 接口：复用 main 的 FX 前端，完整块离线预排，边缘和其他已注册算子由 CPU 执行，使用四项展开的 CPU 基线做相同整数模型对照。原整数模型与 HAR 入口保留，未引入硬件任务引擎。
+
 最新整合保留main 266bca3的16-MAC/INT22/取指缓存核心，接入公共复位、WB修复和完整版图完成与签核流程。新源码287ae40已完成RTL回归、34步、TT后仿、同DB STA及版图完成与签核：密度74.633%，Setup/Hold +0.350/+0.050ns；16组SDF及1组独立功能对照全过，全部阶段时序违规与负IOPATH截零0，WB64项0、LVS正确。[本轮实测及SHA](eda/results/main_266bca3_integration_20261113/README.md)。DRC/ERC按课程保留有依据残项，不称完整foundry签核；以下其他结果绑定各自历史来源。
 
 main 现包含取指行缓冲和固件循环优化。按 SRAM 地址失效取指缓存、缩短 DMA 写响应等待、去除缓存数据阵列复位后，相同训练 HAR 自检 **3510→3462 拍（−1.37%）**；附加 SRAM 写入程序 **7748→4497 拍（−41.96%）**，两者属于不同工作负载。同一套 RTL 上，reuse8 固件在 38 组对照里把完整自检再降低 3.65%，从第一次取指到 NPU DONE 降低 1.23%。完整对照见 [优化报告](report/performance.md)。该历史性能记录当时没有重做PNR、SDF后仿或板测；本轮完整验证见页首新报告。
@@ -27,6 +29,7 @@ main 现包含取指行缓冲和固件循环优化。按 SRAM 地址失效取指
 | [rtl](rtl/README.md) | 当前完整 SoC 硬件及统一 filelist |
 | [eda](eda/README.md) | 正式部署脚本、服务器 EDA 程序、讲义逐步解释及结果分析 |
 | [model](model/README.md) | 保留的训练模型、量化参数和整数参考 |
+| [compiler](compiler/README.md) | PyTorch FX、当前 RAW 后端、CPU 回退、部署包与逐层 SBA 验证 |
 | [test](test/README.md) | 当前 INT8/DMA/启动保护功能回归 |
 | [report](report/README.md) | 架构、MMIO、DMA、性能、SRAM 和验证范围 |
 | [fpga](fpga/README.md) / [板级测试报告](fpga/TEST_REPORT.md) | Vivado 工程、多镜像 JTAG 装载流程和当前 A7-35T 板上验证结果 |
