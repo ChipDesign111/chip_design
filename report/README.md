@@ -1,5 +1,7 @@
 # 当前设计说明
 
+全部前仿入口、覆盖范围、当前 RTL 同源证据、周期及历史待补专项集中在 [当前 RTL 前仿汇总](presim_summary.md)。
+
 当前 RAW 后端已接入 main 的 PyTorch FX 前端，保留原整数模型及 HAR 接口。新图与原整数基准分别测量，详见 [前端接入与26次SoC验证](raw_frontend.md) 和 [源码／固件／结果记录](raw_frontend_validation.json)。
 
 RAW 编译器现默认启用 batch=2..4 的跨样本权重复用，四样本 `64→32` 从原逐样本的 15,919 拍降为 12,311 拍（1.293×），权重流量由 8 KiB 降至 2 KiB；跨块、边缘、多层及容量回退均已验证。见 [批处理调度与对照](raw_batch_reuse.md) 和 [最终验证记录](raw_batch_reuse.json)。

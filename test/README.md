@@ -1,5 +1,7 @@
 # 当前功能回归
 
+先查 [当前 RTL 前仿汇总](../report/presim_summary.md)：列出全部测试入口、覆盖范围、源码一致性、现有结果与历史专项；下述默认命令只运行其中的主 HAR 套件。
+
 ```bash
 python test/int8/run.py --count 32 --trained --soc
 ```
