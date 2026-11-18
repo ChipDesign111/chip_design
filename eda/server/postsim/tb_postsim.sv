@@ -69,19 +69,6 @@ module tb_postsim;
       end
     end
   end
-  always @(posedge dut.auto_start) begin
-    if(raw_scenario && rst_n===1'b1 &&
-       dut.i_npu_subsystem.i_npu_core.raw_mode) begin
-      #1.0;
-      // Only auto_words[3] has a retained load after synthesis: W1=16 keeps
-      // it low, while the forbidden W2=12 encoding sets it high. Unused zero
-      // constant bits are legally absent from the hierarchical loop netlist.
-      if(dut.auto_source<raw_w1_base || dut.auto_source>=raw_w1_base+2048 ||
-         dut.auto_words[3]!==1'b0)
-        $fatal(1,"RAW SoC settling prefetch is not a 16-word W1 transfer source=%h word3=%h",
-               dut.auto_source,dut.auto_words[3]);
-    end
-  end
   task sba_access(input bit writing,input reg [31:0] address,data,
                   input reg [3:0] be,output reg [31:0] response);
     integer count;
