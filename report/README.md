@@ -1,12 +1,12 @@
 # 当前设计说明
 
-全部前仿入口、覆盖范围、当前 RTL 同源证据、周期及历史待补专项集中在 [当前 RTL 前仿汇总](presim_summary.md)。
+全部前仿入口、覆盖范围、当前 RTL 同源证据、周期及历史待补专项集中在 [当前 RTL 前仿汇总](presim_summary.md)，其中列全 **42 条模型/输入配置的加速比**，并单列 **perf.py 的 batch=1/2/3/4 独立计时**。新增源码/输入/日志绑定见 [perf 记录](perf_validation.json) 和 [CPU/HAR 补测](speedup_supplement.json)。
 
 当前 RAW 后端已接入 main 的 PyTorch FX 前端，保留原整数模型及 HAR 接口。新图与原整数基准分别测量，详见 [前端接入与26次SoC验证](raw_frontend.md) 和 [源码／固件／结果记录](raw_frontend_validation.json)。
 
 RAW 编译器现默认启用 batch=2..4 的跨样本权重复用，四样本 `64→32` 从原逐样本的 15,919 拍降为 12,311 拍（1.293×），权重流量由 8 KiB 降至 2 KiB；跨块、边缘、多层及容量回退均已验证。见 [批处理调度与对照](raw_batch_reuse.md) 和 [最终验证记录](raw_batch_reuse.json)。
 
-原训练模型 HAR 模式相对四项展开纯 CPU 的 batch=1/2/4 加速比分别为 **33.84× / 39.68× / 58.78×**；双方统一计算至全部结果写入 SRAM，详见 [HAR 加速比与测量口径](har_speedup.md) 和 [原始计数及验证记录](har_speedup.json)。原默认 HAR 前仿仍为 2700/2695 拍，DMA/MAC 总重叠为 500 拍。
+原训练模型 HAR 模式相对四项展开纯 CPU 的 batch=1/2/3/4 加速比分别为 **33.84× / 39.68× / 56.51× / 58.78×**；双方统一计算至全部结果写入 SRAM，详见 [HAR 加速比与测量口径](har_speedup.md)、[原始记录](har_speedup.json) 和 [batch=3 补测](speedup_supplement.json)。原默认 HAR 前仿仍为 2700/2695 拍，DMA/MAC 总重叠为 500 拍。
 
 最新完整整合验证（287ae40）：保留main266bca3的16-MAC/INT22/取指缓存核心，接入公共复位、TT单元选择和WB/版图完成与签核流程。密度74.633%，Setup/Hold +0.350/+0.050ns；16组SDF及1组功能对照全过，全部阶段动态事件与负IOPATH截零0；WB64项0、LVS正确。课程DRC/ERC残项及TDO工具警告单列。[最终结果及来源SHA](../eda/results/main_266bca3_integration_20261113/README.md)。下列72.509%等值是整合前main历史基线。
 
