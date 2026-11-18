@@ -129,7 +129,7 @@ def main():
         cases.append({'mode':'sdf_raw_'+raw['name'],'kind':'raw_soc',
                       'flags':['+RAW_SCENARIO','+RAW_TILES=%d'%raw['tiles'],
                                '+RAW_OUTPUTS=%d'%raw['outputs'],'+RAW_INPUTS=%d'%raw['inputs'],
-                               '+RAW_READS=%d'%raw['reads'],'+RAW_W1_BASE=%h'%raw['w1_base']],
+                               '+RAW_READS=%d'%raw['reads'],'+RAW_W1_BASE=%x'%raw['w1_base']],
                       'firmware':raw['path'],
                       'metadata':{k:raw[k] for k in ('fixture','tiles','outputs','inputs','reads','w1_base')}})
     plan=[{**{k:v for k,v in case.items() if k!='firmware'},'firmware':str(case['firmware'])}
