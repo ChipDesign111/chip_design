@@ -24,13 +24,15 @@ python test/int8/run_generic_soc.py --vsim /path/to/vsim
 
 第一项用 Icarus 验证原始 INT22 结果、模式切换与协议保护；reference-only 检查分块参考、容量和数值边界；最后一项在真实 CV32E40P/AXI/8KiB SRAM 上执行 CPU 分块、归约及多层固件。接口、数值约束和容量限制见 [通用 GEMV](../report/generic_gemv.md)。
 
-同一任务的纯 CPU / CPU＋RAW 周期对照使用独立入口：
+同一任务的纯 CPU / 动态 RAW / 固定权重优化版周期对照使用独立入口：
 
 ```bash
 python test/int8/run_gemv_benchmark.py --vsim /path/to/vsim
 ```
 
-默认覆盖 `32×64` 满块及上述四个通用场景，可用 `--case` 选择场景。两条路径使用同一紧凑 SRAM 数据、单向量和冷复位；从 CPU 写入 BEGIN 到 END 的实际 SRAM 接受边界计时，包含 RAW 初始化、CPU 权重打包、DMA、轮询、部分和归约和层间处理，CPU 的 golden 检查都在 END 之后。纯 CPU 使用四项展开的 RV32IM 有符号 INT8 乘法及 INT32 累加，复用相同的精确重定标。被动监视器逐字节检查结束前的所有层输出、禁止计时区间内读取 golden，并确保纯 CPU 没有访问 NPU。日志和 `result.json` 保存分段周期、逐块累加的 NPU/DMA overlap、数据和源码 SHA；`speedup=CPU周期/RAW周期`，大于 1 才表示 RAW 更快。已测结果见 [周期对照报告](../report/gemv_benchmark.md)。
+默认覆盖 `32×64` 满块、上述四个通用场景、混合三层和 `32×96`，可用 `--case` 选择场景，或重复指定 `--backend cpu --backend optimized` 限制后端。所有后端使用相同逻辑模型、单向量和冷复位；优化版在固件生成时排列权重，完整块交给 RAW，边缘由 CPU 计算，没有完整块时直接生成 CPU 固件，不增加权重字节数。固定模型可直接使用 `optimized_firmware.build` 生成普通自检固件，默认动态 RAW 入口保留。
+
+从 CPU 写入 BEGIN 到 END 的实际 SRAM 接受边界计时，包含初始化、运行时已有的打包、DMA、轮询、归约和层间处理，CPU 的 golden 检查都在 END 之后。纯 CPU 使用四项展开的 RV32IM 有符号 INT8 乘法及 INT32 累加，各路径复用相同精确重定标。被动监视器逐字节检查结束前的所有层输出、禁止计时区间内读取 golden，确保纯 CPU 没有访问 NPU，并逐笔验证 DMA 源范围和每个 RAW 块的 32 个描述符。日志和 `result.json` 保存分段周期、逐块累加的 NPU/DMA overlap、数据和源码 SHA；加速比为 `CPU周期/对应后端周期`，大于 1 才表示加速。结果与固定模型的使用方法见 [优化报告](../report/gemv_optimization.md)，原始慢速版本的计数保留在 [周期对照报告](../report/gemv_benchmark.md)。
 
 `python eda/postsim.py run` 已把 `tail_33x65` 加入完整SoC SDF后仿，作为独立的 CPU→AXI→NPU RAW场景。它要求完成34步的物理版本由当前分支RTL生成；历史HAR物理包不能代替，也不能只凭上述RTL功能仿真宣称版后时序通过。场景矩阵和判读见[后仿真操作指南](../eda/docs/后仿真操作指南.md)。
 

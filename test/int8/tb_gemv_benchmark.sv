@@ -11,14 +11,16 @@ module tb_gemv_benchmark;
     reg [31:0] load_addr=0,load_data=0;
     reg [31:0] image[0:2047],expected[0:2047];
     reg [31:0] layout[0:128],phase_pc[0:6];
+    reg [31:0] dma_ranges[0:64];
     reg [8191:0] written=0;
     reg [31:0] magic=0;
     integer tick=0,begin_tick=-1,end_tick=-1,phase=0;
     integer phase_cycles[0:6];
     integer expected_tiles,tiles=0,completed_tiles=0,tile_tick=-1;
     integer npu_cycles=0,fc1_cycles=0,read_overlap=0,write_overlap=0,total_overlap=0;
+    integer dma_descriptors=0;
     integer i,j,lane,byte_address,word_address,cycles=0;
-    bit active=0,ended=0,done_before;
+    bit active=0,ended=0,done_before,valid_dma_source;
 
     task sba_write(input reg [31:0] address,value);
         integer timeout;
@@ -87,9 +89,16 @@ module tb_gemv_benchmark;
         end
         if(dut.npu_busy && dut.i_npu_subsystem.i_npu_core.layer)
             $fatal(1,"RAW executed FC2");
-        if(dut.auto_start && (dut.auto_source<32'h800017c0 ||
-           dut.auto_source>=32'h80001fc0 || dut.auto_words!=16))
-            $fatal(1,"Invalid W1 descriptor or W2 prefetch");
+        if(dut.auto_start) begin
+            valid_dma_source=0;
+            for(i=0;i<dma_ranges[0];i=i+1)
+                if(dut.auto_source>=dma_ranges[1+2*i] &&
+                   dut.auto_source+64<=dma_ranges[2+2*i] &&
+                   (dut.auto_source-dma_ranges[1+2*i])%64==0) valid_dma_source=1;
+            if(!active || !valid_dma_source || dut.auto_words!=16)
+                $fatal(1,"Invalid W1 descriptor or W2 prefetch");
+            dma_descriptors=dma_descriptors+1;
+        end
         done_before=dut.i_npu_subsystem.i_npu_core.done;
         #1;
         if(!done_before && dut.i_npu_subsystem.i_npu_core.done) begin
@@ -111,8 +120,10 @@ module tb_gemv_benchmark;
         for(i=0;i<7;i=i+1) phase_cycles[i]=0;
         $readmemh("bench_layout.hex",layout);
         $readmemh("phase_pcs.hex",phase_pc);
+        $readmemh("dma_ranges.hex",dma_ranges);
         $readmemh("expected.hex",expected);
         if(layout[0]<1 || layout[0]>32) $fatal(1,"Invalid layer count");
+        if(dma_ranges[0]>32) $fatal(1,"Invalid DMA range count");
         force dut.dm_master_req=load_req;force dut.dm_master_we=load_we;
         force dut.dm_master_add=load_addr;force dut.dm_master_wdata=load_data;force dut.dm_master_be=load_be;
         $readmemh("firmware.hex",image);
@@ -126,14 +137,14 @@ module tb_gemv_benchmark;
         end
         if(magic!==32'hc0dec0de || !ended || begin_tick<0 || end_tick<=begin_tick)
             $fatal(1,"Benchmark timeout or missing markers PC=%h",dut.instr_addr);
-        if(tiles!=expected_tiles || completed_tiles!=expected_tiles || tile_tick>=0)
+        if(tiles!=expected_tiles || completed_tiles!=expected_tiles || tile_tick>=0 || dma_descriptors!=32*expected_tiles)
             $fatal(1,"Incorrect RAW task count: %0d/%0d expected %0d",tiles,completed_tiles,expected_tiles);
         if(dut.i_npu_subsystem.i_npu_core.raw_mode) $fatal(1,"Legacy mode was not restored");
         j=0;for(i=0;i<7;i=i+1) j=j+phase_cycles[i];
         if(j!=end_tick-begin_tick) $fatal(1,"Phase intervals do not sum to elapsed cycles");
-        $display("GEMV_BENCH_PASS cycles=%0d setup_cycles=%0d input_pack_cycles=%0d weight_pack_cycles=%0d npu_wait_cycles=%0d read_reduce_cycles=%0d postprocess_cycles=%0d cpu_mac_cycles=%0d tiles=%0d npu_cycles=%0d fc1_issue_cycles=%0d DMA_read_MAC_overlap=%0d DMA_write_MAC_overlap=%0d DMA_MAC_total_overlap=%0d",
+        $display("GEMV_BENCH_PASS cycles=%0d setup_cycles=%0d input_pack_cycles=%0d weight_pack_cycles=%0d npu_wait_cycles=%0d read_reduce_cycles=%0d postprocess_cycles=%0d cpu_mac_cycles=%0d tiles=%0d npu_cycles=%0d fc1_issue_cycles=%0d DMA_read_MAC_overlap=%0d DMA_write_MAC_overlap=%0d DMA_MAC_total_overlap=%0d dma_descriptors=%0d",
                  end_tick-begin_tick,phase_cycles[0],phase_cycles[1],phase_cycles[2],phase_cycles[3],phase_cycles[4],phase_cycles[5],phase_cycles[6],
-                 tiles,npu_cycles,fc1_cycles,read_overlap,write_overlap,total_overlap);
+                 tiles,npu_cycles,fc1_cycles,read_overlap,write_overlap,total_overlap,dma_descriptors);
         $finish;
     end
 endmodule

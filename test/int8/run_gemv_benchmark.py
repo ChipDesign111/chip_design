@@ -17,6 +17,7 @@ import time
 
 from generic_firmware import BENCHMARK_PHASES, build
 from generic_runtime import BASE, CODE_BYTES, Layer, plan
+from optimized_firmware import build as build_optimized, pack_layer
 from run_generic_soc import HERE, ROOT, execute, fixtures, hashes, reference_checks
 
 
@@ -25,7 +26,44 @@ def cases():
     full = ('full_32x64', [Layer([[rng.randint(-128, 127) for _ in range(64)] for _ in range(32)],
                                [rng.randint(-100000, 100000) for _ in range(32)])],
             [rng.randint(-128, 127) for _ in range(64)])
-    return [full] + fixtures()
+    hybrid = ('hybrid_layers', [
+        Layer([[rng.randint(-128, 127) for _ in range(65)] for _ in range(33)],
+              [rng.randint(-100000, 100000) for _ in range(33)], 1064, 20, True),
+        Layer([[rng.randint(-128, 127) for _ in range(33)] for _ in range(5)],
+              [71, -93, 17, 100, -7], 1064, 20, True),
+        Layer([[rng.randint(-128, 127) for _ in range(5)] for _ in range(3)], [100000, -300000, 7]),
+    ], [rng.randint(-128, 127) for _ in range(65)])
+    right = ('right_tail_32x96', [
+        Layer([[rng.randint(-128, 127) for _ in range(96)] for _ in range(32)],
+              [rng.randint(-100000, 100000) for _ in range(32)])
+    ], [rng.randint(-128, 127) for _ in range(96)])
+    return [full] + fixtures() + [hybrid, right]
+
+
+def packing_checks():
+    # Independently reconstruct every logical weight from the new layout,
+    # including multiple full blocks and all combinations of empty fringes.
+    rng = random.Random(181126)
+    checks = 0
+    for n in (1, 2, 31, 32, 33, 64, 65):
+        for k in (1, 2, 63, 64, 65, 96, 128, 129):
+            layer = Layer([[rng.randint(-128, 127) for _ in range(k)] for _ in range(n)], [0]*n)
+            packed, nf, kf = pack_layer(layer)
+            assert len(packed) == n*k
+            for row in range(n):
+                for col in range(k):
+                    if row < nf and col < kf:
+                        block = row//32*(kf//64) + col//64
+                        offset = block*2048 + (col%64//2*32 + row%32)*2 + col%2
+                    elif row < nf:
+                        offset = nf*kf + row*(k-kf) + col-kf
+                    elif nf and kf:
+                        offset = nf*k + (row-nf)*k + col
+                    else:
+                        offset = row*k + col
+                    assert packed[offset] == layer.weights[row][col] & 255
+            checks += 1
+    return checks
 
 
 def sha(path):
@@ -34,7 +72,7 @@ def sha(path):
 
 def manifest():
     source = hashes()
-    for name in ('run_gemv_benchmark.py', 'tb_gemv_benchmark.sv'):
+    for name in ('run_gemv_benchmark.py', 'tb_gemv_benchmark.sv', 'optimized_firmware.py'):
         source['test/int8/' + name] = sha(HERE / name)
     return source
 
@@ -47,7 +85,8 @@ def prepare(directory, layers, inputs, backend):
     p = plan(layers, inputs)
     if p['layer_count'] > 32:
         raise ValueError('Benchmark monitor supports at most 32 layers')
-    meta = build(directory, layers, inputs, backend=backend, benchmark=True)
+    meta = (build_optimized(directory, layers, inputs, benchmark=True) if backend == 'optimized'
+            else build(directory, layers, inputs, backend=backend, benchmark=True))
     expected = bytearray(p['image'])
     layout = [len(layers)]
     allocations = {entry['name']: entry for entry in p['allocations']}
@@ -63,7 +102,14 @@ def prepare(directory, layers, inputs, backend):
                 [int.from_bytes(expected[i:i+4], 'little') for i in range(0, 8192, 4)])
     write_words(directory / 'bench_layout.hex', layout + [0] * (129 - len(layout)))
     write_words(directory / 'phase_pcs.hex', [meta['phase_pcs'][name] for name in BENCHMARK_PHASES])
-    data = p['image'][CODE_BYTES:]
+    dma_ranges = meta.get('dma_ranges', [[BASE+0x17c0, BASE+0x1fc0]] if backend == 'raw' else [])
+    dma_layout = [len(dma_ranges)] + [value for pair in dma_ranges for value in pair]
+    write_words(directory / 'dma_ranges.hex', dma_layout + [0]*(65-len(dma_layout)))
+    image = b''.join(int(word, 16).to_bytes(4, 'little')
+                     for word in (directory/'firmware.hex').read_text().splitlines())
+    if len(image) != 8192:
+        raise RuntimeError('Benchmark firmware must be a complete 8 KiB image')
+    data = image[CODE_BYTES:]
     meta['compact_data_sha256'] = hashlib.sha256(data).hexdigest()
     return meta
 
@@ -73,6 +119,8 @@ def main():
     parser.add_argument('--vsim', default='vsim')
     parser.add_argument('--out', type=Path)
     parser.add_argument('--case', action='append', choices=[case[0] for case in cases()])
+    parser.add_argument('--backend', action='append', choices=('cpu', 'raw', 'optimized'),
+                        help='Repeatable; default compares all three backends')
     parser.add_argument('--timeout', type=int, default=300)
     args = parser.parse_args()
     stamp = datetime.now(timezone(timedelta(hours=8))).strftime('%Y%m%d_%H%M%S')
@@ -89,6 +137,8 @@ def main():
         'phase_rule': 'Passive wall-clock windows at legal ID issue of generated phase labels; sum equals total, not an instruction retirement trace; npu_wait includes START/poll overhead',
         'cpu_baseline': 'Scalar RV32IM signed LB/MUL/ADD, four-element unroll plus scalar tail; shared bias, output and exact 64-bit requantization code',
         'speedup_rule': 'cpu.cycles / raw.cycles; greater than 1 means RAW is faster',
+        'optimized_rule': 'Fixed weights prepacked offline without padding or a second weight copy; only full 32x64 rectangles use RAW, CPU computes compact edges; all-small networks compile to the identical CPU baseline',
+        'data_identity': 'CPU and dynamic RAW share byte-identical compact data; optimized has the same logical weights/input/bias and an offline weight permutation plus dispatch descriptors',
         'cases': [],
     }
 
@@ -98,6 +148,7 @@ def main():
     save()
     try:
         report['reference_checks'] = reference_checks()
+        report['packing_checks'] = packing_checks()
         sources = []
         for line in (ROOT / 'rtl/filelist.f').read_text().splitlines():
             line = line.strip()
@@ -124,14 +175,15 @@ def main():
             case = {'case': name, 'layers': len(layers), 'useful_macs': macs,
                     'model_sha256': sha(directory / 'model.json')}
             data_hash = None
-            for backend in ('cpu', 'raw'):
+            for backend in args.backend or ('cpu', 'raw', 'optimized'):
                 run = directory / backend
                 metadata = prepare(run, layers, inputs, backend)
-                if data_hash is not None and data_hash != metadata['compact_data_sha256']:
+                if backend != 'optimized' and data_hash is not None and data_hash != metadata['compact_data_sha256']:
                     raise RuntimeError('Backend compact data mismatch')
-                data_hash = metadata['compact_data_sha256']
+                if backend != 'optimized':
+                    data_hash = metadata['compact_data_sha256']
                 firmware_hash = sha(run / 'firmware.hex')
-                expected_tiles = metadata['tile_count'] if backend == 'raw' else 0
+                expected_tiles = metadata['tile_count'] if backend != 'cpu' else 0
                 (run / 'run.do').write_text('onerror {quit -code 1}\nonbreak {resume}\nvmap work {%s}\nvsim -suppress 12110 -novopt -onfinish stop work.tb_gemv_benchmark +TILES=%d\nrun -all\nset status [examine -radix hex /tb_gemv_benchmark/magic]\nif {![string equal -nocase $status c0dec0de]} {quit -code 3}\nquit -code 0\n' % ((out / 'work').as_posix(), expected_tiles))
                 text, elapsed = execute([args.vsim, '-c', '-do', 'do run.do'], run, 'soc.log', args.timeout)
                 match = re.search(r'GEMV_BENCH_PASS ([^\r\n]+)', text)
@@ -143,14 +195,22 @@ def main():
                 if counters['tiles'] != expected_tiles or firmware_hash != sha(run / 'firmware.hex'):
                     raise RuntimeError('Task count or firmware identity changed')
                 case[backend] = dict(counters, code_bytes=metadata['code_bytes'],
+                                     layer_dispatch=metadata.get('layer_dispatch'),
+                                     data_sha256=metadata['compact_data_sha256'],
                                      firmware_sha256=firmware_hash, elapsed_seconds=elapsed)
                 print('%s %s: PASS cycles=%d' % (name, backend, counters['cycles']), flush=True)
             case['compact_data_sha256'] = data_hash
-            case['speedup'] = case['cpu']['cycles'] / case['raw']['cycles']
-            case['raw_mac_fill_ratio'] = macs / (case['raw']['tiles'] * 32 * 64)
+            if 'cpu' in case and 'raw' in case:
+                case['speedup'] = case['cpu']['cycles'] / case['raw']['cycles']
+                case['raw_mac_fill_ratio'] = macs / (case['raw']['tiles'] * 32 * 64)
+            if 'cpu' in case and 'optimized' in case:
+                case['optimized_speedup'] = case['cpu']['cycles'] / case['optimized']['cycles']
+            if 'raw' in case and 'optimized' in case:
+                case['improvement_over_raw'] = case['raw']['cycles'] / case['optimized']['cycles']
             report['cases'].append(case)
             save()
-            print('%s speedup=%.4fx' % (name, case['speedup']), flush=True)
+            if 'optimized_speedup' in case:
+                print('%s optimized_speedup=%.4fx' % (name, case['optimized_speedup']), flush=True)
         if manifest() != source:
             raise RuntimeError('RTL or benchmark sources changed during measurement')
         report['status'] = 'PASS'
