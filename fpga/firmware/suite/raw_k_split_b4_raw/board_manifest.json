@@ -1,0 +1,842 @@
+{
+  "name": "raw_k_split_b4_raw",
+  "family": "raw",
+  "backend": "raw",
+  "case": "k_split_b4",
+  "batch": 4,
+  "input_shape": [
+    4,
+    128
+  ],
+  "output_shape": [
+    4,
+    32
+  ],
+  "code_bytes": 1220,
+  "halt_pc": 2147483804,
+  "firmware_selfcheck": false,
+  "npu_core_starts": 2,
+  "npu_batch": 4,
+  "batch_weight_reuse": true,
+  "description": "Calibrated PyTorch INT8 graph; all tensors checked externally by check.gdb",
+  "schema": 1,
+  "image_bytes": 8192,
+  "status_address": 2147491808,
+  "pass_value": 3235823838,
+  "fail_value": 3735928559,
+  "tag_address": 2147491812,
+  "tag_value": 2286670451,
+  "checks": [
+    {
+      "address": 2147491136,
+      "expected": 437195227,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491140,
+      "expected": 130753809,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491144,
+      "expected": 35140030,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491148,
+      "expected": 3053898239,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491152,
+      "expected": 2664761347,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491156,
+      "expected": 2922622906,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491160,
+      "expected": 3910859999,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491164,
+      "expected": 1345847537,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491168,
+      "expected": 64760,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491172,
+      "expected": 351604474,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491176,
+      "expected": 33818622,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491180,
+      "expected": 3591369473,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491184,
+      "expected": 3539467275,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491188,
+      "expected": 3609452008,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491192,
+      "expected": 4027317999,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491196,
+      "expected": 454493191,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491200,
+      "expected": 3857835797,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491204,
+      "expected": 572389346,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491208,
+      "expected": 66182206,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491212,
+      "expected": 4128775428,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491216,
+      "expected": 102363155,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491220,
+      "expected": 18025749,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491224,
+      "expected": 4160552703,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491228,
+      "expected": 3891661085,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491232,
+      "expected": 3403927858,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491236,
+      "expected": 809951435,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491240,
+      "expected": 81703551,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491244,
+      "expected": 354567943,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491248,
+      "expected": 960291613,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491252,
+      "expected": 704854851,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491256,
+      "expected": 4293787407,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491260,
+      "expected": 3017084211,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491264,
+      "expected": 2189590913,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491268,
+      "expected": 2223276931,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491272,
+      "expected": 2256962949,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491276,
+      "expected": 2290648967,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491280,
+      "expected": 2324334985,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491284,
+      "expected": 2358021003,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491288,
+      "expected": 2391707021,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491292,
+      "expected": 2425393039,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491296,
+      "expected": 2459079057,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491300,
+      "expected": 2492765075,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491304,
+      "expected": 2526451093,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491308,
+      "expected": 2560137111,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491312,
+      "expected": 2593823129,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491316,
+      "expected": 2627509147,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491320,
+      "expected": 2661195165,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491324,
+      "expected": 2694881183,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491328,
+      "expected": 2728567201,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491332,
+      "expected": 2762253219,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491336,
+      "expected": 2795939237,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491340,
+      "expected": 2829625255,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491344,
+      "expected": 2863311273,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491348,
+      "expected": 2896997291,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491352,
+      "expected": 2930683309,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491356,
+      "expected": 2964369327,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491360,
+      "expected": 2998055345,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491364,
+      "expected": 3031741363,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491368,
+      "expected": 3065427381,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491372,
+      "expected": 3099113399,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491376,
+      "expected": 3132799417,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491380,
+      "expected": 3166485435,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491384,
+      "expected": 3200171453,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491388,
+      "expected": 3233857471,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491392,
+      "expected": 3267543489,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491396,
+      "expected": 3301229507,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491400,
+      "expected": 3334915525,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491404,
+      "expected": 3368601543,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491408,
+      "expected": 3402287561,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491412,
+      "expected": 3435973579,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491416,
+      "expected": 3469659597,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491420,
+      "expected": 3503345615,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491424,
+      "expected": 3537031633,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491428,
+      "expected": 3570717651,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491432,
+      "expected": 3604403669,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491436,
+      "expected": 3638024150,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491440,
+      "expected": 3671710168,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491444,
+      "expected": 3705396186,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491448,
+      "expected": 3739082204,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491452,
+      "expected": 3772768222,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491456,
+      "expected": 3806454240,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491460,
+      "expected": 3840140258,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491464,
+      "expected": 3873826276,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491468,
+      "expected": 3907512294,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491472,
+      "expected": 3941198312,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491476,
+      "expected": 3974884330,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491480,
+      "expected": 4008570348,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491484,
+      "expected": 4042256366,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491488,
+      "expected": 4075942384,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491492,
+      "expected": 4109628402,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491496,
+      "expected": 4143314420,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491500,
+      "expected": 4177000438,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491504,
+      "expected": 4210686456,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491508,
+      "expected": 4244372474,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491512,
+      "expected": 4278058492,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491516,
+      "expected": 16777214,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491520,
+      "expected": 33620224,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491524,
+      "expected": 67306242,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491528,
+      "expected": 100992260,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491532,
+      "expected": 134678278,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491536,
+      "expected": 168364296,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491540,
+      "expected": 202050314,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491544,
+      "expected": 235736332,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491548,
+      "expected": 269422350,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491552,
+      "expected": 303108368,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491556,
+      "expected": 336794386,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491560,
+      "expected": 370480404,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491564,
+      "expected": 404166422,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491568,
+      "expected": 437852440,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491572,
+      "expected": 471538458,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491576,
+      "expected": 505224476,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491580,
+      "expected": 538910494,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491584,
+      "expected": 572596512,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491588,
+      "expected": 606282530,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491592,
+      "expected": 639968548,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491596,
+      "expected": 673654566,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491600,
+      "expected": 707340584,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491604,
+      "expected": 724249130,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491608,
+      "expected": 757935148,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491612,
+      "expected": 791621166,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491616,
+      "expected": 825307184,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491620,
+      "expected": 858993202,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491624,
+      "expected": 892679220,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491628,
+      "expected": 926365238,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491632,
+      "expected": 960051256,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491636,
+      "expected": 993737274,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491640,
+      "expected": 1027423292,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491644,
+      "expected": 1061109310,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491648,
+      "expected": 1094795328,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491652,
+      "expected": 1128481346,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491656,
+      "expected": 1162167364,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491660,
+      "expected": 1195853382,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491664,
+      "expected": 1229539400,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491668,
+      "expected": 1263225418,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491672,
+      "expected": 1296911436,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491676,
+      "expected": 1330597454,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491680,
+      "expected": 1364283472,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491684,
+      "expected": 1397969490,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491688,
+      "expected": 1431655508,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491692,
+      "expected": 1465341526,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491696,
+      "expected": 1499027544,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491700,
+      "expected": 1532713562,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491704,
+      "expected": 1566399580,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491708,
+      "expected": 1600085598,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491712,
+      "expected": 1633771616,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491716,
+      "expected": 1667457634,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491720,
+      "expected": 1701143652,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491724,
+      "expected": 1734829670,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491728,
+      "expected": 1768515688,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491732,
+      "expected": 1802201706,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491736,
+      "expected": 1835887724,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491740,
+      "expected": 1869573742,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491744,
+      "expected": 1903259760,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491748,
+      "expected": 1936945778,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491752,
+      "expected": 1970631796,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491756,
+      "expected": 2004317814,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491760,
+      "expected": 2038003832,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491764,
+      "expected": 2071689850,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491768,
+      "expected": 2105375868,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491772,
+      "expected": 2139061886,
+      "mask": 4294967295
+    }
+  ],
+  "board_tested": false,
+  "cycle_counter_address": 65592,
+  "timing": "Hardware first non-debug fetch through PASS/FAIL, including firmware checks; not BEGIN/END cycles",
+  "files_sha256": {
+    "check.gdb": "f0cc1f9d5a806e07b4e3136575abc95e293509f76164ecaf618fc0ff1dc05eac",
+    "firmware.bin": "3bca6a75bc8c5e9f39c5cbebed5b5449a17f747bcb0851f90a0652fd28c6746a",
+    "firmware.hex": "d3adeadec154c596e8ffa03a6a8a8b2f63d210676109acc60fd58049214bf566",
+    "firmware.S": "fcb2da0f9749cbad311218e0c0aeff2e61d18548490fa708a8708250cc0bbc8a",
+    "manifest.json": "7679bbab08f0349bf3a3222ab8ea2ccbd017da52996938dbd4daab1b1a8554db",
+    "reference.json": "13b08a19e9c1da773938ee96c9a86399d41b2257b4ea12689444d69136193691"
+  }
+}

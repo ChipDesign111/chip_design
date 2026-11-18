@@ -6,8 +6,9 @@ FPGA 系统时钟为 20 MHz，器件为 `xc7a35tcsg324-1`。
 FPGA bitstream、固件和测试证据按不可覆盖版本归档，入口见
 [版本目录](versions/README.md)。最近完成板测的冻结版本为
 [20261104_rtl-1c265c0_int22](versions/20261104_rtl-1c265c0_int22/README.md)；
-该冻结版本的板级测试已 PASS。2026-11-09 活动固件已更新为 `reuse8`，
-完成固定 RTL 的 CPU 仿真验证，尚未重新生成 bitstream 或重新上板测试。
+该冻结版本的板级测试已 PASS。2026-11-19 活动固件已更新到当前 16-MAC INT22 RTL，
+保留 38 个 HAR 回归镜像，并新增 24 个 HAR/RAW/CPU 配对固件包；入口、GDB 数值
+检查和使用方法见 [当前测试固件](firmware/README.md)。尚未生成新 bitstream 或重新上板测试。
 上一版的完整 PASS 报告保存在
 [20261101_rtl-fce9d9b_board-pass](versions/20261101_rtl-fce9d9b_board-pass/README.md)。
 当前状态和验收边界见 [FPGA 测试状态](TEST_REPORT.md)。
@@ -69,8 +70,9 @@ fpga/final_project/final_project.runs/impl_2/fpga_top.bit
 
 ## 2. 固件镜像
 
-`firmware/` 中包含 32 个随机/边界镜像和 6 个 UCI 四样本镜像。详细列表、
-seed、batch 和 SHA 见 [firmware/README.md](firmware/README.md)。
+`firmware/` 中包含 32 个随机/边界镜像、6 个 UCI 四样本镜像，以及
+`firmware/suite/` 下的 24 个 HAR/RAW/CPU 配对包。详细列表、seed、batch、SHA
+和结果检查方法见 [firmware/README.md](firmware/README.md)。
 
 默认镜像：
 
@@ -222,17 +224,18 @@ monitor reg pc
 `flushregs` 仍可使用，但已经是
 `maintenance flush register-cache` 的弃用别名。
 
-固件结束后 CPU 实际仍在执行 `j 0x80000470` 自循环，不会自己进入 debug
-halt。`monitor halt` 用于得到稳定的调试现场。预期最终 PC 为：
+固件结束后 CPU 仍在停机自循环中，不会自己进入 debug halt。`monitor halt`
+用于得到稳定现场。2026-11-19 默认 `int8_selftest` 的停机 PC 为：
 
 ```text
-pc = 0x80000470
+pc = 0x800005ec
 
-=> 0x80000470: j 0x80000470
-   0x80000474: unimp
-   0x80000476: unimp
+=> 0x800005ec: j 0x800005ec
 ```
 
+不同镜像的停机 PC 不同，以 `firmware/image_manifest.json` 或包内
+`firmware.S` 的 `halt` 标签为准；RAW 包的 `board_manifest.json` 也记录该地址。
+旧冻结版本的 `0x80000470` 不适用于当前默认镜像。
 `monitor reg pc` 从 OpenOCD 侧再次读取 PC，可用于排除 GDB 缓存不一致。
 若刷新后仍显示 `0x10000`，说明 CPU 仍停在 Boot 跳板起点，不应视为本次
 固件执行完成。
@@ -287,16 +290,17 @@ soc-full-cycles
 
 该计数器独立于 JTAG 交互时间，也不同于 NPU 内部的 `cycle_count`。
 
-当前 canonical 镜像的完整 SoC 仿真结果为：
+2026-11-04 冻结镜像的完整 SoC 仿真结果为：
 
 ```text
 硬件 SoC 周期             6364
 testbench 观测窗口周期    6369
 ```
 
-两者相差 5 拍，因为 testbench 从 SBI 提交完成后开始观测，而硬件计数器还要
-等到 CPU 第一次非 debug 取指。当前无预装载 JTAG 流程的板端实测为 `6368`
-（`0x000018E0`）；旧版的 `5105` 只属于历史版本，不能再用于当前 bitstream。
+两者相差 5 拍，因为 testbench 从 SBA 提交完成后开始观测，而硬件计数器还要
+等到 CPU 第一次非 debug 取指。该冻结版本无预装载 JTAG 流程的板端实测为
+`6368`（`0x000018E0`）；它和更早的 `5105` 均不代表当前 RTL/新固件。
+当前前仿结果见 [固件验证清单](firmware/validation.json)，新板端周期仍需实测。
 
 ### 启动提交码（“密钥”）
 

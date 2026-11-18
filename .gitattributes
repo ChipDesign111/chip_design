@@ -32,3 +32,6 @@ report/firmware_optimization_20261109/** -text
 # Raw evidence may have Windows line endings; frozen sources keep original EOF.
 report/loop_optimization_20261109/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
 report/loop_optimization_20261109/source_at_measurement/** whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+# Keep emitted FPGA package bytes identical to their SHA-256 manifests.
+fpga/firmware/image_manifest.json -text whitespace=cr-at-eol
+fpga/firmware/suite/** -text whitespace=cr-at-eol

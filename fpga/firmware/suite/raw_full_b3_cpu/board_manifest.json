@@ -1,0 +1,402 @@
+{
+  "name": "raw_full_b3_cpu",
+  "family": "raw",
+  "backend": "cpu",
+  "case": "full_b3",
+  "batch": 3,
+  "input_shape": [
+    3,
+    64
+  ],
+  "output_shape": [
+    3,
+    32
+  ],
+  "code_bytes": 672,
+  "halt_pc": 2147484080,
+  "firmware_selfcheck": false,
+  "npu_core_starts": 0,
+  "npu_batch": 1,
+  "batch_weight_reuse": false,
+  "description": "Calibrated PyTorch INT8 graph; all tensors checked externally by check.gdb",
+  "schema": 1,
+  "image_bytes": 8192,
+  "status_address": 2147491808,
+  "pass_value": 3235823838,
+  "fail_value": 3735928559,
+  "tag_address": 2147491812,
+  "tag_value": 3107843944,
+  "checks": [
+    {
+      "address": 2147491488,
+      "expected": 1138350291,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491492,
+      "expected": 3914414831,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491496,
+      "expected": 186129084,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491500,
+      "expected": 402259444,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491504,
+      "expected": 2381775922,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491508,
+      "expected": 3684571636,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491512,
+      "expected": 1895449604,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491516,
+      "expected": 3488219583,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491520,
+      "expected": 4092783089,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491524,
+      "expected": 4041803019,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491528,
+      "expected": 520880105,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491532,
+      "expected": 236649456,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491536,
+      "expected": 32507404,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491540,
+      "expected": 285407998,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491544,
+      "expected": 66063889,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491548,
+      "expected": 15271412,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491552,
+      "expected": 2735536911,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491556,
+      "expected": 4135702566,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491560,
+      "expected": 889119510,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491564,
+      "expected": 87751148,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491568,
+      "expected": 1961494502,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491572,
+      "expected": 1197857288,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491576,
+      "expected": 2531645470,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491580,
+      "expected": 854133033,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491584,
+      "expected": 2240053889,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491588,
+      "expected": 2324269190,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491592,
+      "expected": 2425261452,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491596,
+      "expected": 2509542033,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491600,
+      "expected": 2593757334,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491604,
+      "expected": 2694749596,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491608,
+      "expected": 2779030177,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491612,
+      "expected": 2863245478,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491616,
+      "expected": 2964237740,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491620,
+      "expected": 3048518321,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491624,
+      "expected": 3132733622,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491628,
+      "expected": 3233725884,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491632,
+      "expected": 3317940929,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491636,
+      "expected": 3402221510,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491640,
+      "expected": 3486436811,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491644,
+      "expected": 3587429073,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491648,
+      "expected": 3671709654,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491652,
+      "expected": 3755924955,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491656,
+      "expected": 3856917217,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491660,
+      "expected": 3941197798,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491664,
+      "expected": 4025413099,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491668,
+      "expected": 4126405361,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491672,
+      "expected": 4210685942,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491676,
+      "expected": 4294901243,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491680,
+      "expected": 84083201,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491684,
+      "expected": 168363782,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491688,
+      "expected": 252579083,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491692,
+      "expected": 353571345,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491696,
+      "expected": 437851926,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491700,
+      "expected": 522067227,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491704,
+      "expected": 623059489,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491708,
+      "expected": 707340070,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491712,
+      "expected": 791555371,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491716,
+      "expected": 892547633,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491720,
+      "expected": 976828214,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491724,
+      "expected": 1061043515,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491728,
+      "expected": 1145258560,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491732,
+      "expected": 1246250822,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491736,
+      "expected": 1330531403,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491740,
+      "expected": 1414746704,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491744,
+      "expected": 1515738966,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491748,
+      "expected": 1600019547,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491752,
+      "expected": 1684234848,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491756,
+      "expected": 1785227110,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491760,
+      "expected": 1869507691,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491764,
+      "expected": 1953722992,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491768,
+      "expected": 2054715254,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491772,
+      "expected": 2138995835,
+      "mask": 4294967295
+    }
+  ],
+  "board_tested": false,
+  "cycle_counter_address": 65592,
+  "timing": "Hardware first non-debug fetch through PASS/FAIL, including firmware checks; not BEGIN/END cycles",
+  "files_sha256": {
+    "check.gdb": "b37109fb1dfbf905b877d0c0fe19703e31c36e9ca3e4ee14a7d7b04c77752f43",
+    "firmware.bin": "96da559fa157c604e611564e95c6441c357c586762f683371548181dc547122a",
+    "firmware.hex": "ff9aec2f96af64685a9c5e750a1c2897040e24d4e8742b7c528003db0151d531",
+    "firmware.S": "4e09e0d5055088863b493ed522520ba89b5e3c3a6956094398f273745cdc6786",
+    "manifest.json": "edcef5aeea40e48e1fc224731a62cca41eee5a762ae072b9ab47548299851638",
+    "reference.json": "7bae83159655961ffd182ba987a0c1b0479414d3c6e93b986244751df44b0c4e"
+  }
+}

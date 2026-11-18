@@ -18,6 +18,16 @@ document soc-full-cycles
 Print cycles from the first non-debug CPU fetch after boot ready to PASS or FAIL.
 end
 
+define soc-npu-counters
+  printf "last NPU task: cycles=%u fc1_issue=%u fc2_issue=%u\n", *(unsigned int *)0x7000000c, *(unsigned int *)0x70000028, *(unsigned int *)0x7000002c
+  printf "DMA/MAC overlap: read=%u write=%u total=%u\n", *(unsigned int *)0x70000034, *(unsigned int *)0x70000038, *(unsigned int *)0x7000001c
+end
+
+document soc-npu-counters
+Print NPU cycles and DMA read/write/total overlap for the last hardware task.
+RAW matrices can launch multiple tasks: these counters are not whole-network totals.
+end
+
 define soc-load-bin
   if $argc != 1
     printf "usage: soc-load-bin <image.bin>\n"

@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import struct
 import sys
 import tempfile
 from pathlib import Path
@@ -34,6 +35,8 @@ def single_image(output_dir, seed, name, kind):
 
     target = output_dir / name
     target.write_text(text, encoding="ascii", newline="\n")
+    binary = target.with_suffix(".bin")
+    binary.write_bytes(struct.pack("<2048I", *(int(line, 16) for line in lines)))
     digest = hashlib.sha256(target.read_bytes()).hexdigest()
     return {
         "file": name,
@@ -42,7 +45,11 @@ def single_image(output_dir, seed, name, kind):
         "batch": batch,
         "firmware_mode": metadata["mode"],
         "code_bytes": metadata["code_bytes"],
+        "halt_pc": metadata["labels"]["halt"],
         "sha256": digest,
+        "binary_file": binary.name,
+        "binary_bytes": binary.stat().st_size,
+        "binary_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(),
     }
 
 
@@ -89,6 +96,7 @@ def main():
         else:
             print("int8_selftest.hex already matches current UCI group 00")
     canonical.write_bytes(uci_zero.read_bytes())
+    canonical.with_suffix(".bin").write_bytes(uci_zero.with_suffix(".bin").read_bytes())
 
     manifest = {
         "format": "2048 x 32-bit hexadecimal words, one word per line",
@@ -114,6 +122,14 @@ def main():
         "canonical_firmware_mode": uci_images[0]["firmware_mode"],
         "canonical_code_bytes": uci_images[0]["code_bytes"],
         "canonical_sha256": hashlib.sha256(canonical.read_bytes()).hexdigest(),
+        "canonical_binary": "int8_selftest.bin",
+        "canonical_binary_sha256": uci_images[0]["binary_sha256"],
+        "canonical_halt_pc": uci_images[0]["halt_pc"],
+        "rtl_source_sha256": {
+            path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in sorted((ROOT / "rtl").rglob("*"))
+            if path.suffix in (".sv", ".svh", ".v", ".f")
+        },
         "count": len(images),
         "images": images,
     }

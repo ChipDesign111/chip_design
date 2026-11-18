@@ -4,8 +4,14 @@ FPGA 测试证据按不可覆盖版本归档，入口见
 [fpga/versions](versions/README.md)。最近完成板测的冻结版本为
 [20261104_rtl-1c265c0_int22](versions/20261104_rtl-1c265c0_int22/README.md)。
 
-2026-11-09 活动固件已更新为 `reuse8`，完成固定 RTL 的 CPU 仿真验证。
-本次没有重新生成 FPGA bitstream 或重新板测；下列板级结果仅对应冻结版本。
+2026-11-19 活动固件已更新到当前 16-MAC INT22 RTL：38 个原 HAR 回归镜像，
+另有 24 个 HAR/RAW/CPU 配对包，包含 batch=1/2/3/4、33×65 尾块、K 分块、
+多层图和 INT32 合并测试。生成方法与上板验收入口见
+[当前固件说明](firmware/README.md)，本轮完整 SoC 前仿结果见
+[validation.json](firmware/validation.json)。
+
+本次没有生成 FPGA bitstream 或重新板测。新镜像需要用当前 RTL 生成的 bitstream；
+下列板级资源、时序、周期和 SHA 仅对应 2026-11-04 冻结版本。
 
 ## 最近板测冻结版本（20261104）
 
@@ -19,13 +25,13 @@ FPGA 测试证据按不可覆盖版本归档，入口见
 | 板级测试 | PASS |
 | 扩展回归 | LED、连续复位、重复重配置、长时间运行均 PASS |
 
-当前 bitstream SHA-256：
+该冻结版本 bitstream SHA-256：
 
 ```text
 bdf36e5888703ebc6905f3cd87a4f42b8256168484147baf97b966e9d47d326e
 ```
 
-当前 canonical 固件 SHA-256：
+该冻结版本 canonical 固件 SHA-256：
 
 ```text
 3f1dcd0eaf725269e52cd39e9e6917138e8f8ed932fa0d4f61fa81fe4175ee4b

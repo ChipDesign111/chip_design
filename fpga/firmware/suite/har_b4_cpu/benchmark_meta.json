@@ -1,0 +1,11 @@
+{
+  "seed": 10000,
+  "batch": 4,
+  "mode": "cpu_unroll4",
+  "code_bytes": 1128,
+  "benchmark": true,
+  "backend": "cpu",
+  "useful_macs": 8960,
+  "arithmetic": "Signed INT22 wrap per layer, ReLU/UINT16 requant with exact 64-bit product, INT22 scores, signed argmax with lowest-index tie",
+  "input_bytes_sha256": "b7b8be8b4390b782d470746570cce5c65acda3402ca29e99e5f1ab6822a6e81f"
+}

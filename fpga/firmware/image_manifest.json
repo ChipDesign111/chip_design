@@ -4,10 +4,10 @@
     "entrypoint": "fpga/firmware/generate_images.py",
     "firmware_mode": "reuse8",
     "source_sha256": {
-      "fpga/firmware/generate_images.py": "0339c5d83023085b8e3e075fccf95df91d9a6c9d4c282418cc18c6d49f5b0a03",
-      "test/int8/firmware.py": "2f05b350adf54d9d433afb622c5d1f1135f57aafcd08153878b120b4e6e7b9d7",
+      "fpga/firmware/generate_images.py": "cef1e02ca987f680e0179d0beed53607bab1dbe4d9bb94c043cf87b11c88fe1c",
+      "test/int8/firmware.py": "dc8bd8406dc53cb62427b81bddd559f81e3dd419b4843eb4376a93717d513c6c",
       "test/int8/assembler.py": "dd37a5885d98927fe27d42f663475b439b2b3f918b5d23ff33b8a5d304f2cf38",
-      "test/int8/run.py": "c1f4ca32f2fbc8ee1b62e1c7d09a1a34d2d47f8d9479a33731958d0e787d48e0",
+      "test/int8/run.py": "3d8f8737c95131774f8a4fe0763df3415ad795a4ef007b3aeb34b1262fd43cee",
       "test/int8/har_uci24.json": "91169e2887c23c7de44da2eceae906271f7f4ac67c529e530bf2f48d94b10ef9",
       "model/reference/tile_layout.py": "db0da1b855abeadb47400d05c1c0633805d141d72e5bd418bd726707b98e3e10",
       "model/export/weights_int8.npz": "aca576691d0fb45f382eb4ef3dfd7fc6009143c242d2535643040c542ddbbc47",
@@ -18,7 +18,98 @@
   "canonical_alias": "int8_uci_00_batch4.hex",
   "canonical_firmware_mode": "reuse8",
   "canonical_code_bytes": 1520,
-  "canonical_sha256": "770876652242b4248f390845388a71c9146384bde80b18a4d674d1e8510a15d3",
+  "canonical_sha256": "a711b9f58714e77190dfbcc5c35a8cac1096a326b2eaf7e727f35e2900f68ac3",
+  "canonical_binary": "int8_selftest.bin",
+  "canonical_binary_sha256": "650ea777add595673dd39de8179a05a9fbb8e797e731c5e06aa49c1775c9e90f",
+  "canonical_halt_pc": 2147485164,
+  "rtl_source_sha256": {
+    "rtl/axi/addr_decode.sv": "84e2b6d49c834b21f13b12d94919efd9a7d541b191a0651d2cca97435a5ca85a",
+    "rtl/axi/axi2mem.sv": "3ef78c641f0be1d090dde77e48ae114f774a1747836cdf3f85a30e2fd6d64e0d",
+    "rtl/axi/axi_adapter.sv": "e50bf7d69b52544a7c5d032f6f41817fd58aa4fb21c60dc999a89de738092c9a",
+    "rtl/axi/axi_atop_filter.sv": "328ce02dcbdca8917393b2f399b856be3c4e06f561cb1347368210c9aae3f9e3",
+    "rtl/axi/axi_demux.sv": "75ff0775043bea786d54781358558579e701042b2e687339fe53eb696de6e020",
+    "rtl/axi/axi_err_slv.sv": "15365a63f8a7b66bb61fce39b03ad5401845f244b5acd06d7140daab2c7906a4",
+    "rtl/axi/axi_id_prepend.sv": "37472cac2adfea0f0127f395ad2df8de9d0643122234113a5965dbfd82566bd7",
+    "rtl/axi/axi_intf.sv": "c610a66a6c58f0f53dc4a44c2932ff034cf5855ca3fdfd2e3621b0aa30e7fb43",
+    "rtl/axi/axi_mux.sv": "71b6b0187138fe1a659154f939678a92b1b36c3db7a5b74f7b64329beb107e97",
+    "rtl/axi/axi_pkg.sv": "76b3797792ee5b95ab5937f3d457b48852e5c427de48298dafbdde43d0916ac2",
+    "rtl/axi/axi_xbar.sv": "fe402e3efc15236b4ba66409777c0f7e959373344bd04ebbcba8bbf2582f0b16",
+    "rtl/clk_rst/cluster_clk_cells.sv": "0bf54e372850c1af22264711d311d943718dc4c8d918e47cc98e9a8d07461d44",
+    "rtl/clk_rst/cv32e40p_fpga_clock_gate.sv": "34cca41fb001e179819e899ad1cfe0e251193233b34e25da172db0bbbc55604e",
+    "rtl/clk_rst/pulp_clk_cells.sv": "717fc6e7ec754807440f346d9b8bb930da302fffd294550e30ceae78009f4e87",
+    "rtl/clk_rst/rstgen.sv": "83d9f70bab3b514062a7a79a581919afd5de466167dfcd08733c773f36ba094a",
+    "rtl/clk_rst/rstgen_bypass.sv": "51322d03a0479f16a4acb66cccee48003e2e224c02a7d3188cbaea9b2f8b2756",
+    "rtl/clk_rst/tc_clk.sv": "7eb340f76c76d18f4ac3b6d1d61433c7372118d24f57f83a6ceae82cdbf51c2d",
+    "rtl/common_cells/cdc_2phase.sv": "3720278ce00b5591a1a63fe5515528dd4223a35070303e58cf2e48bd0b56c8c1",
+    "rtl/common_cells/cf_math_pkg.sv": "afc32fcae21f6cbb834c5ee602a1aaee1b518fc436a86d4fe1b97942473d35c8",
+    "rtl/common_cells/counter.sv": "b7a9b5fc11ce4def51133f27ec0470a18ae7c8c6b1161f21c948ae848b693f58",
+    "rtl/common_cells/delta_counter.sv": "698851a015f2b093d5688faa02ae60f0b3ed4324a7584846a99726e1c93732f7",
+    "rtl/common_cells/fifo_v2.sv": "cff163332b28e84904955e88691f973a47f90a4209b3f0ae0d2afe94f6a49921",
+    "rtl/common_cells/fifo_v3.sv": "08cc968a5b26b5a68ad2c548755e6b3b0d07a7ad75a3f11e92bc1bab71eeb7c6",
+    "rtl/common_cells/lzc.sv": "c47046cab67cd9e9ff46f9b2a4c055f301eabd0f135d76d96639eb41c9fa3609",
+    "rtl/common_cells/rr_arb_tree.sv": "c7361280318a605131345932ab3325bc53f8fc76e67c5579b991b96a5b4ffeed",
+    "rtl/common_cells/spill_register.sv": "97bf85128f538c54c749896b8eee5fcfe4b27c16845d2a17990979a63b09f2ec",
+    "rtl/common_cells/spill_register_flushable.sv": "f25965444dd82ef32a8a5eaaf6bcc5f05d1ab577b42ee4157dffb38aff5ccfe9",
+    "rtl/common_cells/stream_register.sv": "b4292350fdfaf9471b736dbd610d4cb0a450ed757e9f13431e4b195c53834b1c",
+    "rtl/cpu_cv32e40p/include/cv32e40p_apu_core_pkg.sv": "33d7c06b0fef3ae2c8814b040abe3cdaa23065cf12643de20e8275f44f97abe1",
+    "rtl/cpu_cv32e40p/include/cv32e40p_fpu_pkg.sv": "ae738f408ba2ade41bfcf0488c8f611a2c39b26915191890dac907b8a7a518e5",
+    "rtl/cpu_cv32e40p/include/cv32e40p_pkg.sv": "3fee39d262ef44bff6ee00b591fe08830e5e35cdd1b9e5eb9eb06da6f6525805",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_aligner.sv": "c78cd8c09fee10e45536dc5b8d1fb17c3a130e2270168279fcaa43a19580e4f3",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_alu.sv": "6eca8d4c2e299adcc498417220478360cc22898ba9037cdad6a1b81e80373c7b",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_alu_div.sv": "11035bcbb28447fa5a3e40d5cad4f257e763f75e49664ce8098ab6247a9a57cb",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_apu_disp.sv": "27931c8004e4d266c6ea02c9d5c19968c67d7e6ab86e57da4088531b13c8c48f",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_compressed_decoder.sv": "db90df2f8737aff29d73b3d242dd33aeb6750ae69ae7eb8e118b531180945d7f",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_controller.sv": "858b172963e17529de0b40a5be6ddfdadfc60bdca967819e4fc558b0ed6d7b87",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_core.sv": "6a78a0d77d32e6795f63e5149f77b98320ce504c67c44a2e359c9aea70989224",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_cs_registers.sv": "e2cec8f3d273748783275c60b1ec89101336608638d7e7783b03dd6b9dbb0345",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_decoder.sv": "6e12f673e05380e34a35c38d8ee8b6878935d96b6f2dfda72c67f8a6e92a6e4e",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_ex_stage.sv": "1510df315721b370c2d86b1c1d134a3ff6beefba2d072de7a4a611e3ecffb753",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_ff_one.sv": "6b646e6aa931f8ab56b85ee27549a422450b456270a54d68a4130329823226b6",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_fifo.sv": "d910cbd0751f38d349e8975de22b43d0a2937f9e905b0d9b82894fd83c53fe8a",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_fp_wrapper.sv": "1579104bf82f2e18a13029a7e299d867415a660ccff24c20ca3bb4ee4e315e9d",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_hwloop_regs.sv": "c2a0787c07bcd6c198b6338c4c6ee372b4bce96ec4a4def467ff0ae03da4e43a",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_id_stage.sv": "98b246d9ada45a7073d217d5c3bbc86941ee76bb00e7e0edda61d3bbec83728e",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_if_stage.sv": "e2d1cc9bc433a093938f2d4e4268c611f9a9bf199101e85114d417ff04597626",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_int_controller.sv": "24df51d9cb33f5c8760a8cfbc7931aafc94c2ab0523c7df55b2635e7778af16f",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_load_store_unit.sv": "857962513fc5bd3eb3d6b28c55fdfb15ef53f8ce8a59173a7d583efb8caee66f",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_mult.sv": "6a0cf2f15c69886ad5497222aa203f6f5b1fdd004b32a4ab87b36a0960ba2254",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_obi_interface.sv": "2b0a58e5c2f758dbe5f6e8f786c547da5508ce466007517434e2f7d817b758ed",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_popcnt.sv": "7a2dbeded21929832b40fc8d068b35b7281c75a63c426feed207127d4da08e4e",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_prefetch_buffer.sv": "a2fcbe6b783659ebecaf25d105f30c68af9b68c2850b833af64a2cec3ec29262",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_prefetch_controller.sv": "66e6078ea3b3acd3ceea4b974c0488d25e02324935532de1f2d39cdc34c875a0",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_register_file_ff.sv": "cd04d46afbf778ff3f1573bdd390784e5461a09b33fd670fa126ae7d3c433e89",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_sleep_unit.sv": "1cf012a83b54472931ad9944e7774e311222641a0aa026229c19467f90bf5448",
+    "rtl/cpu_cv32e40p/rtl/cv32e40p_top.sv": "2467f6b3c2745e687edad1a0c88ab5267b4ba8642c91e1fc0f282cf4223e5dc3",
+    "rtl/debug/debug_rom.sv": "fa60eaab03518e8e145a3f0a626bc7945e79265e8322ce874a6c8f6996f0e10b",
+    "rtl/debug/dm_csrs.sv": "0538bf1d829187699085de361d20ab79d04a459b06060a8f04709105f61818dc",
+    "rtl/debug/dm_mem.sv": "fa416bea75e91c7e1b2ea3302c46d04574ecb0ff4b0e37b451b6afd873dc4bc5",
+    "rtl/debug/dm_pkg.sv": "c46075cb09de0e773c91da62d02497673945b7a3e5de176363e5b5e118f82eea",
+    "rtl/debug/dm_sba.sv": "e7e30ce0f0e6f652dcf59e586933cada245018b80f2529da476b4272e86e4380",
+    "rtl/debug/dm_top.sv": "5fa2656a11759ff10fd016ed885761c9c379627b9a1b83ddee6e03a35ee9e23f",
+    "rtl/debug/dmi_cdc.sv": "ad8a13c8314b9a3c28228db2844466c9d750460d6afa8f6299a7229d80f8dd47",
+    "rtl/debug/dmi_jtag.sv": "807cf3fb86fe7060cdb1fa21dfbc843220b09a4d694d23ad4bc1cdd3e7118264",
+    "rtl/debug/dmi_jtag_tap.sv": "50d1b4d325694f4e898d5b2f2e7b26a7e631a5abdd1cd283500c900b079275ab",
+    "rtl/dma/har_dma.sv": "6aaa673d985b4c431ed7f65cb12ff7794bf6af48fbced4f399f3b5dbd45da2cb",
+    "rtl/dma/har_dma_axi.sv": "a1feba50769690c3fd1016c93931ddc1411d447a7ff1cc3b6ebcd82f64d7814d",
+    "rtl/filelist.f": "585ecd828be977bb22ea7b0c3aa01d996c0fec54176201db6cc1281f58cf5ff6",
+    "rtl/include/axi/assign.svh": "fda021db4c1c67e0345bcf8feb5a501d77e759ce56cef31e6293bdce89ec6a84",
+    "rtl/include/axi/typedef.svh": "c2ef2098fea077e07100b9b9c40f2ac5453e7e01af407e236a810b43aeb8b2ef",
+    "rtl/include/common_cells/assertions.svh": "d44ed5ffbbfb69c65f5b398428c6b5b5a1103883b925040cbc7bece257d13b1a",
+    "rtl/include/common_cells/registers.svh": "a4e19da894564fd30a4dec4ca8466d181592c9202be2bf124fc4caa82b432d25",
+    "rtl/include/my_soc_pkg.sv": "1366702d96b1ea493246dd813261956309bd14bccdb627121662de2b014ea83b",
+    "rtl/memory/bootram.sv": "3a7930a2052e39d94d58042b27725eb60a16541463cfc92792dc0bb9727e714b",
+    "rtl/memory/bootrom.sv": "24f7966a9f6bd58e6cf28e9803b0bf1c66bb84feb5aef6306c472caba7be3710",
+    "rtl/memory/chip_sram_2048x32.sv": "8e2d5241c81dfb3fbeb0f64a7b042c8e553561f2ea6a42ee7c5f2331f32f22de",
+    "rtl/memory/my_mainmem.sv": "649ca8f38e5da58a7744228ea6893ef35c20ac0f6cbe16bd2ed35e44ecb913d4",
+    "rtl/memory/ra1shd_blackbox.sv": "bc8f3dbb1f1e7bc13338f986431a731aec51e457f8f1c93ca4eb90a0a2782874",
+    "rtl/memory/sram_transaction_reset.sv": "d3b9030e3c3e0612bb6fad4318df105582e90eac427100e41fdda02e3911ae1b",
+    "rtl/npu/har_npu_core.sv": "93adcc770bf449e124caad4d86fafb2360b13c65d9a5832a78706989263ef949",
+    "rtl/npu/har_weight_store.sv": "473106074ca66f795445cd3862104d7e57da364b6ab119996eb612934b7d2913",
+    "rtl/npu/simple_npu_top.sv": "ed24e874deeccedba01cd013c53ef3e83f47e4d466187c0670ed2e60d3522b72",
+    "rtl/soc/my_ifetch.sv": "3d8d8ba907e5ad8a4b27e1e8d4b4abf9958a9a32c49056ed81150eeedfed1ea0",
+    "rtl/soc/my_npu_subsystem.sv": "85f4fe6b1bf0a093224eb16524ffc5e950e921e9e9a9d21ea73787fddc1cfe21",
+    "rtl/soc/my_soc_top.sv": "c0f2b0b8d8f7c1f1c3b16e9e33f5d7b73cbe7e6fbf20e7cc54447d6cb8cf1a1a"
+  },
   "count": 38,
   "images": [
     {
@@ -28,7 +119,11 @@
       "batch": 4,
       "firmware_mode": "reuse8",
       "code_bytes": 1524,
-      "sha256": "a723b2c890d0b76eae9e1f5b975d2a2c34f0ec0b9cab9cc90d8f1d04b07809fb"
+      "halt_pc": 2147485168,
+      "sha256": "f4bea94e865ac33dd3236530c8ee206adedb84ec550255fae01966725e09dc5b",
+      "binary_file": "int8_random_00_batch4.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "657ea81fa79e78a55a62119a9b252f7b1e5d9301905c5c363b63fd531c66f03e"
     },
     {
       "file": "int8_random_01_batch2.hex",
@@ -37,7 +132,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 944,
-      "sha256": "3bbb0185548181e3bc1fbf73b5a06de2d6e0e499888f58e7d8cd320a3f81b3e4"
+      "halt_pc": 2147484588,
+      "sha256": "15631e52b19705bf56d421ac223536787b8953808c20794c4f0d8ec6a64755dc",
+      "binary_file": "int8_random_01_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "51a83fec20c6fe77865a5bb98303617a913bb0718c8a8fcf72deb3e3f8fb039a"
     },
     {
       "file": "int8_random_02_batch1.hex",
@@ -46,7 +145,11 @@
       "batch": 1,
       "firmware_mode": "reuse8",
       "code_bytes": 640,
-      "sha256": "1a99ea212d990b193250e345bf8e1a099059d1f6ebbcd6f6b77b83e31cdfa18e"
+      "halt_pc": 2147484284,
+      "sha256": "27ecb19cdf0d24ec3e04128aefb4a5fc0f010568ffb20a59cf6c0b1da6adc21b",
+      "binary_file": "int8_random_02_batch1.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "6c555debaaeaefbcfc353deec1a04d537118ab9974988fd149e5e2986cdf8dc8"
     },
     {
       "file": "int8_random_03_batch2.hex",
@@ -55,7 +158,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 940,
-      "sha256": "cb181829f7aaffa311d52181d4491c1ee10685e28a710de36d70dc24f2c17ada"
+      "halt_pc": 2147484584,
+      "sha256": "51e51fdc917831fa599ad5a239b10e81b8b01567fe554c138161088d9e7fb987",
+      "binary_file": "int8_random_03_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "2c047bf43eb005c9a4115c84e4846da1091b59f7b98342b2fb40f18ffe69a054"
     },
     {
       "file": "int8_random_04_batch1.hex",
@@ -64,7 +171,11 @@
       "batch": 1,
       "firmware_mode": "reuse8",
       "code_bytes": 644,
-      "sha256": "b1fd622929c1644c402c1c9b2ed2bb765c2114795822c0a681ed4910455512de"
+      "halt_pc": 2147484288,
+      "sha256": "c1d1b5c501f7b6b9a9b54e671f6b786ebc9cf8036b9a60b340167c5086b958c7",
+      "binary_file": "int8_random_04_batch1.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "bdf6aceb8668cfe1a645710edba8fac7d5b39610c821b61bf68f9226d86a938e"
     },
     {
       "file": "int8_random_05_batch2.hex",
@@ -73,7 +184,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 944,
-      "sha256": "cf6bf11a1facfaabd55f18d7247ff5281ce8bc40f8e51f4a5b456882c9190037"
+      "halt_pc": 2147484588,
+      "sha256": "b98e80e200674edd5fab0f3ad0325423ea96a15d6583ed9150e2e89d7b1b4ee2",
+      "binary_file": "int8_random_05_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "8ce19f8fdbb085a73f5db24b0ff48c5d320845289750539c0fe848c5ffeed4e5"
     },
     {
       "file": "int8_random_06_batch4.hex",
@@ -82,7 +197,11 @@
       "batch": 4,
       "firmware_mode": "reuse8",
       "code_bytes": 1520,
-      "sha256": "cc150e5c0c1ade23a5c6e0b64e0a544abff9b4afafc8f81a2e8a02f55e16c79f"
+      "halt_pc": 2147485164,
+      "sha256": "228f7d62d0daa30a7b2e71a2dbefb03cda43ac59044ca3d4b362f27196bbbb0a",
+      "binary_file": "int8_random_06_batch4.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "67e4c6bb55b4aae8d4905ca24ea0946be13173b924317d5be5fd48b32e63f848"
     },
     {
       "file": "int8_random_07_batch2.hex",
@@ -91,7 +210,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 940,
-      "sha256": "f705a70643adfb7966fa748f2be7508faa90706c8339e9523908b8315fea1dfe"
+      "halt_pc": 2147484584,
+      "sha256": "5a623919200cd04f2bdeb69f0cec7a3ea7830e2f7e6ab7cba1043e057d988598",
+      "binary_file": "int8_random_07_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "98fc0578aab3b911a7cd07bc0d7a68f770fd640fedc1f8d692ddf31de000ba4d"
     },
     {
       "file": "int8_random_08_batch1.hex",
@@ -100,7 +223,11 @@
       "batch": 1,
       "firmware_mode": "reuse8",
       "code_bytes": 644,
-      "sha256": "864c949463cb144bcdc2ba16235a7d04575a87ac537baf920267fa4254d16a8b"
+      "halt_pc": 2147484288,
+      "sha256": "92c02890bf86f70ffc380f687871e3ec99f6368dcab3249a3eef683f48aca475",
+      "binary_file": "int8_random_08_batch1.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "17639b00f3b10b794860a84e4d7d4c9f8e9134b5c278ba7aa29b898bbd656ad4"
     },
     {
       "file": "int8_random_09_batch2.hex",
@@ -109,7 +236,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 944,
-      "sha256": "d2a70da6f8084d1ede127d090ad32bc5e1fb7e9657496d83c69e8ac259a5cd6e"
+      "halt_pc": 2147484588,
+      "sha256": "a8a92fa30264d1df7e84079b8114d5e824c1759ff09ab0e82dfecc6210cb0f5e",
+      "binary_file": "int8_random_09_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "27f2f4864665737c45e5b31f5cfb358be130c2eba57b5207928f4a9d2ab676b4"
     },
     {
       "file": "int8_random_10_batch1.hex",
@@ -118,7 +249,11 @@
       "batch": 1,
       "firmware_mode": "reuse8",
       "code_bytes": 640,
-      "sha256": "f5a0ea6349dd3e130c6843764cd018ddc18bd1daed2a4f52fc11535ed4e709ee"
+      "halt_pc": 2147484284,
+      "sha256": "5960f894fe3f5cb4141923600f0174d056b0c64649bbdabc5473e9cbacb26972",
+      "binary_file": "int8_random_10_batch1.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "921d19ce11ae36b9c39142c46f82b62e2364e1473de46c89649fb952ef3600df"
     },
     {
       "file": "int8_random_11_batch2.hex",
@@ -127,7 +262,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 940,
-      "sha256": "80d646c942d6254d5b546e8ebe6957d6f283f7543d3710b1664a62e3b9ad90c2"
+      "halt_pc": 2147484584,
+      "sha256": "2acf5be8541e5aab3e3b37ce042fddcb2a5daeaf777146b08094c297b4d35b9c",
+      "binary_file": "int8_random_11_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "fabfbce76a89d4044fb07d0943e5845c2f72171d03253fe03d226b9503d4261e"
     },
     {
       "file": "int8_random_12_batch4.hex",
@@ -136,7 +275,11 @@
       "batch": 4,
       "firmware_mode": "reuse8",
       "code_bytes": 1524,
-      "sha256": "4759763b7e359cadeed1cf592011644702ef5e91532afc8af418c50da8e2dd94"
+      "halt_pc": 2147485168,
+      "sha256": "911edfe874028b53adefb3fee8bf9be134b9b93ac0e22b2f857d5718e8533252",
+      "binary_file": "int8_random_12_batch4.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "e87b997b90435180d9b63de0faf80fc21219110ef3d01dc9eb9293ef081c68f1"
     },
     {
       "file": "int8_random_13_batch2.hex",
@@ -145,7 +288,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 944,
-      "sha256": "b72e97d92253038373ed83d6633997e5d6cffda85104061d87857b0e4b65bfa7"
+      "halt_pc": 2147484588,
+      "sha256": "223f0a96f027b7afbcb77f5a7f26010abb2b8b115e55668a3ba8a62b5b187d25",
+      "binary_file": "int8_random_13_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "d1a4e50380043166528e0938c435f8a25a8e22fc177f1df9e30bd82bd5f5a8fe"
     },
     {
       "file": "int8_random_14_batch1.hex",
@@ -154,7 +301,11 @@
       "batch": 1,
       "firmware_mode": "reuse8",
       "code_bytes": 640,
-      "sha256": "b9269491cb48143392effe489c4da2fd560f58a57be549b8af042f7c0108df79"
+      "halt_pc": 2147484284,
+      "sha256": "d310633bd96f36e692c64ed038024ba0698840ab8fc8f8ef2d276c86d952d91e",
+      "binary_file": "int8_random_14_batch1.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "f736937c550d2bf292c5a0b7eba0580da1a731cfa0b3bb026aad5b6ff2608a30"
     },
     {
       "file": "int8_random_15_batch2.hex",
@@ -163,7 +314,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 940,
-      "sha256": "a4e2616c0fe60f57863ef2a24cd245996dc9ae727e3c4d58198ce5fee0140830"
+      "halt_pc": 2147484584,
+      "sha256": "626dcf9ed3ce2b7e9066fbebaf669e57705038b13d0c407f797ca41c5e07fa66",
+      "binary_file": "int8_random_15_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "10bf969988c5c81b396191d9f601fb754694227fdcf50b2b9396a2323aa58525"
     },
     {
       "file": "int8_random_16_batch1.hex",
@@ -172,7 +327,11 @@
       "batch": 1,
       "firmware_mode": "reuse8",
       "code_bytes": 644,
-      "sha256": "e2e7c7d2676e1032940d7a5420f8230a343feb652f1c2f9426dc6c3c7b0b70a1"
+      "halt_pc": 2147484288,
+      "sha256": "5cdc54572df9547eb5837340f02a275b32e910a8d76a9b14802bc38a26bf31a2",
+      "binary_file": "int8_random_16_batch1.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "f58046d03be9dc603556e1258c9b63e5f84aa204db4372bafb7c9abb5b52dbf1"
     },
     {
       "file": "int8_random_17_batch2.hex",
@@ -181,7 +340,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 944,
-      "sha256": "1cb18c3bf3c51055df00f6150199b8f92736e7a1aa88ba14eb29e7f02748662f"
+      "halt_pc": 2147484588,
+      "sha256": "d07b335c13cf0b3bf48838a40f7b464109ea4c97932711a88e92fdc319c02e48",
+      "binary_file": "int8_random_17_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "a800f02d4c3f3537e96e0052b2983588917831beb3d73ef353d40e10761a3e65"
     },
     {
       "file": "int8_random_18_batch4.hex",
@@ -190,7 +353,11 @@
       "batch": 4,
       "firmware_mode": "reuse8",
       "code_bytes": 1520,
-      "sha256": "fea0c15c93a0034bacff7961e17e4badffbdc40514753e57369d8a89f5cd9320"
+      "halt_pc": 2147485164,
+      "sha256": "9a962cb05b1e04cf593c63e1eebced04f99b0837387a9b157a3cfc5a717a6131",
+      "binary_file": "int8_random_18_batch4.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "4955cd04a47af73c760df8512b73dca61f2855ae876108e56be0975a6db31ad4"
     },
     {
       "file": "int8_random_19_batch2.hex",
@@ -199,7 +366,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 940,
-      "sha256": "dcc7fe78871d25903dc6c8c18086646fbbededa89e2f605834eaa8bddb7834a3"
+      "halt_pc": 2147484584,
+      "sha256": "4f9506ae7f53008f92f3491457c8c757ef9c2f263b23fc62db628c895e5abd53",
+      "binary_file": "int8_random_19_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "38b9435086757c947aa313dbe055a751c2a5366f09b73be641a75a9236f288c8"
     },
     {
       "file": "int8_random_20_batch1.hex",
@@ -208,7 +379,11 @@
       "batch": 1,
       "firmware_mode": "reuse8",
       "code_bytes": 644,
-      "sha256": "a1e7be45546b80e9b71997dac0d909b41f48bbf962673b02bcc8466c98371be6"
+      "halt_pc": 2147484288,
+      "sha256": "3a5a083f7833159319d7b9cd4fc442f842ef232c966608f67836d2bbb3a9eff3",
+      "binary_file": "int8_random_20_batch1.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "fd365054557802ccdc778319edeeb6c31f8e9d87b00510fc5cb5c9523fd7b544"
     },
     {
       "file": "int8_random_21_batch2.hex",
@@ -217,7 +392,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 944,
-      "sha256": "1e94c3f8a83a1e15241b3f249b778d56e4150084472e149eb48fdb6739911b20"
+      "halt_pc": 2147484588,
+      "sha256": "14b8d52bd97cc47031e767e8b4b1e03839a7937853b128141add9ee559dd3824",
+      "binary_file": "int8_random_21_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "2d35a033689f779ced917c3910ffec1c1cec37b2de845ecab543007548f980b4"
     },
     {
       "file": "int8_random_22_batch1.hex",
@@ -226,7 +405,11 @@
       "batch": 1,
       "firmware_mode": "reuse8",
       "code_bytes": 640,
-      "sha256": "d8e7e83471c145613df55820ecce2f9e91788116ff35d634f0877d1bce758370"
+      "halt_pc": 2147484284,
+      "sha256": "029f0c0c19c313fcd6427ad5e4db2b7acfe69c6eac986763d7a8d99c8eac5aab",
+      "binary_file": "int8_random_22_batch1.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "9bf02100ca679a341f4742f11e523b2b77a5de669456a708a833a129048c3129"
     },
     {
       "file": "int8_random_23_batch2.hex",
@@ -235,7 +418,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 940,
-      "sha256": "13c273541aa2f96e975b47bb5340e74f0682c877a2515eab832af851b72fa2e2"
+      "halt_pc": 2147484584,
+      "sha256": "0654e02afb9a9c6255beb09b30225041ec9e096354af6e699608081880cf22cd",
+      "binary_file": "int8_random_23_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "614e76f209cce712a121c686e687cbc0be05e003cc98551711796a87bb652e23"
     },
     {
       "file": "int8_random_24_batch4.hex",
@@ -244,7 +431,11 @@
       "batch": 4,
       "firmware_mode": "reuse8",
       "code_bytes": 1524,
-      "sha256": "54e9fd67e498820b5f95f30e46f6d44810a7dbf09233191a6802804786ef633e"
+      "halt_pc": 2147485168,
+      "sha256": "eb7106946cfff1ebeee32eb240e208bc023da8d6fde87360d3e8b24d644369c7",
+      "binary_file": "int8_random_24_batch4.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "ae8812f55480dc0120904f7fe4b9fe168b385e068583004c2f63f9b4a62cd3ad"
     },
     {
       "file": "int8_random_25_batch2.hex",
@@ -253,7 +444,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 944,
-      "sha256": "e00b71f7b03434b69bc820aef8489521cfffec89a91e700b55d56b8fbc02f214"
+      "halt_pc": 2147484588,
+      "sha256": "3ece565810f7b3c504a3e0147b79023cfa513525563d14b8fabbb631ea37c28d",
+      "binary_file": "int8_random_25_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "2161bd544982c2ab343927b4b274c4c81bb26674f397d2404586423cba5c85f8"
     },
     {
       "file": "int8_random_26_batch1.hex",
@@ -262,7 +457,11 @@
       "batch": 1,
       "firmware_mode": "reuse8",
       "code_bytes": 640,
-      "sha256": "4cec00b5e2c9de9066b136dcb5fc21d62d3f08f965211032b39ec5fa3715c500"
+      "halt_pc": 2147484284,
+      "sha256": "6ddf75a72732af8c6dfb26eae85926d14194484824e45ffb33664f7d49bd2818",
+      "binary_file": "int8_random_26_batch1.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "787b02893c1e5e78cca7cfecb8ae6f495a892131c3b6d1d73e9bcb6c1e2fba5d"
     },
     {
       "file": "int8_random_27_batch2.hex",
@@ -271,7 +470,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 940,
-      "sha256": "9c4bad3136690f4fdc9f412cf1c0585747ddbd06c90edc6446e587b4e571844e"
+      "halt_pc": 2147484584,
+      "sha256": "9ec9e0d173bddbd51fff4a7b9663abf79a1b2561509b218645556104187801a8",
+      "binary_file": "int8_random_27_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "7ad9debc0f6d8778353ea79a99053fe4457bc3cef0c9a21fa329585ebd2f9372"
     },
     {
       "file": "int8_random_28_batch1.hex",
@@ -280,7 +483,11 @@
       "batch": 1,
       "firmware_mode": "reuse8",
       "code_bytes": 644,
-      "sha256": "ffe0afc00d38e5fa33f4fd1f1033d437799388c0155ac9ca913240ead861720a"
+      "halt_pc": 2147484288,
+      "sha256": "2a9bb5d32e5680c6384d5b138052b164072dfe1e6be2d80792904a8007b190fd",
+      "binary_file": "int8_random_28_batch1.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "8acb990ad9f2e41bec0cc946e547981985a06799dedce066d61c427e9136d788"
     },
     {
       "file": "int8_random_29_batch2.hex",
@@ -289,7 +496,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 944,
-      "sha256": "aae768ce52768ec88f6c87336e87f300044dfa1fdc6088314be45cb85d2978ea"
+      "halt_pc": 2147484588,
+      "sha256": "f15af6ddab49524ed3bb6c22ba517acd0a7b21357c4c94c0d8ace21865f77f81",
+      "binary_file": "int8_random_29_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "d2c8bd2d2a4054391094d5c3b68d7744b3e9f09872e5bc7a0ff2fb9e8193966b"
     },
     {
       "file": "int8_random_30_batch4.hex",
@@ -298,7 +509,11 @@
       "batch": 4,
       "firmware_mode": "reuse8",
       "code_bytes": 1520,
-      "sha256": "8ed5e2e1d8f2e256780aea56c75adea266517489ec21c33fc30e904500d2140a"
+      "halt_pc": 2147485164,
+      "sha256": "e123e7ab164f80bfab7521f06e58c882ad097dc568979aadff975b0206fe3062",
+      "binary_file": "int8_random_30_batch4.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "e97d1c64a7adb32361b4a997c75fccfc8ddddd59e1c26b1cc02b9bd039ab2b83"
     },
     {
       "file": "int8_random_31_batch2.hex",
@@ -307,7 +522,11 @@
       "batch": 2,
       "firmware_mode": "reuse8",
       "code_bytes": 940,
-      "sha256": "f1852326564947274643e700abc61b5d0ea28bef10f72e509e00aee69656ea9e"
+      "halt_pc": 2147484584,
+      "sha256": "7837e24a8510a96a556421e84e7799da7f17c4c13f09d27901820b76dd9da8cb",
+      "binary_file": "int8_random_31_batch2.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "e3650786a9dd4ea97cd8bd6c6c883f5ba06080ff9f7afb4b0d9b1a97c88b718f"
     },
     {
       "file": "int8_uci_00_batch4.hex",
@@ -316,7 +535,11 @@
       "batch": 4,
       "firmware_mode": "reuse8",
       "code_bytes": 1520,
-      "sha256": "770876652242b4248f390845388a71c9146384bde80b18a4d674d1e8510a15d3"
+      "halt_pc": 2147485164,
+      "sha256": "a711b9f58714e77190dfbcc5c35a8cac1096a326b2eaf7e727f35e2900f68ac3",
+      "binary_file": "int8_uci_00_batch4.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "650ea777add595673dd39de8179a05a9fbb8e797e731c5e06aa49c1775c9e90f"
     },
     {
       "file": "int8_uci_01_batch4.hex",
@@ -325,7 +548,11 @@
       "batch": 4,
       "firmware_mode": "reuse8",
       "code_bytes": 1520,
-      "sha256": "a6c307d075ff6a22a2aef07e03ba7c53426d7a7a590da9ee7548691e9385cc2c"
+      "halt_pc": 2147485164,
+      "sha256": "330e41ed5af6d347922b8726e38f35fa037429aeb39b119cab88d5d8365f1880",
+      "binary_file": "int8_uci_01_batch4.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "35fb440f142a12bd7dee2deba4131d1a132c928d5dbc1f10d4100a7396c6df35"
     },
     {
       "file": "int8_uci_02_batch4.hex",
@@ -334,7 +561,11 @@
       "batch": 4,
       "firmware_mode": "reuse8",
       "code_bytes": 1520,
-      "sha256": "7b6041886a0eb40350fe3f528b5ffd79e76d6dfd56a532e6b47109909db699ef"
+      "halt_pc": 2147485164,
+      "sha256": "9826a22e7fffb67e35852cd52ee90cf79e4ec870d0cf1fe94e6f0511889f10f9",
+      "binary_file": "int8_uci_02_batch4.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "b55866e7857df5fd91ecaa6d05b0eb38061a7adeb2f55760717584797c9f883a"
     },
     {
       "file": "int8_uci_03_batch4.hex",
@@ -343,7 +574,11 @@
       "batch": 4,
       "firmware_mode": "reuse8",
       "code_bytes": 1520,
-      "sha256": "7b017325ee2096031f92bd8df8d8a8f92b616ec20e09859f84f2277f3185a3a7"
+      "halt_pc": 2147485164,
+      "sha256": "27e870bdb6ba4a995dec75b76a72f5cce3aaa6e51b3cfa86a9260a3c4c0c7ca0",
+      "binary_file": "int8_uci_03_batch4.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "25698354fa5e84fa619c371ea61255104be0353b20f95279d0d09dc231277a05"
     },
     {
       "file": "int8_uci_04_batch4.hex",
@@ -352,7 +587,11 @@
       "batch": 4,
       "firmware_mode": "reuse8",
       "code_bytes": 1520,
-      "sha256": "97482cca2819e913619d65a9ec1b3bb917a494464e23a2474cac42fe69b7f329"
+      "halt_pc": 2147485164,
+      "sha256": "401e3f206438b55d96fef39b019a3345b035b0668fd6ad7b64e2289a7885b3ce",
+      "binary_file": "int8_uci_04_batch4.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "4a6b10e8abb5153b768efa271fbc6b9f8066560c769e491e709d8bd7f0cd8459"
     },
     {
       "file": "int8_uci_05_batch4.hex",
@@ -361,7 +600,11 @@
       "batch": 4,
       "firmware_mode": "reuse8",
       "code_bytes": 1520,
-      "sha256": "c652787786df02e8eb06cbb02df406a30e41e8f1330a66f066c0c3a404f61aa1"
+      "halt_pc": 2147485164,
+      "sha256": "98ececbd34d90a9ec2ff0cfd09382d922d2847ba3bc128b161a2ebc58f346b48",
+      "binary_file": "int8_uci_05_batch4.bin",
+      "binary_bytes": 8192,
+      "binary_sha256": "631bb0641aeff30f11353b530f722c3d6640a0015a9152ede28b958094a30d19"
     }
   ],
   "retained_fixtures": [

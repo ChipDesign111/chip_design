@@ -1,0 +1,162 @@
+{
+  "name": "raw_full_b1_raw",
+  "family": "raw",
+  "backend": "raw",
+  "case": "full_b1",
+  "batch": 1,
+  "input_shape": [
+    1,
+    64
+  ],
+  "output_shape": [
+    1,
+    32
+  ],
+  "code_bytes": 848,
+  "halt_pc": 2147483904,
+  "firmware_selfcheck": false,
+  "npu_core_starts": 1,
+  "npu_batch": 1,
+  "batch_weight_reuse": false,
+  "description": "Calibrated PyTorch INT8 graph; all tensors checked externally by check.gdb",
+  "schema": 1,
+  "image_bytes": 8192,
+  "status_address": 2147491808,
+  "pass_value": 3235823838,
+  "fail_value": 3735928559,
+  "tag_address": 2147491812,
+  "tag_value": 2624038957,
+  "checks": [
+    {
+      "address": 2147491680,
+      "expected": 3888296924,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491684,
+      "expected": 3382778396,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491688,
+      "expected": 2032991126,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491692,
+      "expected": 1230815192,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491696,
+      "expected": 4005494587,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491700,
+      "expected": 838138352,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491704,
+      "expected": 13052502,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491708,
+      "expected": 3582279082,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491712,
+      "expected": 2374600065,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491716,
+      "expected": 2644088209,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491720,
+      "expected": 2913576353,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491724,
+      "expected": 3183064497,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491728,
+      "expected": 3469395650,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491732,
+      "expected": 3738883794,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491736,
+      "expected": 4008371938,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491740,
+      "expected": 4277860082,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491744,
+      "expected": 235537922,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491748,
+      "expected": 505026066,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491752,
+      "expected": 774514210,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491756,
+      "expected": 1044002354,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491760,
+      "expected": 1330333507,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491764,
+      "expected": 1599821651,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491768,
+      "expected": 1869309795,
+      "mask": 4294967295
+    },
+    {
+      "address": 2147491772,
+      "expected": 2138797939,
+      "mask": 4294967295
+    }
+  ],
+  "board_tested": false,
+  "cycle_counter_address": 65592,
+  "timing": "Hardware first non-debug fetch through PASS/FAIL, including firmware checks; not BEGIN/END cycles",
+  "files_sha256": {
+    "check.gdb": "cd1131f2325be0fa4ae8f23b27d31e0ca7e71a8f1b9c6a4b142aa5257b692228",
+    "firmware.bin": "6d1581583016cdce69ad6be849a96f2f653d00d672765e04b78dc9332923b960",
+    "firmware.hex": "0929af972e830250d36b247f44aee512dc421bf4d3de2c8f7fa476b83343d8aa",
+    "firmware.S": "87c892e29f4ec33d0f87b64ed9b4c28907af7fca2261af706f9529ba207815d5",
+    "manifest.json": "eba372dd9beb51287b4bb7f48ab7b61026163e8e86cc60e82fc4c036bc8126fd",
+    "reference.json": "6ce982d7a642e956d681909aa5ef1ced9e86b1d08d47ce13b6b8ee3c3c84c3fa"
+  }
+}
