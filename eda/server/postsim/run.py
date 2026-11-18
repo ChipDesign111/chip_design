@@ -33,7 +33,7 @@ def main():
     if root.exists():raise ValueError('Choose a NEW post-simulation run directory')
     if not (work/'evidence/step_34.json').is_file():raise ValueError('Missing completed EDA input')
     manifest_path=args.scenario_manifest.resolve();manifest=json.loads(manifest_path.read_text())
-    if (manifest.get('schema') not in (1,2) or not isinstance(manifest.get('legacy'),dict) or
+    if (manifest.get('schema') not in (1,2,3) or not isinstance(manifest.get('legacy'),dict) or
         not isinstance(manifest.get('raw'),list) or not manifest['raw'] or
         not isinstance(manifest.get('soc',[]),list)):
         raise ValueError('Unsupported post-simulation scenario manifest')
@@ -60,6 +60,9 @@ def main():
         kind=item.get('kind','raw_dynamic')
         if kind not in ('raw_dynamic','raw_optimized'):
             raise ValueError('Unsupported RAW scenario kind')
+        if item.get('benchmark') and (item.get('backend') not in ('raw','optimized') or
+                                      not re.fullmatch(r'[a-z0-9_]+',str(item.get('model_case','')))):
+            raise ValueError('Invalid RAW benchmark identity')
         if kind=='raw_dynamic':
             output_blocks=(item['outputs']+31)//32
             input_blocks=(item['inputs']+63)//64
@@ -90,6 +93,9 @@ def main():
             raise ValueError('Invalid SoC-only scenario name')
         if item.get('kind') not in ('cpu_only','har_benchmark'):
             raise ValueError('Unsupported SoC-only scenario kind')
+        if item.get('benchmark') and (item.get('backend') not in ('cpu','npu') or
+                                      not re.fullmatch(r'[a-z0-9_]+',str(item.get('model_case','')))):
+            raise ValueError('Invalid SoC benchmark identity')
         if item['name'] in seen_names:raise ValueError('Duplicate scenario name')
         seen_names.add(item['name'])
         soc_cases.append({**item,'path':firmware_file(item.get('firmware'))})
@@ -157,20 +163,28 @@ def main():
                '+RAW_READS=%d'%raw['reads'],'+RAW_W1_BASE=%x'%raw['w1_base']]
         if raw.get('dma_ranges'):
             flags.append('+RAW_RANGE_FILE')
+        if raw.get('benchmark'):
+            flags.append('+BENCH_SCENARIO')
         cases.append({'mode':'sdf_'+raw['name'],'kind':raw['kind'],
                       'flags':flags,
                       'firmware':raw['path'],
                       'metadata':{k:raw[k] for k in
-                                  ('kind','fixture','tiles','outputs','inputs','reads','w1_base')
+                                  ('kind','fixture','tiles','outputs','inputs','reads','w1_base',
+                                   'backend','model_case','benchmark')
                                   if k in raw},
                       'extras':{'dma_ranges.hex':[len(raw.get('dma_ranges',[]))]+
                                 [value for pair in raw.get('dma_ranges',[]) for value in pair]}
                                 if raw.get('dma_ranges') else {}})
     for soc in soc_cases:
         flag='+SOC_SCENARIO_CPU_ONLY' if soc['kind']=='cpu_only' else '+SOC_SCENARIO_HAR_BENCHMARK'
+        flags=[flag]
+        if soc.get('benchmark'):
+            flags.append('+BENCH_SCENARIO')
         cases.append({'mode':'sdf_soc_'+soc['name'],'kind':soc['kind'],
-                      'flags':[flag],'firmware':soc['path'],
-                      'metadata':{k:soc[k] for k in ('kind','tiles','layer_dispatch') if k in soc},
+                      'flags':flags,'firmware':soc['path'],
+                      'metadata':{k:soc[k] for k in
+                                  ('kind','tiles','layer_dispatch','backend','model_case','benchmark')
+                                  if k in soc},
                       'extras':{}})
     plan=[{**{k:v for k,v in case.items() if k!='firmware'},'firmware':str(case['firmware'])}
           for case in cases]
@@ -207,10 +221,25 @@ def main():
         legacy_match=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
         raw_match=re.search(r'FUNCTIONAL_PASS cycles=(\d+) scenario=raw_soc tiles=(\d+) outputs=(\d+) inputs=(\d+) reads=(\d+)',text)
         soc_match=re.search(r'FUNCTIONAL_PASS cycles=(\d+) scenario=(cpu_only|har_benchmark)',text)
+        benchmark_match=re.search(
+            r'BENCHMARK_INTERVAL cycles=(\d+) begin_cycle=(\d+) end_cycle=(\d+)',text)
         reset_match=re.search(r'RESET_ASSERT offset_ps=(\d+)',text)
         match=(raw_match if case['kind'].startswith('raw_') else
                soc_match if case['kind'] in ('cpu_only','har_benchmark') else legacy_match)
         if not match or not reset_match or 'POSTSIM_DONE' not in text:raise RuntimeError('Functional/reset result missing: '+mode)
+        if case['metadata'].get('benchmark'):
+            if not benchmark_match:
+                raise RuntimeError('Benchmark BEGIN/END result missing: '+mode)
+            benchmark_values=dict(zip(
+                ('benchmark_cycles','begin_cycle','end_cycle'),
+                map(int,benchmark_match.groups())))
+            if (benchmark_values['begin_cycle']<0 or
+                benchmark_values['end_cycle']<=benchmark_values['begin_cycle'] or
+                benchmark_values['benchmark_cycles']!=
+                benchmark_values['end_cycle']-benchmark_values['begin_cycle']):
+                raise RuntimeError('Invalid benchmark cycle interval: '+mode)
+        else:
+            benchmark_values={}
         io_events=[{'time_ps':int(t),'instance':i.strip()} for t,i in re.findall(r'ERROR\s*:\s*(\d+)\s*\+\+BUS CONFLICT\+\+\s*:\s*([^\r\n]+)',text)]
         if case['kind'].startswith('raw_'):
             raw_values=dict(zip(('observed_cpu_cycles','raw_tiles','raw_outputs','raw_inputs','raw_reads'),map(int,match.groups())))
@@ -225,6 +254,7 @@ def main():
         else:
             result_values=dict(zip(('observed_cpu_cycles','npu_cycles','dma_mac_overlap','read_overlap','write_overlap'),
                                    map(int,legacy_match.groups())))
+        result_values.update(benchmark_values)
         results[mode]={'functional_pass':True,'kind':case['kind'],'values':result_values,
                        'timing_violation_messages':len(re.findall(r'Timing violation',text,re.I)),
                        'reset_offset_ps':int(reset_match.group(1)),

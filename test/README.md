@@ -59,7 +59,7 @@ python test/int8/run_raw_batch_reuse.py --soc --vsim /path/to/vsim
 
 默认比较原逐样本 RAW 与新调度，覆盖 batch=1/2/3/4、跨输入/输出块、CPU 边缘、多层激活、INT32 大累加、零位移重定标，以及容量不足时的回退。`--backend cpu --backend sequential --backend reuse` 可加入纯 CPU；相同固件只仿真一次并标明复用的结果。testbench 检查实际硬件 batch、每次任务的 `128×batch` 发射、32 个 W1 描述符及所有输出，详情见 [批处理权重复用](../report/raw_batch_reuse.md)。
 
-`python eda/postsim.py run` 已把当前前仿的代表场景加入完整SoC SDF后仿：动态打包 `tail_33x65`、预打包 `full_32x64`／`tail_33x65`／CPU→RAW→CPU三层、CPU-only自动回退，以及 HAR 加速比的 CPU/HAR batch=4 成对固件。它要求完成34步的物理版本由当前分支RTL生成；若RTL相对物理提交未变，可复用同一网表和SDF，但仍须重跑新固件。历史HAR物理包不能代替RAW验证，也不能只凭上述RTL功能仿真宣称版后时序通过，SDF下的加速比固件测试也不重新生成性能结论。场景矩阵和判读见[后仿真操作指南](../eda/docs/后仿真操作指南.md)。
+`python eda/postsim.py run` 已把当前前仿的代表场景加入完整SoC SDF后仿：动态打包 `tail_33x65`、预打包 `full_32x64`／`tail_33x65`／CPU→RAW→CPU三层、对应的四个CPU后端，以及 HAR 加速比的 CPU/HAR batch=4 成对固件。所有 benchmark 固件与前仿共享 `0x80001fc0` 的 BEGIN/END marker；后仿在最终SRAM宏写口重算 `benchmark_cycles` 和成对加速比，并继续把 golden 检查放在 END 后。它要求完成34步的物理版本由当前分支RTL生成；若RTL相对物理提交未变，可复用同一网表和SDF，但仍须重跑新固件。历史HAR物理包不能代替RAW验证，也不能只凭上述RTL功能仿真宣称版后时序通过。场景矩阵和判读见[后仿真操作指南](../eda/docs/后仿真操作指南.md)。
 
 取指模块的独立协议回归使用 Xcelium：
 

@@ -44,7 +44,7 @@ def build_firmware(directory):
     fixture,layers,inputs=raw_fixture
     if len(layers)!=1:raise ValueError('RAW post-sim fixture must contain one layer')
     raw_directory=directory/('raw_'+fixture)
-    metadata=build_generic(raw_directory,layers,inputs)
+    metadata=build_generic(raw_directory,layers,inputs,backend='raw',benchmark=True)
     raw_file='raw_'+fixture+'.hex'
     (directory/raw_file).write_bytes((raw_directory/'firmware.hex').read_bytes())
     outputs=len(layers[0].weights)
@@ -52,7 +52,8 @@ def build_firmware(directory):
     raw_cases=[{'name':'raw_tail_33x65','kind':'raw_dynamic','fixture':fixture,
                 'firmware':raw_file,'tiles':metadata['tile_count'],
                 'outputs':outputs,'inputs':len(inputs),'reads':raw_reads,
-                'w1_base':metadata['work_address'],'dma_ranges':[]}]
+                'w1_base':metadata['work_address'],'dma_ranges':[],
+                'backend':'raw','model_case':fixture,'benchmark':True}]
 
     # Fixed-weight image generation permutes complete 32x64 hardware blocks.
     # Cover no fringe, both fringes and an interleaved CPU->RAW->CPU sequence.
@@ -60,7 +61,7 @@ def build_firmware(directory):
     for case_name in ('full_32x64','tail_33x65','hybrid_layers'):
         name,case_layers,case_inputs=benchmark_by_name[case_name]
         target=directory/('optimized_'+name)
-        meta=build_optimized(target,case_layers,case_inputs)
+        meta=build_optimized(target,case_layers,case_inputs,benchmark=True)
         raw_dispatch=[item for item in meta.get('layer_dispatch',[])
                       if item.get('raw_tiles',0)]
         if not raw_dispatch or meta.get('tile_count',0)<=0:
@@ -74,20 +75,21 @@ def build_firmware(directory):
             'outputs':first['outputs'],'inputs':first['inputs'],
             'reads':32*meta['tile_count'],'w1_base':meta['work_address'],
             'dma_ranges':meta.get('dma_ranges',[]),
-            'layer_dispatch':meta.get('layer_dispatch',[])})
+            'layer_dispatch':meta.get('layer_dispatch',[]),
+            'backend':'optimized','model_case':name,'benchmark':True})
 
     soc_cases=[]
-    cpu_name,cpu_layers,cpu_inputs=next(
-        item for item in fixtures() if item[0]=='three_layers')
-    cpu_directory=directory/('optimized_cpu_'+cpu_name)
-    cpu_meta=build_optimized(cpu_directory,cpu_layers,cpu_inputs)
-    if cpu_meta.get('tile_count')!=0:
-        raise ValueError('CPU-only optimized scenario unexpectedly contains RAW work')
-    cpu_file='soc_optimized_cpu_three_layers.hex'
-    (directory/cpu_file).write_bytes((cpu_directory/'firmware.hex').read_bytes())
-    soc_cases.append({'name':'optimized_cpu_three_layers','kind':'cpu_only',
-                      'firmware':cpu_file,'tiles':0,
-                      'layer_dispatch':cpu_meta.get('layer_dispatch',[])})
+    for case_name in ('full_32x64','tail_33x65','hybrid_layers','three_layers'):
+        name,cpu_layers,cpu_inputs=benchmark_by_name[case_name]
+        cpu_directory=directory/('benchmark_cpu_'+name)
+        build_generic(cpu_directory,cpu_layers,cpu_inputs,
+                      backend='cpu',benchmark=True)
+        cpu_file='soc_benchmark_cpu_'+name+'.hex'
+        (directory/cpu_file).write_bytes((cpu_directory/'firmware.hex').read_bytes())
+        soc_cases.append({'name':'benchmark_cpu_'+name,'kind':'cpu_only',
+                          'firmware':cpu_file,'tiles':0,
+                          'backend':'cpu','model_case':name,'benchmark':True,
+                          'layer_dispatch':[]})
 
     # Exercise the paired speedup fixtures under SDF. This checks gate-level
     # function; it does not turn the 20ns SDF run into a new speedup claim.
@@ -97,7 +99,9 @@ def build_firmware(directory):
         flat_name='soc_har_benchmark_'+backend+'_batch4.hex'
         (directory/flat_name).write_bytes((target/'firmware.hex').read_bytes())
         soc_cases.append({'name':'har_benchmark_'+backend+'_batch4',
-                          'kind':'har_benchmark','firmware':flat_name,'tiles':0})
+                          'kind':'har_benchmark','firmware':flat_name,'tiles':0,
+                          'backend':backend,'model_case':'har_seed10000_batch4',
+                          'benchmark':True})
 
     generators={}
     for name in ('firmware.py','generic_firmware.py','generic_runtime.py',
@@ -106,10 +110,17 @@ def build_firmware(directory):
         path=ROOT/'test/int8'/name
         generators['test/int8/'+name]=hashlib.sha256(path.read_bytes()).hexdigest()
     manifest={
-        'schema':2,
+        'schema':3,
         'legacy':{'primary':'firmware.hex','gate_unit':'firmware.hex','reset_sweep':reset_sweep},
         'raw':raw_cases,
         'soc':soc_cases,
+        'benchmark_protocol':{
+            'address':0x80001fc0,
+            'begin_word':1,
+            'end_word':2,
+            'timing':'accepted SRAM BEGIN to END stores; golden checks after END',
+            'clock_period_ns':20
+        },
         'generators':generators
     }
     (directory/'scenarios.json').write_text(json.dumps(manifest,indent=2)+'\n')
@@ -144,7 +155,7 @@ def main():
                               (raw['name'],raw['tiles'],raw['reads']) for raw in scenarios['raw'])
         soc_summary='\n'.join('- `%s`：%s' % (soc['name'],soc['kind'])
                               for soc in scenarios.get('soc',[]))
-        guide='# 本次是已完成版图的后仿运行\n\n物理输入：`'+eda+'`。后仿目录：`'+upload+'`。不重新运行34步，原work不修改。\n\n本矩阵同时执行动态 RAW、预打包 RAW、CPU-only 回退及 HAR 加速比固件的门级场景：\n\n'+raw_summary+'\n'+soc_summary+'\n\n所有最终检查使用同一份版后网表和 TT SDF；仿真只验证功能与动态时序，不以 20 ns SDF 周期重新宣称前仿加速比。\n\n'+(ROOT/'eda/docs/后仿真操作指南.md').read_text(encoding='utf-8')
+        guide='# 本次是已完成版图的后仿运行\n\n物理输入：`'+eda+'`。后仿目录：`'+upload+'`。不重新运行34步，原work不修改。\n\n本矩阵同时执行动态 RAW、预打包 RAW、成对 CPU benchmark 及 HAR 加速比固件的门级场景：\n\n'+raw_summary+'\n'+soc_summary+'\n\nRAW、CPU 与 HAR benchmark 都使用与前仿相同的 BEGIN/END marker。后仿额外报告门级 BEGIN→END 周期和 CPU/后端加速比；20 ns 是版后 SDF 约束，不把后仿墙钟时间当作频率签核。\n\n'+(ROOT/'eda/docs/后仿真操作指南.md').read_text(encoding='utf-8')
         ui=firmware/'gui';ui.mkdir();(ui/'README.md').write_text(guide,encoding='utf-8');(ui/'README.html').write_text(html_page(guide),encoding='utf-8')
         remote.scp(args.host,[ui/'README.md',ui/'README.html'],upload+'/')
         remote.scp(args.host,list(firmware.glob('*.hex'))+[firmware/'scenarios.json'],upload+'/configs/')

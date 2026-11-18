@@ -13,6 +13,10 @@ def audit(root):
     inputs=json.loads((root/'input_manifest.json').read_text())
     plan_path=root/'run_plan.json'
     plan=json.loads(plan_path.read_text()) if plan_path.is_file() else []
+    plan_by_mode={item.get('mode'):item for item in plan if isinstance(item,dict)}
+    expected_benchmark_modes=sorted(
+        item.get('mode') for item in plan
+        if isinstance(item,dict) and item.get('metadata',{}).get('benchmark'))
     expected_raw_modes=sorted(item.get('mode') for item in plan
                               if isinstance(item,dict) and str(item.get('kind','')).startswith('raw_'))
     expects_optimized=any(isinstance(item,dict) and item.get('kind')=='raw_optimized'
@@ -59,7 +63,12 @@ def audit(root):
         legacy=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
         raw=re.search(r'FUNCTIONAL_PASS cycles=(\d+) scenario=raw_soc tiles=(\d+) outputs=(\d+) inputs=(\d+) reads=(\d+)',text)
         soc=re.search(r'FUNCTIONAL_PASS cycles=(\d+) scenario=(cpu_only|har_benchmark)',text)
+        bench=re.search(r'BENCHMARK_INTERVAL cycles=(\d+) begin_cycle=(\d+) end_cycle=(\d+)',text)
         if (not legacy and not raw and not soc) or 'POSTSIM_DONE' not in text:raise ValueError('Incomplete functional run')
+        planned=plan_by_mode.get(mode.name,{})
+        metadata=planned.get('metadata',{})
+        if metadata.get('benchmark') and not bench:
+            raise ValueError('Missing benchmark interval: '+mode.name)
         clocks=[float(x) for x in re.findall(r'CLOCK_AT_CORE time_ns=([\d.]+)',text)]
         if raw:
             case_values=dict(zip(['observed_cpu_cycles','raw_tiles','raw_outputs','raw_inputs','raw_reads'],
@@ -72,10 +81,19 @@ def audit(root):
             case_values=dict(zip(['observed_cpu_cycles','npu_cycles','dma_mac_overlap','read_overlap','write_overlap'],
                                  map(int,legacy.groups())))
             scenario='legacy'
-        summary['cases'][mode.name]={'functional_pass':True,'scenario':scenario,**case_values,
+        case_summary={'functional_pass':True,'scenario':scenario,**case_values,
             'active_start_ns':start,'active_end_ns':end,'clock_core_edges_ns':clocks,
             'timing_counts':dict(collections.Counter(x['phase'] for x in violations)),
-            'timing_violations':violations}
+            'timing_violations':violations,
+            'backend':metadata.get('backend'),'model_case':metadata.get('model_case'),
+            'benchmark':bool(metadata.get('benchmark'))}
+        if bench:
+            cycles,begin,end=map(int,bench.groups())
+            if cycles!=end-begin or begin<0 or end<=begin:
+                raise ValueError('Invalid benchmark interval: '+mode.name)
+            case_summary.update(benchmark_cycles=cycles,benchmark_begin_cycle=begin,
+                                benchmark_end_cycle=end)
+        summary['cases'][mode.name]=case_summary
         reported=len(re.findall(r'Timing violation',text,re.I))
         if reported!=len(violations):raise ValueError('Unparsed timing violations; cannot claim clean: '+mode.name)
     summary['binding_complete_for_instances_and_checks']=not (error_count or summary['missing_instances'] or summary['unmatched_timing_checks'] or unmatched_paths)
@@ -96,6 +114,38 @@ def audit(root):
         x.get('scenario')=='cpu_only' for x in summary['cases'].values())
     summary['har_benchmark_cases_present']=sorted(
         name for name,value in summary['cases'].items() if value.get('scenario')=='har_benchmark')
+    benchmark_cases={name:value for name,value in summary['cases'].items()
+                     if value.get('benchmark') and 'benchmark_cycles' in value}
+    by_model={}
+    for name,value in benchmark_cases.items():
+        if value.get('model_case') and value.get('backend'):
+            by_model.setdefault(value['model_case'],{})[value['backend']]=value
+    comparisons={}
+    pair_errors=[]
+    for model,candidates in sorted(by_model.items()):
+        cpu=candidates.get('cpu')
+        if cpu is None:
+            if any(backend!='cpu' for backend in candidates):
+                pair_errors.append(model+': missing CPU pair')
+            continue
+        entry={'cpu_cycles':cpu['benchmark_cycles'],'compared_cycles':{},
+               'speedup_cpu_over_backend':{}}
+        for backend,value in sorted(candidates.items()):
+            if backend=='cpu':continue
+            entry['compared_cycles'][backend]=value['benchmark_cycles']
+            entry['speedup_cpu_over_backend'][backend]=(
+                cpu['benchmark_cycles']/value['benchmark_cycles'])
+        comparisons[model]=entry
+    actual_benchmark_modes=sorted(
+        name for name,value in summary['cases'].items()
+        if value.get('benchmark') and 'benchmark_cycles' in value)
+    summary['benchmark_protocol_complete']=(
+        set(expected_benchmark_modes)<=set(actual_benchmark_modes) and not pair_errors)
+    summary['benchmark_expected_cases']=expected_benchmark_modes
+    summary['benchmark_present_cases']=actual_benchmark_modes
+    summary['benchmark_pair_errors']=pair_errors
+    summary['benchmark_speedups']=comparisons
+    summary['benchmark_clock_period_ns']=20
     summary['active_window_dynamic_timing_clean']=all(not x['timing_counts'].get('active',0) for x in summary['cases'].values())
     summary['normal_acceptance']={
         'functional_pass':bool(summary['cases']) and all(x['functional_pass'] for x in summary['cases'].values()),
@@ -105,6 +155,7 @@ def audit(root):
         'har_benchmark_cases_present':(set(expected_har_modes)<=
                                        set(summary['har_benchmark_cases_present']))
                                       if expected_har_modes else True,
+        'benchmark_protocol_complete':summary['benchmark_protocol_complete'],
         'sdf_binding_complete':summary['binding_complete_for_instances_and_checks'],
         'dynamic_timing_clean':bool(summary['cases']) and all(not x['timing_violations'] for x in summary['cases'].values()),
         'warnings_are_reported_not_required_to_be_zero':True}
@@ -113,6 +164,7 @@ def audit(root):
                                         'raw_optimized_case_present',
                                         'prepacked_cpu_fallback_case_present',
                                         'har_benchmark_cases_present',
+                                        'benchmark_protocol_complete',
                                         'sdf_binding_complete','dynamic_timing_clean'])
     summary['scope']=('Full notifier/message checking across legacy HAR, dynamic RAW, prepacked RAW, '
                       'CPU fallback and paired HAR-benchmark firmware on one final gate netlist/SDF; '

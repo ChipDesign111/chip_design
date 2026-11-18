@@ -29,6 +29,7 @@ module tb_postsim;
   integer cycles=0,i;
   integer reset_offset_ps=2000;
   integer raw_scenario=0,raw_range_file=0,soc_cpu_only=0,soc_har_benchmark=0;
+  integer benchmark_scenario=0,benchmark_begin_cycle=-1,benchmark_end_cycle=-1;
   integer raw_expected_tiles=0,raw_expected_outputs=0;
   integer raw_expected_inputs=0,raw_expected_reads=0,timeout_cycles=200000;
   integer raw_prefetches=0;
@@ -118,15 +119,28 @@ module tb_postsim;
   // command/response phase. Do not report completion before the SRAM access.
   always @(posedge dut.i_mainmem.i_sram.i_macro.CLK) begin
     if(dut.i_mainmem.i_sram.i_macro.CEN===1'b0 &&
-       dut.i_mainmem.i_sram.i_macro.WEN===4'b0000 &&
-       dut.i_mainmem.i_sram.i_macro.A===11'h7f8)
-      magic<=dut.i_mainmem.i_sram.i_macro.D;
+       dut.i_mainmem.i_sram.i_macro.WEN===4'b0000) begin
+      if(dut.i_mainmem.i_sram.i_macro.A===11'h7f8)
+        magic<=dut.i_mainmem.i_sram.i_macro.D;
+      if(benchmark_scenario && dut.i_mainmem.i_sram.i_macro.A===11'h7f0) begin
+        if(dut.i_mainmem.i_sram.i_macro.D===32'd1) begin
+          if(benchmark_begin_cycle>=0)
+            $fatal(1,"Duplicate benchmark BEGIN");
+          benchmark_begin_cycle=cycles;
+        end else if(dut.i_mainmem.i_sram.i_macro.D===32'd2) begin
+          if(benchmark_begin_cycle<0 || benchmark_end_cycle>=0)
+            $fatal(1,"Invalid benchmark END");
+          benchmark_end_cycle=cycles;
+        end
+      end
+    end
   end
   initial begin
     raw_scenario=$test$plusargs("RAW_SCENARIO");
     raw_range_file=$test$plusargs("RAW_RANGE_FILE");
     soc_cpu_only=$test$plusargs("SOC_SCENARIO_CPU_ONLY");
     soc_har_benchmark=$test$plusargs("SOC_SCENARIO_HAR_BENCHMARK");
+    benchmark_scenario=$test$plusargs("BENCH_SCENARIO");
     if(soc_cpu_only && soc_har_benchmark) $fatal(1,"Conflicting SoC-only scenario flags");
     if(raw_scenario && (soc_cpu_only || soc_har_benchmark))
       $fatal(1,"RAW and SoC-only scenario flags cannot be combined");
@@ -205,6 +219,13 @@ module tb_postsim;
         $fatal(1,"No actual DMA/MAC overlap");
       $display("FUNCTIONAL_PASS cycles=%0d npu_cycles=%0d dma_mac_overlap=%0d read_overlap=%0d write_overlap=%0d time_ns=%0.3f",
                cycles,stats[0],stats[1],stats[2],stats[3],$realtime);
+    end
+    if(benchmark_scenario) begin
+      if(benchmark_begin_cycle<0 || benchmark_end_cycle<=benchmark_begin_cycle)
+        $fatal(1,"Missing or invalid benchmark BEGIN/END interval");
+      $display("BENCHMARK_INTERVAL cycles=%0d begin_cycle=%0d end_cycle=%0d",
+               benchmark_end_cycle-benchmark_begin_cycle,
+               benchmark_begin_cycle,benchmark_end_cycle);
     end
     $display("ACTIVE_END time_ns=%0.3f",$realtime);
     if(!$value$plusargs("RESET_OFFSET_PS=%d",reset_offset_ps)) reset_offset_ps=2000;
