@@ -1,6 +1,6 @@
 # INT22 RAW GEMV 全流程 EDA 结果
 
-本次结果绑定物理部署提交 `fe04981`，功能 RTL 为 `0e2d0cf`。物理、TT SDF 后仿和 Lab5 均由本机同一套 TSMC180 工具环境执行。
+本次结果绑定物理部署提交 `fe04981`，功能 RTL 为 `0e2d0cf`。物理、TT SDF 后仿和版图完成与签核均由本机同一套 TSMC180 工具环境执行。
 
 ## 物理实现
 
@@ -33,11 +33,11 @@
 
 所有报告路径 slack 均非负。
 
-## Lab5
+## 版图完成与签核
 
-Lab5 完成输入审计、CDL 转换、Seal Ring/POC、pre/post dummy DRC、金属及 OD/PO dummy、LVS、ERC、天线和 Wire Bond。
+版图完成与签核流程完成输入审计、CDL 转换、Seal Ring/POC、pre/post dummy DRC、金属及 OD/PO dummy、LVS、ERC、天线和 Wire Bond。历史 `Lab5` 路径通过兼容符号链接保留。
 
-- `lab5_pass=true`。
+- `layout_signoff_pass=true`。
 - LVS CORRECT，605 条 trace property 核对。
 - 天线 62 项、Wire Bond 64 项，违规均为 0。
 - post-dummy DRC 的剩余非课程排除项为空。

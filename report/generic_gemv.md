@@ -100,7 +100,7 @@ bias 只加入一次，ReLU、舍入和 INT8 饱和只在该输出的全部输�
 | `rtl/npu/simple_npu_top.sv` | `ed24e874deeccedba01cd013c53ef3e83f47e4d466187c0670ed2e60d3522b72` |
 | `rtl/npu/har_weight_store.sv`（两版相同） | `473106074ca66f795445cd3862104d7e57da364b6ab119996eb612934b7d2913` |
 
-原版/新版利用率报告 SHA 分别为 `a5c32b4af9dc0caa75f10b7f5b52171ec163d57219fcad5971be7bcd4a750703`、`3b32aa5258d40cc189550288093d0fdd5d94102e06780449e1edc443c8a3ff80`。本轮随后完成了全新 Genus/Innovus 01–34、同源 TT SDF 后仿和 Lab5，结果见[全流程 EDA 结果](../eda/results/fullflow_fe04981_20261118/README.md)。
+原版/新版利用率报告 SHA 分别为 `a5c32b4af9dc0caa75f10b7f5b52171ec163d57219fcad5971be7bcd4a750703`、`3b32aa5258d40cc189550288093d0fdd5d94102e06780449e1edc443c8a3ff80`。本轮随后完成了全新 Genus/Innovus 01–34、同源 TT SDF 后仿和版图完成与签核，结果见[全流程 EDA 结果](../eda/results/fullflow_fe04981_20261118/README.md)。
 
 ## 完整SoC后仿入口
 

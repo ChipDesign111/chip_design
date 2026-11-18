@@ -5,7 +5,7 @@
   "rtl_commit": "0e2d0cf3a6dea5d26836f147072179fab82171c4",
   "physical_upload": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261118_fe04981_1",
   "postsim_root": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261118_fe04981_1/postsim_tt_5",
-  "lab5_upload": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261118_61993db_lab5",
+  "layout_signoff_upload": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261118_layout_signoff_61993db",
   "implementation": {
     "last_completed_step": 34,
     "environment_exit_code": 0,
@@ -66,8 +66,8 @@
     "reset_to_request_hold_slack_ns": 11.493,
     "all_reported_slacks_nonnegative": true
   },
-  "lab5": {
-    "lab5_pass": true,
+  "layout_signoff": {
+    "layout_signoff_pass": true,
     "status": "course_checks_passed_with_documented_exceptions",
     "lvs_correct": true,
     "trace_property_count": 605,
@@ -80,5 +80,5 @@
     "drc_remaining_nonexcluded": {},
     "original_inputs_unchanged": true
   },
-  "scope": "Local TSMC180 RTL-to-physical flow with fresh synthesis, 34 Innovus steps, same-database TT SDF simulation and Lab5. Density 75.005% is an explicit user-accepted exception to the default 75% limit. Not an independent foundry DRC/LVS, multi-PVT timing, SI, IR/EM/ESD or board-signoff claim."
+  "scope": "Local TSMC180 RTL-to-physical flow with fresh synthesis, 34 Innovus steps, same-database TT SDF simulation and layout completion/signoff checks. Density 75.005% is an explicit user-accepted exception to the default 75% limit. Not an independent foundry DRC/LVS, multi-PVT timing, SI, IR/EM/ESD or board-signoff claim."
 }

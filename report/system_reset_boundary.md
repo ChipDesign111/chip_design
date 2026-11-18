@@ -22,7 +22,7 @@ dea5584已以干净源完成新Genus和34步物理实现，环境/EDA/整理/入
 
 TT静态Setup/Hold为+3.825/+0.115 ns。新TT17用例功能全过，绑定错误/缺失/全部阶段动态违规/负IOPATH截零均0。原先两条复位事件所处相位保留，未改生产激励、SDF、模型或检查。相同最终DB的多角最差SRAM输入半周期Setup/Hold为+1.951/+9.935 ns，输出+0.367/+10.879 ns（Setup取SS、Hold取FF−40，不作为TT专属数值）；共享功能复位至port_req_q/D为+6.714/+11.064 ns，报告含真实下降沿发射/上升沿采样及传播时钟。
 
-新同源Lab5完成，WB64项0违规、最终天线0、完整LVS正确；课程DRC残项和按原生IO/外环几何核对的ERC残项保留，不称ERC Clean或完整代工厂签核。本轮只跑TT SDF；独立main RTL、Dummy后STA、IR/EM等没有因此被验证。
+新版图完成与签核已通过同源验证，WB64项0违规、最终天线0、完整LVS正确；课程DRC残项和按原生IO/外环几何核对的ERC残项保留，不称ERC Clean或完整代工厂签核。本轮只跑TT SDF；独立main RTL、Dummy后STA、IR/EM等没有因此被验证。
 
 [完整最终结果及SHA来源](../eda/results/system_reset_unified_20261113/README.md)。20ns、3.8mm²与原生电气/几何规则保持。有限相位测试及静态分析不等于所有异步相位的亚稳态证明。
 

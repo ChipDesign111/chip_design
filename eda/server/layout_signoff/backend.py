@@ -1,4 +1,4 @@
-"""Course Lab5 native tool stages. Report raw errors before teaching exclusions."""
+"""Course 版图完成与签核 native tool stages. Report raw errors before teaching exclusions."""
 import io
 import json
 from pathlib import Path
@@ -62,12 +62,12 @@ def drc_summary(path):
 
 
 def execute(root,physical,config,report,save,sha):
-    work=root/'lab5';evidence=work/'evidence';soc=root/'soc-stu';layout=soc/'layout'
+    work=root/'layout_signoff';evidence=work/'evidence';soc=root/'soc-stu';layout=soc/'layout'
     if not layout.is_dir():
         raise ValueError('Missing frozen soc-stu/layout')
     workspace=layout/'workspace'
     pdk=Path(config['pdk_root']);process=pdk/config['process_pdk']
-    py=root.parent.parent/'tools/lab5_python/bin/python'
+    py=root.parent.parent/'tools/layout_signoff_python/bin/python'
     if not py.is_file():
         py.parent.parent.parent.mkdir(parents=True,exist_ok=True)
         run(['python3.12','-m','venv',py.parent.parent],workspace,evidence/'create_python.log',save)
@@ -88,15 +88,15 @@ unless(tf error("Cannot open private technology"))
 unless(tcLoadTechFile(tf "%s" "w") error("Cannot compile private technology"))
 unless(techGetDBUPerUU(tf "maskLayout")==2000 error("Private DBU readback mismatch"))
 unless(techSaveTechFile(tf) error("Cannot save private technology"))
-printf("LAB5_PRIVATE_TECH_DBU=2000\\n")
+printf("LAYOUT_SIGNOFF_PRIVATE_TECH_DBU=2000\\n")
 exit(0)
 '''%(private_tech,tech_path))
     run(['dbAccess','-load',skill],workspace,evidence/'private_tech.log',save)
-    if 'LAB5_PRIVATE_TECH_DBU=2000' not in (evidence/'private_tech.log').read_text():
+    if 'LAYOUT_SIGNOFF_PRIVATE_TECH_DBU=2000' not in (evidence/'private_tech.log').read_text():
         raise ValueError('Private technology preparation did not finish')
     pre=workspace/'my_soc_top_preDummy.gds'
     ring_zip=pdk/'tsmc180/Foundry Design Documents/t018lodr001_2_15.zip'
-    command=[py,root/'deploy/server/lab5/geometry.py',work/'inputs/my_soc_top.gds.gz',pre,ring_zip,evidence/'geometry.json']
+    command=[py,root/'deploy/server/layout_signoff/geometry.py',work/'inputs/my_soc_top.gds.gz',pre,ring_zip,evidence/'geometry.json']
     if config.get('measured_pvdd2_pimp_patch'):command.append('--patch-io')
     run(command,workspace,evidence/'geometry.log',save)
     run(['strmin','-library','my_soc_top_manual','-strmFile',pre,'-topCell','my_soc_top',
@@ -200,7 +200,7 @@ exit(0)
     save(evidence/'final_inputs.json',{'gds_sha256':identity,'cdl_sha256':sha(work/'my_soc_top.cdl'),'unchanged':True})
     # Actual report parsing and ERC object review required; never infer clean.
     report['flow_completed']=True
-    run([py,root/'deploy/server/lab5/review_erc.py',lvsdir/'erc.summary',lvsdir/'erc.results',final,evidence/'erc_review.json'],workspace,evidence/'erc_review.log',save)
+    run([py,root/'deploy/server/layout_signoff/review_erc.py',lvsdir/'erc.summary',lvsdir/'erc.results',final,evidence/'erc_review.json'],workspace,evidence/'erc_review.log',save)
     erc=json.loads((evidence/'erc_review.json').read_text())
     report['stages']['lvs_erc']['erc_review']=erc
     errors=[]
@@ -215,6 +215,6 @@ exit(0)
     report['stages']['lvs_erc']['status']='passed_with_reviewed_erc_residuals' if correct and erc['accepted_course_residuals'] else 'failed'
     for name,summary in [('antenna',ant),('wire_bond',bond)]:
         report['stages'][name]['status']='passed' if summary['parsed'] and summary['raw_results']==0 else 'failed'
-    report['lab5_pass']=not errors
+    report['layout_signoff_pass']=not errors
     report['status']='failed_checks' if errors else 'course_checks_passed_with_documented_exceptions'
     return 1 if errors else 0

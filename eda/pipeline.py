@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""One project entry: RTL regression -> implementation -> TT SDF -> Lab5.
+"""One project entry: RTL regression -> implementation -> TT SDF -> layout signoff.
 
---only lab5 uploads the same complete source bundle and binds existing physical
+--only layout-signoff uploads the same complete source bundle and binds existing physical
 results. No implicit rerun of earlier tools and no automatic retry of mutations.
 """
 import argparse
@@ -32,22 +32,22 @@ def command(script,*args,capture=False):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('command',choices=['run'])
-    p.add_argument('--only',choices=['all','lab5'],default='all')
+    p.add_argument('--only',choices=['all','layout-signoff'],default='all')
     p.add_argument('--start-at',choices=['rtl','implementation'],default='rtl',help='implementation retains source checks and starts fresh synthesis; skips unchanged RTL regression')
     p.add_argument('--host',default='chipdesign')
-    p.add_argument('--eda-upload',help='Required when selecting only Lab5')
+    p.add_argument('--eda-upload',help='Required when selecting only layout-signoff')
     p.add_argument('--rtl-regression-result',type=Path,help='Reuse a completed full-SoC regression only after verifying every recorded RTL/test source SHA against this checkout')
     p.add_argument('--output',type=Path,required=True)
     a=p.parse_args()
     if a.output.exists() and any(a.output.iterdir()):
         raise ValueError('Use a new empty output directory')
-    if a.only=='lab5':
-        if not a.eda_upload:raise ValueError('--only lab5 requires explicit --eda-upload')
+    if a.only=='layout-signoff':
+        if not a.eda_upload:raise ValueError('--only layout-signoff requires explicit --eda-upload')
         command('eda/signoff.py','run','--host',a.host,'--eda-upload',a.eda_upload,'--output',a.output)
         return
-    if a.eda_upload:raise ValueError('Full flow starts fresh; existing physical input is only for --only lab5')
+    if a.eda_upload:raise ValueError('Full flow starts fresh; existing physical input is only for --only layout-signoff')
     a.output.mkdir(parents=True,exist_ok=True)
-    journal={'scope':'New RTL-to-Lab5 execution, TT SDF only','stages':[]}
+    journal={'scope':'New RTL-to-layout-signoff execution, TT SDF only','stages':[]}
     def stage(name):
         journal['stages'].append({'name':name,'started_utc':datetime.now(timezone.utc).isoformat()})
         (a.output/'pipeline.json').write_text(json.dumps(journal,indent=2),encoding='utf-8')
@@ -92,8 +92,8 @@ def main():
         audit=json.loads((a.output/'postsim_tt/audit.json').read_text())
         if audit.get('normal_postsim_pass') is not True:
             raise RuntimeError('TT SDF functional/binding/dynamic timing acceptance failed')
-        stage('lab5')
-        command('eda/signoff.py','run','--host',a.host,'--eda-upload',physical,'--output',a.output/'lab5')
+        stage('layout_signoff')
+        command('eda/signoff.py','run','--host',a.host,'--eda-upload',physical,'--output',a.output/'layout_signoff')
         journal['status']='completed'
     except Exception as e:
         journal['status']='failed_or_review_required'
