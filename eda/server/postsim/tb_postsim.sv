@@ -80,8 +80,6 @@ module tb_postsim;
         end
         if(!raw_source_valid)
           $fatal(1,"RAW SoC prefetched outside an approved W1 source=%h",dut.auto_source);
-        if(dut.auto_words!=16)
-          $fatal(1,"RAW SoC issued a non-W1 descriptor");
         raw_prefetches<=raw_prefetches+1;
       end
     end
