@@ -1,8 +1,10 @@
 # INT8 HAR 全芯片实现
 
-本轮复位安全自动门控已完成TT验证：保留两级下降沿请求采样，新增两个上升沿重定时FF，恢复自动门控。原始41组RTL与19组门级性能逐项不变；完整SoC仍2700拍。综合Cell Area **2.124368mm²**，比关闭门控版减少 **0.127741mm²（5.672%）**，原生Density **77.191%**；TT Setup/Hold **+0.126/0.000ns**。34步、18组SDF全阶段0动态时序事件、同DB SRAM STA和Lab5按课程口径通过；ERC仍有7层次/977展开残项，不能称完整签核。[最终结果、复位契约与失败修复](report/reset_safe_clock_gating_20261117/README.md)。本轮只做TT。
+当前版已完成顺序任务NPU、PyTorch编译部署及TT／课程EDA验收：16 MAC和8 KiB SRAM保持，新增自动输入/bias、量化及六种激活、结果写回、多层交接。编译器默认生成任务执行段，`--legacy-npu`保留旧路径。原专用程序仍2700拍；mixed0为2521拍、trained_har0为1727拍。
 
-当前共享16 MAC的单/双层FC、K/N自动分块与PyTorch→RV32IM的CPU/NPU部署保持；编译器位于顶层compiler/，网络与数据位于model/。含PAD实现外框3.795639mm²，Lab5 SealRing外包络3.916441mm²，3.8mm²课程限制适用于实现边界。此前关闭门控的3b9ef76基线为2.252109mm²、Density82.746%，其验证和存档见[上一轮完整报告](report/fc_generalization_eda_20261117/README.md)。
+综合Cell Area **2.241754mm²**，布局密度 **83.533%**；TT Setup/Hold **+0.070/+0.001ns**。34步实现、23组SDF加1组功能对照、同DB SRAM STA及Lab5完成。ERC仍有7层次/977展开课程残留，Hold仅1ps；只覆盖TT，不能称完整流片签核。[本轮验收与面积预算](report/npu_task_engine_20261117/README.md)。
+
+工程保持八个顶层目录：RTL在rtl/，编译器在compiler/，原模型与新增测试网络/数据在model/，正式回归在test/，EDA流程在eda/，必要结果在report/。大型/授权产物及本地临时工具留在仓库外归档。前一版复位安全门控结果见[历史验收](report/reset_safe_clock_gating_20261117/README.md)。
 
 上一轮整合保留main 266bca3的16-MAC/INT22/取指缓存核心，接入公共复位、WB修复和完整Lab5流程。新源码287ae40已完成RTL回归、34步、TT后仿、同DB STA及Lab5：密度74.633%，Setup/Hold +0.350/+0.050ns；16组SDF及1组独立功能对照全过，全部阶段时序违规与负IOPATH截零0，WB64项0、LVS正确。[本轮实测及SHA](eda/results/main_266bca3_integration_20261113/README.md)。DRC/ERC按课程保留有依据残项，不称完整foundry签核；以下其他结果绑定各自历史来源。
 

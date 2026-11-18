@@ -1,5 +1,7 @@
 # 工程工具
 
+这里只保留正式可复用工具。顺序任务的编译/周期分析位于同级compiler/（profiling.py、benchmark_report.py），EDA部署/回传位于eda/。一次性驱动、上传包和本地仿真构建不进入main；冻结输入与必要结果归入report/。
+
 project.py：doctor 查看工具，check 检查项目资料，test 运行当前 INT8/训练模型回归，加 --soc 运行商业仿真器上的完整 SoC。
 export_tiles.py：将已有模型导出为当前 DMA 的 SRAM tile 字节布局，无 NumPy 依赖。
 check_hardware.py：依据 manifest 核对保留外围及已说明的集成覆盖项。

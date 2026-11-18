@@ -5,7 +5,7 @@
   "physical_commit": "579fd17a2f48ff49b3cdf51df70d4083df0ccbbe",
   "postsim_lab5_commit": "1f132af1a9cef024118d08e09d934b74d6ddafbe",
   "compiler_default_commit": "6cb158c1d23d484d2887645fe547ed4bb796d5f1",
-  "current_rtl_matches_physical_source_files": 95,
+  "current_rtl_matches_physical_source_files": 94,
   "server_uploads": {
     "physical": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_231529_task_compact_579fd17",
     "postsim": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261118_003119_postsim_vcs_tt_1f132af",
@@ -127,5 +127,26 @@
     "lab5\\lab5\\evidence\\input_manifest.json": "e00c5898b75a8126030b43516a849a7fe6d3939aa0d3ee6c0bec9584c9ac54e3",
     "lab5\\lab5\\evidence\\final_inputs.json": "8c01163cd0fe84838edd9804d049fb4dc6add1552dc7a8a3f13b090c48acf5de"
   },
-  "local_raw_review_root": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\lab5\\npu_task_engine_20261118"
+  "local_raw_review_root": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\lab5\\npu_task_engine_20261118",
+  "documentation_only_changes_since_physical": [
+    "rtl/npu/README.md"
+  ],
+  "main_integration": {
+    "hdl_unchanged_from_accepted_physical": true,
+    "upstream_input_window_fix_retained": true,
+    "expanded_input_window_regression": "32 legal words and64 reserved words",
+    "local_cleanup_archive": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\archives\\npu_main_sync_20261118_122900",
+    "validation": {
+      "rtl_run": "test\\int8\\runs\\20261118_122926",
+      "unit_cases": 41,
+      "original_soc_cycles": 2700,
+      "input_window_check": "32 legal and64 reserved words passed",
+      "rtl_result_sha256": "59e0c19c6196b58e1dc6cbb27f137d63a6c6d7389204c08c6de9e12ccbb8ad79",
+      "compiler_soc_run": "test\\int8\\runs\\compiler_20261118_123022",
+      "compiler_cases": 8,
+      "task_planner_tests": 6,
+      "compiler_result_sha256": "0167443cd6fb2a29deaa9a221991cd53bab2466cab68b5b40236d531d7059b63",
+      "all_integer_references_match_frozen_baseline": true
+    }
+  }
 }

@@ -1,10 +1,8 @@
 # 从本机部署到完整 EDA 结果
 
-当前活动版本：[main266bca3核心完整整合结果](results/main_266bca3_integration_20261113/README.md)。保留16-MAC/INT22/128B取指缓存、CUT_SLV_AX和main固件，接入公共复位、原生WB避让与Lab5。新287ae40已经完成41组计算/8组DMA/完整SoC及复位契约回归、全新Genus/34步、TT16组SDF+1组功能对照、同DB STA和Lab5。
+当前活动硬件579fd17已完成Genus、34步实现、TT后仿、同DB SRAM STA及Lab5；后仿/课程检查脚本为1f132af。[最终数值及输入SHA](../report/npu_task_engine_20261117/final_result.json)。TT Setup/Hold +0.070/+0.001ns，23例SDF与1例无SDF对照通过；ERC课程残留保留。
 
-实测密度74.633%、TT Setup/Hold +0.350/+0.050ns；回标错误/缺失检查/全部阶段动态事件/负IOPATH截零0，WB64项0、天线62项0、完整LVS正确。DRC/ERC课程残项和TDO上层互连工具警告按原文说明，不称全Warning为零或完整foundry签核。本轮按用户授权整合main；以后独立改动需另行验证。
-
-本地核验包lab5/main_266bca3_final_20261113，原生利用率日志和TT完整路径另有SHA核验补充，未改原675项回传清单。服务器保留最新三个关联目录及必要工具，旧上传在源码/轻量证据核验缓存后清理。历史[dea5584结果](results/system_reset_unified_20261113/README.md)及其他结果不能替代本轮新输入。[Lab5操作指南](docs/Lab5操作指南.md)区分一键完整流程与只执行Lab5。
+原始核验包位于本机lab5/npu_task_engine_20261118，完整版图/数据库和授权资料留服务器。本轮结果不替代SS/FF、SI、IR/EM或完整代工厂签核。后续操作仍使用下述正式工具和独立上传流程。
 
 功能RTL基线已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。设计是完整 CV32E40P SoC：共享16个INT8乘法器，FC1每相位为2个输入×8个输出，FC2为2×6；偏置及累加使用INT22，MMIO分数符号扩展到32位。新增单层FC和续算模式与原双层HAR路径共用硬件。主 SRAM 保存完整权重；DMA 将当前需要的小块搬入两个 64 字节缓冲。面积验收是 **包含 PAD 的整个 Die ≤3.8 mm²**。
 

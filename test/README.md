@@ -1,5 +1,7 @@
 # 当前功能回归
 
+统一入口为`python tools/project.py test --soc`，包含原41组、单双层FC、任务ABI、11,788组缩放向量以及直接/缓存两种任务保护回归。任务引擎执行中POR/NDM恢复可用装有compiler依赖的Python运行`python test/int8/run_task_reset_soc.py --lut-cache`。编译器完整SoC验证见[使用说明](../compiler/README.md)。下述入口仍可单独使用。
+
 ```bash
 python test/int8/run.py --count 32 --trained --soc
 ```

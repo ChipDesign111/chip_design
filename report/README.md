@@ -1,6 +1,6 @@
 # 当前设计说明
 
-当前单/双层FC与PyTorch编译部署的接口见[FC模式](fc_modes.md)和[编译器](../compiler/README.md)；8组完整SoC编译验证见[编译验收](model_compiler_20261117/README.md)。更新后完整EDA的面积、19例TT SDF、Lab5失败及M2避让修复进度见[本轮报告](fc_generalization_eda_20261117/README.md)。旧基线记录按日期保留，不代表新增功能的物理结果。
+当前版顺序任务NPU的[验收结果](npu_task_engine_20261117/README.md)与[周期/流量对照](npu_task_engine_20261117/performance/README.md)为最新入口；任务架构见[数据通路](npu_task_engine_20261117/architecture.md)，接口见[任务ABI](../compiler/TASK_ABI.md)。下列旧版结果按原提交保留。
 
 上一轮完整整合验证（287ae40）：保留main266bca3的16-MAC/INT22/取指缓存核心，接入公共复位、TT单元选择和WB/Lab5流程。密度74.633%，Setup/Hold +0.350/+0.050ns；16组SDF及1组功能对照全过，全部阶段动态事件与负IOPATH截零0；WB64项0、LVS正确。课程DRC/ERC残项及TDO工具警告单列。[最终结果及来源SHA](../eda/results/main_266bca3_integration_20261113/README.md)。下列72.509%等值是整合前main历史基线。
 

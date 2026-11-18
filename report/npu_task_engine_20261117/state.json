@@ -1,6 +1,6 @@
 {
   "baseline_commit": "94636cc",
-  "branch": "feat/npu-task-engine",
+  "branch": "main",
   "active_stage": null,
   "stages": {
     "1": "passed within documented TT/course acceptance scope",
@@ -23,5 +23,6 @@
   "current_physical_upload": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_231529_task_compact_579fd17",
   "current_rtl_commit": "579fd17",
   "final_result": "final_result.json",
-  "completed_utc": "2026-11-17T21:57:51.221779+00:00"
+  "completed_utc": "2026-11-17T21:57:51.221779+00:00",
+  "development_branch": "feat/npu-task-engine"
 }
