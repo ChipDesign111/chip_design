@@ -4,7 +4,7 @@
   "physical_commit": "fe049819cea783c8a20ea76776d21b9123456a37",
   "rtl_commit": "0e2d0cf3a6dea5d26836f147072179fab82171c4",
   "physical_upload": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261118_fe04981_1",
-  "postsim_root": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261118_fe04981_1/postsim_tt_5",
+  "postsim_root": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261118_fe04981_1/postsim_tt_7",
   "layout_signoff_upload": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261118_layout_signoff_61993db",
   "implementation": {
     "last_completed_step": 34,
@@ -35,8 +35,8 @@
   },
   "postsim_tt": {
     "normal_postsim_pass": true,
-    "runtime_cases": 18,
-    "sdf_cases": 17,
+    "runtime_cases": 24,
+    "sdf_cases": 23,
     "unit_delay_control_cases": 1,
     "annotation_errors": 0,
     "missing_instances": 0,
@@ -46,6 +46,10 @@
     "negative_iopath_clamped_by_simulator": 0,
     "negative_path_delay_support_complete": true,
     "raw_soc_case_present": true,
+    "raw_soc_cases": 4,
+    "optimized_raw_soc_cases": 3,
+    "prepacked_cpu_fallback_case_present": true,
+    "har_benchmark_case_count": 2,
     "raw_soc": {
       "case": "sdf_raw_tail_33x65",
       "observed_cpu_cycles": 188032,
@@ -53,6 +57,20 @@
       "outputs": 33,
       "inputs": 65,
       "raw_reads": 66,
+      "functional_pass": true,
+      "timing_violations": 0
+    },
+    "optimized_raw_soc": {
+      "full_32x64_observed_cpu_cycles": 4441,
+      "tail_33x65_observed_cpu_cycles": 7503,
+      "hybrid_layers_observed_cpu_cycles": 12216,
+      "functional_pass": true,
+      "timing_violations": 0
+    },
+    "soc_auxiliary": {
+      "optimized_cpu_three_layers_observed_cpu_cycles": 5591,
+      "har_benchmark_cpu_batch4_observed_cpu_cycles": 154661,
+      "har_benchmark_npu_batch4_observed_cpu_cycles": 3371,
       "functional_pass": true,
       "timing_violations": 0
     }
@@ -80,5 +98,5 @@
     "drc_remaining_nonexcluded": {},
     "original_inputs_unchanged": true
   },
-  "scope": "Local TSMC180 RTL-to-physical flow with fresh synthesis, 34 Innovus steps, same-database TT SDF simulation and layout completion/signoff checks. Density 75.005% is an explicit user-accepted exception to the default 75% limit. Not an independent foundry DRC/LVS, multi-PVT timing, SI, IR/EM/ESD or board-signoff claim."
+  "scope": "Local TSMC180 RTL-to-physical flow with fresh synthesis, 34 Innovus steps, same-database TT SDF simulation covering current dynamic/prepacked RAW, CPU fallback, paired HAR-benchmark firmware and legacy reset cases, plus layout completion/signoff checks. Post-sim cycle counts are full-firmware self-check windows through magic and are not benchmark BEGIN/END speedups. Density 75.005% is an explicit user-accepted exception to the default 75% limit. Not an independent foundry DRC/LVS, multi-PVT timing, SI, IR/EM/ESD or board-signoff claim."
 }
