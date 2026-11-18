@@ -85,11 +85,18 @@ def execute(root, physical):
                 raise ValueError('Physical stage not complete: '+str(p))
         if (original/'evidence/last_step.txt').read_text().strip() != '34':
             raise ValueError('Physical step34 incomplete')
-        home_bytes = int(subprocess.check_output(['du', '-sx', '-B1', str(Path.home())]).split()[0])
-        if home_bytes + config['peak_additional_budget_bytes'] > config['home_limit_bytes']:
-            raise ValueError('Projected home storage exceeds 20GB')
-        save(work/'evidence/storage.json', {'home_allocated_bytes': home_bytes,
-             'additional_budget_bytes': config['peak_additional_budget_bytes'], 'limit_bytes': config['home_limit_bytes']})
+        # The quota is for project uploads, not IDE/tool caches elsewhere in
+        # HOME. Every physical, post-sim and Lab5 product lives under uploads/.
+        storage_root = root.parent
+        project_bytes = int(subprocess.check_output(
+            ['du', '-sx', '-B1', str(storage_root)]).split()[0])
+        if project_bytes + config['peak_additional_budget_bytes'] > config['home_limit_bytes']:
+            raise ValueError('Projected project storage exceeds 20GB')
+        save(work/'evidence/storage.json', {'project_storage_root': str(storage_root),
+             'project_allocated_bytes': project_bytes,
+             'additional_budget_bytes': config['peak_additional_budget_bytes'],
+             'limit_bytes': config['home_limit_bytes'],
+             'scope': 'All uploads only; IDE/tool caches elsewhere in HOME are excluded'})
         source = json.loads((deploy/'source.json').read_text())
         for name, spec in source['files'].items():
             if sha(deploy/name) != spec['sha256']:
