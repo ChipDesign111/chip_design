@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Lab5 input/CDL validation, with explicit blockers for unavailable final checks.
+"""Layout completion and course signoff checks with explicit blockers.
 
 Original physical work is read-only. Never mark unimplemented geometry/final
 checks passed. A review bundle is generated even on blocked/failed validation.
@@ -31,43 +31,43 @@ def save(p, data):
 
 
 def bundle(root, report):
-    evidence = root/'lab5/evidence'
-    save(root/'results/lab5.json', report)
+    evidence = root/'layout_signoff/evidence'
+    save(root/'results/layout_signoff.json', report)
     save(evidence/'result.json', report)
-    text = '# Lab5 本次运行\n\n状态：%s；最终检查通过：%s\n\n' % (report['status'], report['lab5_pass'])
+    text = '# 版图完成与签核 本次运行\n\n状态：%s；最终检查通过：%s\n\n' % (report['status'], report['layout_signoff_pass'])
     text += '\n'.join('- %s：%s' % (s, r['status']) for s, r in report['stages'].items())
     text += '\n\n' + '\n'.join('- ' + x for x in report['blockers'])
     text += '\n\nCDL转换与输入核验不代表DRC/LVS通过。大型/授权资料留在服务器。\n'
     if report.get('documented_exceptions'):
         erc=report['documented_exceptions']['erc']
         text+='\n课程例外单列，原始ERC %d层次/%d展开；ERC Clean=%s，逐对象识别=%s。不代表代工厂完整签核。\n'%(erc['native_erc_hierarchical'],erc['native_erc_expanded'],erc['erc_clean'],erc['accepted_course_residuals'])
-    (root/'README_lab5.md').write_text(text, encoding='utf-8')
+    (root/'README_layout_signoff.md').write_text(text, encoding='utf-8')
     import html
-    (root/'README_lab5.html').write_text('<meta charset="utf-8"><pre>'+html.escape(text)+'</pre>', encoding='utf-8')
+    (root/'README_layout_signoff.html').write_text('<meta charset="utf-8"><pre>'+html.escape(text)+'</pre>', encoding='utf-8')
     (root/'README.md').write_text(text, encoding='utf-8')
     (root/'README.html').write_text('<meta charset="utf-8"><pre>'+html.escape(text)+'</pre>', encoding='utf-8')
     files = [p for p in evidence.rglob('*') if p.is_file()]
-    files += [root/'README_lab5.md', root/'README_lab5.html']
-    archive = root/'results/lab5_review.tar.gz'
+    files += [root/'README_layout_signoff.md', root/'README_layout_signoff.html']
+    archive = root/'results/layout_signoff_review.tar.gz'
     with tarfile.open(str(archive), 'w:gz') as t:
         for p in sorted(files):
             t.add(str(p), arcname=p.relative_to(root).as_posix(), recursive=False)
-    save(root/'results/lab5_review_manifest.json', {
+    save(root/'results/layout_signoff_review_manifest.json', {
         'archive_sha256': sha(archive),
         'files': {p.relative_to(root).as_posix(): {'sha256': sha(p), 'bytes': p.stat().st_size} for p in files}})
 
 
 def execute(root, physical):
     deploy = root/'deploy'
-    config = json.loads((deploy/'server/config/lab5.json').read_text())
-    report = {'schema': 1, 'status': 'running', 'lab5_pass': False,
+    config = json.loads((deploy/'server/config/layout_signoff.json').read_text())
+    report = {'schema': 1, 'status': 'running', 'layout_signoff_pass': False,
               'started_utc': datetime.now(timezone.utc).isoformat(),
               'physical_upload': str(physical), 'script_source': json.loads((deploy/'source.json').read_text())['git_commit'],
               'stages': {s: {'status': 'not_run'} for s in config['stages']}, 'blockers': []}
-    work = root/'lab5'
+    work = root/'layout_signoff'
     try:
         if work.exists():
-            raise ValueError('Lab5 work already exists: create a new upload; no blind reruns')
+            raise ValueError('Layout-signoff work already exists: create a new upload; no blind reruns')
         (work/'evidence').mkdir(parents=True)
         (work/'inputs').mkdir()
         save(work/'config.json', config)
@@ -86,7 +86,7 @@ def execute(root, physical):
         if (original/'evidence/last_step.txt').read_text().strip() != '34':
             raise ValueError('Physical step34 incomplete')
         # The quota is for project uploads, not IDE/tool caches elsewhere in
-        # HOME. Every physical, post-sim and Lab5 product lives under uploads/.
+        # HOME. Every physical, post-sim and layout-signoff product lives under uploads/.
         storage_root = root.parent
         project_bytes = int(subprocess.check_output(
             ['du', '-sx', '-B1', str(storage_root)]).split()[0])
@@ -199,10 +199,10 @@ if __name__ == '__main__':
     args.root = args.root.resolve()
     if args.root.parent.name != 'uploads' or args.physical.resolve().parent != args.root.parent:
         raise ValueError('Use isolated uploads in the same server project')
-    if (args.root/'lab5').exists():
-        raise ValueError('Existing Lab5 work is frozen; use a new upload')
-    with (args.root/'logs/lab5.lock').open('w') as lock:
+    if (args.root/'layout_signoff').exists():
+        raise ValueError('Existing layout-signoff work is frozen; use a new upload')
+    with (args.root/'logs/layout_signoff.lock').open('w') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         rc = execute(args.root, args.physical.resolve())
-    (args.root/'logs/lab5_exit_code.txt').write_text(str(rc)+'\n')
+    (args.root/'logs/layout_signoff_exit_code.txt').write_text(str(rc)+'\n')
     sys.exit(rc)

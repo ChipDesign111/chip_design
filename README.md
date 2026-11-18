@@ -1,8 +1,8 @@
 # INT8 HAR 全芯片实现
 
-当前功能分支新增可选 RAW GEMV：保留默认 HAR 流程，以现有 INT22/16-MAC 计算 32×64 小块，由 CPU 合并更大矩阵及连接多层网络。使用与验证见 [通用 GEMV](report/generic_gemv.md)。本分支新增 RTL 尚未完成 ASIC 综合、PNR 或 SDF 验证；下列物理数据仍绑定注明的历史源码。
+当前功能分支新增可选 RAW GEMV：保留默认 HAR 流程，以现有 INT22/16-MAC 计算 32×64 小块，由 CPU 合并更大矩阵及连接多层网络。使用与验证见 [通用 GEMV](report/generic_gemv.md)。该 RAW RTL 已完成 ASIC 综合、PNR、同源 TT SDF 后仿和版图完成与签核，详见[全流程 EDA 结果](eda/results/fullflow_fe04981_20261118/README.md)；下列其他物理数据仍绑定各自注明的历史源码。
 
-最新整合保留main 266bca3的16-MAC/INT22/取指缓存核心，接入公共复位、WB修复和完整Lab5流程。新源码287ae40已完成RTL回归、34步、TT后仿、同DB STA及Lab5：密度74.633%，Setup/Hold +0.350/+0.050ns；16组SDF及1组独立功能对照全过，全部阶段时序违规与负IOPATH截零0，WB64项0、LVS正确。[本轮实测及SHA](eda/results/main_266bca3_integration_20261113/README.md)。DRC/ERC按课程保留有依据残项，不称完整foundry签核；以下其他结果绑定各自历史来源。
+最新整合保留main 266bca3的16-MAC/INT22/取指缓存核心，接入公共复位、WB修复和完整版图完成与签核流程。新源码287ae40已完成RTL回归、34步、TT后仿、同DB STA及版图完成与签核：密度74.633%，Setup/Hold +0.350/+0.050ns；16组SDF及1组独立功能对照全过，全部阶段时序违规与负IOPATH截零0，WB64项0、LVS正确。[本轮实测及SHA](eda/results/main_266bca3_integration_20261113/README.md)。DRC/ERC按课程保留有依据残项，不称完整foundry签核；以下其他结果绑定各自历史来源。
 
 main 现包含取指行缓冲和固件循环优化。按 SRAM 地址失效取指缓存、缩短 DMA 写响应等待、去除缓存数据阵列复位后，相同训练 HAR 自检 **3510→3462 拍（−1.37%）**；附加 SRAM 写入程序 **7748→4497 拍（−41.96%）**，两者属于不同工作负载。同一套 RTL 上，reuse8 固件在 38 组对照里把完整自检再降低 3.65%，从第一次取指到 NPU DONE 降低 1.23%。完整对照见 [优化报告](report/performance.md)。该历史性能记录当时没有重做PNR、SDF后仿或板测；本轮完整验证见页首新报告。
 
@@ -39,6 +39,6 @@ python tools/export_tiles.py --output tools/local/int8_tiles
 python eda/remote.py run
 ```
 
-本机功能测试使用 Icarus；完整 SoC 另需 ModelSim。当前训练权重读取与 tile 导出无需 NumPy；训练仍使用 model/requirements.txt。EDA 总控需要 Python 3.8+ 与 OpenSSH。大版图、授权库和中间数据库保留服务器；轻量结果回传 lab4 下新目录。
+本机功能测试使用 Icarus；完整 SoC 另需 ModelSim。当前训练权重读取与 tile 导出无需 NumPy；训练仍使用 model/requirements.txt。EDA 总控需要 Python 3.8+ 与 OpenSSH。大版图、授权库和中间数据库保留服务器；轻量结果回传 `eda_runs/uploads` 下的新目录。
 
 旧分支、旧 RTL 和旧范式记录保存在本地 archives，当前分支只保留更新后实现。第三方源码许可及固定输入来源见 [组件声明](report/THIRD_PARTY_NOTICES.md)。

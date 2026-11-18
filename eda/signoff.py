@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deploy the complete RTL-to-Lab5 source bundle; execute only Lab5 on bound physical results."""
+"""Execute layout completion and course signoff checks on bound physical results."""
 import argparse
 from datetime import datetime
 import json
@@ -20,8 +20,8 @@ def state(host, upload):
 import json
 from pathlib import Path
 p=Path(UPLOAD)
-f=p/'logs/lab5_exit_code.txt'
-r=p/'results/lab5.json'
+f=p/'logs/layout_signoff_exit_code.txt'
+r=p/'results/layout_signoff.json'
 print(json.dumps({'exit_code':int(f.read_text()) if f.exists() else None,
                  'result':json.loads(r.read_text()) if r.exists() else None}))
 PY
@@ -33,9 +33,9 @@ def fetch(host, upload, output):
     if output.exists() and any(output.iterdir()):
         raise ValueError('Use a new empty local result directory')
     output.mkdir(parents=True, exist_ok=True)
-    remote.scp(host, [upload+'/results/lab5_review.tar.gz', upload+'/results/lab5_review_manifest.json'], output, download=True)
-    manifest = json.loads((output/'lab5_review_manifest.json').read_text())
-    archive = output/'lab5_review.tar.gz'
+    remote.scp(host, [upload+'/results/layout_signoff_review.tar.gz', upload+'/results/layout_signoff_review_manifest.json'], output, download=True)
+    manifest = json.loads((output/'layout_signoff_review_manifest.json').read_text())
+    archive = output/'layout_signoff_review.tar.gz'
     if remote.digest(archive) != manifest['archive_sha256']:
         raise ValueError('Review archive SHA mismatch')
     seen = set()
@@ -77,21 +77,21 @@ def main():
         subprocess.run([sys.executable, str(ROOT/'eda/package_server.py')], cwd=str(ROOT), check=True)
         commit=subprocess.check_output(['git','rev-parse','--short','HEAD'],cwd=str(ROOT),text=True).strip()
         parent=physical.rsplit('/',1)[0]
-        upload=parent+'/'+datetime.now().strftime('%Y%m%d_%H%M%S')+'_lab5_'+commit
+        upload=parent+'/'+datetime.now().strftime('%Y%m%d_%H%M%S')+'_layout_signoff_'+commit
         remote.ssh(args.host, 'set -e\nmkdir '+shlex.quote(upload)+'\n')
         remote.scp(args.host,[DIST/'chip_design_eda.tar.gz',DIST/'chip_design_eda.tar.gz.sha256'],upload+'/')
         # Reuse the single public unpacker and complete deployment contract.
         public=parent.rsplit('/',1)[0]+'/unpack.sh'
         remote.scp(args.host,[ROOT/'eda/unpack.sh'],public)
         remote.ssh(args.host,'bash '+shlex.quote(public)+' '+shlex.quote(upload)+'\n',capture=False)
-        remote.save(DIST/'last_lab5.json',{'host':args.host,'upload':upload,'eda_upload':physical})
-        command='python3 -u deploy/server/lab5/run.py --root '+shlex.quote(upload)+' --physical '+shlex.quote(physical)
-        remote.ssh(args.host,'set -e\nsource /etc/profile.d/eda.sh\ncd '+shlex.quote(upload)+'\nnohup '+command+' >logs/lab5.log 2>&1 < /dev/null &\necho $! >logs/lab5.pid\n')
-        print('Complete deployment; Lab5-only execution: '+upload,flush=True)
+        remote.save(DIST/'last_layout_signoff.json',{'host':args.host,'upload':upload,'eda_upload':physical})
+        command='python3 -u deploy/server/layout_signoff/run.py --root '+shlex.quote(upload)+' --physical '+shlex.quote(physical)
+        remote.ssh(args.host,'set -e\nsource /etc/profile.d/eda.sh\ncd '+shlex.quote(upload)+'\nnohup '+command+' >logs/layout_signoff.log 2>&1 < /dev/null &\necho $! >logs/layout_signoff.pid\n')
+        print('Complete deployment; layout-signoff execution: '+upload,flush=True)
         if args.detach:
             return
     else:
-        saved=json.loads((DIST/'last_lab5.json').read_text())
+        saved=json.loads((DIST/'last_layout_signoff.json').read_text())
         upload=remote.valid_upload(args.upload or saved['upload'])
     if args.command=='status':
         print(json.dumps(state(args.host,upload),ensure_ascii=False,indent=2));return

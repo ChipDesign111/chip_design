@@ -8,17 +8,17 @@
 原生21.16预检已读回34个PAD、68个分层对象、isExceptPGNet=1、isPGNetOnly=0和spacing=2.5。
 每次恢复后检查对象/层/属性仍在；真正通过必须以新完整实现和Calibre最终WB为准。预检没有保存旧DB。
 
-一键启动本轮完整物理及TT/新Lab5链路：
+一键启动本轮完整物理及TT/版图完成与签核链路：
 
 ```powershell
-python eda/pipeline.py run --start-at implementation --output C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/lab5/本次新修复目录
+python eda/pipeline.py run --start-at implementation --output C:/Users/zixiang/OneDrive/Desktop/advanced_chip_study/layout_signoff/本次新修复目录
 ```
 
 `implementation`仍运行硬件来源检查并从全新Genus开始，不复用旧检查点，只省略未修改RTL的功能回归；新TT SDF仍完整运行。
 结果通过后才更新最终报告并清理旧的相关服务器版本。新main的RTL与本分支基线不同，本任务不自动合并或改main。
 
 本轮物理源码be4a7fc已部署至`uploads/20261113_000112_be4a7fc`；205项清单逐文件核验一致，环境退出0，当前仍在综合。
-后续Lab5后处理加入逐对象ERC识别：在旧版最终GDS及原始报告只读预检中，7个层次标记/977个展开结果均定位到已测IO/外环对象；未知规则和移入核心的负控制均被拒绝。
+后续版图完成与签核后处理加入逐对象ERC识别：在旧版最终GDS及原始报告只读预检中，7个层次标记/977个展开结果均定位到已测IO/外环对象；未知规则和移入核心的负控制均被拒绝。
 这项预检不改变旧结果、原始规则、ERC计数或WB9状态。新物理、TT、最终WB及ERC仍须使用本轮新结果实测。
 
 北京时间2026-11-13 00:25，真实Genus正常退出；综合68,676单元、cell 2,064,074.900µm²（含SRAM 401,443.591µm²），与原实现一致。实际自动ICG、受控FF和排除TT组合实例均0。
