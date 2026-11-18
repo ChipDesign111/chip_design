@@ -12,7 +12,7 @@ module tb_soc;
     reg [31:0] image[0:2047];
     reg [31:0] magic=0;
     reg fetch_started=0;
-    integer cycles=0,read_overlap=0,write_overlap=0;
+    integer cycles=0,read_overlap=0,write_overlap=0,total_overlap=0;
     task sba_write(input reg [31:0] address,value,input reg [3:0] be);
         integer timeout;
         begin
@@ -40,6 +40,9 @@ module tb_soc;
         if(dut.sram_req && dut.sram_we && dut.sram_addr==32'h80001fe0) magic<=dut.sram_wdata;
         if(dut.i_npu_subsystem.i_npu_core.core.product_valid && dut.dma_read_active) read_overlap<=read_overlap+1;
         if(dut.i_npu_subsystem.i_npu_core.core.product_valid && dut.dma_write_active) write_overlap<=write_overlap+1;
+        // Count a cycle once even when both DMA channels complete a beat.
+        if(dut.i_npu_subsystem.i_npu_core.core.product_valid &&
+           (dut.dma_read_active || dut.dma_write_active)) total_overlap<=total_overlap+1;
     end
     integer i;
     initial begin
@@ -75,17 +78,21 @@ module tb_soc;
         if(magic!==32'hc0dec0de) $fatal(1,"SoC timeout, PC=%h",dut.instr_addr);
         if(!fetch_started) $fatal(1,"Firmware boot fetch was not observed");
         if(read_overlap==0 || write_overlap==0) $fatal(1,"Full AXI SoC did not overlap DMA and MAC");
+        if(total_overlap<read_overlap || total_overlap<write_overlap ||
+           total_overlap>read_overlap+write_overlap ||
+           dut.i_npu_subsystem.i_npu_core.core.overlap_count!==total_overlap)
+            $fatal(1,"DMA/MAC total overlap does not match accepted read/write cycles");
         if(!dut.i_bootram.soc_cycles_captured ||
            dut.i_bootram.soc_cycles<=0 ||
            dut.i_bootram.soc_cycles>=cycles ||
            ^dut.i_bootram.soc_cycles===1'bx)
             $fatal(1,"Invalid hardware SoC cycle count: %0d",dut.i_bootram.soc_cycles);
-        $display("INT8_SOC PASS cycles=%0d hw_soc_cycles=%0d npu_cycles=%0d fc1_issue_cycles=%0d fc2_issue_cycles=%0d DMA_read_MAC_overlap=%0d DMA_write_MAC_overlap=%0d",
+        $display("INT8_SOC PASS cycles=%0d hw_soc_cycles=%0d npu_cycles=%0d fc1_issue_cycles=%0d fc2_issue_cycles=%0d DMA_read_MAC_overlap=%0d DMA_write_MAC_overlap=%0d DMA_MAC_total_overlap=%0d",
                  cycles,dut.i_bootram.soc_cycles,
                  dut.i_npu_subsystem.i_npu_core.core.cycle_count,
                  dut.i_npu_subsystem.i_npu_core.core.fc1_cycles,
                  dut.i_npu_subsystem.i_npu_core.core.fc2_cycles,
-                 read_overlap,write_overlap);
+                 read_overlap,write_overlap,total_overlap);
         // User-authorized shared reset recognizes a root request within two falling edges.
         #2;rst_n=0;repeat(2) @(negedge clk);#1;
         if(dut.ndmreset_n || dut.boot_ready) $fatal(1,"Reset assertion failed");

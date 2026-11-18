@@ -130,6 +130,10 @@ def main():
             if firmware_hash != sha(case / "firmware.hex"):
                 raise RuntimeError("Firmware changed during simulation: " + str(case))
             values = dict(zip(FIELDS, map(int, match.groups())))
+            total_overlap = re.search(r'DMA_MAC_total_overlap=(\d+)', text)
+            if not total_overlap:
+                raise RuntimeError('Missing full SoC DMA/MAC total overlap: ' + str(case))
+            values['dma_mac_total_overlap'] = int(total_overlap.group(1))
             values.update(seed=seed, firmware_sha256=firmware_hash, seconds=elapsed)
             report["cases"].append(values)
             print(json.dumps(values), flush=True)
