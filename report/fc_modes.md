@@ -1,12 +1,12 @@
 # 单层 / 双层 FC：共享硬件实现
 
-本次验收约定：原始固定两层模型端到端周期尽量不增加，最大允许 +5%；单层模式先支持现有 8KiB 物理 SRAM 可容纳的权重。实现基于 main f2b9814 和输入窗口修复 28b6d60。
+本文说明兼容MMIO的MODE=0/1/3路径。默认编译目标是[顺序任务ABI](../compiler/TASK_ABI.md)，由NPU自动装载、后处理和写回；需要CPU逐块驱动时使用`--legacy-npu`。
 
 ## 使用方式与复用
 
 MODE=0 保留原始 64→32→6、ReLU/requant、Argmax、权重字节布局及所有旧 MMIO，复位默认模式也是 0。单层模式只运行共享 FC1 数据通路，在末输入 tile 完成后直接 DONE，跳过 requant、FC2、Argmax，返回原始有符号 INT22 累加结果（读回符号扩展到32位）。
 
-两种模式共用现有16个8×8乘法器、输入寄存器、FC1累加器、两个64B权重bank和DMA。不增加第二个计算阵列、不增加部分和存储阵列。新增的是模式/尺寸/部分和有效元数据与结果读回选择逻辑；源代码复用不等于面积零增长；后续综合、布线与Lab5验证状态见[完整EDA报告](fc_generalization_eda_20261117/README.md)。保持16 MAC是优先保护batch=4及两层周期验收的选择，本次不声称已经找到了面积最优阵列规模。
+两种模式共用现有16个8×8乘法器、输入寄存器、FC1累加器、两个64B权重bank和DMA。不增加第二个计算阵列、不增加部分和存储阵列。新增的是模式/尺寸/部分和有效元数据与结果读回选择逻辑；源代码复用不等于面积零增长；当前综合、布线与Lab5验证见[验收结果](results/README.md)。保持16 MAC是优先保护batch=4及两层周期验收的选择，本次不声称已经找到了面积最优阵列规模。
 
 硬件单次任务范围 K=1..64、N=1..32、batch=1..4。大 FC 由软件在输出维按32、输入维按64分块：首输入块 MODE=1 从bias初始化，后续输入块 MODE=3 保留累加器接着算。一个输出块所有输入段完成后，读回结果，再开始下一个输出块。K/N余数均支持；K奇数时硬件屏蔽第二输入lane，N补齐8输出的权重为零。一个任务有ceil(K/2)个tile，每tile计算ceil(N/8)个相位，每相位16个MAC，ISSUE计数为batch×ceil(K/2)×ceil(N/8)。DMA每tile搬运16×ceil(N/8)字节。
 
@@ -53,9 +53,9 @@ python test/int8/compare_fc_perf.py BASELINE_RUN CANDIDATE_RUN --limit 0.05
 
 ## 2026-11-17 本地验收结果
 
-[带SHA的验收记录](fc_modes_20261117/summary.json)：与28b6d60修复基线相比，41组匹配用例的NPU总周期与两层ISSUE计数全部不变；固定训练固件完整SoC观测2700→2700拍、硬件计数2695→2695拍，增幅0%，满足≤5%约定。新单层10组形状测试与保护测试通过；65→9完整CPU/AXI/DMA单层SoC观测853拍、硬件计数848拍。单层与双层是不同工作负载，不用853与2700比较加速比。普通C驱动通过GCC C11语法及Wall/Wextra/Werror检查；本次真实CPU运行的是公开RV32I汇编测试程序，没有声称已运行C编译产物。
+[带SHA的验收记录](https://github.com/ChipDesign111/chip_design/blob/ebedafd14129cade89973de22bcad26ab22d7998/report/fc_modes_20261117/summary.json)：与28b6d60修复基线相比，41组匹配用例的NPU总周期与两层ISSUE计数全部不变；固定训练固件完整SoC观测2700→2700拍、硬件计数2695→2695拍，增幅0%，满足≤5%约定。新单层10组形状测试与保护测试通过；65→9完整CPU/AXI/DMA单层SoC观测853拍、硬件计数848拍。单层与双层是不同工作负载，不用853与2700比较加速比。普通C驱动通过GCC C11语法及Wall/Wextra/Werror检查；本次真实CPU运行的是公开RV32I汇编测试程序，没有声称已运行C编译产物。
 
-本节记录当时的RTL验收；后续综合、PNR、STA、19例TT SDF及Lab5状态见[完整EDA报告](fc_generalization_eda_20261117/README.md)。尚未新增板测；不能从RTL周期不变推断最高频率不变或面积下降。
+本节记录当时的RTL验收；后续综合、PNR、STA、19例TT SDF及Lab5状态见[完整EDA报告](https://github.com/ChipDesign111/chip_design/blob/ebedafd14129cade89973de22bcad26ab22d7998/report/fc_generalization_eda_20261117/README.md)。尚未新增板测；不能从RTL周期不变推断最高频率不变或面积下降。
 
 目录调整说明：编译器及通用分块/运行时现位于顶层compiler/，通用样例位于model/generic_mixed/。历史summary.json保留运行当时的源码路径和SHA，不将迁移后的路径冒充旧验证输入。
 
@@ -74,4 +74,4 @@ python test/int8/compare_fc_perf.py BASELINE_RUN CANDIDATE_RUN --limit 0.05
 
 此例逻辑权重65×41=2665B，按输入对和8输出补齐后实际打包3168B。还须容纳CPU机器码、164B bias、输入/输出、CPU算子的LUT及状态区；完整编译器统一规划总8KiB并拒绝重叠或超限。使用者不必手算任务和地址，manifest.json会公开调度结果供检查。硬件当前没有从外部内存分批换入整个模型的机制。
 
-编译器按已实现内核选择后端：满足INT22范围的Linear走上述NPU路径，ReLU、Tanh、Softmax等已注册算子由CPU生成的定点代码执行；没有CPU内核的算子会明确拒绝。原始64→32→6仍可直接用MODE=0的专用程序运行，不必为了通用部署改写已有性能基线。
+编译器按已实现内核选择后端：满足INT22范围的Linear走上述NPU路径，本页兼容编译路径的激活和Softmax由CPU执行；默认任务路径的六种激活由NPU执行，Softmax保留CPU内核；没有CPU内核的算子会明确拒绝。原始64→32→6仍可直接用MODE=0的专用程序运行，不必为了通用部署改写已有性能基线。

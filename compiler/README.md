@@ -1,6 +1,6 @@
 # PyTorch → RV32 CPU / NPU 混合部署
 
-默认使用顺序任务引擎：自动输入/bias、六种量化激活及写回，连续支持算子一次启动，CPU处理已有Add/Sub/Mul/Softmax等边界。生成task_plan.json/md，详见 [ABI](TASK_ABI.md) 和 [验收状态](../report/npu_task_engine_20261117/state.json)。`--legacy-npu`保留冻结的旧MMIO编译路径，Python API对应`task_engine=False`；`--task-engine`仍可显式选择默认路径。融合和内部交接通过被动观测核对必要的整数边界。
+默认使用顺序任务引擎：自动输入/bias、六种量化激活及写回，连续支持算子一次启动，CPU处理已有Add/Sub/Mul/Softmax等边界。生成task_plan.json/md，详见 [ABI](TASK_ABI.md) 和 [验收状态](../report/results/state.json)。`--legacy-npu`保留冻结的旧MMIO编译路径，Python API对应`task_engine=False`；`--task-engine`仍可显式选择默认路径。融合和内部交接通过被动观测核对必要的整数边界。
 
 入口是一个PyTorch nn.Module和有代表性的浮点输入。编译器使用FX获取静态计算图，进行对称INT8量化、后端选择、FC分块及8KiB SRAM布局，然后直接生成普通RV32IM机器码。芯片上不运行Python或PyTorch，也不需要新的CPU指令。
 
@@ -75,8 +75,6 @@ python test/int8/run_model_compiler.py --soc --task-engine
 
 完整SoC用例覆盖混合网络的两个不同输入（机器码SHA相同）、强制全CPU、65→9输入分块且batch=2、9→41输出分块、INT22不安全时自动CPU Linear、CPU标量/张量减法与batch Softmax，以及工程保留的训练HAR浮点权重。逐层SBA读回核对，检查实际NPU启动任务数；模型浮点误差单独记录。训练HAR使用12个已有样本校准、另一个样本做SoC执行，不作为全测试集精度结论。
 
-上述旧MMIO编译路径初版未修改RTL，也没有声称任意PyTorch模型都能部署；本轮新增任务引擎确实修改了NPU/DMA硬件，见 [任务架构](../report/npu_task_engine_20261117/architecture.md)。原双层专用固件及其2700拍基线保持独立，不把任意新生成程序的周期等同于该专用固件。旧版完整EDA、19例TT SDF及Lab5见 [原物理报告](../report/fc_generalization_eda_20261117/README.md)，新增硬件的验收状态见 [新报告](../report/npu_task_engine_20261117/README.md)。
-
-本轮8组完整SoC的实测、精度边界与可启动示例包见 [验收报告](../report/model_compiler_20261117/README.md)。
+当前逐值验证、周期/流量和冻结镜像见[本版结果](../report/results/README.md)及[性能数据](../report/results/performance/README.md)。原专用2700拍基线保持独立，不能把任意新生成程序周期等同于该固件。
 
 编译器与运行时位于仓库顶层compiler/；独立的网络、权重和样例数据位于 [model/generic_mixed](../model/generic_mixed/README.md)。

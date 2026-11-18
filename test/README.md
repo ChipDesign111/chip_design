@@ -37,4 +37,4 @@ python test/int8/run_ifetch_snoop_soc.py --out test/int8/runs/snoop_new
 
 单/双层共享硬件回归：`python test/int8/run_single_fc.py --soc`，见 [FC模式](../report/fc_modes.md)。
 
-PyTorch混合执行编译器回归：装好compiler/requirements.txt后运行 `python test/int8/run_model_compiler.py --soc`，核对完整SoC各层结果。
+PyTorch混合执行编译器回归：装好compiler/requirements.txt后运行 `python test/int8/run_model_compiler.py --soc --task-engine`，核对完整SoC各层结果。

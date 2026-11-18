@@ -1,17 +1,22 @@
-# 开发与验证
+# 当前开发与验证
 
-本次集成基于 rtl-dev `1eb6462`，移入 perf/ifetch-line-buffer `5da2148` 的取指缓存并修复非缓存地址、写入一致性和异常填充处理，同时修复单样本 Argmax 的旧值比较。当前 NPU 保持 batch=4、零气泡 tile 交接、FC2 八 tile 打包和 W2 跨层预取，并将共享 INT8 乘法器从 32 个收为 16 个：FC1 改为四个 8 输出×2 lane 相位，FC2 仍为四个 2 行×6 输出相位并只使用 12 个乘法器；内部累加器和 bias 存储均为 INT22。用户本地完整回归通过，batch=4 SoC testbench/硬件为 2700/2695 拍、NPU 为 952 拍、FC1/FC2 发射为 512/64，DMA 读/写重叠为 466/499。同源 34 步 EDA 也已完成：最终密度 72.509%，Setup/Hold 为 +0.335/+0.050 ns。最终数据库的 10 组 MAXIMUM SDF 和 1 组 unit-delay 对照功能通过 11/11，工作窗口动态时序违规为 0。当前 ASIC RTL 保留 `CUT_SLV_AX` 地址通道边界；FPGA bitstream 也必须从当前源码重新构建验证。
-
-```bash
+```powershell
 python tools/project.py doctor
 python tools/project.py check
-python test/int8/run.py --count 32 --trained --soc
-python test/int8/perf.py
-python tools/export_tiles.py --output tools/local/int8_tiles
+python tools/project.py test --soc
 ```
 
-run.py 创建独立 test/int8/runs/时间戳，记录单元和 SoC 日志。32 组随机批次覆盖单样本、双样本和四样本，以及 INT8 极值、舍入/饱和、累加回绕；6 组训练模型四样本批次覆盖固定的 24 条 UCI 输入。真实 SoC 使用 Debug SBA 请求边界注入装载事务，事务穿过实际 AXI 适配器和交叉开关；不以直接改 SRAM 数组或注入完成标志代替 CPU 执行。
+check检查目录范式、文档链接、Python语法、硬件来源SHA和MMIO布局。test运行原41组（32随机、6训练批次、3个Argmax定向）、DMA错误/启动保护、完整SoC与复位协议、单双层FC、任务ABI、11,788组缩放向量，以及直接/缓存两种任务引擎保护回归。完整SoC需ModelSim，单元需Icarus。
 
-单元回归还检查 tile 不提前释放、不覆盖有效 bank、进入 FC2 前已经发起 W2 预取、读失败不发布、复位中断与重新启动。随机数据同时覆盖 INT22 正负极值 bias 和补码回绕；训练模型的 24 条输入要求与历史 INT32 逐值一致。完整 SoC 检查无镜像/部分镜像/乱序/字节写/错误时机密钥不会放行，CPU 启动后通过 MMIO 驱动 NPU 并逐值自检。固定权重下的逐步周期对比如 [performance.md](performance.md)。
+使用装有compiler/requirements.txt依赖的Python执行模型验证：
 
-ModelSim 测试是 RTL 行为仿真。工艺综合、布局布线和导出依照 [EDA 指南](../eda/README.md) 在服务器完成。CI 只运行开源功能子集，不伪称执行了商业工具或 SDF 后仿。原生宏模型、PDK 和开发临时工具留在本地/服务器授权目录。
+```powershell
+python test/int8/test_task_planner.py
+python test/int8/run_model_compiler.py --soc --task-engine
+python test/int8/run_task_compiler.py --soc
+python test/int8/run_task_reset_soc.py --lut-cache
+```
+
+生成的CPU程序通过真实Debug SBA、AXI和SRAM装载并执行。物化张量由SBA读回，融合/内部张量按被动trace核对整数边界。复位回归覆盖POR/NDM共同边界、在途AXI事务和NPU执行中断恢复。
+
+产物统一在忽略的test/int8/runs/下；只把复现所需的冻结输入、摘要与当前验收结果收录在report/results。CI验证开源RTL和编译器子集，不替代商业SoC、SDF或Lab5。完整EDA入口见[操作指南](../eda/README.md)。

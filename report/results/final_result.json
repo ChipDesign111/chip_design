@@ -1,0 +1,161 @@
+{
+  "status": "all_required_TT_stages_passed_with_documented_course_exceptions",
+  "finished_utc": "2026-11-17T21:57:51.221779+00:00",
+  "recorded_utc": "2026-11-17T22:01:09.485539+00:00",
+  "physical_commit": "579fd17a2f48ff49b3cdf51df70d4083df0ccbbe",
+  "postsim_lab5_commit": "1f132af1a9cef024118d08e09d934b74d6ddafbe",
+  "compiler_default_commit": "6cb158c1d23d484d2887645fe547ed4bb796d5f1",
+  "current_rtl_matches_physical_source_files": 93,
+  "server_uploads": {
+    "physical": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261117_231529_task_compact_579fd17",
+    "postsim": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261118_003119_postsim_vcs_tt_1f132af",
+    "lab5": "/home/s2400011041/Desktop/fullstack_chipdesign/uploads/20261118_055307_lab5_1f132af"
+  },
+  "functional": {
+    "legacy_cases": 41,
+    "original_cycles": 2700,
+    "previous_cycles": 2700,
+    "hard_limit": 2835,
+    "legacy_sdf_cycles": 2701,
+    "previous_sdf_cycles": 2701,
+    "scalar_vectors": 11788,
+    "full_soc_reset_cases": 4,
+    "cycles_and_traffic": "performance/summary.json"
+  },
+  "area": {
+    "genus_mm2": 2.241754388,
+    "previous_genus_mm2": 2.124368263,
+    "genus_increment_mm2": 0.117386125,
+    "planning_target_mm2": [
+      0.03,
+      0.05
+    ],
+    "conservative_increment_budget_mm2": 0.155,
+    "nonfixed_placed_mm2": 1.805521,
+    "previous_nonfixed_placed_mm2": 1.668455,
+    "placed_increment_mm2": 0.137066,
+    "conservative_budget_remaining_mm2": 0.017934,
+    "placeable_row_mm2": 2.161451,
+    "unoccupied_before_filler_mm2": 0.35593,
+    "density_percent": 83.533,
+    "margin_to_85percent_mm2": 0.03171235,
+    "die_including_pad_mm2": 3.7956390976,
+    "sealring_envelope_mm2": 3.916441
+  },
+  "physical": {
+    "steps_completed": 34,
+    "same_input_manifest": true,
+    "setup_wns_ns": 0.07,
+    "hold_wns_ns": 0.001,
+    "setup_hold_negative_paths": 0,
+    "route_drc": 0,
+    "antenna": 0,
+    "signal_problems": 0
+  },
+  "postsim": {
+    "functional_passes": 24,
+    "total_cases": 24,
+    "sdf_cases": 23,
+    "annotation_errors": 0,
+    "missing_instances": 0,
+    "missing_checks": 0,
+    "negative_iopath_clamps": 0,
+    "all_initial_active_final_timing_violations": 0,
+    "real_dmcontrol_reset_verified": true,
+    "generic_payload_checked_words": {
+      "sdf_firmware_model_mixed": 30,
+      "sdf_firmware_model_tiled": 34,
+      "sdf_firmware_task_chain": 35,
+      "sdf_firmware_task_deep": 21,
+      "sdf_firmware_task_lut": 99,
+      "sdf_firmware_task_special": 105,
+      "sdf_firmware_task_split_chain": 37
+    }
+  },
+  "same_db_sram_min_slack_ns": {
+    "sram_input_setup": 6.304,
+    "sram_input_hold": 10.041,
+    "sram_output_setup": 2.847,
+    "sram_output_hold": 11.612,
+    "reset_to_request_func_tt_io_setup": 6.331,
+    "reset_to_request_func_tt_io_hold": 11.227
+  },
+  "lab5": {
+    "status": "course_checks_passed_with_documented_exceptions",
+    "lvs_correct": true,
+    "postdummy_drc_raw": 2426,
+    "postdummy_drc_nonexcluded": 0,
+    "teaching_excluded_positive": {
+      "ESD.24g": 30,
+      "ESD.25g": 2384,
+      "LUP.3.3g_3.3V": 1,
+      "LUP.5.3g_3.3V": 9,
+      "MOM.R.2": 1,
+      "DRM.R.1": 1
+    },
+    "erc_hierarchical": 7,
+    "erc_expanded": 977,
+    "erc_clean": false,
+    "erc_course_objects_reviewed": true,
+    "antenna_results": 0,
+    "wire_bond_checks": 64,
+    "wire_bond_results": 0,
+    "final_gds_sha256": "fc7440326101179bc15940e406ebb9fd41e2b934c1d1026cb067cc0ddc03988c",
+    "storage": {
+      "home_allocated_bytes": 13692118016,
+      "additional_budget_bytes": 6000000000,
+      "limit_bytes": 20000000000
+    }
+  },
+  "compiler_default_validation": {
+    "default_task_image_equals_frozen": true,
+    "default_cli_real_soc_pass": true,
+    "legacy_cli_image_equals_frozen": true,
+    "task_planner_contract_tests": 6,
+    "default_cli_run": "test/int8/runs/default_target_20261118/package"
+  },
+  "scope": "TT only,20ns,SI off,native low-RC recipe. Hold margin is only1ps. Course DRC exclusions and reviewed native IO/substrate ERC residuals remain; ERC Clean=false. Sealring envelope exceeds3.8mm2 while the profile measures PAD die. No SS/FF,IR/EM,power or independent foundry signoff claimed.",
+  "evidence_sha256": {
+    "physical\\receipt.json": "1434fe3e1208b2bc633570b92bbced3b8e99f60f9dc9968ff6c23ccc35685112",
+    "physical\\core\\evidence\\step_33.json": "0016f0b9c00f3aebf0bd797570d87be7a61fb042a9b750a05b92f36c57b51760",
+    "physical\\core\\evidence\\step_34.json": "cfe48799afa8c6c96e3dae0418bcc6b076326bc9b1680d3761d1738c3afc13c7",
+    "postsim\\audit.json": "0c8b17f6d9010ead682d109e60e2f47e9909945a357a7610cd72a8f858683eb3",
+    "postsim\\input_manifest.json": "d126c282b1c543413376861b6c62a9f221e193560b99a580182715c2046785c9",
+    "postsim\\results.json": "0b19bee5eccfd8bc642afef42d063eb8ef4a510012231e2e843b59ab85b21581",
+    "lab5\\receipt.json": "bcf7b5b21ec9340a15cec77148b3272c86455fc6799460cdcc0a8fac6d12850c",
+    "lab5\\lab5\\evidence\\result.json": "915f0f2bbb35f710e10dd8f63e748225d8c74d212873a4bd1f24e7bf7a2c201d",
+    "lab5\\lab5\\evidence\\input_manifest.json": "e00c5898b75a8126030b43516a849a7fe6d3939aa0d3ee6c0bec9584c9ac54e3",
+    "lab5\\lab5\\evidence\\final_inputs.json": "8c01163cd0fe84838edd9804d049fb4dc6add1552dc7a8a3f13b090c48acf5de"
+  },
+  "local_raw_review_root": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\lab5\\npu_task_engine_20261118",
+  "documentation_only_changes_since_physical": [
+    "rtl/README.md",
+    "rtl/npu/README.md"
+  ],
+  "main_integration": {
+    "hdl_unchanged_from_accepted_physical": true,
+    "upstream_input_window_fix_retained": true,
+    "expanded_input_window_regression": "32 legal words and64 reserved words",
+    "local_cleanup_archive": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\archives\\npu_main_sync_20261118_122900",
+    "validation": {
+      "rtl_run": "test\\int8\\runs\\20261118_122926",
+      "unit_cases": 41,
+      "original_soc_cycles": 2700,
+      "input_window_check": "32 legal and64 reserved words passed",
+      "rtl_result_sha256": "59e0c19c6196b58e1dc6cbb27f137d63a6c6d7389204c08c6de9e12ccbb8ad79",
+      "compiler_soc_run": "test\\int8\\runs\\compiler_20261118_123022",
+      "compiler_cases": 8,
+      "task_planner_tests": 6,
+      "compiler_result_sha256": "0167443cd6fb2a29deaa9a221991cd53bab2466cab68b5b40236d531d7059b63",
+      "all_integer_references_match_frozen_baseline": true
+    }
+  },
+  "main_layout": {
+    "current_results": "report/results",
+    "historical_snapshot_commit": "ebedafd14129cade89973de22bcad26ab22d7998",
+    "history_index": "report/history.md",
+    "local_archive": "C:\\Users\\zixiang\\OneDrive\\Desktop\\advanced_chip_study\\archives\\main_history_cleanup_20261118_125017",
+    "archive_manifest_sha256": "3eece8bfee531fbbf434fa0ae4f7718f649119e9b1961c6881c79d648293dca0",
+    "hdl_and_eda_executables_unchanged": true
+  }
+}

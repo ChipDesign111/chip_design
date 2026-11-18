@@ -1,6 +1,6 @@
 # 顺序任务 ABI v1
 
-本接口用于新增任务引擎，旧 MMIO、MODE0/1/3 地址和语义保留。此文档冻结软件协议，**不表示硬件已经实现或通过验证**；实现状态以 report/npu_task_engine_20261117/state.json 为准。
+本接口用于新增任务引擎，旧 MMIO、MODE0/1/3 地址和语义保留。此文档冻结软件协议，**不表示硬件已经实现或通过验证**；实现状态以 report/results/state.json 为准。
 
 CPU 将只读任务表放在现有 8KiB SRAM，配置 BASE/COUNT 后 START 一次。每条 FC 描述符对应 K≤64、N≤32、batch≤4 的计算块；64B 权重 tile 的循环、复用与预取仍在硬件内。沿 K 的块必须连续执行，同一 context、N、batch，首块 INIT，其后续算，末块 LAST_K。中途不量化。ACTIVATION 描述符处理已经量化的 INT8，支持需要保留独立舍入边界的连续激活。
 

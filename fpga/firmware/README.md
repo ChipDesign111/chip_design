@@ -44,7 +44,7 @@ SHA-256 为 `3138265a94b452151a0191066246716fd4591542ef30c5a65c2146a95fa747ce`�
 已有对应 hex 的 8 个活动 bin 均由 `../prepare_jtag_image.ps1` 转换。
 `int8_partial_4k.bin` 保留为历史 fixture，不属于本轮生成或验证的镜像。
 最近板测完整版本快照见
-[20261104_rtl-1c265c0_int22](../versions/20261104_rtl-1c265c0_int22/README.md)。
+[20261104_rtl-1c265c0_int22](https://github.com/ChipDesign111/chip_design/blob/ebedafd14129cade89973de22bcad26ab22d7998/fpga/versions/20261104_rtl-1c265c0_int22/README.md)。
 
 ## 测试内容
 

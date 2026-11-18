@@ -1,8 +1,0 @@
-{
-  "source_commit": "ee203a3",
-  "routed_netlist_sha256": "0d9994aec31e04bfc2001bb0bf80e989e50d45bf6c6c509e315dcd3e9d429d3a",
-  "automatic_gating_wrapper_leaves": 0,
-  "native_icgs": 0,
-  "native_controlled_flops": 10933,
-  "scope": "Routed netlist counts after clock/route optimization. Original RTL clock structure unchanged."
-}

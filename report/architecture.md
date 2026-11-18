@@ -1,15 +1,27 @@
-# 架构与数据流
+# 当前架构与数据流
 
-新增单层FC及保留部分和的任务与原始两层共用16 MAC、双bank和DMA，接口见[FC模式](fc_modes.md)；PyTorch编译与CPU/NPU部署见[编译器](../compiler/README.md)。下文的固定64→32→6调度描述原始MODE=0路径。
+my_soc_top保留clk_i、rst_ni、tck_i、tms_i、td_i、td_o六个信号端口。CPU指令、CPU数据、Debug SBA、DMA是四个AXI发起端；Boot、主SRAM、Debug映射、NPU是四个目标端。
 
-my_soc_top 顶层仍为 clk_i、rst_ni、tck_i、tms_i、td_i、td_o 六个端口。CPU 指令、CPU 数据、Debug SBA、DMA 是四个 AXI 发起端；Boot、主 SRAM、Debug 映射、NPU 是四个目标端。保留完整 CPU 和调试互连。
+```mermaid
+flowchart LR
+    M[PyTorch模型与校准输入] --> C[编译器：量化/分块/布局]
+    C --> I[8KiB启动镜像与任务清单]
+    I --> CPU[RV32IM CPU]
+    CPU --> T[NPU顺序任务引擎]
+    CPU --> S[主SRAM]
+    T --> D[共享DMA与两个64B权重bank]
+    D --> MAC[共享16 MAC / INT22累加]
+    MAC --> P[量化与激活]
+    P --> H[内部h缓冲或掩码写回SRAM]
+    H --> T
+```
 
-CPU 指令端增加四条、每条八个 32-bit 字的取指缓存，数据容量共 128 B。缓存命中时当拍授权、下一周期返回；未命中通过 AXI INCR burst 填充，并预取下一条。仅物理 8 KiB SRAM 和 32 B 不可变 Boot 跳板允许缓存，Debug、Boot 状态寄存器等使用精确字地址的单次读取。SRAM 实际非零字节写入只撤销匹配的物理指令行（含地址别名），Boot 写入仍全局撤销；已发出的匹配填充事务继续排空，避免重装程序后使用旧指令。数据阵列不复位，valid、填充长度和输出仍复位，只有成功填充的字可返回。CPU 核本身未修改。
+编译器将支持的连续FC和激活合成执行段。CPU提交任务表地址和数量，NPU自行完成描述符、输入、bias、权重搬运及结果提交；遇到Add/Sub/Mul/Softmax等CPU内核时在SRAM交接。形状/整数语义/布局全部符合且成本合适时，编译器可选择原始双层专用模式。
 
-主 SRAM 8 KiB 保存程序、两层权重和工作数据。NPU 的配置寄存器保存最多 4 个输入、偏置和量化系数。开始一批后，硬件 DMA 自动读取第一层 32 个 tile，每块两列输入对应 32 个输出的权重；每块依次用于本批全部样本后才替换。第一层完成后用一个共享重定标器依次产生全部样本的隐藏值。第二层按每组 8 个逻辑 tile、48 B 有效权重打包，共 4 次粗粒度 DMA；核心仍按 32 个逻辑 tile 计算，内部产生每样本六个 INT22 分数和最大值下标，MMIO 再符号扩展为 32 位。
+共享阵列为16个INT8 MAC。一次FC块K≤64、N≤32、batch≤4，沿K保留INT22部分和，最后K块才量化；沿N更换输出块。任务内64B权重循环由硬件完成，不为每64B生成描述符。
 
-两个 64B bank 交替：一个计算、一个 DMA 写。DMA 用两字 FIFO 让读与写独立流动。为使短 MAC 发射段与真实传输重叠，下一块开始写入时再发射当前块；最后一个样本发射时立即释放当前 bank，下一 bank 已就绪则直接进入下一 tile，不经过固定 `DRAIN` 气泡。W1 tile31 仍占用一个 bank 时，另一个空闲 bank 开始预取 W2 组，因此 W2 首批传输藏在 W1 尾部和 requant 期间。没有增加空乘法器、复制整套权重或新增 NPU 内部 SRAM。
+内部h为4×32字节，与原专用隐藏激活共用。编译器只在单消费者、形状允许且旧输入不再使用时内部转发；多N块、分支或CPU消费者通过SRAM。当前不复用不同物化张量的SRAM地址区间。
 
-NPU 的真实执行周期受 AXI 仲裁与背压影响，读取计数寄存器获得；每样本 FC1/FC2 分别为 128/16 个 MAC 发射周期。启动保护默认关闭普通固件取指，完整镜像覆盖和密钥提交后放行；调试请求仍可在无镜像时进入 Debug 区域。细节见 [SRAM](sram.md)。
+CPU指令缓存为4条×32B。SRAM实际字节写入按物理地址撤销匹配缓存行，包含地址别名；已发填充继续排空。主SRAM总8KiB，容纳机器码、权重、bias、LUT、张量和邮箱，超容量在编译时拒绝。
 
-当前源码保留 AXI 交叉开关的 `CUT_SLV_AX` 地址通道边界及 `FallThrough=0`，用于控制 CPU 到 NPU 的组合路径。FPGA 工程已加入取指模块，但已有 bitstream 和历史 ASIC 物理结果不代表本次集成版本；需要从当前源码重新构建、实现和验证。
+复位、启动及事务边界见[SRAM协议](sram.md)，整数和完成规则见[任务ABI](../compiler/TASK_ABI.md)，当前测量见[结果](results/README.md)。

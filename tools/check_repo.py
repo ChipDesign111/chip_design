@@ -20,6 +20,7 @@ REQUIRED_FILES = (
     "model/requirements.txt", "rtl/project.json", "rtl/filelist.f", "rtl/manifest.json",
     "report/README.md", "report/architecture.md", "report/development.md", "report/mmio.md",
     "report/sram.md", "report/THIRD_PARTY_NOTICES.md", "model/numerics.md",
+    "report/history.md", "report/results/README.md", "report/results/final_result.json",
     ".github/workflows/ci.yml", "test/README.md", "tools/README.md",
 )
 REQUIRED_DIRS = ("rtl", "model", "tools", "test", "report", "fpga", "eda", "compiler")
@@ -46,6 +47,22 @@ def check() -> list[str]:
         if not (ROOT / name).is_dir(): errors.append(f"Missing directory: {name}")
     visible = {p.name for p in ROOT.iterdir() if p.is_dir() and not p.name.startswith(".")}
     if visible != set(REQUIRED_DIRS): errors.append("Top-level directories must be exactly rtl/fpga/model/eda/test/report/tools/compiler")
+    # Current-facing documentation and results have one location. Historical
+    # snapshots are available through report/history.md and Git history.
+    report_files = {
+        "README.md", "architecture.md", "development.md", "dma.md", "fc_modes.md",
+        "history.md", "LICENSES.md", "mmio.md", "npu.md", "performance.md",
+        "sram.md", "THIRD_PARTY_NOTICES.md",
+    }
+    for item in (ROOT / "report").iterdir():
+        if item.name == "__pycache__": continue
+        if item.is_dir() and item.name != "results":
+            errors.append("Historical report directory in current tree: " + item.name)
+        elif item.is_file() and item.name not in report_files:
+            errors.append("Unclassified report file in current tree: " + item.name)
+    for retired in ["eda/results", "fpga/versions"]:
+        if (ROOT / retired).exists():
+            errors.append("Use external archives and report/history.md for " + retired)
     if (ROOT/"rtl/npu/lab3").exists(): errors.append("Original NPU must not be retained")
     for doc in files(".md"):
         content = doc.read_text(encoding="utf-8")
