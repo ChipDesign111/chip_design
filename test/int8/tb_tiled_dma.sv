@@ -101,8 +101,35 @@ module tb_tiled_dma;
             if(timeout>=30000) $fatal(1,"DMA/NPU timeout");
         end
     endtask
+    task check_input_window;
+        integer slot,word_index,byte_addr;
+        reg [31:0] value;
+        reg [4095:0] inputs_before;
+        begin
+            $display("MMIO_TEST input window bounds");
+            for(slot=2;slot<4;slot=slot+1)
+                for(word_index=0;word_index<16;word_index=word_index+1) begin
+                    byte_addr='h1000+(slot-2)*'h40+word_index*4;
+                    value=32'ha5a50000 | byte_addr;
+                    put(byte_addr,value);
+                    if(dut.input_packed[slot*512+word_index*32+:32]!==value)
+                        $fatal(1,"Legal input write rejected at %h",byte_addr);
+                end
+            check(4,0);
+            inputs_before=dut.input_packed;
+            // Every reserved word must independently set ERROR and leave all
+            // four samples intact, including the adjacent legal word 0x107c.
+            for(byte_addr='h1080;byte_addr<'h1180;byte_addr=byte_addr+4) begin
+                put(0,2);check(4,0);
+                put(byte_addr,32'hdead0000 | byte_addr);check(4,4);
+                if(dut.input_packed!==inputs_before)
+                    $fatal(1,"Reserved input write changed samples at %h",byte_addr);
+            end
+            put(0,2);check(4,0);
+            $display("MMIO_INPUT_WINDOW PASS legal_words=32 reserved_words=64");
+        end
+    endtask
     string directory,filename;
-    reg [2047:0] input_snapshot;
     integer count,which,j,n,batch,input_addr,output_addr,golden_addr,class_addr;
     initial begin
         if(!$value$plusargs("DIR=%s",directory)) $fatal(1,"DIR required");
@@ -112,18 +139,7 @@ module tb_tiled_dma;
         if($bits(dut.b1[0])!=22 || $bits(dut.b2[0])!=22)
             $fatal(1,"Expected INT22 bias storage");
         #1;rst_n=0;repeat(3) @(negedge clk);rst_n=1;
-        // Samples 2/3 occupy exactly 128 bytes; later slots are reserved.
-        put('h1000,32'h12345678);put('h107c,32'h89abcdef);check(4,0);
-        if(dut.x[2][31:0]!==32'h12345678 || dut.x[3][511:480]!==32'h89abcdef)
-            $fatal(1,"Valid extended input boundary write was lost");
-        input_snapshot={dut.x[3],dut.x[2],dut.x[1],dut.x[0]};
-        for(input_addr='h1080;input_addr<'h1180;input_addr=input_addr+4) begin
-            put(input_addr,32'hdeadbeef);check(4,4);
-            if({dut.x[3],dut.x[2],dut.x[1],dut.x[0]}!==input_snapshot)
-                $fatal(1,"Reserved input write changed an active sample");
-            put(0,2);check(4,0);
-        end
-        $display("INPUT_WINDOW_BOUNDS PASS reserved_words=64");
+        check_input_window();
         // Invalid SRAM pointer cannot start an inference.
         put(0,1);check(4,4);
         for(which=0;which<count;which=which+1) begin
