@@ -112,7 +112,8 @@ def initialize(root, deploy):
     whole_area=geometry.get('whole_die_area_mm2')
     limit=read_json(work/'config/design.json').get('max_die_area_mm2',4.0)
     summary = {'acceptance_profile':read_json(root/'configs/design.json').get('acceptance_profile'),
-               'minimum_setup_and_hold_wns_ns':0.0,
+               'minimum_setup_wns_ns':read_json(root/'configs/design.json').get('setup_target_ns',0.0),
+               'minimum_hold_wns_ns':read_json(root/'configs/design.json').get('hold_target_ns',0.0),
                'whole_die_area_mm2':whole_area,'max_whole_die_area_mm2':limit,
                'whole_die_area_within_limit':None if whole_area is None else whole_area<=limit, 'upload': str(root), 'archive_sha256': upload.get('archive_sha256'),
                'deployment_commit': source.get('git_commit'), 'work': str(work),

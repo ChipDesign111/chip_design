@@ -95,9 +95,17 @@ def read_config(path):
     goal=c['setup_optimization_goal_ns']
     if not isinstance(goal,(int,float)) or not math.isfinite(goal) or not 0<=goal<c['system_period_ns']:
         raise ValueError('Setup optimization goal must be finite, nonnegative and below the clock period')
+    c.setdefault('setup_target_ns',goal)
+    setup_target=c['setup_target_ns']
+    if not isinstance(setup_target,(int,float)) or not math.isfinite(setup_target) or not 0<=setup_target<c['system_period_ns']:
+        raise ValueError('Setup acceptance WNS must be finite, nonnegative and below the clock period')
     if c['analysis_profile'] not in ['single_TT_SI_off_native_low_RC','matched_TT_SS_FF0_FFm40_SI_off_native_low_RC']:
         raise ValueError('Unknown library PVT profile')
-    if not isinstance(c['max_repair_iterations'], int) or not 1 <= c['max_repair_iterations'] <= 10 or c['hold_target_ns'] not in [0,0.02,0.05]:
+    hold_target=c['hold_target_ns']
+    if (not isinstance(hold_target,(int,float)) or not math.isfinite(hold_target) or
+        not 0<=hold_target<c['system_period_ns']):
+        raise ValueError('Hold acceptance WNS must be finite, nonnegative and below the clock period')
+    if not isinstance(c['max_repair_iterations'], int) or not 1 <= c['max_repair_iterations'] <= 10:
         raise ValueError('Invalid repair iteration count/target')
     if len(c['macro_xy_um']) != 2 or any(not isinstance(x, (int, float)) or not math.isfinite(x) or x < 200 for x in c['macro_xy_um']):
         raise ValueError('Macro coordinates must leave room for core rings and halo')
@@ -165,7 +173,7 @@ def prepare(args):
         shutil.copytree(str(work / 'flow' / name), str(work / name))
     (work / 'config/design.json').write_text(json.dumps(config, indent=2) + '\n', encoding='utf-8')
     shutil.copyfile(str(SERVER / 'config/io_plan.json'), str(work / 'config/io_plan.json'))
-    (work / 'flow/config/repair.tcl').write_text('set eda_repair_iterations %d\nset eda_hold_target %g\n' % (config['max_repair_iterations'],config['hold_target_ns']),encoding='utf-8')
+    (work / 'flow/config/repair.tcl').write_text('set eda_repair_iterations %d\nset eda_setup_target %g\nset eda_hold_target %g\n' % (config['max_repair_iterations'],config['setup_target_ns'],config['hold_target_ns']),encoding='utf-8')
     user = work / 'config/user_define.tcl'
     text = user.read_text(encoding='utf-8')
     for key, value in [('PROJECT_ROOT', tcl(work)), ('PDK_ROOT', tcl(pdk)), ('rm_clock_period', config['system_period_ns']), ('eda_opt_max_density', config['optimizer_max_density']), ('syn_cpus', config['cpus']), ('pnr_cpus', config['cpus'])]:
@@ -215,12 +223,13 @@ def prepare(args):
     prepare_mapping(work,config)
     write_json(work/'evidence/optimization_goal.json',{
         'setup_optimization_goal_ns':config['setup_optimization_goal_ns'],
+        'setup_acceptance_wns_ns':config['setup_target_ns'],
+        'hold_acceptance_wns_ns':config['hold_target_ns'],
         'implementation_effort':config['implementation_effort'],
         'antenna_fanout_reserve':config['antenna_fanout_reserve'],
         'antenna_repair_strategy':config['antenna_repair_strategy'],
         'fanout_reserve_is_optimization_only':True,
-        'minimum_accepted_setup_hold_slack_ns':0.0,
-        'optimization_goal_is_not_an_acceptance_threshold':True})
+        'margins_are_final_acceptance_thresholds':True})
     write_json(work / 'evidence/preparation.json', {'rtl_files': len(listed), 'include_dirs': includes, 'macro_source': str(macro), 'work': str(work), 'functional_retested_here': False, 'profile_changes': ['CHIP_USE_RA1SHD and SYNTHESIS', 'absolute source paths', 'no hidden path_adjust tightening', 'guard empty async net selection', 'original CPU clock passthrough']})
     write_json(work / 'evidence/input_manifest.json', fingerprint_inputs(work))
     print('Prepared NEW project: ' + str(work))

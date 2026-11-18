@@ -54,6 +54,18 @@ proc eda_timing_bad {directory {mode all} {include_fanout 1}} {
     }
     return $bad
 }
+proc eda_timing_margin_short {directory {mode all} {minimum 0.0}} {
+    set files [glob -nocomplain [file join $directory *.summary] [file join $directory *.summary.gz]]
+    if {[llength $files] == 0} {error "Missing timing summary: $directory"}
+    foreach p $files {
+        set fd [open $p rb]; set data [read $fd]; close $fd
+        if {[file extension $p] eq ".gz"} {set data [zlib gunzip $data]}
+        if {$mode ne "all" && [string first "$mode mode" $data] < 0} {continue}
+        if {![regexp {WNS \(ns\):\|\s*([-\d.]+)} $data -> wns]} {error "Unrecognized WNS summary: $p"}
+        if {$wns < $minimum} {return 1}
+    }
+    return 0
+}
 proc eda_drc_count {path} {
     set fd [open $path r]; set text [read $fd]; close $fd
     if {[regexp {Total Violations\s*:\s*([0-9]+)\s+Viols\.} $text -> count]} {
@@ -135,16 +147,18 @@ if {[catch {
                 }
                 eda_run 29_check.tcl
                 # Recheck actual timing after native electrical optimization.
-                # Setup recovery can alter Hold; repair genuine residuals only.
+                # Repair until the configured Hold acceptance margin is met.
                 for {set iteration 0} {$iteration < $eda_repair_iterations} {incr iteration} {
                     set current_dir ../my_soc_top/reports/postCTS_holdFix_check
-                    if {[eda_timing_bad $current_dir] == 0} {break}
+                    if {[eda_timing_bad $current_dir] == 0 &&
+                        [eda_timing_margin_short $current_dir Hold $eda_hold_target] == 0} {break}
                     if {[eda_timing_bad $current_dir Setup] > 0} {
                         eda_eval 29_native_drv {eda_native_opt optDesign -postCTS -expandedViews -outDir ../my_soc_top/reports/postCTS_nativeOpt}
                         eda_run 29_check.tcl
                     }
-                    if {[eda_timing_bad $current_dir Hold] > 0} {
-                        eda_eval 29_hold_mode {setOptMode -fixHoldAllowSetupTnsDegrade false -holdTargetSlack 0}
+                    if {[eda_timing_bad $current_dir Hold] > 0 ||
+                        [eda_timing_margin_short $current_dir Hold $eda_hold_target] > 0} {
+                        eda_eval 29_hold_mode [list setOptMode -fixHoldAllowSetupTnsDegrade false -holdTargetSlack $eda_hold_target]
                         eda_run 29_fix.tcl
                         eda_run 29_check.tcl
                     }
@@ -184,22 +198,25 @@ if {[catch {
                 }
                 for {set iteration 0} {$iteration < $eda_repair_iterations} {incr iteration} {
                     set current_dir [expr {$iteration == 0 ? "../my_soc_top/reports/postRoute" : "../my_soc_top/reports/postRoute_holdAuto_check"}]
-                    if {[eda_timing_bad $current_dir] == 0} {break}
-                    if {[eda_timing_bad $current_dir all 0] == 0} {
+                    set actual_bad [eda_timing_bad $current_dir]
+                    set setup_short [eda_timing_margin_short $current_dir Setup $eda_setup_target]
+                    set hold_short [eda_timing_margin_short $current_dir Hold $eda_hold_target]
+                    if {$actual_bad == 0 && $setup_short == 0 && $hold_short == 0} {break}
+                    if {$actual_bad > 0 && [eda_timing_bad $current_dir all 0] == 0} {
                         puts "EDA_POSTROUTE_FANOUT_ONLY: native postRoute fanout repair is unavailable; preserve final16 check and stop redundant setup retries"
                         break
                     }
-                    if {[eda_timing_bad $current_dir Setup] > 0} {
+                    if {[eda_timing_bad $current_dir Setup] > 0 || $setup_short > 0} {
                         eda_eval 32_native_setup_drv {eda_native_opt optDesign -postRoute -expandedViews -outDir ../my_soc_top/reports/postRoute_setupAuto}
-                        eda_run 32_check.tcl
+                        eda_eval 32_setup_check {timeDesign -postRoute -expandedViews -outDir ../my_soc_top/reports/postRoute_holdAuto_check}
+                        eda_eval 32_setup_hold_check {timeDesign -postRoute -hold -expandedViews -outDir ../my_soc_top/reports/postRoute_holdAuto_check}
                         set current_dir ../my_soc_top/reports/postRoute_holdAuto_check
+                        set hold_short [eda_timing_margin_short $current_dir Hold $eda_hold_target]
                     }
-                    if {[eda_timing_bad $current_dir Hold] > 0} {
-                        # Lecture: first repair at zero, then 20ps optimization
-                        # target if residual negative paths remain. Acceptance
-                        # is always WNS>=0, TNS=0 and zero violating paths.
-                        set goal [expr {$iteration==0 ? 0 : $eda_hold_target}]
-                        eda_eval 32_hold_mode [list setOptMode -fixHoldAllowSetupTnsDegrade false -holdTargetSlack $goal]
+                    if {[eda_timing_bad $current_dir Hold] > 0 || $hold_short > 0} {
+                        # Final acceptance requires the configured positive
+                        # Hold WNS, not merely zero violating paths.
+                        eda_eval 32_hold_mode [list setOptMode -fixHoldAllowSetupTnsDegrade false -holdTargetSlack $eda_hold_target]
                         eda_eval 32_native_hold {eda_native_opt optDesign -postRoute -hold -expandedViews -outDir ../my_soc_top/reports/postRoute_holdAuto}
                     }
                     eda_run 32_check.tcl

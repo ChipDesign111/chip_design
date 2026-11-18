@@ -74,7 +74,7 @@ def area_summary(path):
     return {'cell_count': int(numbers[0]), 'cell_area_um2': numbers[1], 'net_area_um2': numbers[2], 'latch_area_um2': numbers[7], 'memory_area_um2': numbers[9], 'report': str(path)}
 
 
-def timing(directory, require_clean=False):
+def timing(directory, require_clean=False, minimum_setup_ns=0.0, minimum_hold_ns=0.0):
     found = {}
     for p in sorted(directory.glob('*.summary*')):
         text = load_text(p)
@@ -91,7 +91,7 @@ def timing(directory, require_clean=False):
         if mode == 'Setup' and not {'max_cap', 'max_tran', 'max_fanout'}.issubset(drv):
             raise ValueError('Missing electrical DRV fields: ' + str(p))
         value = {'report': str(p), 'wns_ns': float(fields[0].group(1)), 'tns_ns': float(fields[1].group(1)), 'violating_paths': int(fields[2].group(1)), 'drv': drv, 'electrical_drv_table_reported_here': bool(drv)}
-        value['minimum_wns_ns'] = 0.0
+        value['minimum_wns_ns'] = minimum_setup_ns if mode == 'Setup' else minimum_hold_ns
         value['targets_met'] = value['wns_ns'] >= value['minimum_wns_ns'] and value['tns_ns'] == 0 and value['violating_paths'] == 0 and all(x['real'] == x['total'] == 0 for x in drv.values())
         if mode in found:
             raise ValueError('Ambiguous multiple timing summaries for ' + mode + ': ' + str(directory))
@@ -401,7 +401,12 @@ def audit_step(work, step):
     timing_dirs = {26: 'preCTS', 28: 'postCTS', 29: 'postCTS_holdFix_check', 32: 'postRoute_holdAuto_check', 33: 'postFiller'}
     if step in timing_dirs:
         cfg=json.loads((work/'config/design.json').read_text())
-        checks['timing'] = timing(pnr / 'reports' / timing_dirs[step], step in [32,33])
+        checks['timing'] = timing(
+            pnr / 'reports' / timing_dirs[step],
+            step in [32, 33],
+            minimum_setup_ns=cfg.get('setup_target_ns', cfg.get('setup_optimization_goal_ns', 0.0)),
+            minimum_hold_ns=cfg.get('hold_target_ns', 0.0),
+        )
         if cfg.get('analysis_profile','').startswith('matched_'):
             checks['expanded_analysis_views']={}
             for view in ['func_tt_io','func_ss_io','func_ff0_io','func_ffm40_io']:
