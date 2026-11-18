@@ -6,10 +6,10 @@
       "name": "int8_random_00_batch4.hex",
       "passed": true,
       "firmware_hex_sha256": "f4bea94e865ac33dd3236530c8ee206adedb84ec550255fae01966725e09dc5b",
-      "hw_soc_cycles": 2740,
+      "hw_soc_cycles": 2746,
       "counters": {
-        "cycles": 2745,
-        "hw_soc_cycles": 2740,
+        "cycles": 2751,
+        "hw_soc_cycles": 2746,
         "npu_cycles": 962,
         "fc1_issue_cycles": 512,
         "fc2_issue_cycles": 64,
@@ -17,16 +17,16 @@
         "DMA_write_MAC_overlap": 499,
         "DMA_MAC_total_overlap": 500
       },
-      "log_sha256": "56fdc8974f21200496abfec8f6d56bc98a90df213d56cde3ed955d69c35e0c09"
+      "log_sha256": "016e107a993d741d77a92d8594a53b2c935e4f9dd89950795e6b89a52ec1e8c2"
     },
     {
       "name": "int8_random_01_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "15631e52b19705bf56d421ac223536787b8953808c20794c4f0d8ec6a64755dc",
-      "hw_soc_cycles": 1976,
+      "hw_soc_cycles": 1982,
       "counters": {
-        "cycles": 1981,
-        "hw_soc_cycles": 1976,
+        "cycles": 1987,
+        "hw_soc_cycles": 1982,
         "npu_cycles": 850,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -34,16 +34,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "d68f259195f661a7b3989a0ae5ab95cfa758ed400755b6a0e7a002a6f8e72b7f"
+      "log_sha256": "d14019a4cd0f6db25504bf60065f9759c16cfbfbdc89b3e2de82dee525074d21"
     },
     {
       "name": "int8_random_02_batch1.hex",
       "passed": true,
       "firmware_hex_sha256": "27ecb19cdf0d24ec3e04128aefb4a5fc0f010568ffb20a59cf6c0b1da6adc21b",
-      "hw_soc_cycles": 1597,
+      "hw_soc_cycles": 1603,
       "counters": {
-        "cycles": 1602,
-        "hw_soc_cycles": 1597,
+        "cycles": 1608,
+        "hw_soc_cycles": 1603,
         "npu_cycles": 801,
         "fc1_issue_cycles": 128,
         "fc2_issue_cycles": 16,
@@ -51,16 +51,16 @@
         "DMA_write_MAC_overlap": 132,
         "DMA_MAC_total_overlap": 133
       },
-      "log_sha256": "ffc2c0beea8c1c6a53613a5c27c7cc4cf2f9f17ae8d8aae71bec56b3acff65f1"
+      "log_sha256": "465d2be54bfc4ce77f8c0f653acbd0e6ca381c8b1d38f776e21781b166514806"
     },
     {
       "name": "int8_random_03_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "51e51fdc917831fa599ad5a239b10e81b8b01567fe554c138161088d9e7fb987",
-      "hw_soc_cycles": 1957,
+      "hw_soc_cycles": 1963,
       "counters": {
-        "cycles": 1962,
-        "hw_soc_cycles": 1957,
+        "cycles": 1968,
+        "hw_soc_cycles": 1963,
         "npu_cycles": 851,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -68,16 +68,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "d60888715823447b7801935fa89948bf69e4428de1035c6ad3e78702429296a5"
+      "log_sha256": "2536f8f3f6c8a116aff24cf5aadabdc2dcad087d02f9fe843c8a957d73dbfd31"
     },
     {
       "name": "int8_random_04_batch1.hex",
       "passed": true,
       "firmware_hex_sha256": "c1d1b5c501f7b6b9a9b54e671f6b786ebc9cf8036b9a60b340167c5086b958c7",
-      "hw_soc_cycles": 1603,
+      "hw_soc_cycles": 1609,
       "counters": {
-        "cycles": 1608,
-        "hw_soc_cycles": 1603,
+        "cycles": 1614,
+        "hw_soc_cycles": 1609,
         "npu_cycles": 805,
         "fc1_issue_cycles": 128,
         "fc2_issue_cycles": 16,
@@ -85,16 +85,16 @@
         "DMA_write_MAC_overlap": 132,
         "DMA_MAC_total_overlap": 133
       },
-      "log_sha256": "dc3d9bd21f46989bd3401626356bf9ed02a131cee4eb8e08d2267848c2ab247a"
+      "log_sha256": "5b7650eff245c22675ac66e59402e69e5bd90aa074bceb6b74b423a836096c26"
     },
     {
       "name": "int8_random_05_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "b98e80e200674edd5fab0f3ad0325423ea96a15d6583ed9150e2e89d7b1b4ee2",
-      "hw_soc_cycles": 1976,
+      "hw_soc_cycles": 1982,
       "counters": {
-        "cycles": 1981,
-        "hw_soc_cycles": 1976,
+        "cycles": 1987,
+        "hw_soc_cycles": 1982,
         "npu_cycles": 850,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -102,16 +102,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "67b0aeaf03752c27dae1abf8d8712ddbc9b45742f109464daabc15d3621d5119"
+      "log_sha256": "87c18c690519bd8be89990dd68581df018429d1db28f24edba64b072ee16465e"
     },
     {
       "name": "int8_random_06_batch4.hex",
       "passed": true,
       "firmware_hex_sha256": "228f7d62d0daa30a7b2e71a2dbefb03cda43ac59044ca3d4b362f27196bbbb0a",
-      "hw_soc_cycles": 2695,
+      "hw_soc_cycles": 2701,
       "counters": {
-        "cycles": 2700,
-        "hw_soc_cycles": 2695,
+        "cycles": 2706,
+        "hw_soc_cycles": 2701,
         "npu_cycles": 952,
         "fc1_issue_cycles": 512,
         "fc2_issue_cycles": 64,
@@ -119,16 +119,16 @@
         "DMA_write_MAC_overlap": 499,
         "DMA_MAC_total_overlap": 500
       },
-      "log_sha256": "9c7307cc754986cb66ea438b4ad2ab34635556eb9edfb429a4bbd31e6f9707bf"
+      "log_sha256": "524d18906d4497bd434a20c597aafffae13eba68e688e381d0f103f1ee751d69"
     },
     {
       "name": "int8_random_07_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "5a623919200cd04f2bdeb69f0cec7a3ea7830e2f7e6ab7cba1043e057d988598",
-      "hw_soc_cycles": 1957,
+      "hw_soc_cycles": 1963,
       "counters": {
-        "cycles": 1962,
-        "hw_soc_cycles": 1957,
+        "cycles": 1968,
+        "hw_soc_cycles": 1963,
         "npu_cycles": 851,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -136,16 +136,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "97009c33569bce49b97d6e52d64bb028fbd6a2348364fe2fbe02d762a27443b3"
+      "log_sha256": "b039fe91f8d784ef742bf03979e61994c492d6bb7912421b6a38151cc86c3124"
     },
     {
       "name": "int8_random_08_batch1.hex",
       "passed": true,
       "firmware_hex_sha256": "92c02890bf86f70ffc380f687871e3ec99f6368dcab3249a3eef683f48aca475",
-      "hw_soc_cycles": 1603,
+      "hw_soc_cycles": 1609,
       "counters": {
-        "cycles": 1608,
-        "hw_soc_cycles": 1603,
+        "cycles": 1614,
+        "hw_soc_cycles": 1609,
         "npu_cycles": 805,
         "fc1_issue_cycles": 128,
         "fc2_issue_cycles": 16,
@@ -153,16 +153,16 @@
         "DMA_write_MAC_overlap": 132,
         "DMA_MAC_total_overlap": 133
       },
-      "log_sha256": "7f536883d4d71f84eec5fb5dc2e29cca152b30241408381a907f46b78dc4c380"
+      "log_sha256": "e0d067ebdeb6c4d932629457860afdd08b0f3d263a6fb0ab7f8ffce997d2c09f"
     },
     {
       "name": "int8_random_09_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "a8a92fa30264d1df7e84079b8114d5e824c1759ff09ab0e82dfecc6210cb0f5e",
-      "hw_soc_cycles": 1976,
+      "hw_soc_cycles": 1982,
       "counters": {
-        "cycles": 1981,
-        "hw_soc_cycles": 1976,
+        "cycles": 1987,
+        "hw_soc_cycles": 1982,
         "npu_cycles": 850,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -170,16 +170,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "057b103f4b0886be9f5a44706195d5c2128239a1228b042a6ca4084287ea72e5"
+      "log_sha256": "4274ecc34f236c887d54f737dd88643f09d359e26399f52e6f268b1695887e2b"
     },
     {
       "name": "int8_random_10_batch1.hex",
       "passed": true,
       "firmware_hex_sha256": "5960f894fe3f5cb4141923600f0174d056b0c64649bbdabc5473e9cbacb26972",
-      "hw_soc_cycles": 1597,
+      "hw_soc_cycles": 1603,
       "counters": {
-        "cycles": 1602,
-        "hw_soc_cycles": 1597,
+        "cycles": 1608,
+        "hw_soc_cycles": 1603,
         "npu_cycles": 801,
         "fc1_issue_cycles": 128,
         "fc2_issue_cycles": 16,
@@ -187,16 +187,16 @@
         "DMA_write_MAC_overlap": 132,
         "DMA_MAC_total_overlap": 133
       },
-      "log_sha256": "891c5c0929ddad6e1d34656836a4186dbcadcc69913fbf6edb2179c061fda84d"
+      "log_sha256": "48ed5a2354d98004145ae033a600ee582900072ea04beac9dca143f042726fc9"
     },
     {
       "name": "int8_random_11_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "2acf5be8541e5aab3e3b37ce042fddcb2a5daeaf777146b08094c297b4d35b9c",
-      "hw_soc_cycles": 1957,
+      "hw_soc_cycles": 1963,
       "counters": {
-        "cycles": 1962,
-        "hw_soc_cycles": 1957,
+        "cycles": 1968,
+        "hw_soc_cycles": 1963,
         "npu_cycles": 851,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -204,16 +204,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "3e83e712e7781d8bd366e46c06bfb1948f514b0710d04747985c798572382059"
+      "log_sha256": "dc983df72c7aac30b279ead1e90236f87aa7912900b964c62d5289871f5a7db7"
     },
     {
       "name": "int8_random_12_batch4.hex",
       "passed": true,
       "firmware_hex_sha256": "911edfe874028b53adefb3fee8bf9be134b9b93ac0e22b2f857d5718e8533252",
-      "hw_soc_cycles": 2740,
+      "hw_soc_cycles": 2746,
       "counters": {
-        "cycles": 2745,
-        "hw_soc_cycles": 2740,
+        "cycles": 2751,
+        "hw_soc_cycles": 2746,
         "npu_cycles": 962,
         "fc1_issue_cycles": 512,
         "fc2_issue_cycles": 64,
@@ -221,16 +221,16 @@
         "DMA_write_MAC_overlap": 499,
         "DMA_MAC_total_overlap": 500
       },
-      "log_sha256": "f65840795c17b40d6feabf107ca24a9e1e65fc80f637a22d03e8abd704795c5a"
+      "log_sha256": "65403837d7c21821a9db9b2c3da10f15ca3384b80384eedceb775f619ac0c924"
     },
     {
       "name": "int8_random_13_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "223f0a96f027b7afbcb77f5a7f26010abb2b8b115e55668a3ba8a62b5b187d25",
-      "hw_soc_cycles": 1976,
+      "hw_soc_cycles": 1982,
       "counters": {
-        "cycles": 1981,
-        "hw_soc_cycles": 1976,
+        "cycles": 1987,
+        "hw_soc_cycles": 1982,
         "npu_cycles": 850,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -238,16 +238,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "7e4a2cb5f686b8f892ffbd8eed374ab324dbee33848fbe252d20560c87de9a14"
+      "log_sha256": "cbaf8bc5155b14636e3a967344a92fa8a90ad32859ff9f140f90aa301b64aa0f"
     },
     {
       "name": "int8_random_14_batch1.hex",
       "passed": true,
       "firmware_hex_sha256": "d310633bd96f36e692c64ed038024ba0698840ab8fc8f8ef2d276c86d952d91e",
-      "hw_soc_cycles": 1597,
+      "hw_soc_cycles": 1603,
       "counters": {
-        "cycles": 1602,
-        "hw_soc_cycles": 1597,
+        "cycles": 1608,
+        "hw_soc_cycles": 1603,
         "npu_cycles": 801,
         "fc1_issue_cycles": 128,
         "fc2_issue_cycles": 16,
@@ -255,16 +255,16 @@
         "DMA_write_MAC_overlap": 132,
         "DMA_MAC_total_overlap": 133
       },
-      "log_sha256": "4f27be422f130f9c9a3c33213a2929059e2c87226002c232fb6f2babca098301"
+      "log_sha256": "d3807cbb6cac9e15c4f136c446dbaa0666edd51f295618e7bddf3419b54d9a60"
     },
     {
       "name": "int8_random_15_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "626dcf9ed3ce2b7e9066fbebaf669e57705038b13d0c407f797ca41c5e07fa66",
-      "hw_soc_cycles": 1957,
+      "hw_soc_cycles": 1963,
       "counters": {
-        "cycles": 1962,
-        "hw_soc_cycles": 1957,
+        "cycles": 1968,
+        "hw_soc_cycles": 1963,
         "npu_cycles": 851,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -272,16 +272,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "093bdd1a0b6d5b8d0263d9bebab229bfe4d7e718cff416c8678f59df0fcd1fb8"
+      "log_sha256": "22d9253722abb59f51efc9119d82146b8363845dd0903ca8c92fb91cc4eddfde"
     },
     {
       "name": "int8_random_16_batch1.hex",
       "passed": true,
       "firmware_hex_sha256": "5cdc54572df9547eb5837340f02a275b32e910a8d76a9b14802bc38a26bf31a2",
-      "hw_soc_cycles": 1603,
+      "hw_soc_cycles": 1609,
       "counters": {
-        "cycles": 1608,
-        "hw_soc_cycles": 1603,
+        "cycles": 1614,
+        "hw_soc_cycles": 1609,
         "npu_cycles": 805,
         "fc1_issue_cycles": 128,
         "fc2_issue_cycles": 16,
@@ -289,16 +289,16 @@
         "DMA_write_MAC_overlap": 132,
         "DMA_MAC_total_overlap": 133
       },
-      "log_sha256": "572ccbfea5ea730aafea879708fc7008f50c44ff6046cf732b0c407968ef61d6"
+      "log_sha256": "e89c0eddc2d820c9849da552ab0fd84c9cfe69749b4eec33e763a25a5456d828"
     },
     {
       "name": "int8_random_17_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "d07b335c13cf0b3bf48838a40f7b464109ea4c97932711a88e92fdc319c02e48",
-      "hw_soc_cycles": 1976,
+      "hw_soc_cycles": 1982,
       "counters": {
-        "cycles": 1981,
-        "hw_soc_cycles": 1976,
+        "cycles": 1987,
+        "hw_soc_cycles": 1982,
         "npu_cycles": 850,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -306,16 +306,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "956dfc9de6985e5c17af2869b096a32a13bcac5645e192a66eb8812c45f0b8d2"
+      "log_sha256": "57906e6c266dadff59c2770d2faa7fd94f35243ada3d4a733e3d252996eb8f67"
     },
     {
       "name": "int8_random_18_batch4.hex",
       "passed": true,
       "firmware_hex_sha256": "9a962cb05b1e04cf593c63e1eebced04f99b0837387a9b157a3cfc5a717a6131",
-      "hw_soc_cycles": 2695,
+      "hw_soc_cycles": 2701,
       "counters": {
-        "cycles": 2700,
-        "hw_soc_cycles": 2695,
+        "cycles": 2706,
+        "hw_soc_cycles": 2701,
         "npu_cycles": 952,
         "fc1_issue_cycles": 512,
         "fc2_issue_cycles": 64,
@@ -323,16 +323,16 @@
         "DMA_write_MAC_overlap": 499,
         "DMA_MAC_total_overlap": 500
       },
-      "log_sha256": "bbaea8a11ee5acf69331fd7b40c006bb3492168b774fc7556876c443ee360f30"
+      "log_sha256": "5180311a0e61905efc4cff52e06aa6774391603936058f9cbf5f28e0611eafaa"
     },
     {
       "name": "int8_random_19_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "4f9506ae7f53008f92f3491457c8c757ef9c2f263b23fc62db628c895e5abd53",
-      "hw_soc_cycles": 1957,
+      "hw_soc_cycles": 1963,
       "counters": {
-        "cycles": 1962,
-        "hw_soc_cycles": 1957,
+        "cycles": 1968,
+        "hw_soc_cycles": 1963,
         "npu_cycles": 851,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -340,16 +340,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "ae2ab7ec6566f11fa87fbebeb8aff3927cbdc72e85ada6b3f4082bff0bc781bf"
+      "log_sha256": "b9b3d89bc07a0714f2566f8107ebd4870177e124ad3be897c94ea7169b93075a"
     },
     {
       "name": "int8_random_20_batch1.hex",
       "passed": true,
       "firmware_hex_sha256": "3a5a083f7833159319d7b9cd4fc442f842ef232c966608f67836d2bbb3a9eff3",
-      "hw_soc_cycles": 1603,
+      "hw_soc_cycles": 1609,
       "counters": {
-        "cycles": 1608,
-        "hw_soc_cycles": 1603,
+        "cycles": 1614,
+        "hw_soc_cycles": 1609,
         "npu_cycles": 805,
         "fc1_issue_cycles": 128,
         "fc2_issue_cycles": 16,
@@ -357,16 +357,16 @@
         "DMA_write_MAC_overlap": 132,
         "DMA_MAC_total_overlap": 133
       },
-      "log_sha256": "c825ba1d989dfc30e8e19d6359a7e8d322e15f3c224976073225244eb01d76a2"
+      "log_sha256": "b0e2526623cc7fe2d2e9766071d057ed420a5610f3974bbac9746806cf67b3dc"
     },
     {
       "name": "int8_random_21_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "14b8d52bd97cc47031e767e8b4b1e03839a7937853b128141add9ee559dd3824",
-      "hw_soc_cycles": 1976,
+      "hw_soc_cycles": 1982,
       "counters": {
-        "cycles": 1981,
-        "hw_soc_cycles": 1976,
+        "cycles": 1987,
+        "hw_soc_cycles": 1982,
         "npu_cycles": 850,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -374,16 +374,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "620df7943fbabb201ae46352129492a086c92e3febb4f71fa7c96b5be7348373"
+      "log_sha256": "98d7030003c45ce1d42a1111ad3dda6d6de0c4b189013737090bbb94e33a50fb"
     },
     {
       "name": "int8_random_22_batch1.hex",
       "passed": true,
       "firmware_hex_sha256": "029f0c0c19c313fcd6427ad5e4db2b7acfe69c6eac986763d7a8d99c8eac5aab",
-      "hw_soc_cycles": 1597,
+      "hw_soc_cycles": 1603,
       "counters": {
-        "cycles": 1602,
-        "hw_soc_cycles": 1597,
+        "cycles": 1608,
+        "hw_soc_cycles": 1603,
         "npu_cycles": 801,
         "fc1_issue_cycles": 128,
         "fc2_issue_cycles": 16,
@@ -391,16 +391,16 @@
         "DMA_write_MAC_overlap": 132,
         "DMA_MAC_total_overlap": 133
       },
-      "log_sha256": "f4785e5aaff9ce098dc51e6cc1c9d520cb15feedcc0c20bef9e9bc2c7f4b369e"
+      "log_sha256": "16e8d701c1f923531b2ea8cd5e65284e725025516ecf6da3fe3797eb4bfb4a3f"
     },
     {
       "name": "int8_random_23_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "0654e02afb9a9c6255beb09b30225041ec9e096354af6e699608081880cf22cd",
-      "hw_soc_cycles": 1957,
+      "hw_soc_cycles": 1963,
       "counters": {
-        "cycles": 1962,
-        "hw_soc_cycles": 1957,
+        "cycles": 1968,
+        "hw_soc_cycles": 1963,
         "npu_cycles": 851,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -408,16 +408,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "7c8376a02ca7ffaa9ecbe588599784c5f065bc98b3c149d923e8822870213bfd"
+      "log_sha256": "04cd5e5e36fcc27899b9c8fb7af7cb09612f4ff7bb277c69cb569bc65ce3cdfc"
     },
     {
       "name": "int8_random_24_batch4.hex",
       "passed": true,
       "firmware_hex_sha256": "eb7106946cfff1ebeee32eb240e208bc023da8d6fde87360d3e8b24d644369c7",
-      "hw_soc_cycles": 2740,
+      "hw_soc_cycles": 2746,
       "counters": {
-        "cycles": 2745,
-        "hw_soc_cycles": 2740,
+        "cycles": 2751,
+        "hw_soc_cycles": 2746,
         "npu_cycles": 962,
         "fc1_issue_cycles": 512,
         "fc2_issue_cycles": 64,
@@ -425,16 +425,16 @@
         "DMA_write_MAC_overlap": 499,
         "DMA_MAC_total_overlap": 500
       },
-      "log_sha256": "34bfca21dfad530e56b4c284fec680f84d87a5b5e6dfd01d78eb9281c985c619"
+      "log_sha256": "28d902b57efa4e9b26411c1ba9dde1df246e95c05be95a2807402c1c30584310"
     },
     {
       "name": "int8_random_25_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "3ece565810f7b3c504a3e0147b79023cfa513525563d14b8fabbb631ea37c28d",
-      "hw_soc_cycles": 1976,
+      "hw_soc_cycles": 1982,
       "counters": {
-        "cycles": 1981,
-        "hw_soc_cycles": 1976,
+        "cycles": 1987,
+        "hw_soc_cycles": 1982,
         "npu_cycles": 850,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -442,16 +442,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "bb705057de1d6d5fba427cbfe1e5194540da50c4235067948c1c048d05cb1052"
+      "log_sha256": "34f13c0a74c86af5e2f5e2f51c842f9a30d4cb5ee0dfd81a058f11f3b4958891"
     },
     {
       "name": "int8_random_26_batch1.hex",
       "passed": true,
       "firmware_hex_sha256": "6ddf75a72732af8c6dfb26eae85926d14194484824e45ffb33664f7d49bd2818",
-      "hw_soc_cycles": 1597,
+      "hw_soc_cycles": 1603,
       "counters": {
-        "cycles": 1602,
-        "hw_soc_cycles": 1597,
+        "cycles": 1608,
+        "hw_soc_cycles": 1603,
         "npu_cycles": 801,
         "fc1_issue_cycles": 128,
         "fc2_issue_cycles": 16,
@@ -459,16 +459,16 @@
         "DMA_write_MAC_overlap": 132,
         "DMA_MAC_total_overlap": 133
       },
-      "log_sha256": "886ea93c3b402f61445eb5f324fee10111f8e12160b30b2d20b1819ca8e537a3"
+      "log_sha256": "70650d60921c465d2895a423f37b43257c6073876c5d15be712957c19d16017d"
     },
     {
       "name": "int8_random_27_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "9ec9e0d173bddbd51fff4a7b9663abf79a1b2561509b218645556104187801a8",
-      "hw_soc_cycles": 1957,
+      "hw_soc_cycles": 1963,
       "counters": {
-        "cycles": 1962,
-        "hw_soc_cycles": 1957,
+        "cycles": 1968,
+        "hw_soc_cycles": 1963,
         "npu_cycles": 851,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -476,16 +476,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "805ab2b48f5aaa040b21473fdfebcb05ed37e3be4f3922b4a4a33b81335f99f1"
+      "log_sha256": "a64d0ac076ad289ad7bd3677fbde3cdf9a51824332b138c2a66594e48d0a41e8"
     },
     {
       "name": "int8_random_28_batch1.hex",
       "passed": true,
       "firmware_hex_sha256": "2a9bb5d32e5680c6384d5b138052b164072dfe1e6be2d80792904a8007b190fd",
-      "hw_soc_cycles": 1603,
+      "hw_soc_cycles": 1609,
       "counters": {
-        "cycles": 1608,
-        "hw_soc_cycles": 1603,
+        "cycles": 1614,
+        "hw_soc_cycles": 1609,
         "npu_cycles": 805,
         "fc1_issue_cycles": 128,
         "fc2_issue_cycles": 16,
@@ -493,16 +493,16 @@
         "DMA_write_MAC_overlap": 132,
         "DMA_MAC_total_overlap": 133
       },
-      "log_sha256": "55d0e3c6871cf1dc974d15de4aa580cff92fceed76e8821c76e9bf5f30cc5ec3"
+      "log_sha256": "d43d356fa4dfc53f576cf924dc0c3e2d39ec6773c28d254155d7197edaa316b5"
     },
     {
       "name": "int8_random_29_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "f15af6ddab49524ed3bb6c22ba517acd0a7b21357c4c94c0d8ace21865f77f81",
-      "hw_soc_cycles": 1976,
+      "hw_soc_cycles": 1982,
       "counters": {
-        "cycles": 1981,
-        "hw_soc_cycles": 1976,
+        "cycles": 1987,
+        "hw_soc_cycles": 1982,
         "npu_cycles": 850,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -510,16 +510,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "fb7baab1e4be823f59a13d02af2b92a0be4e2fc1eed7e1546f7f6641c46ad723"
+      "log_sha256": "9a60c9def7213af005b984761beff79b79343ec7fa89317d08295bed89b03292"
     },
     {
       "name": "int8_random_30_batch4.hex",
       "passed": true,
       "firmware_hex_sha256": "e123e7ab164f80bfab7521f06e58c882ad097dc568979aadff975b0206fe3062",
-      "hw_soc_cycles": 2695,
+      "hw_soc_cycles": 2701,
       "counters": {
-        "cycles": 2700,
-        "hw_soc_cycles": 2695,
+        "cycles": 2706,
+        "hw_soc_cycles": 2701,
         "npu_cycles": 952,
         "fc1_issue_cycles": 512,
         "fc2_issue_cycles": 64,
@@ -527,16 +527,16 @@
         "DMA_write_MAC_overlap": 499,
         "DMA_MAC_total_overlap": 500
       },
-      "log_sha256": "584751937015521c7df21b43e5e326d926bb00d2a5e4ff6089e2866987154a5f"
+      "log_sha256": "fffccbd9a1744eab63dc13dbffc70231bc618d33af95dc573133a36320621f05"
     },
     {
       "name": "int8_random_31_batch2.hex",
       "passed": true,
       "firmware_hex_sha256": "7837e24a8510a96a556421e84e7799da7f17c4c13f09d27901820b76dd9da8cb",
-      "hw_soc_cycles": 1957,
+      "hw_soc_cycles": 1963,
       "counters": {
-        "cycles": 1962,
-        "hw_soc_cycles": 1957,
+        "cycles": 1968,
+        "hw_soc_cycles": 1963,
         "npu_cycles": 851,
         "fc1_issue_cycles": 256,
         "fc2_issue_cycles": 32,
@@ -544,16 +544,16 @@
         "DMA_write_MAC_overlap": 268,
         "DMA_MAC_total_overlap": 269
       },
-      "log_sha256": "b61d201ebdd683aa53ecfaf7c25d492f6a9213712957334eac79d46912a69b1d"
+      "log_sha256": "050765f8144d5c22e7d832dda02d1890a0c28f2838a40296b712a5ac01289d25"
     },
     {
       "name": "int8_uci_00_batch4.hex",
       "passed": true,
       "firmware_hex_sha256": "a711b9f58714e77190dfbcc5c35a8cac1096a326b2eaf7e727f35e2900f68ac3",
-      "hw_soc_cycles": 2695,
+      "hw_soc_cycles": 2701,
       "counters": {
-        "cycles": 2700,
-        "hw_soc_cycles": 2695,
+        "cycles": 2706,
+        "hw_soc_cycles": 2701,
         "npu_cycles": 952,
         "fc1_issue_cycles": 512,
         "fc2_issue_cycles": 64,
@@ -561,16 +561,16 @@
         "DMA_write_MAC_overlap": 499,
         "DMA_MAC_total_overlap": 500
       },
-      "log_sha256": "cb0ad9321c75ce19723bf9fdbadeeaa5b720e9f2c07822e0a2deee690ff7b4d3"
+      "log_sha256": "aac4558f43effa680d77e3fd7f1921f5f236494b733f44e09e0ee389dbbc7ee0"
     },
     {
       "name": "int8_uci_01_batch4.hex",
       "passed": true,
       "firmware_hex_sha256": "330e41ed5af6d347922b8726e38f35fa037429aeb39b119cab88d5d8365f1880",
-      "hw_soc_cycles": 2695,
+      "hw_soc_cycles": 2701,
       "counters": {
-        "cycles": 2700,
-        "hw_soc_cycles": 2695,
+        "cycles": 2706,
+        "hw_soc_cycles": 2701,
         "npu_cycles": 952,
         "fc1_issue_cycles": 512,
         "fc2_issue_cycles": 64,
@@ -578,16 +578,16 @@
         "DMA_write_MAC_overlap": 499,
         "DMA_MAC_total_overlap": 500
       },
-      "log_sha256": "b71ddfead53fcb29f7947e509ae522dc9f02d8330be1a2b4895b3c3134dcc7ae"
+      "log_sha256": "f10f9cd48eb8774e47c77a232099e7e49920abf19d3e8b8bb5563fd2bb5c51e6"
     },
     {
       "name": "int8_uci_02_batch4.hex",
       "passed": true,
       "firmware_hex_sha256": "9826a22e7fffb67e35852cd52ee90cf79e4ec870d0cf1fe94e6f0511889f10f9",
-      "hw_soc_cycles": 2695,
+      "hw_soc_cycles": 2701,
       "counters": {
-        "cycles": 2700,
-        "hw_soc_cycles": 2695,
+        "cycles": 2706,
+        "hw_soc_cycles": 2701,
         "npu_cycles": 952,
         "fc1_issue_cycles": 512,
         "fc2_issue_cycles": 64,
@@ -595,16 +595,16 @@
         "DMA_write_MAC_overlap": 499,
         "DMA_MAC_total_overlap": 500
       },
-      "log_sha256": "0414acfaec77d83c1deb83f82c613ba972dc7762f38b3c585315716d8fe82336"
+      "log_sha256": "770e94b51a7bc962194b0d8db330cb9d553da88c788856c1637517440fda541e"
     },
     {
       "name": "int8_uci_03_batch4.hex",
       "passed": true,
       "firmware_hex_sha256": "27e870bdb6ba4a995dec75b76a72f5cce3aaa6e51b3cfa86a9260a3c4c0c7ca0",
-      "hw_soc_cycles": 2695,
+      "hw_soc_cycles": 2701,
       "counters": {
-        "cycles": 2700,
-        "hw_soc_cycles": 2695,
+        "cycles": 2706,
+        "hw_soc_cycles": 2701,
         "npu_cycles": 952,
         "fc1_issue_cycles": 512,
         "fc2_issue_cycles": 64,
@@ -612,16 +612,16 @@
         "DMA_write_MAC_overlap": 499,
         "DMA_MAC_total_overlap": 500
       },
-      "log_sha256": "5abd284bb0a3c56bac4465d50716f6066225c7981848feaa3b6d8f57317133fe"
+      "log_sha256": "cf85b1fffb89cdaf962197bd67d5e3987c7a28aefbb25d8a390ebc43e87c54a2"
     },
     {
       "name": "int8_uci_04_batch4.hex",
       "passed": true,
       "firmware_hex_sha256": "401e3f206438b55d96fef39b019a3345b035b0668fd6ad7b64e2289a7885b3ce",
-      "hw_soc_cycles": 2695,
+      "hw_soc_cycles": 2701,
       "counters": {
-        "cycles": 2700,
-        "hw_soc_cycles": 2695,
+        "cycles": 2706,
+        "hw_soc_cycles": 2701,
         "npu_cycles": 952,
         "fc1_issue_cycles": 512,
         "fc2_issue_cycles": 64,
@@ -629,16 +629,16 @@
         "DMA_write_MAC_overlap": 499,
         "DMA_MAC_total_overlap": 500
       },
-      "log_sha256": "169e4ec23ab4eb0ecf1aef1e51101e458cecd207dd1b950455c735bc74af3c30"
+      "log_sha256": "0d1d94e5c7630c4bd1b883ff152a7635dda412eaa6f59c2790c78a4062452156"
     },
     {
       "name": "int8_uci_05_batch4.hex",
       "passed": true,
       "firmware_hex_sha256": "98ececbd34d90a9ec2ff0cfd09382d922d2847ba3bc128b161a2ebc58f346b48",
-      "hw_soc_cycles": 2695,
+      "hw_soc_cycles": 2701,
       "counters": {
-        "cycles": 2700,
-        "hw_soc_cycles": 2695,
+        "cycles": 2706,
+        "hw_soc_cycles": 2701,
         "npu_cycles": 952,
         "fc1_issue_cycles": 512,
         "fc2_issue_cycles": 64,
@@ -646,13 +646,13 @@
         "DMA_write_MAC_overlap": 499,
         "DMA_MAC_total_overlap": 500
       },
-      "log_sha256": "1bbdbe8095a106fc045d1f044ee27f24e5a8bcb7abbb63a2e41d119003ee3360"
+      "log_sha256": "41a1774da42ed22fb36d7d37fa94f673aeed763f838eeeec3b09834b6e111d84"
     },
     {
       "name": "har_b1_cpu",
       "passed": true,
       "firmware_hex_sha256": "ad76463c0ebca392e663ed9e80e47374c9c6b221d0456d44a946eaa658ceee60",
-      "hw_soc_cycles": 51940,
+      "hw_soc_cycles": 51946,
       "counters": {
         "cycles": 51613,
         "batch": 1,
@@ -665,13 +665,13 @@
         "DMA_MAC_total_overlap": 0,
         "dma_descriptors": 0
       },
-      "log_sha256": "28689cfe85a8beb3f46c6f6f38255c4ca4b003d21fb1247da4d40a1ffabe182d"
+      "log_sha256": "617e48aff8339026e896a0fd0b0a01cde5f68012ee3387bd43975631438c9ab8"
     },
     {
       "name": "har_b1_npu",
       "passed": true,
       "firmware_hex_sha256": "5abb7d5f481d8b653f0c8bbf1b3b648954f9f60abd6dd3d481c7676f7cce7c48",
-      "hw_soc_cycles": 1787,
+      "hw_soc_cycles": 1793,
       "counters": {
         "cycles": 1525,
         "batch": 1,
@@ -684,13 +684,13 @@
         "DMA_MAC_total_overlap": 133,
         "dma_descriptors": 36
       },
-      "log_sha256": "4d49887d5f84bc95356be24751349e37a7b1fc54c824afc66da86e9f460369f7"
+      "log_sha256": "1a3e73a40489a60f8916f94623d8b472faf32957fe783a31b2018e993294f057"
     },
     {
       "name": "har_b2_cpu",
       "passed": true,
       "firmware_hex_sha256": "1454132520e0ef64bd6eef8db61bfbe490188d2dbbde00a4be97edd96021bb88",
-      "hw_soc_cycles": 76670,
+      "hw_soc_cycles": 76676,
       "counters": {
         "cycles": 76104,
         "batch": 2,
@@ -703,13 +703,13 @@
         "DMA_MAC_total_overlap": 0,
         "dma_descriptors": 0
       },
-      "log_sha256": "c833545e5ba3c8ceb2d1526952e9dd51e7dd732e64f3eaa53519e436a150a99f"
+      "log_sha256": "f5f175e02614ad5a3c9e7fa7234b0d43e9e7fba9634c223db59308b897a7d5ad"
     },
     {
       "name": "har_b2_npu",
       "passed": true,
       "firmware_hex_sha256": "4877f0f8abd59ee8571b3738d1c8dacc146f77f3a65a18c29cd0d468294c0f79",
-      "hw_soc_cycles": 2332,
+      "hw_soc_cycles": 2338,
       "counters": {
         "cycles": 1918,
         "batch": 2,
@@ -722,13 +722,13 @@
         "DMA_MAC_total_overlap": 269,
         "dma_descriptors": 36
       },
-      "log_sha256": "7be2b595882fbe303e915b1af1be0fe459efeb1002d1ad60f07cb0895bc63f52"
+      "log_sha256": "57656e4205e81c0dd28e0132f06b3dc1a574a91b6189ebc193924c514a048188"
     },
     {
       "name": "har_b3_cpu",
       "passed": true,
       "firmware_hex_sha256": "3c8fb7983ec0fc4b735c71790d8b86f65b50c939eef8a5f3ab2c4a4e0391fa3b",
-      "hw_soc_cycles": 128995,
+      "hw_soc_cycles": 129001,
       "counters": {
         "cycles": 128162,
         "batch": 3,
@@ -741,13 +741,13 @@
         "DMA_MAC_total_overlap": 0,
         "dma_descriptors": 0
       },
-      "log_sha256": "d6152ed03ac7272929da2d38b70dda4f25d74db71e7a477fe704393c7eaea325"
+      "log_sha256": "7dc6a3f374e6304d6a66d3732eb72a76f007eadd6249b13d38862b26308588b8"
     },
     {
       "name": "har_b3_npu",
       "passed": true,
       "firmware_hex_sha256": "4cbc977172dd210c032c0210fdfe238e5f29a46c2854ad74f4047c73ae3da758",
-      "hw_soc_cycles": 2851,
+      "hw_soc_cycles": 2857,
       "counters": {
         "cycles": 2268,
         "batch": 3,
@@ -760,13 +760,13 @@
         "DMA_MAC_total_overlap": 403,
         "dma_descriptors": 36
       },
-      "log_sha256": "059e13e0c67361504ee10917e1839a53f8875945c37888314864e72591dd31e2"
+      "log_sha256": "b5c77925b3e37334b03b7927d718629178a3cab6b9b04bf788cf7660466e21fc"
     },
     {
       "name": "har_b4_cpu",
       "passed": true,
       "firmware_hex_sha256": "7029f8427001ec329e8c2a1f7cfe62a2bd78715cd377c50425f466821ca7dca9",
-      "hw_soc_cycles": 154655,
+      "hw_soc_cycles": 154661,
       "counters": {
         "cycles": 153536,
         "batch": 4,
@@ -779,13 +779,13 @@
         "DMA_MAC_total_overlap": 0,
         "dma_descriptors": 0
       },
-      "log_sha256": "c51a2257d857abb7dd69378cdfbfa2123c457fc1bd4ddf157c4b345ee7ac1cee"
+      "log_sha256": "c00e0a429a50f470e2e5934b0b058c7b5b5c610b667f944997870deec6ed1af5"
     },
     {
       "name": "har_b4_npu",
       "passed": true,
       "firmware_hex_sha256": "6ac13c33b84c64ed1a70f67ef845fdc92abf8f9369413dda8d64be508a50c954",
-      "hw_soc_cycles": 3365,
+      "hw_soc_cycles": 3371,
       "counters": {
         "cycles": 2612,
         "batch": 4,
@@ -798,7 +798,7 @@
         "DMA_MAC_total_overlap": 500,
         "dma_descriptors": 36
       },
-      "log_sha256": "fa80e7832f8eb059296781d169e0895089b6b42f1b328c0fe3679f081b7ab07e"
+      "log_sha256": "41f165aa261f03014da4ea3004983bd62d466b52ee81917e1eb6d634bc30e3b4"
     },
     {
       "name": "raw_full_b1_cpu",
@@ -822,7 +822,7 @@
         "DMA_MAC_total_overlap": 0,
         "dma_descriptors": 0
       },
-      "simulation_sha256": "4507a5ff7bb475472883bdca01bc2733c2ca062e53bd00f64f0b46ca92c3fa60",
+      "simulation_sha256": "fa62f352a01ddb4c542115b47a7ba3293262516d02ede94ea088a0222da3433f",
       "tensor_count": 2,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "9d6410bad1d0edc92f7ff6e976a588a9e4473b408223390239ae6ca69c112334"
@@ -849,7 +849,7 @@
         "DMA_MAC_total_overlap": 124,
         "dma_descriptors": 32
       },
-      "simulation_sha256": "a49d8cee1d4839d3df929f548382f62b180c91637af6f02975490dc32fc3a61a",
+      "simulation_sha256": "43ebe6f7e4adda9585763723712256fdf3e5f98031d7c1596875518417518620",
       "tensor_count": 2,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "9d6410bad1d0edc92f7ff6e976a588a9e4473b408223390239ae6ca69c112334"
@@ -876,7 +876,7 @@
         "DMA_MAC_total_overlap": 0,
         "dma_descriptors": 0
       },
-      "simulation_sha256": "9de9c957bfee53e15f2b7db25a7b5c52e3d8d2b81a98755b984ffac654afc9a0",
+      "simulation_sha256": "8856c9828e78840e81d4fdd328f9eac4d670e2111ca557ba2b366790f3ce8966",
       "tensor_count": 2,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "dab9df297b86c31bd4d703863738ca5ad7a10ac7635d81523047130c455bdacd"
@@ -903,7 +903,7 @@
         "DMA_MAC_total_overlap": 248,
         "dma_descriptors": 32
       },
-      "simulation_sha256": "fa282cf2206611f3552cff9055cb3b1cb3b525301f33dd1361a498835f60cd7b",
+      "simulation_sha256": "1ba33a45437316ff80ceeedec96a6dc31ed08a7af05de41baf7b0ded69f6e2de",
       "tensor_count": 2,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "dab9df297b86c31bd4d703863738ca5ad7a10ac7635d81523047130c455bdacd"
@@ -930,7 +930,7 @@
         "DMA_MAC_total_overlap": 0,
         "dma_descriptors": 0
       },
-      "simulation_sha256": "61d4de419ba93b557fa09ab203ace180d76b0ec499c99fc8e769fa2592bbaacb",
+      "simulation_sha256": "7244fc487da84e466d17e25f6008d112f71f509aa870d256f45e47aa1565d776",
       "tensor_count": 2,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "8fa125d7bcaeb75c88c7995eeb090d2998b86d18e0d31a1425680fd3ed357cbc"
@@ -957,7 +957,7 @@
         "DMA_MAC_total_overlap": 372,
         "dma_descriptors": 32
       },
-      "simulation_sha256": "bf30f9d40068c52883bcbc22599f9363ae5b929ba1a8b82ceb2bdd75352fec06",
+      "simulation_sha256": "5455407eefc8fcd8bbc4dc2fb1e29163f3cac57588e4893a6275fa93679d8b3b",
       "tensor_count": 2,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "8fa125d7bcaeb75c88c7995eeb090d2998b86d18e0d31a1425680fd3ed357cbc"
@@ -984,7 +984,7 @@
         "DMA_MAC_total_overlap": 0,
         "dma_descriptors": 0
       },
-      "simulation_sha256": "1d33885584621d694527df670365556bd9fca29f7237df33a98d7da60a97fb2a",
+      "simulation_sha256": "e848b6b757a712a9b4386dda105a86ccc4fb8c4f248568925442ff55ca4a146f",
       "tensor_count": 2,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "05c467d1906e2fba760d30710d50956525a6594a9e12811de5f4c7802d9f4855"
@@ -1011,7 +1011,7 @@
         "DMA_MAC_total_overlap": 465,
         "dma_descriptors": 32
       },
-      "simulation_sha256": "a07da4e7eedfd9d383aca4e3dba9edba7c5c2cefdf25e4b40a3cd63413b62da4",
+      "simulation_sha256": "f766115650e0fe265bab47a6904c7dd8d7c8de96bc90aae72233e095d7a4be1e",
       "tensor_count": 2,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "05c467d1906e2fba760d30710d50956525a6594a9e12811de5f4c7802d9f4855"
@@ -1038,7 +1038,7 @@
         "DMA_MAC_total_overlap": 0,
         "dma_descriptors": 0
       },
-      "simulation_sha256": "514697ee712027ac7086d1be5c932f8e95e5600b8810efb5a1edfb1a290f378e",
+      "simulation_sha256": "d0bca3418ec1899dbbf5b7ca6c064d4b259a7c85418f53b89dc772005f9c069b",
       "tensor_count": 2,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "a114489397f730b418d81f82892bc86899606c6f763dd2c6d72ebe3fa24f6919"
@@ -1065,7 +1065,7 @@
         "DMA_MAC_total_overlap": 465,
         "dma_descriptors": 32
       },
-      "simulation_sha256": "9887caaf2c0509388ae2b3dbb7cea4bd2b34942345d544168922e1dee0e376d2",
+      "simulation_sha256": "87ef2d80c35a514524dc5bedddedb65bd732ccea0def9dc32ba4ab251ba4ffe5",
       "tensor_count": 2,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "a114489397f730b418d81f82892bc86899606c6f763dd2c6d72ebe3fa24f6919"
@@ -1092,7 +1092,7 @@
         "DMA_MAC_total_overlap": 0,
         "dma_descriptors": 0
       },
-      "simulation_sha256": "94bad84e5375b44853b9f053ffe7dc970da6c86520300b95308aeb59fde099ad",
+      "simulation_sha256": "0c7e9e48ccf6f10f28cf8b28a2b43bbd4108c20a07aede11b38e7511d12eb2f4",
       "tensor_count": 2,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "e08ef5c2a2e29599058ae47d8038ae1fdb33c9d62b57dd5af0ac7f16720c77ac"
@@ -1119,7 +1119,7 @@
         "DMA_MAC_total_overlap": 930,
         "dma_descriptors": 64
       },
-      "simulation_sha256": "c0f2c698d4312d86959b4b1fcaa14ac8da37a1957e813f091d947a59bc8b76fa",
+      "simulation_sha256": "5c48da8f4df872b37f8631179aff3242e84361423b2d4b6da2d79d5b13722640",
       "tensor_count": 2,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "e08ef5c2a2e29599058ae47d8038ae1fdb33c9d62b57dd5af0ac7f16720c77ac"
@@ -1146,7 +1146,7 @@
         "DMA_MAC_total_overlap": 0,
         "dma_descriptors": 0
       },
-      "simulation_sha256": "aa0662c5781468cad8eba682d5e197863facb5eae05df7a874f7ee437a9fbc69",
+      "simulation_sha256": "5e0f67adbe31781c530d75a19b9a7df4783bdf51b81ec499827492369faf2ca5",
       "tensor_count": 5,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "66b8f4ea9002ced99227ab7aaacad4f0b3649453ff8b2ff67e5a345f8adabc7a"
@@ -1173,7 +1173,7 @@
         "DMA_MAC_total_overlap": 248,
         "dma_descriptors": 32
       },
-      "simulation_sha256": "1de0e458cebfd90691fb4e4396a9757e68298b89364866526cddc06f9d79c751",
+      "simulation_sha256": "05ea5a0b03945264c990886a745907342aa96261d565b1c5ac296f3210cdf5f4",
       "tensor_count": 5,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "66b8f4ea9002ced99227ab7aaacad4f0b3649453ff8b2ff67e5a345f8adabc7a"
@@ -1200,7 +1200,7 @@
         "DMA_MAC_total_overlap": 0,
         "dma_descriptors": 0
       },
-      "simulation_sha256": "a87c8081b6ae09c85126f2e352f7ad69e7d29a351f3b37fb07db4b15d5b4e091",
+      "simulation_sha256": "6679e7cbc9d19cfb31254774ed27e94550263926c081b8733440cbfc0ee5fe6e",
       "tensor_count": 2,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "690d254c8a1d09b3d3d5a978ef7bec26196b4760733240400a7e8d4802695a75"
@@ -1227,13 +1227,13 @@
         "DMA_MAC_total_overlap": 740,
         "dma_descriptors": 64
       },
-      "simulation_sha256": "0b4b25070491bd73a4a2259cd950fd8fb9e1f940d61253b6cb06a5d5578ff66d",
+      "simulation_sha256": "0ae8e5184044737156a3a8303ffe0d37ce35567205294ffe09e41a9fc8a9d130",
       "tensor_count": 2,
       "all_tensors_sba_match": true,
       "actual_output_sha256": "690d254c8a1d09b3d3d5a978ef7bec26196b4760733240400a7e8d4802695a75"
     }
   ],
-  "scope": "Actual emitted FPGA images on unchanged full CPU/AXI/SRAM RTL; not FPGA timing or board validation",
+  "scope": "Actual FPGA images on boot/debug-guard RTL; full CPU/AXI/SRAM simulation, not FPGA board or timing validation",
   "source_sha256": {
     "compiler/__init__.py": "b471ee9950d4c73931d8410f41db69c3da51a4c1181a04e9ca80ae236994e033",
     "compiler/__main__.py": "99f5e5929c05d9d9a0bb5cc074cdaa35cf1fb0ea47914c1b0a47d0639f53a1d0",
@@ -1319,7 +1319,7 @@
     "rtl/include/common_cells/assertions.svh": "d44ed5ffbbfb69c65f5b398428c6b5b5a1103883b925040cbc7bece257d13b1a",
     "rtl/include/common_cells/registers.svh": "a4e19da894564fd30a4dec4ca8466d181592c9202be2bf124fc4caa82b432d25",
     "rtl/include/my_soc_pkg.sv": "1366702d96b1ea493246dd813261956309bd14bccdb627121662de2b014ea83b",
-    "rtl/memory/bootram.sv": "3a7930a2052e39d94d58042b27725eb60a16541463cfc92792dc0bb9727e714b",
+    "rtl/memory/bootram.sv": "e816d2726ef50f6cfaaf9a77a3cdd4648563921e543076cb9a0a0ccdce7f8c8b",
     "rtl/memory/bootrom.sv": "24f7966a9f6bd58e6cf28e9803b0bf1c66bb84feb5aef6306c472caba7be3710",
     "rtl/memory/chip_sram_2048x32.sv": "8e2d5241c81dfb3fbeb0f64a7b042c8e553561f2ea6a42ee7c5f2331f32f22de",
     "rtl/memory/my_mainmem.sv": "649ca8f38e5da58a7744228ea6893ef35c20ac0f6cbe16bd2ed35e44ecb913d4",
@@ -1330,7 +1330,7 @@
     "rtl/npu/simple_npu_top.sv": "ed24e874deeccedba01cd013c53ef3e83f47e4d466187c0670ed2e60d3522b72",
     "rtl/soc/my_ifetch.sv": "3d8d8ba907e5ad8a4b27e1e8d4b4abf9958a9a32c49056ed81150eeedfed1ea0",
     "rtl/soc/my_npu_subsystem.sv": "85f4fe6b1bf0a093224eb16524ffc5e950e921e9e9a9d21ea73787fddc1cfe21",
-    "rtl/soc/my_soc_top.sv": "c0f2b0b8d8f7c1f1c3b16e9e33f5d7b73cbe7e6fbf20e7cc54447d6cb8cf1a1a",
+    "rtl/soc/my_soc_top.sv": "a71a539618bd7667282efd7e9c90f33e892e7f3cdb1af165d6bf600eaa7fae99",
     "test/int8/assembler.py": "dd37a5885d98927fe27d42f663475b439b2b3f918b5d23ff33b8a5d304f2cf38",
     "test/int8/generic_firmware.py": "d4503b73359aa7e8652e7997d2632e34bb5395e16126ff6ecea3158b99e628a2",
     "test/int8/generic_runtime.py": "cca173221d6b45283e377d757618eee0074fd11be646c58a0e6278d86921632a",
@@ -1340,48 +1340,558 @@
     "test/int8/raw_batch_cases.py": "d00b3733d1233eb0f7306a3cc4253e6f04f9a2376848a75919a17ec9de71c0d4",
     "test/int8/har_benchmark.py": "1c5b8ecee531ab42ea9443754938c445f5f407c401e52c2e0ac3d2c30a97e10c",
     "test/int8/firmware.py": "dc8bd8406dc53cb62427b81bddd559f81e3dd419b4843eb4376a93717d513c6c",
-    "test/int8/run.py": "3d8f8737c95131774f8a4fe0763df3415ad795a4ef007b3aeb34b1262fd43cee",
+    "test/int8/run.py": "5f4feb2d2e2b52e7221bcb287f2a75b4f1149c4dfb4a885aa24da61d9a350bc8",
     "test/int8/har_uci24.json": "91169e2887c23c7de44da2eceae906271f7f4ac67c529e530bf2f48d94b10ef9",
     "model/reference/tile_layout.py": "db0da1b855abeadb47400d05c1c0633805d141d72e5bd418bd726707b98e3e10",
     "model/export/weights_int8.npz": "aca576691d0fb45f382eb4ef3dfd7fc6009143c242d2535643040c542ddbbc47",
     "model/export/quant_params.json": "e204583be3b842b62a0eabed03f1ca32aec3f0cd11b587f609209dbaf07e0b3a"
   },
-  "legacy_manifest_sha256": "e6a6f5e649f47d0e93f410d9dc4ccdafd595e4bc72812e7e6336483cdf2edb7b",
-  "suite_manifest_sha256": "c10d7fdd54b4df51bd5b1b3427370755e81bdbaad64c8db8433736af62fc7358",
-  "date": "2026-11-19",
-  "rtl_git_tree": "9c0272a82e9c9af8d37e3458358dcd00181992c5",
-  "simulation_clock_period_ns": 10,
-  "reproducible": {
+  "legacy_manifest_sha256": "a1160950c928b72110f11186bed558725569827c59391a848ecd2a4d275c17bc",
+  "suite_manifest_sha256": "062670a52db6b834cfe83bdff4024c8995e24162087b4913f7303cbd666357f7",
+  "baseline_commit": "95dcfc8",
+  "compatibility": {
     "passed": true,
-    "legacy_images": 38,
-    "paired_packages": 24,
-    "scope": "Independent regeneration, byte-for-byte identical images and package files"
+    "unchanged_program_image_checker_files": 207,
+    "source_only_changes": [
+      "fpga/firmware/image_manifest.json",
+      "fpga/firmware/suite/raw_full_b1_cpu/board_manifest.json",
+      "fpga/firmware/suite/raw_full_b1_cpu/manifest.json",
+      "fpga/firmware/suite/raw_full_b1_raw/board_manifest.json",
+      "fpga/firmware/suite/raw_full_b1_raw/manifest.json",
+      "fpga/firmware/suite/raw_full_b2_cpu/board_manifest.json",
+      "fpga/firmware/suite/raw_full_b2_cpu/manifest.json",
+      "fpga/firmware/suite/raw_full_b2_raw/board_manifest.json",
+      "fpga/firmware/suite/raw_full_b2_raw/manifest.json",
+      "fpga/firmware/suite/raw_full_b3_cpu/board_manifest.json",
+      "fpga/firmware/suite/raw_full_b3_cpu/manifest.json",
+      "fpga/firmware/suite/raw_full_b3_raw/board_manifest.json",
+      "fpga/firmware/suite/raw_full_b3_raw/manifest.json",
+      "fpga/firmware/suite/raw_full_b4_cpu/board_manifest.json",
+      "fpga/firmware/suite/raw_full_b4_cpu/manifest.json",
+      "fpga/firmware/suite/raw_full_b4_raw/board_manifest.json",
+      "fpga/firmware/suite/raw_full_b4_raw/manifest.json",
+      "fpga/firmware/suite/raw_k_split_b4_cpu/board_manifest.json",
+      "fpga/firmware/suite/raw_k_split_b4_cpu/manifest.json",
+      "fpga/firmware/suite/raw_k_split_b4_raw/board_manifest.json",
+      "fpga/firmware/suite/raw_k_split_b4_raw/manifest.json",
+      "fpga/firmware/suite/raw_multi_b2_cpu/board_manifest.json",
+      "fpga/firmware/suite/raw_multi_b2_cpu/manifest.json",
+      "fpga/firmware/suite/raw_multi_b2_raw/board_manifest.json",
+      "fpga/firmware/suite/raw_multi_b2_raw/manifest.json",
+      "fpga/firmware/suite/raw_tail_b4_cpu/board_manifest.json",
+      "fpga/firmware/suite/raw_tail_b4_cpu/manifest.json",
+      "fpga/firmware/suite/raw_tail_b4_raw/board_manifest.json",
+      "fpga/firmware/suite/raw_tail_b4_raw/manifest.json",
+      "fpga/firmware/suite/raw_wide_b3_cpu/board_manifest.json",
+      "fpga/firmware/suite/raw_wide_b3_cpu/manifest.json",
+      "fpga/firmware/suite/raw_wide_b3_raw/board_manifest.json",
+      "fpga/firmware/suite/raw_wide_b3_raw/manifest.json",
+      "fpga/firmware/suite/suite_manifest.json"
+    ]
   },
-  "jtag_converter": {
-    "passed": true,
-    "images": [
-      "int8_selftest",
-      "raw_full_b4_raw"
-    ],
-    "scope": "Existing fpga/prepare_jtag_image.ps1 yields byte-identical binaries"
+  "comparison_to_baseline": {
+    "legacy_and_har_full_cycles_delta": 6,
+    "paired_application_counters_unchanged": true,
+    "raw_tensor_readbacks_identical": true,
+    "cases": [
+      {
+        "name": "int8_random_00_batch4.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 2740,
+        "new_full_cycles": 2746,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_01_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1976,
+        "new_full_cycles": 1982,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_02_batch1.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1597,
+        "new_full_cycles": 1603,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_03_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1957,
+        "new_full_cycles": 1963,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_04_batch1.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1603,
+        "new_full_cycles": 1609,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_05_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1976,
+        "new_full_cycles": 1982,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_06_batch4.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 2695,
+        "new_full_cycles": 2701,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_07_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1957,
+        "new_full_cycles": 1963,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_08_batch1.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1603,
+        "new_full_cycles": 1609,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_09_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1976,
+        "new_full_cycles": 1982,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_10_batch1.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1597,
+        "new_full_cycles": 1603,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_11_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1957,
+        "new_full_cycles": 1963,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_12_batch4.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 2740,
+        "new_full_cycles": 2746,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_13_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1976,
+        "new_full_cycles": 1982,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_14_batch1.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1597,
+        "new_full_cycles": 1603,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_15_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1957,
+        "new_full_cycles": 1963,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_16_batch1.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1603,
+        "new_full_cycles": 1609,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_17_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1976,
+        "new_full_cycles": 1982,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_18_batch4.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 2695,
+        "new_full_cycles": 2701,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_19_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1957,
+        "new_full_cycles": 1963,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_20_batch1.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1603,
+        "new_full_cycles": 1609,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_21_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1976,
+        "new_full_cycles": 1982,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_22_batch1.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1597,
+        "new_full_cycles": 1603,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_23_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1957,
+        "new_full_cycles": 1963,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_24_batch4.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 2740,
+        "new_full_cycles": 2746,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_25_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1976,
+        "new_full_cycles": 1982,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_26_batch1.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1597,
+        "new_full_cycles": 1603,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_27_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1957,
+        "new_full_cycles": 1963,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_28_batch1.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1603,
+        "new_full_cycles": 1609,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_29_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1976,
+        "new_full_cycles": 1982,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_30_batch4.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 2695,
+        "new_full_cycles": 2701,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_random_31_batch2.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1957,
+        "new_full_cycles": 1963,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_uci_00_batch4.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 2695,
+        "new_full_cycles": 2701,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_uci_01_batch4.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 2695,
+        "new_full_cycles": 2701,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_uci_02_batch4.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 2695,
+        "new_full_cycles": 2701,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_uci_03_batch4.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 2695,
+        "new_full_cycles": 2701,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_uci_04_batch4.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 2695,
+        "new_full_cycles": 2701,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "int8_uci_05_batch4.hex",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 2695,
+        "new_full_cycles": 2701,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "har_b1_cpu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 51940,
+        "new_full_cycles": 51946,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "har_b1_npu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 1787,
+        "new_full_cycles": 1793,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "har_b2_cpu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 76670,
+        "new_full_cycles": 76676,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "har_b2_npu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 2332,
+        "new_full_cycles": 2338,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "har_b3_cpu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 128995,
+        "new_full_cycles": 129001,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "har_b3_npu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 2851,
+        "new_full_cycles": 2857,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "har_b4_cpu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 154655,
+        "new_full_cycles": 154661,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "har_b4_npu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_full_cycles": 3365,
+        "new_full_cycles": 3371,
+        "boot_overhead_cycles": 6
+      },
+      {
+        "name": "raw_full_b1_cpu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 36953,
+        "new_benchmark_cycles": 36953,
+        "all_tensors_unchanged": true
+      },
+      {
+        "name": "raw_full_b1_raw",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 3926,
+        "new_benchmark_cycles": 3926,
+        "all_tensors_unchanged": true
+      },
+      {
+        "name": "raw_full_b2_cpu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 77684,
+        "new_benchmark_cycles": 77684,
+        "all_tensors_unchanged": true
+      },
+      {
+        "name": "raw_full_b2_raw",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 6737,
+        "new_benchmark_cycles": 6737,
+        "all_tensors_unchanged": true
+      },
+      {
+        "name": "raw_full_b3_cpu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 116224,
+        "new_benchmark_cycles": 116224,
+        "all_tensors_unchanged": true
+      },
+      {
+        "name": "raw_full_b3_raw",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 9530,
+        "new_benchmark_cycles": 9530,
+        "all_tensors_unchanged": true
+      },
+      {
+        "name": "raw_full_b4_cpu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 180188,
+        "new_benchmark_cycles": 180188,
+        "all_tensors_unchanged": true
+      },
+      {
+        "name": "raw_full_b4_raw",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 12311,
+        "new_benchmark_cycles": 12311,
+        "all_tensors_unchanged": true
+      },
+      {
+        "name": "raw_tail_b4_cpu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 187127,
+        "new_benchmark_cycles": 187127,
+        "all_tensors_unchanged": true
+      },
+      {
+        "name": "raw_tail_b4_raw",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 26323,
+        "new_benchmark_cycles": 26323,
+        "all_tensors_unchanged": true
+      },
+      {
+        "name": "raw_k_split_b4_cpu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 254069,
+        "new_benchmark_cycles": 254069,
+        "all_tensors_unchanged": true
+      },
+      {
+        "name": "raw_k_split_b4_raw",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 19218,
+        "new_benchmark_cycles": 19218,
+        "all_tensors_unchanged": true
+      },
+      {
+        "name": "raw_multi_b2_cpu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 189325,
+        "new_benchmark_cycles": 189325,
+        "all_tensors_unchanged": true
+      },
+      {
+        "name": "raw_multi_b2_raw",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 83457,
+        "new_benchmark_cycles": 83457,
+        "all_tensors_unchanged": true
+      },
+      {
+        "name": "raw_wide_b3_cpu",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 186705,
+        "new_benchmark_cycles": 186705,
+        "all_tensors_unchanged": true
+      },
+      {
+        "name": "raw_wide_b3_raw",
+        "firmware_identical": true,
+        "application_and_npu_counters_unchanged": true,
+        "old_benchmark_cycles": 14909,
+        "new_benchmark_cycles": 14909,
+        "all_tensors_unchanged": true
+      }
+    ]
   },
-  "readback_checker_validation": [
-    {
-      "case": "valid",
-      "passed": true,
-      "scope": "Native host memory fixture populated with actual full-SoC SBA tensor readback; GDB/Python checkers only, not FPGA"
-    },
-    {
-      "case": "bad_output",
-      "passed": true,
-      "scope": "Native host memory fixture populated with actual full-SoC SBA tensor readback; GDB/Python checkers only, not FPGA"
-    },
-    {
-      "case": "wrong_image",
-      "passed": true,
-      "scope": "Native host memory fixture populated with actual full-SoC SBA tensor readback; GDB/Python checkers only, not FPGA"
-    }
-  ],
   "validator_source_sha256": {
     "fpga/firmware/validate_images.py": "1190940ad819d2c87546831d30b94f5e76d0e97aeb3131c807a6060b3ceb3677",
     "fpga/load_soc_image.gdb": "af8cc763b4b2e37c47a24c2e490c83443216f9e053abe7e6ed43ec702d2fcb08",

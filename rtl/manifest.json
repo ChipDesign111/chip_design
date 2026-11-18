@@ -366,10 +366,11 @@
     {
       "source": "soc/rtl/mem/bootram.sv",
       "path": "rtl/memory/bootram.sv",
-      "sha256": "3a7930a2052e39d94d58042b27725eb60a16541463cfc92792dc0bb9727e714b",
+      "sha256": "e816d2726ef50f6cfaaf9a77a3cdd4648563921e543076cb9a0a0ccdce7f8c8b",
       "previous_sha256": "daab5315b0c94e66ce1de229075a56c129708d8dbc5916a63587d02df8427ba0",
       "upstream_sha256": "4aa5f14dbb92a7ac9855f3019486a51a42ba210242a58b653b3e59049c2d82bf",
-      "project_override": "INT8 autonomous tile DMA integration; guarded boot commit, synchronized reset release and full SoC cycles from first non-debug CPU fetch to PASS/FAIL"
+      "project_override": "INT8 autonomous tile DMA integration; guarded boot commit, synchronized reset release and full SoC cycles from first non-debug CPU fetch to PASS/FAIL; immutable ROM instructions poll the uncached ready status before entering SRAM, including pre-commit debug resume",
+      "boot_debug_guard_base_sha256": "3a7930a2052e39d94d58042b27725eb60a16541463cfc92792dc0bb9727e714b"
     },
     {
       "source": "soc/rtl/mem/bootrom.sv",
@@ -387,13 +388,14 @@
     {
       "source": "soc/rtl/my_soc_top.sv",
       "path": "rtl/soc/my_soc_top.sv",
-      "sha256": "c0f2b0b8d8f7c1f1c3b16e9e33f5d7b73cbe7e6fbf20e7cc54447d6cb8cf1a1a",
+      "sha256": "a71a539618bd7667282efd7e9c90f33e892e7f3cdb1af165d6bf600eaa7fae99",
       "previous_sha256": "71ce705f0b1a362dc4eb99bf519876ea9e1827d7da523b0db2e688b1ae9706d4",
       "original_sha256": "0f624888889c210ca669a92b756433729dd3df9ee9813464279023e841c4a9a6",
-      "project_override": "INT8 tiled DMA, guarded boot, shared 16 MAC, CUT_SLV_AX crossbar address boundaries and shared falling-edge SRAM transaction reset; CPU 4x8-word instruction line buffer with write invalidation, retaining CUT_SLV_AX; address-matched SRAM instruction invalidation with physical alias normalization",
+      "project_override": "INT8 tiled DMA, guarded boot, shared 16 MAC, CUT_SLV_AX crossbar address boundaries and shared falling-edge SRAM transaction reset; CPU 4x8-word instruction line buffer with write invalidation, retaining CUT_SLV_AX; address-matched SRAM instruction invalidation with physical alias normalization; report CV32E40P unavailable from actual running/halted state and reset the DM AXI bridge with its crossbar",
       "upstream_sha256": "174207c5682648222a6f280705666d272d1d44406df6193370c0e8efc7ed374e",
       "main_266bca3_sha256": "8f67ff81452ea80d4314c1c8d67b88bc72091e03e8f345b9aa2b2c2780483dd8",
-      "integration_override": "; retain 266bca3 16-MAC/INT22/ifetch/CUT_SLV_AX core; integrate user-authorized common falling-edge system reset from dea5584"
+      "integration_override": "; retain 266bca3 16-MAC/INT22/ifetch/CUT_SLV_AX core; integrate user-authorized common falling-edge system reset from dea5584",
+      "boot_debug_guard_base_sha256": "c0f2b0b8d8f7c1f1c3b16e9e33f5d7b73cbe7e6fbf20e7cc54447d6cb8cf1a1a"
     }
   ],
   "dma_integration": {
@@ -403,5 +405,14 @@
       "rtl/soc/my_soc_top.sv"
     ],
     "unchanged": "CPU, debug and upstream clock/reset library sources remain unchanged; AXI memory bridge and SoC integration overrides are listed per file"
+  },
+  "boot_debug_guard": {
+    "baseline_commit": "95dcfc8",
+    "cpu_sources_unchanged": true,
+    "modified_project_integration": [
+      "rtl/soc/my_soc_top.sv",
+      "rtl/memory/bootram.sv"
+    ],
+    "scope": "Correct debug state reporting and guard entry through Boot ROM; explicit debugger jumps to SRAM remain permitted"
   }
 }

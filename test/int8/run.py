@@ -125,6 +125,8 @@ def main():
             raise RuntimeError('Invalid DMA/MAC total overlap count')
         soc_timing.update(dma_read_overlap=read_overlap,dma_write_overlap=write_overlap,dma_mac_total_overlap=total_overlap)
         print(soc_match.group(0),flush=True)
+        execute([sys.executable,HERE/'run_boot_debug.py','--out',run/'boot_debug',
+                 '--vsim',args.vsim],run,'boot_debug','BOOT_DEBUG_CHECK_PASS')
     if any(hashlib.sha256((ROOT/name).read_bytes()).hexdigest()!=value for name,value in source_sha.items()):raise RuntimeError('Source changed during functional run')
     (run/'result.json').write_text(json.dumps({'unit_cases':len(cases),'dma_response_cases':len(dma_response_result['cases']),'directed_cases':[case[0] for case in directed_cases],'trained_samples':24 if args.trained else 0,'accumulator_bits':22,'bias_bits':22,'soc':args.soc,'soc_timing':soc_timing,'vendor_model_sha256':hashlib.sha256(args.vendor_model.read_bytes()).hexdigest() if args.vendor_model else None,'passed':True},indent=2)+'\n')
     print('Results: '+str(run))

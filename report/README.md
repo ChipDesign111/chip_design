@@ -1,5 +1,10 @@
 # 当前设计说明
 
+2026-11-19：不修改 CPU 的启动与调试修复已接入 unavailable 状态、Boot ROM
+ready 条件回跳及调试 AXI 桥的系统复位。变更、验证范围及新旧周期区别见
+[启动与调试修复](boot_debug_guard.md) 和 [源码与测试记录](boot_debug_guard.json)。
+下方旧完整 SoC 周期、EDA/SDF 和板测记录属于各自归档的 RTL 基线。
+
 全部前仿入口、覆盖范围、当前 RTL 同源证据、周期及历史待补专项集中在 [当前 RTL 前仿汇总](presim_summary.md)，其中列全 **42 条模型/输入配置的加速比**，并单列 **perf.py 的 batch=1/2/3/4 独立计时**。新增源码/输入/日志绑定见 [perf 记录](perf_validation.json) 和 [CPU/HAR 补测](speedup_supplement.json)。
 
 当前 RAW 后端已接入 main 的 PyTorch FX 前端，保留原整数模型及 HAR 接口。新图与原整数基准分别测量，详见 [前端接入与26次SoC验证](raw_frontend.md) 和 [源码／固件／结果记录](raw_frontend_validation.json)。

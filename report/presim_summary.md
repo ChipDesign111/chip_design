@@ -1,5 +1,12 @@
 # 当前 RTL 前仿汇总
 
+2026-11-19 启动修复更新：当前 RTL 已修正 unavailable 接线、Boot ready 轮询及
+调试 AXI 桥系统复位，CPU 未改。最新测试和源码绑定见
+[启动与调试验证](boot_debug_guard.md)、[验证记录](boot_debug_guard.json) 与
+[62 份 FPGA 固件前仿](../fpga/firmware/validation.json)。下方是 2026-11-18
+的历史核对快照；其中“同 RTL”和完整 SoC 启动周期均以该快照为准，不代表修复后
+重新执行了所有历史专项。NPU、DMA、取指模块和编译后端源码未变。
+
 核对日期：2026-11-18。分支：`feat/int22-gemv-runtime`；核对基线：`920d82a`。
 
 当前已有同 RTL 的 HAR、RAW、DMA、Boot/复位、取指单元、通用 SoC 和编译器批处理通过记录。部分独立专项仍只有历史 SoC 记录，见下表“历史专项”。本页汇总现有执行证据，不表示本次重新运行了全部测试。

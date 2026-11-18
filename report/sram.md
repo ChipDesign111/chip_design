@@ -10,6 +10,20 @@
 
 CPU 上电不取指。先释放外部复位，调试模块经过同步后可以工作；通过 Debug SBA 顺序写满 0x80000000–0x80001ffc 的 2048 个完整字（空白区域也写零）。建议读回校验，然后向 0x0001003c 写密钥 0xb007c0de。Boot 控制器检查覆盖计数，再经 5 拍余量才置 boot_ready，CPU 从固定跳板进入 SRAM。只写密钥、只写末字、部分字节写和半份程序都不能启动。
 
+调试请求也能让尚未提交镜像的 CPU 离开控制器 RESET 并进入 Debug Mode，
+供寄存器访问及 progbuf 装载使用。SoC 向 DM 报告
+`unavailable = !(debug_running | debug_halted)`：复位后等待启动是 unavailable，
+进入调试模式后是 halted；不能直接把 unavailable 接成 `!boot_ready`。
+调试 AXI 桥跟随交叉开关的系统复位，避免 NDM reset 中止上游事务后留下旧的
+WAIT_WVALID；DM 寄存器和 JTAG 传输保持原 POR 域。
+
+Boot ROM 从 `0x00010000` 开始执行固定的六条 RV32I 指令：读取
+`0x0001003c`、右移 13 位得到 ready、为零时回跳到读取指令，ready 为 1 后
+跳到 `0x80000000`。代码占 24 B，落在既有 32 B Boot 缓存行内；状态字在该行
+之外，按非缓存访问读取。提前 debug resume 因而可以运行 Boot 轮询，却不会
+由这个入口进入未提交的 SRAM。显式把 DPC/恢复地址设到 SRAM 可绕过 ROM，
+不属于此启动保护的范围。完整汇总见 [启动与调试修复](boot_debug_guard.md)。
+
 POR/系统域复位异步断言、同步释放，共两组四级寄存器；所有启动许可在复位时撤销。JTAG TAP 的外部复位保留其 TCK 域接口。重新加载应先停机/系统复位，再完整装载，不能假设已经运行的 CPU 会被 fetch_enable 的下降沿立即硬复位。
 
 测试镜像布局：0x0000–0x0fff 程序空间，0x1000–0x17ff 第一层权重，0x1800–0x18ff 第二层含填充权重，0x1900 起偏置，0x1a00 起两个输入，0x1b00 起参考结果，0x1fc0 起统计及完成标志。均为 SRAM 内偏移；不把模型和代码叠放。

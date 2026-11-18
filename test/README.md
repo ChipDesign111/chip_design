@@ -12,6 +12,17 @@ python test/int8/run.py --count 32 --trained --soc
 
 原 HAR SoC 的 PASS 行同时打印 `DMA_read_MAC_overlap`、`DMA_write_MAC_overlap` 和 `DMA_MAC_total_overlap`。total 按 `MAC 有效 && (DMA 读握手 || DMA 写握手)` 逐拍统计，读写同拍仅计一次，不是两个分项相加；testbench 会与 NPU 硬件计数器核对。`run.py --soc` 会将完整 PASS 行回显到终端，并将三个计数保存到 `result.json` 的 `soc_timing`；Xcelium 入口也保存 total 字段。
 
+`run.py --soc` 还自动执行真实 JTAG/DMI 的启动与调试回归，也可单独运行：
+
+```bash
+python test/int8/run_boot_debug.py --out test/int8/runs/boot_debug_NEW --vsim /path/to/vsim
+```
+
+它覆盖 10 项冷启动/保留 SRAM/提前 resume/提交/NDM 复位/按键复位检查，
+另跑两次预装载启动和原 cold-halt 用例。run control、状态、DPC 和 progbuf
+经过实际 TAP、DMI CDC 和 Debug ROM；大镜像装载沿用 SBA 主端测试边界。
+不启动 OpenOCD 进程，不替代板测或 SDF。详见 [修复与验证](../report/boot_debug_guard.md)。
+
 独立 NPU＋DMA 性能探针 `perf.py` 无需 ModelSim 或 PyTorch，使用 Icarus 和固定合成 AXI 背压：
 
 ```bash

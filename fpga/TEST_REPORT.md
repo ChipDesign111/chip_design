@@ -10,6 +10,13 @@ FPGA 测试证据按不可覆盖版本归档，入口见
 [当前固件说明](firmware/README.md)，本轮完整 SoC 前仿结果见
 [validation.json](firmware/validation.json)。
 
+同日启动修复只改 SoC 接线及 Boot ROM，CPU 未改：等待启动时正确报告
+unavailable，Boot ROM 以 ready 条件回跳，并修复调试 AXI 桥的 NDM 复位域。
+真实 JTAG/DMI 冷启动、提前 resume、progbuf 装载、复位与普通 DPC 恢复的
+RTL 专项及原固件兼容性记录见 [启动与调试验证](../report/boot_debug_guard.md)。
+默认 HAR 完整硬件计数由 2695 变为 2701，新增 6 拍 Boot 检查；NPU 和
+DMA/MAC 重叠计数保持原值。该修复尚未生成新 bitstream 或上板验证。
+
 本次没有生成 FPGA bitstream 或重新板测。新镜像需要用当前 RTL 生成的 bitstream；
 下列板级资源、时序、周期和 SHA 仅对应 2026-11-04 冻结版本。
 

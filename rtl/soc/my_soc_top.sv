@@ -121,6 +121,7 @@ module my_soc_top #(
   logic           debug_resp_ready;
   dm::dmi_resp_t  debug_resp;
   logic           debug_req_irq;
+  logic           debug_running;
   logic           debug_halted;
   localparam logic [31:0] DM_HALT_ADDR      = dm::HaltAddress[31:0];
   localparam logic [31:0] DM_EXCEPTION_ADDR = dm::ExceptionAddress[31:0];
@@ -161,7 +162,7 @@ module my_soc_top #(
       .irq_id_o            (),
       .debug_req_i         (debug_req_irq),
       .debug_havereset_o   (),
-      .debug_running_o     (),
+      .debug_running_o     (debug_running),
       .debug_halted_o      (debug_halted),
       .fetch_enable_i      (boot_ready | debug_req_irq),
       .core_sleep_o        ()
@@ -314,7 +315,10 @@ module my_soc_top #(
       .AXI_USER_WIDTH (1)
   ) i_dm_axi2mem (
       .clk_i  (clk_i),
-      .rst_ni (por_reset_n),
+      // Reset aborted AXI transactions with the crossbar. Keeping this bridge
+      // on POR alone can strand WAIT_WVALID across an NDM reset; the Debug
+      // Module and JTAG transport themselves still use their independent POR.
+      .rst_ni (ndmreset_n),
       .slave  (master[IDX_DM]),
       .req_o  (dm_slave_req),
       .we_o   (dm_slave_we),
@@ -335,7 +339,9 @@ module my_soc_top #(
       .ndmreset_o       (ndmreset),
       .dmactive_o       (),
       .debug_req_o      (debug_req_irq),
-      .unavailable_i    ('0),
+      // A reset-waiting core is unavailable, not running. Keep a cold-halted
+      // core available so register/progbuf accesses can load an uncommitted image.
+      .unavailable_i    (~(debug_running | debug_halted)),
       .hartinfo_i       (hartinfo),
       .slave_req_i      (dm_slave_req),
       .slave_we_i       (dm_slave_we),

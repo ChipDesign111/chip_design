@@ -1,4 +1,4 @@
-// Safe immutable trampoline plus explicit firmware commit register.
+// Immutable ready-polling trampoline plus explicit firmware commit register.
 // ASIC: load all 2048 words sequentially through SRAM port, then commit.
 // FPGA: a non-empty INIT_FILE statically selects the initialized BRAM path.
 module bootram #(
@@ -56,8 +56,16 @@ module bootram #(
                 end
             end
             if(req_i && !wen_i) case(addr_i)
-                0:data_o<=32'h800002b7; // lui t0,0x80000
-                1:data_o<=32'h00028067; // jalr zero,0(t0)
+                // Debug resume can reach BOOT_BASE before commit. Poll the
+                // uncached status word using immutable instructions, so a
+                // cached boot line cannot retain a pre-commit branch forever.
+                // Status bits [31:14] are zero; shifting by 13 isolates ready.
+                0:data_o<=32'h000102b7; // lui t0,0x10
+                1:data_o<=32'h03c2a303; // wait_ready: lw t1,0x3c(t0)
+                2:data_o<=32'h00d35313; // srli t1,t1,13
+                3:data_o<=32'hfe030ce3; // beq t1,zero,wait_ready (-8)
+                4:data_o<=32'h800002b7; // lui t0,0x80000
+                5:data_o<=32'h00028067; // jalr zero,0(t0)
                 14:data_o<=soc_cycles;
                 15:data_o<={18'd0,ready_o,1'b0,loaded_words};
                 default:data_o<=32'h0000006f; // jal zero,0: safe trap loop

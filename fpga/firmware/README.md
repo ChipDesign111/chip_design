@@ -5,7 +5,9 @@
 8192 字节小端数据，可直接用于 Vivado 预装载或 GDB/JTAG 装载。
 
 本轮 **62/62 份固件通过完整 SoC 前仿**；RAW/CPU 图包的全部张量经 SBA
-读回比较通过。**尚未生成新 bitstream，也未上板验证**。
+读回比较通过。启动保护修复后重新绑定来源并复验，固件机器码、镜像及 GDB
+检查脚本保持逐字节一致；详见 [启动与调试验证](../../report/boot_debug_guard.md)。
+**尚未生成此启动修复的新 bitstream，也未上板验证**。
 必须使用当前 RTL 构建的 bitstream。2026-11-04 冻结 bitstream 的 HAR 发射
 周期和 RAW 接口均不适合直接验收这批固件；其板测结果仍见
 [冻结版本](../versions/20261104_rtl-1c265c0_int22/README.md)。
@@ -29,9 +31,10 @@
 batch 和停机 PC。默认固件代码为 1520 B，停机自循环为 **`0x800005EC`**。
 `int8_partial_4k.bin` 仅保留为历史的不完整装载 fixture，不是可启动固件。
 
-默认固件的本轮前仿基线：完整硬件 SoC **2695 拍**（testbench 观测 2700 拍），
+默认固件的本轮前仿基线：完整硬件 SoC **2701 拍**（testbench 观测 2706 拍），
 NPU 952 拍，FC1/FC2 发射 512/64 拍，DMA/MAC read、write、total overlap
-分别为 **466、499、500 拍**。这些是当前 RTL 前仿数据；板端结果需另行记录。
+分别为 **466、499、500 拍**。相对启动修复前 2695 拍，Boot 就绪检查增加
+6 拍；这些是当前 RTL 前仿数据，板端结果需另行记录。
 
 ## CPU/NPU 配对测试包
 
@@ -73,10 +76,12 @@ GDB 当前工作目录为 `fpga/`、SoC 已复位且 CPU 已 halt 为前提：
 
 ```gdb
 source load_soc_image.gdb
+monitor reset halt
+maintenance flush register-cache
 soc-boot-status
 soc-load-bin firmware/suite/raw_full_b4_raw/firmware.bin
 soc-commit-image
-monitor resume
+monitor resume 0x00010000
 shell sleep 1
 monitor halt
 maintenance flush register-cache

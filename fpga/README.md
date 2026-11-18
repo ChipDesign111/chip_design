@@ -159,6 +159,11 @@ sudo openocd -f cv32e40p.cfg
 可以让 CPU 从控制器 `RESET` 进入 debug，而不启动未装载的 SRAM。若烧录的是
 修复前 bitstream，OpenOCD 会表现为 DMI 可读但 `Unable to halt`。
 
+2026-11-19 又修正了等待启动时误报 running 的 unavailable 接线，并让 Boot ROM
+在 ready=0 时循环读取提交状态。调试 AXI 桥也与交叉开关使用同一系统复位，
+避免 NDM reset 后残留事务。详见 [启动与调试修复](../report/boot_debug_guard.md)。
+必须用更新后的 RTL 重新生成 bitstream；仅更新 SRAM 固件不能改变这些行为。
+
 ## 5. GDB 装载流程
 
 以下命令适用于无预装载 bitstream。GDB 在 WSL 中运行时，文件路径必须使用
@@ -167,6 +172,8 @@ sudo openocd -f cv32e40p.cfg
 ```gdb
 cd /mnt/d/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/fpga
 source load_soc_image.gdb
+monitor reset halt
+maintenance flush register-cache
 soc-boot-status
 ```
 
@@ -206,7 +213,7 @@ boot_status=0x00002800 loaded_words=2048 ready=1
 OpenOCD 为装载镜像会将 CPU 保持在 debug halt。提交后恢复运行：
 
 ```gdb
-monitor resume
+monitor resume 0x00010000
 shell sleep 1
 monitor halt
 ```
@@ -237,8 +244,12 @@ pc = 0x800005ec
 `firmware.S` 的 `halt` 标签为准；RAW 包的 `board_manifest.json` 也记录该地址。
 旧冻结版本的 `0x80000470` 不适用于当前默认镜像。
 `monitor reg pc` 从 OpenOCD 侧再次读取 PC，可用于排除 GDB 缓存不一致。
-若刷新后仍显示 `0x10000`，说明 CPU 仍停在 Boot 跳板起点，不应视为本次
-固件执行完成。
+若刷新后的 DPC 仍为 `0x10000`，表示恢复地址仍是 Boot 入口，不能作为本次
+固件执行完成的证据；还应核对 PASS、结果和固件对应的停机地址。
+
+换固件时使用上面的明确 Boot 入口；普通调试继续运行已有程序时，可用不带地址的
+`monitor resume` 保留 DPC。GDB 的 `$pc` 在该调试实现中对应恢复地址 DPC，
+不代表 CPU 在 Debug Mode 内实际执行 Debug ROM 的地址。
 
 CPU 运行期间，GDB 默认的 abstract memory access 可能失败，例如：
 

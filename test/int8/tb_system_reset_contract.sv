@@ -19,7 +19,8 @@ module tb_system_reset_contract;
   endtask
   task check_common;
     begin
-      if(dut.ndmreset_n!==1'b0 || dut.i_axi2sram.rst_ni!==1'b0 || dut.i_mainmem.rst_ni!==1'b0)
+      if(dut.ndmreset_n!==1'b0 || dut.i_axi2sram.rst_ni!==1'b0 ||
+         dut.i_mainmem.rst_ni!==1'b0 || dut.i_dm_axi2mem.rst_ni!==1'b0)
         $fatal(1,"Producer/receiver resets did not assert within two falling edges");
       if(dut.sram_req!==1'b0) $fatal(1,"SRAM request accepted during shared reset");
     end
