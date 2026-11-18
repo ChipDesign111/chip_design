@@ -28,12 +28,16 @@ module tb_postsim;
   reg [31:0] magic=0;
   integer cycles=0,i;
   integer reset_offset_ps=2000;
-  integer raw_scenario=0,raw_expected_tiles=0,raw_expected_outputs=0;
+  integer raw_scenario=0,raw_range_file=0,soc_cpu_only=0,soc_har_benchmark=0;
+  integer raw_expected_tiles=0,raw_expected_outputs=0;
   integer raw_expected_inputs=0,raw_expected_reads=0,timeout_cycles=200000;
   integer raw_prefetches=0;
+  integer raw_dma_range_count=0,i_range;
   integer raw_mode_entries=0,raw_mode_clears=0;
   reg [31:0] raw_w1_base=0;
+  reg [31:0] raw_dma_ranges[0:64];
   reg raw_mode_previous=0;
+  bit raw_source_valid;
   reg [31:0] value,stats[0:3];
   initial begin
 `ifndef NO_SDF
@@ -63,8 +67,21 @@ module tb_postsim;
       if(!dut.i_npu_subsystem.i_npu_core.raw_mode && raw_mode_previous)
         raw_mode_clears<=raw_mode_clears+1;
       if(dut.auto_start) begin
-        if(dut.auto_source<raw_w1_base || dut.auto_source>=raw_w1_base+2048)
-          $fatal(1,"RAW SoC prefetched outside the W1 workspace source=%h",dut.auto_source);
+        raw_source_valid=0;
+        if(raw_range_file) begin
+          for(i_range=0;i_range<raw_dma_range_count;i_range=i_range+1)
+            if(dut.auto_source>=raw_dma_ranges[1+2*i_range] &&
+               dut.auto_source+64<=raw_dma_ranges[2+2*i_range] &&
+               (dut.auto_source-raw_dma_ranges[1+2*i_range])%64==0)
+              raw_source_valid=1;
+        end else if(dut.auto_source>=raw_w1_base &&
+                    dut.auto_source<raw_w1_base+2048) begin
+          raw_source_valid=1;
+        end
+        if(!raw_source_valid)
+          $fatal(1,"RAW SoC prefetched outside an approved W1 source=%h",dut.auto_source);
+        if(dut.auto_words!=16)
+          $fatal(1,"RAW SoC issued a non-W1 descriptor");
         raw_prefetches<=raw_prefetches+1;
       end
     end
@@ -109,6 +126,12 @@ module tb_postsim;
   end
   initial begin
     raw_scenario=$test$plusargs("RAW_SCENARIO");
+    raw_range_file=$test$plusargs("RAW_RANGE_FILE");
+    soc_cpu_only=$test$plusargs("SOC_SCENARIO_CPU_ONLY");
+    soc_har_benchmark=$test$plusargs("SOC_SCENARIO_HAR_BENCHMARK");
+    if(soc_cpu_only && soc_har_benchmark) $fatal(1,"Conflicting SoC-only scenario flags");
+    if(raw_scenario && (soc_cpu_only || soc_har_benchmark))
+      $fatal(1,"RAW and SoC-only scenario flags cannot be combined");
     if(raw_scenario) begin
       if(!$value$plusargs("RAW_TILES=%d",raw_expected_tiles) ||
          !$value$plusargs("RAW_OUTPUTS=%d",raw_expected_outputs) ||
@@ -117,8 +140,14 @@ module tb_postsim;
          !$value$plusargs("RAW_W1_BASE=%h",raw_w1_base))
         $fatal(1,"Incomplete RAW SoC scenario parameters");
       if(raw_expected_tiles<=0 || raw_expected_outputs<=0 ||
-         raw_expected_inputs<=64 || raw_expected_reads<=0)
+         raw_expected_inputs<=0 || raw_expected_reads<=0)
         $fatal(1,"Invalid RAW SoC scenario shape");
+      if(raw_range_file) begin
+        $readmemh("dma_ranges.hex",raw_dma_ranges);
+        raw_dma_range_count=raw_dma_ranges[0];
+        if(raw_dma_range_count<=0 || raw_dma_range_count>32)
+          $fatal(1,"Invalid RAW direct-DMA range count");
+      end
       timeout_cycles=100000+raw_expected_tiles*50000;
     end
     force dut.dm_master_req=load_req;force dut.dm_master_we=load_we;
@@ -164,6 +193,12 @@ module tb_postsim;
       $display("FUNCTIONAL_PASS cycles=%0d scenario=raw_soc tiles=%0d outputs=%0d inputs=%0d reads=%0d raw_prefetches=%0d mode_entries=%0d mode_clears=%0d time_ns=%0.3f",
                cycles,raw_expected_tiles,raw_expected_outputs,raw_expected_inputs,
                raw_expected_reads,raw_prefetches,raw_mode_entries,raw_mode_clears,$realtime);
+    end else if(soc_cpu_only) begin
+      $display("FUNCTIONAL_PASS cycles=%0d scenario=cpu_only time_ns=%0.3f",
+               cycles,$realtime);
+    end else if(soc_har_benchmark) begin
+      $display("FUNCTIONAL_PASS cycles=%0d scenario=har_benchmark time_ns=%0.3f",
+               cycles,$realtime);
     end else begin
       for(i=0;i<4;i=i+1) begin
         sba_access(0,32'h80001fc0+i*4,0,15,value);stats[i]=value;

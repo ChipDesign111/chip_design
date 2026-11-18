@@ -22,11 +22,14 @@ def html_page(markdown):
     return '<!doctype html><meta charset="utf-8"><title>SDF后仿</title><style>body{font-family:sans-serif;max-width:1100px;margin:32px auto;padding:24px;line-height:1.8}table{border-collapse:collapse}td{border:1px solid #ccd;padding:8px}pre{white-space:pre-wrap;overflow-wrap:anywhere}p,code{overflow-wrap:anywhere}</style>'+module.render_markdown(markdown)
 
 def build_firmware(directory):
-    """Build the legacy matrix and one CPU-driven RAW SoC post-sim case."""
+    """Build legacy HAR, dynamic RAW, prepacked and paired-benchmark cases."""
     sys.path.insert(0,str(ROOT/'test/int8'))
     from firmware import build as build_legacy
     from generic_firmware import build as build_generic
     from generic_runtime import TILE_N, tiles
+    from har_benchmark import build as build_har_benchmark
+    from optimized_firmware import build as build_optimized
+    from run_gemv_benchmark import cases as benchmark_cases
     from run_generic_soc import fixtures
 
     directory.mkdir(parents=True)
@@ -46,12 +49,68 @@ def build_firmware(directory):
     (directory/raw_file).write_bytes((raw_directory/'firmware.hex').read_bytes())
     outputs=len(layers[0].weights)
     raw_reads=sum(min(TILE_N,outputs-nb) for nb,_,_,_ in tiles(outputs,len(inputs)))
+    raw_cases=[{'name':'raw_tail_33x65','kind':'raw_dynamic','fixture':fixture,
+                'firmware':raw_file,'tiles':metadata['tile_count'],
+                'outputs':outputs,'inputs':len(inputs),'reads':raw_reads,
+                'w1_base':metadata['work_address'],'dma_ranges':[]}]
+
+    # Fixed-weight image generation permutes complete 32x64 hardware blocks.
+    # Cover no fringe, both fringes and an interleaved CPU->RAW->CPU sequence.
+    benchmark_by_name={item[0]:item for item in benchmark_cases()}
+    for case_name in ('full_32x64','tail_33x65','hybrid_layers'):
+        name,case_layers,case_inputs=benchmark_by_name[case_name]
+        target=directory/('optimized_'+name)
+        meta=build_optimized(target,case_layers,case_inputs)
+        raw_dispatch=[item for item in meta.get('layer_dispatch',[])
+                      if item.get('raw_tiles',0)]
+        if not raw_dispatch or meta.get('tile_count',0)<=0:
+            raise ValueError('Optimized RAW scenario has no complete hardware block: '+name)
+        flat_name='raw_optimized_'+name+'.hex'
+        (directory/flat_name).write_bytes((target/'firmware.hex').read_bytes())
+        first=raw_dispatch[0]
+        raw_cases.append({
+            'name':'raw_optimized_'+name,'kind':'raw_optimized','fixture':name,
+            'firmware':flat_name,'tiles':meta['tile_count'],
+            'outputs':first['outputs'],'inputs':first['inputs'],
+            'reads':32*meta['tile_count'],'w1_base':meta['work_address'],
+            'dma_ranges':meta.get('dma_ranges',[]),
+            'layer_dispatch':meta.get('layer_dispatch',[])})
+
+    soc_cases=[]
+    cpu_name,cpu_layers,cpu_inputs=next(
+        item for item in fixtures() if item[0]=='three_layers')
+    cpu_directory=directory/('optimized_cpu_'+cpu_name)
+    cpu_meta=build_optimized(cpu_directory,cpu_layers,cpu_inputs)
+    if cpu_meta.get('tile_count')!=0:
+        raise ValueError('CPU-only optimized scenario unexpectedly contains RAW work')
+    cpu_file='soc_optimized_cpu_three_layers.hex'
+    (directory/cpu_file).write_bytes((cpu_directory/'firmware.hex').read_bytes())
+    soc_cases.append({'name':'optimized_cpu_three_layers','kind':'cpu_only',
+                      'firmware':cpu_file,'tiles':0,
+                      'layer_dispatch':cpu_meta.get('layer_dispatch',[])})
+
+    # Exercise the paired speedup fixtures under SDF. This checks gate-level
+    # function; it does not turn the 20ns SDF run into a new speedup claim.
+    for backend in ('cpu','npu'):
+        target=directory/('har_benchmark_'+backend)
+        build_har_benchmark(target,seed=10000,batch=4,backend=backend)
+        flat_name='soc_har_benchmark_'+backend+'_batch4.hex'
+        (directory/flat_name).write_bytes((target/'firmware.hex').read_bytes())
+        soc_cases.append({'name':'har_benchmark_'+backend+'_batch4',
+                          'kind':'har_benchmark','firmware':flat_name,'tiles':0})
+
+    generators={}
+    for name in ('firmware.py','generic_firmware.py','generic_runtime.py',
+                 'optimized_firmware.py','run_gemv_benchmark.py',
+                 'har_benchmark.py','run_generic_soc.py'):
+        path=ROOT/'test/int8'/name
+        generators['test/int8/'+name]=hashlib.sha256(path.read_bytes()).hexdigest()
     manifest={
-        'schema':1,
+        'schema':2,
         'legacy':{'primary':'firmware.hex','gate_unit':'firmware.hex','reset_sweep':reset_sweep},
-        'raw':[{'name':fixture,'fixture':fixture,'firmware':raw_file,
-                'tiles':metadata['tile_count'],'outputs':outputs,'inputs':len(inputs),
-                'reads':raw_reads,'w1_base':metadata['work_address']}]
+        'raw':raw_cases,
+        'soc':soc_cases,
+        'generators':generators
     }
     (directory/'scenarios.json').write_text(json.dumps(manifest,indent=2)+'\n')
     return manifest
@@ -81,8 +140,11 @@ def main():
         public=str(Path(parent).parent).replace('\\','/')
         remote.scp(args.host,[ROOT/'eda/unpack.sh'],public+'/unpack.sh')
         remote.ssh(args.host,'bash '+shlex.quote(public+'/unpack.sh')+' '+shlex.quote(upload)+'\n',capture=False)
-        raw=scenarios['raw'][0]
-        guide='# 本次是已完成版图的后仿运行\n\n物理输入：`'+eda+'`。后仿目录：`'+upload+'`。不重新运行34步，原work不修改。\n\n本矩阵额外执行 CPU-driven RAW SoC 场景 `'+raw['name']+'`：'+str(raw['tiles'])+' 个 RAW tile、'+str(raw['reads'])+' 次 RAW 数据读回，并在慢速 SDF 上检查无 W2 取数及最终 MODE=0。\n\n'+(ROOT/'eda/docs/后仿真操作指南.md').read_text(encoding='utf-8')
+        raw_summary='\n'.join('- `%s`：%d 个 RAW tile、%d 次 RAW 数据读回' %
+                              (raw['name'],raw['tiles'],raw['reads']) for raw in scenarios['raw'])
+        soc_summary='\n'.join('- `%s`：%s' % (soc['name'],soc['kind'])
+                              for soc in scenarios.get('soc',[]))
+        guide='# 本次是已完成版图的后仿运行\n\n物理输入：`'+eda+'`。后仿目录：`'+upload+'`。不重新运行34步，原work不修改。\n\n本矩阵同时执行动态 RAW、预打包 RAW、CPU-only 回退及 HAR 加速比固件的门级场景：\n\n'+raw_summary+'\n'+soc_summary+'\n\n所有最终检查使用同一份版后网表和 TT SDF；仿真只验证功能与动态时序，不以 20 ns SDF 周期重新宣称前仿加速比。\n\n'+(ROOT/'eda/docs/后仿真操作指南.md').read_text(encoding='utf-8')
         ui=firmware/'gui';ui.mkdir();(ui/'README.md').write_text(guide,encoding='utf-8');(ui/'README.html').write_text(html_page(guide),encoding='utf-8')
         remote.scp(args.host,[ui/'README.md',ui/'README.html'],upload+'/')
         remote.scp(args.host,list(firmware.glob('*.hex'))+[firmware/'scenarios.json'],upload+'/configs/')
@@ -149,7 +211,18 @@ PY
     audit=json.loads((output/'audit.json').read_text());results=json.loads((output/'results.json').read_text())
     md='# SDF完整SoC后仿结果\n\n服务器：`'+upload+'`。本包'+str(len(manifest['files']))+'个文件已核验SHA。\n\n功能通过 '+str(sum(v['functional_pass'] for v in results.values()))+'/'+str(len(results))+'；回标error '+str(audit['annotation_errors'])+'，缺失实例 '+str(audit['missing_instances'])+'，缺失检查 '+str(audit['unmatched_timing_checks'])+'。\n\n工作窗口检查：'+str(audit['active_window_dynamic_timing_clean'])+'。原始复位事件及负IOPATH截零限制仍须查看，不等于全程无违规。\n\n- [完整审核](audit.json)\n- [全部功能结果](results.json)\n- [输入身份](input_manifest.json)\n- [回标原文](build/sdf.log)\n- [SDF运行](sdf_max/simulation.log)\n- [unit-delay功能对照](gate_unit/simulation.log)\n\n大网表、SDF、授权模型和编译数据库仅留服务器。本轮不宣称独立签核。\n'
     raw_cases=sorted(name for name in results if name.startswith('sdf_raw_'))
-    if raw_cases:md=md.replace('\n大网表、SDF、授权模型和编译数据库仅留服务器。','\n- [RAW SoC SDF运行]('+raw_cases[0]+'/simulation.log)\n\n大网表、SDF、授权模型和编译数据库仅留服务器。')
+    other_cases=sorted(name for name,v in results.items()
+                       if v.get('kind') in ('cpu_only','har_benchmark'))
+    links=[]
+    if raw_cases:
+        links.append('RAW/预打包门级场景：\n'+'\n'.join(
+            '- [%s](%s/simulation.log)'%(name,name) for name in raw_cases))
+    if other_cases:
+        links.append('CPU-only/HAR benchmark固件场景：\n'+'\n'.join(
+            '- [%s](%s/simulation.log)'%(name,name) for name in other_cases))
+    if links:
+        md=md.replace('\n大网表、SDF、授权模型和编译数据库仅留服务器。',
+                      '\n'+'\n\n'.join(links)+'\n\n大网表、SDF、授权模型和编译数据库仅留服务器。')
     quality='正常后仿验收（功能、绑定、实际动态时序）：'+str(audit.get('normal_postsim_pass','旧审核未给出此字段'))+'。已定位工具/模型Warning保留说明，不要求所有Warning为零。\n\n绑定完整性：'+str(audit['binding_complete_for_instances_and_checks'])+'；负路径延时支持完整：'+str(audit.get('negative_path_delay_support_complete',False))+'。后者单独说明模型能力，不作为额外的零Warning门槛。\n\n'
     md=md.replace('# SDF完整SoC后仿结果\n\n','# SDF完整SoC后仿结果\n\n'+quality)
     if not (output/'build/sdf.log').is_file():

@@ -13,7 +13,15 @@ def audit(root):
     inputs=json.loads((root/'input_manifest.json').read_text())
     plan_path=root/'run_plan.json'
     plan=json.loads(plan_path.read_text()) if plan_path.is_file() else []
-    expects_raw_soc=any(isinstance(item,dict) and item.get('kind')=='raw_soc' for item in plan)
+    expected_raw_modes=sorted(item.get('mode') for item in plan
+                              if isinstance(item,dict) and str(item.get('kind','')).startswith('raw_'))
+    expects_optimized=any(isinstance(item,dict) and item.get('kind')=='raw_optimized'
+                          for item in plan)
+    expects_cpu_fallback=any(isinstance(item,dict) and item.get('kind')=='cpu_only'
+                             for item in plan)
+    expected_har_modes=sorted(item.get('mode') for item in plan
+                              if isinstance(item,dict) and item.get('kind')=='har_benchmark')
+    expects_raw_soc=bool(expected_raw_modes)
     engine=inputs.get('simulator','vcs');compile=(root/'build/compile.log').read_text(errors='replace')
     failed_negative=0;unmatched_paths=0
     if engine=='vcs':
@@ -50,12 +58,16 @@ def audit(root):
             violations.append({'instance':m[1].strip(),'time_ns':time,'phase':phase,'check':m[2].strip()})
         legacy=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
         raw=re.search(r'FUNCTIONAL_PASS cycles=(\d+) scenario=raw_soc tiles=(\d+) outputs=(\d+) inputs=(\d+) reads=(\d+)',text)
-        if (not legacy and not raw) or 'POSTSIM_DONE' not in text:raise ValueError('Incomplete functional run')
+        soc=re.search(r'FUNCTIONAL_PASS cycles=(\d+) scenario=(cpu_only|har_benchmark)',text)
+        if (not legacy and not raw and not soc) or 'POSTSIM_DONE' not in text:raise ValueError('Incomplete functional run')
         clocks=[float(x) for x in re.findall(r'CLOCK_AT_CORE time_ns=([\d.]+)',text)]
         if raw:
             case_values=dict(zip(['observed_cpu_cycles','raw_tiles','raw_outputs','raw_inputs','raw_reads'],
                                  map(int,raw.groups())))
             scenario='raw_soc'
+        elif soc:
+            case_values={'observed_cpu_cycles':int(soc.group(1))}
+            scenario=soc.group(2)
         else:
             case_values=dict(zip(['observed_cpu_cycles','npu_cycles','dma_mac_overlap','read_overlap','write_overlap'],
                                  map(int,legacy.groups())))
@@ -70,17 +82,43 @@ def audit(root):
     summary['negative_path_delay_support_complete']=not (clamped or failed_negative)
     summary['raw_annotation_warnings_retained']=True
     summary['raw_soc_case_expected']=expects_raw_soc
+    summary['raw_soc_expected_cases']=expected_raw_modes
+    summary['raw_soc_present_cases']=sorted(name for name,value in summary['cases'].items()
+                                            if value.get('scenario')=='raw_soc')
     summary['raw_soc_case_present']=any(x.get('scenario')=='raw_soc' for x in summary['cases'].values())
+    summary['all_expected_raw_soc_cases_present']=(
+        set(expected_raw_modes)<=set(summary['raw_soc_present_cases']))
+    summary['raw_dynamic_case_present']=any(
+        mode.endswith('raw_tail_33x65') for mode in summary['raw_soc_present_cases'])
+    summary['raw_optimized_case_present']=any(
+        mode.endswith('raw_optimized_full_32x64') for mode in summary['raw_soc_present_cases'])
+    summary['prepacked_cpu_fallback_case_present']=any(
+        x.get('scenario')=='cpu_only' for x in summary['cases'].values())
+    summary['har_benchmark_cases_present']=sorted(
+        name for name,value in summary['cases'].items() if value.get('scenario')=='har_benchmark')
     summary['active_window_dynamic_timing_clean']=all(not x['timing_counts'].get('active',0) for x in summary['cases'].values())
     summary['normal_acceptance']={
         'functional_pass':bool(summary['cases']) and all(x['functional_pass'] for x in summary['cases'].values()),
-        'raw_soc_case_present':summary['raw_soc_case_present'] if expects_raw_soc else True,
+        'raw_soc_case_present':summary['all_expected_raw_soc_cases_present'] if expects_raw_soc else True,
+        'raw_optimized_case_present':summary['raw_optimized_case_present'] if expects_optimized else True,
+        'prepacked_cpu_fallback_case_present':summary['prepacked_cpu_fallback_case_present'] if expects_cpu_fallback else True,
+        'har_benchmark_cases_present':(set(expected_har_modes)<=
+                                       set(summary['har_benchmark_cases_present']))
+                                      if expected_har_modes else True,
         'sdf_binding_complete':summary['binding_complete_for_instances_and_checks'],
         'dynamic_timing_clean':bool(summary['cases']) and all(not x['timing_violations'] for x in summary['cases'].values()),
         'warnings_are_reported_not_required_to_be_zero':True}
     summary['normal_postsim_pass']=all(summary['normal_acceptance'][k] for k in
-                                       ['functional_pass','raw_soc_case_present','sdf_binding_complete','dynamic_timing_clean'])
-    summary['scope']='Full notifier/message checking in all SDF runs; reset events retained, not masked. Unsupported negative IOPATH clamps remain explicit; not complete signoff.'
+                                       ['functional_pass','raw_soc_case_present',
+                                        'raw_optimized_case_present',
+                                        'prepacked_cpu_fallback_case_present',
+                                        'har_benchmark_cases_present',
+                                        'sdf_binding_complete','dynamic_timing_clean'])
+    summary['scope']=('Full notifier/message checking across legacy HAR, dynamic RAW, prepacked RAW, '
+                      'CPU fallback and paired HAR-benchmark firmware on one final gate netlist/SDF; '
+                      'reset events retained, not masked. SDF functional runs do not recreate '
+                      'the RTL benchmark speedup claim. Unsupported negative IOPATH clamps remain explicit; '
+                      'not complete signoff.')
     (root/'audit.json').write_text(json.dumps(summary,indent=2)+'\n')
     return summary
 

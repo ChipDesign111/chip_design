@@ -33,8 +33,9 @@ def main():
     if root.exists():raise ValueError('Choose a NEW post-simulation run directory')
     if not (work/'evidence/step_34.json').is_file():raise ValueError('Missing completed EDA input')
     manifest_path=args.scenario_manifest.resolve();manifest=json.loads(manifest_path.read_text())
-    if (manifest.get('schema')!=1 or not isinstance(manifest.get('legacy'),dict) or
-        not isinstance(manifest.get('raw'),list) or not manifest['raw']):
+    if (manifest.get('schema') not in (1,2) or not isinstance(manifest.get('legacy'),dict) or
+        not isinstance(manifest.get('raw'),list) or not manifest['raw'] or
+        not isinstance(manifest.get('soc',[]),list)):
         raise ValueError('Unsupported post-simulation scenario manifest')
     firmware_root=args.firmware.resolve().parent
     def firmware_file(name):
@@ -49,24 +50,49 @@ def main():
     reset_names=manifest['legacy'].get('reset_sweep')
     if not isinstance(reset_names,list):raise ValueError('Missing legacy reset sweep')
     reset_firmware=[firmware_file(name) for name in reset_names]
-    raw_cases=[]
+    raw_cases=[];soc_cases=[]
     seen_names=set()
     for item in manifest['raw']:
         if not isinstance(item,dict) or not re.fullmatch(r'[a-z0-9_]+',str(item.get('name',''))):
             raise ValueError('Invalid RAW scenario name')
         for field in ('tiles','outputs','inputs','reads','w1_base'):
             if type(item.get(field)) is not int or item[field]<=0:raise ValueError('Invalid RAW scenario '+field)
-        output_blocks=(item['outputs']+31)//32
-        input_blocks=(item['inputs']+63)//64
-        expected_tiles=output_blocks*input_blocks
-        expected_reads=sum(min(32,item['outputs']-block*32)*input_blocks
-                           for block in range(output_blocks))
-        if item['tiles']!=expected_tiles or item['reads']!=expected_reads:
-            raise ValueError('RAW scenario tile/read shape is inconsistent')
+        kind=item.get('kind','raw_dynamic')
+        if kind not in ('raw_dynamic','raw_optimized'):
+            raise ValueError('Unsupported RAW scenario kind')
+        if kind=='raw_dynamic':
+            output_blocks=(item['outputs']+31)//32
+            input_blocks=(item['inputs']+63)//64
+            expected_tiles=output_blocks*input_blocks
+            expected_reads=sum(min(32,item['outputs']-block*32)*input_blocks
+                               for block in range(output_blocks))
+            if item['tiles']!=expected_tiles or item['reads']!=expected_reads:
+                raise ValueError('RAW scenario tile/read shape is inconsistent')
+        else:
+            dispatch=item.get('layer_dispatch')
+            if not isinstance(dispatch,list) or sum(x.get('raw_tiles',0) for x in dispatch)!=item['tiles']:
+                raise ValueError('Optimized RAW dispatch/tile count mismatch')
+            if item['reads']!=32*item['tiles']:
+                raise ValueError('Optimized RAW partial-read count mismatch')
         if item['w1_base']%4 or item['w1_base']>0xffffffff:raise ValueError('Invalid RAW W1 base')
         if item['name'] in seen_names:raise ValueError('Duplicate RAW scenario name')
         seen_names.add(item['name'])
+        ranges=item.get('dma_ranges',[])
+        if (not isinstance(ranges,list) or len(ranges)>32 or
+            any(not isinstance(pair,list) or len(pair)!=2 or
+                any(type(value) is not int or value<0 or value>0xffffffff for value in pair) or
+                pair[1]<=pair[0] or pair[1]-pair[0]<64 or (pair[1]-pair[0])%64
+                for pair in ranges)):
+            raise ValueError('Invalid RAW direct-DMA ranges')
         raw_cases.append({**item,'path':firmware_file(item.get('firmware'))})
+    for item in manifest.get('soc',[]):
+        if not isinstance(item,dict) or not re.fullmatch(r'[a-z0-9_]+',str(item.get('name',''))):
+            raise ValueError('Invalid SoC-only scenario name')
+        if item.get('kind') not in ('cpu_only','har_benchmark'):
+            raise ValueError('Unsupported SoC-only scenario kind')
+        if item['name'] in seen_names:raise ValueError('Duplicate scenario name')
+        seen_names.add(item['name'])
+        soc_cases.append({**item,'path':firmware_file(item.get('firmware'))})
     root.mkdir(parents=True);inputs=root/'inputs';inputs.mkdir()
     out=work/'pnr/my_soc_top/outputs/manual_final'
     config=json.loads((work/'config/design.json').read_text())
@@ -78,7 +104,7 @@ def main():
            'io_cells':Path('/lec/pdk/tsmc180/tpd018nv_280a/TSMCHOME/digital/Front_End/verilog/tpd018nv_260a/tpd018nv.v'),
            'sram':work/'src/macro/RA1SHD_2048x32M8/RA1SHD_2048x32M8.v'}
     record={k:{'source':str(p),'sha256':sha(p)} for k,p in paths.items()}
-    for p in reset_firmware+[raw['path'] for raw in raw_cases]:
+    for p in reset_firmware+[raw['path'] for raw in raw_cases]+[soc['path'] for soc in soc_cases]:
         record[p.stem]={'source':str(p.resolve()),'sha256':sha(p)}
     (root/'input_manifest.json').write_text(json.dumps({'eda_work':str(work),'simulator':args.simulator,'sdf_mode':args.sdf_mode,'files':record},indent=2)+'\n')
     driver=root/'export.tcl'
@@ -126,18 +152,34 @@ def main():
                'metadata':{'reset_offset_ps':250+1400*i}}
               for i,p in enumerate(reset_firmware)]
     for raw in raw_cases:
-        cases.append({'mode':'sdf_raw_'+raw['name'],'kind':'raw_soc',
-                      'flags':['+RAW_SCENARIO','+RAW_TILES=%d'%raw['tiles'],
-                               '+RAW_OUTPUTS=%d'%raw['outputs'],'+RAW_INPUTS=%d'%raw['inputs'],
-                               '+RAW_READS=%d'%raw['reads'],'+RAW_W1_BASE=%x'%raw['w1_base']],
+        flags=['+RAW_SCENARIO','+RAW_TILES=%d'%raw['tiles'],
+               '+RAW_OUTPUTS=%d'%raw['outputs'],'+RAW_INPUTS=%d'%raw['inputs'],
+               '+RAW_READS=%d'%raw['reads'],'+RAW_W1_BASE=%x'%raw['w1_base']]
+        if raw.get('dma_ranges'):
+            flags.append('+RAW_RANGE_FILE')
+        cases.append({'mode':'sdf_'+raw['name'],'kind':raw['kind'],
+                      'flags':flags,
                       'firmware':raw['path'],
-                      'metadata':{k:raw[k] for k in ('fixture','tiles','outputs','inputs','reads','w1_base')}})
+                      'metadata':{k:raw[k] for k in
+                                  ('kind','fixture','tiles','outputs','inputs','reads','w1_base')
+                                  if k in raw},
+                      'extras':{'dma_ranges.hex':[len(raw.get('dma_ranges',[]))]+
+                                [value for pair in raw.get('dma_ranges',[]) for value in pair]}
+                                if raw.get('dma_ranges') else {}})
+    for soc in soc_cases:
+        flag='+SOC_SCENARIO_CPU_ONLY' if soc['kind']=='cpu_only' else '+SOC_SCENARIO_HAR_BENCHMARK'
+        cases.append({'mode':'sdf_soc_'+soc['name'],'kind':soc['kind'],
+                      'flags':[flag],'firmware':soc['path'],
+                      'metadata':{k:soc[k] for k in ('kind','tiles','layer_dispatch') if k in soc},
+                      'extras':{}})
     plan=[{**{k:v for k,v in case.items() if k!='firmware'},'firmware':str(case['firmware'])}
           for case in cases]
     (root/'run_plan.json').write_text(json.dumps(plan,indent=2)+'\n')
     for case in cases:
         mode=case['mode'];flags=case['flags'];firmware=case['firmware']
         run=root/mode;run.mkdir();shutil.copyfile(firmware,run/'firmware.hex')
+        for name,values in case.get('extras',{}).items():
+            (run/name).write_text(''.join('%08x\n'%(value & 0xffffffff) for value in values))
         os.link(inputs/'timing.sdf',run/'timing.sdf')
         executable=build/'simv'
         if mode=='gate_unit':
@@ -164,11 +206,13 @@ def main():
         text=(run/'simulation.log').read_text(errors='replace')
         legacy_match=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
         raw_match=re.search(r'FUNCTIONAL_PASS cycles=(\d+) scenario=raw_soc tiles=(\d+) outputs=(\d+) inputs=(\d+) reads=(\d+)',text)
+        soc_match=re.search(r'FUNCTIONAL_PASS cycles=(\d+) scenario=(cpu_only|har_benchmark)',text)
         reset_match=re.search(r'RESET_ASSERT offset_ps=(\d+)',text)
-        match=raw_match if case['kind']=='raw_soc' else legacy_match
+        match=(raw_match if case['kind'].startswith('raw_') else
+               soc_match if case['kind'] in ('cpu_only','har_benchmark') else legacy_match)
         if not match or not reset_match or 'POSTSIM_DONE' not in text:raise RuntimeError('Functional/reset result missing: '+mode)
         io_events=[{'time_ps':int(t),'instance':i.strip()} for t,i in re.findall(r'ERROR\s*:\s*(\d+)\s*\+\+BUS CONFLICT\+\+\s*:\s*([^\r\n]+)',text)]
-        if case['kind']=='raw_soc':
+        if case['kind'].startswith('raw_'):
             raw_values=dict(zip(('observed_cpu_cycles','raw_tiles','raw_outputs','raw_inputs','raw_reads'),map(int,match.groups())))
             if (raw_values['raw_tiles']!=case['metadata']['tiles'] or
                 raw_values['raw_outputs']!=case['metadata']['outputs'] or
@@ -176,6 +220,8 @@ def main():
                 raw_values['raw_reads']!=case['metadata']['reads']):
                 raise RuntimeError('RAW SoC scenario shape mismatch: '+mode)
             result_values=raw_values
+        elif case['kind'] in ('cpu_only','har_benchmark'):
+            result_values={'observed_cpu_cycles':int(match.group(1))}
         else:
             result_values=dict(zip(('observed_cpu_cycles','npu_cycles','dma_mac_overlap','read_overlap','write_overlap'),
                                    map(int,legacy_match.groups())))
