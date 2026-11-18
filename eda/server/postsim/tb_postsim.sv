@@ -78,9 +78,17 @@ module tb_postsim;
         if(!dut.npu_we && dut.npu_addr==32'h70000084) raw_data_reads<=raw_data_reads+1;
         if(!dut.npu_we && dut.npu_addr==32'h70000088) raw_ready_reads<=raw_ready_reads+1;
       end
-      if(dut.auto_start &&
-         (dut.auto_source<raw_w1_base || dut.auto_source>=raw_w1_base+2048 || dut.auto_words!=16))
-        $fatal(1,"RAW SoC prefetched outside the W1 workspace source=%h words=%0d",
+      if(dut.auto_start) begin
+        if(dut.auto_source<raw_w1_base || dut.auto_source>=raw_w1_base+2048)
+          $fatal(1,"RAW SoC prefetched outside the W1 workspace source=%h",dut.auto_source);
+      end
+    end
+  end
+  always @(posedge dut.auto_start) begin
+    if(raw_scenario && rst_n===1'b1 && raw_mode_requested) begin
+      #0.01;
+      if(dut.auto_source<raw_w1_base || dut.auto_source>=raw_w1_base+2048 || dut.auto_words!==16)
+        $fatal(1,"RAW SoC settling prefetch is not a 16-word W1 transfer source=%h words=%h",
                dut.auto_source,dut.auto_words);
     end
   end
