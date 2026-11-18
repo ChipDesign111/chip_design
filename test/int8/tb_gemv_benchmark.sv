@@ -17,6 +17,7 @@ module tb_gemv_benchmark;
     integer tick=0,begin_tick=-1,end_tick=-1,phase=0;
     integer phase_cycles[0:6];
     integer expected_tiles,tiles=0,completed_tiles=0,tile_tick=-1;
+    integer expected_batch=1;
     integer npu_cycles=0,fc1_cycles=0,read_overlap=0,write_overlap=0,total_overlap=0;
     integer dma_descriptors=0;
     integer i,j,lane,byte_address,word_address,cycles=0;
@@ -85,6 +86,8 @@ module tb_gemv_benchmark;
         if(dut.i_npu_subsystem.i_npu_core.start) begin
             if(!active || !dut.i_npu_subsystem.i_npu_core.raw_mode || tile_tick>=0)
                 $fatal(1,"Invalid RAW start");
+            if(dut.i_npu_subsystem.i_npu_core.batch_count!=expected_batch)
+                $fatal(1,"Incorrect RAW hardware batch");
             tiles=tiles+1;tile_tick=tick;
         end
         if(dut.npu_busy && dut.i_npu_subsystem.i_npu_core.layer)
@@ -103,7 +106,7 @@ module tb_gemv_benchmark;
         #1;
         if(!done_before && dut.i_npu_subsystem.i_npu_core.done) begin
             if(tile_tick<0 || tick-tile_tick!=dut.i_npu_subsystem.i_npu_core.core.cycle_count ||
-               dut.i_npu_subsystem.i_npu_core.core.fc1_cycles!=128 ||
+               dut.i_npu_subsystem.i_npu_core.core.fc1_cycles!=128*expected_batch ||
                dut.i_npu_subsystem.i_npu_core.core.fc2_cycles!=0)
                 $fatal(1,"NPU interval/counters disagree");
             completed_tiles=completed_tiles+1;tile_tick=-1;
@@ -117,6 +120,8 @@ module tb_gemv_benchmark;
 
     initial begin
         if(!$value$plusargs("TILES=%d",expected_tiles)) $fatal(1,"TILES required");
+        if(!$value$plusargs("BATCH=%d",expected_batch)) expected_batch=1;
+        if(expected_batch<1 || expected_batch>4) $fatal(1,"Invalid RAW batch");
         for(i=0;i<7;i=i+1) phase_cycles[i]=0;
         $readmemh("bench_layout.hex",layout);
         $readmemh("phase_pcs.hex",phase_pc);

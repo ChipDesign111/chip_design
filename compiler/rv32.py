@@ -6,6 +6,13 @@ class Program(RuntimeAssembler):
     def __init__(self):
         super().__init__()
         self.serial = 0
+        self.label_alignment = {}
+
+    def label(self, name):
+        alignment = self.label_alignment.get(name, 4)
+        while len(self.words)*4 % alignment:
+            self.addi(0, 0, 0)
+        super().label(name)
 
     def fresh(self, prefix):
         self.serial += 1

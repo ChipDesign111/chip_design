@@ -7,11 +7,14 @@ import struct
 
 from .runtime import BASE, _cpu_kernel, _full_blocks, _marker
 from .rv32 import Program
+from .batch_codegen import emit_batch_runtime
 
 
 class Codegen:
-    def __init__(self, memory, tensors, accumulator, has_raw):
+    def __init__(self, memory, tensors, accumulator, has_raw, *, single_raw=None, batched_raw=False):
         self.m, self.ts, self.acc, self.has_raw = memory, tensors, accumulator, has_raw
+        self.single_raw = has_raw if single_raw is None else single_raw
+        self.batched_raw = batched_raw
         self.a = a = Program()
         _marker(a, 1)
         if has_raw:
@@ -42,6 +45,11 @@ class Codegen:
     def linear(self, node):
         a = self.a
         dst = self.ts[node['name']]
+        if node.get('batch_weight_reuse'):
+            done = a.fresh('batch_fc_return')
+            a.li(4, node['batch_descriptor'])
+            a.la(1, done); a.jump('fc_batch_runtime'); a.label(done)
+            return
         for sample, descriptor in enumerate(node['descriptors']):
             done = a.fresh('fc_return')
             a.li(4, descriptor); a.li(29, node['extension'])
@@ -62,7 +70,7 @@ class Codegen:
         a.slli(18, 15, 2); a.add(19, 7, 18); a.lw(21, 19)
         a.add(19, 8, 18); a.sw(21, 19); a.addi(15, 15, 1)
         a.branch('bltu', 15, 9, 'fc_bias')
-        if self.has_raw:
+        if self.single_raw:
             a.lw(13, 29); a.lw(14, 29, 4)
             a.branch('beq', 13, 0, 'fc_cpu_all'); a.branch('beq', 14, 0, 'fc_cpu_all')
             _full_blocks(a)
@@ -73,9 +81,14 @@ class Codegen:
             a.branch('beq', 9, 0, 'fc_return'); a.lw(10, 4, 20)
             a.lw(5, 4); a.lw(6, 29, 12); a.li(8, self.acc)
             a.slli(18, 13, 2); a.add(8, 8, 18); a.li(12, 2); a.jump('fc_cpu_segment')
-            a.label('fc_cpu_all'); a.li(12, 2); a.label('fc_cpu_segment')
+            a.label('fc_cpu_all'); a.li(12, 2)
+        a.label('fc_cpu_segment')
+        if self.batched_raw:
+            # Keep the unchanged 80-byte scalar hot loop to five 16-byte
+            # fetch lines. Only the new batch path receives alignment NOPs.
+            a.label_alignment['cpu_unroll4'] = 16
         _cpu_kernel(a, False)
-        if self.has_raw:
+        if self.single_raw:
             a.li(17, 1); a.branch('beq', 12, 17, 'fc_bottom'); a.label('fc_return')
         a.jalr(0, 1)
 
@@ -159,9 +172,10 @@ class Codegen:
         a.label('exit'); a.li(18, BASE+0x1fe0); a.sw(17, 18); a.label('halt'); a.jump('halt')
         if linear_present:
             self.matrix_runtime()
+        if self.batched_raw:
+            emit_batch_runtime(a, self.acc)
         a.resolve()
         code = struct.pack('<%dI' % len(a.words), *a.words)
-        if len(code) > self.m.top:
-            raise ValueError('Code/data overlap: code=%dB available=%dB; SRAM total=8192B' % (len(code), self.m.top))
+        self.m.check_code_size(len(code))
         self.m.image[:len(code)] = code
         return a

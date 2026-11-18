@@ -19,6 +19,7 @@ def main():
     parser.add_argument('--calibration', type=Path)
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--force-cpu', action='store_true')
+    parser.add_argument('--no-batch-reuse', action='store_true', help='Use the original per-sample RAW schedule')
     parser.add_argument('--simulate', action='store_true')
     parser.add_argument('--vsim', default='vsim')
     args = parser.parse_args()
@@ -30,7 +31,7 @@ def main():
         model.load_state_dict(torch.load(args.weights, map_location='cpu', weights_only=True))
     x = torch.from_numpy(np.load(args.input).astype(np.float32))
     calibration = [torch.from_numpy(v.astype(np.float32)) for v in np.load(args.calibration)] if args.calibration else None
-    package = compile_model(model, x, calibration, force_cpu=args.force_cpu)
+    package = compile_model(model, x, calibration, force_cpu=args.force_cpu, reuse_batch_weights=not args.no_batch_reuse)
     package.write(args.out, x.numpy())
     result = dict(output=str(args.out), target=package.metadata['target'],
                   code_bytes=package.metadata['code_bytes'], free_bytes=package.metadata['free_bytes'],

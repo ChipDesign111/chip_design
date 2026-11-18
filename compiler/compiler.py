@@ -5,6 +5,7 @@ mathematical sum may exceed INT22: only unbiased 64-term blocks run on the NPU,
 and the existing CPU INT32 reduction completes the sum before quantization.
 """
 import hashlib
+from copy import deepcopy
 import json
 from pathlib import Path
 import struct
@@ -16,6 +17,10 @@ from .frontend import CompileError, capture
 from .runtime import BASE, Layer, pack_layer, source_hashes
 
 DATA_TOP = 0x1fc0
+
+
+class CapacityError(CompileError):
+    """A schedule does not fit SRAM; another schedule may still fit."""
 
 
 def quantize(value, scale):
@@ -52,7 +57,7 @@ class Memory:
             raise CompileError('Invalid allocation size/alignment')
         self.top = (self.top-size) & -alignment
         if self.top < 0:
-            raise CompileError('Data exceed 8 KiB SRAM')
+            raise CapacityError('Data exceed 8 KiB SRAM')
         if data is not None:
             if len(data) != size:
                 raise CompileError('Internal allocation size mismatch')
@@ -64,6 +69,10 @@ class Memory:
     def words(self, name, words):
         data = struct.pack('<%dI' % len(words), *(word & 0xffffffff for word in words))
         return self.alloc(name, len(data), data)
+
+    def check_code_size(self, size):
+        if size > self.top:
+            raise CapacityError('Code/data overlap: code=%dB available=%dB; SRAM total=8192B' % (size, self.top))
 
 
 class Package:
@@ -122,11 +131,27 @@ class Package:
         return values
 
 
-def compile_model(model, example_input, calibration_inputs=None, force_cpu=False):
+def compile_model(model, example_input, calibration_inputs=None, force_cpu=False, *, reuse_batch_weights=True):
     # FX executes the model during calibration. A supported in-place activation
     # must not mutate the caller's representative or reusable calibration data.
     calibration = None if calibration_inputs is None else [x.detach().clone() for x in calibration_inputs]
     graph = capture(model, example_input.detach().clone(), calibration)
+    try:
+        return _compile_graph(graph, force_cpu, reuse_batch_weights)
+    except CapacityError as error:
+        if force_cpu or not reuse_batch_weights:
+            raise
+        # A larger batch scratch/code must not reject an existing deployment.
+        package = _compile_graph(graph, force_cpu, False)
+        package.metadata['batch_weight_reuse_requested'] = True
+        package.metadata['batch_weight_reuse_fallback'] = str(error)
+        return package
+
+
+def _compile_graph(captured, force_cpu, reuse_batch_weights):
+    # Allocation/codegen mutate these dictionaries. A capacity retry starts
+    # from the same calibrated graph and exact integer contract.
+    graph = dict(captured, nodes=deepcopy(captured['nodes']), tensors=deepcopy(captured['tensors']))
     nodes, tensors, memory = graph['nodes'], graph['tensors'], Memory()
     if not nodes:
         raise CompileError('At least one supported graph operator is required')
@@ -135,7 +160,13 @@ def compile_model(model, example_input, calibration_inputs=None, force_cpu=False
         tensor['stride'] = (width+3)//4*4
         tensor['address'] = memory.alloc('tensor:'+name, batch*tensor['stride'])
     linears = [node for node in nodes if node['op'] == 'linear']
-    accumulator = memory.alloc('cpu_int32_accumulators', max((tensors[n['name']]['shape'][1] for n in linears), default=0)*4) if linears else 0
+    for node in linears:
+        batch, n = tensors[node['name']]['shape']
+        k = tensors[node['inputs'][0]]['shape'][1]
+        node['batch_weight_reuse'] = bool(reuse_batch_weights and not force_cpu and batch > 1 and n >= 32 and k >= 64)
+    scratch_words = max((tensors[n['name']]['shape'][0]*32 if n['batch_weight_reuse']
+                         else tensors[n['name']]['shape'][1] for n in linears), default=0)
+    accumulator = memory.alloc('cpu_int32_accumulators', scratch_words*4) if linears else 0
     raw_starts = 0
     dma_ranges = []
     for node in nodes:
@@ -163,12 +194,18 @@ def compile_model(model, example_input, calibration_inputs=None, force_cpu=False
                 packed, nf, kf = qw.tobytes(), 0, 0
             weights_address = memory.alloc(node['name']+':weights', len(packed), packed)
             bias_address = memory.alloc(node['name']+':bias', qb.nbytes, qb.astype('<i4').tobytes())
-            extension = memory.words(node['name']+':dispatch', [nf, kf, weights_address+nf*kf, weights_address+nf*k])
-            descriptors = [memory.words(node['name']+':sample_%d' % b,
-                           [src[0]['address']+b*src[0]['stride'], weights_address, bias_address,
-                            output['address']+b*output['stride'], n, k]) for b in range(batch)]
-            count = nf//32*(kf//64)*batch
-            node.update(extension=extension, descriptors=descriptors, raw_tiles=count,
+            if node['batch_weight_reuse']:
+                descriptor = [src[0]['address'], weights_address, bias_address, output['address'], n, k,
+                              batch, src[0]['stride'], output['stride'], nf, kf,
+                              weights_address+nf*kf, weights_address+nf*k, node['mult'][0], node['shift']]
+                node['batch_descriptor'] = memory.words(node['name']+':batch_dispatch', descriptor)
+            else:
+                node['extension'] = memory.words(node['name']+':dispatch', [nf, kf, weights_address+nf*kf, weights_address+nf*k])
+                node['descriptors'] = [memory.words(node['name']+':sample_%d' % b,
+                                      [src[0]['address']+b*src[0]['stride'], weights_address, bias_address,
+                                       output['address']+b*output['stride'], n, k]) for b in range(batch)]
+            count = nf//32*(kf//64)*(1 if node['batch_weight_reuse'] else batch)
+            node.update(raw_tiles=count,
                         raw_macs=nf*kf*batch, cpu_macs=(n*k-nf*kf)*batch,
                         weight_address=weights_address, weight_bytes=len(packed), bias_address=bias_address)
             if count:
@@ -206,19 +243,27 @@ def compile_model(model, example_input, calibration_inputs=None, force_cpu=False
             if op == 'leaky_relu':
                 mult, shift = coefficients([src[0]['scale']*node['negative_slope']/output['scale']], [128])
                 node.update(negative_mult=mult[0], negative_shift=shift)
-    generator = Codegen(memory, tensors, accumulator, bool(raw_starts))
+    batched_raw = any(n['batch_weight_reuse'] for n in linears)
+    single_raw = any(n['raw_tiles'] and not n['batch_weight_reuse'] for n in linears)
+    generator = Codegen(memory, tensors, accumulator, bool(raw_starts), single_raw=single_raw, batched_raw=batched_raw)
     for node in nodes:
         node['start_pc'] = BASE+len(generator.a.words)*4
         getattr(generator, 'linear' if node['op'] == 'linear' else 'softmax' if node['op'] == 'softmax' else 'elementwise')(node)
         node['end_pc'] = BASE+len(generator.a.words)*4
     try:
         program = generator.finish(bool(linears))
+    except CapacityError:
+        raise
     except (ValueError, AssertionError) as error:
         raise CompileError(str(error)) from error
     reported_nodes = [{k: v for k, v in node.items() if k not in ('qweight', 'qbias', 'lut')} for node in nodes]
     metadata = dict(target='int22-raw-v1', kind='pytorch', frontend_commit='4b552b1',
                     input=graph['input'], output=graph['output'], tensors=tensors, nodes=reported_nodes,
                     input_shape=tensors[graph['input']]['shape'], npu_core_starts=raw_starts,
+                    npu_batch=tensors[graph['input']]['shape'][0] if batched_raw else 1,
+                    batch_weight_reuse_requested=bool(reuse_batch_weights), batch_weight_reuse=batched_raw,
+                    batch_weight_reuse_fallback=None, accumulator_scratch_bytes=scratch_words*4,
+                    weight_dma_bytes=raw_starts*2048,
                     dma_ranges=dma_ranges, cpu_unroll=4, task_engine=False,
                     raw_registers={'index': 0x80, 'data': 0x84, 'ready': 0x88},
                     accumulator_bits=22, cpu_reduction_bits=32,

@@ -106,7 +106,7 @@ def simulate(directory, vsim='vsim', timeout=300):
             sources.append('+incdir+'+(ROOT/line[8:]).as_posix() if line.startswith('+incdir+') else (ROOT/line).as_posix())
     sources.append((work/'tb_compiled_raw.sv').as_posix())
     (work/'soc.f').write_text('\n'.join(sources)+'\n')
-    (work/'run.do').write_text('onerror {quit -code 1}\nonbreak {resume}\nvlib work\nvmap work work\nvlog -sv -f soc.f\nvsim -suppress 12110 -novopt -onfinish stop work.tb_gemv_benchmark +TILES=%d\nrun -all\nset status [examine -radix hex /tb_gemv_benchmark/magic]\nif {![string equal -nocase $status c0dec0de]} {quit -code 3}\nquit -code 0\n' % meta['npu_core_starts'])
+    (work/'run.do').write_text('onerror {quit -code 1}\nonbreak {resume}\nvlib work\nvmap work work\nvlog -sv -f soc.f\nvsim -suppress 12110 -novopt -onfinish stop work.tb_gemv_benchmark +TILES=%d +BATCH=%d\nrun -all\nset status [examine -radix hex /tb_gemv_benchmark/magic]\nif {![string equal -nocase $status c0dec0de]} {quit -code 3}\nquit -code 0\n' % (meta['npu_core_starts'], meta.get('npu_batch', 1)))
     text, seconds = execute([vsim, '-c', '-do', 'do run.do'], work, 'soc.log', timeout)
     match = re.search(r'GEMV_BENCH_PASS ([^\r\n]+)', text)
     if not match:

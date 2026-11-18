@@ -51,6 +51,14 @@ python test/int8/run_raw_compiler.py --soc --vsim /path/to/vsim
 
 需先安装 [compiler/requirements.txt](../compiler/requirements.txt)。第一项验证原整数固件 SHA、相同 CPU/RAW 整数契约、INT32 归约、量化、容量和输入检查；第二项逐层 SBA 回读完整图的实际输出，并分别记录 CPU/RAW 周期。图程序的 reference 不嵌入固件。混合图、batch=2、整层超过 INT22、纯 CPU 算术以及原整数满块和尾块均在范围内，具体使用见 [编译器说明](../compiler/README.md)。
 
+跨样本 RAW 权重复用的独立对照：
+
+```bash
+python test/int8/run_raw_batch_reuse.py --soc --vsim /path/to/vsim
+```
+
+默认比较原逐样本 RAW 与新调度，覆盖 batch=1/2/3/4、跨输入/输出块、CPU 边缘、多层激活、INT32 大累加、零位移重定标，以及容量不足时的回退。`--backend cpu --backend sequential --backend reuse` 可加入纯 CPU；相同固件只仿真一次并标明复用的结果。testbench 检查实际硬件 batch、每次任务的 `128×batch` 发射、32 个 W1 描述符及所有输出，详情见 [批处理权重复用](../report/raw_batch_reuse.md)。
+
 `python eda/postsim.py run` 已把 `tail_33x65` 加入完整SoC SDF后仿，作为独立的 CPU→AXI→NPU RAW场景。它要求完成34步的物理版本由当前分支RTL生成；历史HAR物理包不能代替，也不能只凭上述RTL功能仿真宣称版后时序通过。场景矩阵和判读见[后仿真操作指南](../eda/docs/后仿真操作指南.md)。
 
 取指模块的独立协议回归使用 Xcelium：

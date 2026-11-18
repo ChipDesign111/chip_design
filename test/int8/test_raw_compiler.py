@@ -16,6 +16,7 @@ from compiler import compile_layers, compile_model
 from compiler.compiler import rescale
 from compiler.frontend import CompileError
 from raw_compiler_cases import fixtures
+from raw_batch_cases import fixtures as batch_fixtures
 from run_gemv_benchmark import cases as integer_cases
 
 
@@ -83,6 +84,53 @@ class CompilerContracts(unittest.TestCase):
 
     def test_rounding_negative_ties(self):
         np.testing.assert_array_equal(rescale([-3, -1, 1, 3], 1, 1), [-1, 0, 1, 2])
+
+    def test_batch_reuse_contracts(self):
+        for name, model, x, calibration in batch_fixtures():
+            reuse = compile_model(model, x, calibration)
+            sequential = compile_model(model, x, calibration, reuse_batch_weights=False)
+            for key, value in reuse.reference(x.numpy()).items():
+                np.testing.assert_array_equal(value, sequential.reference(x.numpy())[key], err_msg=name+':'+key)
+            if reuse.metadata['batch_weight_reuse']:
+                self.assertEqual(reuse.program.labels['cpu_unroll4'] % 16, 0)
+                self.assertEqual(reuse.metadata['npu_batch'], x.shape[0])
+                self.assertEqual(reuse.metadata['npu_core_starts']*x.shape[0], sequential.metadata['npu_core_starts'])
+                self.assertEqual(reuse.metadata['weight_dma_bytes']*x.shape[0], sequential.metadata['weight_dma_bytes'])
+                self.assertLessEqual(reuse.metadata['accumulator_scratch_bytes'], 512)
+            else:
+                self.assertEqual(reuse.memory.image, sequential.memory.image, name)
+            self.assertEqual([n.get('weight_bytes') for n in reuse.nodes],
+                             [n.get('weight_bytes') for n in sequential.nodes])
+
+    def test_batch_capacity_falls_back(self):
+        _, model, x, calibration = next(c for c in batch_fixtures() if c[0] == 'capacity_b4')
+        reuse = compile_model(model, x, calibration)
+        sequential = compile_model(model, x, calibration, reuse_batch_weights=False)
+        self.assertTrue(reuse.metadata['batch_weight_reuse_requested'])
+        self.assertFalse(reuse.metadata['batch_weight_reuse'])
+        self.assertIn('Code/data overlap', reuse.metadata['batch_weight_reuse_fallback'])
+        self.assertEqual(reuse.memory.image, sequential.memory.image)
+
+    def test_batch_new_input_keeps_program(self):
+        _, model, x, calibration = next(c for c in batch_fixtures() if c[0] == 'full_b4')
+        package = compile_model(model, x, calibration)
+        with tempfile.TemporaryDirectory(dir=ROOT/'test/int8/runs') as tmp:
+            a, b = Path(tmp)/'a', Path(tmp)/'b'
+            package.write(a, x.numpy()); package.write(b, x.flip(0).numpy())
+            size = package.metadata['code_bytes']
+            self.assertEqual((a/'firmware.bin').read_bytes()[:size], (b/'firmware.bin').read_bytes()[:size])
+            self.assertNotEqual((a/'firmware.bin').read_bytes(), (b/'firmware.bin').read_bytes())
+
+    def test_batch_wide_sums_and_zero_shift(self):
+        for name, model, x, calibration in batch_fixtures():
+            if name not in ('wide_b3', 'shift0_b2'):
+                continue
+            p = compile_model(model, x, calibration)
+            self.assertTrue(p.metadata['batch_weight_reuse'])
+            if name == 'wide_b3':
+                self.assertGreater(p.nodes[0]['accumulator_bound'], 1 << 21)
+            else:
+                self.assertEqual(p.nodes[0]['shift'], 0)
 
     def test_inplace_capture_preserves_caller_inputs(self):
         x = torch.tensor([[-1.0, 2.0]])

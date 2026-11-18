@@ -2,6 +2,8 @@
 
 已接入 main@4b552b1 的 PyTorch FX 前端，并为本分支的 RAW_INDEX/RAW_DATA/RAW_READY 实现部署后端。RTL、INT22 位宽、16-MAC、DMA 与现有版图签核流程均未修改，没有合并 main 的单层 FC／任务引擎接口。固定模型预打包和四项展开 CPU 内核复用现有实现。
 
+本页数值记录 `bcb0ae0` 接入时的逐样本调度。后续编译器已加入 batch=2..4 的跨样本权重复用，更新后的调度、对照结果和容量回退见 [批处理报告](raw_batch_reuse.md)。
+
 ## 同整数模型的实测
 
 2026-11-18，Python 3.10.11、PyTorch 2.14.1+cpu、NumPy 2.2.6、ModelSim 2019.2。每个后端独立冷复位，真实 CPU 从 SRAM 执行；计时为实际 BEGIN/END 写入的接受边沿之差，包含初始化、调用、输入搬运、DMA、轮询、INT32 归约、CPU 激活及输出写回。测试完成后再由 Debug SBA 回读所有中间张量，逐值核对。
