@@ -1,0 +1,97 @@
+{
+  "status": "PASS",
+  "seed": 10000,
+  "results": {
+    "1": {
+      "cycles": 1394,
+      "cycles_per_sample": 1394.0,
+      "fc1_issue_cycles": 128,
+      "fc2_issue_cycles": 16,
+      "read_mac_overlap": 65,
+      "write_mac_overlap": 62,
+      "useful_macs": 2240,
+      "macs_per_cycle": 1.6068866571018652,
+      "evidence_sha256": {
+        "case_0.hex": "2830722c23d061705b5a8ac496c7bb380f224c315f8adf1a2fb778de8afd147a",
+        "log": "f5211196b38edfc682185336a04d65ffc18d1b22bf02192bd954a3cbfbd44dc1"
+      },
+      "speedup_vs_serial_batch1": 1.0
+    },
+    "2": {
+      "cycles": 1429,
+      "cycles_per_sample": 714.5,
+      "fc1_issue_cycles": 256,
+      "fc2_issue_cycles": 32,
+      "read_mac_overlap": 138,
+      "write_mac_overlap": 133,
+      "useful_macs": 4480,
+      "macs_per_cycle": 3.1350594821553535,
+      "evidence_sha256": {
+        "case_0.hex": "186a9111470df97b71553f756d073f453514c367490aa7a9c3257069d9a4c565",
+        "log": "2df956fc532b5deea09f26c6bcb54665978e37124f2fbe3ae50ceaa93a73879a"
+      },
+      "speedup_vs_serial_batch1": 1.9510146955913226
+    },
+    "3": {
+      "cycles": 1455,
+      "cycles_per_sample": 485.0,
+      "fc1_issue_cycles": 384,
+      "fc2_issue_cycles": 48,
+      "read_mac_overlap": 208,
+      "write_mac_overlap": 208,
+      "useful_macs": 6720,
+      "macs_per_cycle": 4.618556701030927,
+      "evidence_sha256": {
+        "case_0.hex": "49bcb18eb2e36b9f6fcb191971312b2cb7f8d5fb5c278e7e7a2e076bfa335005",
+        "log": "c506aec9caa8632b0066d5d8b2a823572815e755c5eef22e9740323c51f53e0f"
+      },
+      "speedup_vs_serial_batch1": 2.8742268041237113
+    },
+    "4": {
+      "cycles": 1509,
+      "cycles_per_sample": 377.25,
+      "fc1_issue_cycles": 512,
+      "fc2_issue_cycles": 64,
+      "read_mac_overlap": 277,
+      "write_mac_overlap": 266,
+      "useful_macs": 8960,
+      "macs_per_cycle": 5.937707090788602,
+      "evidence_sha256": {
+        "case_0.hex": "ccf5819b7259786a5dbda6762e958ac0089e0ae8cc664299189b579516ff3842",
+        "log": "dee94960eb392782e359ec6920b9e3e79ca6496266185f5844708e14533ba8e5"
+      },
+      "speedup_vs_serial_batch1": 3.695162359178264
+    }
+  },
+  "source_sha256": {
+    "rtl/npu/har_weight_store.sv": "473106074ca66f795445cd3862104d7e57da364b6ab119996eb612934b7d2913",
+    "rtl/npu/har_npu_core.sv": "93adcc770bf449e124caad4d86fafb2360b13c65d9a5832a78706989263ef949",
+    "rtl/npu/simple_npu_top.sv": "ed24e874deeccedba01cd013c53ef3e83f47e4d466187c0670ed2e60d3522b72",
+    "rtl/dma/har_dma.sv": "6aaa673d985b4c431ed7f65cb12ff7794bf6af48fbced4f399f3b5dbd45da2cb",
+    "test/int8/tb_tiled_dma.sv": "e0880184d7961d23c7da857aca5e6063d2d12d257bf1b5501c1dee138c4ac7f6",
+    "test/int8/perf.py": "e1f68aad00faf11e7766e576b48bad91b72c5b7861753c2318d07df2bf7e7a8b",
+    "test/int8/run.py": "3d8f8737c95131774f8a4fe0763df3415ad795a4ef007b3aeb34b1262fd43cee",
+    "test/int8/har_uci24.json": "91169e2887c23c7de44da2eceae906271f7f4ac67c529e530bf2f48d94b10ef9",
+    "model/reference/tile_layout.py": "db0da1b855abeadb47400d05c1c0633805d141d72e5bd418bd726707b98e3e10",
+    "model/export/weights_int8.npz": "aca576691d0fb45f382eb4ef3dfd7fc6009143c242d2535643040c542ddbbc47",
+    "model/export/quant_params.json": "e204583be3b842b62a0eabed03f1ca32aec3f0cd11b587f609209dbaf07e0b3a"
+  },
+  "clock_period_ns": 10,
+  "scope": "Standalone NPU+DMA with deterministic synthetic AXI backpressure; not CPU/SoC end-to-end",
+  "timing": "NPU hardware START/DONE interval; excludes testbench MMIO configuration and output checks",
+  "serial_speedup_definition": "batch * batch1_cycles / batch_cycles; NPU interval throughput gain, not CPU speedup",
+  "compile_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "local_run": "test/int8/runs/perf_summary_all_batches",
+  "rtl_git_tree": "9c0272a82e9c9af8d37e3458358dcd00181992c5",
+  "base_commit": "920d82ae0e924d5b03fdc0d5218806d9d5e6b96e",
+  "measured_with_working_tree_changes": true,
+  "default_batch_compatibility": {
+    "passed": true,
+    "batches": [
+      1,
+      2,
+      4
+    ],
+    "result_sha256": "47edfcd4d8d7a53881ef33092ce2ca9745ed90a201f7418b97208b2b50731599"
+  }
+}

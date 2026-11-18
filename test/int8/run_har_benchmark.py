@@ -23,7 +23,7 @@ def main():
     parser.add_argument('--vsim', default='vsim')
     parser.add_argument('--out', type=Path)
     parser.add_argument('--seed', type=int, action='append', help='Default 10000, the first trained four-sample fixture')
-    parser.add_argument('--batch', type=int, action='append', choices=(1, 2, 4), help='Default compares batch 1,2,4')
+    parser.add_argument('--batch', type=int, action='append', choices=(1, 2, 3, 4), help='Default compares batch 1,2,4')
     args = parser.parse_args()
     stamp = datetime.now(timezone(timedelta(hours=8))).strftime('%Y%m%d_%H%M%S')
     out = (args.out or ROOT/'test/int8/runs'/('har_bench_'+stamp)).resolve()

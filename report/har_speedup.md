@@ -1,11 +1,12 @@
 # HAR 模式相对纯 CPU 的加速比
 
-2026-11-18，在当前 `feat/int22-gemv-runtime` 分支的完整 CV32E40P / AXI / 8 KiB SRAM SoC 上实测。使用原训练模型 `64 → 32 → 6`、原量化参数，以及 `seed=10000` 的第一组 UCI 固定输入。batch=1/2 分别取同一组四样本的前 1/2 条。
+2026-11-18，在当前 `feat/int22-gemv-runtime` 分支的完整 CV32E40P / AXI / 8 KiB SRAM SoC 上实测。使用原训练模型 `64 → 32 → 6`、原量化参数，以及 `seed=10000` 的第一组 UCI 固定输入。batch=1/2/3 分别取同一组四样本的前 1/2/3 条。
 
 | batch | 纯 CPU 周期 | HAR 端到端周期 | CPU/HAR 加速比 |
 |---:|---:|---:|---:|
 | 1 | 51,613 | 1,525 | **33.84×** |
 | 2 | 76,104 | 1,918 | **39.68×** |
+| 3（补测） | 128,162 | 2,268 | **56.51×** |
 | 4 | 153,536 | 2,612 | **58.78×** |
 
 加速比为 `CPU 周期 / HAR 周期`。这里的 HAR 周期包含 CPU 配置、输入搬运、DMA/NPU 执行、轮询，以及将所有 hidden、六类分数和类别写回 SRAM；不能用 NPU 内核的 952 拍替代 batch=4 的端到端 2,612 拍。
@@ -26,6 +27,7 @@
 |---:|---:|---:|---:|---:|---:|---:|
 | 1 | 805 | 128 | 16 | 133 | 132 | 133 |
 | 2 | 857 | 256 | 32 | 269 | 268 | 269 |
+| 3（补测） | 898 | 384 | 48 | 401 | 402 | 403 |
 | 4 | 952 | 512 | 64 | 466 | 499 | 500 |
 
 total 对读写同拍去重，不能将两项 overlap 相加。表中硬件计数与真实 START/DONE 区间核对通过。
@@ -33,6 +35,8 @@ total 对读写同拍去重，不能将两项 overlap 相加。表中硬件计�
 ## 边界与原功能回归
 
 新增基准共完成 **10 次完整 SoC 仿真**：三个训练模型 batch 的 CPU/NPU 对照，以及两个单样本定向场景的 CPU/NPU 对照，全部通过 hidden、分数和类别检查。
+
+随后补测 batch=3 的 CPU/HAR 两次完整 SoC，合计 12 次。补测使用相同原训练参数、相同输入前缀和相同 BEGIN/END 计时，入口的默认 batch 列表仍为 1/2/4；额外记录见 [性能补测证据](speedup_supplement.json)。
 
 - `seed=0, batch=1`：覆盖 W1 从 `0x80000ffc` 起始的 DMA 4 KiB 边界拆分，CPU/HAR 为 51,717 / 1,524 拍。
 - `seed=5, batch=1`：覆盖 FC1 两处、FC2 一处 INT22 最终和回绕；重定标 `mult=65535, shift=31`，有六个正乘积超过 UINT32，其中三个舍入产生低 32 位进位。CPU/HAR 为 51,694 / 1,519 拍。
@@ -47,6 +51,7 @@ total 对读写同拍去重，不能将两项 overlap 相加。表中硬件计�
 
 ```bash
 python test/int8/run_har_benchmark.py --vsim /path/to/vsim
+python test/int8/run_har_benchmark.py --batch 3 --vsim /path/to/vsim
 python test/int8/run_har_benchmark.py --seed 0 --seed 5 --batch 1 --vsim /path/to/vsim
 ```
 

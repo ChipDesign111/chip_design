@@ -1,5 +1,7 @@
 # 当前功能回归
 
+先查 [当前 RTL 前仿汇总](../report/presim_summary.md)：列出全部测试入口、覆盖范围、源码一致性、现有结果与历史专项；下述默认命令只运行其中的主 HAR 套件。
+
 ```bash
 python test/int8/run.py --count 32 --trained --soc
 ```
@@ -10,13 +12,22 @@ python test/int8/run.py --count 32 --trained --soc
 
 原 HAR SoC 的 PASS 行同时打印 `DMA_read_MAC_overlap`、`DMA_write_MAC_overlap` 和 `DMA_MAC_total_overlap`。total 按 `MAC 有效 && (DMA 读握手 || DMA 写握手)` 逐拍统计，读写同拍仅计一次，不是两个分项相加；testbench 会与 NPU 硬件计数器核对。`run.py --soc` 会将完整 PASS 行回显到终端，并将三个计数保存到 `result.json` 的 `soc_timing`；Xcelium 入口也保存 total 字段。
 
+独立 NPU＋DMA 性能探针 `perf.py` 无需 ModelSim 或 PyTorch，使用 Icarus 和固定合成 AXI 背压：
+
+```bash
+python test/int8/perf.py --seed 10000
+python test/int8/perf.py --seed 10000 --batch 1 --batch 2 --batch 3 --batch 4
+```
+
+默认保留 batch=1/2/4，可选 batch=3，`--out` 指定新目录；结果保存 NPU 周期、每样本周期、批吞吐增益，以及源码/输入/日志 SHA。当前四种 batch 的 NPU 周期为 1394 / 1429 / 1455 / 1509；这个区间不含 CPU 配置和输出搬运，不能作为完整 SoC 周期或 CPU 加速比。见 [perf 证据](../report/perf_validation.json) 和 [完整前仿/加速比汇总](../report/presim_summary.md)。
+
 HAR 相对纯 CPU 的加速比使用独立入口，无需 PyTorch：
 
 ```bash
 python test/int8/run_har_benchmark.py --vsim /path/to/vsim
 ```
 
-默认对照原训练模型同一组输入的 batch=1/2/4；CPU 使用现有四项展开 RV32IM 内核，双方保持相同 INT22/重定标/argmax 语义。BEGIN/END 包含配置、输入、推理和全部输出写回 SRAM，golden 自检放在 END 后。实测加速比分别为 33.84× / 39.68× / 58.78×，完整口径和边界验证见 [HAR 加速比](../report/har_speedup.md)。
+默认对照原训练模型同一组输入的 batch=1/2/4，可用 `--batch 3` 测第三种批大小；CPU 使用现有四项展开 RV32IM 内核，双方保持相同 INT22/重定标/argmax 语义。BEGIN/END 包含配置、输入、推理和全部输出写回 SRAM，golden 自检放在 END 后。batch=1/2/3/4 实测加速比为 33.84× / 39.68× / 56.51× / 58.78×，完整口径和边界验证见 [HAR 加速比](../report/har_speedup.md)。
 
 `run.py` 还固定执行三组单样本 Argmax 定向回归：最后一次 FC2 累加使第 0 类得分上升、下降或并列时，分类必须使用最终分数。默认 32 组随机加 6 组训练及这 3 组定向用例，共 41 组。
 
