@@ -9,7 +9,7 @@ MODES = ('baseline', 'compact', 'unroll2', 'unroll4', 'unroll8', 'scheduled4',
 DEFAULT_MODE = 'reuse8'
 
 
-def build(run,seed=10000,mode=DEFAULT_MODE):
+def build(run,seed=10000,mode=DEFAULT_MODE,*,benchmark=False,batch_override=None):
     """Emit identical data/checks with a selectable RV32I instruction schedule.
 
     Baseline retains the original instruction stream. Compact changes only LI;
@@ -19,6 +19,10 @@ def build(run,seed=10000,mode=DEFAULT_MODE):
     if mode not in MODES:
         raise ValueError('Unknown firmware mode: %s' % mode)
     mem=make_case(seed)
+    if batch_override is not None:
+        if not 1<=batch_override<=mem[0x1f08//4]:
+            raise ValueError('Batch override must select a prefix of the fixture')
+        mem[0x1f08//4]=batch_override
     batch=mem[0x1f08//4]
     if not 1<=batch<=4:raise ValueError('Invalid batch size')
     a=Assembler()
@@ -77,6 +81,9 @@ def build(run,seed=10000,mode=DEFAULT_MODE):
             # A single group needs no loop counter or pointer updates.
             a.label(name)
             body(count)
+    def marker(value):
+        a.li(31,0x80001fc0);a.li(30,value);a.sw(30,31)
+    if benchmark:marker(1)
     mark('configure')
     a.li(20,0x70000000)
     def put(offset,value):a.li(5,value);a.sw(5,20,offset)
@@ -146,15 +153,22 @@ def build(run,seed=10000,mode=DEFAULT_MODE):
         output_base=0x70000a80 if n==0 else 0x70000c40 if n==1 else 0x70001200+(n-2)*64
         score_address=0x70000b00 if n==0 else 0x70000c80 if n==1 else output_base+0x20
         class_address=0x70000008 if n==0 else 0x70000c98 if n==1 else output_base+0x38
-        compare('hidden'+str(n),output_base,0x80001c00+n*64,8)
-        compare('scores'+str(n),score_address,0x80001c20+n*64,6)
-        compare('class'+str(n),class_address,0x80001c38+n*64,1)
+        transfer=copy if benchmark else compare
+        destination=0x80001d00 if benchmark else 0x80001c00
+        transfer('hidden'+str(n),output_base,destination+n*64,8)
+        transfer('scores'+str(n),score_address,destination+0x20+n*64,6)
+        transfer('class'+str(n),class_address,destination+0x38+n*64,1)
+    if benchmark:
+        marker(2)
+        pointers = {5: None, 6: None}
+        for n in range(batch):
+            compare('check_results'+str(n),0x80001d00+n*64,0x80001c00+n*64,15)
     mark('counters')
     a.lw(5,20,0x30);a.li(6,64);a.branch('bne',5,6,'fail')
     a.lw(5,20,0x28);a.li(6,batch*128);a.branch('bne',5,6,'fail')
     a.lw(5,20,0x2c);a.li(6,batch*16);a.branch('bne',5,6,'fail')
     mark('statistics')
-    a.li(6,0x80001fc0)
+    a.li(6,0x80001fd0 if benchmark else 0x80001fc0)
     for offset,reg in [(0,0x0c),(4,0x1c),(8,0x34),(12,0x38)]:a.lw(5,20,reg);a.sw(5,6,offset)
     a.li(5,0xc0dec0de);a.jump('finish')
     a.label('fail');a.li(5,0xdeadbeef)
@@ -167,6 +181,7 @@ def build(run,seed=10000,mode=DEFAULT_MODE):
     (run/'firmware.S').write_text('\n'.join(a.listing)+'\n')
     (run/'firmware_meta.json').write_text(json.dumps({
         'mode':mode, 'seed':seed, 'batch':batch, 'code_bytes':len(a.words)*4,
+        'benchmark':benchmark, 'batch_override':batch_override,
         'instruction_words':len(a.words), 'compact_li':a.compact_li,
         'unroll':unroll, 'labels':a.labels, 'phases':phases,
         'code_limit_bytes':code_limit,

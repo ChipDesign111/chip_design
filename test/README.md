@@ -10,6 +10,14 @@ python test/int8/run.py --count 32 --trained --soc
 
 原 HAR SoC 的 PASS 行同时打印 `DMA_read_MAC_overlap`、`DMA_write_MAC_overlap` 和 `DMA_MAC_total_overlap`。total 按 `MAC 有效 && (DMA 读握手 || DMA 写握手)` 逐拍统计，读写同拍仅计一次，不是两个分项相加；testbench 会与 NPU 硬件计数器核对。`run.py --soc` 会将完整 PASS 行回显到终端，并将三个计数保存到 `result.json` 的 `soc_timing`；Xcelium 入口也保存 total 字段。
 
+HAR 相对纯 CPU 的加速比使用独立入口，无需 PyTorch：
+
+```bash
+python test/int8/run_har_benchmark.py --vsim /path/to/vsim
+```
+
+默认对照原训练模型同一组输入的 batch=1/2/4；CPU 使用现有四项展开 RV32IM 内核，双方保持相同 INT22/重定标/argmax 语义。BEGIN/END 包含配置、输入、推理和全部输出写回 SRAM，golden 自检放在 END 后。实测加速比分别为 33.84× / 39.68× / 58.78×，完整口径和边界验证见 [HAR 加速比](../report/har_speedup.md)。
+
 `run.py` 还固定执行三组单样本 Argmax 定向回归：最后一次 FC2 累加使第 0 类得分上升、下降或并列时，分类必须使用最终分数。默认 32 组随机加 6 组训练及这 3 组定向用例，共 41 组。
 
 NPU MMIO 回归逐字检查样本 2..3 输入窗口的全部 32 个合法字，以及 `0x1080–0x117f` 保留区的全部 64 个字。合法写必须更新对应输入，保留区每次写必须独立置 ERROR 且不改变任何样本输入，ACK 后错误状态必须清零。
