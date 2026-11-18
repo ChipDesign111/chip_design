@@ -100,18 +100,18 @@ bias 只加入一次，ReLU、舍入和 INT8 饱和只在该输出的全部输�
 | `rtl/npu/simple_npu_top.sv` | `ed24e874deeccedba01cd013c53ef3e83f47e4d466187c0670ed2e60d3522b72` |
 | `rtl/npu/har_weight_store.sv`（两版相同） | `473106074ca66f795445cd3862104d7e57da364b6ab119996eb612934b7d2913` |
 
-原版/新版利用率报告 SHA 分别为 `a5c32b4af9dc0caa75f10b7f5b52171ec163d57219fcad5971be7bcd4a750703`、`3b32aa5258d40cc189550288093d0fdd5d94102e06780449e1edc443c8a3ff80`。当前没有新一轮 Genus/Innovus、ASIC SDF 后仿或 FPGA 布局布线结果，不能据此断言旧的 ASIC Density 或物理时序不受影响。
+原版/新版利用率报告 SHA 分别为 `a5c32b4af9dc0caa75f10b7f5b52171ec163d57219fcad5971be7bcd4a750703`、`3b32aa5258d40cc189550288093d0fdd5d94102e06780449e1edc443c8a3ff80`。本轮随后完成了全新 Genus/Innovus 01–34、同源 TT SDF 后仿和 Lab5，结果见[全流程 EDA 结果](../eda/results/fullflow_fe04981_20261118/README.md)。
 
 ## 完整SoC后仿入口
 
-[`eda/postsim.py`](../eda/postsim.py) 现在会为每次已完成后端版本额外生成 `raw_tail_33x65.hex`。该场景复用已通过RTL SoC的功能fixture：33个输出、65个输入，形成4次RAW START；CPU对非整齐输出尾块和两个64输入块执行66次 `RAW_INDEX`/`RAW_DATA` 读回并完成INT32归约。测试平台在CPU可见的SoC MMIO总线上检查：
+[`eda/postsim.py`](../eda/postsim.py) 会为每次已完成后端版本额外生成 `raw_tail_33x65.hex`。该场景复用已通过RTL SoC的功能fixture：33个输出、65个输入，形成4次RAW START；CPU对非整齐输出尾块和两个64输入块执行66次 `RAW_INDEX`/`RAW_DATA` 读回并完成INT32归约。综合优化可能折叠单周期MMIO请求脉冲，因此后综合测试平台检查：
 
-- START只发生在 `MODE=1` 后，且总数恰为4。
-- RAW索引写和数据读各66次，至少发生一次 `RAW_READY` 轮询。
-- 所有自动DMA取数都来自2048 B W1工作区、每笔16字，不允许W2预取。
+- RAW模式从0进入1再回到0，且最终保持 `MODE=0`。
+- 四个RAW任务对应128个W1预取，所有自动DMA源地址都位于2048 B W1工作区，不允许W2预取。
+- CPU固件逐值完成66次RAW部分和读回、INT32归约和输出比较。
 - 固件逐值自检完成后恢复 `MODE=0`，再执行最终异步复位。
 
-后仿矩阵由本地 `scenarios.json` 固定身份，服务器端同时校验firmware、场景形状和输入SHA。legacy矩阵仍为16组SDF加1组unit-delay对照，新增RAW场景后总计18组。这里的实现只建立了可执行的后仿入口；承载新RTL的功能提交 `0e2d0cf` 尚无匹配的34步物理版本，因此没有新的SDF结果，不能把历史HAR后仿归档套用于本分支。
+后仿矩阵由本地 `scenarios.json` 固定身份，服务器端同时校验firmware、场景形状和输入SHA。legacy矩阵仍为16组SDF加1组unit-delay对照，新增RAW场景后总计18组。绑定物理提交 `fe04981` 的本轮 TT SDF 矩阵18/18通过；RAW场景为188032个CPU观测周期，SDF回标error、缺失实例和缺失检查均为0，全部阶段动态时序违规为0。
 
 ## 验证要求
 
