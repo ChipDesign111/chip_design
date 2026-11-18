@@ -15,18 +15,18 @@
 
 ## TT SDF 后仿
 
-后仿绑定同一 `fe04981` 最终数据库，共 24 组：23 组 SDF 和 1 组独立 unit-delay 对照。当前新增测试没有修改 RTL，因此复用同一版后网表和 TT SDF。
+后仿绑定同一 `fe04981` 最终数据库，共 27 组：26 组 SDF 和 1 组独立 unit-delay 对照。当前新增测试没有修改 RTL，因此复用同一版后网表和 TT SDF。
 
-- 功能通过 24/24，`normal_postsim_pass=true`。
+- 功能通过 27/27，`normal_postsim_pass=true`。
 - SDF 回标 error 0、缺失实例 0、缺失时序检查 0。
 - 全部阶段动态时序违规 0，负 IOPATH 截零 0，负路径支持完整。
 - 动态 RAW `sdf_raw_tail_33x65` 通过：CPU 观测 188032 周期、4 个 RAW tile、33×65 非整齐输入输出、66 次 RAW 部分和读回，没有动态时序违规。
-- 预打包 RAW 三组通过：`32×64` 满块、`33×65` 尾块和 CPU→RAW→CPU 三层，分别观测 4441、7503、12216 个 SoC 周期；均直接读取镜像中预排的 W1 权重，运行时权重重排为 0。
-- 无完整 RAW 块的 CPU-only 三层回退通过，观测 5591 周期。
-- HAR 加速比使用的 CPU/HAR batch=4 成对固件均通过门级功能；分别观测 154661/3371 周期。这里的后仿周期包含自检，不替代前仿 BEGIN/END 加速比。
+- 预打包 RAW 三组通过：`32×64` 满块、`33×65` 尾块和 CPU→RAW→CPU 三层；BEGIN→END benchmark 周期分别为 4997、9199、13278，与前仿逐项完全一致。
+- 四组 CPU benchmark 通过：`32×64`、`33×65`、混合三层和 CPU-only 三层分别为 45624、47397、52606、6074 周期。
+- HAR 加速比使用的 CPU/HAR batch=4 成对固件通过；BEGIN→END 周期分别为 153536/2612，与前仿一致，加速比 58.7810×。
 - Legacy HAR 16 组 SDF、15 相位复位扫描及 unit-delay 对照全部通过。
 
-RAW 和 CPU-only 后仿记录的是从 CPU 提交镜像后到自检 magic 的完整 SoC 周期，包含 golden 检查和固件清理，不是纯推理 BEGIN/END 区间，不能与前仿加速比周期直接相减。
+所有 benchmark 固件使用与前仿相同的 `0x80001fc0` BEGIN/END marker；后仿在最终 SRAM 宏写口捕获 `benchmark_cycles`。10 组后仿 benchmark 周期与前仿逐项完全一致，`benchmark_protocol_complete=true`、`benchmark_pair_errors=[]`。`observed_cpu_cycles` 仍保留为执行到 magic 的完整自检窗口，但加速比只使用 BEGIN→END 周期。
 
 ## SRAM 半周期 STA
 
