@@ -92,16 +92,16 @@ bash ../../unpack.sh "$PWD"
 cat configs/design.json
 ```
 
-本次目录下的 deploy 是压缩包解出的源码；configs/design.json 是本版本可编辑配置。默认 PDK 为 /lec/pdk/tsmc180，宏资料来自 /lec/lab4，周期 20 ns，核数 8；核心请求 1648.5×1648.5 μm，四侧余量 150 μm，目标外框 1948.5×1948.5 μm，目标利用率 0.85，包含 PAD 的面积上限 3.8 mm²。
+本次目录下的 deploy 是压缩包解出的源码；configs/design.json 是本版本可编辑配置。默认 PDK 为 /lec/pdk/tsmc180，宏资料来自 /lec/lab4，周期 20 ns，核数 8；核心请求 1648.8×1648.8 μm，四侧余量 150 μm，目标外框 1948.8×1948.8 μm，目标利用率 0.85，包含 PAD 的面积上限 3.8 mm²。
 
-目标利用率0.85用于标准逻辑面积规划检查；本轮固定 core 1648.5µm，并显式请求 Die 1948.5×1948.5µm（3.79665025mm²）。floorplan 使用显式 Die box 和 `-noSnapToGrid`，geometry 阶段会拒绝偏离目标的实测 DIEAREA；不把85%参数或含Filler密度当作实测逻辑密度。
+目标利用率0.85用于标准逻辑面积规划检查；本轮固定 core 1648.8µm，并显式请求 Die 1948.8×1948.8µm（3.79782144mm²）。floorplan 使用显式 Die box 和 `-noSnapToGrid`，geometry 阶段会拒绝偏离目标的实测 DIEAREA；不把85%参数或含Filler密度当作实测逻辑密度。
 
 
 
 
 RC温度也必须看实际读回：rc_temperatures.tcl在初始化和恢复检查点后核对25/125/0/−40°C，结果保存work/evidence/rc_temperatures.json并纳入各步审核。Genus的-temperature与Innovus的-T语法不同；旧版物理RC角实际均25°C，不能用匹配的库温度代替RC生效证明。新版本仍仅使用供应的typical RC技术表，不能称独立RC最小/最大角或SI签核。
 
-**第一次运行 check_env 前** 修改 configs/design.json。准备完成后 work 中的输入被固定，禁止修改来冒充续跑。更换参数请新建上传目录。1648.5+2×150=1948.5 μm，且 `target_die_size_um` 必须与 core+两侧余量一致；实际尺寸仍以最终 DEF/GDS 核对。
+**第一次运行 check_env 前** 修改 configs/design.json。准备完成后 work 中的输入被固定，禁止修改来冒充续跑。更换参数请新建上传目录。1648.8+2×150=1948.8 μm，且 `target_die_size_um` 必须与 core+两侧余量一致；实际尺寸仍以最终 DEF/GDS 核对。
 
 ## 5．独立阶段一：环境检查
 
