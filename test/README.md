@@ -10,6 +10,10 @@ python test/int8/run.py --count 32 --trained --soc
 
 当前覆盖范围和已测结果见 [开发与验证](../report/development.md)。
 
+真实 FPGA 的 62 份固件可用 [批量板测入口](../fpga/FIRMWARE_BATCH.md) 依次运行。
+脚本自身的离线控制与 TCP 协议回归使用
+`python test/int8/test_firmware_batch.py`，不连接 FPGA，也不计为 RTL 或板测。
+
 原 HAR SoC 的 PASS 行同时打印 `DMA_read_MAC_overlap`、`DMA_write_MAC_overlap` 和 `DMA_MAC_total_overlap`。total 按 `MAC 有效 && (DMA 读握手 || DMA 写握手)` 逐拍统计，读写同拍仅计一次，不是两个分项相加；testbench 会与 NPU 硬件计数器核对。`run.py --soc` 会将完整 PASS 行回显到终端，并将三个计数保存到 `result.json` 的 `soc_timing`；Xcelium 入口也保存 total 字段。
 
 `run.py --soc` 还自动执行真实 JTAG/DMI 的启动与调试回归，也可单独运行：

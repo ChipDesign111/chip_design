@@ -13,6 +13,12 @@ FPGA bitstream、固件和测试证据按不可覆盖版本归档，入口见
 [20261101_rtl-fce9d9b_board-pass](versions/20261101_rtl-fce9d9b_board-pass/README.md)。
 当前状态和验收边界见 [FPGA 测试状态](TEST_REPORT.md)。
 
+在已连接板子的 WSL GDB 中，从 `fpga/` 执行 `source test_all_firmware.gdb`，
+可一键依次复位、装载、运行并检查全部 62 个正常固件，自动汇总完整 SoC 周期、
+DMA/MAC overlap 和 12 组 CPU/硬件加速比。入口会自动断开并重新连接 GDB，
+不要求 GDB 内置 Python。结果位置、筛选参数和验证范围见
+[批量板测说明](FIRMWARE_BATCH.md)。
+
 ## 1. 两种 bitstream
 
 不要把“CPU 运行后读取 SRAM”和“无预装载后用 JTAG 写入 SRAM”混在一起。
