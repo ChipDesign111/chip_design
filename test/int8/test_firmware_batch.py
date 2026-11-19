@@ -9,6 +9,7 @@ import socket
 import struct
 import threading
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 spec = importlib.util.spec_from_file_location("firmware_batch",ROOT / "fpga/firmware_batch.py")
@@ -200,7 +201,7 @@ class BatchTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cases=batch.catalog()
-        cls.root=ROOT / "test/int8/runs" / datetime.datetime.now().strftime("firmware_batch_tests_%Y%m%d_%H%M%S_%f")
+        cls.root=batch.workspace() / "tests" / datetime.datetime.now().strftime("firmware_batch_tests_%Y%m%d_%H%M%S_%f")
         cls.root.mkdir(parents=True)
         cls.pair=[c for c in cls.cases if c["name"] in ("raw_full_b4_cpu","raw_full_b4_raw")]
 
@@ -219,6 +220,7 @@ class BatchTests(unittest.TestCase):
         self.assertFalse(any("selftest" in c["name"] or "partial" in c["name"] for c in self.cases))
         self.assertEqual([len(c["checks"]) for c in self.pair],[96,96])
         for case in self.cases:
+            self.assertTrue((case["firmware_root"]/"image_manifest.json").is_file(),case["name"])
             word=struct.unpack_from("<I",case["binary"].read_bytes(),case["halt_pc"]-batch.BASE)[0]
             self.assertEqual(word,0x6f,case["name"])
 
@@ -232,6 +234,33 @@ class BatchTests(unittest.TestCase):
     def test_user_measured_pair_ratio(self):
         result,_,_=self.run_fixture()
         self.assertAlmostEqual(result["speedups"][0]["speedup"],180232/12349)
+
+    def test_report_replace_retries_temporary_permission_error(self):
+        original = Path.replace
+        attempts = []
+
+        def replace(path, target):
+            attempts.append(path)
+            if len(attempts) <= 2:
+                raise PermissionError("temporary file sharing violation")
+            return original(path, target)
+
+        with patch.object(Path, "replace", replace), patch.object(batch.time, "sleep") as sleep:
+            result, _, _ = self.run_fixture()
+        self.assertEqual(result["status"], "PASS")
+        self.assertEqual(sleep.call_count, 2)
+
+    def test_report_replace_failure_retains_last_result_and_temporary_file(self):
+        out = self.root / self._testMethodName
+        out.mkdir()
+        (out / "result.json").write_bytes(b'{"previous":true}')
+        report = dict(cases=[], selected=0, status="ERROR", environment="Offline file fixture")
+        with patch.object(Path, "replace", side_effect=PermissionError("persistent denial")) as replace:
+            with patch.object(batch.time, "sleep"), self.assertRaises(PermissionError):
+                batch.save_report(out, report)
+        self.assertEqual(replace.call_count, 4)
+        self.assertEqual((out / "result.json").read_bytes(), b'{"previous":true}')
+        self.assertEqual(json.loads((out / "result.json.tmp").read_text()), report)
 
     def test_original_first_two_samples_zero_is_detected(self):
         result,_,_=self.run_fixture(fault="first_two_samples_zero")

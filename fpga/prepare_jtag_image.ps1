@@ -39,6 +39,10 @@ for ($index = 0; $index -lt $tokens.Count; $index++) {
 }
 
 $output = [IO.Path]::GetFullPath($OutputBin)
+$repository = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".."))
+if ($output.StartsWith($repository + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) {
+    throw "FPGA image output must be outside the repository: $output"
+}
 [IO.File]::WriteAllBytes($output, $bytes)
 
 $hash = (Get-FileHash -LiteralPath $output -Algorithm SHA256).Hash

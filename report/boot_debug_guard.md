@@ -123,7 +123,7 @@ Boot ROM、旧 DM AXI 桥复位接线，要求在对应检查处失败，避免�
 46 份 HAR 镜像的完整硬件计数均比原来增加 6 拍，来自启动检查。
 24 份成对包的应用计数及 NPU/DMA 指标逐项与修复前一致；其中 16 份图包
 全部实际张量的序列化文件 SHA 也一致。完整记录见
-[固件验证](../fpga/firmware/validation.json) 和 [本轮记录](boot_debug_guard.json)。
+[固件验证](../fpga/results/20261119_boot_debug_guard/firmware_validation.json) 和 [本轮记录](boot_debug_guard.json)。
 
 本次属于 RTL 功能验证，尚未生成此修复的新 bitstream，也未执行 EDA/SDF 或板测。
 使用 FPGA 时必须重新生成并烧录 bitstream；历史物理密度、时序和板级 PASS 不构成

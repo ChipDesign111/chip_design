@@ -14,6 +14,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "test/int8"))
+from fpga.workspace import external, firmware_dir
 
 BASE = 0x80000000
 TAG = BASE + 0x1fe4
@@ -70,7 +71,7 @@ def write_board_files(directory, info, checks):
                 checks=checks, board_tested=False,
                 cycle_counter_address=0x10038,
                 timing="Hardware first non-debug fetch through PASS/FAIL, including firmware checks; not BEGIN/END cycles")
-    lines = ["# Generated; source from the fpga directory after running and halting this image.",
+    lines = ["# Generated; source after running and halting this image.",
              "define soc-check-result", "  set $soc_check_errors = 0",
              "  if *(unsigned int *)0x%08x != 0x%08x" % (TAG, tag),
              '    printf "FPGA_CHECK_FAIL: wrong image tag for %s\\n"' % info["name"],
@@ -100,6 +101,7 @@ def write_board_files(directory, info, checks):
 
 
 def generate(output):
+    output = external(output)
     # Heavy dependencies are needed only for generation, not image/dump checking.
     from compiler import compile_model
     from compiler.runtime import source_hashes
@@ -160,7 +162,7 @@ def generate(output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output-dir", type=Path, default=HERE / "suite")
+    parser.add_argument("--output-dir", type=Path, default=firmware_dir() / "suite")
     args = parser.parse_args()
     generate(args.output_dir.resolve())
 

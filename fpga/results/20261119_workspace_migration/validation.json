@@ -1,0 +1,87 @@
+{
+  "status": "PASS",
+  "date": "2026-11-19T16:38:07.332302+08:00",
+  "baseline_commit": "19a0ce29e61127f666f5e97b8a55e62fda9cb23e",
+  "scope": "Host workspace migration, emitted image identity and Vivado project creation only; no new synthesis, implementation, bitstream or FPGA execution",
+  "rtl_compiler_model_changed": false,
+  "source_sha256": {
+    "fpga/run.py": "c530f44d587213a52f5df50c76e4ab312efc13de2a5ce38fe217f28ab0b14a53",
+    "fpga/workspace.py": "30dd6b14a0ddc2faafafcb5cb44ebae1fd26f87f8c838b7f04b633406fbd868a",
+    "fpga/firmware_batch.py": "8185e5736f74aa1708d87a0c5ce551b441bdbe15197b8d602394222a094be71b",
+    "fpga/firmware/generate_images.py": "f49ab078ec4ea6981e0eb8af397f50346a325141eae786a7cc69c9a6c1e2d407",
+    "fpga/firmware/generate_suite.py": "fb763d9f40d35b0f3688dbcd860ae2a89e6a3913d8f5f2ddf2ef415aaee06df1",
+    "fpga/firmware/validate_images.py": "2c1db4f8b87828b0aba4db0e6d0ef59c4926925004e683d15261d11bd023864c",
+    "fpga/src/fpga_top.sv": "2471531b11706c3edd874d82e4ca2d814ed649423414126af607b8483d415c85",
+    "fpga/src/fpga_top.xdc": "15b2888487204a24059448fa8141f19c6a0d7798a875471039910dfc190b0896",
+    "fpga/tcl/project.tcl": "c4466272e50fdc2508ac42e74c49b8c452f29a679332685fc360c9660e8ce752",
+    "fpga/config/board.json": "09b1b823f0b0e83258cb392bd90ef0ca6dceb9d349f7617f489267658a8b7d7d",
+    "fpga/config/cv32e40p.cfg": "727ca5700268f2032051dde3b9d59d96f6a2abe7d32425c5485f54d8a174e73a",
+    "fpga/load_soc_image.gdb": "af8cc763b4b2e37c47a24c2e490c83443216f9e053abe7e6ed43ec702d2fcb08",
+    "test/int8/test_fpga_workspace.py": "1bc9d37ff907b6e1ec9e98ae834b8fe19fa8b48feece74bba62333d2706ec184",
+    "test/int8/test_firmware_batch.py": "15543571309bc100e6b6317bb8726a62be2d37460d6a5d393ee45a4309356111",
+    "tools/check_repo.py": "2efc7eaa5da866ac6f9f254410df4b049940fffcd0b29fa0f36806d62847797c"
+  },
+  "preservation": {
+    "files": 403,
+    "receipt_sha256": "36033f7a3703f6b007f8db82edeea280062801546853de90e3e67f7567beb7b2",
+    "location": "D:\\LiChade\\PKU\\major\\AdvanceChip\\chip_design\\fpga_workspace\\migration",
+    "original_xpr_and_xci_backed_up": true
+  },
+  "firmware": {
+    "normal_images": 62,
+    "recreated_byte_identical_files": 182,
+    "historical_partial_fixture_preserved": true,
+    "historical_partial_fixture_regenerated": false
+  },
+  "source_only_checkout": {
+    "files": 3017,
+    "export_manifest_sha256": "ecae62d25ae0f39afc70c1e48a1352fe869c869aa72fb1dd429d41810e68082c",
+    "prepared": true,
+    "all_tested_code_matches_current_checkout": true
+  },
+  "tests": {
+    "workspace": 9,
+    "batch_controller_and_transport": 16,
+    "workspace_log_sha256": "806ee390423744510788532d5cf2ac21a41f9cf8cf0b338028d895d1cb845cc2",
+    "batch_log_sha256": "d6370f41ac993978df120eadfa592bbea9a4bb74ead17084b8a90638278597e3",
+    "notes": "A temporary Windows replace denial during the first full catalog run was addressed with bounded retries; persistent denial preserves old JSON and new temporary file."
+  },
+  "vivado": {
+    "version": "2019.1",
+    "projects": [
+      {
+        "workspace": "D:\\LiChade\\PKU\\major\\AdvanceChip\\chip_design\\fpga_workspace",
+        "files_resolve": 87,
+        "mode": "runtime",
+        "input_manifest_sha256": "a2df5979af89c3f063833cd86f4e03049bbcb60f0444a911dbc3d2eb1382393c",
+        "log_sha256": "50812f94c733db46787a12b64b16d63b780fd5789c16294d092e3536b4333e39",
+        "project_sha256": "e0c4cd81d2abcd77f1f9dc75a52737be91353f1619d99bd58f2c49f69b5bc05e"
+      },
+      {
+        "workspace": "D:\\LiChade\\PKU\\major\\AdvanceChip\\chip_design\\fpga_workspace\\verification\\new_machine_v2",
+        "files_resolve": 81,
+        "mode": "runtime",
+        "input_manifest_sha256": "fecaf70aaf89a319f755ce1d1fbf991817099e65f1fd64e75d07a49f2b10dd72",
+        "log_sha256": "3190bf603936a5f88fd792d87d60cd1918f88788ab3a7c9355f26423c4aa13bb",
+        "project_sha256": "cf76bde3d45162ae20153883ac6bf531e026f6536c4c6833434cd7baa4f4d5d2"
+      },
+      {
+        "workspace": "D:\\LiChade\\PKU\\major\\AdvanceChip\\chip_design\\fpga_workspace\\verification\\source_only_work",
+        "files_resolve": 81,
+        "mode": "runtime",
+        "input_manifest_sha256": "a6634bf23daf13febe942d329a2c404608f9f70db97b23eff5d5c6ecf39d5f45",
+        "log_sha256": "41e6cad86ea5b783fd8107f928420d8adcae4bf1110c579f286ccc9e47e4737b",
+        "project_sha256": "6be5de4c5e76f73a489e7cb5d3106cddfe62781460bc538b07c5b21eb433092f"
+      }
+    ],
+    "clock_mhz": 20,
+    "reset_pin_on_clock_ip": false
+  },
+  "checks": {
+    "repository_policy_and_75_hardware_source_hashes": "PASS",
+    "repository_check_log_sha256": "fc067b088d43a1738a33c276a1f5ea5c3030846bf7833c1eaacc1168e03680fa",
+    "tracked_fpga_artifacts": 0,
+    "converter_binary_matches_generator": true,
+    "wsl_gdb_offline_catalog": "PASS: 62 images, FPGA_WSL_GDB_LIST_PASS; no target connection"
+  }
+}

@@ -9,6 +9,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
+sys.path.insert(0, str(ROOT))
+from fpga.workspace import external, firmware_dir
 TEST_DIR = ROOT / "test" / "int8"
 sys.path.insert(0, str(TEST_DIR))
 
@@ -55,9 +57,9 @@ def single_image(output_dir, seed, name, kind):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output-dir", type=Path, default=HERE)
+    parser.add_argument("--output-dir", type=Path, default=firmware_dir())
     args = parser.parse_args()
-    output_dir = args.output_dir.resolve()
+    output_dir = external(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     images = []

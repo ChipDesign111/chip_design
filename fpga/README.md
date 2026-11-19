@@ -1,431 +1,173 @@
-# FPGA 测试与多镜像加载
+# FPGA：从新机器准备到板测
 
-本目录提供 A7-35T 板级构建、JTAG 目标选择、镜像转换和 GDB 装载流程。
-FPGA 系统时钟为 20 MHz，器件为 `xc7a35tcsg324-1`。
+仓库保存板级源码、配置、执行脚本和[测试报告](results/README.md)。Vivado 工程、IP、固件、bitstream、日志和测试输出全部放在仓库外。默认工作区是仓库的同级目录 `../fpga_workspace`；可用环境变量 `FPGA_WORKSPACE` 或每条命令的 `--workspace` 指定其他外部目录。脚本拒绝将生成目录设在仓库内。
 
-FPGA bitstream、固件和测试证据按不可覆盖版本归档，入口见
-[版本目录](versions/README.md)。最近完成板测的冻结版本为
-[20261104_rtl-1c265c0_int22](versions/20261104_rtl-1c265c0_int22/README.md)；
-该冻结版本的板级测试已 PASS。2026-11-19 活动固件已更新到当前 16-MAC INT22 RTL，
-保留 38 个 HAR 回归镜像，并新增 24 个 HAR/RAW/CPU 配对固件包；入口、GDB 数值
-检查和使用方法见 [当前测试固件](firmware/README.md)。尚未生成新 bitstream 或重新上板测试。
-上一版的完整 PASS 报告保存在
-[20261101_rtl-fce9d9b_board-pass](versions/20261101_rtl-fce9d9b_board-pass/README.md)。
-当前状态和验收边界见 [FPGA 测试状态](TEST_REPORT.md)。
+板卡为 A7-35T，器件 `xc7a35tcsg324-1`，输入时钟 100 MHz，SoC 时钟 20 MHz。配置入口为 [board.json](config/board.json)，引脚约束见 [fpga_top.xdc](src/fpga_top.xdc)，板级连接见 [fpga_top.sv](src/fpga_top.sv)。本次仅迁移板级文件位置，没有修改硬件逻辑。
 
-在已连接板子的 WSL GDB 中，从 `fpga/` 执行 `source test_all_firmware.gdb`，
-可一键依次复位、装载、运行并检查全部 62 个正常固件，自动汇总完整 SoC 周期、
-DMA/MAC overlap 和 12 组 CPU/硬件加速比。入口会自动断开并重新连接 GDB，
-不要求 GDB 内置 Python。结果位置、筛选参数和验证范围见
-[批量板测说明](FIRMWARE_BATCH.md)。
+## 1. 新机器准备
 
-## 1. 两种 bitstream
+需要 Git、Python 3.10+、Vivado（本流程已用 2019.1 创建工程验证）。生成 RAW 配对包还需[编译器依赖](../compiler/requirements.txt)中的 PyTorch/NumPy；批量板测只使用 Python 标准库。
 
-不要把“CPU 运行后读取 SRAM”和“无预装载后用 JTAG 写入 SRAM”混在一起。
+从仓库根目录在 PowerShell 执行，以下路径均为可替换的示例：
 
-| 模式 | 构建链 | `SRAM_INIT_FILE` | `PREINITIALIZED` | 用途 |
-|---|---|---|---:|---|
-| 预装载 | `synth_1 → impl_1` | 指向一个 `.hex` 绝对路径 | 1 | 上电自动运行固定镜像 |
-| 无预装载 | `synth_2 → impl_2` | 空 | 0 | 复位后通过 JTAG 装载任意镜像 |
+~~~powershell
+$env:FPGA_WORKSPACE = [IO.Path]::GetFullPath('../fpga_workspace')
+$env:VIVADO = 'D:/Xilinx/Vivado/2019.1/bin/vivado.bat'
+python -m venv "$env:FPGA_WORKSPACE/python"
+& "$env:FPGA_WORKSPACE/python/Scripts/python.exe" -m pip install -r compiler/requirements.txt
+python fpga/run.py doctor
+python fpga/run.py prepare --compiler-python "$env:FPGA_WORKSPACE/python/Scripts/python.exe"
+~~~
 
-当前 [fpga_top.sv](fpga_top.sv) 的默认参数为空，因此不显式传 generic 时生成
-无预装载 bitstream。预装载流程由 `synth_1` 的 Synthesis Settings 传入固件路径。
+Linux 的虚拟环境解释器位于 `python/bin/python`，Vivado 使用安装目录下的 `bin/vivado`。也可先加载 Vivado 的 `settings64.sh`，通过 PATH 查找。`--vivado` 可代替 `VIVADO`。已有 PyTorch 环境时直接传给 `--compiler-python`。
 
-### 无预装载配置
+`prepare` 重新生成并验证全部固件，创建外部 GDB 入口，并在不存在时复制 OpenOCD 配置；不会覆盖已经调整过的外部 `config/cv32e40p.cfg`。
 
-在 Vivado GUI：
+~~~text
+仓库/
+  rtl/                     SoC 与 NPU RTL
+  fpga/src/                板级顶层与引脚约束
+  fpga/config/             器件、时钟与 OpenOCD 默认配置
+  fpga/tcl/                可重建 Vivado 工程的流程
+  fpga/firmware/           固件生成器、验证器源码
+  fpga/results/            筛选后的测试报告
+fpga_workspace/            全部本机生成物
+  final_project/           final_project.xpr、IP、runs、bitstream
+  firmware/                38 个 HAR 镜像及 suite/ 下 24 个配对包
+  gdb/                     手动装载与一键批测入口
+  config/                  生成的工程配置、本机 OpenOCD 配置
+  logs/                    prepare / Vivado 日志及输入 SHA
+  tests/                   板测和脚本检查结果
+  presim/                  可选的完整 SoC 仿真输出
+  archives/                本机迁来的历史完整归档（新机器无需具备）
+~~~
 
-```text
-Window → Design Runs
-→ synth_2 → Synthesis Settings → Options → More Options
-```
+脚本以当前检出的源码为输入。切换提交后先重新 `prepare`，再 `build`；新机器无需复制旧 `.xpr/.xci` 或固件。
 
-填写不带引号的完整字符串：
+## 2. 创建和构建外部工程
 
-```text
--generic SRAM_INIT_FILE=
-```
+~~~powershell
+# 只创建/打开工程并准备时钟 IP，不运行综合实现
+python fpga/run.py project
 
-不要写成：
+# 默认：无预装固件，综合、实现并生成 bitstream
+python fpga/run.py build --jobs 4
 
-```text
--generic SRAM_INIT_FILE=""
-```
+# 打开外部工程，Vivado 运行目录也在工作区
+python fpga/run.py gui
+~~~
 
-Vivado 2019.1 会把 `""` 当作两个实际字符，使 `INIT_FILE` 非空，仍然生成
-自动启动的预装载 bitstream。
+`project` 从 [rtl/filelist.f](../rtl/filelist.f) 收集源码并创建 Clock Wizard 6.0。`build` 重置所选 run 后重新构建，日志与输入 SHA 保存在外部 `logs/`。只综合可用 `build --stage synth`。
 
-综合完成后检查：
+| 模式 | 命令 | runs | SRAM 初值与启动 |
+|---|---|---|---|
+| JTAG 装载 | `build --mode runtime`（默认） | `synth_2 → impl_2` | 空初值，完整装载并提交后启动 |
+| 预装自检 | `build --mode preload` | `synth_1 → impl_1` | 外部 `firmware/int8_selftest.hex`，上电自动启动 |
 
-```text
-fpga/final_project/final_project.runs/synth_2/runme.log
-```
+日常切换固件使用 runtime。bitstream 位于外部 `final_project/final_project.runs/impl_2/fpga_top.bit`。预装模式每次修改镜像都要重新构建。
 
-必须包含：
+runtime 的综合参数应为 `-generic SRAM_INIT_FILE=`。Vivado 2019.1 的 More Options 中不要填 `SRAM_INIT_FILE=""`，它会把双引号当作实际字符。综合日志应显示 `SRAM_INIT_FILE bound to: 0` 和 `PREINITIALIZED bound to: 1'b0`。
 
-```text
-Parameter SRAM_INIT_FILE bound to: 0 - type: integer
-Parameter PREINITIALIZED bound to: 1'b0
-```
+在 Vivado Hardware Manager 的 Tcl 控制台中加载仓库脚本，再传入外部 bitstream 路径：
 
-`impl_2` 必须是 `synth_2` 的 implementation run。烧录：
+~~~tcl
+source /path/to/repository/fpga/connect_fpga.tcl
+har_program_fpga /path/to/fpga_workspace/final_project/final_project.runs/impl_2/fpga_top.bit
+~~~
 
-```text
-fpga/final_project/final_project.runs/impl_2/fpga_top.bit
-```
+脚本动态查找在线 `xc7a35t`，无需保存另一台机器的 JTAG 序列号。`vivado_init.tcl` 也可从任意仓库位置加载。烧写后关闭 Hardware Manager，再交给 OpenOCD。
 
-## 2. 固件镜像
+## 3. WSL/Linux 的 OpenOCD
 
-`firmware/` 中包含 32 个随机/边界镜像、6 个 UCI 四样本镜像，以及
-`firmware/suite/` 下的 24 个 HAR/RAW/CPU 配对包。详细列表、seed、batch、SHA
-和结果检查方法见 [firmware/README.md](firmware/README.md)。
+需要支持 RISC-V Debug 的 OpenOCD 和 RV32 GDB。本机验证过的 OpenOCD 是 `riscv-openocd` 提交 `10b7a647d`（版本字符串 `0.12.0+dev-04406-g10b7a647d`）；RISC-V GDB 来自 xPack GCC 13.2.0-2。GDB 无需内置 Python。
 
-默认镜像：
+外接 JTAG 使用 FT232H `0403:6014`。接线为 ADBUS0/TCK→E15、ADBUS1/TDI→E16、ADBUS2/TDO←D15、ADBUS3/TMS→C15，并共地。`0403:6010` 为另一 USB 串口设备。实际总线号用 `usbipd list` 查询，管理员 PowerShell 例：
 
-```text
-firmware/int8_selftest.hex
-firmware/int8_selftest.bin
-```
-
-`.hex` 是每行一个 32 位字的文本镜像；OpenOCD/GDB 的 `restore` 使用 8 KiB
-小端 `.bin`。从其他 hex 生成 bin：
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass `
-  -File fpga/prepare_jtag_image.ps1 `
-  -InputHex fpga/firmware/int8_uci_01_batch4.hex `
-  -OutputBin fpga/firmware/int8_uci_01_batch4.bin
-```
-
-转换器要求正好 2048 个 32 位字，并输出 8192 B。
-
-## 3. Vivado 动态选择 JTAG 目标
-
-`vivado_init.tcl` 会加载 `connect_fpga.tcl`，并在 Hardware Manager 加载后
-包装 `open_hw_target`。Auto Connect 会动态选择名为 `xc7a35t` 的在线目标，
-不会继续缓存旧的 `21051218003`。
-
-检查钩子：
-
-```tcl
-info body open_hw_target
-```
-
-自动连接：
-
-```tcl
-har_connect_fpga
-```
-
-自动连接并烧录：
-
-```tcl
-har_program_fpga D:/path/to/fpga_top.bit
-```
-
-## 4. WSL 中的 OpenOCD
-
-板上 JTAG 使用 FTDI `0403:6014`；`0403:6010` 是 UART/USB Serial 复合设备。
-不要把 6010 当成 JTAG 适配器。
-
-先在 Windows 查看 USB/IP 状态：
-
-```powershell
+~~~powershell
 usbipd list
-```
-
-JTAG 设备应显示为：
-
-```text
-BUSID  VID:PID    DEVICE                     STATE
-2-2    0403:6014  USB Serial Converter       Attached
-```
-
-确保 Vivado Hardware Manager 已关闭，避免 Windows `hw_server` 和 WSL
-OpenOCD 同时占用 JTAG。如果 6014 没有 Attached，在管理员 PowerShell 中：
-
-```powershell
 usbipd bind --busid 2-2
 usbipd attach --wsl --busid 2-2
-```
+~~~
 
-在 WSL 中检查：
+在 WSL 设置与 Windows 相同位置的工作区，使用 `/mnt/d/...` 路径，然后：
 
-```bash
-lsusb | grep 0403:6014
-```
+~~~bash
+export FPGA_WORKSPACE=/path/to/fpga_workspace
+sudo openocd -f "$FPGA_WORKSPACE/config/cv32e40p.cfg"
+~~~
 
-然后启动现有 OpenOCD 配置：
+默认适配器频率 10 kHz，GDB/Tcl 端口为 3333/6666。端口占用时先确认是否已有自己的 OpenOCD 在运行。默认配置源码见 [cv32e40p.cfg](config/cv32e40p.cfg)。
 
-```bash
-sudo openocd -f cv32e40p.cfg
-```
+当前 Boot ROM 会等待 `ready` 后才跳 SRAM，DM 正确报告 unavailable。实现原理与验证见[启动与调试修复](../report/boot_debug_guard.md)；必须烧写包含这些 RTL 的 bitstream，单独更换固件不会更新硬件。
 
-当前 RTL 已增加 cold-boot debug 支持：无预装载时，OpenOCD 的 halt request
-可以让 CPU 从控制器 `RESET` 进入 debug，而不启动未装载的 SRAM。若烧录的是
-修复前 bitstream，OpenOCD 会表现为 DMI 可读但 `Unable to halt`。
+## 4. 手动装载和检查
 
-2026-11-19 又修正了等待启动时误报 running 的 unavailable 接线，并让 Boot ROM
-在 ready=0 时循环读取提交状态。调试 AXI 桥也与交叉开关使用同一系统复位，
-避免 NDM reset 后残留事务。详见 [启动与调试修复](../report/boot_debug_guard.md)。
-必须用更新后的 RTL 重新生成 bitstream；仅更新 SRAM 固件不能改变这些行为。
+在 WSL 启动 `riscv-none-elf-gdb`，以下路径替换为外部工作区：
 
-## 5. GDB 装载流程
-
-以下命令适用于无预装载 bitstream。GDB 在 WSL 中运行时，文件路径必须使用
-`/mnt/d/...`。
-
-```gdb
-cd /mnt/d/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/fpga
-source load_soc_image.gdb
+~~~gdb
+target extended-remote :3333
+cd /path/to/fpga_workspace
+source gdb/load_soc_image.gdb
 monitor reset halt
 maintenance flush register-cache
 soc-boot-status
-```
-
-刚复位、无预装载时应为：
-
-```text
-boot_status=0x00000000 loaded_words=0 ready=0
-```
-
-装载 canonical 镜像：
-
-```gdb
-soc-load-bin firmware/int8_selftest.bin
-```
-
-成功后：
-
-```text
-boot_status=0x00000800 loaded_words=2048 ready=0
-```
-
-提交启动：
-
-```gdb
+soc-load-bin firmware/suite/raw_full_b4_raw/firmware.bin
 soc-commit-image
-```
-
-成功后：
-
-```text
-boot_status=0x00002800 loaded_words=2048 ready=1
-```
-
-重复执行 `soc-commit-image` 是安全的；若 `ready` 已经为 1，命令只报告
-`image is already committed`，不会再次写提交码。
-
-OpenOCD 为装载镜像会将 CPU 保持在 debug halt。提交后恢复运行：
-
-```gdb
 monitor resume 0x00010000
 shell sleep 1
 monitor halt
-```
-
-`monitor resume` 是给 OpenOCD 的命令，GDB 不一定同步更新自己的寄存器缓存。
-因此 halt 后必须刷新寄存器，不能直接使用恢复前的 `$pc`：
-
-```gdb
 maintenance flush register-cache
-info registers pc
-x/3i $pc
-monitor reg pc
-```
-
-`flushregs` 仍可使用，但已经是
-`maintenance flush register-cache` 的弃用别名。
-
-固件结束后 CPU 仍在停机自循环中，不会自己进入 debug halt。`monitor halt`
-用于得到稳定现场。2026-11-19 默认 `int8_selftest` 的停机 PC 为：
-
-```text
-pc = 0x800005ec
-
-=> 0x800005ec: j 0x800005ec
-```
-
-不同镜像的停机 PC 不同，以 `firmware/image_manifest.json` 或包内
-`firmware.S` 的 `halt` 标签为准；RAW 包的 `board_manifest.json` 也记录该地址。
-旧冻结版本的 `0x80000470` 不适用于当前默认镜像。
-`monitor reg pc` 从 OpenOCD 侧再次读取 PC，可用于排除 GDB 缓存不一致。
-若刷新后的 DPC 仍为 `0x10000`，表示恢复地址仍是 Boot 入口，不能作为本次
-固件执行完成的证据；还应核对 PASS、结果和固件对应的停机地址。
-
-换固件时使用上面的明确 Boot 入口；普通调试继续运行已有程序时，可用不带地址的
-`monitor resume` 保留 DPC。GDB 的 `$pc` 在该调试实现中对应恢复地址 DPC，
-不代表 CPU 在 Debug Mode 内实际执行 Debug ROM 的地址。
-
-CPU 运行期间，GDB 默认的 abstract memory access 可能失败，例如：
-
-```text
-Cannot access memory at address 0x80001fe0
-```
-
-这不是内存损坏。执行 `monitor halt` 后再读取：
-
-```gdb
-x/1wx 0x80001FE0
-```
-
-预期：
-
-```text
-0x80001fe0: 0xc0dec0de
-```
-
-## 6. Boot 状态
-
-读取地址：
-
-```gdb
-x/1wx 0x0001003C
-```
-
-| 值 | `loaded_words` | `ready` | 含义 |
-|---:|---:|---:|---|
-| `0x00000000` | 0 | 0 | 复位后等待装载 |
-| `0x00000800` | 2048 | 0 | 镜像完整，等待启动密钥 |
-| `0x00002800` | 2048 | 1 | 已提交并放行 CPU |
-
-完整 SoC 周期由 bootram 硬件计数器记录：`boot_ready` 置高并且 CPU 离开内部
-debug halt 状态后，第一次发出指令取指时开始，到固件写入 PASS 或 FAIL 的完整
-字为止。正常启动通常首先取指 Boot 跳板 `0x00010000`；调试恢复从保存的 DPC
-继续时也不影响触发。镜像装载、启动提交、debug halt 和 JTAG resume 等待都不
-计入。读取：
-
-```gdb
-x/1wx 0x00010038
-```
-
-或使用 GDB 命令：
-
-```gdb
+source firmware/suite/raw_full_b4_raw/check.gdb
+soc-check-result
 soc-full-cycles
-```
+soc-npu-counters
+~~~
 
-该计数器独立于 JTAG 交互时间，也不同于 NPU 内部的 `cycle_count`。
+换固件时从 `monitor reset halt` 重做，换成对应 `.bin` 和 `check.gdb`。显式从 `0x00010000` 启动，保证新镜像从入口执行；按键复位不会清 SRAM，也不保证调试器保存的 DPC 指向入口。重新 source 检查脚本时的 `Redefine command` 是正常替换。
 
-2026-11-04 冻结镜像的完整 SoC 仿真结果为：
-
-```text
-硬件 SoC 周期             6364
-testbench 观测窗口周期    6369
-```
-
-两者相差 5 拍，因为 testbench 从 SBA 提交完成后开始观测，而硬件计数器还要
-等到 CPU 第一次非 debug 取指。该冻结版本无预装载 JTAG 流程的板端实测为
-`6368`（`0x000018E0`）；它和更早的 `5105` 均不代表当前 RTL/新固件。
-当前前仿结果见 [固件验证清单](firmware/validation.json)，新板端周期仍需实测。
-
-### 启动提交码（“密钥”）
-
-这里所说的“密钥”是启动提交码，不是加密密钥、密码或身份认证凭据。固定值是：
-
-```text
-0xB007C0DE
-```
-
-写入地址：
-
-```text
-0x0001003C
-```
-
-无预装载启动必须同时满足：
-
-```text
-1. 按顺序写满 0x80000000–0x80001FFC 的 2048 个完整 32 位字
-2. 向 0x0001003C 写 0xB007C0DE
-```
-
-部分镜像、乱序写入或只写启动提交码都不会放行 CPU：
-
-| 写入状态 | 对 `0x0001003C` 写入 `0xB007C0DE` 的结果 |
+| 时点 | `soc-boot-status` |
 |---|---|
-| 未装载 | `loaded_words=0, ready=0` |
-| 部分装载 | `loaded_words<2048, ready=0` |
-| 乱序装载 | 计数停在缺口处，`ready=0` |
-| 完整按序装载 | `loaded_words=2048`，约 5 拍后 `ready=1` |
+| runtime 复位后 | `loaded_words=0 ready=0`，状态 `0x00000000` |
+| 完整写入 8 KiB | `loaded_words=2048 ready=0`，状态 `0x00000800` |
+| 提交 `0xB007C0DE` 后 | `loaded_words=2048 ready=1`，状态 `0x00002800` |
 
-预装载 bitstream 不需要写这个值。`PREINITIALIZED=1` 会直接把镜像视为完整，
-自动完成 release margin 并置 `boot_ready=1`。
+部分装载或错误提交码不能启动。`soc-load-bin` 顺序重写全部 2048 个字。固件完成后停在自己的自循环，读寄存器和内存前先 halt；GDB 使用 `maintenance flush register-cache` 刷新 PC。
 
-向同一地址写 0 会执行 reload，清除 `loaded_words`、release margin 和
-`ready`，但不会复位 CPU，也不会清空 SRAM。
+RAW 的 PASS 标志和 LED 只说明执行完成，数值正确须以 `soc-check-result` 为准。加速比使用同组 `CPU full_soc_cycles / 硬件 full_soc_cycles`，排除 JTAG 装载和等待时间。NPU cycles、FC1/FC2、DMA/MAC read/write/total overlap 仅代表最后一个任务；`total` 是重叠周期并集。
 
-该提交码是公开的协议常量，不具备保密、签名或防篡改能力。它能防止误把
-未完成镜像交给 CPU，但不能阻止知道该值的调试器执行提交操作。
+## 5. 一键批测和保存报告
 
-## 7. 更换下一个镜像
+在已连接的 WSL GDB 中 source 外部自动生成的入口：
 
-正确顺序：
+~~~gdb
+source /path/to/fpga_workspace/gdb/test_all_firmware.gdb
+~~~
 
-```text
-复位 SoC
-→ soc-boot-status 应为 0
-→ soc-load-bin <new-image.bin>
-→ 检查 loaded_words=2048
-→ soc-commit-image
-→ monitor resume
-→ 等待并检查 PASS
-```
+它会断开 GDB，使用现有 OpenOCD 依次测 62 份固件，再重新连接。输出在外部 `tests/fpga_board_时间戳/`，包括完整周期、DMA/MAC overlap 和 12 组加速比。筛选和失败处理见[批量板测](FIRMWARE_BATCH.md)。
 
-系统复位只清空 `bootram.loaded_words` 和 `boot_ready`，不会清空
-`my_mainmem` 的 8 KiB 数据阵列。加载器总是重写完整的 2048 个字，包括
-未使用区和零值，因此不依赖复位前的 SRAM 内容。
+从 WSL 仓库根目录也可运行；先在 GDB 中 `disconnect`：
 
-重新配置预装载 bitstream 会重新装入它的 `INIT_FILE`。重新配置无预装载
-bitstream 不应被当作软件清零手段；测试流程始终要求完整 JTAG 装载。
+~~~bash
+python3 fpga/run.py test
+python3 fpga/run.py test --only 'raw_full_b4_*'
+~~~
 
-## 8. T07 启动保护测试
+确认一份实际测试输出后，从仓库根目录收录轻量报告：
 
-每次测试前复位：
+~~~bash
+python3 fpga/run.py collect --run /path/to/fpga_workspace/tests/fpga_board_TIMESTAMP --name board_YYYYMMDD
+~~~
 
-| 操作 | 预期 |
-|---|---|
-| 不装载，只写 `0xB007C0DE` | `ready=0`，CPU 不启动 |
-| 只装载部分镜像后提交 | `loaded_words<2048`，CPU 不启动 |
-| 乱序装载后提交 | 计数停在缺口处，CPU 不启动 |
-| 完整装载后写错误密钥 | `loaded_words=2048, ready=0` |
-| 完整装载后写正确密钥 | `ready=1`，最终 `0x80001FE0=0xC0DEC0DE` |
+`collect` 只复制 `result.json`、`summary.md/csv`、`speedups.csv` 和校验收据到 `fpga/results/` 的新目录，保留测试环境与结论；不会收录固件、工程、bitstream 或逐命令原始日志，不覆盖已有报告。构建和上板并不会自动修改仓库报告。
 
-## 9. 常见问题
+## 6. 离线验证
 
-### `soc-load-bin` 报文件不存在
+~~~powershell
+python fpga/run.py validate
+python test/int8/test_fpga_workspace.py
+python test/int8/test_firmware_batch.py
+# 可选：重新跑所有实际固件的 SoC 仿真，输出在外部 presim/
+python fpga/run.py validate --simulate --vsim D:/modeltech64_2019.2/win64/vsim.exe
+~~~
 
-确认 GDB 在 WSL 中，并先执行：
-
-```bash
-ls -l /mnt/d/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/fpga/firmware/int8_selftest.bin
-```
-
-也可以先 `cd` 到文件所在目录，再传相对路径。`source` 只加载命令定义，
-不会自动找到镜像。
-
-### `soc-boot-status` 读到 `0x2800`
-
-说明当前运行的是预装载 bitstream，或已经完成过装载和提交。检查是否烧错
-`impl_1`，并从 `impl_2/fpga_top.bit` 重新配置后复位。
-
-### OpenOCD 显示 `Unable to halt`
-
-先确认无预装载综合日志中 `PREINITIALIZED=0`。若 bitstream 来自修复前 RTL，
-CPU 在 `RESET` 状态不响应 debug request；需要重新构建包含 cold-boot debug
-修复的 bitstream。
-
-### OpenOCD 找不到设备
-
-检查 6014 是否 Attached 到 WSL，Vivado Hardware Manager 是否已关闭，以及
-是否有残留 OpenOCD 进程占用 FTDI。
-
-### 修改 GDB 脚本后行为没有变化
-
-重新执行：
-
-```gdb
-source /mnt/d/LiChade/PKU/major/AdvanceChip/chip_design/chip_design/fpga/load_soc_image.gdb
-```
-
-已经加载的 GDB user command 不会自动更新。
+批测脚本测试需要先 `prepare`，只连接临时本机 TCP fixture。当前已保留的板测、前仿与迁移验证范围见 [TEST_REPORT.md](TEST_REPORT.md)；历史报告不能替代当前 RTL 的新构建或板测。

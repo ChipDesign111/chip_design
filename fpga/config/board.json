@@ -1,0 +1,23 @@
+{
+  "part": "xc7a35tcsg324-1",
+  "top": "fpga_top",
+  "clock_ip": "clk_wiz_0",
+  "clock_ip_version": "6.0",
+  "clock_properties": {
+    "PRIM_IN_FREQ": "100.000",
+    "CLKOUT1_REQUESTED_OUT_FREQ": "20.000",
+    "MMCM_CLKFBOUT_MULT_F": "8.500",
+    "MMCM_CLKOUT0_DIVIDE_F": "42.500",
+    "MMCM_DIVCLK_DIVIDE": "1",
+    "CLKOUT1_DRIVES": "BUFG",
+    "PRIM_SOURCE": "Single_ended_clock_capable_pin",
+    "USE_RESET": "false",
+    "USE_LOCKED": "true"
+  },
+  "synthesis_strategy": "Flow_AreaOptimized_high",
+  "synthesis_directive": "AreaOptimized_high",
+  "runtime_synth": "synth_2",
+  "runtime_impl": "impl_2",
+  "preload_synth": "synth_1",
+  "preload_impl": "impl_1"
+}
