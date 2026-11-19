@@ -17,6 +17,16 @@
 *.pdf binary
 *.npz binary
 *.pt binary
+# Preserve exact raw evidence bytes referenced by this demo's SHA index.
+report/camera_demo_raw0b_20261120/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+report/camera_demo_raw0b_20261120/board_detection.txt whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+report/camera_demo_raw0b_20261120/**/xrun.history whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+# Keep measured generator/bench byte identities portable across Windows/Linux.
+fpga/demo/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+test/int8/run_live_demo.py -text whitespace=trailing-space,space-before-tab,cr-at-eol
+test/int8/tb_live_demo.sv -text whitespace=trailing-space,space-before-tab,cr-at-eol
+test/int8/test_camera_demo.py -text whitespace=trailing-space,space-before-tab,cr-at-eol
+test/unit/test_live_host.py -text whitespace=trailing-space,space-before-tab,cr-at-eol
 rtl/cpu_cv32e40p/** -text
 rtl/axi/** -text
 rtl/clk_rst/** -text

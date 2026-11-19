@@ -1,0 +1,12 @@
+localparam integer ROUNDS=4;
+localparam integer INPUT_BYTES=64;
+localparam integer INPUT_WORDS=16;
+localparam integer OUTPUT_WORDS=2;
+localparam integer NPU_STARTS_PER_ROUND=1;
+localparam integer HIDDEN_WORDS=8;
+localparam [31:0] INPUT_ADDRESS=32'h80001f80;
+localparam [31:0] OUTPUT_ADDRESS=32'h80001f38;
+localparam [31:0] HIDDEN_ADDRESS=32'h80001f60;
+localparam [31:0] OUTPUT_TAIL_MASK=32'h0000ffff;
+localparam [31:0] PACKAGE_TAG_LOW=32'hb97ba797;
+localparam [31:0] PACKAGE_TAG_HIGH=32'hc1bca34e;

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import ast
 import json
+import os
 from pathlib import Path
 import re
 import sys
@@ -21,14 +22,15 @@ REQUIRED_FILES = (
     ".github/workflows/ci.yml", "test/README.md", "tools/README.md",
 )
 REQUIRED_DIRS = ("rtl", "model", "tools", "test", "report", "fpga", "eda", "compiler")
-EXCLUDED_PARTS = {".git", "data", "local", "runs", ".venv", "venv", "__pycache__", "dist"}
+EXCLUDED_PARTS = {".git", "data", "local", "runs", ".venv", ".venv-demo", "venv", "__pycache__", "dist"}
 
 
 def files(suffix: str):
-    return (
-        path for path in ROOT.rglob("*" + suffix)
-        if not any(part in EXCLUDED_PARTS for part in path.relative_to(ROOT).parts)
-    )
+    for directory, children, names in os.walk(ROOT):
+        children[:] = [name for name in children if name not in EXCLUDED_PARTS]
+        for name in names:
+            if name.endswith(suffix):
+                yield Path(directory) / name
 
 
 def check() -> list[str]:

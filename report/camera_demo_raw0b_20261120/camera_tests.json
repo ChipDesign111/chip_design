@@ -1,0 +1,119 @@
+{
+  "status": "PASS",
+  "scope": "Local camera preprocessing, session split, model training/quantization and RAW resident packaging engineering checks; no human camera accuracy or physical FPGA claim",
+  "base_commit": "0b5e34d29c3b0ac333461c0edba8197738906e1a",
+  "unit_tests": {
+    "passed": 11,
+    "entry": "test/int8/test_camera_demo.py",
+    "test_source_sha256": "899a0b758357610c8c48dc33ca6a37761665bc5e7e78dab70f95a7cf562ebdd3",
+    "coverage": [
+      "translation/scale/aspect invariance",
+      "low visibility rejection",
+      "temporal window and gap reset",
+      "quantization ties and clipping",
+      "dataset append contract",
+      "session separated splits",
+      "untrained/UCI rejection",
+      "guided SPACE-confirmed sessions and cancellation",
+      "resident tag/scale/no-RAW package rejection",
+      "synthetic provenance rejected without explicit engineering override",
+      "in-flight worker shutdown",
+      "input age separated from completion age"
+    ]
+  },
+  "pose_api": {
+    "status": "PASS",
+    "mediapipe_version": "0.10.32",
+    "model_sha256": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a",
+    "input": "synthetic black RGB frame 640x480",
+    "poses": 0,
+    "camera_opened": false,
+    "accuracy_claim": false
+  },
+  "engineering_training": {
+    "source": "synthetic-engineering-test",
+    "dataset_sha256": "1ca1444e22b7bed25c3852ea2be819e79bcdd4fb023be81d32f288ac48873095",
+    "samples": 288,
+    "sessions": 18,
+    "classes": [
+      "standing",
+      "left_arm",
+      "right_arm",
+      "both_arms",
+      "squat",
+      "lean"
+    ],
+    "network": [
+      64,
+      32,
+      6
+    ],
+    "session_counts": {
+      "train": 6,
+      "validation": 6,
+      "test": 6
+    },
+    "sample_counts": {
+      "train": 96,
+      "validation": 96,
+      "test": 96
+    },
+    "calibration": "Training sessions only; no test sessions",
+    "epochs": 60,
+    "accuracy_claim": false,
+    "hardware_verified": false
+  },
+  "actual_compiler_mapping": {
+    "target": "int22-raw-v1",
+    "layers": [
+      {
+        "name": "_0",
+        "op": "linear",
+        "backend": "RAW+CPU",
+        "raw_tiles": 1,
+        "raw_macs": 2048,
+        "cpu_macs": 0
+      },
+      {
+        "name": "_1",
+        "op": "relu",
+        "backend": "CPU"
+      },
+      {
+        "name": "_2",
+        "op": "linear",
+        "backend": "CPU",
+        "raw_tiles": 0,
+        "raw_macs": 0,
+        "cpu_macs": 192
+      }
+    ],
+    "raw_npu_starts_per_request": 1,
+    "npu_mac_products": 2048,
+    "cpu_mac_products": 192,
+    "limitation": "RAW backend accelerates complete 32-output x 64-input blocks only; FC2 fringe, activation and INT32 reduction execute on CPU inside FPGA"
+  },
+  "packages": {
+    "compiled_code_bytes": 1056,
+    "compiled_data_bytes": 2736,
+    "compiled_free_bytes": 4336,
+    "resident_code_bytes": 1448,
+    "resident_data_bytes": 2744,
+    "resident_free_bytes": 3936,
+    "package_tag": "4fbcd5f202bf5883",
+    "resident_image_sha256": "a6883963cc824f3cba7e70f2a7214fbc12e5d0b1662151b36760e3a5fb54d050",
+    "resident_manifest_sha256": "ba2ee5bcfe0a944e963c604c8a752c2edb60044fc6e69615694e3641facf4d38",
+    "camera_metadata_sha256": "36622e273db96e18b2bc027f4c1d8a3cd28862d8519a2e1ab9c961da0a7213b1",
+    "word_count": 2048
+  },
+  "camera_sources_sha256": {
+    "fpga/demo/camera.py": "85ba5b5af7764e26c36f754fe96aec7126628cc1ef2f9b9f31b77936126dea83",
+    "fpga/demo/features.py": "7ee273a9facb7d7eeba57764c39831884812448c4e6da2b19a29d422f1bf640f",
+    "fpga/demo/train_camera.py": "f4e46f4f3c8f800175ad29ee6d5bfb12109e62d8ee5ee03ea47b56afd8725ca6"
+  },
+  "not_performed": [
+    "Recording labelled real people",
+    "Real-camera action accuracy evaluation",
+    "Physical FPGA camera roundtrip"
+  ]
+}

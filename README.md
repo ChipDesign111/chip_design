@@ -1,5 +1,7 @@
 # INT8 HAR 全芯片实现
 
+摄像头多轮演示开发见 [操作入口](fpga/demo/README.md) 和 [本轮状态](report/camera_demo_raw0b_20261120/README.md)。该演示使用本分支 RAW 硬件，模型一次装载、每轮更新输入并由 FPGA 内 CPU/NPU 回传结果。
+
 当前功能分支新增可选 RAW GEMV：保留默认 HAR 流程，以现有 INT22/16-MAC 计算 32×64 小块，由 CPU 合并更大矩阵及连接多层网络。使用与验证见 [通用 GEMV](report/generic_gemv.md)。该 RAW RTL 已完成 ASIC 综合、PNR、同源 TT SDF 后仿和版图完成与签核，详见[全流程 EDA 结果](eda/results/fullflow_fe04981_20261118/README.md)；下列其他物理数据仍绑定各自注明的历史源码。
 
 PyTorch 模型可通过新增的 [compiler](compiler/README.md) 部署到当前 RAW 接口：复用 main 的 FX 前端，完整块离线预排，边缘和其他已注册算子由 CPU 执行，使用四项展开的 CPU 基线做相同整数模型对照。原整数模型与 HAR 入口保留，未引入硬件任务引擎。

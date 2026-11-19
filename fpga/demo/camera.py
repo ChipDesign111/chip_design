@@ -1,0 +1,341 @@
+"""Local camera pose capture and live FPGA classification.
+
+record saves feature vectors, labels and session IDs, never video. run requires
+a separately trained camera model and reports only results returned by FPGA.
+"""
+import argparse
+import json
+import math
+from pathlib import Path
+import queue
+import threading
+import time
+import uuid
+
+import numpy as np
+
+from .features import (FEATURE_SCHEMA, JOINTS, PoseWindow, append_dataset,
+                       DEFAULT_LABELS, feature_metadata, normalize_pose)
+
+DEFAULT_POSE_MODEL = Path('tools/local/camera_demo/pose_landmarker_lite.task')
+CONNECTIONS = ((11,12),(11,13),(13,15),(12,14),(14,16),(11,23),(12,24),(23,24),
+               (23,25),(25,27),(27,29),(29,31),(24,26),(26,28),(28,30),(30,32))
+
+
+def read_camera_model(package, *, allow_synthetic_engineering_test=False):
+    path = Path(package)/'camera_demo.json'
+    if not path.exists():
+        raise ValueError('No trained camera_demo.json. Record camera features and run train_camera first; the UCI sensor model cannot classify camera features.')
+    model = json.loads(path.read_text(encoding='utf-8'))
+    contract = model.get('feature_contract', {})
+    if not model.get('trained') or contract.get('schema') != FEATURE_SCHEMA:
+        raise ValueError('Untrained or incompatible camera model')
+    source=model.get('dataset_source')
+    if source != 'local-camera' and not (allow_synthetic_engineering_test and source == 'synthetic-engineering-test'):
+        raise ValueError('Camera inference requires a model trained on labelled local-camera recordings; synthetic/unknown training data are not a human-action model')
+    expected = feature_metadata(contract.get('window_seconds', 1.0))
+    if any(contract.get(k) != v for k, v in expected.items()):
+        raise ValueError('Camera model uses a different feature extraction contract')
+    if len(model.get('labels', [])) != 6 or model.get('network') != [64,32,6]:
+        raise ValueError('Camera model must define six labels and a 64→32→6 network')
+    manifest = json.loads((Path(package)/'manifest.json').read_text(encoding='utf-8'))
+    live = manifest.get('live_demo', {})
+    if not model.get('package_tag') or model['package_tag'] != live.get('package_tag'):
+        raise ValueError('Camera labels/features do not belong to this resident model (package_tag mismatch)')
+    if live.get('input_bytes') != 64 or live.get('output_bytes') != 6:
+        raise ValueError('Resident dimensions differ from camera classifier')
+    if model.get('input_scale') != live.get('input_scale') or model.get('output_scale') != live.get('output_scale'):
+        raise ValueError('Camera quantization metadata differs from resident model')
+    if model.get('backend_target') != 'int22-raw-v1' or manifest.get('target') != model['backend_target']:
+        raise ValueError('Camera model is not compiled for this RAW FPGA backend')
+    if model.get('npu_core_starts_per_request',0) < 1 or manifest.get('npu_core_starts',0) < 1:
+        raise ValueError('Camera demo package has no real RAW NPU block')
+    return model
+
+
+class FPGAWorker:
+    """Keep camera timestamps continuous while JTAG handles one request at a time."""
+    def __init__(self, package, host, port, timeout, attach=False):
+        self.package, self.host, self.port = package, host, port
+        self.timeout, self.attach = timeout, attach
+        self.pending = queue.Queue(maxsize=1)
+        self.stop = threading.Event()
+        self.lock = threading.Lock()
+        self.status, self.result, self.result_at = 'FPGA connecting...', None, None
+        self.result_input_at, self.transport = None, None
+        self.thread = threading.Thread(target=self._run, daemon=True, name='fpga-jtag-inference')
+        self.thread.start()
+
+    def _set(self, status, result=None, input_at=None):
+        with self.lock:
+            if self.stop.is_set():
+                return
+            self.status = status
+            if result is not None:
+                self.result, self.result_at = result, time.monotonic()
+                self.result_input_at = input_at
+
+    def _run(self):
+        try:
+            from .host import DemoClient
+            from .transport import OpenOCDTransport
+            transport = OpenOCDTransport(self.host, self.port, timeout=self.timeout)
+            with self.lock:
+                self.transport = transport
+            with transport:
+                if self.stop.is_set():
+                    return
+                client = DemoClient.from_package(transport, self.package, timeout=self.timeout)
+                self._set('FPGA attaching...' if self.attach else 'FPGA loading model once...')
+                client.attach() if self.attach else client.load()
+                self._set('FPGA ready')
+                while not self.stop.is_set():
+                    try:
+                        features, captured_at = self.pending.get(timeout=0.1)
+                    except queue.Empty:
+                        continue
+                    self._set('FPGA computing...')
+                    result = client.infer(client.quantize(features))
+                    if result.backend != 'openocd-jtag':
+                        raise RuntimeError('Camera demo requires a real OpenOCD JTAG backend')
+                    self._set('FPGA ready', result, captured_at)
+        except Exception as e:
+            # Clear old results: a communication error must never show a stale
+            # result as a prediction for the current image.
+            with self.lock:
+                if not self.stop.is_set():
+                    self.status, self.result, self.result_at = f'FPGA ERROR: {e}', None, None
+                    self.result_input_at = None
+        finally:
+            with self.lock:
+                self.transport = None
+
+    def submit(self, features, captured_at=None):
+        captured_at = time.monotonic() if captured_at is None else float(captured_at)
+        if not math.isfinite(captured_at):
+            raise ValueError('Nonfinite camera capture time')
+        with self.lock:
+            if self.stop.is_set() or not self.status.startswith(('FPGA ready', 'FPGA computing')):
+                return
+        # One in-flight and one latest window. Drop superseded camera windows.
+        try:
+            self.pending.put_nowait((features.copy(), captured_at))
+        except queue.Full:
+            try:
+                self.pending.get_nowait()
+            except queue.Empty:
+                pass
+            try:
+                self.pending.put_nowait((features.copy(), captured_at))
+            except queue.Full:
+                pass
+
+    def snapshot(self):
+        with self.lock:
+            return self.status, self.result, self.result_at, self.result_input_at
+
+    def close(self):
+        self.stop.set()
+        with self.lock:
+            transport = self.transport
+        if transport is not None:
+            # Closing the socket interrupts an outstanding Tcl read so a quit
+            # does not leave a daemon owning the JTAG connection until timeout.
+            transport.close()
+        self.thread.join(timeout=self.timeout+1)
+        if self.thread.is_alive():
+            raise RuntimeError('JTAG worker did not stop before its network timeout')
+
+
+def run_capture(args):
+    import cv2
+    import mediapipe as mp
+    if not args.pose_model.is_file():
+        raise ValueError('Missing MediaPipe pose model: ' + str(args.pose_model))
+    model = read_camera_model(args.package, allow_synthetic_engineering_test=args.allow_synthetic_engineering_test) if args.command == 'run' else None
+    window_seconds = model['feature_contract']['window_seconds'] if model else args.window
+    if not all(math.isfinite(v) and v > 0 for v in (args.seconds,args.interval)):
+        raise ValueError('--seconds and --interval must be positive')
+    if args.command == 'record' and (not math.isfinite(args.countdown) or args.countdown < 0):
+        raise ValueError('--countdown must be nonnegative')
+    if args.command == 'record' and args.wait_start and args.no_display:
+        raise ValueError('Space-to-start confirmation requires the camera display')
+    cap = cv2.VideoCapture(args.camera)
+    if not cap.isOpened():
+        cap.release()
+        raise RuntimeError(f'Camera {args.camera} could not be opened')
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    options = mp.tasks.vision.PoseLandmarkerOptions(
+        base_options=mp.tasks.BaseOptions(model_asset_path=str(args.pose_model)),
+        running_mode=mp.tasks.vision.RunningMode.VIDEO, num_poses=1,
+        min_pose_detection_confidence=0.5, min_pose_presence_confidence=0.5,
+        min_tracking_confidence=0.5)
+    worker = None
+    samples, timestamps = [], []
+    start, last_emit, last_ms = time.monotonic(), float('-inf'), -1
+    capture_start = start
+    started = args.command != 'record' or not args.wait_start
+    cancelled, last_result_seq, last_error = False, None, None
+    window = PoseWindow(window_seconds)
+    session = args.session or f'{args.label}-{uuid.uuid4().hex[:12]}' if args.command == 'record' else None
+    try:
+        if model:
+            worker = FPGAWorker(args.package, args.host, args.port, args.timeout, args.attach)
+        with mp.tasks.vision.PoseLandmarker.create_from_options(options) as detector:
+            while True:
+                ok, frame = cap.read()
+                if not ok:
+                    raise RuntimeError('Camera frame read failed')
+                now = time.monotonic(); elapsed = now-start
+                # MediaPipe's video timestamp remains monotonic when a guided
+                # record resets its separate preparation/record countdown.
+                ms = max(last_ms+1, int((now-capture_start)*1000)); last_ms = ms
+                image = mp.Image(image_format=mp.ImageFormat.SRGB, data=cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+                detection = detector.detect_for_video(image, ms)
+                landmarks = None
+                if detection.pose_landmarks:
+                    landmarks = np.array([[p.x,p.y,p.z,p.visibility] for p in detection.pose_landmarks[0]])
+                pose = normalize_pose(landmarks, frame.shape[1], frame.shape[0]) if landmarks is not None else None
+                features = window.update(now, pose)
+                pose_status = 'Pose ready' if features is not None else f'Need full visible body / {window_seconds:g}s stable history'
+                lines = [f'{args.command.upper()} - {pose_status}']
+                if args.command == 'record':
+                    remaining = args.countdown+args.seconds-elapsed
+                    if not started:
+                        lines.append(f'WAITING: {args.label}. SPACE: confirm and begin; Q: stop')
+                        lines.append(getattr(args,'progress','Move to the labelled pose before confirming'))
+                    elif elapsed < args.countdown:
+                        lines.append(f'PREPARE {args.countdown-elapsed:.1f}s - action: {args.label}')
+                    else:
+                        if features is not None and now-last_emit >= args.interval:
+                            samples.append(features.copy()); timestamps.append(now); last_emit = now
+                        lines.append(f'RECORD {args.label}: {len(samples)} windows, {max(0,remaining):.1f}s left')
+                    lines.append('Saving features only, no video. Q: finish')
+                    if started and remaining <= 0:
+                        break
+                else:
+                    if features is not None and now-last_emit >= args.interval:
+                        worker.submit(features, now); last_emit = now
+                    status, result, at, input_at = worker.snapshot(); lines.append(status)
+                    if status.startswith('FPGA ERROR') and status != last_error:
+                        print(json.dumps({'event':'fpga_error','message':status}),flush=True);last_error=status
+                    if result is not None:
+                        age = now-input_at
+                        label = model['labels'][result.class_id] if 0 <= result.class_id < len(model['labels']) else 'INVALID CLASS'
+                        if age < max(1,window_seconds+2*args.interval):
+                            lines.append(f'Last FPGA result: {label}, seq={result.sequence}, input age={age:.1f}s')
+                            lines.append(f'JTAG roundtrip={result.roundtrip_ms:.0f}ms; device cycles={result.cycles}')
+                        else:
+                            lines.append(f'Old FPGA input ({age:.1f}s): {label}; waiting for a fresh result')
+                        if features is None:
+                            lines.append('No current pose prediction; previous FPGA result shown only as history')
+                        if result.sequence != last_result_seq:
+                            print(json.dumps({'event':'fpga_result','sequence':result.sequence,
+                                              'label':label,'class_id':result.class_id,
+                                              'scores':list(result.scores),'device_cycles':result.cycles,
+                                              'roundtrip_ms':result.roundtrip_ms,'input_age_ms':1000*age,
+                                              'backend':result.backend}),flush=True)
+                            last_result_seq=result.sequence
+                    if model.get('dataset_source') != 'local-camera':
+                        lines.insert(0,'SYNTHETIC ENGINEERING TEST ONLY - NO HUMAN ACCURACY')
+                    lines.append('PC: pose; FPGA RAW NPU: FC1; FPGA CPU: FC2/ReLU. Q: exit')
+                    if elapsed >= args.seconds:
+                        break
+                if landmarks is not None:
+                    for a,b in CONNECTIONS:
+                        if landmarks[a,3] >= .5 and landmarks[b,3] >= .5:
+                            pa = tuple((landmarks[a,:2]*[frame.shape[1],frame.shape[0]]).astype(int))
+                            pb = tuple((landmarks[b,:2]*[frame.shape[1],frame.shape[0]]).astype(int))
+                            cv2.line(frame,pa,pb,(80,220,80),2)
+                # Display may be mirrored for convenience, features above never are.
+                frame = cv2.flip(frame, 1)
+                for n,line in enumerate(lines):
+                    cv2.putText(frame,line,(8,22+24*n),cv2.FONT_HERSHEY_SIMPLEX,.46,(0,220,255),1,cv2.LINE_AA)
+                if not args.no_display:
+                    cv2.imshow('Camera to FPGA - local processing',frame)
+                    key = cv2.waitKey(1)&0xff
+                    if key in (ord('q'),27):
+                        cancelled=True
+                        break
+                    if args.command == 'record' and not started and key == ord(' '):
+                        started=True;start=time.monotonic();last_emit=float('-inf')
+                        window=PoseWindow(window_seconds)
+    finally:
+        cap.release()
+        if not args.no_display:
+            cv2.destroyAllWindows()
+        if worker:
+            worker.close()
+    if args.command == 'record':
+        if not samples and cancelled:
+            return False
+        metadata = feature_metadata(window_seconds); metadata['capture_source'] = 'local-camera'
+        total = append_dataset(args.output, samples, args.label, session, timestamps, metadata)
+        print(json.dumps({'dataset': str(args.output), 'label': args.label, 'session': session,
+                          'new_windows': len(samples), 'total_windows': total, 'video_saved': False}, indent=2))
+    return not cancelled
+
+
+def collect(args):
+    """Guided labelled sessions; transitions are excluded until SPACE/countdown."""
+    if args.rounds < 3 or len(set(args.labels)) != 6:
+        raise ValueError('Collect at least three rounds of six distinct labels for session holdout')
+    if args.no_display:
+        raise ValueError('Guided collection requires the display and SPACE confirmation')
+    for round_id in range(1,args.rounds+1):
+        for index,label in enumerate(args.labels):
+            options=vars(args).copy()
+            options.update(command='record',label=label,wait_start=True,
+                           session=f'r{round_id}-{label}-{uuid.uuid4().hex[:12]}',
+                           progress=f'Round {round_id}/{args.rounds}, class {index+1}/6: {label}')
+            print(f'Round {round_id}/{args.rounds}: {label}. Take position, then SPACE in camera window.',flush=True)
+            if not run_capture(argparse.Namespace(**options)):
+                return False
+    print(json.dumps({'event':'collection_complete','dataset':str(args.output),
+                      'labels':args.labels,'rounds':args.rounds,'video_saved':False}),flush=True)
+    return True
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    commands = p.add_subparsers(dest='command', required=True)
+    for name in ('record','collect','run'):
+        c = commands.add_parser(name)
+        c.add_argument('--camera',type=int,default=0)
+        c.add_argument('--pose-model',type=Path,default=DEFAULT_POSE_MODEL)
+        c.add_argument('--seconds',type=float,default=15 if name=='record' else 10 if name=='collect' else 3600)
+        c.add_argument('--interval',type=float,default=.25)
+        c.add_argument('--no-display',action='store_true')
+        if name in ('record','collect'):
+            if name == 'record':
+                c.add_argument('--label',required=True)
+                c.add_argument('--session',default='')
+                c.add_argument('--wait-start',action='store_true')
+            else:
+                c.add_argument('--labels',nargs=6,default=DEFAULT_LABELS)
+                c.add_argument('--rounds',type=int,default=3)
+            c.add_argument('--output',type=Path,required=True)
+            c.add_argument('--window',type=float,default=1)
+            c.add_argument('--countdown',type=float,default=3)
+        else:
+            c.add_argument('--package',type=Path,required=True)
+            c.add_argument('--host',default='127.0.0.1')
+            c.add_argument('--port',type=int,default=6666)
+            c.add_argument('--timeout',type=float,default=10)
+            c.add_argument('--attach',action='store_true')
+            c.add_argument('--allow-synthetic-engineering-test',action='store_true',
+                           help='Explicit engineering override; never a human-action accuracy demonstration')
+    args = p.parse_args()
+    try:
+        if args.command == 'collect':
+            if not collect(args):
+                p.exit(130,'Collection stopped; completed feature sessions are saved locally.\n')
+        else:
+            run_capture(args)
+    except (ValueError, RuntimeError, ImportError, OSError) as e:
+        p.exit(2, f'Camera demo stopped: {e}\n')
+
+
+if __name__ == '__main__':
+    main()

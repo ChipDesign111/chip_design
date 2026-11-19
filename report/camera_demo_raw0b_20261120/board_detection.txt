@@ -1,0 +1,48 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Thu Nov 19 23:57:04 2026
+# Process ID: 9360
+# Current directory: C:/Users/wyh/Desktop/chipcourse/chip_design_camera_demo
+# Command line: vivado.exe -mode batch -nojournal -log tools/local/camera_demo/board_detect3.log -source tools/local/camera_demo/check_board.tcl
+# Log file: C:/Users/wyh/Desktop/chipcourse/chip_design_camera_demo/tools/local/camera_demo/board_detect3.log
+# Journal file: 
+#-----------------------------------------------------------
+ERROR: [Common 17-356] Failed to install all user apps.
+source tools/local/camera_demo/check_board.tcl
+# open_hw
+# connect_hw_server -url localhost:3121
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-2222] Launching hw_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+****** Xilinx hw_server v2019.1
+  **** Build date : May 24 2019 at 15:13:31
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+
+# set targets [get_hw_targets]
+# puts "DEMO_TARGET_COUNT [llength $targets]"
+DEMO_TARGET_COUNT 1
+# foreach target $targets {
+#  puts "DEMO_TARGET $target"
+#  current_hw_target $target
+#  if {[catch {open_hw_target} err]} {puts "DEMO_OPEN_ERROR $err"; continue}
+#  foreach device [get_hw_devices] {puts "DEMO_DEVICE $device PART=[get_property PART $device]"}
+#  close_hw_target
+# }
+DEMO_TARGET localhost:3121/xilinx_tcf/Xilinx/1234-tulA
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Xilinx/1234-tulA
+DEMO_DEVICE xc7a35t_0 PART=xc7a35t
+INFO: [Labtoolstcl 44-464] Closing hw_target localhost:3121/xilinx_tcf/Xilinx/1234-tulA
+# disconnect_hw_server
+# close_hw
+****** Webtalk v2019.1 (64-bit)
+  **** SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+  **** IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+source C:/Users/wyh/Desktop/chipcourse/chip_design_camera_demo/.Xil/Vivado-9360-LAPTOP-2N6SEKEC/webtalk/labtool_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Thu Nov 19 23:57:21 2026...
+INFO: [Common 17-206] Exiting Vivado at Thu Nov 19 23:57:21 2026...

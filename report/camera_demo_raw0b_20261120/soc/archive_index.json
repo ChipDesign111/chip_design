@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "rtl_commit": "0b5e34d29c3b0ac333461c0edba8197738906e1a",
+  "scope": "Complete SoC RTL; host at forced Debug SBA boundary; no serial JTAG/USB/board validation",
+  "files_sha256": {
+    "console.log": "69188f964f917646def37edf6c6a8ad2f10f9e62922e8a6a5ca710cc07333b62",
+    "expected_classes.hex": "2e8ce030fe4944fd8014a919f078b4bfb83e001c68646cda705a1ae12dcf658c",
+    "expected_hidden.hex": "0579301358748e447744de2f4a56ff31ce91a6105c2a0221a779d82413634ac4",
+    "expected_vectors.hex": "cd432f5b86bfbe500a90880797d22f4546affdb9d34454f84f47f868e49a837a",
+    "firmware.bin": "25b6e27065a06904afa8161f7705313fca217f53447bf3dc1c9243e28cc7d276",
+    "firmware.hex": "9fc64b8c6cce578237c4a9d03fa145278651d05a63ced6c284aec3b80ed75ae3",
+    "firmware.S": "de969ab88ce9fb0d545572a98a13cc3a1f3d9684a423694a8797ff8497c515a2",
+    "input_vectors.hex": "3e13584864cc68b4085e35206ba5d43ec75ffe62ee87a92fd0c3cdd29ed90803",
+    "live_config.svh": "2741ef049fa7ea463b78c448be9f31876715895adc65954ca983fed706e0a4f7",
+    "manifest.json": "6e5549fd16f9527f7cb9e81266c60f91f155da0fb48676f13de5c24fab116ab4",
+    "results.json": "abce1ff213bf95646ec173c717840a08f44f15c0a21525c7f396d7f8fec7df53",
+    "vectors.json": "5e19f3483ed5b86ec6b2f46e38de53b3223a0f1cb9b75fb52d34f20a42e0fb3d",
+    "xrun.history": "f019d71f361b10e8bb8bfa72c4f923994eb23590dcad696f644796e1dd77dfe4",
+    "xrun.log": "ced7ecfdb18c4d3eee83a602050d1fba33d29230ad4665dca881c4302eb6a429"
+  }
+}

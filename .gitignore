@@ -12,6 +12,7 @@
 transcript
 vsim_stacktrace.vstf
 .venv/
+.venv-demo/
 venv/
 .pytest_cache/
 .env
@@ -28,6 +29,8 @@ Thumbs.db
 /vivado_*.backup.jou
 /vivado.log
 /vivado_*.backup.log
+/webtalk.jou
+/webtalk.log
 /.Xil/
 /fpga/final_project/*.cache/
 /fpga/final_project/*.hw/

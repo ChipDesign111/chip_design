@@ -1,5 +1,7 @@
 # FPGA 测试与多镜像加载
 
+新增 [摄像头多轮交互](demo/README.md)，一次装载后可持续输入/输出。该流程使用 RAW 基线重新构建，实际状态见 [本轮记录](../report/camera_demo_raw0b_20261120/README.md)，与下方历史板测版本分开。
+
 本目录提供 A7-35T 板级构建、JTAG 目标选择、镜像转换和 GDB 装载流程。
 FPGA 系统时钟为 20 MHz，器件为 `xc7a35tcsg324-1`。
 

@@ -1,0 +1,15 @@
+{
+  "scope": "Camera frame read only; no frames or video saved",
+  "devices": [
+    {
+      "index": 0,
+      "opened": true,
+      "frame_read": true,
+      "shape": [
+        480,
+        640,
+        3
+      ]
+    }
+  ]
+}

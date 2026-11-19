@@ -1,0 +1,19 @@
+{
+  "baseline": "0b5e34d29c3b0ac333461c0edba8197738906e1a",
+  "status": "IN_PROGRESS",
+  "rtl_modified": false,
+  "resident_soc": "PASS",
+  "host_common_fake_tests": 12,
+  "camera_tests": 11,
+  "human_action_model": "NOT_COLLECTED",
+  "fpga_build": "RUNNING",
+  "fpga_board": "NOT_YET_PROGRAMMED_WITH_THIS_BUILD",
+  "usb_configuration_target": "xc7a35t_0",
+  "external_adapter": "0403:6014 attached to WSL",
+  "remaining": [
+    "Finish current Vivado build",
+    "Program and verify SoC JTAG",
+    "Run 100 real input/result requests",
+    "User records labelled camera sessions"
+  ]
+}

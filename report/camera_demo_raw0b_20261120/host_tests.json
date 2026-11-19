@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "scope": "Common host protocol unit tests with fake TCP/memory; not board verification",
+  "tests": 12,
+  "command": "python -m unittest discover -s test/unit -v",
+  "observed_in_worktree": "chip_design_camera_demo; identical host modules copied into this RAW worktree",
+  "files_sha256": {
+    "fpga/demo/protocol.py": "6d7fb48380166d5a7e5fae00e2738f72d90414115ed557b4d82c720a24309185",
+    "fpga/demo/transport.py": "5a0f9b7410bb032501fb9e1eb3d06cdbcfc81aca48ec20e78c8e03b1ebebf1ad",
+    "fpga/demo/host.py": "7c37a9a31ec9c0d328d9d248a5b8a26f4cb52b26d05c968198f8117421f57323"
+  },
+  "covered": [
+    "ordered 8192B boot and readback",
+    "fragmented Tcl RPC and errors",
+    "single outstanding request",
+    "commit ordering",
+    "timeout recovery",
+    "wrong model tag rejection",
+    "sequence wrap",
+    "INT8 validation and quantization"
+  ]
+}
