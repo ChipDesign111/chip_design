@@ -454,7 +454,8 @@ def pnr(work, until, headless=False):
         raise ValueError('Requested step already completed; use a later --until or a new project')
     driver = work / 'pnr/generated/driver.tcl'
     source = 'set eda_work ' + tcl(work) + '\nset eda_python ' + tcl(sys.executable) + '\n'
-    source += 'set eda_last %d\nset eda_until %d\nset eda_core_size %s\nset eda_headless %d\n' % (last, until, plan['core_size_um'], headless)
+    target_die = plan.get('target_die_size_um') or 0
+    source += 'set eda_last %d\nset eda_until %d\nset eda_core_size %s\nset eda_target_die %s\nset eda_headless %d\n' % (last, until, plan['core_size_um'], target_die, headless)
     source += 'source ' + tcl(work / 'flow/tcl/driver.tcl') + '\n'
     driver.write_text(source, encoding='utf-8')
     log = work / 'evidence' / ('innovus_%02d_to_%02d.log' % (last + 1, until))
