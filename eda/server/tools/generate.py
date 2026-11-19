@@ -12,6 +12,9 @@ def generate_steps(work, die):
     if min(w, h) < 1800:
         raise ValueError('Die too small for the documented perimeter')
     config = json.loads((work / 'config/design.json').read_text())
+    target_die = config.get('target_die_size_um')
+    if target_die is not None and (abs(w-target_die)>1e-6 or abs(h-target_die)>1e-6):
+        raise ValueError('Measured Die %.6f x %.6f differs from target %.6f' % (w,h,target_die))
     if w*h/1e6>config['max_die_area_mm2']:
         raise ValueError('Measured whole Die including PAD exceeds %.3f mm2: %.6f' % (config['max_die_area_mm2'],w*h/1e6))
     io = json.loads((work / 'config/io_plan.json').read_text())
@@ -35,7 +38,13 @@ def generate_steps(work, die):
     out = work / 'pnr/generated'
     out.mkdir(parents=True, exist_ok=True)
     bodies = {p.name: p.read_text(encoding='utf-8') for p in raw.glob('*.tcl')}
-    bodies['02.tcl'] = 'floorPlan -coreMarginsBy die -site core7T -s $eda_core_size $eda_core_size 150 150 150 150\n'
+    if target_die is None:
+        bodies['02.tcl'] = 'floorPlan -coreMarginsBy die -site core7T -s $eda_core_size $eda_core_size 150 150 150 150\n'
+    else:
+        margin=(target_die-config['core_size_um'])/2
+        bodies['02.tcl'] = ('floorPlan -coreMarginsBy die -site core7T -d '
+                            '%.6f %.6f %.6f %.6f %.6f %.6f -noSnapToGrid\n' %
+                            (target_die,target_die,margin,margin,margin,margin))
     bodies['04.tcl'] += 'if {[lsort [dbGet top.terms.name]] ne [lsort {clk_i rst_ni tck_i tms_i td_i td_o}]} {error "Unexpected top-level signal ports"}\n'
     corners = [('bottom_left', 0, 0, 'R0'), ('bottom_right', w - 115, 0, 'MY'), ('top_left', 0, h - 115, 'MX'), ('top_right', w - 115, h - 115, 'R180')]
     bodies['05.tcl'] = '\n'.join('addInst -physical -cell PCORNER -inst corner_%s -loc {%.6f %.6f} -ori %s -place_status fixed -dontSnapToPlacementGrid' % c for c in corners) + '\n'

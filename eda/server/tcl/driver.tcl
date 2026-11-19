@@ -113,7 +113,12 @@ if {[catch {
     if {$eda_last < 2} {
         file copy -force [file join $eda_work flow tcl steps 01.tcl] [file join $eda_work pnr generated 01.tcl]
         set sf [open [file join $eda_work pnr generated 02.tcl] w]
-        puts $sf {floorPlan -coreMarginsBy die -site core7T -s $eda_core_size $eda_core_size 150 150 150 150}
+        if {$eda_target_die > 0} {
+            set eda_core_margin [expr {($eda_target_die-$eda_core_size)/2.0}]
+            puts $sf [format {floorPlan -coreMarginsBy die -site core7T -d %.6f %.6f %.6f %.6f %.6f %.6f -noSnapToGrid} $eda_target_die $eda_target_die $eda_core_margin $eda_core_margin $eda_core_margin $eda_core_margin]
+        } else {
+            puts $sf {floorPlan -coreMarginsBy die -site core7T -s $eda_core_size $eda_core_size 150 150 150 150}
+        }
         close $sf
     } else {
         set die [lindex [dbGet top.fPlan.box] 0]

@@ -69,6 +69,13 @@ def read_config(path):
         raise ValueError('This design requires a finite whole-die limit at most 4.0 mm2')
     if c['core_size_um'] is not None and c['core_size_um'] < c['min_core_size_um']:
         raise ValueError('Fixed core size is below profile minimum')
+    target_die=c.get('target_die_size_um')
+    if target_die is not None:
+        if (not isinstance(target_die,(int,float)) or not math.isfinite(target_die) or
+            target_die<=0 or c['core_size_um'] is None):
+            raise ValueError('target_die_size_um requires a finite core_size_um')
+        if abs(target_die-(c['core_size_um']+2*c['core_margin_um']))>1e-6:
+            raise ValueError('target_die_size_um must equal core plus two core margins')
     if c['cpu_clock_gate'] != 'repository_passthrough':
         raise ValueError('Changing CPU clock gating requires a separate validated profile')
     # Earlier frozen versions used Genus automatic gating. Preserve that
@@ -380,10 +387,11 @@ def sizing(work):
     x, y = c['macro_xy_um']
     if x < c['core_margin_um'] + 50 or y < c['core_margin_um'] + 50 or x + 554.595 + 30 > side + c['core_margin_um'] or y + 723.85 + 30 > side + c['core_margin_um']:
         raise ValueError('Macro + halo does not fit the planned core')
-    planned_die_area=(side+2*c['core_margin_um'])**2/1e6
+    planned_die_side=c.get('target_die_size_um') or side+2*c['core_margin_um']
+    planned_die_area=planned_die_side**2/1e6
     if planned_die_area>c['max_die_area_mm2']:
         raise ValueError('Whole die including PAD exceeds area limit: %.6f mm2' % planned_die_area)
-    record = dict(area, planning_pass=True, required_core_area_um2=wanted, planned_whole_die_area_mm2=planned_die_area, max_whole_die_area_mm2=c['max_die_area_mm2'], standard_cell_area_estimate_um2=logic_area, reserved_macro_halo_um2=reserved_macro, target_utilization=c['target_utilization'], core_size_um=side, planning_only_not_timing_or_IR_proof=True)
+    record = dict(area, planning_pass=True, required_core_area_um2=wanted, planned_whole_die_area_mm2=planned_die_area, target_die_size_um=planned_die_side, max_whole_die_area_mm2=c['max_die_area_mm2'], standard_cell_area_estimate_um2=logic_area, reserved_macro_halo_um2=reserved_macro, target_utilization=c['target_utilization'], core_size_um=side, planning_only_not_timing_or_IR_proof=True)
     write_json(work / 'evidence/floorplan_plan.json', record)
     return record
 
@@ -446,7 +454,8 @@ def pnr(work, until, headless=False):
         raise ValueError('Requested step already completed; use a later --until or a new project')
     driver = work / 'pnr/generated/driver.tcl'
     source = 'set eda_work ' + tcl(work) + '\nset eda_python ' + tcl(sys.executable) + '\n'
-    source += 'set eda_last %d\nset eda_until %d\nset eda_core_size %s\nset eda_headless %d\n' % (last, until, plan['core_size_um'], headless)
+    target_die = plan.get('target_die_size_um') or 0
+    source += 'set eda_last %d\nset eda_until %d\nset eda_core_size %s\nset eda_target_die %s\nset eda_headless %d\n' % (last, until, plan['core_size_um'], target_die, headless)
     source += 'source ' + tcl(work / 'flow/tcl/driver.tcl') + '\n'
     driver.write_text(source, encoding='utf-8')
     log = work / 'evidence' / ('innovus_%02d_to_%02d.log' % (last + 1, until))
