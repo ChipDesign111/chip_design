@@ -1,0 +1,369 @@
+{
+  "status": "PASS",
+  "audited_at": "2026-11-19T18:01:43.987190+08:00",
+  "scope": "Offline audit of the completed user-operated FPGA run; no target connection",
+  "run_directory": "D:\\LiChade\\PKU\\major\\AdvanceChip\\chip_design\\fpga_workspace\\tests\\fpga_board_20261119_172402_151924",
+  "run_status": "PASS",
+  "images": 62,
+  "checked_words": 3154,
+  "pure_cpu_images": 12,
+  "hardware_images": 50,
+  "checks": {
+    "unique_complete_catalog": true,
+    "firmware_and_current_source_hashes": true,
+    "all_case_status_and_timing_valid": true,
+    "boot_reset_load_commit": true,
+    "all_terminal_pcs": true,
+    "all_numerical_readbacks": true,
+    "cpu_npu_counters_zero": true,
+    "hardware_issue_counts": true,
+    "dma_mac_overlap_union": true,
+    "raw_log_sha256_checked": 62,
+    "speedup_pairs_recomputed": 12
+  },
+  "collected_files_sha256": {
+    "result.json": "cc4e815f44d104f56e3c8c7cdf126aa1bf0851783b83ed042d0fc2f4c3445f62",
+    "summary.md": "c5107d458eb53390c25e2213af25099ee65bc7f63a16c5bd83dffcdb46ae108b",
+    "summary.csv": "91d285ae80148c263f9f8457b3a5e7b1f2e0067eda96d9c2e2b776d9ff14f8b1",
+    "speedups.csv": "580b2be8858c4ffbaa61a60fcbffdadf917c86df7156bda3797eb5d0d7aa73b6"
+  },
+  "inputs_sha256": {
+    "image_manifest.json": "aea36983db6ab16b6cef0b98eebc6a52ee96848fe79a158e6b71ba4b1cb3e497",
+    "suite_manifest.json": "fe60dc67f3d65c684cd9de9147c889a4fe712f110c0697b5ab481891b7bd03d4"
+  },
+  "source_sha256": {
+    "fpga/firmware_batch.py": "8185e5736f74aa1708d87a0c5ce551b441bdbe15197b8d602394222a094be71b",
+    "/mnt/d/LiChade/PKU/major/AdvanceChip/chip_design/fpga_workspace/firmware/image_manifest.json": "aea36983db6ab16b6cef0b98eebc6a52ee96848fe79a158e6b71ba4b1cb3e497",
+    "/mnt/d/LiChade/PKU/major/AdvanceChip/chip_design/fpga_workspace/firmware/suite/suite_manifest.json": "fe60dc67f3d65c684cd9de9147c889a4fe712f110c0697b5ab481891b7bd03d4"
+  },
+  "rtl_full_cycle_comparisons": [
+    {
+      "name": "int8_random_00_batch4",
+      "board_full_cycles": 2745,
+      "rtl_full_cycles": 2746,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_01_batch2",
+      "board_full_cycles": 1981,
+      "rtl_full_cycles": 1982,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_02_batch1",
+      "board_full_cycles": 1602,
+      "rtl_full_cycles": 1603,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_03_batch2",
+      "board_full_cycles": 1962,
+      "rtl_full_cycles": 1963,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_04_batch1",
+      "board_full_cycles": 1608,
+      "rtl_full_cycles": 1609,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_05_batch2",
+      "board_full_cycles": 1981,
+      "rtl_full_cycles": 1982,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_06_batch4",
+      "board_full_cycles": 2700,
+      "rtl_full_cycles": 2701,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_07_batch2",
+      "board_full_cycles": 1962,
+      "rtl_full_cycles": 1963,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_08_batch1",
+      "board_full_cycles": 1608,
+      "rtl_full_cycles": 1609,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_09_batch2",
+      "board_full_cycles": 1981,
+      "rtl_full_cycles": 1982,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_10_batch1",
+      "board_full_cycles": 1602,
+      "rtl_full_cycles": 1603,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_11_batch2",
+      "board_full_cycles": 1962,
+      "rtl_full_cycles": 1963,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_12_batch4",
+      "board_full_cycles": 2745,
+      "rtl_full_cycles": 2746,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_13_batch2",
+      "board_full_cycles": 1981,
+      "rtl_full_cycles": 1982,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_14_batch1",
+      "board_full_cycles": 1602,
+      "rtl_full_cycles": 1603,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_15_batch2",
+      "board_full_cycles": 1962,
+      "rtl_full_cycles": 1963,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_16_batch1",
+      "board_full_cycles": 1608,
+      "rtl_full_cycles": 1609,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_17_batch2",
+      "board_full_cycles": 1981,
+      "rtl_full_cycles": 1982,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_18_batch4",
+      "board_full_cycles": 2700,
+      "rtl_full_cycles": 2701,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_19_batch2",
+      "board_full_cycles": 1962,
+      "rtl_full_cycles": 1963,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_20_batch1",
+      "board_full_cycles": 1608,
+      "rtl_full_cycles": 1609,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_21_batch2",
+      "board_full_cycles": 1981,
+      "rtl_full_cycles": 1982,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_22_batch1",
+      "board_full_cycles": 1602,
+      "rtl_full_cycles": 1603,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_23_batch2",
+      "board_full_cycles": 1962,
+      "rtl_full_cycles": 1963,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_24_batch4",
+      "board_full_cycles": 2745,
+      "rtl_full_cycles": 2746,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_25_batch2",
+      "board_full_cycles": 1981,
+      "rtl_full_cycles": 1982,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_26_batch1",
+      "board_full_cycles": 1602,
+      "rtl_full_cycles": 1603,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_27_batch2",
+      "board_full_cycles": 1962,
+      "rtl_full_cycles": 1963,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_28_batch1",
+      "board_full_cycles": 1608,
+      "rtl_full_cycles": 1609,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_29_batch2",
+      "board_full_cycles": 1981,
+      "rtl_full_cycles": 1982,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_30_batch4",
+      "board_full_cycles": 2700,
+      "rtl_full_cycles": 2701,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_random_31_batch2",
+      "board_full_cycles": 1962,
+      "rtl_full_cycles": 1963,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_uci_00_batch4",
+      "board_full_cycles": 2700,
+      "rtl_full_cycles": 2701,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_uci_01_batch4",
+      "board_full_cycles": 2700,
+      "rtl_full_cycles": 2701,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_uci_02_batch4",
+      "board_full_cycles": 2700,
+      "rtl_full_cycles": 2701,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_uci_03_batch4",
+      "board_full_cycles": 2700,
+      "rtl_full_cycles": 2701,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_uci_04_batch4",
+      "board_full_cycles": 2700,
+      "rtl_full_cycles": 2701,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "int8_uci_05_batch4",
+      "board_full_cycles": 2700,
+      "rtl_full_cycles": 2701,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "har_b1_cpu",
+      "board_full_cycles": 51945,
+      "rtl_full_cycles": 51946,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "har_b1_npu",
+      "board_full_cycles": 1792,
+      "rtl_full_cycles": 1793,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "har_b2_cpu",
+      "board_full_cycles": 76675,
+      "rtl_full_cycles": 76676,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "har_b2_npu",
+      "board_full_cycles": 2337,
+      "rtl_full_cycles": 2338,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "har_b3_cpu",
+      "board_full_cycles": 129000,
+      "rtl_full_cycles": 129001,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "har_b3_npu",
+      "board_full_cycles": 2856,
+      "rtl_full_cycles": 2857,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "har_b4_cpu",
+      "board_full_cycles": 154660,
+      "rtl_full_cycles": 154661,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    },
+    {
+      "name": "har_b4_npu",
+      "board_full_cycles": 3370,
+      "rtl_full_cycles": 3371,
+      "board_minus_rtl": -1,
+      "npu_and_overlap_counters_equal": true
+    }
+  ],
+  "raw_logs_remain_external": true,
+  "limitations": [
+    "The batch run does not record the programmed bitstream SHA-256 or prove that it equals a current on-disk file.",
+    "NPU/DMA counters are the last hardware task, whereas some RAW RTL simulation counters are whole-graph sums; only the 46 matching HAR cases are compared here.",
+    "This run validates normal firmware execution and per-image reset/loading; it is not a new PPA, negative-boot or stress-test signoff."
+  ]
+}

@@ -1,5 +1,7 @@
 # 当前架构变更
 
+2026-11-19：用户在外部工作区完成 FPGA 全部 62 固件一键批测，62/62 PASS、3154 个结果字匹配、12 组 CPU/硬件加速比齐全。62 份日志 SHA、固件及来源身份、复位装载提交和计数关系复核通过；46 份 HAR 板端完整周期均比对应 RTL 前仿少 1 拍，NPU/发射/overlap 计数一致。HAR batch4 完整周期加速比 45.89×、RAW full batch4 为 14.59×；原始报告与输入清单保存在[板测归档](../fpga/results/board_20261119_172402/README.md)，不修改旧 BEGIN/END 性能记录。
+
 2026-11-19：FPGA 流程改用仓库外工作区。现有 `final_project`、活动固件与完整历史归档迁到同级 `fpga_workspace`；仓库保留板级源码、默认配置、重建/测试脚本和轻量报告。统一入口 `fpga/run.py` 支持 prepare、project、build、test、validate、collect。403 份原跟踪资产迁移核验通过，182 份重新生成的 hex/bin/汇编清单字节不变，另 1 份历史不完整镜像保留原件。下文 `fpga/versions` 是原归档路径，其报告现位于 `fpga/results`，大产物保存在外部 archives；新机器按 [FPGA 指南](../fpga/README.md) 重建。
 
 2026-11-13：将 NPU 共享 INT8 乘法器从 32 个收为 16 个。FC1 改为四个 8 输出×2 lane 相位，每个 tile 对 batch=4 需要 16 个 ISSUE 周期，与 16 拍权重读取形成重叠；FC2 保持四个 2 行×6 输出相位并只使用 12 个乘法器。bias1/bias2 内部存储由每个 32 bit 收为 INT22，MMIO 仍使用 32 bit 写口。用户本地完整功能回归通过；batch=4 SoC testbench/硬件周期为 2700/2695，NPU 为 952 拍，FC1/FC2 发射周期为 512/64，DMA 读/写与 MAC 重叠为 466/499。同源 34 步 EDA 完成：综合 Cell Area 2.023901 mm²，NPU subsystem 0.775048 mm²，最终密度 72.509%，20 ns Setup/Hold 为 +0.335/+0.050 ns，DRV/DRC/天线/PG/信号连接通过。最终数据库完成 10 组 MAXIMUM SDF 和 1 组 unit-delay 无 SDF 对照，11/11 功能通过，工作窗口动态时序违规为 0；各 SDF 用例的 28 条初始复位事件和 21 条负 IOPATH 截零保留。详见 [16-MAC 结果](../eda/results/int8_16mac_20261113/README.md)和[后仿结果](../eda/results/int8_16mac_20261113/postsim/README.md)。

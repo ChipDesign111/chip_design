@@ -1,5 +1,7 @@
 # 当前设计说明
 
+2026-11-19 FPGA：用户一键批测 **62/62 PASS**，3154 个结果字全部匹配，12 组完整 SoC 加速比齐全。HAR batch4 为 154660/3370 拍（45.89×），RAW full batch4 为 180229/12349 拍（14.59×）。板测完整周期含固件自检，与下方 BEGIN/END 应用区间口径不同；实际记录见[FPGA 板测报告](../fpga/results/board_20261119_172402/README.md)。
+
 2026-11-19：不修改 CPU 的启动与调试修复已接入 unavailable 状态、Boot ROM
 ready 条件回跳及调试 AXI 桥的系统复位。变更、验证范围及新旧周期区别见
 [启动与调试修复](boot_debug_guard.md) 和 [源码与测试记录](boot_debug_guard.json)。

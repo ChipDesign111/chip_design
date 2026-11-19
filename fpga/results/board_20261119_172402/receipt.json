@@ -1,0 +1,11 @@
+{
+  "source_run": "D:\\LiChade\\PKU\\major\\AdvanceChip\\chip_design\\fpga_workspace\\tests\\fpga_board_20261119_172402_151924",
+  "status": "PASS",
+  "environment": "OpenOCD Tcl 127.0.0.1:6666",
+  "files_sha256": {
+    "result.json": "cc4e815f44d104f56e3c8c7cdf126aa1bf0851783b83ed042d0fc2f4c3445f62",
+    "summary.md": "c5107d458eb53390c25e2213af25099ee65bc7f63a16c5bd83dffcdb46ae108b",
+    "summary.csv": "91d285ae80148c263f9f8457b3a5e7b1f2e0067eda96d9c2e2b776d9ff14f8b1",
+    "speedups.csv": "580b2be8858c4ffbaa61a60fcbffdadf917c86df7156bda3797eb5d0d7aa73b6"
+  }
+}

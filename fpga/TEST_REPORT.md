@@ -2,26 +2,40 @@
 
 当前操作入口见[新机器指南](README.md)，轻量证据见[报告目录](results/README.md)。工程、固件和原始测试输出已迁到仓库同级 `fpga_workspace`；构建和板测不会直接在仓库内运行。
 
-## 当前固件与用户手动板测
+## 当前固件与完整批测
 
 当前 16-MAC INT22 固件包含 38 个 HAR 镜像及 24 个 HAR/RAW/CPU 配对包，覆盖 batch=1/2/3/4、33×65 尾块、K 分块、多层及 INT32 合并。[生成方法](firmware/README.md)与[批量测试](FIRMWARE_BATCH.md)均使用外部工作区。
 
-用户在本次会话手动运行了以下两份固件，均检查全部 96 个字通过：
+2026-11-19 用户执行一键批测，**62/62 PASS，失败 0、未完成 0**，共核对 3154 个结果字。62 份日志 SHA、固件/源码身份、启动状态、停止 PC、CPU/NPU 发射计数及 overlap 关系均通过离线复核。完整结果、12 组加速比和计时解释见[本轮板测报告](results/board_20261119_172402/README.md)，逐镜像数据见[批测汇总](results/board_20261119_172402/summary.md)。
+
+| 配对 | CPU 完整周期 | 硬件完整周期 | 加速比 |
+|---|---:|---:|---:|
+| HAR batch1 | 51,945 | 1,792 | 28.99× |
+| HAR batch2 | 76,675 | 2,337 | 32.81× |
+| HAR batch3 | 129,000 | 2,856 | 45.17× |
+| HAR batch4 | 154,660 | 3,370 | 45.89× |
+| RAW full batch4 | 180,229 | 12,349 | 14.59× |
+
+HAR batch4 的 NPU 仍为 952 拍，FC1/FC2 为 512/64，read/write/total overlap 为 466/499/500；3370 为包含启动及固件自检的完整周期，与 BEGIN/END 的 2612 拍不同。本次批测未采集实际烧写 bitstream 的 SHA，也未新增 PPA 或启动负例专项结论。
+
+### 此前手动测试记录
+
+用户此前在会话中手动运行以下两份固件，均检查全部 96 个字通过：
 
 | 固件 | full_soc_cycles | 最后 NPU cycles | FC1/FC2 issue | DMA/MAC read/write/total overlap |
 |---|---:|---:|---|---|
 | `raw_full_b4_raw` | 12,349 | 730 | 512 / 0 | 434 / 465 / 465 |
 | `raw_full_b4_cpu` | 180,232 | 0 | 0 / 0 | 0 / 0 / 0 |
 
-同组完整 SoC 加速比为 **14.595×**。以上是用户提供的 GDB 实测记录，没有对应的新 bitstream SHA 或完整 62 镜像板测归档；不能据此声明整个批次通过。批测脚本运行后以实际 `summary.md` 为准。
+此前同组完整 SoC 加速比为 **14.595×**，保留为手工 GDB 记录。本次完整批测中 RAW full batch4 仍为 12349 拍，CPU 为 180229 拍，与此前 CPU 相差 3 拍；当前批次加速比采用本轮成对数据，不覆盖原手工读数。
 
 ## RTL 前仿与主机流程验证
 
 启动修复保持 CPU RTL 不变：DM unavailable 接线、Boot ROM ready 条件回跳和调试 AXI 桥 NDM 复位域已通过专项仿真，见[启动与调试验证](../report/boot_debug_guard.md)。62/62 固件完整 SoC 前仿见[原始验证清单](results/20261119_boot_debug_guard/firmware_validation.json)。默认 HAR 硬件计数 2701、testbench 2706、NPU 952、FC1/FC2 512/64，DMA/MAC read/write/total overlap 为 466/499/500。新增 Boot 检查占 6 拍，NPU 计数保持不变。
 
-本轮目录重构核对了全部 403 份迁移资产，182 份重新生成的 `.hex/.bin/.S` 与迁移前逐字节一致，另 1 份历史不完整装载 fixture 保留原件。16 项批测脚本和 9 项工作区离线检查通过，且用 Vivado 2019.1 在全新外部目录成功创建工程和 Clock Wizard。详细流程验证见[工作区迁移记录](results/20261119_workspace_migration/README.md)。本轮没有重新综合实现、生成新 bitstream 或操作真实 FPGA，下列 PPA 仅对应 2026-11-04 冻结版本。
+目录重构阶段核对了全部 403 份迁移资产，182 份重新生成的 `.hex/.bin/.S` 与迁移前逐字节一致，另 1 份历史不完整装载 fixture 保留原件。16 项批测脚本和 9 项工作区离线检查通过，且用 Vivado 2019.1 在全新外部目录成功创建工程和 Clock Wizard。详细流程验证见[工作区迁移记录](results/20261119_workspace_migration/README.md)。目录迁移没有重新综合实现、生成新 bitstream 或操作真实 FPGA；之后用户完成的实际板测见上方记录，下列 PPA 仅对应 2026-11-04 冻结版本。
 
-## 最近板测冻结版本（20261104）
+## 历史构建与板测冻结版本（20261104）
 
 | 项目 | 状态 |
 |---|---|

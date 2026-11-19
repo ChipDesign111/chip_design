@@ -56,4 +56,6 @@ python3 fpga/firmware_batch.py --list
 
 ## 已验证范围
 
-`python test/int8/test_firmware_batch.py` 的 16 项离线测试覆盖全部 62 镜像流程、原 16 个零输出的错误、错误 tag、部分装载、未完成运行、CPU/NPU 计数、overlap、Ctrl+C、部分汇总、Windows 报告文件占用，以及临时 TCP 服务的分片响应和 Tcl 错误。报告替换遇到短暂权限错误时有限重试；持续失败保留上一份完整 JSON 和新临时文件。本轮未用批测脚本操作真实 FPGA。用户手动测得的 RAW/CPU batch4 结果与历史板测分别记录在[测试状态](TEST_REPORT.md)。
+`python test/int8/test_firmware_batch.py` 的 16 项离线测试覆盖全部 62 镜像流程、原 16 个零输出的错误、错误 tag、部分装载、未完成运行、CPU/NPU 计数、overlap、Ctrl+C、部分汇总、Windows 报告文件占用，以及临时 TCP 服务的分片响应和 Tcl 错误。报告替换遇到短暂权限错误时有限重试；持续失败保留上一份完整 JSON 和新临时文件。
+
+2026-11-19 用户已用该入口完成真实 FPGA 批测：**62/62 PASS、3154 个结果字匹配、12 组完整周期加速比齐全**。实际结果及离线复核见[本轮板测报告](results/board_20261119_172402/README.md)，当前与历史状态见[测试状态](TEST_REPORT.md)。
