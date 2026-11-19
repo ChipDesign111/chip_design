@@ -1,0 +1,133 @@
+{
+  "schema": 1,
+  "observed_date": "2026-11-19",
+  "rtl_baseline_commit": "19a0ce2",
+  "physical_deployment_commit": "1efd16148fd892bbc050d056949e3a4008a28188",
+  "documentation_commit_at_signing": "24f4886",
+  "physical_upload": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261119_163338_1efd161",
+  "postsim_root": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261119_163338_1efd161/postsim_tt_1",
+  "layout_signoff_upload": "/home/s2400011035/chip-fullstack-2026/eda_runs/uploads/20261119_095620_layout_signoff_24f4886",
+  "constraints": {
+    "die_max_um": 1950.0,
+    "seal_ring_outer_max_um": 1980.0,
+    "die_area_max_mm2": 3.8
+  },
+  "implementation": {
+    "last_completed_step": 34,
+    "environment_exit_code": 0,
+    "eda_exit_code": 0,
+    "collect_exit_code": 0,
+    "run_exit_code": 0,
+    "die_um": [
+      1948.8,
+      1948.8
+    ],
+    "whole_die_area_mm2": 3.79782144,
+    "native_density_percent": 74.966,
+    "mapped_leaf_instances": 65367,
+    "cell_area_um2": 2076163.866,
+    "sram_area_um2": 401443.591,
+    "setup_wns_ns": 0.481,
+    "hold_wns_ns": 0.05,
+    "setup_tns_ns": 0.0,
+    "hold_tns_ns": 0.0,
+    "setup_violating_paths": 0,
+    "hold_violating_paths": 0,
+    "electrical_drv_zero": true,
+    "default_drc_clean": true,
+    "full_core_pg_clean": true,
+    "signal_connectivity_clean": true,
+    "antenna_violating_nets": 0,
+    "unexpected_tool_errors": false
+  },
+  "final_view_sha256": {
+    "my_soc_top.def": "20dd95c3bc18096483ea8c411bfb8de7a86f140ea0368e0a63e2140280970174",
+    "my_soc_top.gds.gz": "7bfa8ef26e881369cb21026da170b67d2c65d492aed8ce37560fc470104f0ba3",
+    "my_soc_top_hier_postpnr.v": "f88c94ca5ea94ccb1e83fbe1bbfaf8576c8e3663b0296fedc0247ccdb4671a4a",
+    "my_soc_top_tt_io.sdf.gz": "3fa56b973071d0646298e54c845cb8d843c0b66edc0827c3de510afde5eb4369",
+    "my_soc_top_tt_io.spef.gz": "c47a5f025de2da97849f09b245fb1c9e517c3efb111da09998064b4aff7483c1"
+  },
+  "postsim_tt": {
+    "normal_postsim_pass": true,
+    "runtime_cases": 27,
+    "functional_passes": 27,
+    "sdf_cases": 26,
+    "unit_delay_control_cases": 1,
+    "annotation_errors": 0,
+    "missing_instances": 0,
+    "unmatched_timing_checks": 0,
+    "negative_iopath_clamped_by_simulator": 0,
+    "negative_path_delay_support_complete": true,
+    "dynamic_timing_phase_counts": {
+      "initial_reset": 26,
+      "active": 0,
+      "final_reset": 0
+    },
+    "active_window_dynamic_timing_clean": true,
+    "final_reset_dynamic_timing_clean": true,
+    "all_phase_dynamic_timing_clean": false,
+    "initial_reset_events_retained": true,
+    "initial_reset_event_summary": "One identical DMA clock-gate setuphold event per SDF case in the initial power-up/reset phase; no event was masked.",
+    "benchmark_protocol_complete": true,
+    "benchmark_pair_errors": [],
+    "benchmark_cycles": {
+      "raw_dynamic_tail_33x65": 189720,
+      "raw_optimized_full_32x64": 4997,
+      "raw_optimized_tail_33x65": 9199,
+      "raw_optimized_hybrid_layers": 13278,
+      "cpu_full_32x64": 45624,
+      "cpu_tail_33x65": 47397,
+      "cpu_hybrid_layers": 52606,
+      "cpu_three_layers": 6074,
+      "har_cpu_batch4": 153536,
+      "har_npu_batch4": 2612
+    },
+    "benchmark_speedups": {
+      "full_32x64_cpu_over_optimized": 9.13027816690014,
+      "tail_33x65_cpu_over_dynamic_raw": 0.24982605945604047,
+      "tail_33x65_cpu_over_optimized": 5.1524078704206975,
+      "hybrid_layers_cpu_over_optimized": 3.961891851182407,
+      "har_batch4_cpu_over_npu": 58.781010719754974
+    },
+    "review_archive_sha256": "fc138b34eec20033b6d3a0e1817b12be84ca3802dd02ba24d92364df456c2efe"
+  },
+  "sram_half_cycle_sta": {
+    "input_setup_min_slack_ns": 6.37,
+    "input_hold_min_slack_ns": 10.087,
+    "output_setup_min_slack_ns": 2.815,
+    "output_hold_min_slack_ns": 11.619,
+    "reset_to_request_setup_slack_ns": 5.651,
+    "reset_to_request_hold_slack_ns": 11.748,
+    "all_reported_slacks_positive": true
+  },
+  "layout_signoff": {
+    "layout_signoff_pass": true,
+    "status": "course_checks_passed_with_documented_exceptions",
+    "die_um": [
+      1948.8,
+      1948.8
+    ],
+    "seal_ring_external_um": [
+      1979.0,
+      1979.0
+    ],
+    "seal_ring_edges": 7836,
+    "seal_ring_corners": 4,
+    "lvs_correct": true,
+    "trace_property_count": 605,
+    "post_dummy_drc_checks": 523,
+    "post_dummy_drc_nonexcluded": {},
+    "antenna_checks": 62,
+    "antenna_violations": 0,
+    "wire_bond_checks": 64,
+    "wire_bond_violations": 0,
+    "erc_checks": 12,
+    "erc_hierarchical_results": 7,
+    "erc_expanded_results": 977,
+    "erc_clean": false,
+    "course_erc_residuals_documented": true,
+    "original_inputs_unchanged": true,
+    "review_archive_sha256": "841923cc547da01912f750f2cbdb59f814f6792d75cda02284357bded53d023d"
+  },
+  "scope": "Local TSMC180 RTL-to-layout flow and same-database TT SDF validation. Die and seal-ring size constraints are met. Initial-reset timing events are retained separately; active-window and final-reset timing are clean. ERC is not claimed clean. Not an independent foundry, multi-PVT, SI, IR/EM/ESD, board, or formal-equivalence signoff."
+}
