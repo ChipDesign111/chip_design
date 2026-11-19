@@ -18,6 +18,8 @@ import time
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
+sys.path.insert(0,str(ROOT))
+from fpga.workspace import external, firmware_dir, workspace
 BASE, BOOT, CYCLES, STATUS = 0x80000000, 0x1003c, 0x10038, 0x80001fe0
 PASS, FAIL = 0xc0dec0de, 0xdeadbeef
 COUNTERS = {"cycles": 0x0c, "fc1_issue": 0x28, "fc2_issue": 0x2c,
@@ -32,18 +34,22 @@ def read_json(path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def catalog():
+def catalog(directory=None):
     # Reuse the stdlib-only image/reference/source validation. No PyTorch and
     # no FPGA access is needed here; validate all inputs before resetting a hart.
     spec = importlib.util.spec_from_file_location("_int22_image_validator", HERE / "firmware/validate_images.py")
     validator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(validator)
-    legacy = validator.check_legacy()
-    suite_dir = HERE / "firmware/suite"
+    directory = firmware_dir(directory)
+    firmware_root = directory
+    if not (directory / "image_manifest.json").is_file():
+        raise ValueError("External firmware missing; run python fpga/run.py prepare --workspace "+str(directory.parent))
+    legacy = validator.check_legacy(directory)
+    suite_dir = directory / "suite"
     suite = validator.check_suite(suite_dir)
     cases = []
     for item in legacy["images"]:
-        binary = HERE / "firmware" / item["binary_file"]
+        binary = directory / item["binary_file"]
         image = binary.read_bytes()
         checks = []
         for sample in range(item["batch"]):
@@ -56,7 +62,7 @@ def catalog():
                 checks.append(dict(address=address, expected=expected, mask=0xffffffff))
         cases.append(dict(name=Path(item["file"]).stem, group="legacy", family="har", backend="npu",
                           batch=item["batch"], binary=binary, firmware_sha256=item["binary_sha256"],
-                          checks=checks, halt_pc=item["halt_pc"], pair=None,
+                          checks=checks, halt_pc=item["halt_pc"], pair=None, firmware_root=firmware_root,
                           npu_core_starts=1, npu_batch=item["batch"]))
     for item in suite["images"]:
         directory = suite_dir / item["path"]
@@ -80,7 +86,7 @@ def catalog():
                           batch=meta["batch"], binary=directory / "firmware.bin",
                           firmware_sha256=item["firmware_sha256"], checks=meta["checks"], halt_pc=halt_pc,
                           tag_address=meta["tag_address"], tag_value=meta["tag_value"],
-                          pair="har_b%d" % meta["batch"] if meta["family"] == "har" else "raw_"+meta["case"],
+                          pair="har_b%d" % meta["batch"] if meta["family"] == "har" else "raw_"+meta["case"], firmware_root=firmware_root,
                           npu_core_starts=meta["npu_core_starts"], npu_batch=meta["npu_batch"]))
     return cases
 
@@ -90,9 +96,11 @@ def parser():
     action = result.add_mutually_exclusive_group(required=True)
     action.add_argument("--run", action="store_true", help="Run on the FPGA through the existing OpenOCD service")
     action.add_argument("--list", action="store_true", help="Validate/list images without accessing the target")
+    result.add_argument("--workspace", type=Path, help="External workspace; defaults to FPGA_WORKSPACE or ../fpga_workspace")
+    result.add_argument("--firmware-dir", type=Path, help="External firmware directory override")
     result.add_argument("--group", choices=("all", "suite", "legacy"), default="all")
     result.add_argument("--only", action="append", default=[], help="Repeatable image name/glob, e.g. raw_full_b4_*")
-    result.add_argument("--out", type=Path, help="Fresh result directory; default is ignored test/int8/runs/fpga_board_TIMESTAMP")
+    result.add_argument("--out", type=Path, help="Fresh external result directory; default WORKSPACE/tests/fpga_board_TIMESTAMP")
     result.add_argument("--run-seconds", type=float, default=1.0, help="One uninterrupted run per image before halt, default 1 second")
     result.add_argument("--host", default="127.0.0.1", help="OpenOCD Tcl host")
     result.add_argument("--port", type=int, default=6666, help="OpenOCD Tcl port, not GDB port 3333")
@@ -224,7 +232,16 @@ def save_report(out, report):
     report["updated_at"] = datetime.datetime.now().astimezone().isoformat()
     temp = out / "result.json.tmp"
     temp.write_text(json.dumps(report, indent=2)+"\n", encoding="utf-8")
-    temp.replace(out / "result.json")
+    # Windows readers/scanners can briefly deny replacement after a read.
+    # Keep the previous complete result and the new temporary file on failure.
+    for attempt in range(4):
+        try:
+            temp.replace(out / "result.json")
+            break
+        except PermissionError:
+            if attempt == 3:
+                raise
+            time.sleep(0.05 * (2 ** attempt))
     columns = ["name", "family", "backend", "batch", "status", "timing_valid", "checked_words", "full_soc_cycles",
                "pc", "npu_cycles", "fc1_issue", "fc2_issue", "overlap_read", "overlap_write", "overlap_total", "errors"]
     with (out / "summary.csv").open("w", encoding="utf-8", newline="") as stream:
@@ -242,7 +259,7 @@ def save_report(out, report):
     with (out / "speedups.csv").open("w", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream,fieldnames=("pair","cpu_cycles","accelerated_cycles","speedup"))
         writer.writeheader();writer.writerows(report["speedups"])
-    lines = ["# FPGA firmware batch results", "", "Status: **%s**; PASS %d, FAIL/ERROR %d, remaining %d." %
+    lines = ["# FPGA firmware batch results", "", "Environment: "+report["environment"], "", "Status: **%s**; PASS %d, FAIL/ERROR %d, remaining %d." %
              (report["status"],report["passed"],report["failed"],report["remaining"]), "",
              "Full SoC cycles: first non-debug fetch after commit through PASS/FAIL; includes firmware checks.",
              "NPU/DMA counters are for the **last hardware task**, not a whole-network sum.", "",
@@ -266,13 +283,15 @@ def save_report(out, report):
 
 
 def run_batch(target, cases, args, out, emit=print):
+    out = external(out)
     out.mkdir(parents=True, exist_ok=False)
     report = dict(schema=1, status="RUNNING", selected=len(cases), cases=[],
                   environment=target.environment, started_at=datetime.datetime.now().astimezone().isoformat(),
                   resume_address=0x10000, uninterrupted_run_seconds=args.run_seconds,
+                  firmware_directory=str(cases[0]["firmware_root"]),
                   source_sha256={"fpga/firmware_batch.py": sha(Path(__file__)),
-                                 "fpga/firmware/image_manifest.json": sha(HERE / "firmware/image_manifest.json"),
-                                 "fpga/firmware/suite/suite_manifest.json": sha(HERE / "firmware/suite/suite_manifest.json")})
+                                 str(cases[0]["firmware_root"] / "image_manifest.json"): sha(cases[0]["firmware_root"] / "image_manifest.json"),
+                                 str(cases[0]["firmware_root"] / "suite/suite_manifest.json"): sha(cases[0]["firmware_root"] / "suite/suite_manifest.json")})
     save_report(out, report)
     try:
         target.preflight(args.remote_timeout)
@@ -422,13 +441,13 @@ class OpenOcdTarget:
 def main():
     options=parser().parse_args()
     try:
-        chosen=select_cases(catalog(),options)
+        chosen=select_cases(catalog(firmware_dir(options.firmware_dir,options.workspace)),options)
         if options.list:
             for case in chosen:
                 print("%s [%s, batch=%d]" % (case["name"],case["backend"],case["batch"]))
             print("%d unique normal firmware images" % len(chosen))
             return 0
-        out=options.out.resolve() if options.out else ROOT / "test/int8/runs" / datetime.datetime.now().strftime("fpga_board_%Y%m%d_%H%M%S_%f")
+        out=external(options.out) if options.out else workspace(options.workspace) / "tests" / datetime.datetime.now().strftime("fpga_board_%Y%m%d_%H%M%S_%f")
         print("Results: %s" % out,flush=True)
         target=OpenOcdTarget(options.host,options.port)
         result=run_batch(target,chosen,options,out,lambda text:print(text,flush=True))

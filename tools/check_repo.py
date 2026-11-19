@@ -16,6 +16,8 @@ REQUIRED_FILES = (
     "tools/project.py", "tools/check_hardware.py",
     "compiler/README.md", "compiler/frontend.py", "compiler/compiler.py", "compiler/requirements.txt",
     "model/requirements.txt", "rtl/project.json", "rtl/filelist.f", "rtl/manifest.json",
+    "fpga/run.py", "fpga/workspace.py", "fpga/config/board.json", "fpga/config/cv32e40p.cfg",
+    "fpga/tcl/project.tcl", "fpga/src/fpga_top.sv", "fpga/src/fpga_top.xdc", "fpga/results/README.md",
     "report/README.md", "report/architecture.md", "report/development.md", "report/mmio.md",
     "report/sram.md", "report/THIRD_PARTY_NOTICES.md", "model/numerics.md",
     ".github/workflows/ci.yml", "test/README.md", "tools/README.md",
@@ -42,6 +44,11 @@ def check() -> list[str]:
         if not (ROOT / name).is_file(): errors.append(f"Missing required file: {name}")
     for name in REQUIRED_DIRS:
         if not (ROOT / name).is_dir(): errors.append(f"Missing directory: {name}")
+    for path in (ROOT / "fpga").rglob("*"):
+        if not path.is_file() or "__pycache__" in path.parts:
+            continue
+        if path.suffix.lower() in {".hex", ".bin", ".bit", ".xpr", ".xci", ".dcp", ".jou", ".log"}:
+            errors.append(f"FPGA generated artifacts must stay outside the repository: {path.relative_to(ROOT)}")
     visible = {p.name for p in ROOT.iterdir() if p.is_dir() and not p.name.startswith(".")}
     if visible != set(REQUIRED_DIRS): errors.append("Top-level directories must be exactly rtl/fpga/model/eda/test/report/tools/compiler")
     if (ROOT/"rtl/npu/lab3").exists(): errors.append("Original NPU must not be retained")

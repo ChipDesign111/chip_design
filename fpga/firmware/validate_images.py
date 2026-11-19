@@ -4,6 +4,7 @@ Image/dump checks use only the Python standard library. Simulation uses the
 existing CPU/AXI/SRAM testbenches and ModelSim, without changing any RTL.
 """
 import argparse
+import datetime
 import hashlib
 import json
 from pathlib import Path
@@ -18,6 +19,7 @@ ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(HERE))
 from generate_suite import BASE, readback_words
+from fpga.workspace import external, firmware_dir, workspace
 
 
 def sha(path):
@@ -102,18 +104,19 @@ def check_suite(suite):
     return manifest
 
 
-def check_legacy():
-    manifest = read_json(HERE / "image_manifest.json")
+def check_legacy(directory=None):
+    directory = firmware_dir(directory)
+    manifest = read_json(directory / "image_manifest.json")
     check_sources(manifest["generator"]["source_sha256"])
     check_sources(manifest["rtl_source_sha256"])
     for item in manifest["images"]:
-        check_image(HERE / item["file"], HERE / item["binary_file"])
-        if sha(HERE / item["file"]) != item["sha256"] or sha(HERE / item["binary_file"]) != item["binary_sha256"]:
+        check_image(directory / item["file"], directory / item["binary_file"])
+        if sha(directory / item["file"]) != item["sha256"] or sha(directory / item["binary_file"]) != item["binary_sha256"]:
             raise ValueError("HAR image hash mismatch: " + item["file"])
-    if (HERE / manifest["canonical"]).read_bytes() != (HERE / manifest["canonical_alias"]).read_bytes():
+    if (directory / manifest["canonical"]).read_bytes() != (directory / manifest["canonical_alias"]).read_bytes():
         raise ValueError("Canonical HAR image differs from UCI 00")
-    check_image(HERE / manifest["canonical"], HERE / manifest["canonical_binary"])
-    if sha(HERE / manifest["canonical_binary"]) != manifest["canonical_binary_sha256"]:
+    check_image(directory / manifest["canonical"], directory / manifest["canonical_binary"])
+    if sha(directory / manifest["canonical_binary"]) != manifest["canonical_binary_sha256"]:
         raise ValueError("Canonical binary identity mismatch")
     return manifest
 
@@ -127,13 +130,15 @@ def execute(command, directory, log):
     return output
 
 
-def simulate_all(suite, suite_meta, legacy, out, vsim):
+def simulate_all(suite, suite_meta, legacy, out, vsim, legacy_dir=None):
     from compiler.sim import simulate
+    out = external(out)
+    legacy_dir = firmware_dir(legacy_dir or suite.parent)
     out.mkdir(parents=True, exist_ok=False)
     report = dict(status="RUNNING", board_tested=False, cases=[],
                   scope="Actual emitted FPGA images on unchanged full CPU/AXI/SRAM RTL; not FPGA timing or board validation",
                   source_sha256=suite_meta["source_sha256"],
-                  legacy_manifest_sha256=sha(HERE / "image_manifest.json"),
+                  legacy_manifest_sha256=sha(legacy_dir / "image_manifest.json"),
                   suite_manifest_sha256=sha(suite / "suite_manifest.json"))
     build = out / "build"
     build.mkdir()
@@ -153,7 +158,7 @@ def simulate_all(suite, suite_meta, legacy, out, vsim):
     (build / "compile.do").write_text("onerror {quit -code 1}\nvlib work\nvmap work work\nvlog -sv -f soc.f\nquit -code 0\n")
     try:
         execute([vsim, "-c", "-do", "do compile.do"], build, "compile.log")
-        todo = [(item["file"], HERE / item["file"], "tb_soc", "", "INT8_SOC PASS", item["sha256"])
+        todo = [(item["file"], legacy_dir / item["file"], "tb_soc", "", "INT8_SOC PASS", item["sha256"])
                 for item in legacy["images"]]
         for item in suite_meta["images"]:
             if item["family"] == "har":
@@ -205,13 +210,17 @@ def simulate_all(suite, suite_meta, legacy, out, vsim):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--suite", type=Path, default=HERE / "suite")
+    parser.add_argument("--workspace", type=Path)
+    parser.add_argument("--firmware-dir", type=Path)
+    parser.add_argument("--suite", type=Path)
     parser.add_argument("--package", type=Path, help="Package to check against --dump")
     parser.add_argument("--dump", type=Path, help="8 KiB binary SRAM capture, starting at 0x80000000")
     parser.add_argument("--simulate", action="store_true")
-    parser.add_argument("--out", type=Path, help="Fresh simulation output directory (use test/int8/runs/)")
+    parser.add_argument("--out", type=Path, help="Fresh simulation output directory outside the repository")
     parser.add_argument("--vsim", default="vsim")
     args = parser.parse_args()
+    directory = firmware_dir(args.firmware_dir, args.workspace)
+    args.suite = args.suite or directory / "suite"
     if args.dump:
         if not args.package:
             parser.error("--dump requires --package")
@@ -219,13 +228,12 @@ def main():
         check_suite(args.package.resolve().parent)
         print(json.dumps(check_dump(args.package, args.dump.read_bytes()), indent=2))
         return
-    legacy, suite = check_legacy(), check_suite(args.suite)
+    legacy, suite = check_legacy(directory), check_suite(args.suite)
     print("FPGA_IMAGE_CHECK_PASS legacy=%d paired=%d; all hex/bin/source/reference hashes match" %
           (legacy["count"], suite["image_count"]), flush=True)
     if args.simulate:
-        if not args.out:
-            parser.error("--simulate requires --out")
-        report = simulate_all(args.suite.resolve(), suite, legacy, args.out.resolve(), args.vsim)
+        output = args.out or workspace(args.workspace) / "presim" / datetime.datetime.now().strftime("run_%Y%m%d_%H%M%S_%f")
+        report = simulate_all(args.suite.resolve(), suite, legacy, external(output), args.vsim, directory)
         print("FPGA_SOC_CHECK_PASS images=%d" % len(report["cases"]), flush=True)
 
 
