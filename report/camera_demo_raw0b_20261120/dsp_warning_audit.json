@@ -1,0 +1,343 @@
+{
+  "schema_version": 1,
+  "audited_at": "2026-11-20T01:46:10.8491733+08:00",
+  "scope": "Read-only audit of routed.dcp DSP48E1 dynamic OPMODE DPREG-4 warning. No synthesis, implementation, RTL, production-script, or bitstream modifications.",
+  "tool": "Vivado 2019.1 build 2552052",
+  "target_cell": "u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1",
+  "location": "DSP48_X1Y18",
+  "checkpoint": "tools/local/camera_demo/bitstream_raw0b/routed.dcp",
+  "source": {
+    "path": "rtl/npu/har_npu_core.sv",
+    "cell_line_number": 132,
+    "operation": "scaled=unsigned_v*{{ (38-16){1'b0}},requant_mult}; (shared quantizer)",
+    "relevant_lines": [
+      120,
+      132,
+      134,
+      164,
+      234,
+      243
+    ],
+    "rtl_matches_commit": "0b5e34d",
+    "verification": "git diff --quiet 0b5e34d -- rtl: exit 0",
+    "coverage_note": "The warning cell belongs to the shared legacy hardware requantizer (har_npu_core.sv line 132). RAW mode gates the hidden-output quant() update off at line 267 (if quant_value_valid_q && !raw_mode_q). Both the planned 100-round RAW test and the planned 12-round trained engineering-model test use RAW FC1; the latter executes ReLU, quantization, and the final layer on the on-chip CPU. Neither validates the legacy hardware requantizer result path. Only a dedicated legacy HAR non-RAW execution would exercise that result path. No such legacy-path physical coverage is claimed by this audit."
+  },
+  "attributes": {
+    "PREG": 0,
+    "OPMODEREG": 0,
+    "AREG": 1,
+    "BREG": 0,
+    "CREG": 0,
+    "MREG": 0,
+    "USE_MULT": "MULTIPLY",
+    "USE_SIMD": "ONE48"
+  },
+  "pin_proof": {
+    "fixed_low_bits": [
+      6,
+      3,
+      1
+    ],
+    "opmode_bits_5_and_4": "Same exact net: u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_39_n_0",
+    "opmode_bits_2_and_0": "Same exact net: u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_40_n_0",
+    "z_driver": "p_0_out__1_i_39 LUT2 INIT=4'hE; I0=_i_41_n_0, I1=p_1_out_0[0]",
+    "xy_driver": "p_0_out__1_i_40 LUT2 INIT=4'h1; exact same I0/I1 as _i_39",
+    "other_luts": [
+      "p_0_out__1_i_41 LUT3 INIT=8'hFE; I0=p_1_out_0[4], I1=p_1_out_0[3], I2=_i_79_n_0",
+      "p_0_out__1_i_79 LUT2 INIT=4'hE; I0=p_1_out_0[2], I1=p_1_out_0[1]"
+    ],
+    "fanin_startpoint_cells": [
+      "u_soc/i_npu_subsystem/i_npu_core/shift_reg[0]",
+      "u_soc/i_npu_subsystem/i_npu_core/shift_reg[1]",
+      "u_soc/i_npu_subsystem/i_npu_core/shift_reg[2]",
+      "u_soc/i_npu_subsystem/i_npu_core/shift_reg[3]",
+      "u_soc/i_npu_subsystem/i_npu_core/shift_reg[4]"
+    ],
+    "symbolic": "s = OR(shift[4:0]); t = NOT s; OPMODE[6:0] = {0,s,s,0,t,0,t}",
+    "reachable_opmodes": [
+      "0000101",
+      "0110000"
+    ],
+    "enumerated_all_32_shift_patterns": [
+      {
+        "shift": 0,
+        "opmode": "0000101",
+        "z": "000",
+        "x": "01"
+      },
+      {
+        "shift": 1,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 2,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 3,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 4,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 5,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 6,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 7,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 8,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 9,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 10,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 11,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 12,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 13,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 14,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 15,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 16,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 17,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 18,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 19,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 20,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 21,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 22,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 23,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 24,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 25,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 26,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 27,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 28,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 29,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 30,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      },
+      {
+        "shift": 31,
+        "opmode": "0110000",
+        "z": "011",
+        "x": "00"
+      }
+    ],
+    "any_legal_P_feedback_or_illegal_opmode": false,
+    "ALUMODE": "0000",
+    "CARRYINSEL": "000",
+    "CARRYIN": 0,
+    "PCIN": "48'b0"
+  },
+  "official_spec": {
+    "title": "AMD/Xilinx UG479 v1.10 (March 27, 2018), page 34, Tables 2-7 and 2-9",
+    "url": "https://docs.amd.com/api/khub/documents/gu4oRPFEh_Pm2uaAlfY6Kg/content#page=34",
+    "z_selections": {
+      "000": "0",
+      "001": "PCIN",
+      "010": "P; requires PREG=1",
+      "011": "C",
+      "100": "P for MACC extend; requires X=00,Y=10 and PREG=1",
+      "101": "PCIN arithmetic shift right 17",
+      "110": "P arithmetic shift right 17; requires PREG=1",
+      "111": "Illegal selection; undefined"
+    },
+    "x_selection_10": "P; requires PREG=1",
+    "local_unisim": "D:/pkuwyh/Vivado/2019.1/data/verilog/src/unisims/DSP48E1.v:1087,1139",
+    "local_unisim_note": "2019.1 unisim casex implements Z=11x as shifted P; the normative table marks 111 illegal. Neither 110 nor 111 is reachable here."
+  },
+  "conclusion": {
+    "status": "No logically selectable internal P feedback in actual routed OPMODE cone",
+    "detail": "The only stable Boolean OPMODE values are 0000101 (Z=0, X/Y select multiplication) and 0110000 (Z=C, X=Y=0). Z=010/100/110 and X=10 are unreachable for every input pattern. DPREG-4 is conservative with respect to correlated dynamic pins in this checkpoint.",
+    "drc_warning_remains": true,
+    "drc_waived_or_suppressed": false,
+    "limitations": [
+      "This proves routed-netlist Boolean mode reachability; no post-route SDF timing simulation, analog/internal mux transition-skew analysis, or additional PVT qualification was performed.",
+      "This audit is not a substitute for STA or physical-board functional tests. RTL simulation passing does not remove physical DRC warnings.",
+      "The audit does not certify every DRC warning. CFGBVS-1, pipeline/reset recommendations, and unused DMI response nets remain as reported.",
+      "At this audit correction, the planned RAW 100-round and RAW-plus-on-chip-CPU 12-round physical-board tests are not_performed. The parent task reports the internal FPGA TAP remains all zero and testing has not begun. This is parent-reported test state, not a hardware observation by this audit agent."
+    ]
+  },
+  "original_drc_summary": {
+    "total_warnings": 174,
+    "CFGBVS-1": 1,
+    "DPIP-1": 58,
+    "DPOP-1": 26,
+    "DPOP-2": 21,
+    "DPOR-1": 66,
+    "DPREG-4": 1,
+    "RTSTAT-10": 1
+  },
+  "hashes_sha256": {
+    "tools/local/camera_demo/bitstream_raw0b/routed.dcp": "8eca6efa126d90564f55fbd740b29f65fdc7ddd950bb5748dc5653f4b6891999",
+    "tools/local/camera_demo/bitstream_raw0b/fpga_top.bit": "ce118945509b83d281c657aa8297aab0afcdb7eb6fb9b78332b380f2bc0e6efa",
+    "tools/local/camera_demo/bitstream_raw0b/drc.rpt": "fb925b29a771662f88a85d5ebc25ea184f59d365e5c3acaa2e1cb1ec96ce284d",
+    "tools/local/camera_demo/bitstream_raw0b/timing_summary.rpt": "0e3842bff427d80106141a0b0c81287c3dfc38c829dc4075ce92278496a5c01c",
+    "rtl/npu/har_npu_core.sv": "93adcc770bf449e124caad4d86fafb2360b13c65d9a5832a78706989263ef949"
+  },
+  "raw_evidence": {
+    "cell_properties": "Property              Type    Read-only  Value\nACASCREG              int     false      1\nADREG                 int     false      1\nALUMODEREG            int     false      0\nAREG                  int     false      1\nAUTORESET_PATDET      string  false      NO_RESET\nA_INPUT               string  false      DIRECT\nBCASCREG              int     false      0\nBEL                   string  false      DSP48E1.DSP48E1\nBREG                  int     false      0\nB_INPUT               string  false      DIRECT\nCARRYINREG            int     false      0\nCARRYINSELREG         int     false      0\nCLASS                 string  true       cell\nCREG                  int     false      0\nDREG                  int     false      1\nFILE_NAME             string  true       C:/Users/wyh/Desktop/chipcourse/chip_design_demo_raw0b/rtl/npu/har_npu_core.sv\nINMODEREG             int     false      0\nIS_BEL_FIXED          bool    false      0\nIS_BLACKBOX           bool    true       0\nIS_DEBUGGABLE         bool    true       1\nIS_LOC_FIXED          bool    false      0\nIS_MATCHED            bool    true       1\nIS_ORIG_CELL          bool    true       1\nIS_PRIMITIVE          bool    true       1\nIS_REUSED             bool    true       0\nIS_SEQUENTIAL         bool    true       1\nLINE_NUMBER           int     true       132\nLOC                   site    false      DSP48_X1Y18\nMASK                  hex     false      48'h3FFFFFFFFFFF\nMETHODOLOGY_DRC_VIOS  string  false      {SYNTH-11 {cell *THIS*}}\nMREG                  int     false      0\nNAME                  string  true       u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1\nOPMODEREG             int     false      0\nPARENT                cell    true       u_soc/i_npu_subsystem/i_npu_core/core\nPATTERN               hex     false      48'h000000000000\nPREG                  int     false      0\nPRIMITIVE_COUNT       int     true       1\nPRIMITIVE_GROUP       enum    true       MULT\nPRIMITIVE_LEVEL       enum    true       LEAF\nPRIMITIVE_SUBGROUP    enum    true       dsp\nPRIMITIVE_TYPE        enum    true       MULT.dsp.DSP48E1\nREF_NAME              string  true       DSP48E1\nREUSE_STATUS          enum    true       \nSEL_MASK              string  false      MASK\nSEL_PATTERN           string  false      PATTERN\nSLR_INDEX             int     true       0\nSTATUS                enum    true       PLACED\nUSE_DPORT             bool    false      0\nUSE_MULT              string  false      MULTIPLY\nUSE_PATTERN_DETECT    string  false      NO_PATDET\nUSE_SIMD              string  false      ONE48",
+    "opmode_pin_dump": "PIN u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1/OPMODE[6] NETS u_soc/i_npu_subsystem/i_npu_core/core/<const0>\nDRIVERS u_soc/i_npu_subsystem/i_npu_core/core/GND/G\nDRIVER_CELL u_soc/i_npu_subsystem/i_npu_core/core/GND REF GND\nWARNING: [Vivado 12-829] No fanin objects found for 'all_fanin -flat -startpoints_only -to {u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1/OPMODE[6]}'.\nSTARTPOINTS \nPIN u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1/OPMODE[5] NETS u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_39_n_0\nDRIVERS u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_39/O\nDRIVER_CELL u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_39 REF LUT2\nSTARTPOINTS u_soc/i_npu_subsystem/i_npu_core/shift_reg[0]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[1]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[2]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[3]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[4]/C\nPIN u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1/OPMODE[4] NETS u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_39_n_0\nDRIVERS u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_39/O\nDRIVER_CELL u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_39 REF LUT2\nSTARTPOINTS u_soc/i_npu_subsystem/i_npu_core/shift_reg[0]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[1]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[2]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[3]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[4]/C\nPIN u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1/OPMODE[3] NETS u_soc/i_npu_subsystem/i_npu_core/core/<const0>\nDRIVERS u_soc/i_npu_subsystem/i_npu_core/core/GND/G\nDRIVER_CELL u_soc/i_npu_subsystem/i_npu_core/core/GND REF GND\nWARNING: [Vivado 12-829] No fanin objects found for 'all_fanin -flat -startpoints_only -to {u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1/OPMODE[3]}'.\nSTARTPOINTS \nPIN u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1/OPMODE[2] NETS u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_40_n_0\nDRIVERS u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_40/O\nDRIVER_CELL u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_40 REF LUT2\nSTARTPOINTS u_soc/i_npu_subsystem/i_npu_core/shift_reg[0]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[1]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[2]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[3]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[4]/C\nPIN u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1/OPMODE[1] NETS u_soc/i_npu_subsystem/i_npu_core/core/<const0>\nDRIVERS u_soc/i_npu_subsystem/i_npu_core/core/GND/G\nDRIVER_CELL u_soc/i_npu_subsystem/i_npu_core/core/GND REF GND\nWARNING: [Vivado 12-829] No fanin objects found for 'all_fanin -flat -startpoints_only -to {u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1/OPMODE[1]}'.\nSTARTPOINTS \nPIN u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1/OPMODE[0] NETS u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_40_n_0\nDRIVERS u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_40/O\nDRIVER_CELL u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_40 REF LUT2\nSTARTPOINTS u_soc/i_npu_subsystem/i_npu_core/shift_reg[0]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[1]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[2]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[3]/C u_soc/i_npu_subsystem/i_npu_core/shift_reg[4]/C",
+    "lut_cone": [
+      "AUDIT_CONE_CELL u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_39 REF LUT2\nINIT 4'hE\nCONNECTION O u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_39_n_0\nCONNECTION I0 u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_41_n_0\nCONNECTION_DRIVERS u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_41/O\nCONNECTION I1 u_soc/i_npu_subsystem/i_npu_core/core/p_1_out_0[0]\nWARNING: [Vivado 12-508] No pins matched 'get_pins -of_objects {u_soc/i_npu_subsystem/i_npu_core/core/p_1_out_0[0]} -filter {DIRECTION == OUT}'.\nCONNECTION_DRIVERS",
+      "AUDIT_CONE_CELL u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_40 REF LUT2\nINIT 4'h1\nCONNECTION O u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_40_n_0\nCONNECTION I0 u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_41_n_0\nCONNECTION_DRIVERS u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_41/O\nCONNECTION I1 u_soc/i_npu_subsystem/i_npu_core/core/p_1_out_0[0]\nWARNING: [Vivado 12-508] No pins matched 'get_pins -of_objects {u_soc/i_npu_subsystem/i_npu_core/core/p_1_out_0[0]} -filter {DIRECTION == OUT}'.\nCONNECTION_DRIVERS",
+      "AUDIT_CONE_CELL u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_41 REF LUT3\nINIT 8'hFE\nCONNECTION O u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_41_n_0\nCONNECTION I0 u_soc/i_npu_subsystem/i_npu_core/core/p_1_out_0[4]\nWARNING: [Vivado 12-508] No pins matched 'get_pins -of_objects {u_soc/i_npu_subsystem/i_npu_core/core/p_1_out_0[4]} -filter {DIRECTION == OUT}'.\nCONNECTION_DRIVERS \nCONNECTION I1 u_soc/i_npu_subsystem/i_npu_core/core/p_1_out_0[3]\nWARNING: [Vivado 12-508] No pins matched 'get_pins -of_objects {u_soc/i_npu_subsystem/i_npu_core/core/p_1_out_0[3]} -filter {DIRECTION == OUT}'.\nCONNECTION_DRIVERS \nCONNECTION I2 u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_79_n_0\nCONNECTION_DRIVERS u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_79/O",
+      "AUDIT_CONE_CELL u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_79 REF LUT2\nINIT 4'hE\nCONNECTION O u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1_i_79_n_0\nCONNECTION I0 u_soc/i_npu_subsystem/i_npu_core/core/p_1_out_0[2]\nWARNING: [Vivado 12-508] No pins matched 'get_pins -of_objects {u_soc/i_npu_subsystem/i_npu_core/core/p_1_out_0[2]} -filter {DIRECTION == OUT}'.\nCONNECTION_DRIVERS \nCONNECTION I1 u_soc/i_npu_subsystem/i_npu_core/core/p_1_out_0[1]\nWARNING: [Vivado 12-508] No pins matched 'get_pins -of_objects {u_soc/i_npu_subsystem/i_npu_core/core/p_1_out_0[1]} -filter {DIRECTION == OUT}'.\nCONNECTION_DRIVERS"
+    ],
+    "reproduction_tcl": "open_checkpoint {C:/Users/wyh/Desktop/chipcourse/chip_design_demo_raw0b/tools/local/camera_demo/bitstream_raw0b/routed.dcp}\nset target_name {u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1}\nset target [get_cells $target_name]\nputs {AUDIT_CELL_BEGIN}\nreport_property $target\nputs {AUDIT_CELL_END}\nset modepins [get_pins -of_objects $target -filter {REF_PIN_NAME =~ OPMODE*}]\nputs {AUDIT_OPMODE_BEGIN}\nforeach p $modepins {\n  set ns [get_nets -of_objects $p]\n  puts \"PIN $p NETS $ns\"\n  foreach n $ns {\n    set ds [get_pins -of_objects $n -filter {DIRECTION == OUT}]\n    puts \"DRIVERS $ds\"\n    foreach d $ds {set c [get_cells -of_objects $d]; puts \"DRIVER_CELL $c REF [get_property REF_NAME $c]\"}\n  }\n  puts \"STARTPOINTS [all_fanin -flat -startpoints_only -to $p]\"\n}\nputs {AUDIT_OPMODE_END}\nset cone [lsort -unique [all_fanin -flat -only_cells -to $modepins]]\nputs \"AUDIT_CONE_LENGTH [llength $cone]\"\nforeach c $cone {\n  puts \"AUDIT_CONE_CELL $c REF [get_property REF_NAME $c]\"\n  set init [get_property -quiet INIT $c]\n  puts \"INIT $init\"\n  foreach p [get_pins -of_objects $c] {\n    set ns [get_nets -of_objects $p]\n    puts \"CONNECTION [get_property REF_PIN_NAME $p] $ns\"\n    if {[get_property DIRECTION $p] eq {IN}} {\n      foreach n $ns {puts \"CONNECTION_DRIVERS [get_pins -of_objects $n -filter {DIRECTION == OUT}]\"}\n    }\n  }\n}\nputs {AUDIT_DONE}\nclose_design\nexit\r\n",
+    "temporary_log_path": "C:\\Users\\wyh\\AppData\\Local\\Temp\\raw0b_dsp_audit_fd72604825704f129624796f297f859c\\vivado.log"
+  },
+  "checks": {
+    "open_checkpoint_completed": true,
+    "vivado_exit": 0,
+    "existing_timing_report": "check_timing reports 0 combinational loops; not re-run or overwritten by this audit",
+    "bitstream_unmodified_sha256": "ce118945509b83d281c657aa8297aab0afcdb7eb6fb9b78332b380f2bc0e6efa"
+  },
+  "physical_test_status": {
+    "updated_at": "2026-11-20T01:48:37.1352473+08:00",
+    "state_source": "Parent task message; no hardware access by this audit agent",
+    "board_test_readiness": "Parent reports internal FPGA TAP remains all zero and actual board testing has not begun",
+    "raw_100_rounds": {
+      "status": "not_performed",
+      "covers_legacy_hardware_requantizer_result": false
+    },
+    "trained_engineering_model_12_rounds": {
+      "status": "not_performed",
+      "execution_path": "RAW FC1 plus on-chip CPU ReLU, quantization, and final layer",
+      "covers_legacy_hardware_requantizer_result": false
+    },
+    "dedicated_legacy_HAR_non_RAW": {
+      "status": "not_performed",
+      "coverage_role": "Required execution path to exercise the legacy hardware requantizer result"
+    }
+  }
+}

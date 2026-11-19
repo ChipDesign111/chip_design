@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "repository_check": "tools/project.py check: repository policy, links, syntax, MMIO, 75 source SHA checks",
+  "rtl_compiler_unchanged": "git diff --exit-code 0b5e34d -- rtl compiler: exit 0",
+  "diff_whitespace": "git diff --check: exit 0",
+  "functional_evidence": "soc/, host_tests.json, camera_tests.json; no physical inference pass",
+  "source_commit_before_final_archive": "b1e26b678dc0d06309216bcc449b44a9e82c8d81"
+}

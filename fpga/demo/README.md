@@ -14,7 +14,7 @@ flowchart LR
     C --> H[PC实时显示类别与延迟]
 ```
 
-软件入口与 RAW 完整 SoC 多轮功能仿真已通过。实时板测、真人采样后的分类精度、USB 实际吞吐仍须实测。每一项验证状态见 [本轮记录](../../report/camera_demo_raw0b_20261120/README.md)。原 UCI HAR 模型输入是惯性传感器特征，不能给它塞入摄像头坐标后沿用原准确率。
+软件入口与 RAW 完整 SoC 多轮功能仿真已通过。新RAW FPGA布局布线、20 MHz时序和实际配置已通过；CPU JTAG尚返回全0，真实多轮板测、真人采样后的分类精度、USB实际吞吐仍须实测。每一项验证状态见 [本轮记录](../../report/camera_demo_raw0b_20261120/README.md)。原 UCI HAR 模型输入是惯性传感器特征，不能给它塞入摄像头坐标后沿用原准确率。
 
 ## 软件与环境
 
@@ -31,7 +31,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File fpga/demo/setup.ps1
 
 ## FPGA 配置与连接
 
-目标器件为 `xc7a35tcsg324-1`，板载 100 MHz 经 Clock Wizard 产生 20 MHz。该 RAW 硬件需要重新构建，不能拿 11 月 4 日的历史 bitstream 宣称运行该 RAW 硬件。
+目标器件为 `xc7a35tcsg324-1`，板载100 MHz经Clock Wizard产生20 MHz。已构建的新RAW bitstream位于 [冻结版本](../versions/20261120_rtl-0b5e34d_camera-debug-pending/README.md)，可直接使用；不能拿11月4日历史bitstream宣称运行该RAW硬件。以下命令供重新构建使用。
 
 ```powershell
 & 'D:\pkuwyh\Vivado\2019.1\bin\vivado.bat' -mode batch -nojournal `
@@ -46,11 +46,31 @@ powershell -NoProfile -ExecutionPolicy Bypass -File fpga/demo/setup.ps1
 
 板载配置链和 SoC 的 JTAG Debug 引脚是两条不同通路。现有顶层把 TCK/TMS/TDI/TDO 放在 E15/C15/E16/D15，沿用课程接线；下载链能看到 `xc7a35t`，不代表 OpenOCD 已能访问内部 CPU。独立 FT232H 适配器通常为 `0403:6014`，板载复合设备为 `0403:6010`。不应将后者的 FPGA 配置 TAP 当成 RISC-V DTM。以实际接线和 TAP 探测结果为准。
 
+| FT232H引脚 | FPGA封装引脚 | 信号/方向 |
+| --- | --- | --- |
+| AD0 | E15 | TCK，适配器输出 |
+| AD1 | E16 | TDI，适配器输出 |
+| AD2 | D15 | TDO，适配器输入 |
+| AD3 | C15 | TMS，适配器输出 |
+| GND | GND | 共地 |
+
+按开发板原理图将封装引脚对应到排针位置；E15等不是排针编号。信号为3.3 V。仅插FT232H的USB线不会自动连到这四个FPGA引脚。2026-11-20诊断中，新RAW bitstream在1 MHz/100 kHz和历史已板测bitstream在1 MHz均返回全0，当前原因未确认，需检查这段接线、复位和时钟；不能继续把端口监听当成连接成功。
+
+启动已安装的WSL并附加外接适配器后，在仓库根目录启动OpenOCD：
+
+```powershell
+wsl -e openocd -f /mnt/c/Users/wyh/Desktop/chipcourse/chip_design_demo_raw0b/fpga/demo/openocd_ft232h.cfg
+```
+
+如果日志仍含`all zeroes`、`IR capture error`或`dtmcontrol is 0`，应先恢复CPU调试链，再装载固件。本轮结束时没有保留失败的OpenOCD服务。
+
 WSL 使用 USB/IP 时，先在 Windows 执行 `usbipd list`，核对适配器 BUSID；管理员终端执行 `usbipd bind --busid BUSID`，再 `usbipd attach --wsl --busid BUSID`。不要把摄像头或仍由 Vivado 使用的下载接口误传进 WSL。进入 WSL 启动适配器对应的 OpenOCD 配置，Tcl RPC 端口为 6666。主机程序强制使用 `sysbus`，运行中读写 SRAM，不以每轮 halt CPU 的方式代替常驻服务。不同版本的内存访问命令已兼容处理。
 
 ## 采集与训练动作
 
 默认六类是站立、左臂抬起、右臂抬起、双臂抬起、下蹲、侧倾；它们是演示标签，尚无已验证真人分类器。可以用 `--labels` 提供六个其他标签，但训练、采集、显示必须使用同一份标签顺序。
+
+采集时需要全身入镜，包括肩、髋、膝和脚踝；只有上半身时程序会拒绝缺失关键点的窗口。每次先按 SPACE 再完成倒计时，确认保持当前标签动作；过渡姿势不应录进上一类。
 
 ```powershell
 .\.venv-demo\Scripts\python.exe -m fpga.demo.camera collect `
@@ -104,6 +124,8 @@ WSL 使用 USB/IP 时，先在 Windows 执行 `usbipd list`，核对适配器 BU
 常驻 CPU 程序每轮装入新输入，调度 RAW NPU 和 CPU 内核重新计算激活并写回输出。权重与量化参数固定在模型包，输入和中间激活不再固定为启动镜像的测试值。完整 ABI 在 [protocol.py](protocol.py)，生成入口在 [firmware.py](firmware.py)。输出为编译器的 INT8 分数，不是概率。
 
 `cycles` 记录 CPU 接受请求至结果公布，不包含摄像头、特征时间窗、USB/JTAG 搬运和主机显示。界面另显示电脑端往返延迟，不能把功能仿真时钟或周期数当成实际摄像头 FPS。
+
+常驻程序持续等待下一轮，不写旧自检的 PASS 标记；心跳灯继续闪烁属于正常现象。是否成功以请求编号、返回状态和结果比对为准。
 
 ## 开发验证
 

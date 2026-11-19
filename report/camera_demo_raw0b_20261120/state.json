@@ -1,19 +1,48 @@
 {
   "baseline": "0b5e34d29c3b0ac333461c0edba8197738906e1a",
-  "status": "IN_PROGRESS",
+  "status": "HARDWARE_CONNECTION_REQUIRED",
   "rtl_modified": false,
   "resident_soc": "PASS",
-  "host_common_fake_tests": 12,
+  "host_common_fake_tests": 13,
   "camera_tests": 11,
   "human_action_model": "NOT_COLLECTED",
-  "fpga_build": "RUNNING",
-  "fpga_board": "NOT_YET_PROGRAMMED_WITH_THIS_BUILD",
+  "fpga_build": "SYNTHESIS_IMPLEMENTATION_STA_PASS",
+  "fpga_board": "CONFIGURATION_PASS_CPU_JTAG_UNAVAILABLE",
   "usb_configuration_target": "xc7a35t_0",
-  "external_adapter": "0403:6014 attached to WSL",
+  "external_adapter": "0403:6014 detected and attached to WSL; CPU TAP all zeros",
   "remaining": [
-    "Finish current Vivado build",
-    "Program and verify SoC JTAG",
-    "Run 100 real input/result requests",
-    "User records labelled camera sessions"
-  ]
+    "Confirm external FT232H AD0/AD1/AD2/AD3 to E15/E16/D15/C15 and common ground; diagnose reset/clock if needed",
+    "Restore working CPU JTAG TAP, then load resident firmware and run 100 arithmetic plus 12 engineering-model requests",
+    "User records labelled camera sessions; train and measure real action recognition"
+  ],
+  "fpga_synthesis": {
+    "slice_luts": 18220,
+    "slice_luts_available": 20800,
+    "slice_registers": 15058,
+    "dsp48": 30,
+    "bram36_tiles": 2,
+    "clock_target_mhz": 20,
+    "rtl_commit": "0b5e34d"
+  },
+  "firmware_loaded": false,
+  "board_arithmetic_requests_passed": 0,
+  "board_engineering_requests_passed": 0,
+  "human_action_accuracy_verified": false,
+  "fpga_implementation": {
+    "slice_luts": 18141,
+    "slice_registers": 15058,
+    "bram36_tiles": 2,
+    "dsp48": 30,
+    "setup_wns_ns": 0.758,
+    "hold_whs_ns": 0.023,
+    "setup_failing_endpoints": 0,
+    "hold_failing_endpoints": 0,
+    "drc_errors": 0,
+    "drc_warnings": 174,
+    "route_verification_passed": true
+  },
+  "cleanup": {
+    "failed_openocd_server_left_running": false,
+    "task_sleep_inhibitor_removed_on_exit": true
+  }
 }

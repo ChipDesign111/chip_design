@@ -1,0 +1,813 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Fri Nov 20 01:12:02 2026
+# Process ID: 38324
+# Current directory: C:/Users/wyh/Desktop/chipcourse/chip_design_demo_raw0b
+# Command line: vivado.exe -mode batch -nojournal -log tools/local/camera_demo/vivado_raw0b_impl.log -source fpga/demo/implement_checkpoint.tcl -tclargs tools/local/camera_demo/bitstream_raw0b
+# Log file: C:/Users/wyh/Desktop/chipcourse/chip_design_demo_raw0b/tools/local/camera_demo/vivado_raw0b_impl.log
+# Journal file: 
+#-----------------------------------------------------------
+source fpga/demo/implement_checkpoint.tcl
+# if {[llength $argv] != 1} {error "Pass the build directory containing synthesized.dcp"}
+# set out [file normalize [lindex $argv 0]]
+# set_param general.maxThreads 4
+# open_checkpoint [file join $out synthesized.dcp]
+Command: open_checkpoint C:/Users/wyh/Desktop/chipcourse/chip_design_demo_raw0b/tools/local/camera_demo/bitstream_raw0b/synthesized.dcp
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.171 . Memory (MB): peak = 295.461 ; gain = 0.000
+INFO: [Device 21-403] Loading part xc7a35tcsg324-1
+INFO: [Netlist 29-17] Analyzing 3285 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 1 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2019.1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Project 1-853] Binary constraint restore complete.
+Reading XDEF placement.
+Reading placer database...
+Reading XDEF routing.
+Read XDEF File: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.421 . Memory (MB): peak = 1329.492 ; gain = 0.000
+Restored from archive | CPU: 0.000000 secs | Memory: 0.000000 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.422 . Memory (MB): peak = 1329.492 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.040 . Memory (MB): peak = 1329.492 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 6 instances were transformed.
+  RAM32M => RAM32M (RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMS32, RAMS32): 6 instances
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2019.1 (64-bit) build 2552052
+open_checkpoint: Time (s): cpu = 00:01:24 ; elapsed = 00:01:51 . Memory (MB): peak = 1329.492 ; gain = 1034.031
+# opt_design
+Command: opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a35t'
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:07 ; elapsed = 00:00:03 . Memory (MB): peak = 1329.492 ; gain = 0.000
+
+Starting Cache Timing Information Task
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Ending Cache Timing Information Task | Checksum: 2758715ee
+
+Time (s): cpu = 00:00:08 ; elapsed = 00:00:05 . Memory (MB): peak = 1414.199 ; gain = 84.707
+
+Starting Logic Optimization Task
+
+Phase 1 Retarget
+INFO: [Opt 31-138] Pushed 2 inverter(s) to 9 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 1 Retarget | Checksum: 1bb110988
+
+Time (s): cpu = 00:00:14 ; elapsed = 00:00:08 . Memory (MB): peak = 1543.637 ; gain = 0.172
+INFO: [Opt 31-389] Phase Retarget created 0 cells and removed 27 cells
+INFO: [Opt 31-1021] In phase Retarget, 167 netlist objects are constrained preventing optimization. Please run opt_design with -debug_log to get more detail. 
+
+Phase 2 Constant propagation
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Phase 2 Constant propagation | Checksum: 1d709a74d
+
+Time (s): cpu = 00:00:15 ; elapsed = 00:00:10 . Memory (MB): peak = 1543.637 ; gain = 0.172
+INFO: [Opt 31-389] Phase Constant propagation created 0 cells and removed 0 cells
+INFO: [Opt 31-1021] In phase Constant propagation, 166 netlist objects are constrained preventing optimization. Please run opt_design with -debug_log to get more detail. 
+
+Phase 3 Sweep
+Phase 3 Sweep | Checksum: 252cdc2f3
+
+Time (s): cpu = 00:00:17 ; elapsed = 00:00:13 . Memory (MB): peak = 1543.637 ; gain = 0.172
+INFO: [Opt 31-389] Phase Sweep created 0 cells and removed 0 cells
+INFO: [Opt 31-1021] In phase Sweep, 407 netlist objects are constrained preventing optimization. Please run opt_design with -debug_log to get more detail. 
+
+Phase 4 BUFG optimization
+Phase 4 BUFG optimization | Checksum: 252cdc2f3
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:16 . Memory (MB): peak = 1543.637 ; gain = 0.172
+INFO: [Opt 31-662] Phase BUFG optimization created 0 cells of which 0 are BUFGs and removed 0 cells.
+
+Phase 5 Shift Register Optimization
+INFO: [Opt 31-1064] SRL Remap converted 0 SRLs to 0 registers and converted 0 registers of register chains to 0 SRLs
+Phase 5 Shift Register Optimization | Checksum: 252cdc2f3
+
+Time (s): cpu = 00:00:23 ; elapsed = 00:00:19 . Memory (MB): peak = 1543.637 ; gain = 0.172
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Phase 6 Post Processing Netlist
+Phase 6 Post Processing Netlist | Checksum: 252cdc2f3
+
+Time (s): cpu = 00:00:24 ; elapsed = 00:00:20 . Memory (MB): peak = 1543.637 ; gain = 0.172
+INFO: [Opt 31-389] Phase Post Processing Netlist created 0 cells and removed 0 cells
+INFO: [Opt 31-1021] In phase Post Processing Netlist, 166 netlist objects are constrained preventing optimization. Please run opt_design with -debug_log to get more detail. 
+Opt_design Change Summary
+=========================
+
+
+-------------------------------------------------------------------------------------------------------------------------
+|  Phase                        |  #Cells created  |  #Cells Removed  |  #Constrained objects preventing optimizations  |
+-------------------------------------------------------------------------------------------------------------------------
+|  Retarget                     |               0  |              27  |                                            167  |
+|  Constant propagation         |               0  |               0  |                                            166  |
+|  Sweep                        |               0  |               0  |                                            407  |
+|  BUFG optimization            |               0  |               0  |                                              0  |
+|  Shift Register Optimization  |               0  |               0  |                                              0  |
+|  Post Processing Netlist      |               0  |               0  |                                            166  |
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.437 . Memory (MB): peak = 1543.637 ; gain = 0.000
+Ending Logic Optimization Task | Checksum: 198049943
+
+Time (s): cpu = 00:00:28 ; elapsed = 00:00:24 . Memory (MB): peak = 1543.637 ; gain = 0.172
+
+Starting Power Optimization Task
+INFO: [Pwropt 34-132] Skipping clock gating for clocks with a period < 2.00 ns.
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Pwropt 34-9] Applying IDT optimizations ...
+INFO: [Pwropt 34-10] Applying ODC optimizations ...
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.582 | TNS=-1.657 |
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+
+
+Starting PowerOpt Patch Enables Task
+INFO: [Pwropt 34-162] WRITE_MODE attribute of 0 BRAM(s) out of a total of 2 has been updated to save power. Run report_power_opt to get a complete listing of the BRAMs updated.
+INFO: [Pwropt 34-201] Structural ODC has moved 0 WE to EN ports
+Number of BRAM Ports augmented: 0 newly gated: 0 Total Ports: 4
+Ending PowerOpt Patch Enables Task | Checksum: 198049943
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1805.422 ; gain = 0.000
+Ending Power Optimization Task | Checksum: 198049943
+
+Time (s): cpu = 00:01:20 ; elapsed = 00:00:45 . Memory (MB): peak = 1805.422 ; gain = 261.785
+
+Starting Final Cleanup Task
+Ending Final Cleanup Task | Checksum: 198049943
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Starting Netlist Obfuscation Task
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.041 . Memory (MB): peak = 1805.422 ; gain = 0.000
+Ending Netlist Obfuscation Task | Checksum: 198049943
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.042 . Memory (MB): peak = 1805.422 ; gain = 0.000
+INFO: [Common 17-83] Releasing license: Implementation
+27 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:02:16 ; elapsed = 00:01:30 . Memory (MB): peak = 1805.422 ; gain = 475.930
+INFO: [Common 17-600] The following parameters have non-default value.
+general.maxThreads
+# place_design -directive Explore
+Command: place_design -directive Explore
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a35t'
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+Starting Placer Task
+INFO: [Place 46-5] The placer was invoked with the 'Explore' directive.
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 4 CPUs
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.042 . Memory (MB): peak = 1805.422 ; gain = 0.000
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: 18f48a902
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.131 . Memory (MB): peak = 1805.422 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.039 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device | Checksum: 8aa8e0a8
+
+Time (s): cpu = 00:00:24 ; elapsed = 00:00:12 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 1.3 Build Placer Netlist Model
+Phase 1.3 Build Placer Netlist Model | Checksum: 15fb43ed6
+
+Time (s): cpu = 00:01:11 ; elapsed = 00:00:42 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 1.4 Constrain Clocks/Macros
+Phase 1.4 Constrain Clocks/Macros | Checksum: 15fb43ed6
+
+Time (s): cpu = 00:01:11 ; elapsed = 00:00:42 . Memory (MB): peak = 1805.422 ; gain = 0.000
+Phase 1 Placer Initialization | Checksum: 15fb43ed6
+
+Time (s): cpu = 00:01:12 ; elapsed = 00:00:42 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 2 Global Placement
+
+Phase 2.1 Floorplanning
+Phase 2.1 Floorplanning | Checksum: 9fabb044
+
+Time (s): cpu = 00:01:27 ; elapsed = 00:00:50 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 2.2 Global Placement Core
+
+Phase 2.2.1 Physical Synthesis In Placer
+INFO: [Physopt 32-65] No nets found for high-fanout optimization.
+INFO: [Physopt 32-232] Optimized 0 net. Created 0 new instance.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-456] No candidate cells for DSP register optimization found in the design.
+INFO: [Physopt 32-775] End 2 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-677] No candidate cells for Shift Register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-526] No candidate cells for BRAM register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-949] No candidate nets found for HD net replication
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.055 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Summary of Physical Synthesis Optimizations
+============================================
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+|  Optimization                  |  Added Cells  |  Removed Cells  |  Optimized Cells/Nets  |  Dont Touch  |  Iterations  |  Elapsed   |
+----------------------------------------------------------------------------------------------------------------------------------------
+|  Very High Fanout              |            0  |              0  |                     0  |           0  |           1  |  00:00:01  |
+|  DSP Register                  |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Shift Register                |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  BRAM Register                 |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  HD Interface Net Replication  |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Total                         |            0  |              0  |                     0  |           0  |           5  |  00:00:01  |
+----------------------------------------------------------------------------------------------------------------------------------------
+
+
+Phase 2.2.1 Physical Synthesis In Placer | Checksum: b51a216e
+
+Time (s): cpu = 00:05:33 ; elapsed = 00:03:23 . Memory (MB): peak = 1805.422 ; gain = 0.000
+Phase 2.2 Global Placement Core | Checksum: 94be3f51
+
+Time (s): cpu = 00:05:44 ; elapsed = 00:03:29 . Memory (MB): peak = 1805.422 ; gain = 0.000
+Phase 2 Global Placement | Checksum: 94be3f51
+
+Time (s): cpu = 00:05:44 ; elapsed = 00:03:29 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 3 Detail Placement
+
+Phase 3.1 Commit Multi Column Macros
+Phase 3.1 Commit Multi Column Macros | Checksum: d0be1bd8
+
+Time (s): cpu = 00:06:07 ; elapsed = 00:03:45 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 3.2 Commit Most Macros & LUTRAMs
+Phase 3.2 Commit Most Macros & LUTRAMs | Checksum: 1a77132b3
+
+Time (s): cpu = 00:06:51 ; elapsed = 00:04:15 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 3.3 Area Swap Optimization
+Phase 3.3 Area Swap Optimization | Checksum: 10242d721
+
+Time (s): cpu = 00:06:54 ; elapsed = 00:04:18 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 3.4 Pipeline Register Optimization
+Phase 3.4 Pipeline Register Optimization | Checksum: 10d21c8e6
+
+Time (s): cpu = 00:06:54 ; elapsed = 00:04:18 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 3.5 Fast Optimization
+Phase 3.5 Fast Optimization | Checksum: 115402304
+
+Time (s): cpu = 00:07:51 ; elapsed = 00:05:12 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 3.6 Small Shape Detail Placement
+Phase 3.6 Small Shape Detail Placement | Checksum: 12e176155
+
+Time (s): cpu = 00:09:11 ; elapsed = 00:06:58 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 3.7 Re-assign LUT pins
+Phase 3.7 Re-assign LUT pins | Checksum: 7621c9c4
+
+Time (s): cpu = 00:09:19 ; elapsed = 00:07:09 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 3.8 Pipeline Register Optimization
+Phase 3.8 Pipeline Register Optimization | Checksum: c56817b4
+
+Time (s): cpu = 00:09:20 ; elapsed = 00:07:10 . Memory (MB): peak = 1805.422 ; gain = 0.000
+Phase 3 Detail Placement | Checksum: c56817b4
+
+Time (s): cpu = 00:09:21 ; elapsed = 00:07:11 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 4 Post Placement Optimization and Clean-Up
+
+Phase 4.1 Post Commit Optimization
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Phase 4.1.1 Post Placement Optimization
+Post Placement Optimization Initialization | Checksum: 148a9c6be
+
+Phase 4.1.1.1 BUFG Insertion
+INFO: [Place 46-33] Processed net u_soc/i_rstgen_main/i_rstgen_bypass/synch_regs_q_reg[3]_2, BUFG insertion was skipped due to placement/routing conflicts.
+INFO: [Place 46-56] BUFG insertion identified 1 candidate nets. Inserted BUFG: 0, Replicated BUFG Driver: 0, Skipped due to Placement/Routing Conflicts: 1, Skipped due to Timing Degradation: 0, Skipped due to Illegal Netlist: 0.
+Phase 4.1.1.1 BUFG Insertion | Checksum: 148a9c6be
+
+Time (s): cpu = 00:10:16 ; elapsed = 00:07:41 . Memory (MB): peak = 1805.422 ; gain = 0.000
+INFO: [Place 30-746] Post Placement Timing Summary WNS=0.508. For the most accurate timing information please run report_timing.
+Phase 4.1.1 Post Placement Optimization | Checksum: 16820c141
+
+Time (s): cpu = 00:12:07 ; elapsed = 00:09:22 . Memory (MB): peak = 1805.422 ; gain = 0.000
+Phase 4.1 Post Commit Optimization | Checksum: 16820c141
+
+Time (s): cpu = 00:12:08 ; elapsed = 00:09:23 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 4.2 Post Placement Cleanup
+Phase 4.2 Post Placement Cleanup | Checksum: 16820c141
+
+Time (s): cpu = 00:12:10 ; elapsed = 00:09:24 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 4.3 Placer Reporting
+Phase 4.3 Placer Reporting | Checksum: 16820c141
+
+Time (s): cpu = 00:12:11 ; elapsed = 00:09:26 . Memory (MB): peak = 1805.422 ; gain = 0.000
+
+Phase 4.4 Final Placement Cleanup
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.044 . Memory (MB): peak = 1805.422 ; gain = 0.000
+Phase 4.4 Final Placement Cleanup | Checksum: 24e3d04bc
+
+Time (s): cpu = 00:12:12 ; elapsed = 00:09:26 . Memory (MB): peak = 1805.422 ; gain = 0.000
+Phase 4 Post Placement Optimization and Clean-Up | Checksum: 24e3d04bc
+
+Time (s): cpu = 00:12:12 ; elapsed = 00:09:27 . Memory (MB): peak = 1805.422 ; gain = 0.000
+Ending Placer Task | Checksum: 19b1efea0
+
+Time (s): cpu = 00:12:12 ; elapsed = 00:09:27 . Memory (MB): peak = 1805.422 ; gain = 0.000
+INFO: [Common 17-83] Releasing license: Implementation
+26 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+place_design completed successfully
+place_design: Time (s): cpu = 00:12:25 ; elapsed = 00:09:33 . Memory (MB): peak = 1805.422 ; gain = 0.000
+INFO: [Common 17-600] The following parameters have non-default value.
+general.maxThreads
+# phys_opt_design
+Command: phys_opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a35t'
+INFO: [Vivado_Tcl 4-383] Design worst setup slack (WNS) is greater than or equal to 0.250 ns. Skipping all physical synthesis optimizations.
+INFO: [Vivado_Tcl 4-232] No setup violation found. The netlist was not modified.
+INFO: [Common 17-83] Releasing license: Implementation
+4 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+phys_opt_design completed successfully
+phys_opt_design: Time (s): cpu = 00:00:48 ; elapsed = 00:00:21 . Memory (MB): peak = 1805.422 ; gain = 0.000
+INFO: [Common 17-600] The following parameters have non-default value.
+general.maxThreads
+# route_design -directive Explore
+Command: route_design -directive Explore
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a35t'
+Running DRC as a precondition to command route_design
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+
+Starting Routing Task
+INFO: [Route 35-270] Using Router directive 'Explore'.
+INFO: [Route 35-254] Multithreading enabled for route_design using a maximum of 4 CPUs
+Checksum: PlaceDB: aafed5f4 ConstDB: 0 ShapeSum: f02028ac RouteDB: 0
+
+Phase 1 Build RT Design
+Phase 1 Build RT Design | Checksum: 16221856d
+
+Time (s): cpu = 00:01:59 ; elapsed = 00:01:35 . Memory (MB): peak = 1859.062 ; gain = 35.516
+Post Restoration Checksum: NetGraph: b59432e9 NumContArr: ac8d5284 Constraints: 0 Timing: 0
+
+Phase 2 Router Initialization
+
+Phase 2.1 Create Timer
+Phase 2.1 Create Timer | Checksum: 16221856d
+
+Time (s): cpu = 00:02:02 ; elapsed = 00:01:38 . Memory (MB): peak = 1859.062 ; gain = 35.516
+
+Phase 2.2 Fix Topology Constraints
+Phase 2.2 Fix Topology Constraints | Checksum: 16221856d
+
+Time (s): cpu = 00:02:03 ; elapsed = 00:01:39 . Memory (MB): peak = 1872.020 ; gain = 48.473
+
+Phase 2.3 Pre Route Cleanup
+Phase 2.3 Pre Route Cleanup | Checksum: 16221856d
+
+Time (s): cpu = 00:02:03 ; elapsed = 00:01:39 . Memory (MB): peak = 1872.020 ; gain = 48.473
+ Number of Nodes with overlaps = 0
+
+Phase 2.4 Update Timing
+Phase 2.4 Update Timing | Checksum: 20f1b14c2
+
+Time (s): cpu = 00:03:03 ; elapsed = 00:02:13 . Memory (MB): peak = 1909.559 ; gain = 86.012
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=1.107  | TNS=0.000  | WHS=-0.156 | THS=-40.123|
+
+Phase 2 Router Initialization | Checksum: 1fd044cbd
+
+Time (s): cpu = 00:03:41 ; elapsed = 00:02:32 . Memory (MB): peak = 2139.543 ; gain = 315.996
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 0 %
+  Global Horizontal Routing Utilization  = 0 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 30704
+    (Failed Nets is the sum of unrouted and partially routed nets)
+  Number of Unrouted Nets             = 30704
+  Number of Partially Routed Nets     = 0
+  Number of Node Overlaps             = 0
+
+
+Phase 3 Initial Routing
+Phase 3 Initial Routing | Checksum: 19a6f481c
+
+Time (s): cpu = 00:04:36 ; elapsed = 00:03:06 . Memory (MB): peak = 2152.527 ; gain = 328.980
+
+Phase 4 Rip-up And Reroute
+
+Phase 4.1 Global Iteration 0
+ Number of Nodes with overlaps = 7302
+ Number of Nodes with overlaps = 1329
+ Number of Nodes with overlaps = 564
+ Number of Nodes with overlaps = 200
+ Number of Nodes with overlaps = 72
+ Number of Nodes with overlaps = 50
+ Number of Nodes with overlaps = 23
+ Number of Nodes with overlaps = 13
+ Number of Nodes with overlaps = 13
+ Number of Nodes with overlaps = 3
+ Number of Nodes with overlaps = 2
+ Number of Nodes with overlaps = 5
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=0.649  | TNS=0.000  | WHS=N/A    | THS=N/A    |
+
+Phase 4.1 Global Iteration 0 | Checksum: 14d9d92de
+
+Time (s): cpu = 00:09:01 ; elapsed = 00:05:32 . Memory (MB): peak = 2152.527 ; gain = 328.980
+
+Phase 4.2 Global Iteration 1
+ Number of Nodes with overlaps = 1
+ Number of Nodes with overlaps = 109
+ Number of Nodes with overlaps = 67
+ Number of Nodes with overlaps = 23
+ Number of Nodes with overlaps = 13
+ Number of Nodes with overlaps = 12
+ Number of Nodes with overlaps = 23
+ Number of Nodes with overlaps = 8
+ Number of Nodes with overlaps = 8
+ Number of Nodes with overlaps = 8
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=0.690  | TNS=0.000  | WHS=N/A    | THS=N/A    |
+
+Phase 4.2 Global Iteration 1 | Checksum: 1e7f6fa13
+
+Time (s): cpu = 00:10:06 ; elapsed = 00:06:32 . Memory (MB): peak = 2152.527 ; gain = 328.980
+Phase 4 Rip-up And Reroute | Checksum: 1e7f6fa13
+
+Time (s): cpu = 00:10:06 ; elapsed = 00:06:32 . Memory (MB): peak = 2152.527 ; gain = 328.980
+
+Phase 5 Delay and Skew Optimization
+
+Phase 5.1 Delay CleanUp
+Phase 5.1 Delay CleanUp | Checksum: 1e7f6fa13
+
+Time (s): cpu = 00:10:07 ; elapsed = 00:06:33 . Memory (MB): peak = 2152.527 ; gain = 328.980
+
+Phase 5.2 Clock Skew Optimization
+Phase 5.2 Clock Skew Optimization | Checksum: 1e7f6fa13
+
+Time (s): cpu = 00:10:08 ; elapsed = 00:06:34 . Memory (MB): peak = 2152.527 ; gain = 328.980
+Phase 5 Delay and Skew Optimization | Checksum: 1e7f6fa13
+
+Time (s): cpu = 00:10:08 ; elapsed = 00:06:34 . Memory (MB): peak = 2152.527 ; gain = 328.980
+
+Phase 6 Post Hold Fix
+
+Phase 6.1 Hold Fix Iter
+
+Phase 6.1.1 Update Timing
+Phase 6.1.1 Update Timing | Checksum: 1f33b310f
+
+Time (s): cpu = 00:10:22 ; elapsed = 00:06:41 . Memory (MB): peak = 2152.527 ; gain = 328.980
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=0.770  | TNS=0.000  | WHS=0.021  | THS=0.000  |
+
+Phase 6.1 Hold Fix Iter | Checksum: 174aa777f
+
+Time (s): cpu = 00:10:22 ; elapsed = 00:06:42 . Memory (MB): peak = 2152.527 ; gain = 328.980
+Phase 6 Post Hold Fix | Checksum: 174aa777f
+
+Time (s): cpu = 00:10:23 ; elapsed = 00:06:42 . Memory (MB): peak = 2152.527 ; gain = 328.980
+
+Phase 7 Route finalize
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 15.4623 %
+  Global Horizontal Routing Utilization  = 18.677 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 0
+    (Failed Nets is the sum of unrouted and partially routed nets)
+  Number of Unrouted Nets             = 0
+  Number of Partially Routed Nets     = 0
+  Number of Node Overlaps             = 0
+
+Phase 7 Route finalize | Checksum: 17888346f
+
+Time (s): cpu = 00:10:24 ; elapsed = 00:06:44 . Memory (MB): peak = 2152.527 ; gain = 328.980
+
+Phase 8 Verifying routed nets
+
+ Verification completed successfully
+Phase 8 Verifying routed nets | Checksum: 17888346f
+
+Time (s): cpu = 00:10:24 ; elapsed = 00:06:44 . Memory (MB): peak = 2152.527 ; gain = 328.980
+
+Phase 9 Depositing Routes
+Phase 9 Depositing Routes | Checksum: 16604ed10
+
+Time (s): cpu = 00:10:42 ; elapsed = 00:07:08 . Memory (MB): peak = 2152.527 ; gain = 328.980
+
+Phase 10 Post Router Timing
+INFO: [Route 35-20] Post Routing Timing Summary | WNS=0.758  | TNS=0.000  | WHS=0.023  | THS=0.000  |
+
+INFO: [Route 35-61] The design met the timing requirement.
+Phase 10 Post Router Timing | Checksum: 1f348da53
+
+Time (s): cpu = 00:11:47 ; elapsed = 00:07:31 . Memory (MB): peak = 2152.527 ; gain = 328.980
+INFO: [Route 35-16] Router Completed Successfully
+
+Time (s): cpu = 00:11:47 ; elapsed = 00:07:32 . Memory (MB): peak = 2152.527 ; gain = 328.980
+
+Routing Is Done.
+INFO: [Common 17-83] Releasing license: Implementation
+14 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+route_design completed successfully
+route_design: Time (s): cpu = 00:12:04 ; elapsed = 00:07:38 . Memory (MB): peak = 2152.527 ; gain = 347.105
+INFO: [Common 17-600] The following parameters have non-default value.
+general.maxThreads
+# phys_opt_design
+Command: phys_opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a35t'
+INFO: [Vivado_Tcl 4-241] Physical synthesis in post route mode ( 100.0% nets are fully routed)
+INFO: [Vivado_Tcl 4-383] Design worst setup slack (WNS) is greater than or equal to 0.000 ns. Skipping all physical synthesis optimizations.
+INFO: [Vivado_Tcl 4-232] No setup violation found. The netlist was not modified.
+INFO: [Common 17-83] Releasing license: Implementation
+5 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+phys_opt_design completed successfully
+phys_opt_design: Time (s): cpu = 00:01:03 ; elapsed = 00:00:24 . Memory (MB): peak = 2152.527 ; gain = 0.000
+INFO: [Common 17-600] The following parameters have non-default value.
+general.maxThreads
+# write_checkpoint -force [file join $out routed.dcp]
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.045 . Memory (MB): peak = 2152.527 ; gain = 0.000
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:42 ; elapsed = 00:00:18 . Memory (MB): peak = 2152.527 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/wyh/Desktop/chipcourse/chip_design_demo_raw0b/tools/local/camera_demo/bitstream_raw0b/routed.dcp' has been generated.
+write_checkpoint: Time (s): cpu = 00:01:00 ; elapsed = 00:00:41 . Memory (MB): peak = 2152.527 ; gain = 0.000
+# report_utilization -file [file join $out utilization.rpt]
+report_utilization: Time (s): cpu = 00:00:33 ; elapsed = 00:00:28 . Memory (MB): peak = 2152.527 ; gain = 0.000
+# report_timing_summary -file [file join $out timing_summary.rpt]
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+report_timing_summary: Time (s): cpu = 00:00:11 ; elapsed = 00:00:07 . Memory (MB): peak = 2152.527 ; gain = 0.000
+# report_route_status -file [file join $out route_status.rpt]
+# report_drc -file [file join $out drc.rpt]
+Command: report_drc -file C:/Users/wyh/Desktop/chipcourse/chip_design_demo_raw0b/tools/local/camera_demo/bitstream_raw0b/drc.rpt
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'D:/pkuwyh/Vivado/2019.1/data/ip'.
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Coretcl 2-168] The results of DRC are in file C:/Users/wyh/Desktop/chipcourse/chip_design_demo_raw0b/tools/local/camera_demo/bitstream_raw0b/drc.rpt.
+report_drc completed successfully
+report_drc: Time (s): cpu = 00:00:34 ; elapsed = 00:00:25 . Memory (MB): peak = 2152.527 ; gain = 0.000
+# set setup [get_timing_paths -delay_type max -max_paths 1]
+# set hold [get_timing_paths -delay_type min -max_paths 1]
+# if {[llength $setup] == 0 || [llength $hold] == 0} {error "No timing paths"}
+# set wns [get_property SLACK $setup]
+# set whs [get_property SLACK $hold]
+# if {$wns < 0 || $whs < 0} {error "Timing failed: setup=$wns hold=$whs"}
+# write_bitstream -force [file join $out fpga_top.bit]
+Command: write_bitstream -force C:/Users/wyh/Desktop/chipcourse/chip_design_demo_raw0b/tools/local/camera_demo/bitstream_raw0b/fpga_top.bit
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a35t'
+Running DRC as a precondition to command write_bitstream
+INFO: [IP_Flow 19-1839] IP Catalog is up to date.
+INFO: [DRC 23-27] Running DRC with 4 threads
+WARNING: [DRC CFGBVS-1] Missing CFGBVS and CONFIG_VOLTAGE Design Properties: Neither the CFGBVS nor CONFIG_VOLTAGE voltage property is set in the current_design.  Configuration bank voltage select (CFGBVS) must be set to VCCO or GND, and CONFIG_VOLTAGE must be set to the correct configuration voltage, in order to determine the I/O voltage support for the pins in bank 0.  It is suggested to specify these either using the 'Edit Device Properties' function in the GUI or directly in the XDC file using the following syntax:
+
+ set_property CFGBVS value1 [current_design]
+ #where value1 is either VCCO or GND
+
+ set_property CONFIG_VOLTAGE value2 [current_design]
+ #where value2 is the voltage provided to configuration bank 0
+
+Refer to the device configuration user guide for more information.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_cpu/core_i/ex_stage_i/mult_i/ input u_soc/i_cpu/core_i/ex_stage_i/mult_i//A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_cpu/core_i/ex_stage_i/mult_i/ input u_soc/i_cpu/core_i/ex_stage_i/mult_i//B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_cpu/core_i/ex_stage_i/mult_i/__0 input u_soc/i_cpu/core_i/ex_stage_i/mult_i/__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_cpu/core_i/ex_stage_i/mult_i/__0 input u_soc/i_cpu/core_i/ex_stage_i/mult_i/__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_cpu/core_i/ex_stage_i/mult_i/__1 input u_soc/i_cpu/core_i/ex_stage_i/mult_i/__1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_cpu/core_i/ex_stage_i/mult_i/short_mac input u_soc/i_cpu/core_i/ex_stage_i/mult_i/short_mac/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_cpu/core_i/ex_stage_i/mult_i/short_mul input u_soc/i_cpu/core_i/ex_stage_i/mult_i/short_mul/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_cpu/core_i/ex_stage_i/mult_i/short_mul input u_soc/i_cpu/core_i/ex_stage_i/mult_i/short_mul/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out input u_soc/i_npu_subsystem/i_npu_core/core/p_0_out/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out input u_soc/i_npu_subsystem/i_npu_core/core/p_0_out/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1 input u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1 input u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__2 input u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__2/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__2 input u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__2/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_1_out input u_soc/i_npu_subsystem/i_npu_core/core/p_1_out/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_1_out input u_soc/i_npu_subsystem/i_npu_core/core/p_1_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__5 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__5/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__5 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__5/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__1 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__1 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__3 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__3/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__3 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__3/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 input u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/douta1 input u_soc/i_npu_subsystem/i_npu_core/douta1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/douta1 input u_soc/i_npu_subsystem/i_npu_core/douta1/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_cpu/core_i/ex_stage_i/mult_i/ output u_soc/i_cpu/core_i/ex_stage_i/mult_i//P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_cpu/core_i/ex_stage_i/mult_i/__0 output u_soc/i_cpu/core_i/ex_stage_i/mult_i/__0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_cpu/core_i/ex_stage_i/mult_i/__1 output u_soc/i_cpu/core_i/ex_stage_i/mult_i/__1/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_cpu/core_i/ex_stage_i/mult_i/short_mac output u_soc/i_cpu/core_i/ex_stage_i/mult_i/short_mac/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out output u_soc/i_npu_subsystem/i_npu_core/core/p_0_out/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0 output u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0__0 output u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0__0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1 output u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__2 output u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__2/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_1_out output u_soc/i_npu_subsystem/i_npu_core/core/p_1_out/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0 output u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0 output u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0__0 output u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0__0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1 output u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1__0 output u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1__0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2 output u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2__0 output u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2__0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3 output u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3__0 output u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3__0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4 output u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4__0 output u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4__0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__5 output u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__5/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/douta1 output u_soc/i_npu_subsystem/i_npu_core/douta1/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_cpu/core_i/ex_stage_i/mult_i/ multiplier stage u_soc/i_cpu/core_i/ex_stage_i/mult_i//P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_cpu/core_i/ex_stage_i/mult_i/__0 multiplier stage u_soc/i_cpu/core_i/ex_stage_i/mult_i/__0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_cpu/core_i/ex_stage_i/mult_i/__1 multiplier stage u_soc/i_cpu/core_i/ex_stage_i/mult_i/__1/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_0_out/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0 multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0__0 multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__0__0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__2 multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__2/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_1_out multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_1_out/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0 multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0 multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0__0 multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__0__0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1 multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1__0 multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__1__0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2 multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2__0 multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__2__0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3 multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3__0 multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__3__0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4 multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4__0 multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__4__0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__5 multiplier stage u_soc/i_npu_subsystem/i_npu_core/core/p_3_out0__5/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_soc/i_npu_subsystem/i_npu_core/douta1 multiplier stage u_soc/i_npu_subsystem/i_npu_core/douta1/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][0], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][0], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][0], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][0]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][10], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][10], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][10], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][10]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][11], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][11], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][11], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][11]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][12], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][12], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][12], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][12]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][13], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][13], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][13], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][13]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][14], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][14], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][14], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][14]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][15], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][15], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][15], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][15]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][16], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][16], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][16], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][16]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][17], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][17], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][17], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][17]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][18], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][18], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][18], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][18]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][19], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][19], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][19], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][19]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][1], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][1], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][1], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][1]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][20], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][20], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][20], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][20]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][21], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][21], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][21], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][21]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][2], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][2], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][2], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][2]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][3], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][3], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][3], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][3]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][4], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][4], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][4], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][4]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][5], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][5], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][5], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][5]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][6], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][6], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][6], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][6]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][7], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][7], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][7], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][7]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][8], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][8], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][8], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][8]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__0 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][0][9], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][0][9], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][0][9], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][0][9]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][0], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][0], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][0], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][0]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][10], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][10], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][10], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][10]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][11], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][11], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][11], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][11]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][12], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][12], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][12], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][12]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][13], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][13], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][13], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][13]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][14], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][14], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][14], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][14]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][15], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][15], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][15], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][15]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][16], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][16], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][16], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][16]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][17], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][17], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][17], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][17]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][18], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][18], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][18], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][18]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][19], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][19], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][19], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][19]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][1], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][1], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][1], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][1]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][20], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][20], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][20], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][20]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][21], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][21], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][21], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][21]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][2], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][2], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][2], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][2]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][3], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][3], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][3], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][3]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][4], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][4], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][4], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][4]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][5], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][5], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][5], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][5]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][6], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][6], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][6], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][6]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][7], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][7], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][7], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][7]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][8], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][8], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][8], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][8]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__2 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][2][9], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][2][9], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][2][9], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][2][9]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][0], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][0], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][0], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][0]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][10], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][10], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][10], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][10]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][11], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][11], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][11], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][11]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][12], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][12], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][12], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][12]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][13], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][13], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][13], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][13]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][14], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][14], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][14], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][14]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][15], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][15], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][15], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][15]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][16], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][16], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][16], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][16]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][17], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][17], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][17], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][17]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][18], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][18], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][18], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][18]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][19], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][19], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][19], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][19]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][1], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][1], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][1], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][1]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][20], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][20], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][20], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][20]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][21], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][21], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][21], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][21]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][2], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][2], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][2], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][2]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][3], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][3], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][3], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][3]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][4], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][4], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][4], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][4]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][5], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][5], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][5], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][5]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][6], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][6], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][6], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][6]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][7], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][7], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][7], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][7]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][8], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][8], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][8], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][8]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPOR-1] Asynchronous load check: DSP u_soc/i_npu_subsystem/i_npu_core/core/p_3_out__4 output is connected to registers with an asynchronous reset (u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[0][3][9], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[1][3][9], u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[2][3][9], and u_soc/i_npu_subsystem/i_npu_core/core/a2_reg[3][3][9]). This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+WARNING: [DRC DPREG-4] DSP48E1_PregDynOpmodeZmuxP:: The DSP48E1 cell u_soc/i_npu_subsystem/i_npu_core/core/p_0_out__1 with the given dynamic OPMODE[6:0] connections may lead to an unregistered asynchronous feedback path without the PREG attribute enabled. Please refer to the user guide and if one of the internal P feedback opmodes is possible for this design the PREG attribute must be set to 1, currently set to 0
+WARNING: [DRC RTSTAT-10] No routable loads: 2 net(s) have no routable loads. The problem bus(es) and/or net(s) are u_soc/i_dmi_jtag/i_dmi_cdc/i_cdc_resp/i_dst/data_dst_q[resp][1:0].
+INFO: [Vivado 12-3199] DRC finished with 0 Errors, 174 Warnings
+INFO: [Vivado 12-3200] Please refer to the DRC report (report_drc) for more information.
+INFO: [Designutils 20-2272] Running write_bitstream with 4 threads.
+Loading data files...
+Loading site data...
+Loading route data...
+Processing options...
+Creating bitmap...
+Creating bitstream...
+Writing bitstream C:/Users/wyh/Desktop/chipcourse/chip_design_demo_raw0b/tools/local/camera_demo/bitstream_raw0b/fpga_top.bit...
+INFO: [Vivado 12-1842] Bitgen Completed Successfully.
+INFO: [Project 1-120] WebTalk data collection is mandatory when using a WebPACK part without a full Vivado license. To see the specific WebTalk data collected for your design, open the usage_statistics_webtalk.html or usage_statistics_webtalk.xml file in the implementation directory.
+INFO: [Common 17-83] Releasing license: Implementation
+9 Infos, 174 Warnings, 0 Critical Warnings and 0 Errors encountered.
+write_bitstream completed successfully
+write_bitstream: Time (s): cpu = 00:02:30 ; elapsed = 00:01:43 . Memory (MB): peak = 2279.473 ; gain = 126.945
+# set fd [open [file join $out build_status.txt] w]
+# puts $fd "PASS current RAW RTL; empty SRAM; part=xc7a35tcsg324-1; clock=20MHz; setup=$wns hold=$whs"
+# close $fd
+# close_design
+INFO: [Common 17-206] Exiting Vivado at Fri Nov 20 01:37:25 2026...

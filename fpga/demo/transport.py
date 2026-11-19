@@ -104,14 +104,22 @@ class OpenOCDTransport:
         self.close()
 
     def close(self):
-        if self._socket is not None:
-            self._socket.close()
-            self._socket = None
+        connection = self._socket
+        self._socket = None
+        if connection is not None:
+            # shutdown wakes a blocking recv in the camera worker on Windows;
+            # close alone may leave it waiting until the network timeout.
+            try:
+                connection.shutdown(socket.SHUT_RDWR)
+            except OSError:
+                pass
+            connection.close()
         self._receive.clear()
 
     def command(self, script: str) -> str:
         """Checked Tcl response; errors never masquerade as memory values."""
-        if self._socket is None:
+        connection = self._socket
+        if connection is None:
             raise TransportError("Connect to OpenOCD before issuing commands")
         if "\x1a" in script or "\x00" in script:
             raise ValueError("Forbidden Tcl framing byte")
@@ -119,9 +127,9 @@ class OpenOCDTransport:
         wrapped = "set __live_rc [catch {" + script + "} __live_result]; format {%d %s} $__live_rc $__live_result"
         with self._lock:
             try:
-                self._socket.sendall(wrapped.encode("utf-8") + b"\x1a")
+                connection.sendall(wrapped.encode("utf-8") + b"\x1a")
                 while b"\x1a" not in self._receive:
-                    data = self._socket.recv(65536)
+                    data = connection.recv(65536)
                     if not data:
                         raise TransportError("OpenOCD closed the Tcl connection")
                     self._receive.extend(data)

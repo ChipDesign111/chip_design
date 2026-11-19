@@ -229,6 +229,31 @@ class TclTransportTests(unittest.TestCase):
         with self.assertRaises(ValueError): transport.write_words(0x80000000,[-1])
         with self.assertRaises(ValueError): transport.boot_image(b'bad-size')
 
+    def test_close_interrupts_blocked_rpc_without_waiting_for_timeout(self):
+        client, peer = socket.socketpair()
+        client.settimeout(30)
+        peer.settimeout(2)
+        transport = OpenOCDTransport(timeout=30)
+        transport._socket = client
+        errors = []
+        def request():
+            try:
+                transport.command('version')
+            except Exception as error:
+                errors.append(error)
+        worker = threading.Thread(target=request, daemon=True)
+        try:
+            worker.start()
+            self.assertTrue(peer.recv(4096))  # Peer intentionally never replies.
+            transport.close()
+            worker.join(2)
+            self.assertFalse(worker.is_alive(), 'camera quit left a blocked RPC thread')
+            self.assertEqual(len(errors), 1)
+            self.assertIsInstance(errors[0], TransportError)
+        finally:
+            transport.close()
+            peer.close()
+
 
 if __name__ == '__main__':
     unittest.main()

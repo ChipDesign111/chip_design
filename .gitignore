@@ -31,6 +31,9 @@ Thumbs.db
 /vivado_*.backup.log
 /webtalk.jou
 /webtalk.log
+/webtalk_*.backup.*
+/usage_statistics_webtalk.html
+/usage_statistics_webtalk.xml
 /.Xil/
 /fpga/final_project/*.cache/
 /fpga/final_project/*.hw/

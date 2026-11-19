@@ -1,0 +1,18 @@
+test_attach_does_not_overwrite_outstanding_request (test_live_host.MailboxClientTests.test_attach_does_not_overwrite_outstanding_request) ... ok
+test_bad_input_never_writes_mailbox (test_live_host.MailboxClientTests.test_bad_input_never_writes_mailbox) ... ok
+test_failed_response_does_not_return_previous_result (test_live_host.MailboxClientTests.test_failed_response_does_not_return_previous_result) ... ok
+test_input_tail_preserves_padding (test_live_host.MailboxClientTests.test_input_tail_preserves_padding) ... ok
+test_npu_failure_disables_client (test_live_host.MailboxClientTests.test_npu_failure_disables_client) ... ok
+test_quantization_matches_compiler_ties_and_saturation (test_live_host.MailboxClientTests.test_quantization_matches_compiler_ties_and_saturation) ... ok
+test_repeated_requests_commit_last_and_return_actual_readback (test_live_host.MailboxClientTests.test_repeated_requests_commit_last_and_return_actual_readback) ... ok
+test_sequence_wrap_skips_zero (test_live_host.MailboxClientTests.test_sequence_wrap_skips_zero) ... ok
+test_timeout_reserves_slot_and_recovers_same_sequence (test_live_host.MailboxClientTests.test_timeout_reserves_slot_and_recovers_same_sequence) ... ok
+test_wrong_package_rejected_even_same_shape (test_live_host.MailboxClientTests.test_wrong_package_rejected_even_same_shape) ... ok
+test_close_interrupts_blocked_rpc_without_waiting_for_timeout (test_live_host.TclTransportTests.test_close_interrupts_blocked_rpc_without_waiting_for_timeout) ... ok
+test_fragmented_rpc_errors_memory_and_full_ordered_boot (test_live_host.TclTransportTests.test_fragmented_rpc_errors_memory_and_full_ordered_boot) ... ok
+test_invalid_transport_access_rejected_before_socket (test_live_host.TclTransportTests.test_invalid_transport_access_rejected_before_socket) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 1.607s
+
+OK

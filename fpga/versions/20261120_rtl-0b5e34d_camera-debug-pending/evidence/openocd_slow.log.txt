@@ -1,0 +1,13 @@
+Info : clock speed 100 kHz
+Error: JTAG scan chain interrogation failed: all zeroes
+Error: Check JTAG interface, timings, target power, etc.
+Error: Trying to use configured scan chain anyway...
+Error: cv32.cpu: IR capture error; saw 0x00 not 0x01
+Warn : Bypassing JTAG setup events due to errors
+Error: dtmcontrol is 0. Check JTAG connectivity/board power.
+Warn : target cv32.cpu examination failed
+Info : starting gdb server for cv32.cpu on 3333
+Info : Listening on port 3333 for gdb connections
+Info : Listening on port 6666 for tcl connections
+Info : Listening on port 4444 for telnet connections
+shutdown command invoked

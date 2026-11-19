@@ -2,14 +2,18 @@
 # vivado -mode batch -source fpga/demo/build_bitstream.tcl -tclargs OUTPUT_DIR
 set here [file normalize [file dirname [info script]]]
 set root [file normalize [file join $here ../..]]
-if {[llength $argv] != 1} {error "Pass a fresh output directory"}
+if {[llength $argv] < 1 || [llength $argv] > 2} {error "Pass a fresh output directory and optional thread count"}
 set out [file normalize [lindex $argv 0]]
 if {[file exists [file join $out live_demo.xpr]]} {error "Use a fresh build directory"}
 file mkdir $out
-set_param general.maxThreads 4
+set threads 4
+if {[llength $argv] == 2} {set threads [lindex $argv 1]}
+if {![string is integer -strict $threads] || $threads < 1 || $threads > 4} {error "Thread count must be 1..4"}
+set_param general.maxThreads $threads
 create_project live_demo $out -part xc7a35tcsg324-1 -force
 set_property target_language Verilog [current_project]
 set includes {}
+set sources {}
 set fd [open [file join $root rtl/filelist.f] r]
 foreach line [split [read $fd] \n] {
     set line [string trim $line]
@@ -17,10 +21,11 @@ foreach line [split [read $fd] \n] {
     if {[string match {+incdir+*} $line]} {
         lappend includes [file normalize [file join $root [string range $line 8 end]]]
     } else {
-        add_files -norecurse [file join $root $line]
+        lappend sources [file join $root $line]
     }
 }
 close $fd
+add_files -norecurse $sources
 set_property include_dirs $includes [get_filesets sources_1]
 add_files -norecurse [file join $root fpga/fpga_top.sv]
 add_files -fileset constrs_1 -norecurse [file join $root fpga/fpga_top.xdc]

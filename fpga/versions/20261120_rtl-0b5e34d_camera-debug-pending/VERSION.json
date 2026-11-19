@@ -1,0 +1,52 @@
+{
+  "version": "20261120_rtl-0b5e34d_camera-debug-pending",
+  "status": "BUILD_AND_CONFIGURATION_PASS_CPU_JTAG_UNAVAILABLE",
+  "rtl_commit": "0b5e34d29c3b0ac333461c0edba8197738906e1a",
+  "rtl_modified": false,
+  "software_checkpoint": "b1e26b678dc0d06309216bcc449b44a9e82c8d81",
+  "part": "xc7a35tcsg324-1",
+  "clock_hz": 20000000,
+  "preinitialized": false,
+  "build": {
+    "slice_luts": 18141,
+    "slice_registers": 15058,
+    "bram36_tiles": 2,
+    "dsp48": 30,
+    "setup_wns_ns": 0.758,
+    "hold_whs_ns": 0.023,
+    "setup_failing_endpoints": 0,
+    "hold_failing_endpoints": 0,
+    "drc_errors": 0,
+    "drc_warnings": 174,
+    "route_verification_passed": true,
+    "timing_constraint_limits": {
+      "internal_unconstrained_endpoints": 0,
+      "inputs_without_input_delay": 3,
+      "outputs_without_output_delay": 3,
+      "scope": "Supplied constraints; no complete external JTAG I/O timing signoff"
+    }
+  },
+  "bitstream": {
+    "path": "artifacts/fpga_top.bit",
+    "bytes": 2192116,
+    "sha256": "ce118945509b83d281c657aa8297aab0afcdb7eb6fb9b78332b380f2bc0e6efa"
+  },
+  "configuration": {
+    "programming_passed": true,
+    "target": "1234-tulA/xc7a35t_0",
+    "restored_to_this_bitstream": true
+  },
+  "board_functional_test": {
+    "status": "NOT_RUN",
+    "firmware_loaded": false,
+    "planned_arithmetic_requests": 100,
+    "planned_trained_engineering_requests": 12,
+    "reason": "CPU TAP all zero with new RAW bit at1MHz/100kHz and historical board-passed bit at1MHz; debug connector/reset/clock path requires inspection",
+    "human_accuracy_verified": false
+  },
+  "checkpoint_sha256": {
+    "synthesized.dcp": "6fb4428415cec7e8a57aa1761f341222753e429472616f39a299a2f2d94545c8",
+    "routed.dcp": "8eca6efa126d90564f55fbd740b29f65fdc7ddd950bb5748dc5653f4b6891999"
+  },
+  "scope": "FPGA build/STA/configuration only; not CPU/NPU board inference pass or new ASIC signoff"
+}
