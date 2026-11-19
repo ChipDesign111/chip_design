@@ -18,6 +18,7 @@
     "eda_exit_code": 0,
     "collect_exit_code": 0,
     "run_exit_code": 0,
+    "pipeline_exit_code": 0,
     "die_um": [
       1948.8,
       1948.8
