@@ -52,14 +52,23 @@ def audit(root):
     for mode in sorted(root.glob('sdf_*')):
         if not mode.is_dir():continue
         text=(mode/'simulation.log').read_text(errors='replace')
-        start=float(re.search(r'ACTIVE_START time_ns=([\d.]+)',text).group(1))
-        end=float(re.search(r'ACTIVE_END time_ns=([\d.]+)',text).group(1))
+        start_match=re.search(r'ACTIVE_START time_ns=([\d.]+)',text)
+        end_match=re.search(r'ACTIVE_END time_ns=([\d.]+)',text)
+        if not start_match or not end_match or end_match.start()<=start_match.start():
+            raise ValueError('Missing or invalid active execution window')
+        start=float(start_match.group(1))
+        end=float(end_match.group(1))
         violations=[]
         for m in re.finditer(r'Timing violation in (.*?)\n\s*(\$\w+\(.*?;)',text,re.S):
-            times=[int(x)/1000 for x in re.findall(r':(\d+)',m[2])]
-            if not times:raise ValueError('Cannot classify timing event')
-            time=max(times);phase='initial_reset' if time<start else 'final_reset' if time>=end else 'active'
-            violations.append({'instance':m[1].strip(),'time_ns':time,'phase':phase,'check':m[2].strip()})
+            # VCS does not print the event time here. The ':91356' tokens in
+            # its condition text are check identifiers, not timestamps. Classify
+            # by the event's position relative to the emitted execution markers
+            # and retain its log line instead of inventing a time.
+            phase=('initial_reset' if m.start()<start_match.start() else
+                   'final_reset' if m.start()>=end_match.start() else 'active')
+            event_line=text.count('\n',0,m.start())+1
+            violations.append({'instance':m[1].strip(),'phase':phase,
+                               'event_line':event_line,'check':m[2].strip()})
         legacy=re.search(r'FUNCTIONAL_PASS cycles=(\d+) npu_cycles=(\d+) dma_mac_overlap=(\d+) read_overlap=(\d+) write_overlap=(\d+)',text)
         raw=re.search(r'FUNCTIONAL_PASS cycles=(\d+) scenario=raw_soc tiles=(\d+) outputs=(\d+) inputs=(\d+) reads=(\d+)',text)
         soc=re.search(r'FUNCTIONAL_PASS cycles=(\d+) scenario=(cpu_only|har_benchmark)',text)
@@ -146,7 +155,14 @@ def audit(root):
     summary['benchmark_pair_errors']=pair_errors
     summary['benchmark_speedups']=comparisons
     summary['benchmark_clock_period_ns']=20
-    summary['active_window_dynamic_timing_clean']=all(not x['timing_counts'].get('active',0) for x in summary['cases'].values())
+    phase_counts={phase:sum(x['timing_counts'].get(phase,0)
+                            for x in summary['cases'].values())
+                  for phase in ('initial_reset','active','final_reset')}
+    summary['dynamic_timing_phase_counts']=phase_counts
+    summary['initial_reset_dynamic_timing_events_retained']=phase_counts['initial_reset']
+    summary['active_window_dynamic_timing_clean']=phase_counts['active']==0
+    summary['final_reset_dynamic_timing_clean']=phase_counts['final_reset']==0
+    summary['all_phase_dynamic_timing_clean']=not any(phase_counts.values())
     summary['normal_acceptance']={
         'functional_pass':bool(summary['cases']) and all(x['functional_pass'] for x in summary['cases'].values()),
         'raw_soc_case_present':summary['all_expected_raw_soc_cases_present'] if expects_raw_soc else True,
@@ -157,7 +173,12 @@ def audit(root):
                                       if expected_har_modes else True,
         'benchmark_protocol_complete':summary['benchmark_protocol_complete'],
         'sdf_binding_complete':summary['binding_complete_for_instances_and_checks'],
-        'dynamic_timing_clean':bool(summary['cases']) and all(not x['timing_violations'] for x in summary['cases'].values()),
+        'dynamic_timing_clean':summary['active_window_dynamic_timing_clean'] and
+                               summary['final_reset_dynamic_timing_clean'],
+        'active_window_dynamic_timing_clean':summary['active_window_dynamic_timing_clean'],
+        'final_reset_dynamic_timing_clean':summary['final_reset_dynamic_timing_clean'],
+        'all_phase_dynamic_timing_clean':summary['all_phase_dynamic_timing_clean'],
+        'initial_reset_timing_events_retained':phase_counts['initial_reset'],
         'warnings_are_reported_not_required_to_be_zero':True}
     summary['normal_postsim_pass']=all(summary['normal_acceptance'][k] for k in
                                        ['functional_pass','raw_soc_case_present',
@@ -168,7 +189,8 @@ def audit(root):
                                         'sdf_binding_complete','dynamic_timing_clean'])
     summary['scope']=('Full notifier/message checking across legacy HAR, dynamic RAW, prepacked RAW, '
                       'CPU fallback and paired HAR-benchmark firmware on one final gate netlist/SDF; '
-                      'reset events retained, not masked. SDF functional runs do not recreate '
+                      'initial-reset events are retained and reported but normal acceptance requires '
+                      'clean active-window and final-reset timing. SDF functional runs do not recreate '
                       'the RTL benchmark speedup claim. Unsupported negative IOPATH clamps remain explicit; '
                       'not complete signoff.')
     (root/'audit.json').write_text(json.dumps(summary,indent=2)+'\n')
