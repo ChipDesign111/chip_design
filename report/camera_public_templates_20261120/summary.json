@@ -1,0 +1,373 @@
+{
+  "format": "public_action_template_experiment_v1",
+  "date_local": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "status": "PUBLIC_CANDIDATE_NOT_ADOPTED_CURRENT_VERIFIED_MODEL_RETAINED",
+  "requested_minimum_accuracy": 0.4,
+  "current_verified_accuracy": 0.40384615384615385,
+  "minimum_already_met": true,
+  "source": {
+    "dataset": "UTD-MHAD official RGB subset",
+    "source_page": "https://personal.utdallas.edu/~kehtar/UTD-MHAD.html",
+    "archive_url": "https://personal.utdallas.edu/~kehtar/UTD-MAD/RGB.zip",
+    "retrieval": "HTTP206 byte ranges; central directory and each member CRC verified",
+    "downloaded_RGB_clips": 8,
+    "decoded_AVI_bytes": 11475992,
+    "source_files": [
+      {
+        "file": "a3_s1_t1_color.avi",
+        "source_action_id": 3,
+        "subject": 1,
+        "trial": 1,
+        "bytes": 1386318,
+        "sha256": "fcd4cf53ea5cfba69e18bc3ea1e3ee988eeb431266e0e2c791463ba240ac3aae",
+        "container_fps": 15.0,
+        "frame_count": 51
+      },
+      {
+        "file": "a3_s2_t1_color.avi",
+        "source_action_id": 3,
+        "subject": 2,
+        "trial": 1,
+        "bytes": 1358788,
+        "sha256": "9fd181255f1949f37f1daef13ab707004db27194862baad7cad2b13f9cfbafbb",
+        "container_fps": 15.0,
+        "frame_count": 51
+      },
+      {
+        "file": "a3_s3_t1_color.avi",
+        "source_action_id": 3,
+        "subject": 3,
+        "trial": 1,
+        "bytes": 1317346,
+        "sha256": "7cb3ca942b83455f38dcfd2c9dfdd99ac7915294f1a7351c4bc88ff682e4e91e",
+        "container_fps": 15.0,
+        "frame_count": 50
+      },
+      {
+        "file": "a3_s4_t1_color.avi",
+        "source_action_id": 3,
+        "subject": 4,
+        "trial": 1,
+        "bytes": 1240420,
+        "sha256": "a14c12daabc3615a31a65ebebba27d79ab4a8646c1c544f0a4f26bb84236ddae",
+        "container_fps": 15.0,
+        "frame_count": 47
+      },
+      {
+        "file": "a27_s1_t1_color.avi",
+        "source_action_id": 27,
+        "subject": 1,
+        "trial": 1,
+        "bytes": 1954004,
+        "sha256": "2fe8d6df89b3f81b64978645e9c6cba1060867be663fe5c2888e9fd3377f8946",
+        "container_fps": 15.0,
+        "frame_count": 74
+      },
+      {
+        "file": "a27_s2_t1_color.avi",
+        "source_action_id": 27,
+        "subject": 2,
+        "trial": 1,
+        "bytes": 1115340,
+        "sha256": "d96d5c48d969ea808c971780966394ae2feeb69b1df0668466cf2f3534c56f92",
+        "container_fps": 15.0,
+        "frame_count": 42
+      },
+      {
+        "file": "a27_s3_t1_color.avi",
+        "source_action_id": 27,
+        "subject": 3,
+        "trial": 1,
+        "bytes": 1751666,
+        "sha256": "29a02b01d9011bc20bc7616d8b25c9ed62ecb03e7e198a4b70c01d2248fbcccc",
+        "container_fps": 15.0,
+        "frame_count": 67
+      },
+      {
+        "file": "a27_s4_t1_color.avi",
+        "source_action_id": 27,
+        "subject": 4,
+        "trial": 1,
+        "bytes": 1352110,
+        "sha256": "4d3a9689d249c3d744504e1d227d339c355d8ad9dadbddaa9cff2fb8a251bfa6",
+        "container_fps": 15.0,
+        "frame_count": 51
+      }
+    ],
+    "citation": "C.Chen,R.Jafari,N.Kehtarnavaz,UTD-MHAD,ICIP2015",
+    "license_observation": "No explicit license stated on author download page; public research dataset/citation. No open license, redistribution or commercial-use grant inferred.",
+    "raw_source_videos_redistributed": false
+  },
+  "adaptation": {
+    "original_actions": {
+      "3": "right hand wave",
+      "27": "squat"
+    },
+    "orientation": "HorizontalRGBflip before HOF: authorright/image-right ->localright/image-left",
+    "viewport_xyxy": [
+      180,
+      150,
+      460,
+      430
+    ],
+    "clock": "Container15fps for external files; actual recorded frame clocks for local videos",
+    "mirror_augmentation": "Swaps left/right labels and motion-direction bins; not an extra independent recording",
+    "public_rows_in_training": 88,
+    "local_rows_in_training": 150,
+    "total_training_rows": 238,
+    "public_recordings_in_validation_or_test": 0,
+    "head_or_feet_required": false
+  },
+  "same_validation_comparison": {
+    "samples": 52,
+    "classes_present": 5,
+    "missing_class": "right_arm",
+    "current_correct": 34,
+    "public_candidate_correct": 37,
+    "current_integer_accuracy": 0.6538461538461539,
+    "public_candidate_integer_accuracy": 0.7115384615384616,
+    "current_macro_recall": 0.6721978021978022,
+    "public_candidate_macro_recall": 0.7204395604395604,
+    "common_weight_current_loss": 0.87176,
+    "common_weight_public_candidate_loss": 1.294886,
+    "confidence_caveat": "Accuracy improves on validation but common-weight cross-entropy does not"
+  },
+  "same_frozen_test_comparison": {
+    "samples": 156,
+    "sessions": 6,
+    "classes": 6,
+    "keys_labels_timestamps_unchanged": true,
+    "current_correct": 63,
+    "public_candidate_correct": 63,
+    "current_integer_accuracy": 0.40384615384615385,
+    "public_candidate_integer_accuracy": 0.40384615384615385,
+    "per_class": [
+      {
+        "label": "standing",
+        "samples": 22,
+        "current_correct": 17,
+        "public_candidate_correct": 17
+      },
+      {
+        "label": "left_arm",
+        "samples": 22,
+        "current_correct": 2,
+        "public_candidate_correct": 4
+      },
+      {
+        "label": "right_arm",
+        "samples": 20,
+        "current_correct": 3,
+        "public_candidate_correct": 3
+      },
+      {
+        "label": "both_arms",
+        "samples": 28,
+        "current_correct": 12,
+        "public_candidate_correct": 13
+      },
+      {
+        "label": "squat",
+        "samples": 24,
+        "current_correct": 11,
+        "public_candidate_correct": 11
+      },
+      {
+        "label": "lean",
+        "samples": 40,
+        "current_correct": 18,
+        "public_candidate_correct": 15
+      }
+    ],
+    "candidate_selection_frozen_before_test": true,
+    "scope": "Reused original whole-clip-labelled recorded-session holdout; not a new blind or cross-person test"
+  },
+  "other_validation_only_trials": {
+    "ema_tau030": {
+      "float_validation": {
+        "accuracy": 0.5961538461538461,
+        "balanced_accuracy_present_classes": 0.6928571428571428,
+        "recall_by_class": [
+          0.5,
+          0.25,
+          null,
+          1.0,
+          0.7142857142857143,
+          1.0
+        ],
+        "class_counts": [
+          26,
+          8,
+          0,
+          5,
+          7,
+          6
+        ],
+        "confusion_actual_by_predicted": [
+          [
+            13,
+            7,
+            3,
+            1,
+            1,
+            1
+          ],
+          [
+            2,
+            2,
+            0,
+            4,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            5,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            5,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            6
+          ]
+        ]
+      },
+      "weighted_validation_loss": 0.8045075535774231,
+      "test_evaluated": false,
+      "deployed": false
+    },
+    "max_window060": {
+      "float_validation": {
+        "accuracy": 0.46153846153846156,
+        "balanced_accuracy_present_classes": 0.5835164835164836,
+        "recall_by_class": [
+          0.34615384615384615,
+          0.0,
+          null,
+          1.0,
+          0.5714285714285714,
+          1.0
+        ],
+        "class_counts": [
+          26,
+          8,
+          0,
+          5,
+          7,
+          6
+        ],
+        "confusion_actual_by_predicted": [
+          [
+            9,
+            5,
+            2,
+            0,
+            7,
+            3
+          ],
+          [
+            0,
+            0,
+            1,
+            6,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            5,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0,
+            0,
+            4,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            6
+          ]
+        ]
+      },
+      "weighted_validation_loss": 1.2415543794631958,
+      "test_evaluated": false,
+      "deployed": false
+    }
+  },
+  "decision": {
+    "status": "PUBLIC_CANDIDATE_NOT_ADOPTED_CURRENT_VERIFIED_MODEL_RETAINED",
+    "reason": "Same156test rows remain63correct; no aggregate gain, while common-weight validation loss is worse. Keep current verified model.",
+    "current_model_tag": "39b64486fa37f2a4",
+    "candidate_model_tag": "c0bb8a7266e6feb7",
+    "candidate_test_correct": 63,
+    "current_test_correct": 63,
+    "test_samples": 156,
+    "candidate_programmed_to_FPGA": false,
+    "current_model_or_weights_changed": false
+  },
+  "verification": {
+    "candidate_resident_bytes": 8192,
+    "candidate_free_SRAM_bytes": 3932,
+    "candidate_compilation_target": "int22-raw-v1",
+    "candidate_hardware_verified": false,
+    "current_hardware_model_previously_verified_on156_requests": true,
+    "source_reader_unit_tests_passed": 25,
+    "hardware_source_SHA_checks_passed": 75,
+    "independent_experiment_audit_checks": 70,
+    "independent_experiment_audit_passed": 70,
+    "RTL_changed": false,
+    "FPGA_bitstream_changed": false
+  },
+  "private_evidence_sha256": {
+    "selection.json": "0ea83ac3759ce6a325a4a870ca7218ebac3db7aa6287aa02cfaf95594bd4a8d9",
+    "actions.npz": "bcc2f54b7a8510883a163b296b58c508ca78df84d9dc16e63d3aaa6b690fb346",
+    "model/camera_demo.json": "6eb0b1cc6878d033b1a9a690edf26ca7ee6d5fffecb042a06c267fd596fe3612",
+    "model/resident/firmware.bin": "87c6a8a7bbae2e7bb4077dffb2e21b2209c945fb10211a248f7193472bf65133",
+    "export_provenance.json": "d8b51164cbf4a807f4ebdf9b6a78df505aeff9408f6fec43d5e66cd880f8045d",
+    "replay/provenance.json": "19a052e2b34095dc3edfb8eef83ea4a7a85ccbbd782784922de0aebf51b8c5ed",
+    "independent_final_audit.json": "2f04f9d3b505b98a37181beaf37694505048ae67cea00c4789b4ea6141e646eb",
+    "deployment_decision.json": "e88abb4edb5f1d0825eaa83fd83910330dcd6dab06c7fce534b179ea79d087a1"
+  },
+  "export_policy": "Source URLs, hashes and aggregate metrics only; local/private or public-source videos, images, feature vectors and trained user-model weights are not uploaded"
+}

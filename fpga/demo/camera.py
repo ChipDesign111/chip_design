@@ -21,6 +21,7 @@ from .features import (PoseWindow, append_dataset, DEFAULT_LABELS,
                        feature_metadata, feature_profile_from_metadata, normalize_pose)
 
 DEFAULT_POSE_MODEL = Path('tools/local/camera_demo/pose_landmarker_lite.task')
+REAL_CAMERA_SOURCES = ('local-camera', 'local-camera+public-templates')
 CONNECTIONS = ((11,12),(11,13),(13,15),(12,14),(14,16),(11,23),(12,24),(23,24),
                (23,25),(25,27),(27,29),(29,31),(24,26),(26,28),(28,30),(30,32))
 WINDOW_NAME = 'Camera to FPGA - local processing'
@@ -211,8 +212,12 @@ def read_camera_model(package, *, allow_synthetic_engineering_test=False):
         raise ValueError('Untrained or incompatible camera model')
     profile = feature_profile_from_metadata(contract)
     source=model.get('dataset_source')
-    if source != 'local-camera' and not (allow_synthetic_engineering_test and source == 'synthetic-engineering-test'):
+    if source not in REAL_CAMERA_SOURCES and not (allow_synthetic_engineering_test and source == 'synthetic-engineering-test'):
         raise ValueError('Camera inference requires a model trained on labelled local-camera recordings; synthetic/unknown training data are not a human-action model')
+    if source == 'local-camera+public-templates':
+        public_sources = model.get('public_template_sources')
+        if (contract.get('capture_source') != source or not isinstance(public_sources, list) or not public_sources):
+            raise ValueError('Mixed-source camera model is missing public-template provenance')
     expected = feature_metadata(contract.get('window_seconds', 1.0), profile=profile)
     if any(contract.get(k) != v for k, v in expected.items()):
         raise ValueError('Camera model uses a different feature extraction contract')
@@ -488,7 +493,7 @@ def run_capture(args):
                                               'roundtrip_ms':result.roundtrip_ms,'input_age_ms':1000*age,
                                               'backend':result.backend}),flush=True)
                             last_result_seq=result.sequence
-                    if model.get('dataset_source') != 'local-camera':
+                    if model.get('dataset_source') not in REAL_CAMERA_SOURCES:
                         lines.insert(0,'SYNTHETIC ENGINEERING TEST ONLY - NO HUMAN ACCURACY')
                     lines.append('PC: video features; FPGA RAW NPU: FC1; FPGA CPU: FC2/ReLU. Q: exit' if profile in ('video','image','flow')
                                  else 'PC: pose; FPGA RAW NPU: FC1; FPGA CPU: FC2/ReLU. Q: exit')

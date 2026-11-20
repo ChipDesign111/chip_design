@@ -345,6 +345,16 @@ class FeaturesTest(unittest.TestCase):
                 if profile=='flow':model['feature_contract']['train_feature_scale']=[1.0]*64
                 (folder/'camera_demo.json').write_text(json.dumps(model),encoding='utf-8')
                 self.assertEqual(feature_profile_from_metadata(read_camera_model(folder)['feature_contract']),profile)
+            model['dataset_source']='local-camera+public-templates'
+            model['feature_contract']['capture_source']=model['dataset_source']
+            model['public_template_sources']=[{'dataset':'UTD-MHAD','action':'right hand wave'}]
+            (folder/'camera_demo.json').write_text(json.dumps(model),encoding='utf-8')
+            self.assertEqual(read_camera_model(folder)['dataset_source'],model['dataset_source'])
+            del model['public_template_sources']
+            (folder/'camera_demo.json').write_text(json.dumps(model),encoding='utf-8')
+            with self.assertRaisesRegex(ValueError,'public-template provenance'):
+                read_camera_model(folder)
+            model['dataset_source']='local-camera'
             model['feature_contract']=feature_metadata(profile='knees')
             model['feature_contract']['joints']=list(JOINTS)
             (folder/'camera_demo.json').write_text(json.dumps(model),encoding='utf-8')
