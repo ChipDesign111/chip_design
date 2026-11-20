@@ -1,0 +1,201 @@
+{
+  "format": "camera_flow_adjustment_aggregate_v1",
+  "date_local": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "status": "IMPROVED_AND_FPGA_VERIFIED_STILL_NOT_RELIABLE_SIX_ACTION_DEMO",
+  "problem_evidence": {
+    "whole_clip_labels_include_relaxed_pose_keyboard_approach_and_return_frames": true,
+    "old_clean_training_rows": 73,
+    "old_clean_training_rows_without_any_observed_joint": 31,
+    "old_lean_training_rows": 4,
+    "old_lean_training_rows_without_any_observed_joint": 4,
+    "original_independent_training_clips": 6,
+    "validation_right_arm_clip_seconds": 0.266,
+    "validation_right_arm_clip_frames": 9,
+    "scope": "These measurements indicate capture, labelling and feature limitations; they do not establish that the user performs actions badly"
+  },
+  "changes": {
+    "frontend": "Full-frame optical motion HOF64; no pose detector, head, feet or complete-body gate",
+    "flow_window_seconds": 0.25,
+    "observation_resolution": [
+      128,
+      96
+    ],
+    "feature_layout": "4x4 spatial cells, four signed-motion magnitude bins per cell",
+    "camera_motion_correction": "Subtract global median XY optical flow",
+    "normalization": "Per-feature training-only standard deviation with a positive floor",
+    "training": "Balanced25/class batches; mirror swaps directional bins and left/right labels; time reversal and mild spatial/amplitude augmentation",
+    "training_augmented_rows_count_as_new_sessions": false,
+    "recording_control": "SPACE starts, ENTER saves; separate keys prevent held-key auto-repeat from stopping a newly started clip",
+    "raw_recordings_deleted": false,
+    "user_recapture_required_for_this_adjustment": false
+  },
+  "same_frozen_test_comparison": {
+    "samples": 156,
+    "independent_recording_sessions": 6,
+    "classes": 6,
+    "same_session_timestamp_label_keys": true,
+    "previous_correct": 32,
+    "adjusted_correct": 63,
+    "previous_integer_accuracy": 0.20512820512820512,
+    "adjusted_integer_accuracy": 0.40384615384615385,
+    "additional_correct": 31,
+    "improvement_percentage_points": 19.871794871794872,
+    "per_class": [
+      {
+        "label": "standing",
+        "same_test_samples": 22,
+        "previous_correct": 19,
+        "adjusted_correct": 17,
+        "previous_accuracy": 0.8636363636363636,
+        "adjusted_accuracy": 0.7727272727272727
+      },
+      {
+        "label": "left_arm",
+        "same_test_samples": 22,
+        "previous_correct": 13,
+        "adjusted_correct": 2,
+        "previous_accuracy": 0.5909090909090909,
+        "adjusted_accuracy": 0.09090909090909091
+      },
+      {
+        "label": "right_arm",
+        "same_test_samples": 20,
+        "previous_correct": 0,
+        "adjusted_correct": 3,
+        "previous_accuracy": 0.0,
+        "adjusted_accuracy": 0.15
+      },
+      {
+        "label": "both_arms",
+        "same_test_samples": 28,
+        "previous_correct": 0,
+        "adjusted_correct": 12,
+        "previous_accuracy": 0.0,
+        "adjusted_accuracy": 0.42857142857142855
+      },
+      {
+        "label": "squat",
+        "same_test_samples": 24,
+        "previous_correct": 0,
+        "adjusted_correct": 11,
+        "previous_accuracy": 0.0,
+        "adjusted_accuracy": 0.4583333333333333
+      },
+      {
+        "label": "lean",
+        "same_test_samples": 40,
+        "previous_correct": 0,
+        "adjusted_correct": 18,
+        "previous_accuracy": 0.0,
+        "adjusted_accuracy": 0.45
+      }
+    ],
+    "scope": "Same original recorded-session holdout reused once after validation-only selection; prompt labels still include idle/transitions; not a new blind test or cross-person accuracy claim"
+  },
+  "validation": {
+    "samples": 52,
+    "classes_present": 5,
+    "missing_class": "right_arm",
+    "correct": 34,
+    "integer_accuracy": 0.6538461538461539,
+    "macro_recall_present_classes": 0.6721978021978022,
+    "float_integer_argmax_agreement": 1.0,
+    "weights_selected_by": "Weighted validation loss only; frozen before final test extraction"
+  },
+  "actual_fpga": {
+    "samples": 156,
+    "all_six_int8_scores_exact": true,
+    "argmax_exact": true,
+    "sequences_and_executions_contiguous_from_one": true,
+    "backend": "openocd-jtag",
+    "package_tag": "39b64486fa37f2a4",
+    "feature_schema": "video_hof64_v5",
+    "correct_labels": 63,
+    "heldout_label_accuracy": 0.40384615384615385,
+    "clock_hz": 20000000,
+    "device_cycles": {
+      "min": 8837.0,
+      "median": 8845.0,
+      "p95": 8849.0,
+      "max": 8850.0,
+      "mean": 8845.21794871795
+    },
+    "device_compute_ms": {
+      "min": 0.44185,
+      "median": 0.44225,
+      "p95": 0.44245,
+      "max": 0.4425,
+      "mean": 0.4422608974358975
+    },
+    "usb_jtag_roundtrip_ms": {
+      "min": 155.9999999954016,
+      "median": 264.9999999994179,
+      "p95": 281.00000000267755,
+      "max": 296.9999999986612,
+      "mean": 247.4551282050062
+    },
+    "openocd_errors": 0,
+    "openocd_warnings": 0,
+    "bitstream_sha256": "ce118945509b83d281c657aa8297aab0afcdb7eb6fb9b78332b380f2bc0e6efa"
+  },
+  "hardware_unchanged": {
+    "network": [
+      64,
+      32,
+      6
+    ],
+    "RTL_changed": false,
+    "bitstream_changed": false,
+    "resident_bytes": 8192,
+    "free_SRAM_bytes": 3936
+  },
+  "reproducibility": {
+    "frontend_matches_202_frozen_training_validation_rows_bit_exact": true,
+    "training_checkpoint_bit_exact_reproduction": {
+      "status": "EXACT_REPRODUCTION_OF_FROZEN_CHECKPOINT",
+      "best_epoch": 144,
+      "epochs": 264,
+      "parameter_max_errors": {
+        "0.weight": 0.0,
+        "0.bias": 0.0,
+        "2.weight": 0.0,
+        "2.bias": 0.0
+      },
+      "train_scale_bit_identical": true,
+      "validation_accuracy": 0.6538461538461539,
+      "test_data_read": false,
+      "deployed_weights_changed": false
+    },
+    "selection_sha256": "a1f3743454f7f4082275f19bd37d3e6b95496711b10c97684019dca6b86e44ad",
+    "checkpoint_sha256": "43a5d3be8204d4c1f9c754ed69da68cbe8a12053b7d064256e64ccf3f9c1bb5d"
+  },
+  "verification": {
+    "camera_feature_training_tests_passed": 84,
+    "hardware_source_SHA_checks_passed": 75,
+    "independent_audit_checks": 69,
+    "independent_audit_passed": 69,
+    "board_replay_count": 1,
+    "new_model_selection_after_test": false
+  },
+  "remaining_limitations": [
+    "Left/right arm classes remain weak",
+    "Validation lacks a valid right_arm session",
+    "Independent clips are few; this is not a reliable six-action or cross-person classifier"
+  ],
+  "private_evidence_sha256": {
+    "selection.json": "a1f3743454f7f4082275f19bd37d3e6b95496711b10c97684019dca6b86e44ad",
+    "actions.npz": "a4dc119183ed7334af5deab1ab4e78d6f527fb4210e4652d6abfb8c09f23113e",
+    "model/camera_demo.json": "fe361396232eb0ff097fd35824f37fb6060c4032ece9adb50cf16c6d88752bc6",
+    "model/resident/firmware.bin": "8d461d0e10c84e14d0af16ee690864c6bf0760207c36c6cc9d1117c05e4c946c",
+    "export_provenance.json": "97ffd83e71a4f993ebd4808396989d64557e5d17ff08ef3e91495c6503574c88",
+    "replay/provenance.json": "2fa4c93f8ec72b01ad17c8e29b45ad013b6e6a65017ce418fe117f72414c0b14",
+    "board_results.jsonl": "44ff76b3270cde144494155e91f10de6c55d6a2b13501cc8eca0896d72b35949",
+    "board_summary.json": "36f86b39bea6eee7ff0a8f7c891bc4578b41a615b382061fda4456b9b5d3d72f",
+    "independent_final_audit.json": "ac2a05c18ed0132b4f2e8325532df679081daf63912337ec6617fa340d4a1d71",
+    "openocd.log": "37f1ac5cb2fa3f98723acf56749846bcbdaf4709ab70f470da92540d85bbfb49",
+    "program.log": "020039e344c77a8046a28d4fb4f897f49a91450c5a875836235dd1987fad11b0",
+    "host.log": "44ff76b3270cde144494155e91f10de6c55d6a2b13501cc8eca0896d72b35949"
+  },
+  "export_policy": "Aggregate metrics and hashes only; no user videos, images, feature vectors, trained user-model weights or private paths"
+}

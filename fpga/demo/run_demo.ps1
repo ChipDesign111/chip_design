@@ -10,7 +10,8 @@ param(
     [ValidateSet('full','knees')]
     [string]$FeatureProfile = 'knees',
     [switch]$ManualCapture,
-    [switch]$AutoCapture
+    [switch]$AutoCapture,
+    [switch]$Attach
 )
 $ErrorActionPreference = 'Stop'
 $Repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
@@ -50,8 +51,17 @@ try {
             }
             'train' { & $Py -m fpga.demo.train_camera --dataset $Dataset --out $Model }
             'run' {
-                & $Py -m fpga.demo.camera run --camera $Camera --camera-backend auto `
-                    --width 1280 --height 720 --zoom 100 --package (Join-Path $Model 'resident')
+                $ReuseResident = $Attach.IsPresent
+                $ActiveModel = Join-Path $Repo 'tools/local/camera_demo/ACTIVE_CAMERA_MODEL.json'
+                if (-not $PSBoundParameters.ContainsKey('Model') -and (Test-Path -LiteralPath $ActiveModel)) {
+                    $SelectedModel = Get-Content -LiteralPath $ActiveModel -Raw | ConvertFrom-Json
+                    $Model = $SelectedModel.model_dir
+                    $ReuseResident = $ReuseResident -or ($SelectedModel.board_loaded -eq $true)
+                }
+                $RunArguments = @('-m','fpga.demo.camera','run','--camera',"$Camera",'--camera-backend','auto',
+                    '--width','1280','--height','720','--zoom','100','--package',(Join-Path $Model 'resident'))
+                if ($ReuseResident) { $RunArguments += '--attach' }
+                & $Py @RunArguments
             }
         }
     }

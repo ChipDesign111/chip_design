@@ -1,6 +1,6 @@
 """Manual clean-video collection; analysis and pose detection happen offline.
 
-SPACE starts/stops one labelled clip. Q, Escape or closing the window preserves
+SPACE starts and ENTER stops one labelled clip. Q, Escape or closing the window preserves
 an active clip as partial. Frames are encoded before any preview/header work.
 There is no landmark visibility gate, detector, audio stream or video upload.
 """
@@ -216,8 +216,8 @@ def run(args):
             if recorder.active:
                 clip = recorder.active
                 chinese += [f'正在录制 REC：{clip["duration_seconds"]:.1f} 秒，已写入 {clip["frame_count"]} 帧',
-                            '按空格停止本段；Q 退出并保留当前片段']
-                english += [f'REC {clip["duration_seconds"]:.1f}s / {clip["frame_count"]} frames; SPACE stop; Q finish partial']
+                            '按回车保存本段并切换；Q 退出并保留当前片段']
+                english += [f'REC {clip["duration_seconds"]:.1f}s / {clip["frame_count"]} frames; ENTER save; Q finish partial']
             else:
                 chinese += ['尚未录制：点击画面，按空格开始当前动作',
                             f'已完成 {recorder.position}/{len(recorder.plan)} 段；Q 退出']
@@ -237,7 +237,9 @@ def run(args):
                                   'completed_clips':recorder.position,
                                   'partial_frames':clip['frame_count'] if clip else 0}),flush=True)
                 return 130
-            if key == ord(' '):
+            # Different start/stop keys prevent OS key-repeat from turning one
+            # held SPACE into an unintended sub-second completed recording.
+            if (key == ord(' ') and recorder.active is None) or (key in (10,13) and recorder.active is not None):
                 started = recorder.active is None
                 clip = recorder.toggle(frame, timestamp)
                 print(json.dumps({'event':'clip_started' if started else 'clip_saved',

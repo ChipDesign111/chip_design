@@ -1,10 +1,10 @@
 # 摄像头 → FPGA 多轮动作演示（RAW 备选版）
 
-本演示按用户指定的备选基线 `0b5e34d29c3b0ac333461c0edba8197738906e1a` 开发。PC保存原始视频，并提取带缺失掩码的姿态与图像特征；FPGA上的真实CPU/NPU执行64→32→6 INT8分类器，PC读回结果并显示。视频分析在PC，动作分类在FPGA；完整图像和MediaPipe网络不放进8KiB SRAM。
+本演示按用户指定的备选基线 `0b5e34d29c3b0ac333461c0edba8197738906e1a` 开发。PC保存原始视频，并按模型契约提取64维特征；当前调整版使用不依赖人体关节点的画面运动特征。FPGA上的真实CPU/NPU执行64→32→6 INT8分类器，PC读回结果并显示。视频分析在PC，动作分类在FPGA；完整图像不放进8KiB SRAM。
 
 ```mermaid
 flowchart LR
-    A[电脑摄像头与本地原始视频] --> B[PC带缺失掩码的姿态与图像64维特征]
+    A[电脑摄像头与本地原始视频] --> B[PC画面运动方向与位置64维特征]
     B --> C[JTAG / Debug SBA]
     C --> D[SRAM请求邮箱]
     D --> E[常驻CPU程序]
@@ -16,7 +16,7 @@ flowchart LR
 
 RAW完整SoC多轮仿真和真实FPGA数值回传均已通过：最终主机源码下100轮算术请求、12轮合成工程模型请求逐项匹配独立整数参考，换模型后重新装载8KiB镜像；另有同模型attach续跑验证。CPU JTAG在1MHz读到ID `0x00000001`、XLEN32。主机17项测试通过，实际读写使用物理地址SBA。最新证据见[真实板测记录](../../report/camera_board_20261120/README.md)，早期构建/RTL记录见[基线记录](../../report/camera_demo_raw0b_20261120/README.md)。真人动作数据与识别精度须单独采集验证；原UCI HAR传感器模型不能沿用到摄像头坐标。
 
-2026-11-20已实际保存18段真人原始视频，共3714帧，并完成离线训练和156次FPGA回放：六路整数分数全部匹配软件参考。按原始整段动作标签计算的识别率为20.5%，仍不能作为可靠的动作识别演示；训练/验证片段中的过渡画面标签和跨片段泛化需继续处理。汇总见[录像与真人模型板测结果](../../report/camera_video_20261120/summary.json)。原视频、图像、输入特征和真人模型权重只保留在本机。
+2026-11-20已实际保存18段真人原始视频，共3714帧。原版本按整段动作标签计算的识别率为20.5%，见[原录像与真人模型板测结果](../../report/camera_video_20261120/summary.json)。改用运动特征、训练集归一化与增强后，同一批156个留出测试样本由32个识别正确增至63个，即40.4%；新一轮FPGA回放的六路整数分数仍全部匹配软件参考。调整记录见[运动特征与真实板测对比](../../report/camera_flow_20261120/summary.json)。左右臂仍较弱，尚不能作为可靠的六动作演示。原视频、图像、输入特征和真人模型权重只保留在本机。
 
 ## 软件与环境
 
@@ -81,7 +81,7 @@ WSL使用USB/IP时，先在Windows执行`usbipd list`核对适配器BUSID；管�
 
 当前采集先保存原始视频，再离线分析。录像器完全不运行姿态检测，也不根据身体完整性、关键点数量或姿态识别结果拒绝保存。能拍到手、腿和膝盖即可，不要求头或脚入镜。
 
-点击摄像头窗口，按SPACE开始当前动作，再按SPACE结束并切换下一个动作。每段建议约10秒，分三轮、每轮六类；全程手动控制。Q或关闭窗口会保留已完成视频及正在录制的部分视频，部分段会标记，原文件不会因分析结果被删除。
+点击摄像头窗口，按SPACE开始当前动作，按ENTER保存并切换下一个动作。开始和结束使用不同按键，避免键盘连发把一次开始误判成结束。每段建议约10秒，分三轮、每轮六类；全程手动控制。Q或关闭窗口会保留已完成视频及正在录制的部分视频，部分段会标记，原文件不会因分析结果被删除。
 
 录像使用原始1280×720整帧，提示栏只显示在预览中，保存的AVI不含文字、镜像或骨架。每帧另存真实采集时间，离线分析使用时间记录，而不是把视频容器的标称帧率当作真实采样时间。视频和特征默认保存在忽略目录`tools/local/camera_demo`，不上传GitHub；不录音。本机DirectShow支持1倍缩放；镜头不支持的软件“广角”不会改变真实视野。
 
@@ -99,7 +99,11 @@ WSL使用USB/IP时，先在Windows执行`usbipd list`核对适配器BUSID；管�
 
 `run_demo.ps1 -Action collect -VideoDir NEW_DIRECTORY`启动该录像流程，`-Action analyze-video`提取特征。中文界面使用本机微软雅黑/Pillow，无中文字体时显示英文，不下载字体。
 
-新版`video`特征仍为64维：10个上肢、髋、膝关键点的位置与可见性掩码、约1秒的位移及位移有效掩码，加4个来自真实图像的明暗和变化统计。看不到的点明确标记为缺失；没有检测到姿态的帧仍使用真实图像信息，不要求所有点同时可见。离线报告列出检测覆盖率作为诊断，不作为录像或特征采样的门槛。[video_features.py](video_features.py)由离线分析和实时推理共用；RTL和64→32→6网络结构保持不变。
+当前`flow`特征为64维：将整幅画面分成4×4格，每格统计向左、右、上、下的运动量。使用实际时间间隔约0.25秒的光流，减去整幅画面的中位移动量以缓解相机抖动，再按训练集统计的尺度归一化。[flow_features.py](flow_features.py)由离线导出和实时推理共用，无需MediaPipe或头、脚、完整身体；初始化零运动是实际时间窗的状态，不代表伪造的“完整姿态”。
+
+[flow_training.py](flow_training.py)提供`train_feature_scale`、`augment_flow`和`fit_flow_head`。只用训练集拟合尺度和生成增强；镜像时同时交换左右运动方向与左右臂标签，时间反转保持动作类别。增强样本不计为新的独立录制。选定权重在最终测试前冻结，量化校准也只用训练集；当前网络仍为64→32→6，RTL和bitstream均未修改。
+
+上面的`analyze_video`通用命令保留兼容的`video`版本：10个上肢、髋、膝关键点的位置、显式缺失掩码、位移以及真实图像统计。它不拒绝缺失姿态的帧，但在这批数据上识别较差，因此未用于最新已装载的模型。
 
 每个动作片段作为独立session，训练/验证/测试按完整session划分，避免相邻重叠帧随机切分造成精度虚高。训练需要六类各至少三个完整片段及足够样本；不同人的泛化需另采独立测试数据。识别精度由实际测试结果决定。
 
@@ -117,6 +121,8 @@ WSL使用USB/IP时，先在Windows执行`usbipd list`核对适配器BUSID；管�
 .\.venv-demo\Scripts\python.exe -m fpga.demo.camera run `
   --package tools/local/camera_demo/my_action_model/resident
 ```
+
+本机已保存最新模型指针`tools/local/camera_demo/ACTIVE_CAMERA_MODEL.json`，`run_demo.ps1 -Action run`在未指定`-Model`时读取它，并复用本次上电已装载的常驻程序。指定模型时可显式加`-Attach`复用同一模型；标签、特征契约及程序tag均会核对。启动前仍需让OpenOCD调试服务可用。
 
 启动时装载 8192 字节镜像、逐字回读、提交 boot key，CPU 开始等待请求。已装载相同模型且处于空闲状态时可加 `--attach`。更换模型需要复位并重新装载；模型标签和 FPGA 程序 tag 必须匹配。界面只把 FPGA 返回的结果显示为 FPGA 结果，连接错误、超时、过期结果会明确显示。单个后台推理线程最多保留一份最新待处理特征，避免 USB 较慢时无限排队。
 
@@ -155,6 +161,7 @@ WSL使用USB/IP时，先在Windows执行`usbipd list`核对适配器BUSID；管�
 ```powershell
 .\.venv-demo\Scripts\python.exe -m unittest discover -s test/int8 -p 'test_camera*.py' -v
 .\.venv-demo\Scripts\python.exe -m unittest discover -s test/int8 -p 'test_*video*.py' -v
+.\.venv-demo\Scripts\python.exe -m unittest discover -s test/int8 -p 'test_flow_training.py' -v
 .\.venv-demo\Scripts\python.exe -m unittest discover -s test/unit -p 'test_live_host.py' -v
 python tools/project.py check
 ```

@@ -338,7 +338,7 @@ def run_capture(args):
     import cv2
     model = read_camera_model(args.package, allow_synthetic_engineering_test=args.allow_synthetic_engineering_test) if args.command == 'run' else None
     profile, contract = _capture_contract(args, model)
-    uses_pose_detector = profile != 'image'
+    uses_pose_detector = profile not in ('image', 'flow')
     if uses_pose_detector:
         import mediapipe as mp
         if not args.pose_model.is_file():
@@ -384,6 +384,10 @@ def run_capture(args):
     elif profile == 'image':
         from .image_features import ImageFeatureExtractor
         video_extractor = ImageFeatureExtractor(window_seconds=window_seconds)
+    elif profile == 'flow':
+        from .flow_features import FlowFeatureExtractor
+        video_extractor = FlowFeatureExtractor(window_seconds=window_seconds,
+                                               feature_scale=contract['train_feature_scale'])
     session = args.session or f'{args.label}-{uuid.uuid4().hex[:12]}' if args.command == 'record' else None
     try:
         if model:
@@ -486,7 +490,7 @@ def run_capture(args):
                             last_result_seq=result.sequence
                     if model.get('dataset_source') != 'local-camera':
                         lines.insert(0,'SYNTHETIC ENGINEERING TEST ONLY - NO HUMAN ACCURACY')
-                    lines.append('PC: video features; FPGA RAW NPU: FC1; FPGA CPU: FC2/ReLU. Q: exit' if profile in ('video','image')
+                    lines.append('PC: video features; FPGA RAW NPU: FC1; FPGA CPU: FC2/ReLU. Q: exit' if profile in ('video','image','flow')
                                  else 'PC: pose; FPGA RAW NPU: FC1; FPGA CPU: FC2/ReLU. Q: exit')
                     if elapsed >= args.seconds:
                         break

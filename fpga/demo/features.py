@@ -24,6 +24,9 @@ def _profile_joints(profile):
 
 
 def feature_metadata(window_seconds=1.0, profile='full'):
+    if profile == 'flow':
+        from .flow_features import flow_feature_metadata
+        return flow_feature_metadata(window_seconds)
     if profile == 'image':
         from .image_features import image_feature_metadata
         return image_feature_metadata(window_seconds)
@@ -47,6 +50,9 @@ def feature_profile_from_metadata(metadata):
     """Resolve a known feature contract; extra capture provenance is allowed."""
     if not isinstance(metadata, dict) or metadata.get('dimension') != 64:
         raise ValueError('Incompatible camera feature schema')
+    if metadata.get('schema') == 'video_hof64_v5':
+        from .flow_features import validate_flow_metadata
+        return validate_flow_metadata(metadata)
     from .image_features import IMAGE_FEATURE_SCHEMA, validate_image_metadata
     if metadata.get('schema') == IMAGE_FEATURE_SCHEMA:
         return validate_image_metadata(metadata)

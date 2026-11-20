@@ -340,8 +340,9 @@ class FeaturesTest(unittest.TestCase):
                   'input_scale':.1,'output_scale':.2}
             (folder/'manifest.json').write_text(json.dumps({'live_demo':live,'target':'int22-raw-v1',
                                                            'npu_core_starts':1}),encoding='utf-8')
-            for profile in ('full','knees','video','image'):
-                model['feature_contract']=feature_metadata(profile=profile)
+            for profile in ('full','knees','video','image','flow'):
+                model['feature_contract']=feature_metadata(.25 if profile=='flow' else 1,profile=profile)
+                if profile=='flow':model['feature_contract']['train_feature_scale']=[1.0]*64
                 (folder/'camera_demo.json').write_text(json.dumps(model),encoding='utf-8')
                 self.assertEqual(feature_profile_from_metadata(read_camera_model(folder)['feature_contract']),profile)
             model['feature_contract']=feature_metadata(profile='knees')

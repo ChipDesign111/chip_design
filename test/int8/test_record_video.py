@@ -187,7 +187,7 @@ class RecorderLoopTests(unittest.TestCase):
     def test_loop_encodes_raw_frames_before_header_and_has_no_pose_gate(self):
         with tempfile.TemporaryDirectory() as tmp:
             folder=Path(tmp)/'videos';factory=WriterFactory();originals=[frame(),frame()+1,frame()+2]
-            cap=FakeCamera(originals);cv=self.fake_cv(factory,[32,32,ord('q')],[1,1,1])
+            cap=FakeCamera(originals);cv=self.fake_cv(factory,[32,13,ord('q')],[1,1,1])
             args=SimpleNamespace(output_dir=folder,labels=DEFAULT_LABELS,rounds=3)
             # An unmistakably altered preview must never reach the encoder.
             preview=lambda image,*args:np.full((8,4,3),255,dtype=np.uint8)
@@ -200,6 +200,21 @@ class RecorderLoopTests(unittest.TestCase):
             self.assertEqual(len(factory.writers[0].frames),2)
             for actual,expected in zip(factory.writers[0].frames,originals):np.testing.assert_array_equal(actual,expected)
             self.assertTrue(read_manifest(folder)['clips'][0]['complete'])
+
+    def test_held_start_key_cannot_stop_clip_and_held_stop_cannot_start_next(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            folder=Path(tmp)/'videos';factory=WriterFactory()
+            cap=FakeCamera([frame()+index for index in range(6)])
+            cv=self.fake_cv(factory,[32,32,32,13,13,ord('q')],[1]*6)
+            args=SimpleNamespace(output_dir=folder,labels=DEFAULT_LABELS,rounds=3)
+            with patch.dict(sys.modules,{'cv2':cv}),patch('fpga.demo.record_video._open_camera',return_value=(cap,{'fps_reported':30})),\
+                 patch('fpga.demo.record_video._chinese_font',return_value=None),patch('fpga.demo.record_video._draw_capture_text',side_effect=lambda image,*args:image),\
+                 patch('fpga.demo.record_video.time.monotonic',side_effect=[1,1.1,1.2,1.3,1.4,1.5]),contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(run(args),130)
+            manifest=read_manifest(folder)
+            self.assertEqual(manifest['completed_clips'],1)
+            self.assertEqual(len(manifest['clips']),1)
+            self.assertEqual(manifest['clips'][0]['frame_count'],4)
 
     def test_window_close_finalizes_active_clip_as_partial(self):
         with tempfile.TemporaryDirectory() as tmp:
