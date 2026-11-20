@@ -30,6 +30,13 @@ class TransportError(RuntimeError):
     pass
 
 
+class OpenOCDCommandError(TransportError):
+    """A Tcl command failed after a correctly framed RPC response."""
+    def __init__(self, script: str, result: str):
+        self.script, self.result = script, result
+        super().__init__(f"OpenOCD command failed ({script}): {result}")
+
+
 def _word_access(address: int, count: int):
     if type(address) is not int or type(count) is not int or address % 4 or count < 1:
         raise ValueError("Memory access needs an aligned uint32 address and positive word count")
@@ -82,8 +89,8 @@ class OpenOCDTransport:
         try:
             self._socket = socket.create_connection((self.host, self.port), self.timeout)
             self._socket.settimeout(self.timeout)
-            self.command("tcl notifications off")
-            self.command("tcl trace off")
+            self._tcl_stream_control("notifications", "tcl_notifications")
+            self._tcl_stream_control("trace", "tcl_trace")
             if self.target:
                 self.command("targets " + self.target)
             # SBA can access the AXI bus while CPU firmware runs. Program-buffer
@@ -96,6 +103,17 @@ class OpenOCDTransport:
             self.close()
             raise
         return self
+
+    def _tcl_stream_control(self, name: str, legacy: str):
+        """Disable unsolicited frames using the server's supported command API."""
+        try:
+            self.command(f"tcl {name} off")
+        except OpenOCDCommandError as error:
+            # OpenOCD 0.12 uses the underscored commands. Only the absent
+            # command permits fallback; real errors must stop the connection.
+            if error.result.strip() != 'invalid command name "tcl"':
+                raise
+            self.command(f"{legacy} off")
 
     def __enter__(self):
         return self.connect()
@@ -145,7 +163,7 @@ class OpenOCDTransport:
         if not separator or not code.isdecimal():
             raise TransportError(f"Malformed OpenOCD response: {response!r}")
         if int(code):
-            raise TransportError(f"OpenOCD command failed ({script}): {result}")
+            raise OpenOCDCommandError(script, result)
         return result.strip()
 
     def read_words(self, address: int, count: int) -> list[int]:
@@ -153,7 +171,9 @@ class OpenOCDTransport:
         result = []
         for offset in range(0, count, self.chunk_words):
             size = min(count-offset, self.chunk_words)
-            raw = self.command(f"read_memory 0x{address+offset*4:08x} 32 {size}")
+            # SRAM/MMIO addresses are physical. Without this flag OpenOCD
+            # tries to read running-hart privilege CSRs for virt2phys first.
+            raw = self.command(f"read_memory 0x{address+offset*4:08x} 32 {size} phys")
             try:
                 words = [int(value, 0) for value in raw.split()]
             except ValueError as error:
@@ -170,7 +190,7 @@ class OpenOCDTransport:
             raise ValueError("Memory write values must be uint32")
         for offset in range(0, len(values), self.chunk_words):
             chunk = " ".join(f"0x{value:08x}" for value in values[offset:offset+self.chunk_words])
-            self.command(f"write_memory 0x{address+offset*4:08x} 32 {{{chunk}}}")
+            self.command(f"write_memory 0x{address+offset*4:08x} 32 {{{chunk}}} phys")
 
     def boot_image(self, image: str | Path | bytes, *, verify: bool = True):
         """Load one uninitialized SoC; a reset/reprogram is required to reload."""

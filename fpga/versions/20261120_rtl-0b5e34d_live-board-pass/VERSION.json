@@ -1,0 +1,240 @@
+{
+  "version": "20261120_rtl-0b5e34d_live-board-pass",
+  "status": "BOARD_NUMERICAL_PASS",
+  "rtl_commit": "0b5e34d29c3b0ac333461c0edba8197738906e1a",
+  "rtl_modified": false,
+  "software_checkpoint": "Final tested host source is bound by SHA256; see host/ and independent audit",
+  "part": "xc7a35tcsg324-1",
+  "clock_hz": 20000000,
+  "preinitialized": false,
+  "build": {
+    "slice_luts": 18141,
+    "slice_registers": 15058,
+    "bram36_tiles": 2,
+    "dsp48": 30,
+    "setup_wns_ns": 0.758,
+    "hold_whs_ns": 0.023,
+    "setup_failing_endpoints": 0,
+    "hold_failing_endpoints": 0,
+    "drc_errors": 0,
+    "drc_warnings": 174,
+    "route_verification_passed": true,
+    "timing_constraint_limits": {
+      "internal_unconstrained_endpoints": 0,
+      "inputs_without_input_delay": 3,
+      "outputs_without_output_delay": 3,
+      "scope": "Supplied constraints; no complete external JTAG I/O timing signoff"
+    }
+  },
+  "bitstream": {
+    "path": "artifacts/fpga_top.bit",
+    "bytes": 2192116,
+    "sha256": "ce118945509b83d281c657aa8297aab0afcdb7eb6fb9b78332b380f2bc0e6efa"
+  },
+  "configuration": {
+    "programming_passed": true,
+    "target": "1234-tulA/xc7a35t_0",
+    "restored_to_this_bitstream": true
+  },
+  "checkpoint_sha256": {
+    "synthesized.dcp": "6fb4428415cec7e8a57aa1761f341222753e429472616f39a299a2f2d94545c8",
+    "routed.dcp": "8eca6efa126d90564f55fbd740b29f65fdc7ddd950bb5748dc5653f4b6891999"
+  },
+  "scope": "RAW FPGA build plus actual numerical JTAG/CPU/NPU readback; no human-action accuracy or new ASIC signoff",
+  "reused_physical_build": "20261120_rtl-0b5e34d_camera-debug-pending",
+  "host_modified": true,
+  "host_source_sha256": {
+    "fpga/demo/transport.py": "24ebecfd753215e4ee3a75e40674e512872f8bc39ffaa95cc8f80c24f09d24c1",
+    "fpga/demo/host.py": "7c37a9a31ec9c0d328d9d248a5b8a26f4cb52b26d05c968198f8117421f57323",
+    "fpga/demo/protocol.py": "6d7fb48380166d5a7e5fae00e2738f72d90414115ed557b4d82c720a24309185"
+  },
+  "programming_passed": true,
+  "board_final_records": 112,
+  "board_inference": {
+    "arithmetic": {
+      "status": "PASS",
+      "records": 100,
+      "unique_input_rows": 4,
+      "unique_output_rows": 4,
+      "input_width": 64,
+      "output_width": 6,
+      "input_mode": "signed INT8",
+      "package": "report/camera_demo_raw0b_20261120/soc",
+      "package_tag": "c1bca34eb97ba797",
+      "firmware_bytes": 8192,
+      "firmware_sha256": "25b6e27065a06904afa8161f7705313fca217f53447bf3dc1c9243e28cc7d276",
+      "fresh_load_not_attach": true,
+      "sequence_first": 1,
+      "sequence_last": 100,
+      "execution_first": 1,
+      "execution_last": 100,
+      "continuous_sequence_and_execution_counters": true,
+      "golden_tensor_and_argmax_checks": 100,
+      "cli_reference_flags_true": 100,
+      "backend": "openocd-jtag",
+      "class_counts": {
+        "0": 25,
+        "1": 75
+      },
+      "host_log_matches_result_jsonl": true,
+      "host_traceback": false,
+      "openocd_error_lines": 0,
+      "openocd_warning_lines": 0,
+      "cpu_cycles": {
+        "min": 8139,
+        "max": 8156,
+        "mean": 8144.83,
+        "median": 8144.5,
+        "p95_nearest_rank": 8151
+      },
+      "cpu_acceptance_to_publication_ms_at_20mhz": {
+        "min": 0.40695,
+        "max": 0.4078,
+        "mean": 0.4072415,
+        "median": 0.407225,
+        "p95_nearest_rank": 0.40755
+      },
+      "host_roundtrip_ms": {
+        "min": 328.0,
+        "max": 468.0,
+        "mean": 390.85,
+        "median": 391.0,
+        "p95_nearest_rank": 422.0
+      },
+      "process_exit_code": {
+        "value": 0,
+        "evidence": "Parent agent exec completion; offline auditor did not own the process"
+      },
+      "golden_files_sha256": {
+        "report/camera_demo_raw0b_20261120/prepared_but_not_run/arithmetic/inputs.json": "da846450374371d39734feff717223dae0303f61e846d421be845390d36c9708",
+        "report/camera_demo_raw0b_20261120/prepared_but_not_run/arithmetic/expected.json": "e258af33280455d7c4e652a012b2a82075231bfd0b159298c61214fbf73b28cd"
+      },
+      "source_sha256": {
+        "fpga/demo/transport.py": "24ebecfd753215e4ee3a75e40674e512872f8bc39ffaa95cc8f80c24f09d24c1",
+        "fpga/demo/host.py": "7c37a9a31ec9c0d328d9d248a5b8a26f4cb52b26d05c968198f8117421f57323",
+        "fpga/demo/protocol.py": "6d7fb48380166d5a7e5fae00e2738f72d90414115ed557b4d82c720a24309185"
+      },
+      "artifact_snapshots": {
+        "results": {
+          "file": "arithmetic_results_final.jsonl",
+          "bytes": 20002,
+          "sha256": "fbbe6db55d888de220eb92dc57ec5113acadbf57912201fa377834c68afdb27c"
+        },
+        "command": {
+          "file": "arithmetic_command_final.json",
+          "bytes": 1152,
+          "sha256": "13d290eb9566f4d7cf4b9858062376d2d0c750ec0fe48977c9fbf86445fd601f"
+        },
+        "host_log": {
+          "file": "arithmetic_host_final.log",
+          "bytes": 20002,
+          "sha256": "fbbe6db55d888de220eb92dc57ec5113acadbf57912201fa377834c68afdb27c"
+        },
+        "openocd_log": {
+          "file": "openocd_final_arithmetic.log",
+          "bytes": 52547,
+          "sha256": "d9e8f79a41f180f3cd0af678ec32c6299089ed6ea61ad96c61a50c0c6ca104c7"
+        }
+      }
+    },
+    "trained_synthetic_engineering": {
+      "status": "PASS",
+      "records": 12,
+      "unique_input_rows": 12,
+      "unique_output_rows": 12,
+      "input_width": 64,
+      "output_width": 6,
+      "input_mode": "float features quantized by host with package input_scale",
+      "package": "report/camera_demo_raw0b_20261120/prepared_but_not_run/camera/resident",
+      "package_tag": "4fbcd5f202bf5883",
+      "firmware_bytes": 8192,
+      "firmware_sha256": "a6883963cc824f3cba7e70f2a7214fbc12e5d0b1662151b36760e3a5fb54d050",
+      "fresh_load_not_attach": true,
+      "sequence_first": 1,
+      "sequence_last": 12,
+      "execution_first": 1,
+      "execution_last": 12,
+      "continuous_sequence_and_execution_counters": true,
+      "golden_tensor_and_argmax_checks": 12,
+      "cli_reference_flags_true": 12,
+      "backend": "openocd-jtag",
+      "class_counts": {
+        "0": 2,
+        "1": 2,
+        "2": 2,
+        "3": 2,
+        "4": 2,
+        "5": 2
+      },
+      "host_log_matches_result_jsonl": true,
+      "host_traceback": false,
+      "openocd_error_lines": 0,
+      "openocd_warning_lines": 0,
+      "cpu_cycles": {
+        "min": 8834,
+        "max": 8847,
+        "mean": 8839.083333,
+        "median": 8838.5,
+        "p95_nearest_rank": 8847
+      },
+      "cpu_acceptance_to_publication_ms_at_20mhz": {
+        "min": 0.4417,
+        "max": 0.44235,
+        "mean": 0.441954167,
+        "median": 0.441925,
+        "p95_nearest_rank": 0.44235
+      },
+      "host_roundtrip_ms": {
+        "min": 46.0,
+        "max": 63.0,
+        "mean": 53.5,
+        "median": 47.0,
+        "p95_nearest_rank": 63.0
+      },
+      "process_exit_code": {
+        "value": 0,
+        "evidence": "Parent agent exec completion; offline auditor did not own the process"
+      },
+      "golden_files_sha256": {
+        "report/camera_demo_raw0b_20261120/prepared_but_not_run/camera/inputs_float.json": "2f678333eb98169549fe33d39bae170bccb89930976e453cada04a9b90b4363d",
+        "report/camera_demo_raw0b_20261120/prepared_but_not_run/camera/expected_int8.json": "c4b54894acb66a1bc6b7059b72013ec4922c30bf0784c2c9edab60ed997c1a1a"
+      },
+      "source_sha256": {
+        "fpga/demo/transport.py": "24ebecfd753215e4ee3a75e40674e512872f8bc39ffaa95cc8f80c24f09d24c1",
+        "fpga/demo/host.py": "7c37a9a31ec9c0d328d9d248a5b8a26f4cb52b26d05c968198f8117421f57323",
+        "fpga/demo/protocol.py": "6d7fb48380166d5a7e5fae00e2738f72d90414115ed557b4d82c720a24309185"
+      },
+      "artifact_snapshots": {
+        "results": {
+          "file": "engineering_results_final.jsonl",
+          "bytes": 2451,
+          "sha256": "2fbd60fc66c53de6954d968c8d94f8e132ba8a1af4975b43f71464b119c6e86f"
+        },
+        "command": {
+          "file": "engineering_command_final.json",
+          "bytes": 1176,
+          "sha256": "2831f2ee9f7b1516bdd47d75090d4651f0ff6da2cd3d95a8008f76c5610c2c6c"
+        },
+        "host_log": {
+          "file": "engineering_host_final.log",
+          "bytes": 2451,
+          "sha256": "2fbd60fc66c53de6954d968c8d94f8e132ba8a1af4975b43f71464b119c6e86f"
+        },
+        "openocd_log": {
+          "file": "openocd_final_engineering.log",
+          "bytes": 21401,
+          "sha256": "8be0eaf223f454c536ac409685fea6469fad0b38bd7ffe2101d9e3765db7fd94"
+        }
+      }
+    }
+  },
+  "human_camera_demo": {
+    "status": "LABELLED_DATA_NOT_COLLECTED",
+    "accuracy_verified": false,
+    "auto_collection_implementation": "CODE_AND_UNIT_TESTS_PASS_NOT_LAUNCHED_AFTER_ESCAPE",
+    "computer_use": "USER_STOPPED_WITH_ESCAPE"
+  },
+  "tested_openocd_configuration": "evidence/course_1mhz.cfg",
+  "host_unit_tests": 17,
+  "camera_unit_tests": 16
+}

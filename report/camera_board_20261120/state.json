@@ -1,0 +1,36 @@
+{
+  "rtl_baseline": "0b5e34d29c3b0ac333461c0edba8197738906e1a",
+  "rtl_compiler_modified": false,
+  "status": "BOARD_NUMERICAL_PASS_HUMAN_CAPTURE_PENDING",
+  "fpga_clock_hz": 20000000,
+  "jtag_clock_hz": 1000000,
+  "jtag_idcode": "0x00000001",
+  "xlen": 32,
+  "host_tests": 17,
+  "final_board_requests": 112,
+  "arithmetic_requests": 100,
+  "trained_engineering_requests": 12,
+  "all_actual_tensors_match_independent_reference": true,
+  "final_openocd_error_warning_lines": 0,
+  "human_dataset": "NO_FILE_AT_LAST_CHECK",
+  "human_accuracy_verified": false,
+  "computer_use": "USER_STOPPED_WITH_ESCAPE",
+  "remaining": [
+    "User resumes automatic capture with whole body visible",
+    "Record six actions with three independent sessions each",
+    "Train/quantize human model; check FPGA integer consistency and live camera demo"
+  ],
+  "source_sha256": {
+    "fpga/demo/transport.py": "24ebecfd753215e4ee3a75e40674e512872f8bc39ffaa95cc8f80c24f09d24c1",
+    "fpga/demo/host.py": "7c37a9a31ec9c0d328d9d248a5b8a26f4cb52b26d05c968198f8117421f57323",
+    "fpga/demo/protocol.py": "6d7fb48380166d5a7e5fae00e2738f72d90414115ed557b4d82c720a24309185"
+  },
+  "manual_retry_exit": {
+    "exit_code": 1,
+    "reason": "No valid 64-dimensional feature samples to save",
+    "dataset_saved": false
+  },
+  "human_collection_status": "WAITING_AUTO_MODE_AND_USER_RESUME_AFTER_ESCAPE",
+  "camera_unit_tests": 16,
+  "automatic_capture": "CODE_AND_UNIT_TESTS_PASS_NOT_LAUNCHED_AFTER_ESCAPE"
+}

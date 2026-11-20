@@ -1,0 +1,1 @@
+PASS current RAW RTL; empty SRAM; part=xc7a35tcsg324-1; clock=20MHz; setup=0.758 hold=0.023

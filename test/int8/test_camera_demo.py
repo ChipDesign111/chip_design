@@ -18,7 +18,8 @@ sys.path.insert(0, str(ROOT))
 from fpga.demo.features import (JOINTS, PoseWindow, append_dataset, feature_metadata,
                                 load_dataset, normalize_pose, quantize_features)
 from fpga.demo.train_camera import split_sessions
-from fpga.demo.camera import FPGAWorker, collect, read_camera_model
+from fpga.demo.camera import (AutoCaptureGate, FPGAWorker, _chinese_font,
+                              _draw_capture_text, collect, read_camera_model)
 
 
 def landmarks():
@@ -105,6 +106,82 @@ class FeaturesTest(unittest.TestCase):
             self.assertTrue(all(o.wait_start and o.command=='record' for o in options))
         with patch('fpga.demo.camera.run_capture',side_effect=[True,False]) as capture, contextlib.redirect_stdout(io.StringIO()):
             self.assertFalse(collect(args));self.assertEqual(capture.call_count,2)
+
+    def test_auto_collect_all_eighteen_sessions_without_space(self):
+        labels=('standing','left_arm','right_arm','both_arms','squat','lean')
+        args=SimpleNamespace(rounds=3,labels=labels,no_display=False,output=Path('unused.npz'),
+                             auto_advance=True,pose_timeout=120)
+        with patch('fpga.demo.camera.run_capture',return_value=True) as capture, contextlib.redirect_stdout(io.StringIO()):
+            self.assertTrue(collect(args))
+        options=[call.args[0] for call in capture.call_args_list]
+        self.assertEqual([o.label for o in options],list(labels)*3)
+        self.assertEqual(len({o.session for o in options}),18)
+        self.assertTrue(all(o.auto_advance and not o.wait_start for o in options))
+        self.assertIn('站立',options[0].progress_zh)
+        self.assertIn('第 3/3 轮',options[-1].progress_zh)
+
+    def test_auto_waits_for_valid_full_body_and_restarts_interrupted_countdown(self):
+        gate=AutoCaptureGate(2,2,.5,timeout=20)
+        self.assertEqual(gate.tick(0,False).phase,'waiting')
+        self.assertEqual(gate.tick(8,False).phase,'waiting')
+        self.assertEqual(gate.tick(9,True).phase,'preparing')
+        self.assertEqual(gate.tick(10,False).phase,'waiting')
+        self.assertEqual(gate.tick(11,True).phase,'preparing')
+        self.assertEqual(gate.tick(12.9,True).phase,'preparing')
+        first=gate.tick(13,True)
+        self.assertTrue(first.emit)
+        self.assertEqual(first.phase,'recording')
+        self.assertEqual(gate.windows,1)
+
+    def test_auto_never_finishes_empty_or_too_small_segment_and_retries_same_gate(self):
+        gate=AutoCaptureGate(1,2,.5,timeout=20)
+        self.assertEqual(gate.minimum,2)
+        gate.tick(0,True)
+        self.assertTrue(gate.tick(1,True).emit)
+        self.assertFalse(gate.tick(1.5,False).emit)
+        rejected=gate.tick(3,False)
+        self.assertEqual(rejected.phase,'retry')
+        self.assertTrue(rejected.discard)
+        self.assertEqual(rejected.windows,1)
+        self.assertEqual(gate.windows,0)
+        self.assertEqual(gate.retries,1)
+        self.assertEqual(gate.tick(3.1,False).phase,'waiting')
+        gate.tick(4,True)
+        self.assertTrue(gate.tick(5,True).emit)
+        self.assertFalse(gate.tick(5.2,True).emit)
+        self.assertTrue(gate.tick(5.5,True).emit)
+        self.assertFalse(gate.tick(6,False).emit)
+        complete=gate.tick(7,False)
+        self.assertEqual(complete.phase,'complete')
+        self.assertEqual(complete.windows,2)
+        self.assertFalse(complete.emit)
+
+    def test_auto_timeout_is_bounded_across_retries_and_bad_settings_fail(self):
+        gate=AutoCaptureGate(1,2,.5,timeout=5)
+        gate.tick(10,False)
+        with self.assertRaisesRegex(RuntimeError,'completed sessions are preserved'):
+            gate.tick(15,False)
+        gate=AutoCaptureGate(1,2,.5,timeout=5)
+        gate.tick(0,True);gate.tick(1,True);gate.tick(3,False)
+        self.assertEqual(gate.retries,1)
+        with self.assertRaisesRegex(RuntimeError,'timed out'):
+            gate.tick(5,False)
+        for settings in [(float('nan'),2,.5,10),(1,0,.5,10),(1,2,.5,3)]:
+            with self.assertRaises(ValueError):AutoCaptureGate(*settings)
+        gate=AutoCaptureGate(1,2,.5,timeout=5)
+        gate.tick(1,False)
+        with self.assertRaises(ValueError):gate.tick(.5,True)
+
+    def test_chinese_capture_overlay_preserves_input_and_frame_contract(self):
+        font=_chinese_font(640)
+        if font is None:self.skipTest('No local Chinese font; runtime retains English fallback')
+        frame=np.zeros((480,640,3),dtype=np.uint8)
+        result=_draw_capture_text(frame,[],['当前动作：站立','准备动作，倒计时 10 秒'],font,None)
+        self.assertEqual(result.shape,frame.shape)
+        self.assertEqual(result.dtype,np.uint8)
+        self.assertTrue(result.flags.c_contiguous)
+        self.assertGreater(np.count_nonzero(result),0)
+        self.assertFalse(np.any(frame))
 
     def test_model_tag_and_quantization_are_bound_to_resident(self):
         with tempfile.TemporaryDirectory() as tmp:

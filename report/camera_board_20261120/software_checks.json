@@ -1,0 +1,20 @@
+{
+  "host_tests": {
+    "status": "PASS",
+    "count": 17,
+    "executed_by": "scoped host compatibility agent",
+    "scope": "TCP framing, modern/legacy controls, exact physical-address flags and failures; no board emulation claim"
+  },
+  "camera_tests": {
+    "status": "PASS",
+    "count": 16,
+    "executed_by": "scoped auto-capture agent",
+    "scope": "original11+5new automatic gating/countdown/retry/timeout/Chinese UI tests; no real capture claim"
+  },
+  "source_sha256": {
+    "fpga/demo/transport.py": "24ebecfd753215e4ee3a75e40674e512872f8bc39ffaa95cc8f80c24f09d24c1",
+    "test/unit/test_live_host.py": "23c8c1edf87ce4a082c16026c0784e2efe2054a5683af2ee88cbc6f5a9dfe60a",
+    "fpga/demo/camera.py": "cef4e1cf968c78a1ccb8a20fa6aceb54cd267e1019e8c6e7793e5aefdb5cf708",
+    "test/int8/test_camera_demo.py": "2c1633b46e6d1673d3988d9f7abbe580013692c0c7afcf76ac4594142f23d4ac"
+  }
+}

@@ -1,0 +1,12 @@
+{"sequence": 1, "values": [73, -16, -5, -32, -24, -60], "class_id": 0, "cycles": 8835, "executions": 1, "backend": "openocd-jtag", "roundtrip_ms": 46.000000002095476, "matches_integer_reference": true}
+{"sequence": 2, "values": [74, -14, -8, -29, -27, -59], "class_id": 0, "cycles": 8834, "executions": 2, "backend": "openocd-jtag", "roundtrip_ms": 63.00000000192085, "matches_integer_reference": true}
+{"sequence": 3, "values": [-58, 117, -56, -21, -100, -37], "class_id": 1, "cycles": 8844, "executions": 3, "backend": "openocd-jtag", "roundtrip_ms": 63.00000000192085, "matches_integer_reference": true}
+{"sequence": 4, "values": [-64, 122, -57, -25, -103, -39], "class_id": 1, "cycles": 8847, "executions": 4, "backend": "openocd-jtag", "roundtrip_ms": 63.00000000192085, "matches_integer_reference": true}
+{"sequence": 5, "values": [-32, -28, 110, -80, -21, -64], "class_id": 2, "cycles": 8841, "executions": 5, "backend": "openocd-jtag", "roundtrip_ms": 46.999999998661224, "matches_integer_reference": true}
+{"sequence": 6, "values": [-33, -28, 116, -85, -21, -68], "class_id": 2, "cycles": 8839, "executions": 6, "backend": "openocd-jtag", "roundtrip_ms": 47.00000000593718, "matches_integer_reference": true}
+{"sequence": 7, "values": [-39, -16, -66, 96, -46, -21], "class_id": 3, "cycles": 8840, "executions": 7, "backend": "openocd-jtag", "roundtrip_ms": 62.999999994644895, "matches_integer_reference": true}
+{"sequence": 8, "values": [-38, -16, -66, 96, -47, -19], "class_id": 3, "cycles": 8837, "executions": 8, "backend": "openocd-jtag", "roundtrip_ms": 46.000000002095476, "matches_integer_reference": true}
+{"sequence": 9, "values": [-44, -62, -34, -58, 87, -46], "class_id": 4, "cycles": 8836, "executions": 9, "backend": "openocd-jtag", "roundtrip_ms": 63.00000000192085, "matches_integer_reference": true}
+{"sequence": 10, "values": [-46, -62, -34, -61, 89, -47], "class_id": 4, "cycles": 8842, "executions": 10, "backend": "openocd-jtag", "roundtrip_ms": 46.999999998661224, "matches_integer_reference": true}
+{"sequence": 11, "values": [-59, -2, -53, -12, -32, 86], "class_id": 5, "cycles": 8838, "executions": 11, "backend": "openocd-jtag", "roundtrip_ms": 46.999999998661224, "matches_integer_reference": true}
+{"sequence": 12, "values": [-54, -2, -50, -12, -31, 81], "class_id": 5, "cycles": 8836, "executions": 12, "backend": "openocd-jtag", "roundtrip_ms": 46.999999998661224, "matches_integer_reference": true}

@@ -152,7 +152,7 @@ class MailboxClientTests(unittest.TestCase):
 
 class TclPeer:
     """Local TCP simulator for framing tests; not an OpenOCD or FPGA process."""
-    def __init__(self):
+    def __init__(self, *, tcl_api='modern', command_errors=None):
         self.listener = socket.socket()
         self.listener.bind(("127.0.0.1", 0)); self.listener.listen(1)
         self.port = self.listener.getsockname()[1]
@@ -160,6 +160,8 @@ class TclPeer:
         self.memory = {}
         self.status = 0
         self.error = None
+        self.tcl_api = tcl_api
+        self.command_errors = command_errors or {}
         self.thread = threading.Thread(target=self.run, daemon=True)
         self.thread.start()
 
@@ -186,14 +188,22 @@ class TclPeer:
             self.listener.close()
 
     def execute(self, script):
+        if script in self.command_errors: return '1 ' + self.command_errors[script]
+        if script in ('tcl notifications off', 'tcl trace off'):
+            return '1 invalid command name "tcl"' if self.tcl_api == 'legacy' else '0 '
+        if script in ('tcl_notifications off', 'tcl_trace off'):
+            return '0 ' if self.tcl_api == 'legacy' else f'1 invalid command name "{script.split()[0]}"'
         if script == 'riscv mem_access sysbus': return '1 unknown command'
         if script == 'fail_for_test': return '1 deliberate test error'
         if script.startswith('read_memory'):
-            _, address, _, count = script.split(); address, count = int(address,16), int(count)
+            parts = script.split()
+            if len(parts) != 5 or parts[-1] != 'phys': return '1 physical addressing required by test peer'
+            _, address, _, count, _ = parts; address, count = int(address,16), int(count)
             values = [self.status if address+4*i == BOOT_STATUS else self.memory.get(address+4*i, 0) for i in range(count)]
             return '0 ' + ' '.join(hex(v) for v in values)
         if script.startswith('write_memory'):
-            match = re.fullmatch(r'write_memory (0x[0-9a-f]+) 32 \{([^}]+)\}', script)
+            match = re.fullmatch(r'write_memory (0x[0-9a-f]+) 32 \{([^}]+)\} phys', script)
+            if match is None: return '1 physical addressing required by test peer'
             address = int(match[1],16); values = [int(v,16) for v in match[2].split()]
             for i, value in enumerate(values):
                 at = address+4*i
@@ -207,6 +217,52 @@ class TclPeer:
 
 
 class TclTransportTests(unittest.TestCase):
+    def test_all_chunked_memory_rpc_uses_explicit_physical_addresses(self):
+        peer = TclPeer()
+        with OpenOCDTransport('127.0.0.1', peer.port, timeout=2, chunk_words=1) as transport:
+            transport.write_words(p.SRAM_BASE+4, [0x12345678, 0xaabbccdd])
+            self.assertEqual(transport.read_words(p.SRAM_BASE+4, 2), [0x12345678, 0xaabbccdd])
+        peer.thread.join(2)
+        memory_commands = [c for c in peer.commands if c.startswith(('read_memory ', 'write_memory '))]
+        self.assertEqual(len(memory_commands), 4)
+        self.assertTrue(all(c.endswith(' phys') for c in memory_commands))
+        self.assertIn('read_memory 0x80000008 32 1 phys', memory_commands)
+        self.assertIn('write_memory 0x80000008 32 {0xaabbccdd} phys', memory_commands)
+        self.assertIsNone(peer.error)
+
+    def test_legacy_tcl_controls_allow_framed_memory_reads(self):
+        peer = TclPeer(tcl_api='legacy')
+        peer.memory[p.SRAM_BASE] = 0x12345678
+        with OpenOCDTransport('127.0.0.1', peer.port, timeout=2) as transport:
+            self.assertEqual(transport.read_words(p.SRAM_BASE, 2), [0x12345678, 0])
+            self.assertIn('tcl_notifications off', peer.commands)
+            self.assertIn('tcl_trace off', peer.commands)
+            self.assertLess(peer.commands.index('tcl_trace off'),
+                            peer.commands.index('riscv mem_access sysbus'))
+        peer.thread.join(2)
+        self.assertIsNone(peer.error)
+
+    def test_tcl_control_real_error_is_not_retried_as_legacy(self):
+        peer = TclPeer(command_errors={'tcl notifications off': 'notifications backend unavailable'})
+        transport = OpenOCDTransport('127.0.0.1', peer.port, timeout=2)
+        with self.assertRaisesRegex(TransportError, 'notifications backend unavailable'):
+            transport.connect()
+        self.assertIsNone(transport._socket)
+        peer.thread.join(2)
+        self.assertNotIn('tcl_notifications off', peer.commands)
+        self.assertFalse(any(command.startswith('riscv ') for command in peer.commands))
+        self.assertIsNone(peer.error)
+
+    def test_legacy_control_failure_stops_connection(self):
+        peer = TclPeer(tcl_api='legacy', command_errors={'tcl_trace off': 'trace backend unavailable'})
+        transport = OpenOCDTransport('127.0.0.1', peer.port, timeout=2)
+        with self.assertRaisesRegex(TransportError, 'trace backend unavailable'):
+            transport.connect()
+        self.assertIsNone(transport._socket)
+        peer.thread.join(2)
+        self.assertFalse(any(command.startswith('riscv ') for command in peer.commands))
+        self.assertIsNone(peer.error)
+
     def test_fragmented_rpc_errors_memory_and_full_ordered_boot(self):
         peer = TclPeer()
         image = struct.pack('<2048I', *range(2048))

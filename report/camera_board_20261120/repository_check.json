@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "repository_check": "tools/project.py check: policy, local links, Python syntax, MMIO and75hardwareSHA checks",
+  "powershell_wrapper_syntax": "PASS",
+  "rtl_compiler_unchanged": "git diff --exit-code 0b5e34d -- rtl compiler: exit0",
+  "diff_check": "PASS",
+  "host_tests": 17,
+  "camera_tests": 16,
+  "human_capture_completed": false,
+  "computer_use": "Stopped after user Escape; no further UI input or GUI launch"
+}

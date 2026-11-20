@@ -1,0 +1,23 @@
+{
+  "command": [
+    "C:\\Users\\wyh\\Desktop\\chipcourse\\chip_design_demo_raw0b\\.venv-demo\\Scripts\\python.exe",
+    "-u",
+    "-m",
+    "fpga.demo.host",
+    "C:\\Users\\wyh\\Desktop\\chipcourse\\chip_design_demo_raw0b\\report\\camera_demo_raw0b_20261120\\soc",
+    "--inputs",
+    "C:\\Users\\wyh\\Desktop\\chipcourse\\chip_design_demo_raw0b\\report\\camera_demo_raw0b_20261120\\prepared_but_not_run\\arithmetic\\inputs.json",
+    "--int8",
+    "--expected",
+    "C:\\Users\\wyh\\Desktop\\chipcourse\\chip_design_demo_raw0b\\report\\camera_demo_raw0b_20261120\\prepared_but_not_run\\arithmetic\\expected.json",
+    "--timeout",
+    "30",
+    "--output",
+    "C:\\Users\\wyh\\Desktop\\chipcourse\\chip_design_demo_raw0b\\tools\\local\\camera_demo\\recheck_20261120_103404\\arithmetic_results_final.jsonl"
+  ],
+  "source_sha256": {
+    "fpga/demo/transport.py": "24ebecfd753215e4ee3a75e40674e512872f8bc39ffaa95cc8f80c24f09d24c1",
+    "fpga/demo/host.py": "7c37a9a31ec9c0d328d9d248a5b8a26f4cb52b26d05c968198f8117421f57323",
+    "fpga/demo/protocol.py": "6d7fb48380166d5a7e5fae00e2738f72d90414115ed557b4d82c720a24309185"
+  }
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "command": "tcl_notifications off",
+    "status": "OK",
+    "result": "",
+    "elapsed_s": 0.0
+  },
+  {
+    "command": "tcl_trace off",
+    "status": "OK",
+    "result": "",
+    "elapsed_s": 0.0
+  },
+  {
+    "command": "riscv set_mem_access sysbus",
+    "status": "OK",
+    "result": "",
+    "elapsed_s": 0.0
+  },
+  {
+    "command": "read_memory 0x0001003c 32 1",
+    "status": "OK",
+    "result": "0x0",
+    "elapsed_s": 0.015
+  },
+  {
+    "command": "halt 5000",
+    "status": "OK",
+    "result": "",
+    "elapsed_s": 0.0
+  },
+  {
+    "command": "targets",
+    "status": "OK",
+    "result": "TargetName         Type       Endian TapName            State       \n--  ------------------ ---------- ------ ------------------ ------------\n 0* cv32.cpu           riscv      little cv32.cpu           halted",
+    "elapsed_s": 0.0
+  },
+  {
+    "command": "read_memory 0x80000000 32 4",
+    "status": "OK",
+    "result": "0x0 0x0 0x0 0x0",
+    "elapsed_s": 0.016
+  },
+  {
+    "command": "resume",
+    "status": "OK",
+    "result": "",
+    "elapsed_s": 0.015
+  }
+]

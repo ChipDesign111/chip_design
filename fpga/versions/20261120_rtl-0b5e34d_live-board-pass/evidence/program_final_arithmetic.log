@@ -1,0 +1,137 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Fri Nov 20 10:55:10 2026
+# Process ID: 44812
+# Current directory: C:/Users/wyh/Desktop/chipcourse/chip_design_demo_raw0b
+# Command line: vivado.exe -mode batch -nojournal -log C:\Users\wyh\Desktop\chipcourse\chip_design_demo_raw0b\tools\local\camera_demo\recheck_20261120_103404\program_final_arithmetic.log -source fpga/demo/program_bitstream.tcl -tclargs fpga/versions/20261120_rtl-0b5e34d_camera-debug-pending/artifacts/fpga_top.bit
+# Log file: C:/Users/wyh/Desktop/chipcourse/chip_design_demo_raw0b/tools/local/camera_demo/recheck_20261120_103404/program_final_arithmetic.log
+# Journal file: 
+#-----------------------------------------------------------
+source fpga/demo/program_bitstream.tcl
+# set here [file normalize [file dirname [info script]]]
+# if {[llength $argv] != 1} {error "Pass the newly built bitstream path"}
+# open_hw
+# source [file join $here ../connect_fpga.tcl]
+## proc har_open_current_target {} {
+##     if {[llength [info commands ::har_open_hw_target_raw]] != 0} {
+##         return [::har_open_hw_target_raw]
+##     }
+## 
+##     return [::open_hw_target]
+## }
+## proc har_connect_fpga {} {
+##     catch {close_hw_target}
+##     catch {disconnect_hw_server}
+## 
+##     connect_hw_server -url localhost:3121
+##     refresh_hw_server
+## 
+##     set targets [get_hw_targets]
+##     if {[llength $targets] == 0} {
+##         error "No JTAG targets are currently visible on localhost:3121"
+##     }
+## 
+##     foreach target $targets {
+##         catch {close_hw_target}
+## 
+##         if {[catch {current_hw_target $target} error]} {
+##             puts "Skipping target $target: $error"
+##             continue
+##         }
+## 
+##         # A stale target may open successfully but expose no devices.
+##         if {[catch {har_open_current_target} error]} {
+##             puts "Cannot open target $target: $error"
+##             continue
+##         }
+## 
+##         if {[catch {get_hw_devices} devices]} {
+##             set devices {}
+##         }
+## 
+##         foreach device $devices {
+##             set part ""
+##             catch {set part [get_property PART $device]}
+## 
+##             if {[string match -nocase "xc7a35t*" $part] ||
+##                 [string match -nocase "*xc7a35t*" $device]} {
+##                 current_hw_device $device
+##                 puts "Connected JTAG target: $target"
+##                 puts "Current FPGA device: $device"
+##                 return $device
+##             }
+##         }
+## 
+##         catch {close_hw_target}
+##     }
+## 
+##     error "No online xc7a35t device was found"
+## }
+## proc har_program_fpga {bitfile} {
+##     if {![file isfile $bitfile]} {
+##         error "Bitstream not found: $bitfile"
+##     }
+## 
+##     set device [har_connect_fpga]
+##     set_property PROGRAM.FILE $bitfile $device
+##     program_hw_devices $device
+##     refresh_hw_device -update_hw_probes false $device
+##     puts "Programmed $device with $bitfile"
+## }
+## proc har_install_open_hw_target_hook {} {
+##     if {[llength [info commands ::har_open_hw_target_raw]] != 0} {
+##         return 1
+##     }
+## 
+##     if {[llength [info commands ::open_hw_target]] == 0} {
+##         catch {auto_load open_hw_target}
+##     }
+## 
+##     if {[llength [info commands ::open_hw_target]] == 0} {
+##         return 0
+##     }
+## 
+##     rename ::open_hw_target ::har_open_hw_target_raw
+## 
+##     proc ::open_hw_target {args} {
+##         if {[llength $args] == 0 ||
+##             [string match "*21051218003*" $args]} {
+##             har_connect_fpga
+##             return
+##         }
+## 
+##         return [::har_open_hw_target_raw {*}$args]
+##     }
+## 
+##     return 1
+## }
+## har_install_open_hw_target_hook
+# har_program_fpga [file normalize [lindex $argv 0]]
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-2222] Launching hw_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+****** Xilinx hw_server v2019.1
+  **** Build date : May 24 2019 at 15:13:31
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+
+INFO: [Labtoolstcl 44-464] Closing hw_target localhost:3121/xilinx_tcf/Xilinx/1234-tulA
+INFO: [Labtoolstcl 44-468] Target hw_target localhost:3121/xilinx_tcf/Xilinx/1234-tulA is already closed
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Xilinx/1234-tulA
+Connected JTAG target: localhost:3121/xilinx_tcf/Xilinx/1234-tulA
+Current FPGA device: xc7a35t_0
+INFO: [Labtools 27-3164] End of startup status: HIGH
+INFO: [Labtools 27-1434] Device xc7a35t (JTAG device index = 0) is programmed with a design that has no supported debug core(s) in it.
+Programmed xc7a35t_0 with C:/Users/wyh/Desktop/chipcourse/chip_design_demo_raw0b/fpga/versions/20261120_rtl-0b5e34d_camera-debug-pending/artifacts/fpga_top.bit
+# close_hw
+****** Webtalk v2019.1 (64-bit)
+  **** SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+  **** IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+source C:/Users/wyh/Desktop/chipcourse/chip_design_demo_raw0b/.Xil/Vivado-44812-LAPTOP-2N6SEKEC/webtalk/labtool_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Fri Nov 20 10:55:31 2026...
+INFO: [Common 17-206] Exiting Vivado at Fri Nov 20 10:55:31 2026...

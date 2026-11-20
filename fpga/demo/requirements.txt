@@ -4,3 +4,4 @@ numpy==2.3.5
 mediapipe==0.10.32
 opencv-contrib-python==5.1.0.95
 matplotlib==3.11.2
+pillow==10.4.0

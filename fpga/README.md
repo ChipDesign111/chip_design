@@ -1,14 +1,13 @@
 # FPGA 测试与多镜像加载
 
-新增 [摄像头多轮交互](demo/README.md)，一次装载后可持续输入/输出。该流程使用 RAW 基线重新构建，实际状态见 [本轮记录](../report/camera_demo_raw0b_20261120/README.md)，与下方历史板测版本分开。
+新增[摄像头多轮交互](demo/README.md)，一次装载后可持续输入/输出。RAW基线的真实100轮算术、12轮工程模型板测已通过，最新状态见[板测记录](../report/camera_board_20261120/README.md)；真人采集和识别验证单独记录。下方历史镜像流程保留作参考。
 
 本目录提供 A7-35T 板级构建、JTAG 目标选择、镜像转换和 GDB 装载流程。
 FPGA 系统时钟为 20 MHz，器件为 `xc7a35tcsg324-1`。
 
 FPGA bitstream、固件和测试证据按不可覆盖版本归档，入口见
 [版本目录](versions/README.md)。最近完成板测的冻结版本为
-[20261104_rtl-1c265c0_int22](versions/20261104_rtl-1c265c0_int22/README.md)；
-该冻结版本的板级测试已 PASS。2026-11-09 活动固件已更新为 `reuse8`，
+[20261120_rtl-0b5e34d_live-board-pass](versions/20261120_rtl-0b5e34d_live-board-pass/README.md)；此前[20261104版本](versions/20261104_rtl-1c265c0_int22/README.md)保留。2026-11-09 活动固件曾更新为 `reuse8`，
 完成固定 RTL 的 CPU 仿真验证，尚未重新生成 bitstream 或重新上板测试。
 上一版的完整 PASS 报告保存在
 [20261101_rtl-fce9d9b_board-pass](versions/20261101_rtl-fce9d9b_board-pass/README.md)。

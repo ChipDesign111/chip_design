@@ -1,0 +1,21 @@
+{
+  "arithmetic_final": {
+    "exit_code": 0,
+    "elapsed_s_including_load_and_verify": 62.5,
+    "actual_records": 100
+  },
+  "engineering_final": {
+    "exit_code": 0,
+    "elapsed_s_including_load_and_verify": 3.672,
+    "actual_records": 12
+  },
+  "engineering_attach_physical_mode": {
+    "exit_code": 0,
+    "records": 12,
+    "sequence_start": 13,
+    "sequence_end": 24,
+    "scope": "historical additional continuity check, excluded from final112"
+  },
+  "recorded_at": "2026-11-20T11:18:49.360402+08:00",
+  "openocd_service": "Running locally with tested engineering image; no human action model loaded"
+}
