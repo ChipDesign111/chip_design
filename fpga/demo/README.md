@@ -46,15 +46,24 @@ powershell -NoProfile -ExecutionPolicy Bypass -File fpga/demo/setup.ps1
 
 板载配置链和 SoC 的 JTAG Debug 引脚是两条不同通路。现有顶层把 TCK/TMS/TDI/TDO 放在 E15/C15/E16/D15，沿用课程接线；下载链能看到 `xc7a35t`，不代表 OpenOCD 已能访问内部 CPU。独立 FT232H 适配器通常为 `0403:6014`，板载复合设备为 `0403:6010`。不应将后者的 FPGA 配置 TAP 当成 RISC-V DTM。以实际接线和 TAP 探测结果为准。
 
-| FT232H引脚 | FPGA封装引脚 | 信号/方向 |
+本机照片已确认板卡为EGo1，下载器外观与课程ALINX USB CABLE一致。按[课程Lab6第8.2节](https://full-stack-ai-chip.tianyuj.com/lab-6/#82-jtag)和[EGo1手册第14节](https://e-elements.readthedocs.io/zh/ego1_v2.2/EGo1.html)核对完整六线连接：
+
+| 下载器信号 / FT232H | EGo1 J5针号 | FPGA封装引脚 / 方向 |
 | --- | --- | --- |
-| AD0 | E15 | TCK，适配器输出 |
-| AD1 | E16 | TDI，适配器输出 |
-| AD2 | D15 | TDO，适配器输入 |
-| AD3 | C15 | TMS，适配器输出 |
-| GND | GND | 共地 |
+| TCK / AD0 | 17 | E15，适配器输出 |
+| TDI / AD1 | 18 | E16，适配器输出 |
+| TDO / AD2 | 19 | D15，适配器输入 |
+| TMS / AD3 | 20 | C15，适配器输出 |
+| GND | 33或34 | 共地 |
+| VREF | 35或36 | +3.3V，下载器参考电压输入 |
+
+此前五线说明遗漏了该款下载器的VREF，已更正；不能只按裸FT232H的四根GPIO加GND描述外接成品下载器。VREF用于目标电平参考，不用于给开发板供电，也不能接5V。
+
+课程图针对下载器端面2×5插口：标签面朝上、正对该插口看，上排从左到右为`TDI / 空 / TMS / TDO / TCK`，下排为`GND / 空 / 空 / VREF / GND`。这一顺序不适用于外壳顶部的长窗口插针。J5为2×18排针，按板上1脚标志计数；照片上下方向不作为针号依据。2026-11-20接线照片中两端触点被遮挡，尚不能确认每根线或VREF是否正确连接，不能仅按颜色断言接错。
 
 按开发板原理图将封装引脚对应到排针位置；E15等不是排针编号。信号为3.3 V。仅插FT232H的USB线不会自动连到这四个FPGA引脚。2026-11-20诊断中，新RAW bitstream在1 MHz/100 kHz和历史已板测bitstream在1 MHz均返回全0，当前原因未确认，需检查这段接线、复位和时钟；不能继续把端口监听当成连接成功。
+
+收到接线照片后，按课程FTDI初始化参数降至10 kHz重新扫描，仍为全0，未执行任何板上推理；本轮原始日志见[照片与接线复核](../../report/jtag_photo_recheck_20261120/README.md)。静态照片中LED亮起不能证明心跳正在闪烁；当前TAP复位仍受外部复位和MMCM锁定控制。
 
 启动已安装的WSL并附加外接适配器后，在仓库根目录启动OpenOCD：
 

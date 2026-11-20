@@ -29,6 +29,7 @@ test/int8/test_camera_demo.py -text whitespace=trailing-space,space-before-tab,c
 test/unit/test_live_host.py -text whitespace=trailing-space,space-before-tab,cr-at-eol
 # Frozen FPGA tool output retains its original whitespace and byte hashes.
 fpga/versions/20261120_rtl-0b5e34d_camera-debug-pending/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+report/jtag_photo_recheck_20261120/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
 rtl/cpu_cv32e40p/** -text
 rtl/axi/** -text
 rtl/clk_rst/** -text
