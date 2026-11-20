@@ -97,7 +97,7 @@ WSL使用USB/IP时，先在Windows执行`usbipd list`核对适配器BUSID；管�
 
 可选自动模式：CLI加`--auto-advance --pose-timeout 120`，或包装脚本加`-AutoCapture`。检测到所选版本要求的连续有效姿态才启动倒计时，准备期间丢失姿态则重等；有效窗口不足重试同一动作。每动作总期限默认120秒，超时退出并保留已完成session。Q退出；自动模式不保存当前未完成段。
 
-保存的是64维特征、标签和独立session标识，不保存原视频。每类至少三次独立session，训练/验证/测试按session划分，避免相邻重叠帧随机切分造成精度虚高。若检验不同人的泛化，需另外采集不同人的独立测试session。当前22项摄像头测试覆盖手动/自动门控、空样本重试、相机配置与整帧预览；代码测试不等于已获得真人样本。
+保存的是64维特征、标签和独立session标识，不保存原视频。每类至少三次独立session，训练/验证/测试按session划分，避免相邻重叠帧随机切分造成精度虚高。若检验不同人的泛化，需另外采集不同人的独立测试session。摄像头及特征测试覆盖手动/自动门控、空样本重试、相机配置、整帧预览和新旧版本兼容；代码测试不等于已获得真人样本。
 
 特征契约为16个关键点的归一化二维位置32维，加约1秒窗口的位移32维。`knees`版本使用6个头部点和肩、肘、腕、髋、膝共10个点，检查所选点可见且位于画面内；脚部缺失不影响采样。坐标以髋中心平移、肩宽归一化；具体关键点、缺失检测和窗口规则见 [features.py](features.py)。采集与推理共用同一实现，推理根据模型中保存的特征版本选择提取器。丢失所需姿态时不发送伪造的零输入。
 
@@ -147,7 +147,7 @@ WSL使用USB/IP时，先在Windows执行`usbipd list`核对适配器BUSID；管�
 ## 开发验证
 
 ```powershell
-.\.venv-demo\Scripts\python.exe -m unittest discover -s test/int8 -p 'test_camera_demo.py' -v
+.\.venv-demo\Scripts\python.exe -m unittest discover -s test/int8 -p 'test_camera*.py' -v
 .\.venv-demo\Scripts\python.exe -m unittest discover -s test/unit -p 'test_live_host.py' -v
 python tools/project.py check
 ```
