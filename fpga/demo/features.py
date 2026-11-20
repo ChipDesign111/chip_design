@@ -8,34 +8,71 @@ import numpy as np
 FEATURE_SCHEMA = 'pose_xy_delta64_v1'
 # MediaPipe shoulders, elbows, wrists, hips, knees, ankles, heels and toes.
 JOINTS = (11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)
+# Six head landmarks plus shoulders, elbows, wrists, hips and knees. Feet are
+# deliberately excluded so this version can be captured in a knee-up frame.
+KNEES_JOINTS = (0, 2, 5, 7, 8, 9, 11, 12, 13, 14, 15, 16, 23, 24, 25, 26)
+KNEES_FEATURE_SCHEMA = 'pose_knees_xy_delta64_v2'
 DEFAULT_LABELS = ('standing', 'left_arm', 'right_arm', 'both_arms', 'squat', 'lean')
 
 
-def feature_metadata(window_seconds=1.0):
-    return {'schema': FEATURE_SCHEMA, 'dimension': 64, 'joints': list(JOINTS),
+def _profile_joints(profile):
+    if profile == 'full':
+        return JOINTS
+    if profile == 'knees':
+        return KNEES_JOINTS
+    raise ValueError('Unknown camera feature profile: ' + str(profile))
+
+
+def feature_metadata(window_seconds=1.0, profile='full'):
+    joints = _profile_joints(profile)
+    metadata = {'schema': FEATURE_SCHEMA, 'dimension': 64, 'joints': list(joints),
             'window_seconds': float(window_seconds), 'coordinates': 'unmirrored image pixels',
             'normalization': 'hip midpoint origin; shoulder distance unit; clip each coordinate and delta to [-3,3], divide by 3',
             'layout': '32 current normalized xy values, then 32 current-minus-window-start xy values',
             'missing_pose': 'No inference; clear history after 0.25 seconds without a valid pose',
             'visibility_threshold': 0.5}
+    if profile == 'knees':
+        metadata['schema'] = KNEES_FEATURE_SCHEMA
+        metadata['required_in_frame'] = True
+    return metadata
 
 
-def normalize_pose(landmarks, image_width, image_height, visibility=0.5):
+def feature_profile_from_metadata(metadata):
+    """Resolve a known feature contract; extra capture provenance is allowed."""
+    if not isinstance(metadata, dict) or metadata.get('dimension') != 64:
+        raise ValueError('Incompatible camera feature schema')
+    schemas = {FEATURE_SCHEMA: 'full', KNEES_FEATURE_SCHEMA: 'knees'}
+    schema = metadata.get('schema')
+    if not isinstance(schema, str) or schema not in schemas:
+        raise ValueError('Incompatible camera feature schema')
+    profile = schemas[schema]
+    if (metadata.get('joints') != list(_profile_joints(profile)) or
+            metadata.get('coordinates') != 'unmirrored image pixels'):
+        raise ValueError('Incompatible camera joint/coordinate contract')
+    if profile == 'knees' and metadata.get('required_in_frame') is not True:
+        raise ValueError('Knees profile requires selected landmarks inside the frame')
+    return profile
+
+
+def normalize_pose(landmarks, image_width, image_height, visibility=0.5, profile='full'):
     """Return [16,2] pose in shoulder-width units, or None for unreliable input."""
+    joints = _profile_joints(profile)
     points = np.asarray(landmarks, dtype=np.float64)
     if points.shape != (33, 4):
         raise ValueError('Expected 33 MediaPipe landmarks with x,y,z,visibility')
     if image_width <= 0 or image_height <= 0:
         raise ValueError('Image dimensions must be positive')
-    selected = points[list(JOINTS)]
+    selected = points[list(joints)]
     if not np.isfinite(selected).all() or (selected[:, 3] < visibility).any():
+        return None
+    if profile == 'knees' and ((selected[:, :2] < 0).any() or (selected[:, :2] > 1).any()):
         return None
     xy = points[:, :2] * np.array([image_width, image_height])
     scale = float(np.linalg.norm(xy[11] - xy[12]))
     if scale < max(image_width, image_height) * 0.015:
         return None
     origin = (xy[23] + xy[24]) / 2
-    return ((xy[list(JOINTS)] - origin) / scale).astype(np.float32)
+    return ((xy[list(joints)] - origin) / scale).astype(np.float32)
 
 
 class PoseWindow:
@@ -94,10 +131,7 @@ def load_dataset(path):
         raise ValueError('Dataset features must be finite [samples,64]')
     if not len(x) or any(result[name].shape != (len(x),) for name in ('labels', 'sessions', 'timestamps')):
         raise ValueError('Dataset arrays have inconsistent or empty sample count')
-    if metadata.get('schema') != FEATURE_SCHEMA or metadata.get('dimension') != 64:
-        raise ValueError('Incompatible camera feature schema')
-    if metadata.get('joints') != list(JOINTS) or metadata.get('coordinates') != 'unmirrored image pixels':
-        raise ValueError('Incompatible camera joint/coordinate contract')
+    feature_profile_from_metadata(metadata)
     if not np.isfinite(result['timestamps']).all():
         raise ValueError('Nonfinite dataset timestamps')
     return result, metadata

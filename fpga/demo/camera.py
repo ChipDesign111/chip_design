@@ -16,8 +16,8 @@ import uuid
 
 import numpy as np
 
-from .features import (FEATURE_SCHEMA, JOINTS, PoseWindow, append_dataset,
-                       DEFAULT_LABELS, feature_metadata, normalize_pose)
+from .features import (PoseWindow, append_dataset, DEFAULT_LABELS,
+                       feature_metadata, feature_profile_from_metadata, normalize_pose)
 
 DEFAULT_POSE_MODEL = Path('tools/local/camera_demo/pose_landmarker_lite.task')
 CONNECTIONS = ((11,12),(11,13),(13,15),(12,14),(14,16),(11,23),(12,24),(23,24),
@@ -39,7 +39,7 @@ class CaptureStep:
 class CaptureGate:
     """One labelled segment: confirm/wait, prepare, record or retry.
 
-    `valid` means PoseWindow has produced a genuine full-body history, never a
+    `valid` means PoseWindow has produced a genuine selected-profile history, never a
     fabricated zero vector. A failed segment stays on the same action; it does
     not count as a completed dataset session.
     """
@@ -71,7 +71,7 @@ class CaptureGate:
         if self.phase == 'complete':
             return CaptureStep('complete', windows=self.windows)
         if self.automatic and now - self.entered >= self.timeout:
-            raise RuntimeError('Automatic capture timed out waiting for enough full-body samples; '
+            raise RuntimeError('Automatic capture timed out waiting for enough valid pose samples; '
                                'completed sessions are preserved. Adjust the camera and retry.')
         if self.phase == 'waiting':
             ready = valid if self.automatic else (confirm or self.start_immediately)
@@ -206,12 +206,13 @@ def read_camera_model(package, *, allow_synthetic_engineering_test=False):
         raise ValueError('No trained camera_demo.json. Record camera features and run train_camera first; the UCI sensor model cannot classify camera features.')
     model = json.loads(path.read_text(encoding='utf-8'))
     contract = model.get('feature_contract', {})
-    if not model.get('trained') or contract.get('schema') != FEATURE_SCHEMA:
+    if not model.get('trained'):
         raise ValueError('Untrained or incompatible camera model')
+    profile = feature_profile_from_metadata(contract)
     source=model.get('dataset_source')
     if source != 'local-camera' and not (allow_synthetic_engineering_test and source == 'synthetic-engineering-test'):
         raise ValueError('Camera inference requires a model trained on labelled local-camera recordings; synthetic/unknown training data are not a human-action model')
-    expected = feature_metadata(contract.get('window_seconds', 1.0))
+    expected = feature_metadata(contract.get('window_seconds', 1.0), profile=profile)
     if any(contract.get(k) != v for k, v in expected.items()):
         raise ValueError('Camera model uses a different feature extraction contract')
     if len(model.get('labels', [])) != 6 or model.get('network') != [64,32,6]:
@@ -229,6 +230,13 @@ def read_camera_model(package, *, allow_synthetic_engineering_test=False):
     if model.get('npu_core_starts_per_request',0) < 1 or manifest.get('npu_core_starts',0) < 1:
         raise ValueError('Camera demo package has no real RAW NPU block')
     return model
+
+
+def _capture_contract(args, model=None):
+    """A loaded classifier owns its feature profile; capture chooses explicitly."""
+    contract = model['feature_contract'] if model else feature_metadata(
+        args.window, profile=getattr(args, 'feature_profile', 'full'))
+    return feature_profile_from_metadata(contract), contract
 
 
 class FPGAWorker:
@@ -331,7 +339,10 @@ def run_capture(args):
     if not args.pose_model.is_file():
         raise ValueError('Missing MediaPipe pose model: ' + str(args.pose_model))
     model = read_camera_model(args.package, allow_synthetic_engineering_test=args.allow_synthetic_engineering_test) if args.command == 'run' else None
-    window_seconds = model['feature_contract']['window_seconds'] if model else args.window
+    profile, contract = _capture_contract(args, model)
+    window_seconds = contract['window_seconds']
+    framing = 'head, hands and knees visible; feet not required' if profile == 'knees' else 'full body including feet visible'
+    framing_zh = '头、手和膝盖完整入镜（无需脚部）' if profile == 'knees' else '头、手和脚完整入镜'
     if not all(math.isfinite(v) and v > 0 for v in (args.seconds,args.interval)):
         raise ValueError('--seconds and --interval must be positive')
     if args.command == 'record' and (not math.isfinite(args.countdown) or args.countdown < 0):
@@ -350,6 +361,7 @@ def run_capture(args):
         min_pose_detection_confidence=0.5, min_pose_presence_confidence=0.5,
         min_tracking_confidence=0.5)
     cap, camera_info = _open_camera(args, cv2)
+    camera_info.update(feature_profile=profile, feature_schema=contract['schema'])
     print(json.dumps(camera_info), flush=True)
     worker = None
     samples, timestamps = [], []
@@ -381,9 +393,9 @@ def run_capture(args):
                 landmarks = None
                 if detection.pose_landmarks:
                     landmarks = np.array([[p.x,p.y,p.z,p.visibility] for p in detection.pose_landmarks[0]])
-                pose = normalize_pose(landmarks, frame.shape[1], frame.shape[0]) if landmarks is not None else None
+                pose = normalize_pose(landmarks, frame.shape[1], frame.shape[0], profile=profile) if landmarks is not None else None
                 features = window.update(now, pose)
-                pose_status = 'Pose ready' if features is not None else f'Need full visible body / {window_seconds:g}s stable history'
+                pose_status = 'Pose ready' if features is not None else f'Need {framing} / {window_seconds:g}s history'
                 lines = [f'{args.command.upper()} - {pose_status}']
                 chinese = []
                 if args.command == 'record':
@@ -399,20 +411,20 @@ def run_capture(args):
                                           'minimum_windows': gate.minimum,
                                           'manual_confirmation_required': not automatic}), flush=True)
                         if args.no_display and not automatic:
-                            raise RuntimeError('Too few valid full-body samples; retry with the camera display')
+                            raise RuntimeError('Too few valid pose samples; retry with the camera display')
                     if step.emit:
                         samples.append(features.copy()); timestamps.append(now)
                     if step.phase == 'complete':
                         break
                     if step.phase in ('waiting', 'retry'):
                         if automatic:
-                            lines.append(f'AUTO: show your full body; {args.label}; Q: stop')
-                            chinese.append('等待全身稳定入镜：头、手和脚均需可见')
+                            lines.append(f'AUTO: {framing}; {args.label}; Q: stop')
+                            chinese.append(f'等待稳定姿态：{framing_zh}')
                         else:
                             lines.append(f'WAITING: {args.label}. SPACE: confirm and begin; Q: stop')
                             lines.append(getattr(args,'progress','Move to the labelled pose before confirming'))
                             chinese.append('尚未开始：点击画面，再按空格开始本动作')
-                            chinese.append('全身已稳定入镜' if features is not None else '请调整位置，让头、手和脚完整入镜')
+                            chinese.append(f'姿态已稳定：{framing_zh}' if features is not None else f'请调整位置：{framing_zh}')
                     elif step.phase == 'preparing':
                         lines.append(f'PREPARE {step.remaining:.1f}s: {args.label}')
                         chinese.append(f'准备动作，倒计时 {step.remaining:.1f} 秒')
@@ -420,7 +432,7 @@ def run_capture(args):
                         lines.append(f'RECORD {args.label}: {step.windows} windows; {step.remaining:.1f}s')
                         chinese.append(f'正在录制：{step.windows} 个窗口，剩余 {step.remaining:.1f} 秒')
                         if features is None:
-                            chinese.append('未看清全身，本帧不采样')
+                            chinese.append(f'未看清所需关键点，本帧不采样：{framing_zh}')
                     if gate.retries:
                         lines.append(f'Too few valid windows; same action retry {gate.retries}')
                         if automatic:
@@ -461,6 +473,8 @@ def run_capture(args):
                         break
                 if landmarks is not None:
                     for a,b in CONNECTIONS:
+                        if profile == 'knees' and (a not in contract['joints'] or b not in contract['joints']):
+                            continue
                         if landmarks[a,3] >= .5 and landmarks[b,3] >= .5:
                             pa = tuple((landmarks[a,:2]*[frame.shape[1],frame.shape[0]]).astype(int))
                             pb = tuple((landmarks[b,:2]*[frame.shape[1],frame.shape[0]]).astype(int))
@@ -496,7 +510,7 @@ def run_capture(args):
             return False
         if cancelled and len(samples) < gate.minimum:
             return False
-        metadata = feature_metadata(window_seconds); metadata['capture_source'] = 'local-camera'
+        metadata = feature_metadata(window_seconds, profile=profile); metadata['capture_source'] = 'local-camera'
         total = append_dataset(args.output, samples, args.label, session, timestamps, metadata)
         print(json.dumps({'dataset': str(args.output), 'label': args.label, 'session': session,
                           'new_windows': len(samples), 'total_windows': total, 'video_saved': False}, indent=2))
@@ -517,12 +531,13 @@ def collect(args):
                            session=f'r{round_id}-{label}-{uuid.uuid4().hex[:12]}',
                            progress=f'Round {round_id}/{args.rounds}, class {index+1}/6: {label}',
                            progress_zh=f'第 {round_id}/{args.rounds} 轮，动作 {index+1}/6：{ACTION_ZH.get(label, label)}')
-            instruction = 'Full-body pose starts countdown automatically.' if automatic else 'Take position, then SPACE in camera window.'
+            instruction = 'Valid selected-profile pose starts countdown automatically.' if automatic else 'Take position, then SPACE in camera window.'
             print(f'Round {round_id}/{args.rounds}: {label}. {instruction}',flush=True)
             if not run_capture(argparse.Namespace(**options)):
                 return False
     print(json.dumps({'event':'collection_complete','dataset':str(args.output),
-                      'labels':args.labels,'rounds':args.rounds,'video_saved':False}),flush=True)
+                      'labels':args.labels,'rounds':args.rounds,
+                      'feature_profile':getattr(args,'feature_profile','full'),'video_saved':False}),flush=True)
     return True
 
 
@@ -543,6 +558,8 @@ def main():
         c.add_argument('--interval',type=float,default=.25)
         c.add_argument('--no-display',action='store_true')
         if name in ('record','collect'):
+            c.add_argument('--feature-profile',choices=('full','knees'),default='full',
+                           help='Versioned capture features: full requires feet; knees requires head/hands/knees only')
             if name == 'record':
                 c.add_argument('--label',required=True)
                 c.add_argument('--session',default='')
@@ -551,7 +568,7 @@ def main():
                 c.add_argument('--labels',nargs=6,default=DEFAULT_LABELS)
                 c.add_argument('--rounds',type=int,default=3)
                 c.add_argument('--auto-advance',action='store_true',
-                               help='Full-body pose starts each countdown; switch actions automatically')
+                               help='Valid selected-profile pose starts each countdown; switch actions automatically')
                 c.add_argument('--pose-timeout',type=float,default=120,
                                help='Maximum total seconds to obtain a qualified segment for each action')
             c.add_argument('--output',type=Path,required=True)

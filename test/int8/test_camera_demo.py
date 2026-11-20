@@ -16,10 +16,10 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from fpga.demo.features import (JOINTS, PoseWindow, append_dataset, feature_metadata,
-                                load_dataset, normalize_pose, quantize_features)
+                                feature_profile_from_metadata, load_dataset, normalize_pose, quantize_features)
 from fpga.demo.train_camera import split_sessions
 from fpga.demo.camera import (AutoCaptureGate, ManualCaptureGate, FPGAWorker, _chinese_font,
-                              _draw_capture_text, _open_camera, collect, read_camera_model)
+                              _capture_contract, _draw_capture_text, _open_camera, collect, read_camera_model)
 
 
 def landmarks():
@@ -140,6 +140,28 @@ class FeaturesTest(unittest.TestCase):
         self.assertTrue(all(o.auto_advance and not o.wait_start for o in options))
         self.assertIn('站立',options[0].progress_zh)
         self.assertIn('第 3/3 轮',options[-1].progress_zh)
+
+    def test_manual_knees_collection_preserves_explicit_profile_for_every_session(self):
+        args=SimpleNamespace(rounds=3,labels=('standing','left_arm','right_arm','both_arms','squat','lean'),
+                             no_display=False,output=Path('unused.npz'),feature_profile='knees')
+        with patch('fpga.demo.camera.run_capture',return_value=True) as capture, contextlib.redirect_stdout(io.StringIO()):
+            self.assertTrue(collect(args))
+        self.assertEqual(capture.call_count,18)
+        self.assertTrue(all(c.args[0].feature_profile=='knees' and c.args[0].wait_start
+                            for c in capture.call_args_list))
+
+    def test_live_feature_profile_comes_from_saved_classifier_not_capture_defaults(self):
+        args=SimpleNamespace(window=2,feature_profile='full')
+        profile,contract=_capture_contract(args)
+        self.assertEqual(profile,'full')
+        self.assertEqual(contract,feature_metadata(2))
+        trained={'feature_contract':feature_metadata(1,profile='knees')}
+        profile,contract=_capture_contract(args,trained)
+        self.assertEqual(profile,'knees')
+        self.assertIs(contract,trained['feature_contract'])
+        self.assertEqual(contract['window_seconds'],1)
+        with self.assertRaises(ValueError):
+            _capture_contract(SimpleNamespace(window=1,feature_profile='unsupported'))
 
     def test_auto_waits_for_valid_full_body_and_restarts_interrupted_countdown(self):
         gate=AutoCaptureGate(2,2,.5,timeout=20)
@@ -307,6 +329,25 @@ class FeaturesTest(unittest.TestCase):
             (folder/'camera_demo.json').write_text(json.dumps(model),encoding='utf-8')
             with self.assertRaisesRegex(ValueError,'synthetic/unknown'):read_camera_model(folder)
             self.assertEqual(read_camera_model(folder,allow_synthetic_engineering_test=True)['dataset_source'],model['dataset_source'])
+
+    def test_camera_reader_accepts_both_profiles_and_rejects_mixed_contract(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            folder=Path(tmp)
+            model={'trained':True,'network':[64,32,6],'labels':list('abcdef'),
+                   'package_tag':'0123456789abcdef','input_scale':.1,'output_scale':.2,
+                   'backend_target':'int22-raw-v1','npu_core_starts_per_request':1,'dataset_source':'local-camera'}
+            live={'package_tag':model['package_tag'],'input_bytes':64,'output_bytes':6,
+                  'input_scale':.1,'output_scale':.2}
+            (folder/'manifest.json').write_text(json.dumps({'live_demo':live,'target':'int22-raw-v1',
+                                                           'npu_core_starts':1}),encoding='utf-8')
+            for profile in ('full','knees'):
+                model['feature_contract']=feature_metadata(profile=profile)
+                (folder/'camera_demo.json').write_text(json.dumps(model),encoding='utf-8')
+                self.assertEqual(feature_profile_from_metadata(read_camera_model(folder)['feature_contract']),profile)
+            model['feature_contract']['joints']=list(JOINTS)
+            (folder/'camera_demo.json').write_text(json.dumps(model),encoding='utf-8')
+            with self.assertRaisesRegex(ValueError,'joint/coordinate'):
+                read_camera_model(folder)
 
     def test_worker_closes_inflight_socket_and_never_publishes_after_quit(self):
         entered=threading.Event();closed=threading.Event();timeouts=[]

@@ -6,6 +6,8 @@ param(
     [string]$Build = 'tools/local/camera_demo/bitstream_new',
     [string]$Vivado = 'D:\pkuwyh\Vivado\2019.1\bin\vivado.bat',
     [int]$Camera = 0,
+    [ValidateSet('full','knees')]
+    [string]$FeatureProfile = 'knees',
     [switch]$ManualCapture,
     [switch]$AutoCapture
 )
@@ -31,7 +33,8 @@ try {
             'doctor' { & $Py -m fpga.demo.doctor }
             'collect' {
                 $captureArguments = @('-m','fpga.demo.camera','collect','--camera',"$Camera",'--camera-backend','auto',
-                    '--width','1280','--height','720','--zoom','100','--countdown','10','--output',$Dataset)
+                    '--width','1280','--height','720','--zoom','100','--countdown','10',
+                    '--feature-profile',$FeatureProfile,'--output',$Dataset)
                 if ($AutoCapture) {
                     $captureArguments += @('--auto-advance','--pose-timeout','120')
                 }
