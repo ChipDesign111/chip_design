@@ -4,6 +4,7 @@ record saves feature vectors, labels and session IDs, never video. run requires
 a separately trained camera model and reports only results returned by FPGA.
 """
 import argparse
+from contextlib import nullcontext
 from dataclasses import dataclass
 import json
 import math
@@ -335,11 +336,13 @@ class FPGAWorker:
 
 def run_capture(args):
     import cv2
-    import mediapipe as mp
-    if not args.pose_model.is_file():
-        raise ValueError('Missing MediaPipe pose model: ' + str(args.pose_model))
     model = read_camera_model(args.package, allow_synthetic_engineering_test=args.allow_synthetic_engineering_test) if args.command == 'run' else None
     profile, contract = _capture_contract(args, model)
+    uses_pose_detector = profile != 'image'
+    if uses_pose_detector:
+        import mediapipe as mp
+        if not args.pose_model.is_file():
+            raise ValueError('Missing MediaPipe pose model: ' + str(args.pose_model))
     window_seconds = contract['window_seconds']
     framing = 'head, hands and knees visible; feet not required' if profile == 'knees' else 'full body including feet visible'
     framing_zh = '头、手和膝盖完整入镜（无需脚部）' if profile == 'knees' else '头、手和脚完整入镜'
@@ -355,11 +358,14 @@ def run_capture(args):
         gate = AutoCaptureGate(args.countdown, args.seconds, args.interval,
                                getattr(args, 'pose_timeout', 120)) if automatic else ManualCaptureGate(
                                    args.countdown, args.seconds, args.interval, args.wait_start)
-    options = mp.tasks.vision.PoseLandmarkerOptions(
-        base_options=mp.tasks.BaseOptions(model_asset_path=str(args.pose_model)),
-        running_mode=mp.tasks.vision.RunningMode.VIDEO, num_poses=1,
-        min_pose_detection_confidence=0.5, min_pose_presence_confidence=0.5,
-        min_tracking_confidence=0.5)
+    detector_context = nullcontext(None)
+    if uses_pose_detector:
+        options = mp.tasks.vision.PoseLandmarkerOptions(
+            base_options=mp.tasks.BaseOptions(model_asset_path=str(args.pose_model)),
+            running_mode=mp.tasks.vision.RunningMode.VIDEO, num_poses=1,
+            min_pose_detection_confidence=0.5, min_pose_presence_confidence=0.5,
+            min_tracking_confidence=0.5)
+        detector_context = mp.tasks.vision.PoseLandmarker.create_from_options(options)
     cap, camera_info = _open_camera(args, cv2)
     camera_info.update(feature_profile=profile, feature_schema=contract['schema'])
     print(json.dumps(camera_info), flush=True)
@@ -371,11 +377,18 @@ def run_capture(args):
     cancelled, last_result_seq, last_error = False, None, None
     font, font_checked = None, False
     window = PoseWindow(window_seconds)
+    video_extractor = None
+    if profile == 'video':
+        from .video_features import VideoFeatureExtractor
+        video_extractor = VideoFeatureExtractor(window_seconds=window_seconds)
+    elif profile == 'image':
+        from .image_features import ImageFeatureExtractor
+        video_extractor = ImageFeatureExtractor(window_seconds=window_seconds)
     session = args.session or f'{args.label}-{uuid.uuid4().hex[:12]}' if args.command == 'record' else None
     try:
         if model:
             worker = FPGAWorker(args.package, args.host, args.port, args.timeout, args.attach)
-        with mp.tasks.vision.PoseLandmarker.create_from_options(options) as detector:
+        with detector_context as detector:
             while True:
                 ok, frame = cap.read()
                 if not ok:
@@ -388,14 +401,19 @@ def run_capture(args):
                 # MediaPipe's video timestamp remains monotonic when a guided
                 # record resets its separate preparation/record countdown.
                 ms = max(last_ms+1, int((now-capture_start)*1000)); last_ms = ms
-                image = mp.Image(image_format=mp.ImageFormat.SRGB, data=cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-                detection = detector.detect_for_video(image, ms)
                 landmarks = None
-                if detection.pose_landmarks:
-                    landmarks = np.array([[p.x,p.y,p.z,p.visibility] for p in detection.pose_landmarks[0]])
-                pose = normalize_pose(landmarks, frame.shape[1], frame.shape[0], profile=profile) if landmarks is not None else None
-                features = window.update(now, pose)
-                pose_status = 'Pose ready' if features is not None else f'Need {framing} / {window_seconds:g}s history'
+                if detector is not None:
+                    image = mp.Image(image_format=mp.ImageFormat.SRGB, data=cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+                    detection = detector.detect_for_video(image, ms)
+                    if detection.pose_landmarks:
+                        landmarks = np.array([[p.x,p.y,p.z,p.visibility] for p in detection.pose_landmarks[0]])
+                if video_extractor is not None:
+                    features = video_extractor.update(now, frame, landmarks)
+                    pose_status = 'Video features ready'
+                else:
+                    pose = normalize_pose(landmarks, frame.shape[1], frame.shape[0], profile=profile) if landmarks is not None else None
+                    features = window.update(now, pose)
+                    pose_status = 'Pose ready' if features is not None else f'Need {framing} / {window_seconds:g}s history'
                 lines = [f'{args.command.upper()} - {pose_status}']
                 chinese = []
                 if args.command == 'record':
@@ -462,18 +480,19 @@ def run_capture(args):
                         if result.sequence != last_result_seq:
                             print(json.dumps({'event':'fpga_result','sequence':result.sequence,
                                               'label':label,'class_id':result.class_id,
-                                              'scores':list(result.scores),'device_cycles':result.cycles,
+                                              'scores':list(result.values),'device_cycles':result.cycles,
                                               'roundtrip_ms':result.roundtrip_ms,'input_age_ms':1000*age,
                                               'backend':result.backend}),flush=True)
                             last_result_seq=result.sequence
                     if model.get('dataset_source') != 'local-camera':
                         lines.insert(0,'SYNTHETIC ENGINEERING TEST ONLY - NO HUMAN ACCURACY')
-                    lines.append('PC: pose; FPGA RAW NPU: FC1; FPGA CPU: FC2/ReLU. Q: exit')
+                    lines.append('PC: video features; FPGA RAW NPU: FC1; FPGA CPU: FC2/ReLU. Q: exit' if profile in ('video','image')
+                                 else 'PC: pose; FPGA RAW NPU: FC1; FPGA CPU: FC2/ReLU. Q: exit')
                     if elapsed >= args.seconds:
                         break
                 if landmarks is not None:
                     for a,b in CONNECTIONS:
-                        if profile == 'knees' and (a not in contract['joints'] or b not in contract['joints']):
+                        if profile in ('knees', 'video') and (a not in contract['joints'] or b not in contract['joints']):
                             continue
                         if landmarks[a,3] >= .5 and landmarks[b,3] >= .5:
                             pa = tuple((landmarks[a,:2]*[frame.shape[1],frame.shape[0]]).astype(int))

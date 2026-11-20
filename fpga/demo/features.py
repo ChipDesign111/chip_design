@@ -24,6 +24,12 @@ def _profile_joints(profile):
 
 
 def feature_metadata(window_seconds=1.0, profile='full'):
+    if profile == 'image':
+        from .image_features import image_feature_metadata
+        return image_feature_metadata(window_seconds)
+    if profile == 'video':
+        from .video_features import video_feature_metadata
+        return video_feature_metadata(window_seconds)
     joints = _profile_joints(profile)
     metadata = {'schema': FEATURE_SCHEMA, 'dimension': 64, 'joints': list(joints),
             'window_seconds': float(window_seconds), 'coordinates': 'unmirrored image pixels',
@@ -41,6 +47,12 @@ def feature_profile_from_metadata(metadata):
     """Resolve a known feature contract; extra capture provenance is allowed."""
     if not isinstance(metadata, dict) or metadata.get('dimension') != 64:
         raise ValueError('Incompatible camera feature schema')
+    from .image_features import IMAGE_FEATURE_SCHEMA, validate_image_metadata
+    if metadata.get('schema') == IMAGE_FEATURE_SCHEMA:
+        return validate_image_metadata(metadata)
+    from .video_features import VIDEO_FEATURE_SCHEMA, validate_video_metadata
+    if metadata.get('schema') == VIDEO_FEATURE_SCHEMA:
+        return validate_video_metadata(metadata)
     schemas = {FEATURE_SCHEMA: 'full', KNEES_FEATURE_SCHEMA: 'knees'}
     schema = metadata.get('schema')
     if not isinstance(schema, str) or schema not in schemas:

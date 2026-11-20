@@ -1,8 +1,9 @@
 param(
-    [ValidateSet('doctor','collect','train','run','build','program')]
+    [ValidateSet('doctor','collect','collect-features','analyze-video','train','run','build','program')]
     [string]$Action = 'doctor',
     [string]$Model = 'tools/local/camera_demo/my_action_model',
     [string]$Dataset = 'tools/local/camera_demo/actions.npz',
+    [string]$VideoDir = 'tools/local/camera_demo/video_capture',
     [string]$Build = 'tools/local/camera_demo/bitstream_new',
     [string]$Vivado = 'D:\pkuwyh\Vivado\2019.1\bin\vivado.bat',
     [int]$Camera = 0,
@@ -32,6 +33,13 @@ try {
         switch ($Action) {
             'doctor' { & $Py -m fpga.demo.doctor }
             'collect' {
+                & $Py -m fpga.demo.record_video --camera $Camera --camera-backend auto `
+                    --width 1280 --height 720 --zoom 100 --rounds 3 --output-dir $VideoDir
+            }
+            'analyze-video' {
+                & $Py -m fpga.demo.analyze_video --manifest (Join-Path $VideoDir 'manifest.json') --output $Dataset
+            }
+            'collect-features' {
                 $captureArguments = @('-m','fpga.demo.camera','collect','--camera',"$Camera",'--camera-backend','auto',
                     '--width','1280','--height','720','--zoom','100','--countdown','10',
                     '--feature-profile',$FeatureProfile,'--output',$Dataset)

@@ -1,0 +1,818 @@
+{
+  "format": "camera_video_board_aggregate_v1",
+  "date_local": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "status": "RAW_VIDEO_SAVED_AND_BOARD_NUMERICS_PASS_RECOGNITION_NOT_READY",
+  "capture": {
+    "clips": 18,
+    "complete_clips": 18,
+    "frames": 3714,
+    "recorded_seconds": 129.81499999999505,
+    "video_bytes": 298807162,
+    "resolution": [
+      1280,
+      720
+    ],
+    "codec": "MJPG",
+    "container": "AVI",
+    "audio_recorded": false,
+    "raw_unmirrored_frames": true,
+    "per_frame_actual_timestamps_saved": true,
+    "pose_visibility_gate": false,
+    "full_body_required": false,
+    "head_required": false,
+    "feet_required": false,
+    "recording_control": "SPACE starts/stops each labelled clip; Q retains a partial clip",
+    "raw_videos_remain_local": true,
+    "raw_videos_exported": false
+  },
+  "analysis": {
+    "samples": 530,
+    "feature_schema": "pose_masked_video64_v3",
+    "class_samples": {
+      "standing": 135,
+      "left_arm": 84,
+      "right_arm": 59,
+      "both_arms": 78,
+      "squat": 79,
+      "lean": 95
+    },
+    "class_independent_sessions": {
+      "standing": 3,
+      "left_arm": 3,
+      "right_arm": 3,
+      "both_arms": 3,
+      "squat": 3,
+      "lean": 3
+    },
+    "samples_with_no_observed_joints": 193,
+    "no_pose_samples_retained_with_real_image_features": true,
+    "raw_videos_preserved": true
+  },
+  "trained_classifier": {
+    "network": [
+      64,
+      32,
+      6
+    ],
+    "package_tag": "481afec54b1bcba7",
+    "backend_target": "int22-raw-v1",
+    "layer_mapping": [
+      {
+        "name": "_0",
+        "op": "linear",
+        "backend": "RAW+CPU",
+        "raw_tiles": 1,
+        "raw_macs": 2048,
+        "cpu_macs": 0
+      },
+      {
+        "name": "_1",
+        "op": "relu",
+        "backend": "CPU"
+      },
+      {
+        "name": "_2",
+        "op": "linear",
+        "backend": "CPU",
+        "raw_tiles": 0,
+        "raw_macs": 0,
+        "cpu_macs": 192
+      }
+    ],
+    "metrics": {
+      "train": {
+        "samples": 197,
+        "sessions": 6,
+        "float_accuracy": 0.27411167512690354,
+        "integer_accuracy": 0.27918781725888325,
+        "float_integer_argmax_agreement": 0.9898477157360406,
+        "integer_confusion_actual_by_predicted": [
+          [
+            26,
+            11,
+            2,
+            0,
+            0,
+            0
+          ],
+          [
+            10,
+            29,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            11,
+            26,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            17,
+            14,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            7,
+            16,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            23,
+            4,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "validation": {
+        "samples": 177,
+        "sessions": 6,
+        "float_accuracy": 0.07909604519774012,
+        "integer_accuracy": 0.07909604519774012,
+        "float_integer_argmax_agreement": 0.9943502824858758,
+        "integer_confusion_actual_by_predicted": [
+          [
+            5,
+            49,
+            20,
+            0,
+            0,
+            0
+          ],
+          [
+            13,
+            9,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            6,
+            12,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            12,
+            17,
+            3,
+            0,
+            0,
+            0
+          ],
+          [
+            13,
+            14,
+            1,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "test": {
+        "samples": 156,
+        "sessions": 6,
+        "float_accuracy": 0.20512820512820512,
+        "integer_accuracy": 0.20512820512820512,
+        "float_integer_argmax_agreement": 0.9871794871794872,
+        "integer_confusion_actual_by_predicted": [
+          [
+            19,
+            3,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            9,
+            13,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            12,
+            8,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            15,
+            12,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            7,
+            17,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            20,
+            17,
+            3,
+            0,
+            0,
+            0
+          ]
+        ]
+      }
+    },
+    "best_epoch": 1,
+    "accuracy_scope": "Original whole-clip prompt labels and recorded-session holdout only; transitions/keyboard approach create label noise; not cross-person or reliable continuous recognition",
+    "reliable_action_demo": false
+  },
+  "actual_fpga": {
+    "status": "BOARD_VERIFIED_ALL_HELDOUT_SCORES_EXACT",
+    "samples": 156,
+    "all_six_int8_scores_exact": true,
+    "argmax_exact": true,
+    "sequences_and_executions_contiguous_from_one": true,
+    "backend": "openocd-jtag",
+    "package_tag": "481afec54b1bcba7",
+    "heldout_label_accuracy": 0.20512820512820512,
+    "correct_labels": 32,
+    "clock_hz": 20000000,
+    "device_cycles": {
+      "min": 8833.0,
+      "median": 8840.0,
+      "p95": 8842.0,
+      "max": 8844.0,
+      "mean": 8839.852564102564
+    },
+    "device_compute_ms": {
+      "min": 0.44165,
+      "median": 0.442,
+      "p95": 0.4421,
+      "max": 0.4422,
+      "mean": 0.44199262820512825
+    },
+    "usb_jtag_roundtrip_ms": {
+      "min": 30.999999995401595,
+      "median": 46.000000002095476,
+      "p95": 47.00000000593718,
+      "max": 47.00000000593718,
+      "mean": 39.55128205122422
+    },
+    "openocd_errors": 0,
+    "openocd_warnings": 0,
+    "bitstream_sha256": "ce118945509b83d281c657aa8297aab0afcdb7eb6fb9b78332b380f2bc0e6efa"
+  },
+  "validation_only_experiments": {
+    "test_samples_used_for_selection": false,
+    "original_train_samples": 197,
+    "original_validation_samples": 177,
+    "feature_variants": {
+      "grid64": {
+        "best_epoch": 30,
+        "training_epochs": 65,
+        "validation_loss": 1.7093158960342407,
+        "train": {
+          "samples": 197,
+          "accuracy": 0.6091370558375635,
+          "confusion_actual_by_predicted": [
+            [
+              0,
+              0,
+              0,
+              0,
+              39,
+              0
+            ],
+            [
+              0,
+              38,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              0,
+              5,
+              32,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              3,
+              7,
+              21,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              23,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              21,
+              6
+            ]
+          ]
+        },
+        "validation": {
+          "samples": 177,
+          "accuracy": 0.192090395480226,
+          "confusion_actual_by_predicted": [
+            [
+              0,
+              4,
+              28,
+              5,
+              37,
+              0
+            ],
+            [
+              0,
+              6,
+              0,
+              0,
+              16,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              16,
+              3
+            ],
+            [
+              2,
+              2,
+              0,
+              0,
+              28,
+              0
+            ],
+            [
+              0,
+              3,
+              0,
+              0,
+              25,
+              0
+            ]
+          ]
+        }
+      },
+      "hog64": {
+        "best_epoch": 45,
+        "training_epochs": 80,
+        "validation_loss": 1.7507842779159546,
+        "train": {
+          "samples": 197,
+          "accuracy": 0.49746192893401014,
+          "confusion_actual_by_predicted": [
+            [
+              39,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              40,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              34,
+              0,
+              3,
+              0,
+              0
+            ],
+            [
+              0,
+              30,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              11,
+              1,
+              0,
+              0,
+              3,
+              8
+            ],
+            [
+              10,
+              2,
+              0,
+              0,
+              0,
+              15
+            ]
+          ]
+        },
+        "validation": {
+          "samples": 177,
+          "accuracy": 0.3220338983050847,
+          "confusion_actual_by_predicted": [
+            [
+              29,
+              35,
+              0,
+              1,
+              0,
+              9
+            ],
+            [
+              4,
+              16,
+              0,
+              0,
+              0,
+              2
+            ],
+            [
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              8,
+              6,
+              0,
+              0,
+              0,
+              5
+            ],
+            [
+              18,
+              5,
+              0,
+              0,
+              4,
+              5
+            ],
+            [
+              15,
+              5,
+              0,
+              0,
+              0,
+              8
+            ]
+          ]
+        }
+      },
+      "grid32_hog32": {
+        "best_epoch": 41,
+        "training_epochs": 76,
+        "validation_loss": 1.6955324411392212,
+        "train": {
+          "samples": 197,
+          "accuracy": 0.7258883248730964,
+          "confusion_actual_by_predicted": [
+            [
+              33,
+              0,
+              1,
+              0,
+              5,
+              0
+            ],
+            [
+              0,
+              38,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              0,
+              5,
+              30,
+              2,
+              0,
+              0
+            ],
+            [
+              0,
+              3,
+              6,
+              22,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0,
+              0,
+              20,
+              0
+            ],
+            [
+              8,
+              5,
+              4,
+              0,
+              10,
+              0
+            ]
+          ]
+        },
+        "validation": {
+          "samples": 177,
+          "accuracy": 0.22033898305084745,
+          "confusion_actual_by_predicted": [
+            [
+              0,
+              5,
+              19,
+              13,
+              37,
+              0
+            ],
+            [
+              2,
+              16,
+              2,
+              0,
+              2,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2,
+              0
+            ],
+            [
+              10,
+              5,
+              0,
+              0,
+              4,
+              0
+            ],
+            [
+              6,
+              2,
+              1,
+              0,
+              23,
+              0
+            ],
+            [
+              12,
+              4,
+              0,
+              0,
+              12,
+              0
+            ]
+          ]
+        }
+      }
+    },
+    "cleaned_image_probe": {
+      "scope": "One exact image_grid64_v4 probe using annotated train/validation intervals only; no test evaluation",
+      "comparability": "Label cleanup changes sample denominators; accuracy is not a comparable baseline gain",
+      "network": [
+        64,
+        32,
+        6
+      ],
+      "seed": 42,
+      "learning_rate": 0.003,
+      "epochs_limit": 300,
+      "patience": 35,
+      "best_epoch": 51,
+      "training_epochs": 86,
+      "best_validation_loss": 1.358502984046936,
+      "validation_coverage": "Five classes only; right_arm has zero valid annotated validation rows",
+      "splits": {
+        "train": {
+          "samples": 73,
+          "sessions": 6,
+          "accuracy": 0.9863013698630136,
+          "weighted_loss": 0.6834775805473328,
+          "class_counts": {
+            "standing": 28,
+            "left_arm": 20,
+            "right_arm": 12,
+            "both_arms": 6,
+            "squat": 3,
+            "lean": 4
+          },
+          "confusion_actual_by_predicted": [
+            [
+              28,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              20,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              12,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              6,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              3
+            ]
+          ]
+        },
+        "validation": {
+          "samples": 52,
+          "sessions": 5,
+          "accuracy": 0.19230769230769232,
+          "weighted_loss": 1.358502984046936,
+          "class_counts": {
+            "standing": 26,
+            "left_arm": 8,
+            "right_arm": 0,
+            "both_arms": 5,
+            "squat": 7,
+            "lean": 6
+          },
+          "confusion_actual_by_predicted": [
+            [
+              0,
+              2,
+              5,
+              5,
+              0,
+              14
+            ],
+            [
+              7,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              0,
+              5,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ]
+        }
+      }
+    },
+    "decision": "No experimental replacement accepted as reliable; no further test-set-driven tuning",
+    "scope": "Cleaned validation changes its denominator and omits right_arm; it is not a directly comparable accuracy gain"
+  },
+  "verification": {
+    "camera_feature_training_tests_passed": 69,
+    "immutable_hardware_source_sha_checks_passed": 75,
+    "hardware_RTL_changed": false,
+    "FPGA_bitstream_changed": false
+  },
+  "private_evidence_sha256": {
+    "videos/manifest.json": "ec26f960fdb1b0cc1912544527ab44e84e412dd8f1b6eafeea603985ec60092a",
+    "actions.npz": "126466d129a5b876127a1f4ed6d5286e8f96a3c231df8d1113de4a80e22ce29b",
+    "video_analysis.json": "7b4eb191ab512934776e64427200eb3fdc31987850d2cb7e24095ac82d025587",
+    "model/camera_demo.json": "b0379af8854075cb9846dace103d443f615df85172340f02002f1400a9cbee12",
+    "model/resident/firmware.bin": "91f8e40a455d556552f97dbcf43f9a9057550c6c4871439d0709dd51357e1dfd",
+    "replay/provenance.json": "df71349492e830a40f6fa9819ad862ea5e27f793531dfa1e35f9c4c0c6fcbf51",
+    "board_results.jsonl": "26a53746786c483e566bb0e00ba3c36247945f8f850cccd32cb345f836268479",
+    "board_summary.json": "599c18723fc8913e363ac514d767073f296456d1cd03b9173b29f8937c6e845f",
+    "openocd.log": "cea4fda5a3b03e4d734a27f6f0d6a341d90c1082406899de1a7b8497d153729a",
+    "program.log": "31b054ef85b9aecaa937e674bfbd81580ba2ce831e2ddaca40a5aba1cb38ab61",
+    "host.log": "26a53746786c483e566bb0e00ba3c36247945f8f850cccd32cb345f836268479"
+  },
+  "export_policy": "Aggregate metrics and evidence hashes only; no raw video, images, feature vectors, user model weights or private paths",
+  "independent_audit": {
+    "status": "ACCEPTED_RECORDINGS_AND_NUMERICAL_BOARD_REPLAY_CLASSIFIER_NOT_RELIABLE",
+    "all_integrity_checks_passed": true,
+    "checks_total": 66,
+    "checks_passed": 66,
+    "private_audit_sha256": "e6d3ec8b2845d53577022fe29f5887dfacdba0789b4d554041e7f2722edae446"
+  }
+}

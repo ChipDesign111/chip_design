@@ -1,10 +1,10 @@
 # 摄像头 → FPGA 多轮动作演示（RAW 备选版）
 
-本演示按用户指定的备选基线 `0b5e34d29c3b0ac333461c0edba8197738906e1a` 开发。PC 用摄像头和 MediaPipe 提取姿态，FPGA 上的真实 CPU/NPU 执行 64→32→6 INT8 分类器，PC 读回结果并显示。姿态提取在 PC，动作分类在 FPGA；不是将整张图像或 MediaPipe 网络放进 8 KiB SRAM。
+本演示按用户指定的备选基线 `0b5e34d29c3b0ac333461c0edba8197738906e1a` 开发。PC保存原始视频，并提取带缺失掩码的姿态与图像特征；FPGA上的真实CPU/NPU执行64→32→6 INT8分类器，PC读回结果并显示。视频分析在PC，动作分类在FPGA；完整图像和MediaPipe网络不放进8KiB SRAM。
 
 ```mermaid
 flowchart LR
-    A[电脑摄像头] --> B[PC姿态检测与64维时间窗特征]
+    A[电脑摄像头与本地原始视频] --> B[PC带缺失掩码的姿态与图像64维特征]
     B --> C[JTAG / Debug SBA]
     C --> D[SRAM请求邮箱]
     D --> E[常驻CPU程序]
@@ -15,6 +15,8 @@ flowchart LR
 ```
 
 RAW完整SoC多轮仿真和真实FPGA数值回传均已通过：最终主机源码下100轮算术请求、12轮合成工程模型请求逐项匹配独立整数参考，换模型后重新装载8KiB镜像；另有同模型attach续跑验证。CPU JTAG在1MHz读到ID `0x00000001`、XLEN32。主机17项测试通过，实际读写使用物理地址SBA。最新证据见[真实板测记录](../../report/camera_board_20261120/README.md)，早期构建/RTL记录见[基线记录](../../report/camera_demo_raw0b_20261120/README.md)。真人动作数据与识别精度须单独采集验证；原UCI HAR传感器模型不能沿用到摄像头坐标。
+
+2026-11-20已实际保存18段真人原始视频，共3714帧，并完成离线训练和156次FPGA回放：六路整数分数全部匹配软件参考。按原始整段动作标签计算的识别率为20.5%，仍不能作为可靠的动作识别演示；训练/验证片段中的过渡画面标签和跨片段泛化需继续处理。汇总见[录像与真人模型板测结果](../../report/camera_video_20261120/summary.json)。原视频、图像、输入特征和真人模型权重只保留在本机。
 
 ## 软件与环境
 
@@ -77,29 +79,33 @@ WSL使用USB/IP时，先在Windows执行`usbipd list`核对适配器BUSID；管�
 
 默认六类是站立、左臂抬起、右臂抬起、双臂抬起、下蹲、侧倾；它们是演示标签，尚无已验证真人分类器。可以用 `--labels` 提供六个其他标签，但训练、采集、显示必须使用同一份标签顺序。
 
-本机采集使用 `knees` 特征版本：头部、肩、肘、腕、髋和膝盖入镜即可，不要求脚踝和脚部。保留六类动作和64维输入，不改FPGA RTL。旧 `full` 版本仍可使用，但两个版本不能追加到同一数据集或混用模型；更换关键点后须重新采集、训练。
+当前采集先保存原始视频，再离线分析。录像器完全不运行姿态检测，也不根据身体完整性、关键点数量或姿态识别结果拒绝保存。能拍到手、腿和膝盖即可，不要求头或脚入镜。
 
-当前默认手动：点击摄像头窗口按SPACE，倒计时10秒后录制10秒，保存合格段后切换下一动作并再次等待SPACE。样本不足会停在同一动作等你重试，不保存空段。
+点击摄像头窗口，按SPACE开始当前动作，再按SPACE结束并切换下一个动作。每段建议约10秒，分三轮、每轮六类；全程手动控制。Q或关闭窗口会保留已完成视频及正在录制的部分视频，部分段会标记，原文件不会因分析结果被删除。
 
-本机已实测DirectShow可正确选择1280×720、1倍缩放，640×480会裁去部分左右视野；MSMF的分辨率设置存在被驱动忽略的情况。0.5/0.75倍请求被驱动拒绝，不能凭软件增加镜头本身视野。默认使用原始1280×720整帧，提示栏另放在画面上方，不覆盖头部或裁掉视频内容；采集时需让头、双手和膝盖保持在画面内。
+录像使用原始1280×720整帧，提示栏只显示在预览中，保存的AVI不含文字、镜像或骨架。每帧另存真实采集时间，离线分析使用时间记录，而不是把视频容器的标称帧率当作真实采样时间。视频和特征默认保存在忽略目录`tools/local/camera_demo`，不上传GitHub；不录音。本机DirectShow支持1倍缩放；镜头不支持的软件“广角”不会改变真实视野。
 
 ```powershell
-.\.venv-demo\Scripts\python.exe -m fpga.demo.camera collect `
-  --camera-backend dshow --width 1280 --height 720 --zoom 100 --countdown 10 `
-  --feature-profile knees `
+.\.venv-demo\Scripts\python.exe -m fpga.demo.record_video `
+  --camera-backend dshow --width 1280 --height 720 --zoom 100 `
+  --rounds 3 --output-dir tools/local/camera_demo/video_capture
+.\.venv-demo\Scripts\python.exe -m fpga.demo.analyze_video `
+  --manifest tools/local/camera_demo/video_capture/manifest.json `
   --output tools/local/camera_demo/actions.npz
 .\.venv-demo\Scripts\python.exe -m fpga.demo.train_camera `
   --dataset tools/local/camera_demo/actions.npz `
   --out tools/local/camera_demo/my_action_model
 ```
 
-引导采集分三轮、每轮六类。动作依次为站立、左臂、右臂、双臂、下蹲、侧倾。`run_demo.ps1 -Action collect`默认手动并使用`knees`；加`-FeatureProfile full`可选择旧版本。底层Python CLI为保持旧脚本兼容，默认仍是`full`，本机应显式加`--feature-profile knees`。中文界面使用本机微软雅黑/Pillow，无中文字体时显示英文，不下载字体。
+`run_demo.ps1 -Action collect -VideoDir NEW_DIRECTORY`启动该录像流程，`-Action analyze-video`提取特征。中文界面使用本机微软雅黑/Pillow，无中文字体时显示英文，不下载字体。
 
-可选自动模式：CLI加`--auto-advance --pose-timeout 120`，或包装脚本加`-AutoCapture`。检测到所选版本要求的连续有效姿态才启动倒计时，准备期间丢失姿态则重等；有效窗口不足重试同一动作。每动作总期限默认120秒，超时退出并保留已完成session。Q退出；自动模式不保存当前未完成段。
+新版`video`特征仍为64维：10个上肢、髋、膝关键点的位置与可见性掩码、约1秒的位移及位移有效掩码，加4个来自真实图像的明暗和变化统计。看不到的点明确标记为缺失；没有检测到姿态的帧仍使用真实图像信息，不要求所有点同时可见。离线报告列出检测覆盖率作为诊断，不作为录像或特征采样的门槛。[video_features.py](video_features.py)由离线分析和实时推理共用；RTL和64→32→6网络结构保持不变。
 
-保存的是64维特征、标签和独立session标识，不保存原视频。每类至少三次独立session，训练/验证/测试按session划分，避免相邻重叠帧随机切分造成精度虚高。若检验不同人的泛化，需另外采集不同人的独立测试session。摄像头及特征测试覆盖手动/自动门控、空样本重试、相机配置、整帧预览和新旧版本兼容；代码测试不等于已获得真人样本。
+每个动作片段作为独立session，训练/验证/测试按完整session划分，避免相邻重叠帧随机切分造成精度虚高。训练需要六类各至少三个完整片段及足够样本；不同人的泛化需另采独立测试数据。识别精度由实际测试结果决定。
 
-特征契约为16个关键点的归一化二维位置32维，加约1秒窗口的位移32维。`knees`版本使用6个头部点和肩、肘、腕、髋、膝共10个点，检查所选点可见且位于画面内；脚部缺失不影响采样。坐标以髋中心平移、肩宽归一化；具体关键点、缺失检测和窗口规则见 [features.py](features.py)。采集与推理共用同一实现，推理根据模型中保存的特征版本选择提取器。丢失所需姿态时不发送伪造的零输入。
+旧`full`和`knees`特征版本仍保留，入口为`camera collect`或`run_demo.ps1 -Action collect-features`，供兼容已有数据；新旧版本不能追加到同一数据集或混用模型。当前用户采集使用原视频流程，不再使用关键点完整性门控。
+
+实验性`image_grid64_v4`直接使用8×8图像灰度空间特征，实时推理无需MediaPipe。该方案在本次独立片段验证中仍不稳定，尚未替换为已验证动作模型。训练清理过的片段时，可用`train_camera --session-split MAP.json`固定原始片段分组；不得把同一片段拆成新的“独立”训练和测试session。缺失的验证类别会记录为空，不计为识别成功。
 
 训练工具生成浮点权重、定点校准、`compiled/` 原始任务包以及 `resident/` 常驻程序包。第一层完整 32×64 块使用 RAW NPU，重标定及第二层 32→6 边缘计算由 FPGA 内的 CPU 完成；逐层后端与 RAW 工作量写入 metadata。至少必须有真实 RAW NPU 工作，否则拒绝作为此演示模型。测试集精度和浮点/量化分类一致性会单独记录。合成样本仅可用于流程测试，不能代替真人精度。
 
@@ -148,6 +154,7 @@ WSL使用USB/IP时，先在Windows执行`usbipd list`核对适配器BUSID；管�
 
 ```powershell
 .\.venv-demo\Scripts\python.exe -m unittest discover -s test/int8 -p 'test_camera*.py' -v
+.\.venv-demo\Scripts\python.exe -m unittest discover -s test/int8 -p 'test_*video*.py' -v
 .\.venv-demo\Scripts\python.exe -m unittest discover -s test/unit -p 'test_live_host.py' -v
 python tools/project.py check
 ```

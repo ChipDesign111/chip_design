@@ -15,8 +15,34 @@ import numpy as np
 from .features import DEFAULT_LABELS, load_dataset
 
 
-def split_sessions(labels, sessions, classes, seed=42):
+def split_sessions(labels, sessions, classes, seed=42, fixed_session_split=None):
     """Separate entire sessions to prevent overlapping-frame train/test leakage."""
+    if fixed_session_split is not None:
+        labels, sessions = np.asarray(labels), np.asarray(sessions)
+        if labels.ndim != 1 or sessions.shape != labels.shape or not len(labels):
+            raise ValueError('Labels and sessions must be matching nonempty vectors')
+        if (not isinstance(fixed_session_split, dict) or not fixed_session_split or
+                any(not isinstance(name, str) or not name or split not in ('train', 'validation', 'test')
+                    for name, split in fixed_session_split.items())):
+            raise ValueError('Fixed session mapping must assign nonempty session IDs to train, validation or test')
+        if set(labels) - set(classes):
+            raise ValueError('Fixed session dataset contains unknown action labels')
+        for session in set(sessions):
+            if len(set(labels[sessions == session])) != 1:
+                raise ValueError('A session contains multiple labels: ' + str(session))
+            if str(session) not in fixed_session_split:
+                raise ValueError('Retained session is missing from the fixed mapping: ' + str(session))
+        result = {name: np.array([index for index, session in enumerate(sessions)
+                                  if fixed_session_split[str(session)] == name], dtype=np.int64)
+                  for name in ('train', 'validation', 'test')}
+        for name in ('train', 'test'):
+            missing = set(classes) - set(labels[result[name]])
+            if missing:
+                raise ValueError(f'Fixed {name} split must cover every action class; missing: ' + ', '.join(sorted(missing)))
+        if not len(result['validation']):
+            raise ValueError('Fixed validation split must contain at least one retained session')
+        # Keep omitted original IDs so cleaning cannot silently reshuffle clips.
+        return result, dict(fixed_session_split)
     rng = random.Random(seed)
     result = {'train': [], 'validation': [], 'test': []}
     assignment = {}
@@ -36,8 +62,27 @@ def split_sessions(labels, sessions, classes, seed=42):
     return {name: np.array(sorted(indices), dtype=np.int64) for name, indices in result.items()}, assignment
 
 
+def _split_details(labels, sessions, classes, indices, assignment, fixed):
+    coverage = {}
+    for split, selected in indices.items():
+        coverage[split] = {}
+        for label in classes:
+            rows = selected[labels[selected] == label]
+            coverage[split][label] = {'samples': len(rows), 'sessions': len(set(sessions[rows]))}
+    canonical = json.dumps(assignment, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode('utf-8')
+    return {'session_split_mode': 'fixed' if fixed else 'seeded',
+            'fixed_session_split_sha256': hashlib.sha256(canonical).hexdigest() if fixed else None,
+            'split_coverage': coverage,
+            'missing_validation_classes': [label for label in classes if not coverage['validation'][label]['samples']]}
+
+
+def _class_accuracies(actual, predicted, classes):
+    return {name: float(np.mean(predicted[actual == index] == index)) if np.any(actual == index) else None
+            for index, name in enumerate(classes)}
+
+
 def train(dataset, out, classes=DEFAULT_LABELS, epochs=300, patience=35,
-          learning_rate=0.003, seed=42, min_samples=12):
+          learning_rate=0.003, seed=42, min_samples=12, fixed_session_split=None):
     # Recording/replay do not require a PyTorch installation.
     import torch
     from torch import nn
@@ -55,7 +100,9 @@ def train(dataset, out, classes=DEFAULT_LABELS, epochs=300, patience=35,
     for label in classes:
         if np.count_nonzero(data['labels'] == label) < min_samples:
             raise ValueError(f'{label}: need at least {min_samples} samples')
-    indices, assignment = split_sessions(data['labels'], data['sessions'], classes, seed)
+    indices, assignment = split_sessions(data['labels'], data['sessions'], classes, seed, fixed_session_split)
+    split_details = _split_details(data['labels'], data['sessions'], classes, indices, assignment,
+                                   fixed_session_split is not None)
     np.random.seed(seed); random.seed(seed); torch.manual_seed(seed)
     torch.set_num_threads(1)
     model = nn.Sequential(nn.Linear(64, 32), nn.ReLU(), nn.Linear(32, 6))
@@ -112,8 +159,12 @@ def train(dataset, out, classes=DEFAULT_LABELS, epochs=300, patience=35,
         for label, predicted in zip(actual, qpred):
             confusion[int(label), int(predicted)] += 1
         metrics[split] = {'samples': len(selected), 'sessions': len(set(data['sessions'][selected])),
+                          'class_counts': {name: split_details['split_coverage'][split][name]['samples'] for name in classes},
+                          'class_session_counts': {name: split_details['split_coverage'][split][name]['sessions'] for name in classes},
                           'float_accuracy': float(np.mean(fpred == actual)),
                           'integer_accuracy': float(np.mean(qpred == actual)),
+                          'float_class_accuracy': _class_accuracies(actual, fpred, classes),
+                          'integer_class_accuracy': _class_accuracies(actual, qpred, classes),
                           'float_integer_argmax_agreement': float(np.mean(fpred == qpred)),
                           'integer_confusion_actual_by_predicted': confusion.tolist()}
     manifest = package.metadata
@@ -131,6 +182,7 @@ def train(dataset, out, classes=DEFAULT_LABELS, epochs=300, patience=35,
               'session_split': assignment, 'metrics': metrics, 'history': history,
               'accuracy_scope': 'Recorded session holdout only; not a general human-action recognition accuracy claim',
               'hardware_verified': False}
+    result.update(split_details)
     for path in (out/'camera_demo.json', out/'resident/camera_demo.json'):
         path.write_text(json.dumps(result, indent=2, ensure_ascii=False)+'\n', encoding='utf-8')
     np.save(out/'example_input.npy', example.numpy())
@@ -148,10 +200,14 @@ def main():
     p.add_argument('--patience', type=int, default=35)
     p.add_argument('--learning-rate', type=float, default=0.003)
     p.add_argument('--seed', type=int, default=42)
+    p.add_argument('--session-split', type=Path,
+                   help='Fixed original JSON session-ID to train/validation/test mapping; preserves omitted session IDs')
     a = p.parse_args()
     try:
-        train(a.dataset, a.out, tuple(a.labels), a.epochs, a.patience, a.learning_rate, a.seed)
-    except (ValueError, ImportError) as e:
+        fixed = json.loads(a.session_split.read_text(encoding='utf-8')) if a.session_split else None
+        train(a.dataset, a.out, tuple(a.labels), a.epochs, a.patience, a.learning_rate, a.seed,
+              fixed_session_split=fixed)
+    except (OSError, ValueError, ImportError) as e:
         p.exit(2, f'Training failed: {e}\n')
 
 
