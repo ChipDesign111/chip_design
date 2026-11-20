@@ -36,19 +36,20 @@ class CaptureStep:
     windows: int = 0
 
 
-class AutoCaptureGate:
-    """One labelled segment: wait for real pose, prepare, record or retry.
+class CaptureGate:
+    """One labelled segment: confirm/wait, prepare, record or retry.
 
     `valid` means PoseWindow has produced a genuine full-body history, never a
     fabricated zero vector. A failed segment stays on the same action; it does
     not count as a completed dataset session.
     """
-    def __init__(self, countdown, seconds, interval, timeout=120, min_windows=None):
+    def __init__(self, countdown, seconds, interval, *, automatic=False,
+                 wait_start=True, timeout=120, min_windows=None):
         if not math.isfinite(countdown) or countdown < 0:
             raise ValueError('Countdown must be finite and nonnegative')
         if not all(math.isfinite(v) and v > 0 for v in (seconds, interval, timeout)):
             raise ValueError('Recording duration, interval and timeout must be positive')
-        if timeout <= countdown + seconds:
+        if automatic and timeout <= countdown + seconds:
             raise ValueError('Pose timeout must exceed countdown plus recording duration')
         maximum = max(1, math.ceil(seconds / interval))
         self.minimum = max(1, math.ceil(maximum / 2)) if min_windows is None else min_windows
@@ -58,8 +59,10 @@ class AutoCaptureGate:
         self.entered = self.phase_started = self.last_time = None
         self.last_emit = float('-inf')
         self.phase, self.windows, self.retries = 'waiting', 0, 0
+        self.automatic = automatic
+        self.start_immediately = not automatic and not wait_start
 
-    def tick(self, now, valid):
+    def tick(self, now, valid, confirm=False):
         if not math.isfinite(now) or (self.last_time is not None and now < self.last_time):
             raise ValueError('Capture timestamps must be finite and monotonic')
         self.last_time = now
@@ -67,15 +70,17 @@ class AutoCaptureGate:
             self.entered = now
         if self.phase == 'complete':
             return CaptureStep('complete', windows=self.windows)
-        if now - self.entered >= self.timeout:
+        if self.automatic and now - self.entered >= self.timeout:
             raise RuntimeError('Automatic capture timed out waiting for enough full-body samples; '
                                'completed sessions are preserved. Adjust the camera and retry.')
         if self.phase == 'waiting':
-            if not valid:
+            ready = valid if self.automatic else (confirm or self.start_immediately)
+            if not ready:
                 return CaptureStep('waiting')
+            self.start_immediately = False
             self.phase, self.phase_started = 'preparing', now
         if self.phase == 'preparing':
-            if not valid:
+            if self.automatic and not valid:
                 self.phase, self.phase_started = 'waiting', None
                 return CaptureStep('waiting')
             remaining = self.countdown - (now - self.phase_started)
@@ -99,6 +104,18 @@ class AutoCaptureGate:
         return CaptureStep('recording', emit=emit, remaining=remaining, windows=self.windows)
 
 
+class AutoCaptureGate(CaptureGate):
+    def __init__(self, countdown, seconds, interval, timeout=120, min_windows=None):
+        super().__init__(countdown, seconds, interval, automatic=True,
+                         timeout=timeout, min_windows=min_windows)
+
+
+class ManualCaptureGate(CaptureGate):
+    def __init__(self, countdown, seconds, interval, wait_start=True, min_windows=None):
+        super().__init__(countdown, seconds, interval, wait_start=wait_start,
+                         min_windows=min_windows)
+
+
 def _chinese_font(width):
     """Optional local font; never download fonts or send camera frames anywhere."""
     try:
@@ -117,20 +134,70 @@ def _chinese_font(width):
 
 
 def _draw_capture_text(frame, english, chinese, font, cv2):
+    """Add a header above the preview; never paint over or crop video pixels."""
     if font is None or not chinese:
+        header = np.full((12 + 24 * len(english), frame.shape[1], 3), 12, dtype=np.uint8)
         for n, line in enumerate(english):
-            cv2.putText(frame, line, (8,22+24*n), cv2.FONT_HERSHEY_SIMPLEX,
+            cv2.putText(header, line, (8,22+24*n), cv2.FONT_HERSHEY_SIMPLEX,
                         .46, (0,220,255), 1, cv2.LINE_AA)
-        return frame
+        return np.concatenate((header, frame), axis=0)
     from PIL import Image, ImageDraw
-    image = Image.fromarray(frame[:, :, ::-1])
-    draw = ImageDraw.Draw(image)
     line_height = font.size + 9
-    draw.rectangle((0, 0, image.width, 12 + line_height * len(chinese)), fill=(12,12,12))
+    image = Image.new('RGB', (frame.shape[1], 12 + line_height * len(chinese)), (12,12,12))
+    draw = ImageDraw.Draw(image)
     for n, line in enumerate(chinese):
         draw.text((10, 6+n*line_height), line, font=font,
                   fill=(255,220,40) if n == 0 else (245,245,245))
-    return np.asarray(image)[:, :, ::-1].copy()
+    header = np.asarray(image)[:, :, ::-1].copy()
+    return np.concatenate((header, frame), axis=0)
+
+
+def _open_camera(args, cv2):
+    """Request a real sensor mode; report driver answers without claiming FOV."""
+    backend = getattr(args, 'camera_backend', 'auto')
+    width, height = getattr(args, 'width', 1280), getattr(args, 'height', 720)
+    zoom = getattr(args, 'zoom', None)
+    if backend not in ('auto', 'dshow', 'msmf'):
+        raise ValueError('Camera backend must be auto, dshow or msmf')
+    if any(type(v) is not int or v <= 0 for v in (width, height)):
+        raise ValueError('Camera width and height must be positive integers')
+    if type(args.camera) is not int or args.camera < 0:
+        raise ValueError('Camera index must be a nonnegative integer')
+    if zoom is not None and (not math.isfinite(zoom) or zoom <= 0):
+        raise ValueError('Camera zoom must be a finite positive native driver value')
+    choices = {'dshow': cv2.CAP_DSHOW, 'msmf': cv2.CAP_MSMF}
+    requested = [choices[backend]] if backend != 'auto' else (
+        [cv2.CAP_DSHOW, cv2.CAP_ANY] if os.name == 'nt' else [cv2.CAP_ANY])
+    cap = None
+    for api in requested:
+        candidate = cv2.VideoCapture(args.camera, api)
+        if candidate.isOpened():
+            cap = candidate
+            break
+        candidate.release()
+    if cap is None:
+        raise RuntimeError(f'Camera {args.camera} could not be opened with backend {backend}')
+    try:
+        width_set = bool(cap.set(cv2.CAP_PROP_FRAME_WIDTH, width))
+        height_set = bool(cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height))
+        zoom_set = bool(cap.set(cv2.CAP_PROP_ZOOM, zoom)) if zoom is not None else None
+        def reported(prop):
+            value = float(cap.get(prop))
+            return value if math.isfinite(value) else None
+        info = {'event': 'camera_opened', 'camera': args.camera,
+                'backend_requested': backend, 'backend_actual': cap.getBackendName(),
+                'width_requested': width, 'height_requested': height,
+                'width_set_accepted': width_set, 'height_set_accepted': height_set,
+                'width_reported': reported(cv2.CAP_PROP_FRAME_WIDTH),
+                'height_reported': reported(cv2.CAP_PROP_FRAME_HEIGHT),
+                'fps_reported': reported(cv2.CAP_PROP_FPS),
+                'zoom_requested': zoom, 'zoom_set_accepted': zoom_set,
+                'zoom_reported': reported(cv2.CAP_PROP_ZOOM),
+                'preview_crop': False, 'video_saved': False}
+        return cap, info
+    except Exception:
+        cap.release()
+        raise
 
 
 def read_camera_model(package, *, allow_synthetic_engineering_test=False):
@@ -272,24 +339,23 @@ def run_capture(args):
     if args.command == 'record' and args.wait_start and args.no_display:
         raise ValueError('Space-to-start confirmation requires the camera display')
     automatic = args.command == 'record' and getattr(args, 'auto_advance', False)
-    auto_gate = AutoCaptureGate(args.countdown, args.seconds, args.interval,
-                               getattr(args, 'pose_timeout', 120)) if automatic else None
-    cap = cv2.VideoCapture(args.camera)
-    if not cap.isOpened():
-        cap.release()
-        raise RuntimeError(f'Camera {args.camera} could not be opened')
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    gate = None
+    if args.command == 'record':
+        gate = AutoCaptureGate(args.countdown, args.seconds, args.interval,
+                               getattr(args, 'pose_timeout', 120)) if automatic else ManualCaptureGate(
+                                   args.countdown, args.seconds, args.interval, args.wait_start)
     options = mp.tasks.vision.PoseLandmarkerOptions(
         base_options=mp.tasks.BaseOptions(model_asset_path=str(args.pose_model)),
         running_mode=mp.tasks.vision.RunningMode.VIDEO, num_poses=1,
         min_pose_detection_confidence=0.5, min_pose_presence_confidence=0.5,
         min_tracking_confidence=0.5)
+    cap, camera_info = _open_camera(args, cv2)
+    print(json.dumps(camera_info), flush=True)
     worker = None
     samples, timestamps = [], []
     start, last_emit, last_ms = time.monotonic(), float('-inf'), -1
     capture_start = start
-    started = args.command != 'record' or not args.wait_start
+    confirm_record = False
     cancelled, last_result_seq, last_error = False, None, None
     font, font_checked = None, False
     window = PoseWindow(window_seconds)
@@ -302,6 +368,10 @@ def run_capture(args):
                 ok, frame = cap.read()
                 if not ok:
                     raise RuntimeError('Camera frame read failed')
+                if last_ms < 0:
+                    print(json.dumps({'event': 'camera_first_frame', 'width_actual': frame.shape[1],
+                                      'height_actual': frame.shape[0],
+                                      'preview_crop': False}), flush=True)
                 now = time.monotonic(); elapsed = now-start
                 # MediaPipe's video timestamp remains monotonic when a guided
                 # record resets its separate preparation/record countdown.
@@ -319,48 +389,46 @@ def run_capture(args):
                 if args.command == 'record':
                     action = ACTION_ZH.get(args.label, args.label)
                     chinese = [getattr(args, 'progress_zh', f'当前动作：{action}')]
-                    if automatic:
-                        step = auto_gate.tick(now, features is not None)
-                        if step.discard:
-                            samples.clear(); timestamps.clear()
-                            window = PoseWindow(window_seconds)
-                            print(json.dumps({'event': 'segment_retry', 'label': args.label,
-                                              'discarded_windows': step.windows,
-                                              'minimum_windows': auto_gate.minimum}), flush=True)
-                        if step.emit:
-                            samples.append(features.copy()); timestamps.append(now)
-                        if step.phase == 'complete':
-                            break
-                        if step.phase in ('waiting', 'retry'):
+                    step = gate.tick(now, features is not None, confirm=confirm_record)
+                    confirm_record = False
+                    if step.discard:
+                        samples.clear(); timestamps.clear()
+                        window = PoseWindow(window_seconds)
+                        print(json.dumps({'event': 'segment_retry', 'label': args.label,
+                                          'discarded_windows': step.windows,
+                                          'minimum_windows': gate.minimum,
+                                          'manual_confirmation_required': not automatic}), flush=True)
+                        if args.no_display and not automatic:
+                            raise RuntimeError('Too few valid full-body samples; retry with the camera display')
+                    if step.emit:
+                        samples.append(features.copy()); timestamps.append(now)
+                    if step.phase == 'complete':
+                        break
+                    if step.phase in ('waiting', 'retry'):
+                        if automatic:
                             lines.append(f'AUTO: show your full body; {args.label}; Q: stop')
                             chinese.append('等待全身稳定入镜：头、手和脚均需可见')
-                        elif step.phase == 'preparing':
-                            lines.append(f'AUTO PREPARE {step.remaining:.1f}s: {args.label}')
-                            chinese.append(f'准备动作，倒计时 {step.remaining:.1f} 秒')
                         else:
-                            lines.append(f'AUTO RECORD {args.label}: {step.windows} windows; {step.remaining:.1f}s')
-                            chinese.append(f'正在录制：{step.windows} 个窗口，剩余 {step.remaining:.1f} 秒')
-                            if features is None:
-                                chinese.append('未看清全身，本帧不采样')
-                        if auto_gate.retries:
-                            chinese.append(f'本动作已重试 {auto_gate.retries} 次，合格后才切换')
-                        chinese.append('自动切换动作，无需按空格；Q 退出')
-                    else:
-                        remaining = args.countdown+args.seconds-elapsed
-                        if not started:
                             lines.append(f'WAITING: {args.label}. SPACE: confirm and begin; Q: stop')
                             lines.append(getattr(args,'progress','Move to the labelled pose before confirming'))
                             chinese.append('尚未开始：点击画面，再按空格开始本动作')
-                        elif elapsed < args.countdown:
-                            lines.append(f'PREPARE {args.countdown-elapsed:.1f}s - action: {args.label}')
-                            chinese.append(f'准备动作，倒计时 {args.countdown-elapsed:.1f} 秒')
+                            chinese.append('全身已稳定入镜' if features is not None else '请调整位置，让头、手和脚完整入镜')
+                    elif step.phase == 'preparing':
+                        lines.append(f'PREPARE {step.remaining:.1f}s: {args.label}')
+                        chinese.append(f'准备动作，倒计时 {step.remaining:.1f} 秒')
+                    else:
+                        lines.append(f'RECORD {args.label}: {step.windows} windows; {step.remaining:.1f}s')
+                        chinese.append(f'正在录制：{step.windows} 个窗口，剩余 {step.remaining:.1f} 秒')
+                        if features is None:
+                            chinese.append('未看清全身，本帧不采样')
+                    if gate.retries:
+                        lines.append(f'Too few valid windows; same action retry {gate.retries}')
+                        if automatic:
+                            chinese.append(f'采样不足，当前动作重试 {gate.retries} 次')
                         else:
-                            if features is not None and now-last_emit >= args.interval:
-                                samples.append(features.copy()); timestamps.append(now); last_emit = now
-                            lines.append(f'RECORD {args.label}: {len(samples)} windows, {max(0,remaining):.1f}s left')
-                            chinese.append(f'正在录制：{len(samples)} 个窗口，剩余 {max(0,remaining):.1f} 秒')
-                        if started and remaining <= 0:
-                            break
+                            chinese.append('采样不足，仍是当前动作；调整后按空格重试')
+                    if automatic:
+                        chinese.append('自动切换动作，无需按空格；Q 退出')
                     lines.append('Saving features only, no video. Q: finish')
                     chinese.append('只保存姿态特征，不保存视频')
                 else:
@@ -412,8 +480,8 @@ def run_capture(args):
                     if key in (ord('q'),27):
                         cancelled=True
                         break
-                    if args.command == 'record' and not automatic and not started and key == ord(' '):
-                        started=True;start=time.monotonic();last_emit=float('-inf')
+                    if args.command == 'record' and not automatic and gate.phase == 'waiting' and key == ord(' '):
+                        confirm_record = True
                         window=PoseWindow(window_seconds)
     finally:
         cap.release()
@@ -426,7 +494,7 @@ def run_capture(args):
             # Completed prior segments are already saved. An interrupted auto
             # segment must not create a tiny or unqualified training session.
             return False
-        if not samples and cancelled:
+        if cancelled and len(samples) < gate.minimum:
             return False
         metadata = feature_metadata(window_seconds); metadata['capture_source'] = 'local-camera'
         total = append_dataset(args.output, samples, args.label, session, timestamps, metadata)
@@ -464,6 +532,12 @@ def main():
     for name in ('record','collect','run'):
         c = commands.add_parser(name)
         c.add_argument('--camera',type=int,default=0)
+        c.add_argument('--camera-backend',choices=('auto','dshow','msmf'),default='auto',
+                       help='Windows auto prefers DirectShow; explicit backends do not silently fall back')
+        c.add_argument('--width',type=int,default=1280,help='Requested real camera width; actual mode is logged')
+        c.add_argument('--height',type=int,default=720,help='Requested real camera height; actual mode is logged')
+        c.add_argument('--zoom',type=float,default=None,
+                       help='Optional native driver zoom value; no synthetic wide-angle or digital crop')
         c.add_argument('--pose-model',type=Path,default=DEFAULT_POSE_MODEL)
         c.add_argument('--seconds',type=float,default=15 if name=='record' else 10 if name=='collect' else 3600)
         c.add_argument('--interval',type=float,default=.25)

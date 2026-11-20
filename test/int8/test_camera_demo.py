@@ -18,8 +18,8 @@ sys.path.insert(0, str(ROOT))
 from fpga.demo.features import (JOINTS, PoseWindow, append_dataset, feature_metadata,
                                 load_dataset, normalize_pose, quantize_features)
 from fpga.demo.train_camera import split_sessions
-from fpga.demo.camera import (AutoCaptureGate, FPGAWorker, _chinese_font,
-                              _draw_capture_text, collect, read_camera_model)
+from fpga.demo.camera import (AutoCaptureGate, ManualCaptureGate, FPGAWorker, _chinese_font,
+                              _draw_capture_text, _open_camera, collect, read_camera_model)
 
 
 def landmarks():
@@ -29,6 +29,27 @@ def landmarks():
         p[i,:2] = (.3+(i%2)*.3, .2+(i-11)*.025)
     p[11,:2],p[12,:2],p[23,:2],p[24,:2] = (.3,.2),(.6,.2),(.35,.5),(.55,.5)
     return p
+
+
+class CameraStub:
+    def __init__(self, opened=True, backend='DSHOW'):
+        self.opened, self.backend, self.released = opened, backend, False
+        self.settings = []
+    def isOpened(self):return self.opened
+    def release(self):self.released=True
+    def getBackendName(self):return self.backend
+    def set(self, prop, value):
+        self.settings.append((prop,value))
+        return prop != 27 or value == 100
+    def get(self, prop):return {3:1280,4:720,5:30,27:100}[prop]
+
+
+class CvCameraStub:
+    CAP_DSHOW, CAP_MSMF, CAP_ANY = 700, 1400, 0
+    CAP_PROP_FRAME_WIDTH, CAP_PROP_FRAME_HEIGHT, CAP_PROP_FPS, CAP_PROP_ZOOM = 3, 4, 5, 27
+    def __init__(self, *cameras):self.cameras=list(cameras);self.calls=[]
+    def VideoCapture(self, index, api):
+        self.calls.append((index,api));return self.cameras.pop(0)
 
 
 class FeaturesTest(unittest.TestCase):
@@ -172,16 +193,92 @@ class FeaturesTest(unittest.TestCase):
         gate.tick(1,False)
         with self.assertRaises(ValueError):gate.tick(.5,True)
 
-    def test_chinese_capture_overlay_preserves_input_and_frame_contract(self):
+    def test_manual_empty_segment_waits_for_space_to_retry_same_action(self):
+        gate=ManualCaptureGate(2,2,.5)
+        self.assertEqual(gate.tick(0,True).phase,'waiting')
+        self.assertEqual(gate.tick(10,True).phase,'waiting')
+        self.assertEqual(gate.tick(11,False,confirm=True).phase,'preparing')
+        self.assertEqual(gate.tick(13,False).phase,'recording')
+        rejected=gate.tick(15,False)
+        self.assertEqual(rejected.phase,'retry')
+        self.assertTrue(rejected.discard)
+        self.assertEqual(rejected.windows,0)
+        self.assertEqual(gate.tick(1000,True).phase,'waiting')
+        gate.tick(1001,True,confirm=True)
+        self.assertTrue(gate.tick(1003,True).emit)
+        self.assertTrue(gate.tick(1003.5,True).emit)
+        self.assertEqual(gate.tick(1005,True).phase,'complete')
+
+    def test_manual_short_segment_never_completes_or_restarts_itself(self):
+        gate=ManualCaptureGate(1,2,.5,wait_start=False)
+        self.assertEqual(gate.tick(0,False).phase,'preparing')
+        self.assertTrue(gate.tick(1,True).emit)
+        self.assertFalse(gate.tick(1.5,False).emit)
+        rejected=gate.tick(3,False)
+        self.assertEqual(rejected.phase,'retry')
+        self.assertEqual(rejected.windows,1)
+        self.assertEqual(gate.tick(4,True).phase,'waiting')
+        self.assertEqual(gate.windows,0)
+
+    def test_windows_camera_prefers_dshow_and_reports_real_mode_and_refused_zoom(self):
+        cap=CameraStub();cv= CvCameraStub(cap)
+        args=SimpleNamespace(camera=0,camera_backend='auto',width=640,height=480,zoom=50)
+        with patch('fpga.demo.camera.os.name','nt'):
+            opened,info=_open_camera(args,cv)
+        self.assertIs(opened,cap)
+        self.assertEqual(cv.calls,[(0,cv.CAP_DSHOW)])
+        self.assertEqual(cap.settings,[(3,640),(4,480),(27,50)])
+        self.assertEqual((info['width_requested'],info['height_requested']),(640,480))
+        self.assertEqual((info['width_reported'],info['height_reported']),(1280,720))
+        self.assertFalse(info['zoom_set_accepted'])
+        self.assertEqual(info['zoom_reported'],100)
+        self.assertFalse(info['preview_crop'])
+
+    def test_camera_auto_falls_back_only_on_open_failure_and_explicit_backend_is_strict(self):
+        failed,good=CameraStub(False),CameraStub(backend='MSMF')
+        cv=CvCameraStub(failed,good)
+        args=SimpleNamespace(camera=0,camera_backend='auto',width=1280,height=720,zoom=None)
+        with patch('fpga.demo.camera.os.name','nt'):
+            _,info=_open_camera(args,cv)
+        self.assertEqual(cv.calls,[(0,cv.CAP_DSHOW),(0,cv.CAP_ANY)])
+        self.assertTrue(failed.released)
+        self.assertEqual(info['backend_actual'],'MSMF')
+        self.assertIsNone(info['zoom_set_accepted'])
+        self.assertFalse(any(prop==27 for prop,value in good.settings))
+        args.camera_backend='dshow';failed=CameraStub(False);cv=CvCameraStub(failed,good)
+        with self.assertRaises(RuntimeError):_open_camera(args,cv)
+        self.assertEqual(cv.calls,[(0,cv.CAP_DSHOW)])
+
+    def test_invalid_camera_options_do_not_open_a_device(self):
+        for key,value in [('width',0),('height',-1),('width',640.5),('zoom',float('nan')),
+                          ('zoom',0),('camera',-1),('camera_backend','fake-wide-angle')]:
+            options=dict(camera=0,camera_backend='auto',width=1280,height=720,zoom=None)
+            options[key]=value;cv=CvCameraStub()
+            with self.assertRaises(ValueError):_open_camera(SimpleNamespace(**options),cv)
+            self.assertFalse(cv.calls)
+
+    def test_chinese_header_keeps_every_preview_pixel_and_original_geometry(self):
         font=_chinese_font(640)
         if font is None:self.skipTest('No local Chinese font; runtime retains English fallback')
-        frame=np.zeros((480,640,3),dtype=np.uint8)
+        frame=np.arange(480*640*3,dtype=np.uint8).reshape(480,640,3)
+        original=frame.copy()
         result=_draw_capture_text(frame,[],['当前动作：站立','准备动作，倒计时 10 秒'],font,None)
-        self.assertEqual(result.shape,frame.shape)
+        self.assertGreater(result.shape[0],frame.shape[0])
+        self.assertEqual(result.shape[1:],frame.shape[1:])
         self.assertEqual(result.dtype,np.uint8)
         self.assertTrue(result.flags.c_contiguous)
-        self.assertGreater(np.count_nonzero(result),0)
-        self.assertFalse(np.any(frame))
+        np.testing.assert_array_equal(result[-frame.shape[0]:],original)
+        np.testing.assert_array_equal(frame,original)
+
+    def test_english_fallback_header_does_not_crop_or_cover_preview(self):
+        frame=np.arange(48*64*3,dtype=np.uint8).reshape(48,64,3)
+        original=frame.copy()
+        def put_text(header,*args):header[0,0]=(1,2,3)
+        cv=SimpleNamespace(putText=put_text,FONT_HERSHEY_SIMPLEX=0,LINE_AA=0)
+        result=_draw_capture_text(frame,['WAITING','SPACE to start'],[],None,cv)
+        self.assertEqual(result.shape,(48+60,64,3))
+        np.testing.assert_array_equal(result[-48:],original)
+        np.testing.assert_array_equal(frame,original)
 
     def test_model_tag_and_quantization_are_bound_to_resident(self):
         with tempfile.TemporaryDirectory() as tmp:
