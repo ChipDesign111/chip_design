@@ -154,6 +154,44 @@ def _draw_capture_text(frame, english, chinese, font, cv2):
     return np.concatenate((header, frame), axis=0)
 
 
+def _live_header(status, result, input_at, now, labels, window_seconds, interval):
+    """Describe only actual JTAG results; old inputs remain labelled history."""
+    english = ['FPGA LIVE: WAITING FOR RESULT']
+    chinese = ['FPGA 实时识别：等待结果']
+    if status.startswith('FPGA ERROR'):
+        english = ['FPGA LIVE: CONNECTION FAILED', status]
+        chinese = ['FPGA 实时识别：连接失败', '请检查开发板连接；当前没有可用识别结果']
+    elif result is None:
+        connecting = status.startswith(('FPGA connecting', 'FPGA attaching', 'FPGA loading'))
+        chinese.append('状态：连接中，请稍候' if connecting else '状态：等待 FPGA 返回结果')
+        english.append(status)
+    elif getattr(result, 'backend', None) != 'openocd-jtag':
+        english = ['FPGA LIVE: INVALID RESULT SOURCE']
+        chinese = ['FPGA 实时识别：连接失败', '结果来源不是 FPGA 硬件，暂不显示预测']
+    else:
+        valid_input = input_at is not None and math.isfinite(input_at) and input_at <= now
+        age = now-input_at if valid_input else float('inf')
+        valid_class = 0 <= result.class_id < len(labels)
+        label = labels[result.class_id] if valid_class else 'INVALID CLASS'
+        action = ACTION_ZH.get(label, label)
+        if not valid_class:
+            chinese.append('硬件返回无效类别，等待下一次结果')
+            english.append('Invalid hardware class; waiting for next result')
+        elif age < max(1, window_seconds+2*interval):
+            english = [f'FPGA LIVE: {label}',
+                       f'Seq {result.sequence} | JTAG {result.roundtrip_ms:.0f}ms | input age {age:.1f}s']
+            chinese = [f'FPGA 实时识别：{action}',
+                       f'序号 {result.sequence}　往返 {result.roundtrip_ms:.0f} 毫秒　输入距今 {age:.1f} 秒']
+        else:
+            english.append(f'EXPIRED HISTORY: {label}; seq {result.sequence}')
+            chinese.append(f'历史结果（已过期）：{action}，序号 {result.sequence}；等待新结果')
+    english.extend(['Actions: standing / left arm / right arm / both arms / squat / lean',
+                    'Experimental model; left/right arms may be confused. Q: exit'])
+    chinese.extend(['动作：站立 / 左臂 / 右臂 / 双臂 / 下蹲 / 侧倾',
+                    '当前为实验模型，左右臂可能混淆；Q 退出'])
+    return english, chinese
+
+
 def _open_camera(args, cv2):
     """Request a real sensor mode; report driver answers without claiming FOV."""
     backend = getattr(args, 'camera_backend', 'auto')
@@ -493,10 +531,11 @@ def run_capture(args):
                                               'roundtrip_ms':result.roundtrip_ms,'input_age_ms':1000*age,
                                               'backend':result.backend}),flush=True)
                             last_result_seq=result.sequence
+                    lines, chinese = _live_header(status, result, input_at, now, model['labels'],
+                                                  window_seconds, args.interval)
                     if model.get('dataset_source') not in REAL_CAMERA_SOURCES:
                         lines.insert(0,'SYNTHETIC ENGINEERING TEST ONLY - NO HUMAN ACCURACY')
-                    lines.append('PC: video features; FPGA RAW NPU: FC1; FPGA CPU: FC2/ReLU. Q: exit' if profile in ('video','image','flow')
-                                 else 'PC: pose; FPGA RAW NPU: FC1; FPGA CPU: FC2/ReLU. Q: exit')
+                        chinese.insert(0,'仅限合成数据工程自测，不代表真人识别能力')
                     if elapsed >= args.seconds:
                         break
                 if landmarks is not None:

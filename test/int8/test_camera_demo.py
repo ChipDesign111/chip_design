@@ -19,7 +19,7 @@ from fpga.demo.features import (JOINTS, PoseWindow, append_dataset, feature_meta
                                 feature_profile_from_metadata, load_dataset, normalize_pose, quantize_features)
 from fpga.demo.train_camera import split_sessions
 from fpga.demo.camera import (AutoCaptureGate, ManualCaptureGate, FPGAWorker, _chinese_font,
-                              _capture_contract, _draw_capture_text, _open_camera, collect, read_camera_model)
+                              _capture_contract, _draw_capture_text, _live_header, _open_camera, collect, read_camera_model)
 
 
 def landmarks():
@@ -406,6 +406,41 @@ class FeaturesTest(unittest.TestCase):
                 self.assertIsNotNone(result);self.assertEqual(source,captured)
                 self.assertGreater(completed-source,4)
             finally:worker.close()
+
+
+class LiveHeaderTests(unittest.TestCase):
+    labels = ['standing','left_arm','right_arm','both_arms','squat','lean']
+
+    def result(self, **changes):
+        values = dict(backend='openocd-jtag',class_id=1,sequence=7,roundtrip_ms=120)
+        values.update(changes)
+        return SimpleNamespace(**values)
+
+    def test_connection_and_waiting_never_fabricate_a_prediction(self):
+        for status in ('FPGA connecting...', 'FPGA ready', 'FPGA computing...'):
+            english,chinese = _live_header(status,None,None,10,self.labels,.25,.25)
+            self.assertIn('WAITING',english[0])
+            self.assertEqual(chinese[0],'FPGA 实时识别：等待结果')
+        self.assertIn('连接中',_live_header('FPGA connecting...',None,None,10,self.labels,.25,.25)[1][1])
+
+    def test_fresh_hardware_result_has_chinese_action_latency_and_sequence(self):
+        _,chinese = _live_header('FPGA ready',self.result(),9.8,10,self.labels,.25,.25)
+        self.assertEqual(chinese[0],'FPGA 实时识别：左臂抬起')
+        self.assertIn('序号 7',chinese[1]);self.assertIn('120 毫秒',chinese[1])
+        self.assertIn('左右臂可能混淆',chinese[-1])
+
+    def test_old_result_is_expired_history_instead_of_current_action(self):
+        english,chinese = _live_header('FPGA computing...',self.result(),5,10,self.labels,.25,.25)
+        self.assertIn('WAITING',english[0])
+        self.assertEqual(chinese[0],'FPGA 实时识别：等待结果')
+        self.assertIn('已过期',chinese[1])
+
+    def test_error_and_nonhardware_results_cannot_display_old_prediction(self):
+        for status,result in [('FPGA ERROR: disconnected',self.result()),
+                              ('FPGA ready',self.result(backend='reference'))]:
+            _,chinese = _live_header(status,result,9.8,10,self.labels,.25,.25)
+            self.assertEqual(chinese[0],'FPGA 实时识别：连接失败')
+            self.assertFalse(any('左臂抬起' in line for line in chinese))
 
 
 if __name__=='__main__':unittest.main()
