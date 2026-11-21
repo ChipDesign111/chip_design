@@ -154,11 +154,94 @@ def _draw_capture_text(frame, english, chinese, font, cv2):
     return np.concatenate((header, frame), axis=0)
 
 
-def _live_header(status, result, input_at, now, labels, window_seconds, interval):
+@dataclass(frozen=True)
+class StableDisplayState:
+    phase: str
+    class_id: int | None = None
+    observations: int = 0
+    margin: int | None = None
+
+
+class StableDisplayFilter:
+    """Filter only displayed labels; preserve every original hardware result."""
+    def __init__(self, minimum_results=3, minimum_span=.5, minimum_margin=3, max_age=1.2):
+        self.minimum_results, self.minimum_span = minimum_results, minimum_span
+        self.minimum_margin, self.max_age = minimum_margin, max_age
+        self._reset()
+
+    def _reset(self):
+        self.last_sequence = self.last_fingerprint = self.last_input_at = None
+        self.candidate = self.first_input_at = None
+        self.count = 0
+        self.state = StableDisplayState('waiting')
+
+    def _uncertain(self, phase, margin=None):
+        self.candidate = self.first_input_at = None
+        self.count = 0
+        self.state = StableDisplayState(phase, margin=margin)
+        return self.state
+
+    def clear(self, phase='waiting'):
+        self._reset()
+        self.state = StableDisplayState(phase)
+        return self.state
+
+    def update(self, status, result, input_at, now):
+        if status.startswith('FPGA ERROR'):
+            self._reset()
+            self.state = StableDisplayState('error')
+            return self.state
+        if result is None:
+            self._reset()
+            return self.state
+        if getattr(result, 'backend', None) != 'openocd-jtag':
+            self._reset()
+            self.state = StableDisplayState('error')
+            return self.state
+        if input_at is None or not math.isfinite(input_at) or input_at > now or now-input_at >= self.max_age:
+            return self._uncertain('expired')
+        values = np.asarray(getattr(result, 'values', ()))
+        if (values.shape != (6,) or values.dtype.kind not in 'iu' or
+                np.any(values < -128) or np.any(values > 127) or
+                not 0 <= result.class_id < 6 or int(values.argmax()) != result.class_id):
+            return self._uncertain('uncertain')
+        margin = int(values[result.class_id])-int(np.max(np.delete(values, result.class_id)))
+        fingerprint = (result.sequence, result.class_id, tuple(values.tolist()), input_at)
+        if self.last_sequence is not None and result.sequence < self.last_sequence:
+            return self._uncertain('uncertain', margin)
+        if result.sequence == self.last_sequence:
+            if fingerprint != self.last_fingerprint:
+                return self._uncertain('uncertain', margin)
+            return self.state
+        if self.last_input_at is not None and input_at <= self.last_input_at:
+            return self._uncertain('uncertain', margin)
+        if self.last_input_at is not None and input_at-self.last_input_at > self.max_age:
+            self._uncertain('recognizing')
+        self.last_sequence, self.last_fingerprint, self.last_input_at = result.sequence, fingerprint, input_at
+        if margin < self.minimum_margin:
+            return self._uncertain('uncertain', margin)
+        if result.class_id != self.candidate:
+            self.candidate, self.count, self.first_input_at = result.class_id, 1, input_at
+        else:
+            self.count += 1
+        confirmed = (self.count >= self.minimum_results and
+                     input_at-self.first_input_at >= self.minimum_span)
+        self.state = StableDisplayState('confirmed' if confirmed else 'recognizing',
+                                        self.candidate if confirmed else None, self.count, margin)
+        return self.state
+
+
+def _live_header(status, result, input_at, now, labels, window_seconds, interval, display=None):
     """Describe only actual JTAG results; old inputs remain labelled history."""
     english = ['FPGA LIVE: WAITING FOR RESULT']
     chinese = ['FPGA 实时识别：等待结果']
-    if status.startswith('FPGA ERROR'):
+    if display is not None and display.phase == 'no_person':
+        english = ['FPGA LIVE: NO PERSON DETECTED', 'Waiting for a new person input; previous prediction hidden']
+        chinese = ['FPGA 实时识别：未检测到人物', '等待人物进入画面，当前不显示上一条识别结果']
+        if status.startswith('FPGA ERROR'):
+            english.append(status)
+            chinese.append('FPGA 连接异常，请检查连接')
+    elif status.startswith('FPGA ERROR'):
         english = ['FPGA LIVE: CONNECTION FAILED', status]
         chinese = ['FPGA 实时识别：连接失败', '请检查开发板连接；当前没有可用识别结果']
     elif result is None:
@@ -177,18 +260,24 @@ def _live_header(status, result, input_at, now, labels, window_seconds, interval
         if not valid_class:
             chinese.append('硬件返回无效类别，等待下一次结果')
             english.append('Invalid hardware class; waiting for next result')
-        elif age < max(1, window_seconds+2*interval):
-            english = [f'FPGA LIVE: {label}',
-                       f'Seq {result.sequence} | JTAG {result.roundtrip_ms:.0f}ms | input age {age:.1f}s']
-            chinese = [f'FPGA 实时识别：{action}',
-                       f'序号 {result.sequence}　往返 {result.roundtrip_ms:.0f} 毫秒　输入距今 {age:.1f} 秒']
+        elif age < 1.2:
+            confirmed = display is not None and display.phase == 'confirmed' and display.class_id == result.class_id
+            uncertain = display is not None and display.phase == 'uncertain'
+            english = [f'FPGA LIVE: {label}' if confirmed else 'FPGA LIVE: UNCERTAIN' if uncertain else 'FPGA LIVE: RECOGNIZING']
+            chinese = [f'FPGA 实时识别：{action}' if confirmed else 'FPGA 实时识别：不确定' if uncertain else 'FPGA 实时识别：识别中']
+            margin = display.margin if display is not None else None
+            observed = display.observations if display is not None else 0
+            english.append(f'Raw FPGA: {label} | integer gap {margin} | consecutive {observed}/3')
+            chinese.append(f'原始 FPGA：{action}　整数分数差 {margin if margin is not None else "待确认"}　连续 {observed}/3 次')
+            english.append(f'Seq {result.sequence} | JTAG {result.roundtrip_ms:.0f}ms | input age {age:.1f}s')
+            chinese.append(f'序号 {result.sequence}　往返 {result.roundtrip_ms:.0f} 毫秒　输入距今 {age:.1f} 秒')
         else:
             english.append(f'EXPIRED HISTORY: {label}; seq {result.sequence}')
             chinese.append(f'历史结果（已过期）：{action}，序号 {result.sequence}；等待新结果')
     english.extend(['Actions: standing / left arm / right arm / both arms / squat / lean',
-                    'Experimental model; left/right arms may be confused. Q: exit'])
+                    'Display stability filter only; experimental model. Q: exit'])
     chinese.extend(['动作：站立 / 左臂 / 右臂 / 双臂 / 下蹲 / 侧倾',
-                    '当前为实验模型，左右臂可能混淆；Q 退出'])
+                    '显示已做稳定筛选；当前为实验模型，左右臂可能混淆；Q 退出'])
     return english, chinese
 
 
@@ -381,7 +470,7 @@ def run_capture(args):
     import cv2
     model = read_camera_model(args.package, allow_synthetic_engineering_test=args.allow_synthetic_engineering_test) if args.command == 'run' else None
     profile, contract = _capture_contract(args, model)
-    uses_pose_detector = profile not in ('image', 'flow')
+    uses_pose_detector = profile not in ('image', 'flow', 'static')
     if uses_pose_detector:
         import mediapipe as mp
         if not args.pose_model.is_file():
@@ -419,6 +508,7 @@ def run_capture(args):
     confirm_record = False
     cancelled, last_result_seq, last_error = False, None, None
     font, font_checked = None, False
+    stable_display = StableDisplayFilter()
     window = PoseWindow(window_seconds)
     video_extractor = None
     if profile == 'video':
@@ -431,6 +521,14 @@ def run_capture(args):
         from .flow_features import FlowFeatureExtractor
         video_extractor = FlowFeatureExtractor(window_seconds=window_seconds,
                                                feature_scale=contract['train_feature_scale'])
+    elif profile == 'static':
+        from .static_features import StaticPoseFeatureExtractor
+        try:
+            video_extractor = StaticPoseFeatureExtractor(model_path=args.static_pose_model,
+                                                         window_seconds=window_seconds)
+        except Exception:
+            cap.release()
+            raise
     session = args.session or f'{args.label}-{uuid.uuid4().hex[:12]}' if args.command == 'record' else None
     try:
         if model:
@@ -444,10 +542,10 @@ def run_capture(args):
                     print(json.dumps({'event': 'camera_first_frame', 'width_actual': frame.shape[1],
                                       'height_actual': frame.shape[0],
                                       'preview_crop': False}), flush=True)
-                now = time.monotonic(); elapsed = now-start
+                captured_at = time.monotonic()
                 # MediaPipe's video timestamp remains monotonic when a guided
                 # record resets its separate preparation/record countdown.
-                ms = max(last_ms+1, int((now-capture_start)*1000)); last_ms = ms
+                ms = max(last_ms+1, int((captured_at-capture_start)*1000)); last_ms = ms
                 landmarks = None
                 if detector is not None:
                     image = mp.Image(image_format=mp.ImageFormat.SRGB, data=cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
@@ -455,18 +553,18 @@ def run_capture(args):
                     if detection.pose_landmarks:
                         landmarks = np.array([[p.x,p.y,p.z,p.visibility] for p in detection.pose_landmarks[0]])
                 if video_extractor is not None:
-                    features = video_extractor.update(now, frame, landmarks)
-                    pose_status = 'Video features ready'
+                    features = video_extractor.update(captured_at, frame, landmarks)
+                    pose_status = ('No person detected' if features is None else 'Static pose features ready') if profile == 'static' else 'Video features ready'
                 else:
                     pose = normalize_pose(landmarks, frame.shape[1], frame.shape[0], profile=profile) if landmarks is not None else None
-                    features = window.update(now, pose)
+                    features = window.update(captured_at, pose)
                     pose_status = 'Pose ready' if features is not None else f'Need {framing} / {window_seconds:g}s history'
                 lines = [f'{args.command.upper()} - {pose_status}']
                 chinese = []
                 if args.command == 'record':
                     action = ACTION_ZH.get(args.label, args.label)
                     chinese = [getattr(args, 'progress_zh', f'当前动作：{action}')]
-                    step = gate.tick(now, features is not None, confirm=confirm_record)
+                    step = gate.tick(captured_at, features is not None, confirm=confirm_record)
                     confirm_record = False
                     if step.discard:
                         samples.clear(); timestamps.clear()
@@ -478,7 +576,7 @@ def run_capture(args):
                         if args.no_display and not automatic:
                             raise RuntimeError('Too few valid pose samples; retry with the camera display')
                     if step.emit:
-                        samples.append(features.copy()); timestamps.append(now)
+                        samples.append(features.copy()); timestamps.append(captured_at)
                     if step.phase == 'complete':
                         break
                     if step.phase in ('waiting', 'retry'):
@@ -509,13 +607,16 @@ def run_capture(args):
                     lines.append('Saving features only, no video. Q: finish')
                     chinese.append('只保存姿态特征，不保存视频')
                 else:
-                    if features is not None and now-last_emit >= args.interval:
-                        worker.submit(features, now); last_emit = now
+                    if features is not None and captured_at-last_emit >= args.interval:
+                        worker.submit(features, captured_at); last_emit = captured_at
                     status, result, at, input_at = worker.snapshot(); lines.append(status)
+                    # Feature extraction can be slow. The input retains its
+                    # frame-read clock; display age includes that frontend time.
+                    display_now = time.monotonic()
                     if status.startswith('FPGA ERROR') and status != last_error:
                         print(json.dumps({'event':'fpga_error','message':status}),flush=True);last_error=status
                     if result is not None:
-                        age = now-input_at
+                        age = display_now-input_at
                         label = model['labels'][result.class_id] if 0 <= result.class_id < len(model['labels']) else 'INVALID CLASS'
                         if age < max(1,window_seconds+2*args.interval):
                             lines.append(f'Last FPGA result: {label}, seq={result.sequence}, input age={age:.1f}s')
@@ -531,12 +632,14 @@ def run_capture(args):
                                               'roundtrip_ms':result.roundtrip_ms,'input_age_ms':1000*age,
                                               'backend':result.backend}),flush=True)
                             last_result_seq=result.sequence
-                    lines, chinese = _live_header(status, result, input_at, now, model['labels'],
-                                                  window_seconds, args.interval)
+                    display = (stable_display.clear('no_person') if profile == 'static' and features is None
+                               else stable_display.update(status, result, input_at, display_now))
+                    lines, chinese = _live_header(status, result, input_at, display_now, model['labels'],
+                                                  window_seconds, args.interval, display=display)
                     if model.get('dataset_source') not in REAL_CAMERA_SOURCES:
                         lines.insert(0,'SYNTHETIC ENGINEERING TEST ONLY - NO HUMAN ACCURACY')
                         chinese.insert(0,'仅限合成数据工程自测，不代表真人识别能力')
-                    if elapsed >= args.seconds:
+                    if display_now-start >= args.seconds:
                         break
                 if landmarks is not None:
                     for a,b in CONNECTIONS:
@@ -642,7 +745,10 @@ def main():
             c.add_argument('--window',type=float,default=1)
             c.add_argument('--countdown',type=float,default=3)
         else:
+            from .static_features import DEFAULT_STATIC_MODEL
             c.add_argument('--package',type=Path,required=True)
+            c.add_argument('--static-pose-model',type=Path,default=DEFAULT_STATIC_MODEL,
+                           help='Local YOLO static-pose frontend weights; used only by a static-profile model')
             c.add_argument('--host',default='127.0.0.1')
             c.add_argument('--port',type=int,default=6666)
             c.add_argument('--timeout',type=float,default=10)

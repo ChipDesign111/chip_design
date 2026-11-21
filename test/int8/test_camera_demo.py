@@ -12,6 +12,7 @@ import threading
 import time
 
 import numpy as np
+from unittest.mock import Mock
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
@@ -19,7 +20,8 @@ from fpga.demo.features import (JOINTS, PoseWindow, append_dataset, feature_meta
                                 feature_profile_from_metadata, load_dataset, normalize_pose, quantize_features)
 from fpga.demo.train_camera import split_sessions
 from fpga.demo.camera import (AutoCaptureGate, ManualCaptureGate, FPGAWorker, _chinese_font,
-                              _capture_contract, _draw_capture_text, _live_header, _open_camera, collect, read_camera_model)
+                              StableDisplayFilter, _capture_contract, _draw_capture_text, _live_header, _open_camera, collect, read_camera_model)
+from fpga.demo.camera import run_capture
 
 
 def landmarks():
@@ -412,7 +414,7 @@ class LiveHeaderTests(unittest.TestCase):
     labels = ['standing','left_arm','right_arm','both_arms','squat','lean']
 
     def result(self, **changes):
-        values = dict(backend='openocd-jtag',class_id=1,sequence=7,roundtrip_ms=120)
+        values = dict(backend='openocd-jtag',class_id=1,sequence=7,roundtrip_ms=120,cycles=42,values=[0,10,0,0,0,0])
         values.update(changes)
         return SimpleNamespace(**values)
 
@@ -424,9 +426,13 @@ class LiveHeaderTests(unittest.TestCase):
         self.assertIn('连接中',_live_header('FPGA connecting...',None,None,10,self.labels,.25,.25)[1][1])
 
     def test_fresh_hardware_result_has_chinese_action_latency_and_sequence(self):
-        _,chinese = _live_header('FPGA ready',self.result(),9.8,10,self.labels,.25,.25)
+        stable = StableDisplayFilter()
+        for sequence, stamp in [(5,9.3),(6,9.55),(7,9.8)]:
+            display=stable.update('FPGA ready',self.result(sequence=sequence),stamp,stamp+.1)
+        _,chinese = _live_header('FPGA ready',self.result(),9.8,10,self.labels,.25,.25,display=display)
         self.assertEqual(chinese[0],'FPGA 实时识别：左臂抬起')
-        self.assertIn('序号 7',chinese[1]);self.assertIn('120 毫秒',chinese[1])
+        self.assertIn('原始 FPGA',chinese[1])
+        self.assertIn('序号 7',chinese[2]);self.assertIn('120 毫秒',chinese[2])
         self.assertIn('左右臂可能混淆',chinese[-1])
 
     def test_old_result_is_expired_history_instead_of_current_action(self):
@@ -441,6 +447,140 @@ class LiveHeaderTests(unittest.TestCase):
             _,chinese = _live_header(status,result,9.8,10,self.labels,.25,.25)
             self.assertEqual(chinese[0],'FPGA 实时识别：连接失败')
             self.assertFalse(any('左臂抬起' in line for line in chinese))
+
+    def test_duplicate_frames_cannot_confirm_and_three_sequences_need_time_span(self):
+        stable=StableDisplayFilter()
+        for now in (10.01,10.02,10.03,10.04):
+            display=stable.update('FPGA ready',self.result(sequence=1),10,now)
+            self.assertEqual(display.phase,'recognizing');self.assertEqual(display.observations,1)
+        stable.update('FPGA ready',self.result(sequence=2),10.1,10.11)
+        display=stable.update('FPGA ready',self.result(sequence=3),10.2,10.21)
+        self.assertEqual(display.phase,'recognizing')
+        display=stable.update('FPGA ready',self.result(sequence=4),10.5,10.51)
+        self.assertEqual(display.phase,'confirmed');self.assertEqual(display.class_id,1)
+
+    def test_bounce_low_margin_expiry_and_connection_error_clear_confirmation(self):
+        stable=StableDisplayFilter()
+        for sequence,stamp in [(1,10),(2,10.25),(3,10.5)]:
+            display=stable.update('FPGA ready',self.result(sequence=sequence),stamp,stamp+.01)
+        self.assertEqual(display.phase,'confirmed')
+        bounce=self.result(sequence=4,class_id=2,values=[0,0,10,0,0,0])
+        self.assertEqual(stable.update('FPGA ready',bounce,10.75,10.76).phase,'recognizing')
+        low=self.result(sequence=5,class_id=2,values=[0,0,10,9,0,0])
+        self.assertEqual(stable.update('FPGA ready',low,11,11.01).phase,'uncertain')
+        self.assertIsNone(stable.state.class_id)
+        self.assertEqual(stable.update('FPGA ready',low,11,12.3).phase,'expired')
+        self.assertEqual(stable.update('FPGA ERROR: disconnected',low,11,12.3).phase,'error')
+        self.assertEqual(stable.update('FPGA ready',self.result(sequence=1),13,13.01).observations,1)
+
+    def test_wrong_source_or_changed_duplicate_cannot_be_stable(self):
+        stable=StableDisplayFilter()
+        original=self.result(sequence=1)
+        stable.update('FPGA ready',original,10,10.01)
+        changed=self.result(sequence=1,class_id=2,values=[0,0,10,0,0,0])
+        self.assertEqual(stable.update('FPGA ready',changed,10,10.02).phase,'uncertain')
+        self.assertEqual(stable.update('FPGA ready',self.result(backend='reference'),10,10.03).phase,'error')
+
+    def test_new_input_after_unobserved_long_gap_starts_a_new_vote(self):
+        stable=StableDisplayFilter()
+        for sequence,stamp in [(1,10),(2,10.25),(3,10.5)]:
+            display=stable.update('FPGA ready',self.result(sequence=sequence),stamp,stamp+.01)
+        self.assertEqual(display.phase,'confirmed')
+        # No GUI update occurred during the gap; the new input itself must
+        # invalidate the old votes rather than carry confirmation forward.
+        display=stable.update('FPGA ready',self.result(sequence=4),12,12.01)
+        self.assertEqual(display.phase,'recognizing');self.assertEqual(display.observations,1)
+        self.assertIsNone(display.class_id)
+
+    def test_uncertain_header_keeps_raw_label_transparent_without_confirming_it(self):
+        stable=StableDisplayFilter()
+        raw=self.result(values=[0,10,9,0,0,0])
+        display=stable.update('FPGA ready',raw,9.8,10)
+        _,chinese=_live_header('FPGA ready',raw,9.8,10,self.labels,.25,.25,display=display)
+        self.assertEqual(chinese[0],'FPGA 实时识别：不确定')
+        self.assertIn('原始 FPGA：左臂抬起',chinese[1])
+        self.assertEqual(raw.class_id,1);self.assertEqual(raw.values,[0,10,9,0,0,0])
+
+    def test_slow_frontend_keeps_capture_clock_but_ages_ui_at_display_time(self):
+        contract=feature_metadata(.25,profile='flow');contract['train_feature_scale']=[1.0]*64
+        model={'feature_contract':contract,'labels':self.labels,'dataset_source':'local-camera'}
+        frame=np.zeros((96,128,3),np.uint8)
+        cap=SimpleNamespace(read=Mock(return_value=(True,frame)),release=Mock())
+        extractor=SimpleNamespace(update=Mock(return_value=np.zeros(64,np.float32)))
+        raw=self.result(class_id=0,values=[10,0,0,0,0,0])
+        worker=SimpleNamespace(submit=Mock(),snapshot=Mock(return_value=('FPGA ready',raw,10.8,9.0)),close=Mock())
+        stable=StableDisplayFilter()
+        args=SimpleNamespace(command='run',package=Path('unused'),allow_synthetic_engineering_test=False,
+                             seconds=.5,interval=.25,no_display=True,host='localhost',port=6666,
+                             timeout=1,attach=True,session='')
+        output=io.StringIO()
+        with patch('fpga.demo.camera.read_camera_model',return_value=model), \
+             patch('fpga.demo.camera._open_camera',return_value=(cap,{})), \
+             patch('fpga.demo.flow_features.FlowFeatureExtractor',return_value=extractor), \
+             patch('fpga.demo.camera.FPGAWorker',return_value=worker), \
+             patch('fpga.demo.camera.StableDisplayFilter',return_value=stable), \
+             patch.object(stable,'update',wraps=stable.update) as update_display, \
+             patch('fpga.demo.camera._live_header',wraps=_live_header) as header, \
+             patch('fpga.demo.camera.time.monotonic',side_effect=[10.0,10.1,10.9]), \
+             contextlib.redirect_stdout(output):
+            self.assertTrue(run_capture(args))
+        self.assertAlmostEqual(extractor.update.call_args.args[0],10.1)
+        self.assertAlmostEqual(worker.submit.call_args.args[1],10.1)
+        self.assertAlmostEqual(update_display.call_args.args[3],10.9)
+        self.assertAlmostEqual(header.call_args.args[3],10.9)
+        self.assertEqual(stable.state.phase,'expired')
+        events=[json.loads(line) for line in output.getvalue().splitlines()]
+        event=next(item for item in events if item.get('event')=='fpga_result')
+        self.assertAlmostEqual(event['input_age_ms'],1900)
+        self.assertEqual(event['class_id'],0);self.assertEqual(event['scores'],[10,0,0,0,0,0])
+        self.assertEqual(event['backend'],'openocd-jtag')
+        worker.close.assert_called_once();cap.release.assert_called_once()
+
+    def test_static_frontend_dispatch_and_no_person_clear_previous_confirmation(self):
+        for detected in (True,False):
+            with self.subTest(person_detected=detected):
+                contract={'schema':'yolo11_hip_mask_static64_v1','window_seconds':.25}
+                model={'feature_contract':contract,'labels':self.labels,'dataset_source':'local-camera'}
+                frame=np.zeros((96,128,3),np.uint8)
+                cap=SimpleNamespace(read=Mock(return_value=(True,frame)),release=Mock())
+                features=np.zeros(64,np.float32) if detected else None
+                extractor=SimpleNamespace(update=Mock(return_value=features))
+                create_extractor=Mock(return_value=extractor)
+                static_module=SimpleNamespace(StaticPoseFeatureExtractor=create_extractor,
+                                               DEFAULT_STATIC_MODEL=Path('default-unused.onnx'))
+                raw=self.result(sequence=3)
+                worker=SimpleNamespace(submit=Mock(),snapshot=Mock(return_value=('FPGA ready',raw,10.2,9.6)),close=Mock())
+                stable=StableDisplayFilter()
+                for sequence,stamp in [(1,9.1),(2,9.35),(3,9.6)]:
+                    stable.update('FPGA ready',self.result(sequence=sequence),stamp,stamp+.01)
+                self.assertEqual(stable.state.phase,'confirmed')
+                args=SimpleNamespace(command='run',package=Path('unused'),allow_synthetic_engineering_test=False,
+                                     seconds=.1,interval=.25,no_display=True,host='localhost',port=6666,
+                                     timeout=1,attach=True,session='',static_pose_model=Path('selected.onnx'))
+                output=io.StringIO()
+                with patch.dict(sys.modules,{'fpga.demo.static_features':static_module}), \
+                     patch('fpga.demo.camera.read_camera_model',return_value=model), \
+                     patch('fpga.demo.camera._capture_contract',return_value=('static',contract)), \
+                     patch('fpga.demo.camera._open_camera',return_value=(cap,{})), \
+                     patch('fpga.demo.camera.FPGAWorker',return_value=worker), \
+                     patch('fpga.demo.camera.StableDisplayFilter',return_value=stable), \
+                     patch('fpga.demo.camera._live_header',wraps=_live_header) as header, \
+                     patch('fpga.demo.camera.time.monotonic',side_effect=[10.0,10.1,10.3]), \
+                     contextlib.redirect_stdout(output):
+                    self.assertTrue(run_capture(args))
+                create_extractor.assert_called_once_with(model_path=Path('selected.onnx'),window_seconds=.25)
+                self.assertIs(extractor.update.call_args.args[1],frame)
+                self.assertIsNone(extractor.update.call_args.args[2])
+                if detected:
+                    worker.submit.assert_called_once()
+                else:
+                    worker.submit.assert_not_called()
+                    self.assertEqual(stable.state.phase,'no_person')
+                    self.assertIsNone(stable.state.class_id)
+                    lines=_live_header(*header.call_args.args,**header.call_args.kwargs)[1]
+                    self.assertEqual(lines[0],'FPGA 实时识别：未检测到人物')
+                    self.assertFalse(any('左臂抬起' in line for line in lines))
+                worker.close.assert_called_once();cap.release.assert_called_once()
 
 
 if __name__=='__main__':unittest.main()

@@ -24,6 +24,9 @@ def _profile_joints(profile):
 
 
 def feature_metadata(window_seconds=1.0, profile='full'):
+    if profile == 'static':
+        from .static_features import static_feature_metadata
+        return static_feature_metadata(window_seconds)
     if profile == 'flow':
         from .flow_features import flow_feature_metadata
         return flow_feature_metadata(window_seconds)
@@ -50,6 +53,9 @@ def feature_profile_from_metadata(metadata):
     """Resolve a known feature contract; extra capture provenance is allowed."""
     if not isinstance(metadata, dict) or metadata.get('dimension') != 64:
         raise ValueError('Incompatible camera feature schema')
+    if metadata.get('schema') == 'yolo11_hip_mask_static64_v1':
+        from .static_features import validate_static_metadata
+        return validate_static_metadata(metadata)
     if metadata.get('schema') == 'video_hof64_v5':
         from .flow_features import validate_flow_metadata
         return validate_flow_metadata(metadata)

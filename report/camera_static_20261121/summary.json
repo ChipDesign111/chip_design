@@ -1,0 +1,187 @@
+{
+  "date": "2026-11-21",
+  "scope": "Personal onsite calibration plus previously used development clips; not an independent general accuracy evaluation",
+  "raw_video_clips": 12,
+  "personal_reviewed_training_frames": 205,
+  "old_training_frames": 150,
+  "old_development_frames": 52,
+  "old_development_missing_classes": [
+    "right_arm"
+  ],
+  "private_data_policy": "No user videos, images, per-frame features/results or trained personal weights are uploaded",
+  "frontend": {
+    "role": "PC-only frozen COCO17 body landmarks; no action category on PC",
+    "asset_url": "https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n-pose.pt",
+    "documentation": "https://docs.ultralytics.com/models/yolo11/",
+    "asset_sha256": "869e83fcdffdc7371fa4e34cd8e51c838cc729571d1635e5141e3075e9319dc0",
+    "schema": "yolo11_hip_mask_static64_v1",
+    "joints": "shoulders/elbows/wrists/hips/knees; head and feet unused",
+    "scales": "hip width first, shoulder/box fallbacks",
+    "boundary_mask_fraction": 0.04
+  },
+  "model": {
+    "network": [
+      64,
+      32,
+      6
+    ],
+    "package_tag": "e8a18d0b9e0da70a",
+    "resident_sha256": "1d2a28d6e3b6244cd4ddb85aa91cbee06936d6c12d5b4c9c5ac222285353229a",
+    "resident_bytes": 8192,
+    "free_sram_bytes": 3936,
+    "target": "int22-raw-v1",
+    "location": "FPGA RAW NPU complete FC1 block; FPGA CPU reductions/ReLU/FC2 fringe"
+  },
+  "personal_training_fit": {
+    "samples": 205,
+    "raw_correct": 200,
+    "raw_fit_accuracy": 0.975609756097561,
+    "margin_ge3_samples": 201,
+    "margin_ge3_coverage": 0.9804878048780488,
+    "margin_ge3_correct": 198,
+    "margin_ge3_wrong": 3,
+    "margin_ge3_conditional_precision": 0.9850746268656716,
+    "margin_min": 0,
+    "margin_median": 25.0
+  },
+  "personal_training_fit_by_class": {
+    "standing": {
+      "samples": 44,
+      "raw_correct": 40,
+      "raw_fit_accuracy": 0.9090909090909091,
+      "margin_ge3_samples": 41,
+      "margin_ge3_coverage": 0.9318181818181818,
+      "margin_ge3_correct": 39,
+      "margin_ge3_wrong": 2,
+      "margin_ge3_conditional_precision": 0.9512195121951219,
+      "margin_min": 0,
+      "margin_median": 14.0
+    },
+    "left_arm": {
+      "samples": 22,
+      "raw_correct": 22,
+      "raw_fit_accuracy": 1.0,
+      "margin_ge3_samples": 22,
+      "margin_ge3_coverage": 1.0,
+      "margin_ge3_correct": 22,
+      "margin_ge3_wrong": 0,
+      "margin_ge3_conditional_precision": 1.0,
+      "margin_min": 35,
+      "margin_median": 46.5
+    },
+    "right_arm": {
+      "samples": 35,
+      "raw_correct": 35,
+      "raw_fit_accuracy": 1.0,
+      "margin_ge3_samples": 35,
+      "margin_ge3_coverage": 1.0,
+      "margin_ge3_correct": 35,
+      "margin_ge3_wrong": 0,
+      "margin_ge3_conditional_precision": 1.0,
+      "margin_min": 4,
+      "margin_median": 19.0
+    },
+    "both_arms": {
+      "samples": 44,
+      "raw_correct": 44,
+      "raw_fit_accuracy": 1.0,
+      "margin_ge3_samples": 44,
+      "margin_ge3_coverage": 1.0,
+      "margin_ge3_correct": 44,
+      "margin_ge3_wrong": 0,
+      "margin_ge3_conditional_precision": 1.0,
+      "margin_min": 16,
+      "margin_median": 32.5
+    },
+    "squat": {
+      "samples": 30,
+      "raw_correct": 30,
+      "raw_fit_accuracy": 1.0,
+      "margin_ge3_samples": 30,
+      "margin_ge3_coverage": 1.0,
+      "margin_ge3_correct": 30,
+      "margin_ge3_wrong": 0,
+      "margin_ge3_conditional_precision": 1.0,
+      "margin_min": 20,
+      "margin_median": 26.0
+    },
+    "lean": {
+      "samples": 30,
+      "raw_correct": 29,
+      "raw_fit_accuracy": 0.9666666666666667,
+      "margin_ge3_samples": 29,
+      "margin_ge3_coverage": 0.9666666666666667,
+      "margin_ge3_correct": 28,
+      "margin_ge3_wrong": 1,
+      "margin_ge3_conditional_precision": 0.9655172413793104,
+      "margin_min": 2,
+      "margin_median": 23.0
+    }
+  },
+  "old_development": {
+    "samples": 52,
+    "float_accuracy": 0.6153846153846154,
+    "integer_accuracy": 0.6153846153846154,
+    "float_integer_argmax_agreement": 0.9807692307692307,
+    "class_integer_accuracy": {
+      "standing": 0.5384615384615384,
+      "left_arm": 0.375,
+      "right_arm": null,
+      "both_arms": 0.8,
+      "squat": 0.8571428571428571,
+      "lean": 0.8333333333333334
+    }
+  },
+  "source_equivalence": {
+    "raw_rows": 514,
+    "detected_person_rows": 509,
+    "all_rows_bit_exact": true,
+    "max_absolute_error": 0.0,
+    "prototype_sha256": "18d4d4ec203d5d8045a9c16a614ccd6518d255f4a85d11d6cfff6d9f5e822791",
+    "source_sha256": "bd9d2a7ddb1719b141489fed93be4a443b49b531e52d77e44b26749a85703064"
+  },
+  "board": {
+    "samples": 407,
+    "all_six_int8_scores_exact": true,
+    "backend": "openocd-jtag",
+    "package_tag": "e8a18d0b9e0da70a",
+    "resident_sha256": "1d2a28d6e3b6244cd4ddb85aa91cbee06936d6c12d5b4c9c5ac222285353229a",
+    "bitstream_sha256": "ce118945509b83d281c657aa8297aab0afcdb7eb6fb9b78332b380f2bc0e6efa",
+    "model_unchanged_during_replay": true,
+    "cycles_min": 8835,
+    "cycles_max": 8850,
+    "jtag_ms_min": 30.999999988125637,
+    "jtag_ms_max": 47.00000000593718,
+    "accuracy_scope": "Calibration fit/development replay; bit-exact inference is not independent human accuracy"
+  },
+  "display_policy": {
+    "minimum_distinct_consecutive_results": 3,
+    "minimum_span_seconds": 0.5,
+    "minimum_int8_top_two_gap": 3,
+    "maximum_input_age_seconds": 1.2,
+    "raw_predictions_preserved": true,
+    "missing_person_clears_label": true
+  },
+  "validation": {
+    "camera_unit_tests": 75,
+    "hardware_source_sha256_checks": 75,
+    "repository_policy": "PASS"
+  },
+  "evidence_sha256": {
+    "freeze_summary.json": "c2c83aae745fdf8c951d30d638036c77ae3adf3ab50e1f329ede2e9828415fe7",
+    "board_state.json": "35df605e72e03411037c82cd8e48228d563e81b0465b9c615beef4ac6380ecb3",
+    "board_summary.json": "21e32411392e57d12253cd0fd51ce5093a6cda2438eaf765568286f8f23c195b",
+    "board_results.jsonl": "ab30deb03d9c3c1c2ee2b70992e9326c3a914939ee3199f6a1c9639979805ba7",
+    "host.log": "ab30deb03d9c3c1c2ee2b70992e9326c3a914939ee3199f6a1c9639979805ba7",
+    "program.log": "735c039503265bda72f00f3f79cebe69dc25802f66d03542a4869491fc9122ec"
+  },
+  "limitations": [
+    "The 97.56% is fit on 205 personal training frames, not held-out action accuracy.",
+    "Both personal rounds were used for calibration; correlated frames are not independent sessions.",
+    "Full raw clips and transition diagnostics remain local; intended prompts are not treated as actual pose truth.",
+    "Old development clips were already used during development and lack right-arm samples.",
+    "No direct numeric gain is claimed against the different 156-frame HOF test set.",
+    "Stable display filtering can still confirm wrong high-margin outputs; it is not an accuracy improvement.",
+    "Actual new live action accuracy requires observed ground truth; board equality verifies arithmetic only."
+  ]
+}
