@@ -13,7 +13,8 @@ import zipfile
 import gdstk
 
 
-def assemble(source, output, ring_zip, evidence, patch_io=False):
+def assemble(source, output, ring_zip, evidence, patch_io=False,
+             outer_side_um=1980.0, inner_gap_um=5.0):
     with tempfile.TemporaryDirectory() as temp:
         original = Path(temp)/'original.gds'
         with gzip.open(source, 'rb') as f:
@@ -46,14 +47,30 @@ def assemble(source, output, ring_zip, evidence, patch_io=False):
     x0,y0,x1,y1 = coords
     if x0 != 0 or y0 != 0 or abs(x1-y1)>0.001 or x1>1950:
         raise ValueError('Unsupported/non-square DIEAREA; geometry requires explicit adaptation')
-    size = math.ceil(x1)
-    if size + 30 > 1980:
-        raise ValueError('Final sealring exceeds course 1980um limit')
+    if abs(outer_side_um-1980.0)>1e-6:
+        raise ValueError('This profile requires a 1980um seal-ring outer side')
+    if abs(inner_gap_um-5.0)>1e-6:
+        raise ValueError('This profile requires a 5um die-to-seal-ring inner gap')
+    size_float=outer_side_um-30.0
+    size=int(round(size_float))
+    if abs(size-size_float)>1e-6:
+        raise ValueError('Seal-ring outer side must map to an integer native boundary')
     ring = next(c for c in ring_lib.cells if c.name == 'tsmc_c018_sealring_1p6m')
     if ring.bounding_box() != ((-15.0,-15.0),(1875.0,2005.0)):
         raise ValueError('Native sealring differs from measured course reference')
     native_edge = next(c for c in ring_lib.cells if c.name == 'tsmc_c018_seal_ring_edge_1p6m')
     native_corner = next(c for c in ring_lib.cells if c.name == 'tsmc_c018_sealring_corner_1p6m')
+    nominal_inner=[p for p in native_edge.get_polygons(layer=3,datatype=0)]
+    if len(nominal_inner)!=1 or nominal_inner[0].bounding_box()!=((0.0,5.0),(1.0,15.0)):
+        raise ValueError('Unexpected native seal-ring nominal inner/outer geometry')
+    # The ring-cell reference boundary is its inner frame. The native
+    # assembly occupies 15um outward from it, while the user requires an
+    # additional 5um clear space between DIEAREA and that inner frame.
+    origin=-inner_gap_um
+    expected_die=size-2.0*inner_gap_um
+    if abs(x1-expected_die)>0.001 or abs(y1-expected_die)>0.001:
+        raise ValueError('DIEAREA %.6f does not realize %.6fum ring origin with %.6fum gap' %
+                         (x1,origin,inner_gap_um))
     new_ring = gdstk.Cell('sealring_my_soc_top')
     # Native source has -5..boundary+4 at 1um cadence, same corner orientations.
     for k in range(-5,size+5):
@@ -72,7 +89,7 @@ def assemble(source, output, ring_zip, evidence, patch_io=False):
     present = {c.name for c in lib.cells}
     deps = [c for c in new_ring.dependencies(True) if c.name not in present]
     lib.add(*deps,new_ring)
-    offset = (x1-size)/2
+    offset = origin
     top.add(gdstk.Reference(new_ring,(offset,offset)))
     # Actual bottom PVDD2CDG reference is located from its transformation.
     candidates = [r for r in top.references if r.cell_name=='PVDD2CDG' and abs(r.origin[1])<0.001 and not r.x_reflection and abs(r.rotation or 0)<1e-9]
@@ -95,9 +112,13 @@ def assemble(source, output, ring_zip, evidence, patch_io=False):
             if expected!=[len(c.polygons),len(c.paths),len(c.labels),len(c.references)]:
                 raise ValueError('Native original cell changed: '+c.name)
     lib.write_gds(str(output))
+    gap_bbox=((origin,origin),(size+origin,size+origin))
     evidence.write_text(json.dumps({'gdstk':gdstk.__version__,'unit_m':lib.unit,'precision_m':lib.precision,
-        'die_um':coords,'ring_reference_um':size,'ring_external_bbox_um':actual,
-        'ring_external_size_um':size+30,'ring_edges':4*(size+10),'ring_corners':4,
+        'die_um':coords,'ring_reference_um':size,'ring_origin_um':[offset,offset],
+        'seal_ring_inner_gap_um':inner_gap_um,'seal_ring_reference_bbox_um':gap_bbox,
+        'seal_ring_native_outward_width_um':15.0,
+        'ring_external_bbox_um':actual,'ring_external_size_um':outer_side_um,
+        'ring_edges':4*(size+10),'ring_corners':4,
         'poc_master':ref.cell_name,'poc_instance_origin_um':ref.origin,'poc_anchor_um':point,
         'original_subcell_element_counts_unchanged':not patch_io,'private_cell_changes':changes,
         'method':'Native GDS cell assembly; no scaling or flattening. Native OA import and Calibre required.'},indent=2))
@@ -107,4 +128,7 @@ if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('source',type=Path);p.add_argument('output',type=Path)
     p.add_argument('ring_zip',type=Path);p.add_argument('evidence',type=Path)
     p.add_argument('--patch-io',action='store_true')
-    a=p.parse_args();assemble(a.source,a.output,a.ring_zip,a.evidence,a.patch_io)
+    p.add_argument('--outer-side-um',type=float,default=1980.0)
+    p.add_argument('--inner-gap-um',type=float,default=5.0)
+    a=p.parse_args();assemble(a.source,a.output,a.ring_zip,a.evidence,a.patch_io,
+                              a.outer_side_um,a.inner_gap_um)

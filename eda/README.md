@@ -6,7 +6,7 @@
 
 本地历史核验包`lab5/main_266bca3_final_20261113`，原生利用率日志和TT完整路径另有SHA核验补充，未改原675项回传清单。服务器保留最新三个关联目录及必要工具，旧上传在源码/轻量证据核验缓存后清理。历史[dea5584结果](results/system_reset_unified_20261113/README.md)及其他结果不能替代本轮新输入。[版图完成与签核操作指南](docs/版图完成与签核操作指南.md)区分一键完整流程与只执行版图完成与签核。
 
-功能RTL基线已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。设计是完整 CV32E40P SoC：第一层每拍 2 个输入×32 个输出，第二层 1×6，输入、权重、隐藏值使用 INT8，偏置、累加和分类分数使用 INT32。主 SRAM 保存完整权重；DMA 将当前需要的小块搬入两个 64 字节缓冲。面积验收是 **包含 PAD 的整个 Die ≤3.8 mm²**。
+功能RTL基线已由 **xzx** 合并至 **main**，开发基线为原 main 267c873。设计是完整 CV32E40P SoC：第一层每拍 2 个输入×32 个输出，第二层 1×6，输入、权重、隐藏值使用 INT8，偏置、累加和分类分数使用 INT32。主 SRAM 保存完整权重；DMA 将当前需要的小块搬入两个 64 字节缓冲。本轮尺寸验收为 **Die 1940×1940 µm、Seal Ring 参考内框净空 5 µm、外框 1980×1980 µm**。
 
 建议先读[当前设计数据流](docs/当前设计数据流.md)，用两个输入理解 MAC、tile、DMA、启动和 PAD。
 
@@ -34,7 +34,7 @@ python test/int8/run.py --count 32 --trained --soc
 
 它用随机停顿的真实 DMA 和 Python 整数参考逐值核对隐藏层、分数与类别，再让完整 SoC 的 CPU 执行自检。测试还覆盖未装载、部分装载、错误启动密钥、DMA 读错误、复位中断和重新运行。运行产物在本地 test/int8/runs，功能 PASS 不代替物理验证。
 
-验收使用native_library_zero_slack：保留四个匹配库角、系统20ns、含PAD整颗≤3.8mm²。最终Setup/Hold均要求WNS≥0、TNS=0、违规路径数=0，电气检查遵守原生Liberty及讲义原SDC；不增加设计级边沿限制。default DRC、真实信号/核心供电连通及天线须通过，IO抽象限制按同源原生几何证据记录。只在真实负余量时修复Hold：先0目标，仍有残项时按讲义尝试0.02ns优化目标；0.02ns不是验收门槛。普通优化密度上限统一0.85，不再分83%/85%预算。详见[验收条件](docs/验收条件.md)。
+验收使用native_library_zero_slack：系统20ns，Die与Seal Ring按上述几何约束。最终Setup/Hold均要求达到配置门槛，TNS=0、违规路径数=0，电气检查遵守原生Liberty及讲义原SDC；不增加设计级边沿限制。default DRC、真实信号/核心供电连通、天线和版图完成与签核须通过，IO抽象限制按同源原生几何证据记录。布局density只报告，不作为本轮门禁。详见[验收条件](docs/验收条件.md)。
 
 ## 2．一键压缩、上传、调用三个阶段、回传
 
@@ -92,16 +92,16 @@ bash ../../unpack.sh "$PWD"
 cat configs/design.json
 ```
 
-本次目录下的 deploy 是压缩包解出的源码；configs/design.json 是本版本可编辑配置。默认 PDK 为 /lec/pdk/tsmc180，宏资料来自 /lec/lab4，周期 20 ns，核数 8；核心请求 1648.8×1648.8 μm，四侧余量 150 μm，目标外框 1948.8×1948.8 μm，目标利用率 0.85，包含 PAD 的面积上限 3.8 mm²。
+本次目录下的 deploy 是压缩包解出的源码；configs/design.json 是本版本可编辑配置。默认 PDK 为 /lec/pdk/tsmc180，宏资料来自 /lec/lab4，周期 20 ns，核数 8；核心请求 1640.0×1640.0 μm，四侧余量 150 μm，目标 Die 1940.0×1940.0 μm，目标利用率 0.85，Die 面积上限 3.8 mm²。
 
-目标利用率0.85用于标准逻辑面积规划检查；本轮固定 core 1648.8µm，并显式请求 Die 1948.8×1948.8µm（3.79782144mm²）。floorplan 使用显式 Die box 和 `-noSnapToGrid`，geometry 阶段会拒绝偏离目标的实测 DIEAREA；不把85%参数或含Filler密度当作实测逻辑密度。
+目标利用率0.85用于标准逻辑面积规划检查；本轮固定 core 1640.0µm，并显式请求 Die 1940.0×1940.0µm（3.7636mm²）。floorplan 使用显式 Die box 和 `-noSnapToGrid`，geometry 阶段会拒绝偏离目标的实测 DIEAREA。最终布局 density 只报告，不作为本轮签核门禁。Seal Ring 参考内框距 Die 5µm，环单元向外占15µm，外框固定为 1980×1980µm。
 
 
 
 
 RC温度也必须看实际读回：rc_temperatures.tcl在初始化和恢复检查点后核对25/125/0/−40°C，结果保存work/evidence/rc_temperatures.json并纳入各步审核。Genus的-temperature与Innovus的-T语法不同；旧版物理RC角实际均25°C，不能用匹配的库温度代替RC生效证明。新版本仍仅使用供应的typical RC技术表，不能称独立RC最小/最大角或SI签核。
 
-**第一次运行 check_env 前** 修改 configs/design.json。准备完成后 work 中的输入被固定，禁止修改来冒充续跑。更换参数请新建上传目录。1648.8+2×150=1948.8 μm，且 `target_die_size_um` 必须与 core+两侧余量一致；实际尺寸仍以最终 DEF/GDS 核对。
+**第一次运行 check_env 前** 修改 configs/design.json。准备完成后 work 中的输入被固定，禁止修改来冒充续跑。更换参数请新建上传目录。1640.0+2×150=1940.0 μm，且 `target_die_size_um` 必须与 core+两侧余量一致；实际尺寸仍以最终 DEF/GDS 核对。
 
 ## 5．独立阶段一：环境检查
 

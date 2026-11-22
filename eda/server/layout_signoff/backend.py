@@ -96,7 +96,9 @@ exit(0)
         raise ValueError('Private technology preparation did not finish')
     pre=workspace/'my_soc_top_preDummy.gds'
     ring_zip=pdk/'tsmc180/Foundry Design Documents/t018lodr001_2_15.zip'
-    command=[py,root/'deploy/server/layout_signoff/geometry.py',work/'inputs/my_soc_top.gds.gz',pre,ring_zip,evidence/'geometry.json']
+    command=[py,root/'deploy/server/layout_signoff/geometry.py',work/'inputs/my_soc_top.gds.gz',pre,ring_zip,evidence/'geometry.json',
+             '--outer-side-um',str(config['seal_ring_outer_side_um']),
+             '--inner-gap-um',str(config['seal_ring_inner_gap_um'])]
     if config.get('measured_pvdd2_pimp_patch'):command.append('--patch-io')
     run(command,workspace,evidence/'geometry.log',save)
     run(['strmin','-library','my_soc_top_manual','-strmFile',pre,'-topCell','my_soc_top',
