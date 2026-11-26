@@ -82,11 +82,11 @@ def main(argv=None):
             elif margin is not None and margin<3:headline='电脑识别：不确定'
             else:headline='电脑识别：确认动作中'
             raw=ACTION_ZH.get(raw_label,raw_label) if raw_label is not None else '暂无'
-            chinese=[headline,'当前计算在电脑上执行，未连接 FPGA',
+            chinese=[headline,
                      f'原始结果：{raw}　分数差 {margin if margin is not None else "—"}　连续确认 {min(count,3)}/3',
                      f'画面 {frame.shape[1]}×{frame.shape[0]}　预览 {fps:.1f} 帧/秒　分类 {compute_ms:.2f} 毫秒',
                      '动作：站立 / 左臂 / 右臂 / 双臂 / 下蹲 / 侧倾；Q 退出']
-            english=['PC ACTION RECOGNITION - FPGA NOT CONNECTED',f'Raw: {raw_label}; confirmed: {confirmed}',
+            english=['PC ACTION RECOGNITION',f'Raw: {raw_label}; confirmed: {confirmed}',
                      'Same frozen INT8 classifier, executed on PC. Q: exit']
             points,visible=extractor.overlay_snapshot()
             frame=draw_static_pose(frame,points,visible)

@@ -30,7 +30,7 @@ RAW完整SoC多轮仿真和真实FPGA数值回传均已通过：最终主机源�
 
 静态姿势画面默认叠加绿色人体骨架：肩、肘、腕、髋、膝以绿点和绿线标出。骨架采用同一帧实际检测到且参与特征的有效点，低置信度、出画和缺失关节不补画；无人时清除。先从原始画面计算64维特征，再绘制骨架和镜像显示，因此显示不会进入模型输入，也不会改变模型权重或FPGA计算结果。绘制实现见[pose_overlay.py](pose_overlay.py)。
 
-电脑识别测试入口为`python -m fpga.demo.pc_preview`，也可用`--model`、`--dataset`、`--static-pose-model`指定本机文件；启动源码见[pc_preview.py](pc_preview.py)。它在电脑上重建并核对冻结的INT8模型，再显示动作标签和绿色骨架，界面始终标注“电脑识别，未连接FPGA”，不启动WSL、USB下载或OpenOCD。个人模型权重、校准数据和摄像头素材不上传，需要在本机保留；`--dataset`须包含`features`与`train/validation`格式的`splits`，且文件SHA与模型记录一致。真实FPGA入口仍为`python -m fpga.demo.camera run --package <resident目录>`，两种后端分别标注。
+电脑识别测试入口为`python -m fpga.demo.pc_preview`，也可用`--model`、`--dataset`、`--static-pose-model`指定本机文件；启动源码见[pc_preview.py](pc_preview.py)。它在电脑上重建并核对冻结的INT8模型，再显示动作标签和绿色骨架；界面以“电脑识别”标题标明计算模式，不额外显示FPGA连接提示，也不启动WSL、USB下载或OpenOCD。个人模型权重、校准数据和摄像头素材不上传，需要在本机保留；`--dataset`须包含`features`与`train/validation`格式的`splits`，且文件SHA与模型记录一致。真实FPGA入口仍为`python -m fpga.demo.camera run --package <resident目录>`，两种后端分别标注。
 
 Windows PowerShell，在仓库根目录执行：
 
