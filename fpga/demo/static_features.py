@@ -97,6 +97,13 @@ class StaticPoseFeatureExtractor:
         static_feature_metadata(window_seconds)
         self.detector = _load_pose_model(model_path)
         self.last_timestamp = None
+        self.last_keypoints = None
+        self.last_valid_mask = None
+
+    def overlay_snapshot(self):
+        """Copies of this frame's observed body points, solely for display."""
+        return (None if self.last_keypoints is None else self.last_keypoints.copy(),
+                None if self.last_valid_mask is None else self.last_valid_mask.copy())
 
     def update(self, timestamp, frame_bgr, landmarks=None):
         timestamp = float(timestamp)
@@ -106,8 +113,12 @@ class StaticPoseFeatureExtractor:
         if frame.ndim != 3 or frame.shape[2] != 3 or frame.dtype != np.uint8 or min(frame.shape[:2]) < 1:
             raise ValueError('A real uint8 BGR image is required')
         self.last_timestamp = timestamp
+        self.last_keypoints = self.last_valid_mask = None
         result = self.detector.predict(frame, imgsz=416, conf=.25, max_det=1, device='cpu', verbose=False)[0]
         if not len(result.boxes):
             return None
-        row = feature(result.keypoints.data[0].cpu().numpy(), result.boxes.xyxy[0].cpu().numpy(), frame.shape[1], frame.shape[0])
+        points = result.keypoints.data[0].cpu().numpy()
+        row = feature(points, result.boxes.xyxy[0].cpu().numpy(), frame.shape[1], frame.shape[0])
+        self.last_keypoints = np.asarray(points, dtype=np.float32).copy()
+        self.last_valid_mask = row[20:30].astype(bool)
         return row if row[20:30].any() else None

@@ -16,7 +16,7 @@ from unittest.mock import Mock
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from fpga.demo.features import (JOINTS, PoseWindow, append_dataset, feature_metadata,
+from fpga.demo.features import (DEFAULT_LABELS, JOINTS, PoseWindow, append_dataset, feature_metadata,
                                 feature_profile_from_metadata, load_dataset, normalize_pose, quantize_features)
 from fpga.demo.train_camera import split_sessions
 from fpga.demo.camera import (AutoCaptureGate, ManualCaptureGate, FPGAWorker, _chinese_font,
@@ -581,6 +581,47 @@ class LiveHeaderTests(unittest.TestCase):
                     self.assertEqual(lines[0],'FPGA 实时识别：未检测到人物')
                     self.assertFalse(any('左臂抬起' in line for line in lines))
                 worker.close.assert_called_once();cap.release.assert_called_once()
+
+
+class StaticOverlayIntegrationTests(unittest.TestCase):
+    def test_display_green_skeleton_does_not_enter_features_or_fpga_input(self):
+        import cv2
+        from fpga.demo.pose_overlay import draw_static_pose
+        frame=np.zeros((480,640,3),np.uint8)
+        points=np.zeros((17,3),np.float32)
+        points[5],points[6],points[11],points[12]=(200,100,1),(400,100,1),(200,300,1),(400,300,1)
+        visible=np.zeros(10,bool);visible[[0,1,6,7]]=True
+        features=np.linspace(0,1,64,dtype=np.float32)
+        extractor=SimpleNamespace(update=Mock(return_value=features),
+                                  overlay_snapshot=Mock(return_value=(points,visible)))
+        cap=SimpleNamespace(read=Mock(return_value=(True,frame)),release=Mock())
+        worker=SimpleNamespace(submit=Mock(),snapshot=Mock(return_value=('FPGA ready',None,None,None)),close=Mock())
+        contract={'schema':'yolo11_hip_mask_static64_v1','window_seconds':.25}
+        model={'feature_contract':contract,'labels':list(DEFAULT_LABELS),'dataset_source':'local-camera'}
+        args=SimpleNamespace(command='run',package=Path('unused'),allow_synthetic_engineering_test=False,
+                             seconds=99,interval=.25,no_display=False,host='localhost',port=6666,
+                             timeout=1,attach=True,session='',static_pose_model=Path('unused.pt'))
+        displayed=[]
+        with patch('fpga.demo.static_features.StaticPoseFeatureExtractor',return_value=extractor), \
+             patch('fpga.demo.camera.read_camera_model',return_value=model), \
+             patch('fpga.demo.camera._capture_contract',return_value=('static',contract)), \
+             patch('fpga.demo.camera._open_camera',return_value=(cap,{})), \
+             patch('fpga.demo.camera.FPGAWorker',return_value=worker), \
+             patch('fpga.demo.camera._chinese_font',return_value=None), \
+             patch('fpga.demo.camera.time.monotonic',side_effect=[10,10.1,10.2]), \
+             patch('fpga.demo.pose_overlay.draw_static_pose',wraps=draw_static_pose) as overlay, \
+             patch.object(cv2,'namedWindow'), patch.object(cv2,'resizeWindow'), \
+             patch.object(cv2,'imshow',side_effect=lambda title,image:displayed.append(image.copy())), \
+             patch.object(cv2,'waitKey',return_value=ord('q')),patch.object(cv2,'destroyAllWindows'), \
+             contextlib.redirect_stdout(io.StringIO()):
+            self.assertFalse(run_capture(args))  # Q exits the one mocked frame.
+        np.testing.assert_array_equal(frame,np.zeros_like(frame))
+        np.testing.assert_array_equal(features,np.linspace(0,1,64,dtype=np.float32))
+        self.assertIs(extractor.update.call_args.args[1],frame)
+        self.assertIs(overlay.call_args.args[0],frame)
+        np.testing.assert_array_equal(worker.submit.call_args.args[0],features)
+        self.assertTrue(np.any(np.all(displayed[0]==(80,220,80),axis=2)))
+        worker.close.assert_called_once();cap.release.assert_called_once()
 
 
 if __name__=='__main__':unittest.main()

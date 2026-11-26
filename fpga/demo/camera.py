@@ -641,7 +641,11 @@ def run_capture(args):
                         chinese.insert(0,'仅限合成数据工程自测，不代表真人识别能力')
                     if display_now-start >= args.seconds:
                         break
-                if landmarks is not None:
+                if profile == 'static':
+                    from .pose_overlay import draw_static_pose
+                    points, visible = video_extractor.overlay_snapshot()
+                    frame = draw_static_pose(frame, points, visible)
+                elif landmarks is not None:
                     for a,b in CONNECTIONS:
                         if profile in ('knees', 'video') and (a not in contract['joints'] or b not in contract['joints']):
                             continue

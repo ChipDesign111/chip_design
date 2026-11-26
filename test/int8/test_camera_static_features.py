@@ -216,6 +216,24 @@ class StaticFeatureRuntimeTests(unittest.TestCase):
         mocked.assert_called_once_with('test-only-model.pt')
         return extractor, detector
 
+    def test_display_snapshot_is_this_frames_copy_with_feature_validity_masks(self):
+        points = body_points()
+        points[7] = (10, 180, 1)  # confident, but too near the left boundary
+        extractor, _ = self.create([detection(points, BOX), detection()])
+        frame = np.zeros((480, 640, 3), np.uint8)
+        self.assertEqual(extractor.overlay_snapshot(), (None, None))
+        row = extractor.update(1, frame)
+        displayed, valid = extractor.overlay_snapshot()
+        np.testing.assert_array_equal(displayed, points)
+        np.testing.assert_array_equal(valid, row[20:30].astype(bool))
+        self.assertFalse(valid[2])
+        displayed[:] = 0; valid[:] = False
+        unchanged, unchanged_mask = extractor.overlay_snapshot()
+        np.testing.assert_array_equal(unchanged, points)
+        np.testing.assert_array_equal(unchanged_mask, row[20:30].astype(bool))
+        extractor.update(2, frame)
+        self.assertEqual(extractor.overlay_snapshot(), (None, None))
+
     def test_first_static_frame_is_immediate_and_identical_pose_needs_no_motion_history(self):
         person = detection(body_points(), BOX)
         extractor, detector = self.create([person, person, person])
